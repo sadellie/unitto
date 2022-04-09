@@ -1,0 +1,20 @@
+package com.sadellie.unitto.data
+
+const val KEY_1 = "1"
+const val KEY_2 = "2"
+const val KEY_3 = "3"
+const val KEY_4 = "4"
+const val KEY_5 = "5"
+const val KEY_6 = "6"
+const val KEY_7 = "7"
+const val KEY_8 = "8"
+const val KEY_9 = "9"
+const val KEY_0 = "0"
+
+const val KEY_DOT = "."
+const val KEY_COMMA = ","
+const val KEY_AC = "AC"
+const val KEY_CLEAR = "<"
+const val KEY_NEGATE = "±"
+const val KEY_MINUS = "-"
+const val KEY_E = "E"
