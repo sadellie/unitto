@@ -1,5 +1,10 @@
 package com.sadellie.unitto.data.units
 
+/**
+ * All UnitIDs. Long file.
+ *
+ * NEVER CHANGE IDS THAT ARE ALREADY HERE, THESE IDS ARE USED IN DATABASE
+ */
 object MyUnitIDS {
 
     // LENGTH
@@ -70,6 +75,7 @@ object MyUnitIDS {
     const val kibibit = "kibibit"
     const val kilobit = "kilobit"
     const val megabit = "megabit"
+    const val mebibit = "mebibit"
     const val gigabit = "gigabit"
     const val terabit = "terabit"
     const val petabit = "petabit"
@@ -78,6 +84,7 @@ object MyUnitIDS {
     const val kibibyte = "kibibyte"
     const val kilobyte = "kilobyte"
     const val megabyte = "megabyte"
+    const val mebibyte = "mebibyte"
     const val gigabyte = "gigabyte"
     const val terabyte = "terabyte"
     const val petabyte = "petabyte"
@@ -111,6 +118,7 @@ object MyUnitIDS {
     const val nanosecond = "nanosecond"
     const val microsecond = "microsecond"
     const val millisecond = "millisecond"
+    const val jiffy = "jiffy"
     const val second = "second"
     const val minute = "minute"
     const val hour = "hour"
@@ -167,6 +175,7 @@ object MyUnitIDS {
     const val kibibit_per_second = "kibibit_per_second"
     const val kilobit_per_second = "kilobit_per_second"
     const val megabit_per_second = "megabit_per_second"
+    const val mebibit_per_second = "mebibit_per_second"
     const val gigabit_per_second = "gigabit_per_second"
     const val terabit_per_second = "terabit_per_second"
     const val petabit_per_second = "petabit_per_second"
@@ -175,6 +184,7 @@ object MyUnitIDS {
     const val kibibyte_per_second = "kibibyte_per_second"
     const val kilobyte_per_second = "kilobyte_per_second"
     const val megabyte_per_second = "megabyte_per_second"
+    const val mebibyte_per_second = "mebibyte_per_second"
     const val gigabyte_per_second = "gigabyte_per_second"
     const val terabyte_per_second = "terabyte_per_second"
     const val petabyte_per_second = "petabyte_per_second"

@@ -128,6 +128,8 @@
     <string name="kilobit_short">Kb</string>
     <string name="megabit">Megabit</string>
     <string name="megabit_short">Mb</string>
+    <string name="mebibit">Mebibit</string>
+    <string name="mebibit_short">Mib</string>
     <string name="gigabit">Gigabit</string>
     <string name="gigabit_short">Gb</string>
     <string name="terabit">Terabit</string>
@@ -144,6 +146,8 @@
     <string name="kilobyte_short">KB</string>
     <string name="megabyte">Megabyte</string>
     <string name="megabyte_short">MB</string>
+    <string name="mebibyte">Mebibyte</string>
+    <string name="mebibyte_short">MiB</string>
     <string name="gigabyte">Gigabyte</string>
     <string name="gigabyte_short">GB</string>
     <string name="terabyte">Terabyte</string>
@@ -162,6 +166,8 @@
     <string name="kilobit_per_second_short">Kb/s</string>
     <string name="megabit_per_second">Megabit per second</string>
     <string name="megabit_per_second_short">Mb/s</string>
+    <string name="mebibit_per_second">Mebibit per second</string>
+    <string name="mebibit_per_second_short">Mib/s</string>
     <string name="gigabit_per_second">Gigabit per second</string>
     <string name="gigabit_per_second_short">Gb/s</string>
     <string name="terabit_per_second">Terabit per second</string>
@@ -178,6 +184,8 @@
     <string name="kilobyte_per_second_short">KB/s</string>
     <string name="megabyte_per_second">Megabyte per second</string>
     <string name="megabyte_per_second_short">MB/s</string>
+    <string name="mebibyte_per_second">Mebibyte per second</string>
+    <string name="mebibyte_per_second_short">MiB/s</string>
     <string name="gigabyte_per_second">Gigabyte per second</string>
     <string name="gigabyte_per_second_short">GB/s</string>
     <string name="terabyte_per_second">Terabyte per second</string>
@@ -240,6 +248,8 @@
     <string name="microsecond_short">µs</string>
     <string name="millisecond">Millisecond</string>
     <string name="millisecond_short">ms</string>
+    <string name="jiffy">Jiffy</string>
+    <string name="jiffy_short">j</string>
     <string name="second">Second</string>
     <string name="second_short">s</string>
     <string name="minute">Minute</string>
