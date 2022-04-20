@@ -17,6 +17,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.ABOUT_SCREEN
 import com.sadellie.unitto.data.preferences.*
@@ -131,12 +132,13 @@ fun SettingsScreen(
                             label = stringResource(R.string.third_party_licenses),
                             onClick = { navControllerAction(ABOUT_SCREEN) }
                         )
+
                         SettingsListItem(
                             label = stringResource(R.string.rate_this_app),
                             onClick = {
                                 openLink(
                                     mContext,
-                                    "http://play.google.com/store/apps/details?id=com.sadellie.unitto"
+                                    BuildConfig.StoreLink
                                 )
                             }
                         )

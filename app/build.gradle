@@ -35,6 +35,16 @@ android {
             // We don't need analytics for debug builds
             resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "true")
             resValue("bool", "FIREBASE_CRASHLYTICS_ENABLED", "false")
+            buildConfigField ("String", "StoreLink", "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\"")
+        }
+
+        debugAppGallery {
+            // We don't need analytics for debug builds
+            resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "true")
+            resValue("bool", "FIREBASE_CRASHLYTICS_ENABLED", "false")
+            buildConfigField ("String", "StoreLink", "\"https://appgallery.huawei.com/app/C105740875\"")
+            debuggable true
+            signingConfig signingConfigs.debug
         }
 
         releaseNoAnal {
@@ -47,9 +57,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-        release {
+        releasePlayStore {
             resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "false")
             resValue("bool", "FIREBASE_CRASHLYTICS_ENABLED", "true")
+            buildConfigField ("String", "StoreLink", "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\"")
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        releaseAppGallery {
+            resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "false")
+            resValue("bool", "FIREBASE_CRASHLYTICS_ENABLED", "true")
+            buildConfigField ("String", "StoreLink", "\"https://appgallery.huawei.com/app/C105740875\"")
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -64,7 +84,7 @@ android {
         compose true
 
         // These are unused features
-        buildConfig false
+//        buildConfig false
         aidl false
         renderScript false
         shaders false
