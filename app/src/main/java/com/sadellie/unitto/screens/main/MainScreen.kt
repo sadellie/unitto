@@ -53,8 +53,9 @@ fun MainScreen(
                     .centerAlignedTopAppBarColors(containerColor = Color.Transparent)
             )
         },
-        content = {
+        content = { padding ->
             PortraitMainScreenContent(
+                modifier = Modifier.padding(padding),
                 unitFrom = viewModel.unitFrom,
                 unitTo = viewModel.unitTo,
                 portrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT,
@@ -72,6 +73,7 @@ fun MainScreen(
 
 @Composable
 private fun PortraitMainScreenContent(
+    modifier: Modifier,
     unitFrom: AbstractUnit,
     unitTo: AbstractUnit,
     portrait: Boolean = true,
@@ -85,7 +87,7 @@ private fun PortraitMainScreenContent(
 ) {
     if (portrait) {
         Column(
-            Modifier
+            modifier
                 .fillMaxSize()
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -117,7 +119,7 @@ private fun PortraitMainScreenContent(
         }
     } else {
         Row(
-            Modifier
+            modifier
                 .fillMaxSize()
                 .padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)

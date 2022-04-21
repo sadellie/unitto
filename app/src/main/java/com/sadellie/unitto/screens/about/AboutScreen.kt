@@ -58,9 +58,9 @@ fun AboutScreen(
                 scrollBehavior = scrollBehavior
             )
         },
-    ) {
+    ) { padding ->
         LazyColumn(
-            Modifier.padding(horizontal = 16.dp),
+            Modifier.padding(padding).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {

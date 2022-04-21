@@ -61,9 +61,9 @@ fun SettingsScreen(
                 scrollBehavior = scrollBehavior
             )
         },
-        content = {
+        content = { padding ->
             LazyColumn(
-                Modifier.fillMaxHeight()
+                Modifier.padding(padding).fillMaxHeight()
             ) {
                 item {
                     Column {
