@@ -63,7 +63,9 @@ fun SettingsScreen(
         },
         content = { padding ->
             LazyColumn(
-                Modifier.padding(padding).fillMaxHeight()
+                Modifier
+                    .padding(padding)
+                    .fillMaxHeight()
             ) {
                 item {
                     Column {
@@ -196,7 +198,8 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(id = R.string.currency_rates_note_title),
                 dismissAction = { currentDialogState = 0 },
-                supportText = stringResource(id = R.string.currency_rates_note_text)
+                supportText = stringResource(id = R.string.currency_rates_note_text),
+                dismissButtonLabel = stringResource(id = R.string.ok_label)
             )
         }
         // Dismissing alert dialog

@@ -39,7 +39,8 @@ fun AlertDialogWithList(
     selectedItemIndex: Int = 0,
     selectAction: (Int) -> Unit = {},
     dismissAction: () -> Unit,
-    supportText: String? = null
+    supportText: String? = null,
+    dismissButtonLabel: String = stringResource(id = R.string.cancel_label)
 ) {
     AlertDialog(
         onDismissRequest = dismissAction,
@@ -67,7 +68,7 @@ fun AlertDialogWithList(
         },
         confirmButton = {
             TextButton(onClick = dismissAction) {
-                Text(text = stringResource(id = R.string.cancel_label))
+                Text(text = dismissButtonLabel)
             }
         }
     )
