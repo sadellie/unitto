@@ -52,6 +52,7 @@ android {
             // Used for on device testing. Same performance, but no analytics
             resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "true")
             resValue("bool", "FIREBASE_CRASHLYTICS_ENABLED", "false")
+            buildConfigField ("String", "StoreLink", "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\"")
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
