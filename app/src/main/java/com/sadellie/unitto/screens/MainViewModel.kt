@@ -24,6 +24,7 @@ import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -428,26 +429,28 @@ class MainViewModel @Inject constructor(
 
         withContext(Dispatchers.Default) {
             // Basic filtering
-            val basicFilteredUnits =
-                ALL_UNITS.asSequence()
-                    // Unit group and favorite
-                    .filter {
-                        // Decide which group of units to show
-                        when {
-                            // Both sides, Chip is selected, Only favorites
-                            (filterGroup) and (favoritesOnly) -> {
-                                (it.group == chosenUnitGroup) and it.isFavorite
-                            }
-                            // Both sides, Chip is selected, NOT Only favorites
-                            (filterGroup) and (!favoritesOnly) -> it.group == chosenUnitGroup
-                            // Chip is NOT selected, Only favorites
-                            (!filterGroup) and (favoritesOnly) -> it.isFavorite
-                            // Chip is NOT selected, NOT Only favorites
-                            else -> true
-                        }
-                    }
-                    // Hiding broken currency units
-                    .filter { if (leftSide) true else it.isEnabled }
+            var basicFilteredUnits = ALL_UNITS.asSequence()
+            basicFilteredUnits = when {
+                // Both sides, Chip is selected, Only favorites
+                (filterGroup) and (favoritesOnly) -> {
+                    basicFilteredUnits.filter { (it.group == chosenUnitGroup) and it.isFavorite }
+                }
+                // Both sides, Chip is selected, NOT Only favorites
+                (filterGroup) and (!favoritesOnly) -> {
+                    basicFilteredUnits.filter { it.group == chosenUnitGroup }
+                }
+                // Chip is NOT selected, Only favorites
+                (!filterGroup) and (favoritesOnly) -> {
+                    basicFilteredUnits.filter { it.isFavorite }
+                }
+                // Chip is NOT selected, NOT Only favorites
+                else -> basicFilteredUnits
+            }
+
+            // Hiding broken currency units
+            if (leftSide) {
+                basicFilteredUnits = basicFilteredUnits.filter { it.isEnabled }
+            }
 
             unitsToShow = if (query.isEmpty()) {
                 // Query is empty, i.e. we want to see all units and they need to be sorted by usage
@@ -462,6 +465,7 @@ class MainViewModel @Inject constructor(
                             .substring(0, minOf(query.length, it.renderedName.length))
                             .lev(query)
                     }
+                    .sortedByDescending { it.renderedName.contains(query) }
             }
                 // Group by unit group
                 .groupBy { it.group }
@@ -470,52 +474,45 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            val latestLeftSideUnitId = mySettingsPrefs.getItem(
+                UserPreferenceKeys.LATEST_LEFT_SIDE,
+                MyUnitIDS.kilometer
+            ).first()
+
+            val latestRightSideUnitId = mySettingsPrefs.getItem(
+                UserPreferenceKeys.LATEST_RIGHT_SIDE,
+                MyUnitIDS.mile
+            ).first()
+
             // First we load latest pair of units
             unitFrom = try {
-                ALL_UNITS.first {
-                    it.unitId == mySettingsPrefs.getItem(
-                        UserPreferenceKeys.LATEST_LEFT_SIDE,
-                        MyUnitIDS.kilometer
-                    ).first()
-                }
+                ALL_UNITS.first { it.unitId == latestLeftSideUnitId }
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
-                ALL_UNITS
-                    .first { it.unitId == MyUnitIDS.kilometer }
+                ALL_UNITS.first { it.unitId == MyUnitIDS.kilometer }
             }
 
             unitTo = try {
                 ALL_UNITS
-                    .first {
-                        it.unitId == mySettingsPrefs.getItem(
-                            UserPreferenceKeys.LATEST_RIGHT_SIDE,
-                            MyUnitIDS.mile
-                        ).first()
-                    }
+                    .first { it.unitId == latestRightSideUnitId }
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
-                ALL_UNITS
-                    .first { it.unitId == MyUnitIDS.mile }
+                ALL_UNITS.first { it.unitId == MyUnitIDS.mile }
             }
 
             // Now we get the precision so we can convert values
             precision = mySettingsPrefs.getItem(UserPreferenceKeys.DIGITS_PRECISION, 3).first()
             // Getting separator and changing it in number formatter
             separator =
-                mySettingsPrefs.getItem(UserPreferenceKeys.SEPARATOR, Separator.SPACES).first()
+                mySettingsPrefs
+                    .getItem(UserPreferenceKeys.SEPARATOR, Separator.SPACES).first()
                     .also { Formatter.setSeparator(it) }
             // Getting output format
             outputFormat =
-                mySettingsPrefs.getItem(UserPreferenceKeys.OUTPUT_FORMAT, OutputFormat.PLAIN)
+                mySettingsPrefs
+                    .getItem(UserPreferenceKeys.OUTPUT_FORMAT, OutputFormat.PLAIN)
                     .first()
 
-            // Basic data is loaded, user is free to convert values
-            // Set negate button state according to current group
-            mainUIState = mainUIState.copy(
-                isLoadingDataStore = false,
-                negateButtonEnabled = unitFrom.group.canNegate
-            )
-            updateCurrenciesBasicUnits()
             convertValue()
 
             val allBasedUnits = myBasedUnitDao.getAll()
@@ -530,6 +527,20 @@ class MainViewModel @Inject constructor(
                 it.isFavorite = based?.isFavorite ?: false
                 it.counter = based?.frequency ?: 0
             }
+
+            // User is free to convert values
+            // Set negate button state according to current group
+            mainUIState = mainUIState.copy(
+                isLoadingDataStore = false,
+                negateButtonEnabled = unitFrom.group.canNegate
+            )
+
+            /*
+            * This is at the bottom in case latest unit group was currency and user doesn't have
+            * network access.
+            * He can choose another unit group and doesn't need to wait for network to appear.
+            * */
+            updateCurrenciesBasicUnits()
         }
     }
 }
