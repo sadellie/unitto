@@ -26,8 +26,8 @@ android {
         applicationId "com.sadellie.unitto"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 3
-        versionName "Aero blue"
+        versionCode 5
+        versionName "Antique bronze"
     }
 
     buildTypes {
