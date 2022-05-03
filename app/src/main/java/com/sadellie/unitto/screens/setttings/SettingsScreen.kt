@@ -135,15 +135,17 @@ fun SettingsScreen(
                             onClick = { navControllerAction(ABOUT_SCREEN) }
                         )
 
-                        SettingsListItem(
-                            label = stringResource(R.string.rate_this_app),
-                            onClick = {
-                                openLink(
-                                    mContext,
-                                    BuildConfig.StoreLink
-                                )
-                            }
-                        )
+                        BuildConfig.StoreLink?.let {
+                            SettingsListItem(
+                                label = stringResource(R.string.rate_this_app),
+                                onClick = {
+                                    openLink(
+                                        mContext,
+                                        it
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }

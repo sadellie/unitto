@@ -47,6 +47,15 @@ android {
             signingConfig signingConfigs.debug
         }
 
+        debugRuPlayMarket {
+            // We don't need analytics for debug builds
+            resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "true")
+            resValue("bool", "FIREBASE_CRASHLYTICS_ENABLED", "false")
+            buildConfigField ("String", "StoreLink", "null")
+            debuggable true
+            signingConfig signingConfigs.debug
+        }
+
         releaseNoAnal {
             // Same as release
             // Used for on device testing. Same performance, but no analytics
@@ -75,6 +84,15 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        releaseRuPlayMarket {
+            resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "false")
+            resValue("bool", "FIREBASE_CRASHLYTICS_ENABLED", "true")
+            buildConfigField ("String", "StoreLink", "null")
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -85,7 +103,6 @@ android {
         compose true
 
         // These are unused features
-//        buildConfig false
         aidl false
         renderScript false
         shaders false
