@@ -3,7 +3,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
 
-
     // Hilt
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
@@ -24,13 +23,15 @@ kapt {
 
 android {
     compileSdkVersion = "android-32"
-    
+
     defaultConfig {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 32
         versionCode = 5
         versionName = "Antique bronze"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -51,7 +52,10 @@ android {
             isDebuggable = false
             isShrinkResources = true
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
 
         // Release without analytics and not debuggable, but minified
@@ -65,10 +69,18 @@ android {
     flavorDimensions += "mainFlavorDimension"
     productFlavors {
         create("playStore") {
-            buildConfigField("String", "StoreLink", "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\"")
+            buildConfigField(
+                "String",
+                "StoreLink",
+                "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\""
+            )
         }
         create("appGallery") {
-            buildConfigField("String", "StoreLink", "\"https://appgallery.huawei.com/app/C105740875\"")
+            buildConfigField(
+                "String",
+                "StoreLink",
+                "\"https://appgallery.huawei.com/app/C105740875\""
+            )
         }
         create("ruPlayStore") {
             buildConfigField("String", "StoreLink", "null")
@@ -100,7 +112,12 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
+    androidTestImplementation("androidx.core:core-ktx:1.5.0")
+    androidTestImplementation("androidx.test:core:1.4.0")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:rules:1.4.0")
 
     // Compose and navigation
     implementation("androidx.compose.ui:ui:$composeVersion")
@@ -127,7 +144,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
 
     // Firebase
-    implementation (platform ("com.google.firebase:firebase-bom:29.0.4"))
+    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Crashlytics and Analytics

@@ -18,13 +18,11 @@ import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.data.units.collections.CURRENCY_COLLECTION
 import com.sadellie.unitto.data.units.database.MyBasedUnit
-import com.sadellie.unitto.data.units.database.MyBasedUnitDao
-import com.sadellie.unitto.data.units.database.MyBasedUnitDatabase
+import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,14 +33,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val mySettingsPrefs: UserPreferences,
+    private val basedUnitRepository: MyBasedUnitsRepository,
     private val application: Application
 ) : ViewModel() {
-
-    /**
-     * App database
-     */
-    private val myBasedUnitDao: MyBasedUnitDao =
-        MyBasedUnitDatabase.getDatabase(application).myBasedUnitDao()
 
     /**
      * APP THEME
@@ -204,7 +197,7 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             // Updating paired unit for left side unit in database
-            myBasedUnitDao.insertUnits(
+            basedUnitRepository.insertUnits(
                 MyBasedUnit(
                     unitId = unitFrom.unitId,
                     isFavorite = unitFrom.isFavorite,
@@ -221,7 +214,7 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun incrementCounter(unit: AbstractUnit) {
-        myBasedUnitDao.insertUnits(
+        basedUnitRepository.insertUnits(
             MyBasedUnit(
                 unitId = unit.unitId,
                 isFavorite = unit.isFavorite,
@@ -391,7 +384,7 @@ class MainViewModel @Inject constructor(
             // Changing unit in list to the opposite
             unit.isFavorite = !unit.isFavorite
             // Updating it in database
-            myBasedUnitDao.insertUnits(
+            basedUnitRepository.insertUnits(
                 MyBasedUnit(
                     unitId = unit.unitId,
                     isFavorite = unit.isFavorite,
@@ -515,7 +508,7 @@ class MainViewModel @Inject constructor(
 
             convertValue()
 
-            val allBasedUnits = myBasedUnitDao.getAll()
+            val allBasedUnits = basedUnitRepository.getAll()
 
             ALL_UNITS.forEach {
                 // Loading unit names so that we can search through them
