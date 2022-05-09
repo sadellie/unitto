@@ -22,6 +22,7 @@ kapt {
 }
 
 android {
+    namespace = "com.sadellie.unitto"
     compileSdkVersion = "android-32"
 
     defaultConfig {
