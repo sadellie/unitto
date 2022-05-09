@@ -22,7 +22,7 @@ class CurrencyAdapter {
     @Suppress("UNUSED", "UNUSED_PARAMETER")
     @ToJson fun toJson(card: CurrencyUnitResponse): String? = null
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNUSED", "UNCHECKED_CAST")
     @FromJson fun fromJson(response: Map<String, Any>): CurrencyUnitResponse {
         val pairsBD: Map<String, BigDecimal> = (response[response.keys.elementAt(1)] as Map<String, Double>)
             .mapValues { it.value.toBigDecimal() }
