@@ -452,13 +452,7 @@ class MainViewModel @Inject constructor(
             } else {
                 // We are searching for a specific unit, we don't care about popularity
                 // We need search accuracy
-                basicFilteredUnits
-                    .sortedBy {
-                        it.renderedName
-                            .substring(0, minOf(query.length, it.renderedName.length))
-                            .lev(query)
-                    }
-                    .sortedByDescending { it.renderedName.contains(query) }
+                basicFilteredUnits.sortByLev(query)
             }
                 // Group by unit group
                 .groupBy { it.group }

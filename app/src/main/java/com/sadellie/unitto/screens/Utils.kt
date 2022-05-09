@@ -8,6 +8,7 @@ import com.sadellie.unitto.data.KEY_COMMA
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_E
 import com.sadellie.unitto.data.preferences.Separator
+import com.sadellie.unitto.data.units.AbstractUnit
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -75,12 +76,12 @@ object Formatter {
  * @param[prefScale] Is the preferred scale, the one which will be compared against
  */
 fun BigDecimal.setMinimumRequiredScale(prefScale: Int): BigDecimal {
-    /* Here we are getting the amount of zeros in fractional part before non zero value
-        * For example, for 0.00000123456 we need the length of 00000
-        * Next we add one to get the position of the first non zero value
-        *
-        * Also, this block is only for VERY small numbers
-        * */
+    /**
+     * Here we are getting the amount of zeros in fractional part before non zero value
+     * For example, for 0.00000123456 we need the length of 00000
+     * Next we add one to get the position of the first non zero value
+     * Also, this block is only for VERY small numbers
+     */
     return this.setScale(
         max(
             prefScale,
@@ -102,31 +103,33 @@ fun openLink(mContext: Context, url: String) {
     mContext.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
 }
 
-
 /**
  * Compute Levenshtein Distance. Doesn't really matter which string goes first
  *
- * @param stringB Second string
+ * @param stringToCompare Second string
  * @return The amount of changes that are needed to transform one string into another
  */
-fun CharSequence.lev(stringB: String): Int {
-    // Skipping computation for this cases
-    if (this == stringB) return 0
-    if (this.isEmpty()) return stringB.length
-    // This case is basically unreal in this app, because stringB is a unit name and are never empty
-    if (stringB.isEmpty()) return this.length
+fun String.lev(stringToCompare: String): Int {
+    val stringA = this.lowercase()
+    val stringB = stringToCompare.lowercase()
 
-    var cost = IntArray(this.length + 1) { it }
-    var newCost = IntArray(this.length + 1)
+    // Skipping computation for this cases
+    if (stringA == stringB) return 0
+    if (stringA.isEmpty()) return stringB.length
+    // This case is basically unreal in this app, because stringToCompare is a unit name and they are never empty
+    if (stringB.isEmpty()) return stringA.length
+
+    var cost = IntArray(stringA.length + 1) { it }
+    var newCost = IntArray(stringA.length + 1)
 
     for (i in 1..stringB.length) {
         // basically shifting this to the right by 1 each time
         newCost[0] = i
 
-        for (j in 1..this.length) {
+        for (j in 1..stringA.length) {
             newCost[j] = minOf(
                 // Adding 1 if they don't match, i.e. need to replace
-                cost[j - 1] + if (this[j - 1] == stringB[i - 1]) 0 else 1,
+                cost[j - 1] + if (stringA[j - 1] == stringB[i - 1]) 0 else 1,
                 // Insert
                 cost[j] + 1,
                 // Delete
@@ -139,4 +142,64 @@ fun CharSequence.lev(stringB: String): Int {
     }
 
     return cost[this.length]
+}
+
+/**
+ * Sorts sequence of units by Levenshtein distance
+ *
+ * @param stringA String for Levenshtein distance
+ * @return Sorted sequence of units. Units with lower Levenshtein distance are higher
+ */
+fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
+    // We don't need units where name is too different, half of the symbols is wrong in this situation
+    val threshold: Int = stringA.length / 2
+    // List of pair: Unit and it's levDist
+    val unitsWithDist = mutableListOf<Pair<AbstractUnit, Int>>()
+    this.forEach { unit ->
+        val unitName: String = unit.renderedName.lowercase()
+
+        /**
+         * There is chance that unit name doesn't need any edits (contains part of the query)
+         * So computing levDist is a waste of resources
+         */
+        when {
+            // It's the best possible match if it start with
+            unitName.startsWith(stringA) -> {
+                unitsWithDist.add(Pair(unit, 0))
+                return@forEach
+            }
+            // It's a little bit worse when it just contains part of the query
+            unitName.contains(stringA) -> {
+                unitsWithDist.add(Pair(unit, 1))
+                return@forEach
+            }
+        }
+
+        /**
+         * Levenshtein Distance for this specific name of this unit
+         *
+         * We use substring so that we compare not the whole unit name, but only part of it
+         * It's required because without it levDist will be too high for units with longer
+         * names than the search query
+         *
+         * For example:
+         * Search query is 'Kelometer' and unit name is 'Kilometer per hour'
+         * Without substring levDist will be 9 which means that this unit will be skipped
+         *
+         * With substring levDist will be 3 so unit will be included
+         */
+        val levDist = unitName
+            .substring(0, minOf(stringA.length, unitName.length))
+            .lev(stringA)
+
+        // Threshold
+        if (levDist < threshold) {
+            unitsWithDist.add(Pair(unit, levDist))
+        }
+    }
+    // Sorting by levDist and getting units
+    return unitsWithDist
+        .sortedBy { it.second }
+        .map { it.first }
+        .asSequence()
 }

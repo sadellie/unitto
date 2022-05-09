@@ -40,4 +40,9 @@ class LevenshteinTest {
     fun levEmptyB() {
         assertEquals(9, "red truck".lev(""))
     }
+
+    @Test
+    fun levDifferentCases() {
+        assertEquals(0, "red truck".lev("red TRUCK"))
+    }
 }
