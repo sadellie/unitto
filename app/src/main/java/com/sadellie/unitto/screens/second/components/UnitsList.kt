@@ -43,19 +43,19 @@ fun UnitsList(
             if (groupedUnits.isEmpty()) {
                 item { SearchPlaceholder() }
             } else {
-                groupedUnits.forEach { (groupOfMeasurements, listOfMeasurements) ->
+                groupedUnits.forEach { (unitGroup, listOfUnits) ->
                     stickyHeader {
                         Text(
                             modifier = Modifier
                                 .background(MaterialTheme.colorScheme.background)
                                 .fillMaxWidth()
                                 .padding(vertical = 12.dp, horizontal = 8.dp),
-                            text = stringResource(id = groupOfMeasurements.res),
+                            text = stringResource(id = unitGroup.res),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
-                    items(listOfMeasurements) { unit ->
+                    items(items = listOfUnits, key = { it.unitId }) { unit ->
                         UnitListItem(
                             modifier = Modifier,
                             changeAction = changeAction,
