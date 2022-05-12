@@ -46,9 +46,15 @@ fun SecondScreen(
                 .padding(8.dp),
             title = stringResource(id = if (leftSide) R.string.units_screen_from else R.string.units_screen_to),
             value = searchQuery,
-            onValueChange = { searchQuery = it },
+            onValueChange = {
+                searchQuery = it
+                viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
+            },
             favoritesOnly = favoritesOnly,
-            favoriteAction = { viewModel.toggleFavoritesOnly() },
+            favoriteAction = {
+                viewModel.toggleFavoritesOnly()
+                viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
+            },
             navigateUpAction = navigateUp,
             focusManager = focusManager
         )
@@ -58,7 +64,10 @@ fun SecondScreen(
                 lazyListState = chipsRowLazyListState,
                 items = ALL_UNIT_GROUPS,
                 chosenUnitGroup = chosenUnitGroup,
-                selectAction = { chosenUnitGroup = if (it == chosenUnitGroup) null else it }
+                selectAction = {
+                    chosenUnitGroup = if (it == chosenUnitGroup) null else it
+                    viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
+                }
             )
             UnitsList(
                 groupedUnits = unitsList,
@@ -77,12 +86,20 @@ fun SecondScreen(
             )
         }
     }
-    LaunchedEffect(searchQuery, favoritesOnly, chosenUnitGroup) {
-        // Everytime we change query, toggle favorites or click chip, this block will be called
-        viewModel.loadUnitToShow(searchQuery, chosenUnitGroup, leftSide)
-    }
+
+    // This block is called only once on initial composition
     LaunchedEffect(Unit) {
-        // This block is called only once on initial composition
+        /**
+         * Telling viewModel that it needs to update the list
+         * Also while the below is being computed user will composable will use cached list from viewModel
+         *
+         * User actually doesn't see cached list. Computation takes few milliseconds since we don't
+         * compute any Levenshtein distance when the screen is launched and the list is limited
+         * to a specific [UnitGroup]
+         *
+         * Adding animation/spinners will cause flickering and confuse user
+         */
+        viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
         // Scrolling chips to current group
         chosenUnitGroup?.let {
             chipsRowLazyListState.animateScrollToItem(ALL_UNIT_GROUPS.indexOf(chosenUnitGroup))

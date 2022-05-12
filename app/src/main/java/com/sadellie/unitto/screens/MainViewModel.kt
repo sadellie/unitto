@@ -413,49 +413,53 @@ class MainViewModel @Inject constructor(
      * @param leftSide Decide whether or not we are on left side. Need it because right side requires
      * us to mark disabled currency units
      */
-    suspend fun loadUnitToShow(
+    fun loadUnitsToShow(
         query: String,
         chosenUnitGroup: UnitGroup?,
         leftSide: Boolean
     ) {
-        val filterGroup: Boolean = chosenUnitGroup != null
+        viewModelScope.launch {
+            val filterGroup: Boolean = chosenUnitGroup != null
 
-        withContext(Dispatchers.Default) {
-            // Basic filtering
-            var basicFilteredUnits = ALL_UNITS.asSequence()
-            basicFilteredUnits = when {
-                // Both sides, Chip is selected, Only favorites
-                (filterGroup) and (favoritesOnly) -> {
-                    basicFilteredUnits.filter { (it.group == chosenUnitGroup) and it.isFavorite }
+            // This is mostly not UI related stuff and viewModelScope.launch uses Dispatchers.Main
+            // So we switch to Default
+            withContext(Dispatchers.Default) {
+                // Basic filtering
+                var basicFilteredUnits = ALL_UNITS.asSequence()
+                basicFilteredUnits = when {
+                    // Both sides, Chip is selected, Only favorites
+                    (filterGroup) and (favoritesOnly) -> {
+                        basicFilteredUnits.filter { (it.group == chosenUnitGroup) and it.isFavorite }
+                    }
+                    // Both sides, Chip is selected, NOT Only favorites
+                    (filterGroup) and (!favoritesOnly) -> {
+                        basicFilteredUnits.filter { it.group == chosenUnitGroup }
+                    }
+                    // Chip is NOT selected, Only favorites
+                    (!filterGroup) and (favoritesOnly) -> {
+                        basicFilteredUnits.filter { it.isFavorite }
+                    }
+                    // Chip is NOT selected, NOT Only favorites
+                    else -> basicFilteredUnits
                 }
-                // Both sides, Chip is selected, NOT Only favorites
-                (filterGroup) and (!favoritesOnly) -> {
-                    basicFilteredUnits.filter { it.group == chosenUnitGroup }
-                }
-                // Chip is NOT selected, Only favorites
-                (!filterGroup) and (favoritesOnly) -> {
-                    basicFilteredUnits.filter { it.isFavorite }
-                }
-                // Chip is NOT selected, NOT Only favorites
-                else -> basicFilteredUnits
-            }
 
-            // Hiding broken currency units
-            if (leftSide) {
-                basicFilteredUnits = basicFilteredUnits.filter { it.isEnabled }
-            }
+                // Hiding broken currency units
+                if (leftSide) {
+                    basicFilteredUnits = basicFilteredUnits.filter { it.isEnabled }
+                }
 
-            unitsToShow = if (query.isEmpty()) {
-                // Query is empty, i.e. we want to see all units and they need to be sorted by usage
-                basicFilteredUnits
-                    .sortedByDescending { it.counter }
-            } else {
-                // We are searching for a specific unit, we don't care about popularity
-                // We need search accuracy
-                basicFilteredUnits.sortByLev(query)
+                unitsToShow = if (query.isEmpty()) {
+                    // Query is empty, i.e. we want to see all units and they need to be sorted by usage
+                    basicFilteredUnits
+                        .sortedByDescending { it.counter }
+                } else {
+                    // We are searching for a specific unit, we don't care about popularity
+                    // We need search accuracy
+                    basicFilteredUnits.sortByLev(query)
+                }
+                    // Group by unit group
+                    .groupBy { it.group }
             }
-                // Group by unit group
-                .groupBy { it.group }
         }
     }
 
