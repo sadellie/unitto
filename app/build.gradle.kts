@@ -127,13 +127,13 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.0-beta01")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:dagger-android-processor:2.41")
-    implementation("com.google.dagger:hilt-android:2.41")
-    kapt("com.google.dagger:hilt-compiler:2.41")
+    kapt("com.google.dagger:dagger-android-processor:2.42")
+    implementation("com.google.dagger:hilt-android:2.42")
+    kapt("com.google.dagger:hilt-compiler:2.42")
 
     // There are a lot of icons
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
@@ -145,7 +145,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
+    implementation(platform("com.google.firebase:firebase-bom:30.0.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Crashlytics and Analytics
