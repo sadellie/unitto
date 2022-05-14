@@ -29,8 +29,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 32
-        versionCode = 5
-        versionName = "Antique bronze"
+        versionCode = 6
+        versionName = "Baby pink"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
