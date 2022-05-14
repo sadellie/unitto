@@ -137,11 +137,12 @@ fun SearchBar(
                         decorationBox = { innerTextField ->
                             // Showing placeholder only when there is query is empty
                             if (value.isEmpty()) {
+                                innerTextField()
                                 Text(
                                     modifier = Modifier.alpha(0.7f),
                                     text = stringResource(id = R.string.search_bar_placeholder),
                                     style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.outline
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                             } else {
                                 innerTextField()

@@ -76,7 +76,7 @@ fun SettingsScreen(
                                 .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
                             text = stringResource(id = R.string.general_settings_group),
                             style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         SettingsListItem(
                             label = stringResource(R.string.precision_setting),
@@ -110,7 +110,7 @@ fun SettingsScreen(
                                 .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
                             text = stringResource(id = R.string.additional_settings_group),
                             style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         SettingsListItem(
                             label = stringResource(R.string.terms_and_conditions),
