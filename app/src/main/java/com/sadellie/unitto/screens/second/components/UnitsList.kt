@@ -68,8 +68,7 @@ fun UnitsList(
                                         unitFrom
                                             .convert(it, inputValue, 3)
                                             .toPlainString()
-                                            .plus(" ")
-                                    )
+                                    ).plus(" ")
                                 } else {
                                     ""
                                 }
