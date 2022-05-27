@@ -15,7 +15,7 @@ val AREA_COLLECTION: List<AbstractUnit> by lazy {
         MyUnit(MyUnitIDS.square_mile,               BigDecimal.valueOf(3.893277806E+34),        UnitGroup.AREA, R.string.square_mile,               R.string.square_mile_short),
         MyUnit(MyUnitIDS.square_yard,               BigDecimal.valueOf(1.256869126E+28),        UnitGroup.AREA, R.string.square_yard,               R.string.square_yard_short),
         MyUnit(MyUnitIDS.square_inch,               BigDecimal.valueOf(9.698064247E+24),        UnitGroup.AREA, R.string.square_inch,               R.string.square_inch_short),
-        MyUnit(MyUnitIDS.square_micrometer,         BigDecimal.valueOf(15032029647492000.0),    UnitGroup.AREA, R.string.square_micrometer,         R.string.square_micrometer_short),
+        MyUnit(MyUnitIDS.square_micrometer,         BigDecimal.valueOf(1.503202964E+16),    UnitGroup.AREA, R.string.square_micrometer,         R.string.square_micrometer_short),
         MyUnit(MyUnitIDS.square_millimeter,         BigDecimal.valueOf(1.503202964E+22),        UnitGroup.AREA, R.string.square_millimeter,         R.string.square_millimeter_short),
         MyUnit(MyUnitIDS.square_centimeter,         BigDecimal.valueOf(1.503202964E+24),        UnitGroup.AREA, R.string.square_centimeter,         R.string.square_centimeter_short),
         MyUnit(MyUnitIDS.square_decimeter,          BigDecimal.valueOf(1.503202964E+26),        UnitGroup.AREA, R.string.square_decimeter,          R.string.square_decimeter_short),

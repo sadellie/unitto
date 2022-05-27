@@ -21,7 +21,7 @@ val SPEED_COLLECTION: List<AbstractUnit> by lazy {
         MyUnit(MyUnitIDS.kilometer_per_hour,            BigDecimal.valueOf(1_000_000),              UnitGroup.SPEED,    R.string.kilometer_per_hour,            R.string.kilometer_per_hour_short),
         MyUnit(MyUnitIDS.kilometer_per_minute,          BigDecimal.valueOf(60_000_000),             UnitGroup.SPEED,    R.string.kilometer_per_minute,          R.string.kilometer_per_minute_short),
         MyUnit(MyUnitIDS.kilometer_per_second,          BigDecimal.valueOf(3_600_000_000),          UnitGroup.SPEED,    R.string.kilometer_per_second,          R.string.kilometer_per_second_short),
-        MyUnit(MyUnitIDS.foot_per_hour,                 BigDecimal.valueOf(304),                    UnitGroup.SPEED,    R.string.foot_per_hour,                 R.string.foot_per_hour_short),
+        MyUnit(MyUnitIDS.foot_per_hour,                 BigDecimal.valueOf(304.8),                  UnitGroup.SPEED,    R.string.foot_per_hour,                 R.string.foot_per_hour_short),
         MyUnit(MyUnitIDS.foot_per_minute,               BigDecimal.valueOf(18_288),                 UnitGroup.SPEED,    R.string.foot_per_minute,               R.string.foot_per_minute_short),
         MyUnit(MyUnitIDS.foot_per_second,               BigDecimal.valueOf(1_097_280),              UnitGroup.SPEED,    R.string.foot_per_second,               R.string.foot_per_second_short),
         MyUnit(MyUnitIDS.yard_per_hour,                 BigDecimal.valueOf(914.4),                  UnitGroup.SPEED,    R.string.yard_per_hour,                 R.string.yard_per_hour_short),
@@ -35,7 +35,7 @@ val SPEED_COLLECTION: List<AbstractUnit> by lazy {
         MyUnit(MyUnitIDS.cosmic_velocity_first,         BigDecimal.valueOf(28_440_000_000),         UnitGroup.SPEED,    R.string.cosmic_velocity_first,         R.string.cosmic_velocity_first_short),
         MyUnit(MyUnitIDS.cosmic_velocity_second,        BigDecimal.valueOf(40_320_000_000),         UnitGroup.SPEED,    R.string.cosmic_velocity_second,        R.string.cosmic_velocity_second_short),
         MyUnit(MyUnitIDS.cosmic_velocity_third,         BigDecimal.valueOf(60_012_000_000),         UnitGroup.SPEED,    R.string.cosmic_velocity_third,         R.string.cosmic_velocity_third_short),
-        MyUnit(MyUnitIDS.earths_orbital_speed,          BigDecimal.valueOf(107_208_000_000),        UnitGroup.SPEED,    R.string.earths_orbital_speed,          R.string.earths_orbital_speed_short),
+        MyUnit(MyUnitIDS.earths_orbital_speed,          BigDecimal.valueOf(107_154_000_000),        UnitGroup.SPEED,    R.string.earths_orbital_speed,          R.string.earths_orbital_speed_short),
         MyUnit(MyUnitIDS.mach,                          BigDecimal.valueOf(1_236_960_000),          UnitGroup.SPEED,    R.string.mach,                          R.string.mach_short),
         MyUnit(MyUnitIDS.mach_si_standard,              BigDecimal.valueOf(1_062_167_040),          UnitGroup.SPEED,    R.string.mach_si_standard,              R.string.mach_si_standard_short),)
 }

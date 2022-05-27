@@ -15,6 +15,8 @@ val ALL_UNITS: List<AbstractUnit> by lazy {
             AREA_COLLECTION +
             VOLUME_COLLECTION +
             DATA_COLLECTION +
+            PRESSURE_COLLECTION +
+            ACCELERATION_COLLECTION +
             ENERGY_COLLECTION +
             POWER_COLLECTION +
             ANGLE_COLLECTION +

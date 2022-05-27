@@ -28,6 +28,30 @@
     <string name="inch_short">in</string>
     <string name="light_year">Light year</string>
     <string name="light_year_short">ly</string>
+    <string name="parsec">Parsec</string>
+    <string name="parsec_short">pc</string>
+    <string name="kiloparsec">Kiloparsec</string>
+    <string name="kiloparsec_short">kpc</string>
+    <string name="megaparsec">Megaparsec</string>
+    <string name="megaparsec_short">Mpc</string>
+    <string name="mercury_equatorial_radius">Mercury equatorial radius</string>
+    <string name="mercury_equatorial_radius_short">Mercury R</string>
+    <string name="venus_equatorial_radius">Venus equatorial radius</string>
+    <string name="venus_equatorial_radius_short">Venus R</string>
+    <string name="earth_equatorial_radius">Earth equatorial radius</string>
+    <string name="earth_equatorial_radius_short">Earth R</string>
+    <string name="mars_equatorial_radius">Mars equatorial radius</string>
+    <string name="mars_equatorial_radius_short">Mars R</string>
+    <string name="jupiter_equatorial_radius">Jupiter equatorial radius</string>
+    <string name="jupiter_equatorial_radius_short">Jupiter R</string>
+    <string name="saturn_equatorial_radius">Saturn equatorial radius</string>
+    <string name="saturn_equatorial_radius_short">Saturn R</string>
+    <string name="uranus_equatorial_radius">Uranus equatorial radius</string>
+    <string name="uranus_equatorial_radius_short">Uranus R</string>
+    <string name="neptune_equatorial_radius">Neptune equatorial radius</string>
+    <string name="neptune_equatorial_radius_short">Neptune R</string>
+    <string name="sun_equatorial_radius">Sun equatorial radius</string>
+    <string name="sun_equatorial_radius_short">Sun R</string>
 
     <!--Mass-->
     <string name="electron_mass_rest">Electron mass</string>
@@ -50,6 +74,24 @@
     <string name="ounce_short">oz</string>
     <string name="carat">Carat</string>
     <string name="carat_short">ct</string>
+    <string name="mercury_mass">Mercury mass</string>
+    <string name="mercury_mass_short">Mercury M</string>
+    <string name="venus_mass">Venus mass</string>
+    <string name="venus_mass_short">Venus M</string>
+    <string name="earth_mass">Earth mass</string>
+    <string name="earth_mass_short">Earth M</string>
+    <string name="mars_mass">Mars mass</string>
+    <string name="mars_mass_short">Mars M</string>
+    <string name="jupiter_mass">Jupiter mass</string>
+    <string name="jupiter_mass_short">Jupiter M</string>
+    <string name="saturn_mass">Saturn mass</string>
+    <string name="saturn_mass_short">Saturn M</string>
+    <string name="uranus_mass">Uranus mass</string>
+    <string name="uranus_mass_short">Uranus M</string>
+    <string name="neptune_mass">Neptune mass</string>
+    <string name="neptune_mass_short">Neptune M</string>
+    <string name="sun_mass">Sun mass</string>
+    <string name="sun_mass_short">Sun M</string>
 
     <!--Temperature-->
     <string name="celsius">Celsius</string>
@@ -342,6 +384,98 @@
     <string name="sextant_short">sxt</string>
     <string name="turn">Turn</string>
     <string name="turn_short">tr</string>
+
+    <!--Pressure-->
+    <string name="attopascal">Attopascal</string>
+    <string name="attopascal_short">aPa</string>
+    <string name="femtopascal">Femtopascal</string>
+    <string name="femtopascal_short">fPa</string>
+    <string name="picopascal">Picopascal</string>
+    <string name="picopascal_short">pPa</string>
+    <string name="nanopascal">Nanopascal</string>
+    <string name="nanopascal_short">nPa</string>
+    <string name="micropascal">Micropascal</string>
+    <string name="micropascal_short">µPa</string>
+    <string name="millipascal">Millipascal</string>
+    <string name="millipascal_short">mPa</string>
+    <string name="centipascal">Centipascal</string>
+    <string name="centipascal_short">cPa</string>
+    <string name="decipascal">Decipascal</string>
+    <string name="decipascal_short">dPa</string>
+    <string name="pascal">Pascal</string>
+    <string name="pascal_short">Pa</string>
+    <string name="dekapascal">Dekapascal</string>
+    <string name="dekapascal_short">daPa</string>
+    <string name="hectopascal">Hectopascal</string>
+    <string name="hectopascal_short">hPa</string>
+    <string name="bar">Bar</string>
+    <string name="bar_short">bar</string>
+    <string name="megapascal">Megapascal</string>
+    <string name="megapascal_short">MPa</string>
+    <string name="gigapascal">Gigapascal</string>
+    <string name="gigapascal_short">GPA</string>
+    <string name="terapascal">Terapascal</string>
+    <string name="terapascal_short">TPa</string>
+    <string name="petapascal">Petapascal</string>
+    <string name="petapascal_short">PPa</string>
+    <string name="exapascal">Exapascal</string>
+    <string name="exapascal_short">EPa</string>
+    <string name="psi">Pound per square inch</string>
+    <string name="psi_short" translatable="false">psi</string>
+    <string name="ksi">Kilopound per square inch</string>
+    <string name="ksi_short" translatable="false">ksi</string>
+    <string name="standard_atmosphere">Standard atmosphere</string>
+    <string name="standard_atmosphere_short">atm</string>
+    <string name="torr">Torr</string>
+    <string name="torr_short">torr</string>
+    <string name="millimeter_of_mercury">Millimeter of mercury</string>
+    <string name="millimeter_of_mercury_short">mm Hg</string>
+
+    <!--Acceleration-->
+    <string name="attometer_per_square_second">Attometer per square second</string>
+    <string name="attometer_per_square_second_short">am/s^2</string>
+    <string name="femtometer_per_square_second">Femtometer per square second</string>
+    <string name="femtometer_per_square_second_short">fm/s^2</string>
+    <string name="picometer_per_square_second">Picometer per square second</string>
+    <string name="picometer_per_square_second_short">pm/s^2</string>
+    <string name="nanometer_per_square_second">Nanometer per square second</string>
+    <string name="nanometer_per_square_second_short">nm/s^2</string>
+    <string name="micrometer_per_square_second">Micrometer per square second</string>
+    <string name="micrometer_per_square_second_short">µm/s^2</string>
+    <string name="millimeter_per_square_second">Millimeter per square second</string>
+    <string name="millimeter_per_square_second_short">mm/s^2</string>
+    <string name="centimeter_per_square_second">Centimeter per square second</string>
+    <string name="centimeter_per_square_second_short">cm/s^2</string>
+    <string name="decimeter_per_square_second">Decimeter per square second</string>
+    <string name="decimeter_per_square_second_short">dm/s^2</string>
+    <string name="meter_per_square_second">Meter per square second</string>
+    <string name="meter_per_square_second_short">m/s^2</string>
+    <string name="kilometer_per_square_second">Kilometer per square second</string>
+    <string name="kilometer_per_square_second_short">km/s^2</string>
+    <string name="dekameter_per_square_second">Dekameter per square second</string>
+    <string name="dekameter_per_square_second_short">dam/s^2</string>
+    <string name="hectometer_per_square_second">Hectometer per square second</string>
+    <string name="hectometer_per_square_second_short">hm/s^2</string>
+    <string name="gal">Gal</string>
+    <string name="gal_short">Gal</string>
+    <string name="mercury_surface_gravity">Mercury surface gravity</string>
+    <string name="mercury_surface_gravity_short">Mercury g</string>
+    <string name="venus_surface_gravity">Venus surface gravity</string>
+    <string name="venus_surface_gravity_short">Venus g</string>
+    <string name="earth_surface_gravity">Earth surface gravity</string>
+    <string name="earth_surface_gravity_short">Earth g</string>
+    <string name="mars_surface_gravity">Mars surface gravity</string>
+    <string name="mars_surface_gravity_short">Mars g</string>
+    <string name="jupiter_surface_gravity">Jupiter surface gravity</string>
+    <string name="jupiter_surface_gravity_short">Jupiter g</string>
+    <string name="saturn_surface_gravity">Saturn surface gravity</string>
+    <string name="saturn_surface_gravity_short">Saturn g</string>
+    <string name="uranus_surface_gravity">Uranus surface gravity</string>
+    <string name="uranus_surface_gravity_short">Uranus g</string>
+    <string name="neptune_surface_gravity">Neptune surface gravity</string>
+    <string name="neptune_surface_gravity_short">Neptune g</string>
+    <string name="sun_surface_gravity">Sun surface gravity</string>
+    <string name="sun_surface_gravity_short">Sun g</string>
 
     <!--Currency-->
     <string name="currency_1inch" translatable="false">1inch Network</string>
@@ -775,6 +909,8 @@
     <string name="power">Power</string>
     <string name="angle">Angle</string>
     <string name="data_transfer">Data transfer</string>
+    <string name="pressure">Pressure</string>
+    <string name="acceleration">Acceleration</string>
     <string name="currency">Currency</string>
 
     <!--Screen names-->
