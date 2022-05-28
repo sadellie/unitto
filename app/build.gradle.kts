@@ -113,7 +113,7 @@ android {
 }
 
 dependencies {
-    androidTestImplementation("androidx.core:core-ktx:1.5.0")
+    implementation("androidx.core:core-ktx:1.7.0")
     androidTestImplementation("androidx.test:core:1.4.0")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
     testImplementation("junit:junit:4.13.2")
@@ -124,10 +124,10 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.0-beta01")
+    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
@@ -145,7 +145,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:30.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:30.0.2"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Crashlytics and Analytics
