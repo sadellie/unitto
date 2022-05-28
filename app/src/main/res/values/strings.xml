@@ -930,6 +930,8 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="third_party_licenses">Third party licenses</string>
     <string name="rate_this_app">Rate this app</string>
+    <string name="send_usage_statistics">Send usage statistics</string>
+    <string name="send_usage_statistics_support">All data is anonymous and encrypted</string>
     <string name="general_settings_group">General</string>
     <string name="additional_settings_group">Additional</string>
 

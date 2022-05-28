@@ -670,5 +670,7 @@
     <string name="sun_mass_short">Солнце M</string>
     <string name="pressure">Давление</string>
     <string name="acceleration">Ускорение</string>
+    <string name="send_usage_statistics">Отправлять статистику использования</string>
+    <string name="send_usage_statistics_support">Все данные анонимны и зашифрованы</string>
 
 </resources>

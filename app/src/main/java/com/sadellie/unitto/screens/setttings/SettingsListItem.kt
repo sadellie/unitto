@@ -2,12 +2,10 @@ package com.sadellie.unitto.screens.setttings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,22 +15,24 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 /**
- * Represents one item in list on Settings screen
+ * Basic list item for settings screen. By default only has label and support text, clickable.
+ * This component can be easily modified if you provide additional component to it,
+ * for example a switch or a checkbox
  *
- * @param modifier Modifier that is applied to a [Row]
- * @param onClick Action to perform when clicking this item
- * @param label Big text that is above support text
- * @param supportText Smaller text that is below label
+ * @param label Main text
+ * @param supportText Text that is located below label
+ * @param onClick Action to perform when user clicks on this component (whole component is clickable)
+ * @param content Additional composable: buttons, switches, checkboxes or something else
  */
 @Composable
-fun SettingsListItem(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+private fun BasicSettingsListItem(
     label: String,
     supportText: String? = null,
+    onClick: () -> Unit = {},
+    content: @Composable RowScope.() -> Unit = {}
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -43,7 +43,9 @@ fun SettingsListItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
-            Modifier.padding(horizontal = 0.dp)
+            Modifier
+                .padding(horizontal = 0.dp)
+                .weight(1f)  // This makes additional composable to be seen
         ) {
             Text(
                 modifier = Modifier
@@ -62,5 +64,38 @@ fun SettingsListItem(
                 )
             }
         }
+        content()
     }
+}
+
+/**
+ * Represents one item in list on Settings screen
+ *
+ * @param label Main text
+ * @param supportText Text that is located below label
+ * @param onClick Action to perform when user clicks on this component (whole component is clickable)
+ */
+@Composable
+fun SettingsListItem(
+    label: String,
+    supportText: String? = null,
+    onClick: () -> Unit,
+) = BasicSettingsListItem(label, supportText, onClick)
+
+/**
+ * Represents one item in list on Settings screen
+ *
+ * @param label Main text
+ * @param supportText Text that is located below label
+ * @param switchState Current switch state
+ * @param onSwitchChange Action to perform when user clicks on this component or just switch
+ */
+@Composable
+fun SettingsListItem(
+    label: String,
+    supportText: String? = null,
+    switchState: Boolean,
+    onSwitchChange: (Boolean) -> Unit
+) = BasicSettingsListItem(label, supportText, { onSwitchChange(switchState) }) {
+    Switch(checked = switchState, onCheckedChange = { onSwitchChange(!it) })
 }
