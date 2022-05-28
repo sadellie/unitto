@@ -1,10 +1,7 @@
 package com.sadellie.unitto.data.preferences
 
 import android.content.Context
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +23,7 @@ object UserPreferenceKeys {
     val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
     val LATEST_LEFT_SIDE = stringPreferencesKey("LATEST_LEFT_SIDE_PREF_KEY")
     val LATEST_RIGHT_SIDE = stringPreferencesKey("LATEST_RIGHT_SIDE_PREF_KEY")
+    val ENABLE_ANALYTICS = booleanPreferencesKey("ENABLE_ANALYTICS_PREF_KEY")
 }
 
 /**
@@ -57,9 +55,20 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
     }
 
     /**
+     * Gets boolean from datastore
+     *
+     * @param[default] Value to return if didn't find anything on fresh install
+     */
+    fun getItem(key: Preferences.Key<Boolean>, default: Boolean): Flow<Boolean> {
+        return context.settingsDataStore.data.map {
+            it[key] ?: default
+        }
+    }
+
+    /**
      * Saves string value by key
      */
-    suspend fun saveString(key: Preferences.Key<String>, value: String) {
+    suspend fun saveItem(key: Preferences.Key<String>, value: String) {
         context.settingsDataStore.edit {
             it[key] = value
         }
@@ -68,7 +77,16 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
     /**
      * Saves int value by key
      */
-    suspend fun saveInt(key: Preferences.Key<Int>, value: Int) {
+    suspend fun saveItem(key: Preferences.Key<Int>, value: Int) {
+        context.settingsDataStore.edit {
+            it[key] = value
+        }
+    }
+
+    /**
+     * Saves boolean value by key
+     */
+    suspend fun saveItem(key: Preferences.Key<Boolean>, value: Boolean) {
         context.settingsDataStore.edit {
             it[key] = value
         }

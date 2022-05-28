@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_DOT
@@ -45,7 +46,7 @@ class MainViewModel @Inject constructor(
 
     fun saveCurrentAppTheme(value: Int) {
         viewModelScope.launch {
-            mySettingsPrefs.saveInt(key = UserPreferenceKeys.CURRENT_APP_THEME, value)
+            mySettingsPrefs.saveItem(key = UserPreferenceKeys.CURRENT_APP_THEME, value)
         }
     }
 
@@ -58,7 +59,7 @@ class MainViewModel @Inject constructor(
     fun setPrecisionPref(value: Int) {
         viewModelScope.launch {
             precision = value
-            mySettingsPrefs.saveInt(UserPreferenceKeys.DIGITS_PRECISION, value)
+            mySettingsPrefs.saveItem(UserPreferenceKeys.DIGITS_PRECISION, value)
             convertValue()
         }
     }
@@ -73,7 +74,7 @@ class MainViewModel @Inject constructor(
         separator = value
         viewModelScope.launch {
             Formatter.setSeparator(value)
-            mySettingsPrefs.saveInt(UserPreferenceKeys.SEPARATOR, value)
+            mySettingsPrefs.saveItem(UserPreferenceKeys.SEPARATOR, value)
             convertValue()
         }
     }
@@ -93,8 +94,21 @@ class MainViewModel @Inject constructor(
         outputFormat = value
         // Updating value on disk
         viewModelScope.launch {
-            mySettingsPrefs.saveInt(UserPreferenceKeys.OUTPUT_FORMAT, value)
+            mySettingsPrefs.saveItem(UserPreferenceKeys.OUTPUT_FORMAT, value)
             convertValue()
+        }
+    }
+
+    /**
+     * ANALYTICS
+     */
+    var enableAnalytics: Boolean by mutableStateOf(false)
+
+    fun setAnalyticsPref(value: Boolean) {
+        enableAnalytics = value
+        viewModelScope.launch {
+            mySettingsPrefs.saveItem(UserPreferenceKeys.ENABLE_ANALYTICS, value)
+            FirebaseAnalytics.getInstance(application).setAnalyticsCollectionEnabled(enableAnalytics)
         }
     }
 
@@ -400,8 +414,8 @@ class MainViewModel @Inject constructor(
      */
     fun saveMe() {
         viewModelScope.launch {
-            mySettingsPrefs.saveString(UserPreferenceKeys.LATEST_LEFT_SIDE, unitFrom.unitId)
-            mySettingsPrefs.saveString(UserPreferenceKeys.LATEST_RIGHT_SIDE, unitTo.unitId)
+            mySettingsPrefs.saveItem(UserPreferenceKeys.LATEST_LEFT_SIDE, unitFrom.unitId)
+            mySettingsPrefs.saveItem(UserPreferenceKeys.LATEST_RIGHT_SIDE, unitTo.unitId)
         }
     }
 
@@ -532,6 +546,9 @@ class MainViewModel @Inject constructor(
             * He can choose another unit group and doesn't need to wait for network to appear.
             * */
             updateCurrenciesBasicUnits()
+
+            enableAnalytics = mySettingsPrefs.getItem(UserPreferenceKeys.ENABLE_ANALYTICS, true).first()
+            FirebaseAnalytics.getInstance(application).setAnalyticsCollectionEnabled(enableAnalytics)
         }
     }
 }

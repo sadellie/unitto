@@ -718,5 +718,7 @@
     <string name="clear_input_description">Clear input</string>
     <string name="favorite_button_description">Add or remove unit from favorites</string>
     <string name="empty_search_result_description">Empty search result</string>
+    <string name="send_usage_statistics">Send usage statistics</string>
+    <string name="send_usage_statistics_support">All data is anonymous and encrypted</string>
 
 </resources>

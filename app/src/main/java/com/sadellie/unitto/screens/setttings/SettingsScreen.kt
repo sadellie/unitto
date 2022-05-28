@@ -131,6 +131,11 @@ fun SettingsScreen(
                             }
                         )
                         SettingsListItem(
+                            label = stringResource(id = R.string.send_usage_statistics),
+                            supportText = stringResource(id = R.string.send_usage_statistics_support),
+                            switchState = mainViewModel.enableAnalytics,
+                            onSwitchChange = { mainViewModel.setAnalyticsPref(!it) })
+                        SettingsListItem(
                             label = stringResource(R.string.third_party_licenses),
                             onClick = { navControllerAction(ABOUT_SCREEN) }
                         )
