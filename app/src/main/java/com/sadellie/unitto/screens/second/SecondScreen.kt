@@ -1,15 +1,17 @@
 package com.sadellie.unitto.screens.second
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.units.ALL_UNIT_GROUPS
@@ -38,52 +40,59 @@ fun SecondScreen(
     val chipsRowLazyListState = rememberLazyListState()
     val currentUnit = if (leftSide) viewModel.unitFrom else viewModel.unitTo
     var chosenUnitGroup: UnitGroup? by rememberSaveable { mutableStateOf(currentUnit.group) }
+    val scrollBehavior: TopAppBarScrollBehavior = remember {
+        TopAppBarDefaults.enterAlwaysScrollBehavior()
+    }
 
-    Column {
-        SearchBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            title = stringResource(id = if (leftSide) R.string.units_screen_from else R.string.units_screen_to),
-            value = searchQuery,
-            onValueChange = {
-                searchQuery = it
-                viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
-            },
-            favoritesOnly = favoritesOnly,
-            favoriteAction = {
-                viewModel.toggleFavoritesOnly()
-                viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
-            },
-            navigateUpAction = navigateUp,
-            focusManager = focusManager
-        )
-
-        if (leftSide) {
-            ChipsRow(
-                lazyListState = chipsRowLazyListState,
-                items = ALL_UNIT_GROUPS,
-                chosenUnitGroup = chosenUnitGroup,
-                selectAction = {
-                    chosenUnitGroup = if (it == chosenUnitGroup) null else it
+    Scaffold(
+        modifier = Modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            SearchBar(
+                title = stringResource(id = if (leftSide) R.string.units_screen_from else R.string.units_screen_to),
+                value = searchQuery,
+                onValueChange = {
+                    searchQuery = it
                     viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
-                }
+                },
+                favoritesOnly = favoritesOnly,
+                favoriteAction = {
+                    viewModel.toggleFavoritesOnly()
+                    viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
+                },
+                navigateUpAction = navigateUp,
+                focusManager = focusManager,
+                scrollBehavior = scrollBehavior
             )
-            UnitsList(
-                groupedUnits = unitsList,
-                changeAction = { viewModel.changeUnitFrom(it); focusManager.clearFocus(true); navigateUp() },
-                favoriteAction = { viewModel.favoriteUnit(it) },
-                currentUnit = viewModel.unitFrom,
-            )
-        } else {
-            UnitsList(
-                groupedUnits = unitsList,
-                changeAction = { viewModel.changeUnitTo(it); focusManager.clearFocus(true); navigateUp() },
-                favoriteAction = { viewModel.favoriteUnit(it) },
-                currentUnit = viewModel.unitTo,
-                inputValue = viewModel.mainUIState.inputValue.toBigDecimal(),
-                unitFrom = viewModel.unitFrom
-            )
+        }
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            if (leftSide) {
+                ChipsRow(
+                    lazyListState = chipsRowLazyListState,
+                    items = ALL_UNIT_GROUPS,
+                    chosenUnitGroup = chosenUnitGroup,
+                    selectAction = {
+                        chosenUnitGroup = if (it == chosenUnitGroup) null else it
+                        viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
+                    }
+                )
+                UnitsList(
+                    groupedUnits = unitsList,
+                    changeAction = { viewModel.changeUnitFrom(it); focusManager.clearFocus(true); navigateUp() },
+                    favoriteAction = { viewModel.favoriteUnit(it) },
+                    currentUnit = viewModel.unitFrom,
+                )
+            } else {
+                UnitsList(
+                    groupedUnits = unitsList,
+                    changeAction = { viewModel.changeUnitTo(it); focusManager.clearFocus(true); navigateUp() },
+                    favoriteAction = { viewModel.favoriteUnit(it) },
+                    currentUnit = viewModel.unitTo,
+                    inputValue = viewModel.mainUIState.inputValue.toBigDecimal(),
+                    unitFrom = viewModel.unitFrom
+                )
+            }
         }
     }
 
