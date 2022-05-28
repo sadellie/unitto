@@ -1,5 +1,6 @@
 package com.sadellie.unitto.data.units
 
+import androidx.annotation.StringRes
 import java.math.BigDecimal
 
 /**
@@ -21,8 +22,8 @@ import java.math.BigDecimal
  */
 abstract class AbstractUnit(
     val unitId: String,
-    val displayName: Int,
-    val shortName: Int,
+    @StringRes val displayName: Int,
+    @StringRes val shortName: Int,
     var basicUnit: BigDecimal,
     val group: UnitGroup,
     var renderedName: String = String(),

@@ -1,5 +1,6 @@
 package com.sadellie.unitto.data.units
 
+import androidx.annotation.StringRes
 import com.sadellie.unitto.data.preferences.MAX_PRECISION
 import com.sadellie.unitto.screens.setMinimumRequiredScale
 import java.math.BigDecimal
@@ -15,8 +16,8 @@ class MyUnit(
     unitId: String,
     basicUnit: BigDecimal,
     group: UnitGroup,
-    displayName: Int,
-    shortName: Int,
+    @StringRes displayName: Int,
+    @StringRes shortName: Int,
 ) : AbstractUnit(
     unitId = unitId,
     displayName = displayName,
