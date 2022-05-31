@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.sadellie.unitto.data.preferences.UserPreferences
+import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.units.ALL_UNITS
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.database.MyBasedUnitDatabase
@@ -26,7 +26,7 @@ class SwapUnitsTest {
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         viewModel = MainViewModel(
-            UserPreferences(context),
+            UserPreferencesRepository(context),
             MyBasedUnitsRepository(
                 Room.inMemoryDatabaseBuilder(
                     context,

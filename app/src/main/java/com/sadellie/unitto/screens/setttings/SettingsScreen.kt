@@ -40,7 +40,7 @@ fun SettingsScreen(
     }
 
     var currentDialogState: Int by rememberSaveable { mutableStateOf(0) }
-    val currentAppTheme: Int by mainViewModel.currentAppTheme.collectAsState(AppTheme.NOT_SET)
+    val currentAppTheme: Int = mainViewModel.currentTheme
 
     Scaffold(
         modifier = Modifier
@@ -134,7 +134,7 @@ fun SettingsScreen(
                             label = stringResource(id = R.string.send_usage_statistics),
                             supportText = stringResource(id = R.string.send_usage_statistics_support),
                             switchState = mainViewModel.enableAnalytics,
-                            onSwitchChange = { mainViewModel.setAnalyticsPref(!it) })
+                            onSwitchChange = { mainViewModel.updateEnableAnalytics(!it) })
                         SettingsListItem(
                             label = stringResource(R.string.third_party_licenses),
                             onClick = { navControllerAction(ABOUT_SCREEN) }
@@ -164,7 +164,7 @@ fun SettingsScreen(
                 title = stringResource(id = R.string.precision_setting),
                 listItems = PRECISIONS,
                 selectedItemIndex = mainViewModel.precision,
-                selectAction = { mainViewModel.setPrecisionPref(it) },
+                selectAction = { mainViewModel.updatePrecision(it) },
                 dismissAction = { currentDialogState = 0 },
                 supportText = stringResource(id = R.string.precision_setting_info)
             )
@@ -174,7 +174,7 @@ fun SettingsScreen(
                 title = stringResource(id = R.string.separator_setting),
                 listItems = SEPARATORS,
                 selectedItemIndex = mainViewModel.separator,
-                selectAction = { mainViewModel.setSeparatorPref(it) },
+                selectAction = { mainViewModel.updateSeparator(it) },
                 dismissAction = { currentDialogState = 0 }
             )
         }
@@ -183,7 +183,7 @@ fun SettingsScreen(
                 title = stringResource(id = R.string.output_format_setting),
                 listItems = OUTPUT_FORMAT,
                 selectedItemIndex = mainViewModel.outputFormat,
-                selectAction = { mainViewModel.setOutputFormatPref(it) },
+                selectAction = { mainViewModel.updateOutputFormat(it) },
                 dismissAction = { currentDialogState = 0 },
                 supportText = stringResource(id = R.string.output_format_setting_info)
             )
@@ -193,7 +193,7 @@ fun SettingsScreen(
                 title = stringResource(id = R.string.theme_setting),
                 listItems = APP_THEMES,
                 selectedItemIndex = currentAppTheme,
-                selectAction = { mainViewModel.saveCurrentAppTheme(it) },
+                selectAction = { mainViewModel.updateCurrentAppTheme(it) },
                 dismissAction = { currentDialogState = 0 },
                 // Show note for users with devices that support custom Dynamic theming
                 supportText = if (Build.VERSION.SDK_INT in (Build.VERSION_CODES.O_MR1..Build.VERSION_CODES.R)) stringResource(

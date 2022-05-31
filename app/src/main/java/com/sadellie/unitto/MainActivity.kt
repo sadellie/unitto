@@ -1,6 +1,5 @@
 package com.sadellie.unitto
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,8 +7,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,7 +21,7 @@ import com.sadellie.unitto.screens.about.AboutScreen
 import com.sadellie.unitto.screens.main.MainScreen
 import com.sadellie.unitto.screens.second.SecondScreen
 import com.sadellie.unitto.screens.setttings.SettingsScreen
-import com.sadellie.unitto.ui.theme.AppTheme
+import com.sadellie.unitto.ui.theme.UnittoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -37,11 +34,11 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            val currentAppTheme: Int by mainViewModel.currentAppTheme.collectAsState(AppTheme.NOT_SET)
+            val currentAppTheme: Int = mainViewModel.currentTheme
 
             // We don't draw anything until we know what theme we need to use
             if (currentAppTheme != AppTheme.NOT_SET) {
-                AppTheme(
+                UnittoTheme(
                     currentAppTheme = currentAppTheme
                 ) {
                     UnittoApp(
@@ -54,7 +51,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onPause() {
-        mainViewModel.saveMe()
+        mainViewModel.saveLatestPairOfUnits()
         super.onPause()
     }
 }

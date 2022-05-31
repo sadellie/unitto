@@ -10,7 +10,7 @@ import com.sadellie.unitto.data.preferences.AppTheme
 
 
 @Composable
-fun AppTheme(
+fun UnittoTheme(
     currentAppTheme: Int,
     content: @Composable () -> Unit
 ) {

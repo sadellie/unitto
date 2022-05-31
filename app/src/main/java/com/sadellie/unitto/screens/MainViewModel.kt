@@ -33,81 +33,67 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mySettingsPrefs: UserPreferences,
+    private val userPrefsRepository: UserPreferencesRepository,
     private val basedUnitRepository: MyBasedUnitsRepository,
     private val application: Application
 ) : ViewModel() {
 
-    /**
-     * APP THEME
-     */
-    val currentAppTheme =
-        mySettingsPrefs.getItem(UserPreferenceKeys.CURRENT_APP_THEME, AppTheme.AUTO)
-
-    fun saveCurrentAppTheme(value: Int) {
-        viewModelScope.launch {
-            mySettingsPrefs.saveItem(key = UserPreferenceKeys.CURRENT_APP_THEME, value)
-        }
-    }
-
-    /**
-     * CONVERSION PRECISION
-     */
-    var precision: Int by mutableStateOf(0)
+    var currentTheme: Int by mutableStateOf(AppTheme.NOT_SET)
         private set
-
-    fun setPrecisionPref(value: Int) {
-        viewModelScope.launch {
-            precision = value
-            mySettingsPrefs.saveItem(UserPreferenceKeys.DIGITS_PRECISION, value)
-            convertValue()
-        }
-    }
-
-    /**
-     * SEPARATOR
-     */
-    var separator: Int by mutableStateOf(0)
+    var precision: Int by mutableStateOf(3)
         private set
-
-    fun setSeparatorPref(value: Int) {
-        separator = value
-        viewModelScope.launch {
-            Formatter.setSeparator(value)
-            mySettingsPrefs.saveItem(UserPreferenceKeys.SEPARATOR, value)
-            convertValue()
-        }
-    }
-
-    /**
-     * OUTPUT FORMAT
-     */
-    var outputFormat: Int by mutableStateOf(0)
+    var separator: Int by mutableStateOf(Separator.SPACES)
         private set
-
-    /**
-     * Sets given output format and saves it in user preference store
-     * @param value [OutputFormat] to set
-     */
-    fun setOutputFormatPref(value: Int) {
-        // Updating value in memory
-        outputFormat = value
-        // Updating value on disk
-        viewModelScope.launch {
-            mySettingsPrefs.saveItem(UserPreferenceKeys.OUTPUT_FORMAT, value)
-            convertValue()
-        }
-    }
-
-    /**
-     * ANALYTICS
-     */
+    var outputFormat: Int by mutableStateOf(OutputFormat.PLAIN)
+        private set
     var enableAnalytics: Boolean by mutableStateOf(false)
+        private set
 
-    fun setAnalyticsPref(value: Boolean) {
-        enableAnalytics = value
+    /**
+     * See [UserPreferencesRepository.updateCurrentAppTheme]
+     */
+    fun updateCurrentAppTheme(appTheme: Int) {
         viewModelScope.launch {
-            mySettingsPrefs.saveItem(UserPreferenceKeys.ENABLE_ANALYTICS, value)
+            userPrefsRepository.updateCurrentAppTheme(appTheme)
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateDigitsPrecision]
+     */
+    fun updatePrecision(precision: Int) {
+        viewModelScope.launch {
+            userPrefsRepository.updateDigitsPrecision(precision)
+            convertValue()
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateSeparator]
+     */
+    fun updateSeparator(separator: Int) {
+        viewModelScope.launch {
+            userPrefsRepository.updateSeparator(separator)
+            convertValue()
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateOutputFormat]
+     */
+    fun updateOutputFormat(outputFormat: Int) {
+        viewModelScope.launch {
+            userPrefsRepository.updateOutputFormat(outputFormat)
+            convertValue()
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateEnableAnalytics]
+     */
+    fun updateEnableAnalytics(enableAnalytics: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updateEnableAnalytics(enableAnalytics)
             FirebaseAnalytics.getInstance(application).setAnalyticsCollectionEnabled(enableAnalytics)
         }
     }
@@ -412,10 +398,9 @@ class MainViewModel @Inject constructor(
     /**
      * Saves latest pair of units into datastore
      */
-    fun saveMe() {
+    fun saveLatestPairOfUnits() {
         viewModelScope.launch {
-            mySettingsPrefs.saveItem(UserPreferenceKeys.LATEST_LEFT_SIDE, unitFrom.unitId)
-            mySettingsPrefs.saveItem(UserPreferenceKeys.LATEST_RIGHT_SIDE, unitTo.unitId)
+            userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
         }
     }
 
@@ -477,21 +462,34 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    init {
+    /**
+     * Observes changes in user preferences and updated values in this ViewModel.
+     *
+     * Any change in user preferences will update mutableStateOf so composables, that rely on this
+     * values recompose when actually needed. For example, when you change output format, composable
+     * in MainActivity will not be recomposed even though it needs currentTheme which is also in
+     * user preferences/
+     */
+    private fun observePreferenceChanges() {
         viewModelScope.launch {
-            val latestLeftSideUnitId = mySettingsPrefs.getItem(
-                UserPreferenceKeys.LATEST_LEFT_SIDE,
-                MyUnitIDS.kilometer
-            ).first()
+            userPrefsRepository.userPreferencesFlow.collect { userPref ->
+                currentTheme = userPref.currentAppTheme
+                precision = userPref.digitsPrecision
+                separator = userPref.separator.also { Formatter.setSeparator(it) }
+                outputFormat = userPref.outputFormat
+                enableAnalytics = userPref.enableAnalytics
+            }
+        }
+    }
 
-            val latestRightSideUnitId = mySettingsPrefs.getItem(
-                UserPreferenceKeys.LATEST_RIGHT_SIDE,
-                MyUnitIDS.mile
-            ).first()
+    init {
+        observePreferenceChanges()
+        viewModelScope.launch {
+            val snapshot = userPrefsRepository.userPreferencesFlow.first()
 
             // First we load latest pair of units
             unitFrom = try {
-                ALL_UNITS.first { it.unitId == latestLeftSideUnitId }
+                ALL_UNITS.first { it.unitId == snapshot.latestLeftSideUnit }
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
                 ALL_UNITS.first { it.unitId == MyUnitIDS.kilometer }
@@ -499,24 +497,11 @@ class MainViewModel @Inject constructor(
 
             unitTo = try {
                 ALL_UNITS
-                    .first { it.unitId == latestRightSideUnitId }
+                    .first { it.unitId == snapshot.latestRightSideUnit }
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
                 ALL_UNITS.first { it.unitId == MyUnitIDS.mile }
             }
-
-            // Now we get the precision so we can convert values
-            precision = mySettingsPrefs.getItem(UserPreferenceKeys.DIGITS_PRECISION, 3).first()
-            // Getting separator and changing it in number formatter
-            separator =
-                mySettingsPrefs
-                    .getItem(UserPreferenceKeys.SEPARATOR, Separator.SPACES).first()
-                    .also { Formatter.setSeparator(it) }
-            // Getting output format
-            outputFormat =
-                mySettingsPrefs
-                    .getItem(UserPreferenceKeys.OUTPUT_FORMAT, OutputFormat.PLAIN)
-                    .first()
 
             convertValue()
 
@@ -546,9 +531,6 @@ class MainViewModel @Inject constructor(
             * He can choose another unit group and doesn't need to wait for network to appear.
             * */
             updateCurrenciesBasicUnits()
-
-            enableAnalytics = mySettingsPrefs.getItem(UserPreferenceKeys.ENABLE_ANALYTICS, true).first()
-            FirebaseAnalytics.getInstance(application).setAnalyticsCollectionEnabled(enableAnalytics)
         }
     }
 }
