@@ -1,20 +1,13 @@
 package com.sadellie.unitto.data.preferences
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
-import androidx.datastore.preferences.preferencesDataStore
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-
-// It's at the top level to make DataStore singleton
-// DON'T TOUCH STRINGS!!!
-private val Context.settingsDataStore by preferencesDataStore("settings")
 
 /**
  * Represents user preferences that are user across the app
@@ -39,12 +32,8 @@ data class UserPreferences(
 
 /**
  * Repository that works with DataStore
- *
- * @property context
  */
-class UserPreferencesRepository @Inject constructor(@ApplicationContext private val context: Context) {
-
-    private val dataStore: DataStore<Preferences> = context.settingsDataStore
+class UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
     /**
      * Keys for DataStore
