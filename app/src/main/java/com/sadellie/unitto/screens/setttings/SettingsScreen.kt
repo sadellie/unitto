@@ -9,9 +9,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -20,7 +30,10 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.ABOUT_SCREEN
-import com.sadellie.unitto.data.preferences.*
+import com.sadellie.unitto.data.preferences.APP_THEMES
+import com.sadellie.unitto.data.preferences.OUTPUT_FORMAT
+import com.sadellie.unitto.data.preferences.PRECISIONS
+import com.sadellie.unitto.data.preferences.SEPARATORS
 import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.openLink
 

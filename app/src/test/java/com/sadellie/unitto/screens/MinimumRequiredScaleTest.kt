@@ -1,7 +1,6 @@
 package com.sadellie.unitto.screens
 
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigDecimal
 

@@ -12,7 +12,11 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_MINUS
-import com.sadellie.unitto.data.preferences.*
+import com.sadellie.unitto.data.preferences.AppTheme
+import com.sadellie.unitto.data.preferences.MAX_PRECISION
+import com.sadellie.unitto.data.preferences.OutputFormat
+import com.sadellie.unitto.data.preferences.Separator
+import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.units.ALL_UNITS
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.MyUnitIDS

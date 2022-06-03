@@ -14,7 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.sadellie.unitto.data.*
+import com.sadellie.unitto.data.ABOUT_SCREEN
+import com.sadellie.unitto.data.LEFT_BUTTON
+import com.sadellie.unitto.data.MAIN_SCREEN
+import com.sadellie.unitto.data.SECOND_SCREEN
+import com.sadellie.unitto.data.SETTINGS_SCREEN
 import com.sadellie.unitto.data.preferences.AppTheme
 import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.about.AboutScreen
@@ -62,7 +66,11 @@ fun UnittoApp(
     viewModel: MainViewModel,
 ) {
     Scaffold { padding ->
-        NavHost(modifier = Modifier.padding(padding), navController = navController, startDestination = MAIN_SCREEN) {
+        NavHost(
+            modifier = Modifier.padding(padding),
+            navController = navController,
+            startDestination = MAIN_SCREEN
+        ) {
 
             composable(MAIN_SCREEN) {
                 MainScreen(

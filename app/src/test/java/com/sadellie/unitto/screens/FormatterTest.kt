@@ -1,8 +1,7 @@
 package com.sadellie.unitto.screens
 
 import com.sadellie.unitto.data.preferences.Separator
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 private val formatter = Formatter
