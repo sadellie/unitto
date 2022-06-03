@@ -477,7 +477,11 @@ class MainViewModel @Inject constructor(
                 precision = userPref.digitsPrecision
                 separator = userPref.separator.also { Formatter.setSeparator(it) }
                 outputFormat = userPref.outputFormat
-                enableAnalytics = userPref.enableAnalytics
+                enableAnalytics = userPref.enableAnalytics.also {
+                    // Maybe this is unnecessary
+                    if (it != enableAnalytics) FirebaseAnalytics.getInstance(application)
+                        .setAnalyticsCollectionEnabled(enableAnalytics)
+                }
             }
         }
     }
