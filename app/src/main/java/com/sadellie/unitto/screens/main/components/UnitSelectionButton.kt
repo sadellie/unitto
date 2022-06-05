@@ -26,19 +26,19 @@ import com.sadellie.unitto.R
  * @param modifier Modifier that is applied to a [Button]
  * @param onClick Function to call when button is clicked (navigate to a unit selection screen)
  * @param label Text on button
- * @param loadingState Show "Loading" text and disable button
+ * @param isLoading Show "Loading" text and disable button
  */
 @Composable
 fun UnitSelectionButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     label: Int,
-    loadingState: Boolean
+    isLoading: Boolean
 ) {
     Button(
         modifier = modifier,
         onClick = { onClick() },
-        enabled = !loadingState,
+        enabled = !isLoading,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         ),
@@ -59,7 +59,7 @@ fun UnitSelectionButton(
             }
         ) {
             Text(
-                text = stringResource(if (loadingState) R.string.loading_label else label),
+                text = stringResource(if (isLoading) R.string.loading_label else label),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSecondaryContainer

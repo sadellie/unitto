@@ -25,7 +25,8 @@ import com.sadellie.unitto.data.units.AbstractUnit
  * @param outputValue Current output value (like big decimal)
  * @param unitFrom [AbstractUnit] on the left
  * @param unitTo [AbstractUnit] on the right
- * @param loadingDataStore Are we still loading settings from data store? Disables unit selection buttons
+ * @param loadingDatabase Are we still loading units usage stats from database? Disables unit
+ * selection buttons.
  * @param loadingNetwork Are we loading data from network? Shows loading text in TextFields
  * @param networkError Did we got errors while trying to get data from network
  * @param onUnitSelectionClick Function that is called when clicking unit selection buttons
@@ -38,7 +39,7 @@ fun TopScreenPart(
     outputValue: String,
     unitFrom: AbstractUnit,
     unitTo: AbstractUnit,
-    loadingDataStore: Boolean,
+    loadingDatabase: Boolean,
     loadingNetwork: Boolean,
     networkError: Boolean,
     onUnitSelectionClick: (Boolean) -> Unit,
@@ -51,14 +52,14 @@ fun TopScreenPart(
         MyTextField(
             Modifier.fillMaxWidth(),
             inputValue,
-            stringResource(id = if (loadingDataStore) R.string.loading_label else unitFrom.shortName),
+            stringResource(id = if (loadingDatabase) R.string.loading_label else unitFrom.shortName),
             loadingNetwork,
             networkError
         )
         MyTextField(
             Modifier.fillMaxWidth(),
             outputValue,
-            stringResource(id = if (loadingDataStore) R.string.loading_label else unitTo.shortName),
+            stringResource(id = if (loadingDatabase) R.string.loading_label else unitTo.shortName),
             loadingNetwork,
             networkError
         )
@@ -73,9 +74,9 @@ fun TopScreenPart(
                     .weight(1f),
                 onClick = { onUnitSelectionClick(true) },
                 label = unitFrom.displayName,
-                loadingState = loadingDataStore
+                isLoading = loadingDatabase
             )
-            IconButton({ swapUnits() }, enabled = !loadingDataStore) {
+            IconButton({ swapUnits() }, enabled = !loadingDatabase) {
                 Icon(
                     Icons.Outlined.SwapHoriz, contentDescription = stringResource(
                         id = R.string.swap_units_description
@@ -88,7 +89,7 @@ fun TopScreenPart(
                     .weight(1f),
                 onClick = { onUnitSelectionClick(false) },
                 label = unitTo.displayName,
-                loadingState = loadingDataStore
+                isLoading = loadingDatabase
             )
         }
     }

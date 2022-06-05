@@ -135,8 +135,6 @@ class MainViewModel @Inject constructor(
      * This function takes local variables, converts values and then causes the UI to update
      */
     private fun convertValue() {
-        // We cannot convert values, as we are still user prefs from datastore (precision)
-        if (mainUIState.isLoadingDataStore) return
         // Converting value using a specified precision
         val convertedValue: BigDecimal =
             unitFrom.convert(unitTo, mainUIState.inputValue.toBigDecimal(), precision)
@@ -230,7 +228,8 @@ class MainViewModel @Inject constructor(
     }
 
     /**
-     * Updates basic units properties for all currencies. Uses [unitFrom]
+     * Updates basic units properties for all currencies, BUT only when [unitFrom]'s group is set
+     * to [UnitGroup.CURRENCY].
      */
     private suspend fun updateCurrenciesBasicUnits() {
         // Resetting error and network loading states in case we are not gonna do anything below
@@ -511,10 +510,10 @@ class MainViewModel @Inject constructor(
                 ALL_UNITS.first { it.unitId == MyUnitIDS.mile }
             }
 
-            convertValue()
+            mainUIState = mainUIState.copy(negateButtonEnabled = unitFrom.group.canNegate)
 
+            // Now we load units data from database
             val allBasedUnits = basedUnitRepository.getAll()
-
             ALL_UNITS.forEach {
                 // Loading unit names so that we can search through them
                 it.renderedName = application.getString(it.displayName)
@@ -526,19 +525,10 @@ class MainViewModel @Inject constructor(
                 it.counter = based?.frequency ?: 0
             }
 
-            // User is free to convert values
-            // Set negate button state according to current group
-            mainUIState = mainUIState.copy(
-                isLoadingDataStore = false,
-                negateButtonEnabled = unitFrom.group.canNegate
-            )
-
-            /*
-            * This is at the bottom in case latest unit group was currency and user doesn't have
-            * network access.
-            * He can choose another unit group and doesn't need to wait for network to appear.
-            * */
+            // User is free to convert values and units on units screen can be sorted properly
+            mainUIState = mainUIState.copy(isLoadingDatabase = false)
             updateCurrenciesBasicUnits()
+            convertValue()
         }
     }
 }
