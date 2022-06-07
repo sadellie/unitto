@@ -52,7 +52,7 @@ fun UnitsList(
                                 .padding(vertical = 12.dp, horizontal = 8.dp),
                             text = stringResource(id = unitGroup.res),
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     items(items = listOfUnits, key = { it.unitId }) { unit ->

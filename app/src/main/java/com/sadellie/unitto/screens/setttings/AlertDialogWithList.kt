@@ -70,7 +70,7 @@ fun AlertDialogWithList(
         },
         confirmButton = {
             TextButton(onClick = dismissAction) {
-                Text(text = dismissButtonLabel, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                Text(text = dismissButtonLabel, color = MaterialTheme.colorScheme.primary)
             }
         }
     )
