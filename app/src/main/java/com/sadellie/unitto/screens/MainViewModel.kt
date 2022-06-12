@@ -421,6 +421,9 @@ class MainViewModel @Inject constructor(
         leftSide: Boolean
     ) {
         viewModelScope.launch {
+            // Prevent user from seeing invalid list
+            unitsToShow = emptyMap()
+
             val filterGroup: Boolean = chosenUnitGroup != null
 
             // This is mostly not UI related stuff and viewModelScope.launch uses Dispatchers.Main

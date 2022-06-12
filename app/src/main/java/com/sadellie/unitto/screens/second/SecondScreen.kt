@@ -105,13 +105,6 @@ fun SecondScreen(
     LaunchedEffect(Unit) {
         /**
          * Telling viewModel that it needs to update the list
-         * Also while the below is being computed user will composable will use cached list from viewModel
-         *
-         * User actually doesn't see cached list. Computation takes few milliseconds since we don't
-         * compute any Levenshtein distance when the screen is launched and the list is limited
-         * to a specific [UnitGroup]
-         *
-         * Adding animation/spinners will cause flickering and confuse user
          */
         viewModel.loadUnitsToShow(searchQuery, chosenUnitGroup, leftSide)
         // Scrolling chips to current group
