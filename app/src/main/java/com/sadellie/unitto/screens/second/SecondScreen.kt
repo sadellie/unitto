@@ -84,17 +84,17 @@ fun SecondScreen(
                 )
                 UnitsList(
                     groupedUnits = unitsList,
-                    changeAction = { viewModel.changeUnitFrom(it); focusManager.clearFocus(true); navigateUp() },
+                    selectAction = { viewModel.changeUnitFrom(it); focusManager.clearFocus(true); navigateUp() },
                     favoriteAction = { viewModel.favoriteUnit(it) },
                     currentUnit = viewModel.unitFrom,
                 )
             } else {
                 UnitsList(
                     groupedUnits = unitsList,
-                    changeAction = { viewModel.changeUnitTo(it); focusManager.clearFocus(true); navigateUp() },
+                    selectAction = { viewModel.changeUnitTo(it); focusManager.clearFocus(true); navigateUp() },
                     favoriteAction = { viewModel.favoriteUnit(it) },
                     currentUnit = viewModel.unitTo,
-                    inputValue = viewModel.mainUIState.inputValue.toBigDecimal(),
+                    input = viewModel.mainUIState.inputValue.toBigDecimal(),
                     unitFrom = viewModel.unitFrom
                 )
             }

@@ -1,5 +1,6 @@
 package com.sadellie.unitto.data.units
 
+import androidx.annotation.StringRes
 import com.sadellie.unitto.R
 
 val ALL_UNIT_GROUPS: List<UnitGroup> by lazy {
@@ -10,7 +11,10 @@ val ALL_UNIT_GROUPS: List<UnitGroup> by lazy {
  * As not all measurements can be converted between into other, we separate them into groups.
  * Within one groups all measurements can be converted
  */
-enum class UnitGroup(val res: Int, val canNegate: Boolean = false) {
+enum class UnitGroup(
+    @StringRes val res: Int,
+    val canNegate: Boolean = false
+) {
     LENGTH(res = R.string.length),
     CURRENCY(res = R.string.currency),
     MASS(res = R.string.mass),

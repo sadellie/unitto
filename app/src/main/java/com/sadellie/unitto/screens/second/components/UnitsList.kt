@@ -19,22 +19,18 @@ import java.math.BigDecimal
 
 
 /**
- * Component with grouped units
+ * Component with grouped units.
  *
- * @param groupedUnits Grouped [AbstractUnit]s to be listed
- * @param changeAction Action to perform when clicking on a list item
- * @param favoriteAction Action to perform when clicking "favorite" button on list item
- * @param inputValue Current input value. Used for right side screen
- * @param unitFrom Current unit on the left. Used for right side screen
- * @param currentUnit Currently selected unit. Will be visually distinguishable
+ * @param groupedUnits Grouped [AbstractUnit]s to be listed.
+ * @param selectAction Action to perform when clicking on a list item.
+ * @param favoriteAction Action to perform when clicking "favorite" button on list item.
+ * @param currentUnit Currently selected unit. Will be visually distinguishable.
  */
 @Composable
 fun UnitsList(
     groupedUnits: Map<UnitGroup, List<AbstractUnit>>,
-    changeAction: (AbstractUnit) -> Unit,
+    selectAction: (AbstractUnit) -> Unit,
     favoriteAction: (AbstractUnit) -> Unit,
-    inputValue: BigDecimal = BigDecimal.ONE,
-    unitFrom: AbstractUnit? = null,
     currentUnit: AbstractUnit,
 ) {
     LazyColumn(
@@ -42,41 +38,82 @@ fun UnitsList(
         content = {
             if (groupedUnits.isEmpty()) {
                 item { SearchPlaceholder() }
-            } else {
-                groupedUnits.forEach { (unitGroup, listOfUnits) ->
-                    stickyHeader {
-                        Text(
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.background)
-                                .fillMaxWidth()
-                                .padding(vertical = 12.dp, horizontal = 8.dp),
-                            text = stringResource(id = unitGroup.res),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    items(items = listOfUnits, key = { it.unitId }) { unit ->
-                        UnitListItem(
-                            modifier = Modifier,
-                            changeAction = changeAction,
-                            favoriteAction = favoriteAction,
-                            item = unit,
-                            isSelected = currentUnit == unit,
-                            convertValue = {
-                                if (unitFrom != null) {
-                                    Formatter.format(
-                                        unitFrom
-                                            .convert(it, inputValue, 3)
-                                            .toPlainString()
-                                    ).plus(" ")
-                                } else {
-                                    ""
-                                }
-                            }
-                        )
-                    }
+                return@LazyColumn
+            }
+            groupedUnits.forEach { (unitGroup, listOfUnits) ->
+                stickyHeader { Header(text = stringResource(id = unitGroup.res)) }
+                items(items = listOfUnits, key = { it.unitId }) { unit ->
+                    UnitListItem(
+                        unit = unit,
+                        isSelected = currentUnit == unit,
+                        selectAction = selectAction,
+                        favoriteAction = favoriteAction
+                    )
                 }
             }
         }
+    )
+}
+
+
+/**
+ * Component with grouped units/
+ *
+ * @param groupedUnits Grouped [AbstractUnit]s to be listed.
+ * @param selectAction Action to perform when clicking on a list item.
+ * @param favoriteAction Action to perform when clicking "favorite" button on list item.
+ * @param currentUnit Currently selected unit. Will be visually distinguishable.
+ * @param unitFrom Unit to convert from. Used for conversion in short name field.
+ * @param input Current input value. Used for conversion in short name field.
+ */
+@Composable
+fun UnitsList(
+    groupedUnits: Map<UnitGroup, List<AbstractUnit>>,
+    selectAction: (AbstractUnit) -> Unit,
+    favoriteAction: (AbstractUnit) -> Unit,
+    currentUnit: AbstractUnit,
+    unitFrom: AbstractUnit,
+    input: BigDecimal
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        content = {
+            if (groupedUnits.isEmpty()) {
+                item { SearchPlaceholder() }
+                return@LazyColumn
+            }
+            groupedUnits.forEach { (unitGroup, listOfUnits) ->
+                stickyHeader { Header(text = stringResource(id = unitGroup.res)) }
+                items(items = listOfUnits, key = { it.unitId }) { unit ->
+                    UnitListItem(
+                        unit = unit,
+                        isSelected = currentUnit == unit,
+                        selectAction = selectAction,
+                        favoriteAction = favoriteAction,
+                        convertValue = {
+                            Formatter.format(unitFrom.convert(unit, input, 3).toPlainString())
+                        }
+                    )
+                }
+            }
+        }
+    )
+}
+
+/**
+ * Unit group header.
+ *
+ * @param text Unit group name.
+ */
+@Composable
+private fun Header(text: String) {
+    Text(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxWidth()
+            .padding(vertical = 12.dp, horizontal = 8.dp),
+        text = text,
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.primary
     )
 }
