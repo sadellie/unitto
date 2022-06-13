@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -38,6 +37,8 @@ fun SecondScreen(
     navigateUp: () -> Unit,
     viewModel: MainViewModel = viewModel()
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarScrollState())
+
     var searchQuery: String by rememberSaveable { mutableStateOf(String()) }
     val favoritesOnly: Boolean = viewModel.favoritesOnly
     val focusManager = LocalFocusManager.current
@@ -45,9 +46,6 @@ fun SecondScreen(
     val chipsRowLazyListState = rememberLazyListState()
     val currentUnit = if (leftSide) viewModel.unitFrom else viewModel.unitTo
     var chosenUnitGroup: UnitGroup? by rememberSaveable { mutableStateOf(currentUnit.group) }
-    val scrollBehavior: TopAppBarScrollBehavior = remember {
-        TopAppBarDefaults.enterAlwaysScrollBehavior()
-    }
 
     Scaffold(
         modifier = Modifier

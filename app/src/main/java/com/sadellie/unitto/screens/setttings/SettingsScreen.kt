@@ -16,10 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -45,15 +45,10 @@ fun SettingsScreen(
     navControllerAction: (String) -> Unit
 ) {
     val mContext = LocalContext.current
-
     // Scrollable
-    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = remember(decayAnimationSpec) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec)
-    }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberSplineBasedDecay(), rememberTopAppBarScrollState())
 
     var currentDialogState: Int by rememberSaveable { mutableStateOf(0) }
-    val currentAppTheme: Int = mainViewModel.currentTheme
 
     Scaffold(
         modifier = Modifier
@@ -153,7 +148,7 @@ fun SettingsScreen(
                             onClick = { navControllerAction(ABOUT_SCREEN) }
                         )
 
-                        BuildConfig.StoreLink?.let {
+                        BuildConfig.StoreLink.let {
                             SettingsListItem(
                                 label = stringResource(R.string.rate_this_app),
                                 onClick = {
@@ -205,7 +200,7 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(id = R.string.theme_setting),
                 listItems = APP_THEMES,
-                selectedItemIndex = currentAppTheme,
+                selectedItemIndex = mainViewModel.currentTheme,
                 selectAction = { mainViewModel.updateCurrentAppTheme(it) },
                 dismissAction = { currentDialogState = 0 },
                 // Show note for users with devices that support custom Dynamic theming

@@ -14,7 +14,7 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion: String by rootProject.extra
+val composeVersion = "1.2.0-beta02"
 
 kapt {
     correctErrorTypes = true
@@ -113,7 +113,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.core:core-ktx:1.8.0")
     androidTestImplementation("androidx.test:core:1.4.0")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
     testImplementation("junit:junit:4.13.2")
@@ -127,7 +127,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
