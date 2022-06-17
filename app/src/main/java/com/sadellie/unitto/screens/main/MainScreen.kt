@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
-import com.sadellie.unitto.data.SECOND_SCREEN
 import com.sadellie.unitto.data.SETTINGS_SCREEN
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.screens.MainScreenUIState
@@ -71,7 +70,7 @@ fun MainScreen(
                 unitTo = viewModel.unitTo,
                 portrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT,
                 mainScreenUIState = viewModel.mainUIState,
-                navControllerAction = { navControllerAction("$SECOND_SCREEN/${it}") },
+                navControllerAction = { navControllerAction(it) },
                 swapMeasurements = { viewModel.swapUnits() },
                 processInput = { viewModel.processInput(it) },
                 deleteDigit = { viewModel.deleteDigit() },
@@ -89,7 +88,7 @@ private fun PortraitMainScreenContent(
     unitTo: AbstractUnit,
     portrait: Boolean = true,
     mainScreenUIState: MainScreenUIState = MainScreenUIState(),
-    navControllerAction: (Boolean) -> Unit = {},
+    navControllerAction: (String) -> Unit = {},
     swapMeasurements: () -> Unit = {},
     processInput: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},

@@ -17,20 +17,17 @@ import com.sadellie.unitto.data.preferences.MAX_PRECISION
 import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.Separator
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
-import com.sadellie.unitto.data.units.ALL_UNITS
 import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.UnitGroup
-import com.sadellie.unitto.data.units.collections.CURRENCY_COLLECTION
 import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -39,7 +36,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val basedUnitRepository: MyBasedUnitsRepository,
-    private val application: Application
+    private val application: Application,
+    private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
     var currentTheme: Int by mutableStateOf(AppTheme.NOT_SET)
@@ -105,30 +103,19 @@ class MainViewModel @Inject constructor(
     /**
      * Unit we converting from (left side)
      */
-    var unitFrom: AbstractUnit by mutableStateOf(ALL_UNITS[0])
+    var unitFrom: AbstractUnit by mutableStateOf(allUnitsRepository.getById(MyUnitIDS.kilometer))
         private set
 
     /**
      * Unit we are converting to (right side)
      */
-    var unitTo: AbstractUnit by mutableStateOf(ALL_UNITS[1])
+    var unitTo: AbstractUnit by mutableStateOf(allUnitsRepository.getById(MyUnitIDS.mile))
         private set
 
     /**
      * UI state
      */
     var mainUIState: MainScreenUIState by mutableStateOf(MainScreenUIState())
-        private set
-
-    var favoritesOnly: Boolean by mutableStateOf(false)
-        private set
-
-    fun toggleFavoritesOnly() {
-        favoritesOnly = !favoritesOnly
-    }
-
-    // This is a grouped list of units that is used for unit selection screen
-    var unitsToShow: Map<UnitGroup, List<AbstractUnit>> by mutableStateOf(emptyMap())
         private set
 
     /**
@@ -166,14 +153,11 @@ class MainViewModel @Inject constructor(
         }
 
         // Now setting up right unit (pair for the left one)
-        unitTo = ALL_UNITS.first {
-            if (unitFrom.pairedUnit.isNullOrEmpty()) {
-                // No pair. Just getting unit from same group
-                it.group == unitFrom.group
-            } else {
-                // There is a paired unit
-                it.unitId == unitFrom.pairedUnit
-            }
+        unitTo = if (unitFrom.pairedUnit == null) {
+            // Dangerous btw
+            allUnitsRepository.getCollectionByGroup(unitFrom.group)!!.first()
+        } else {
+            allUnitsRepository.getById(unitFrom.pairedUnit!!)
         }
 
         viewModelScope.launch {
@@ -243,7 +227,7 @@ class MainViewModel @Inject constructor(
         try {
             val pairs: CurrencyUnitResponse =
                 CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId)
-            CURRENCY_COLLECTION.forEach {
+            allUnitsRepository.getCollectionByGroup(UnitGroup.CURRENCY)?.forEach {
                 // Getting rates from map. We set ZERO as default so that it can be skipped
                 val rate = pairs.currency.getOrElse(it.unitId) { BigDecimal.ZERO }
                 // We make sure that we don't divide by zero
@@ -380,91 +364,11 @@ class MainViewModel @Inject constructor(
     }
 
     /**
-     * Add or remove from favorites (changes to the opposite of current state)
-     */
-    fun favoriteUnit(unit: AbstractUnit) {
-        viewModelScope.launch {
-            // Changing unit in list to the opposite
-            unit.isFavorite = !unit.isFavorite
-            // Updating it in database
-            basedUnitRepository.insertUnits(
-                MyBasedUnit(
-                    unitId = unit.unitId,
-                    isFavorite = unit.isFavorite,
-                    pairedUnitId = unit.pairedUnit,
-                    frequency = unit.counter
-                )
-            )
-        }
-    }
-
-    /**
      * Saves latest pair of units into datastore
      */
     fun saveLatestPairOfUnits() {
         viewModelScope.launch {
             userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
-        }
-    }
-
-    /**
-     * Filters and groups [ALL_UNITS] in coroutine
-     *
-     * @param query String search query
-     * @param chosenUnitGroup Currently selected [UnitGroup] (from chips list)
-     * @param leftSide Decide whether or not we are on left side. Need it because right side requires
-     * us to mark disabled currency units
-     */
-    fun loadUnitsToShow(
-        query: String,
-        chosenUnitGroup: UnitGroup?,
-        leftSide: Boolean
-    ) {
-        viewModelScope.launch {
-            // Prevent user from seeing invalid list
-            unitsToShow = emptyMap()
-
-            val filterGroup: Boolean = chosenUnitGroup != null
-
-            // This is mostly not UI related stuff and viewModelScope.launch uses Dispatchers.Main
-            // So we switch to Default
-            withContext(Dispatchers.Default) {
-                // Basic filtering
-                var basicFilteredUnits = ALL_UNITS.asSequence()
-                basicFilteredUnits = when {
-                    // Both sides, Chip is selected, Only favorites
-                    (filterGroup) and (favoritesOnly) -> {
-                        basicFilteredUnits.filter { (it.group == chosenUnitGroup) and it.isFavorite }
-                    }
-                    // Both sides, Chip is selected, NOT Only favorites
-                    (filterGroup) and (!favoritesOnly) -> {
-                        basicFilteredUnits.filter { it.group == chosenUnitGroup }
-                    }
-                    // Chip is NOT selected, Only favorites
-                    (!filterGroup) and (favoritesOnly) -> {
-                        basicFilteredUnits.filter { it.isFavorite }
-                    }
-                    // Chip is NOT selected, NOT Only favorites
-                    else -> basicFilteredUnits
-                }
-
-                // Hiding broken currency units
-                if (leftSide) {
-                    basicFilteredUnits = basicFilteredUnits.filter { it.isEnabled }
-                }
-
-                unitsToShow = if (query.isEmpty()) {
-                    // Query is empty, i.e. we want to see all units and they need to be sorted by usage
-                    basicFilteredUnits
-                        .sortedByDescending { it.counter }
-                } else {
-                    // We are searching for a specific unit, we don't care about popularity
-                    // We need search accuracy
-                    basicFilteredUnits.sortByLev(query)
-                }
-                    // Group by unit group
-                    .groupBy { it.group }
-            }
         }
     }
 
@@ -499,25 +403,24 @@ class MainViewModel @Inject constructor(
 
             // First we load latest pair of units
             unitFrom = try {
-                ALL_UNITS.first { it.unitId == snapshot.latestLeftSideUnit }
+                allUnitsRepository.getById(snapshot.latestLeftSideUnit)
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
-                ALL_UNITS.first { it.unitId == MyUnitIDS.kilometer }
+                allUnitsRepository.getById(MyUnitIDS.kilometer)
             }
 
             unitTo = try {
-                ALL_UNITS
-                    .first { it.unitId == snapshot.latestRightSideUnit }
+                allUnitsRepository.getById(snapshot.latestRightSideUnit)
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
-                ALL_UNITS.first { it.unitId == MyUnitIDS.mile }
+                allUnitsRepository.getById(MyUnitIDS.mile)
             }
 
             mainUIState = mainUIState.copy(negateButtonEnabled = unitFrom.group.canNegate)
 
             // Now we load units data from database
             val allBasedUnits = basedUnitRepository.getAll()
-            ALL_UNITS.forEach {
+            allUnitsRepository.allUnits.forEach {
                 // Loading unit names so that we can search through them
                 it.renderedName = application.getString(it.displayName)
                 val based = allBasedUnits.firstOrNull { based -> based.unitId == it.unitId }

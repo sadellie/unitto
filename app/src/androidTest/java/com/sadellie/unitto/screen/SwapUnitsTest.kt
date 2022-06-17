@@ -7,7 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sadellie.unitto.data.preferences.DataStoreModule
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
-import com.sadellie.unitto.data.units.ALL_UNITS
+import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.database.MyBasedUnitDatabase
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
@@ -22,6 +22,7 @@ import org.junit.runner.RunWith
 class SwapUnitsTest {
 
     private lateinit var viewModel: MainViewModel
+    private val allUnitsRepository = AllUnitsRepository()
 
     @Before
     fun setUp() {
@@ -34,14 +35,15 @@ class SwapUnitsTest {
                     MyBasedUnitDatabase::class.java
                 ).build().myBasedUnitDao()
             ),
-            ApplicationProvider.getApplicationContext()
+            ApplicationProvider.getApplicationContext(),
+            allUnitsRepository
         )
     }
 
     @Test
     fun swapUnits() {
-        val mile = ALL_UNITS.first { it.unitId == MyUnitIDS.mile }
-        val kilometer = ALL_UNITS.first { it.unitId == MyUnitIDS.kilometer }
+        val mile = allUnitsRepository.getById(MyUnitIDS.mile)
+        val kilometer = allUnitsRepository.getById(MyUnitIDS.kilometer)
 
         viewModel.changeUnitFrom(kilometer)
         viewModel.changeUnitTo(mile)

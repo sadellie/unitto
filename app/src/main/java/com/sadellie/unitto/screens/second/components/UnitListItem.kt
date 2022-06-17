@@ -129,7 +129,7 @@ fun UnitListItem(
     isSelected = isSelected,
     selectAction = selectAction,
     favoriteAction = favoriteAction,
-    stringResource(id = unit.shortName)
+    shortNameLabel = stringResource(id = unit.shortName)
 )
 
 /**

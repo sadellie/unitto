@@ -4,26 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.sadellie.unitto.data.ABOUT_SCREEN
-import com.sadellie.unitto.data.LEFT_BUTTON
+import com.sadellie.unitto.data.LEFT_LIST_SCREEN
 import com.sadellie.unitto.data.MAIN_SCREEN
-import com.sadellie.unitto.data.SECOND_SCREEN
+import com.sadellie.unitto.data.RIGHT_LIST_SCREEN
 import com.sadellie.unitto.data.SETTINGS_SCREEN
 import com.sadellie.unitto.data.preferences.AppTheme
 import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.about.AboutScreen
 import com.sadellie.unitto.screens.main.MainScreen
-import com.sadellie.unitto.screens.second.SecondScreen
+import com.sadellie.unitto.screens.second.LeftSideScreen
+import com.sadellie.unitto.screens.second.RightSideScreen
+import com.sadellie.unitto.screens.second.SecondViewModel
 import com.sadellie.unitto.screens.setttings.SettingsScreen
 import com.sadellie.unitto.ui.theme.UnittoTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
+    private val secondViewModel: SecondViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +45,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     UnittoApp(
                         navController = navController,
-                        viewModel = mainViewModel,
+                        mainViewModel = mainViewModel,
+                        secondViewModel = secondViewModel
                     )
                 }
             }
@@ -63,45 +62,51 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun UnittoApp(
     navController: NavHostController,
-    viewModel: MainViewModel,
+    mainViewModel: MainViewModel,
+    secondViewModel: SecondViewModel
 ) {
-    Scaffold { padding ->
-        NavHost(
-            modifier = Modifier.padding(padding),
-            navController = navController,
-            startDestination = MAIN_SCREEN
-        ) {
+    NavHost(
+        navController = navController,
+        startDestination = MAIN_SCREEN
+    ) {
 
-            composable(MAIN_SCREEN) {
-                MainScreen(
-                    navControllerAction = { route -> navController.navigate(route) },
-                    viewModel = viewModel
-                )
-            }
+        composable(MAIN_SCREEN) {
+            MainScreen(
+                navControllerAction = { route -> navController.navigate(route) },
+                viewModel = mainViewModel
+            )
+        }
 
-            composable(
-                "$SECOND_SCREEN/{$LEFT_BUTTON}",
-                arguments = listOf(navArgument(LEFT_BUTTON) { type = NavType.BoolType })
-            ) {
-                val leftButton = it.arguments?.getBoolean(LEFT_BUTTON) ?: true
-                SecondScreen(
-                    viewModel = viewModel,
-                    leftSide = leftButton,
-                    navigateUp = { navController.navigateUp() },
-                )
-            }
+        composable(LEFT_LIST_SCREEN) {
+            LeftSideScreen(
+                currentUnit = mainViewModel.unitFrom,
+                navigateUp = { navController.navigateUp() },
+                selectAction = { mainViewModel.changeUnitFrom(it) },
+                viewModel = secondViewModel
+            )
+        }
 
-            composable(SETTINGS_SCREEN) {
-                SettingsScreen(
-                    mainViewModel = viewModel,
-                    navigateUpAction = { navController.navigateUp() },
-                    navControllerAction = { route -> navController.navigate(route) }
-                )
-            }
+        composable(RIGHT_LIST_SCREEN) {
+            RightSideScreen(
+                currentUnit = mainViewModel.unitTo,
+                navigateUp = { navController.navigateUp() },
+                selectAction = { mainViewModel.changeUnitTo(it) },
+                viewModel = secondViewModel,
+                inputValue = mainViewModel.mainUIState.inputValue.toBigDecimal(),
+                unitFrom = mainViewModel.unitFrom
+            )
+        }
 
-            composable(ABOUT_SCREEN) {
-                AboutScreen(navigateUpAction = { navController.navigateUp() })
-            }
+        composable(SETTINGS_SCREEN) {
+            SettingsScreen(
+                mainViewModel = mainViewModel,
+                navigateUpAction = { navController.navigateUp() },
+                navControllerAction = { route -> navController.navigate(route) }
+            )
+        }
+
+        composable(ABOUT_SCREEN) {
+            AboutScreen(navigateUpAction = { navController.navigateUp() })
         }
     }
 }

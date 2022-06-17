@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
+import com.sadellie.unitto.data.LEFT_LIST_SCREEN
+import com.sadellie.unitto.data.RIGHT_LIST_SCREEN
 import com.sadellie.unitto.data.units.AbstractUnit
 
 /**
@@ -42,7 +44,7 @@ fun TopScreenPart(
     loadingDatabase: Boolean,
     loadingNetwork: Boolean,
     networkError: Boolean,
-    onUnitSelectionClick: (Boolean) -> Unit,
+    onUnitSelectionClick: (String) -> Unit,
     swapUnits: () -> Unit
 ) {
     Column(
@@ -72,7 +74,7 @@ fun TopScreenPart(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onClick = { onUnitSelectionClick(true) },
+                onClick = { onUnitSelectionClick(LEFT_LIST_SCREEN) },
                 label = unitFrom.displayName,
                 isLoading = loadingDatabase
             )
@@ -87,7 +89,7 @@ fun TopScreenPart(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onClick = { onUnitSelectionClick(false) },
+                onClick = { onUnitSelectionClick(RIGHT_LIST_SCREEN) },
                 label = unitTo.displayName,
                 isLoading = loadingDatabase
             )

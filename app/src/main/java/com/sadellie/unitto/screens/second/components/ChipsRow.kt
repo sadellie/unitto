@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
+import com.sadellie.unitto.data.units.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.units.UnitGroup
 
 /**
@@ -38,9 +39,9 @@ import com.sadellie.unitto.data.units.UnitGroup
  */
 @Composable
 fun ChipsRow(
-    items: List<UnitGroup>,
+    items: List<UnitGroup> = ALL_UNIT_GROUPS,
     chosenUnitGroup: UnitGroup?,
-    selectAction: (UnitGroup?) -> Unit,
+    selectAction: (UnitGroup) -> Unit,
     lazyListState: LazyListState
 ) {
     val chipShape = RoundedCornerShape(8.dp)
@@ -49,7 +50,7 @@ fun ChipsRow(
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(items) { item ->
+        items(items, key = { it.name }) { item ->
             val isSelected: Boolean = item == chosenUnitGroup
             Row(
                 modifier = Modifier

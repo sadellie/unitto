@@ -13,6 +13,7 @@ class AllUnitsTest {
 
     // Group and it's tested unit ids
     var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
+    private val allUnitsRepository = AllUnitsRepository()
 
     @Test
     fun testAcceleration() {
@@ -321,9 +322,9 @@ class AllUnitsTest {
     }
 
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
-        val unit = ALL_UNITS.first { it.unitId == this }
+        val unit = allUnitsRepository.getById(this)
         val actual = unit
-            .convert(ALL_UNITS.first { it.unitId == checkingId }, BigDecimal(value), 5)
+            .convert(allUnitsRepository.getById(checkingId), BigDecimal(value), 5)
             .toPlainString()
         assertEquals("Failed at $this to $checkingId", expected, actual)
         println("PASSED: $this -> $expected == $actual")
@@ -335,6 +336,6 @@ class AllUnitsTest {
     fun after() {
         val unitGroup = history.keys.first()
         // GROUP : testedCount / totalCount
-        println("${unitGroup.name} : ${history[unitGroup]?.size} / ${ALL_UNITS.filter { it.group == unitGroup }.size}")
+        println("${unitGroup.name} : ${history[unitGroup]?.size} / ${allUnitsRepository.getCollectionByGroup(unitGroup)?.size}")
     }
 }

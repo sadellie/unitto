@@ -56,12 +56,12 @@ import com.sadellie.unitto.R
  */
 @Composable
 fun SearchBar(
-    title: String = String(),
-    value: String = String(),
-    onValueChange: (String) -> Unit = {},
+    title: String,
+    value: String,
+    onValueChange: (String) -> Unit,
     favoritesOnly: Boolean,
     favoriteAction: () -> Unit,
-    navigateUpAction: () -> Unit = {},
+    navigateUpAction: () -> Unit,
     focusManager: FocusManager,
     scrollBehavior: TopAppBarScrollBehavior
 ) {

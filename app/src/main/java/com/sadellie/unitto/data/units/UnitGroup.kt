@@ -8,8 +8,8 @@ val ALL_UNIT_GROUPS: List<UnitGroup> by lazy {
 }
 
 /**
- * As not all measurements can be converted between into other, we separate them into groups.
- * Within one groups all measurements can be converted
+ * As not all measurements can be converted between each other, we separate them into groups.
+ * Within one group all measurements can be converted
  */
 enum class UnitGroup(
     @StringRes val res: Int,
@@ -18,10 +18,10 @@ enum class UnitGroup(
     LENGTH(res = R.string.length),
     CURRENCY(res = R.string.currency),
     MASS(res = R.string.mass),
-    TIME(res = R.string.time),
-    TEMPERATURE(res = R.string.temperature, canNegate = true),
     SPEED(res = R.string.speed),
+    TEMPERATURE(res = R.string.temperature, canNegate = true),
     AREA(res = R.string.area),
+    TIME(res = R.string.time),
     VOLUME(res = R.string.volume),
     DATA(res = R.string.data),
     PRESSURE(res = R.string.pressure),
