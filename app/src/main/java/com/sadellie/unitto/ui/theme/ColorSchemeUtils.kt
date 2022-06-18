@@ -76,8 +76,8 @@ fun dynamicLightTheme(context: Context): ColorScheme {
             return lightColorScheme(
                 // Settings screen group text, units screen units group text
                 primary = primary,
-                // Text color on Third party Licenses screen
-                onPrimary = primary.shiftTo255(0.3f),
+                // Switch thumb color
+                onPrimary = primary.getAppropriateTextColor(),
                 onPrimaryContainer = primary.shiftTo0(0.7f),
                 // Selected unit, group, keyboard buttons
                 secondaryContainer = secondary,
@@ -132,8 +132,8 @@ fun dynamicDarkTheme(context: Context): ColorScheme {
             return darkColorScheme(
                 // Settings screen group text, units screen units group text
                 primary = primary,
-                // Text color on Third party Licenses screen
-                onPrimary = primary.shiftTo0(0.3f),
+                // Switch thumb color
+                onPrimary = primary.getAppropriateTextColor(),
                 onPrimaryContainer = primary.shiftTo255(0.7f),
                 // Selected unit, group, keyboard buttons
                 secondaryContainer = secondary,
