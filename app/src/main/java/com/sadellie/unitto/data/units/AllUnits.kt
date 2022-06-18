@@ -1,17 +1,20 @@
 package com.sadellie.unitto.data.units
 
+import android.content.Context
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.preferences.MAX_PRECISION
+import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.screens.setMinimumRequiredScale
 import com.sadellie.unitto.screens.sortByLev
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
-
+import javax.inject.Singleton
 
 /**
  * This repository provides access to all collection of units in the app.
  */
+@Singleton
 class AllUnitsRepository @Inject constructor() {
     /**
      * This is a collection of all available units.
@@ -102,6 +105,26 @@ class AllUnitsRepository @Inject constructor() {
         }
 
         return unitsToShow.groupBy { it.group }
+    }
+
+    /**
+     * Maps data from database to [allUnits] item: favorites, counters, renderedNames and etc.
+     *
+     * @param context [Context] that is used to fill [AbstractUnit.renderedName]. Rendered names are used when
+     * searching.
+     * @param allBasedUnits List from database. See: [MyBasedUnit].
+     */
+    fun loadFromDatabase(context: Context, allBasedUnits: List<MyBasedUnit>) {
+        allUnits.forEach {
+            // Loading unit names so that we can search through them
+            it.renderedName = context.getString(it.displayName)
+            val based = allBasedUnits.firstOrNull { based -> based.unitId == it.unitId }
+            // Loading paired units
+            it.pairedUnit = based?.pairedUnitId
+            // Loading favorite state
+            it.isFavorite = based?.isFavorite ?: false
+            it.counter = based?.frequency ?: 0
+        }
     }
 
     // NOTE: Ignore formatting below it's easier to read this lines as table

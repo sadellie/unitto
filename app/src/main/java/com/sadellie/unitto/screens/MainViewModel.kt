@@ -420,16 +420,7 @@ class MainViewModel @Inject constructor(
 
             // Now we load units data from database
             val allBasedUnits = basedUnitRepository.getAll()
-            allUnitsRepository.allUnits.forEach {
-                // Loading unit names so that we can search through them
-                it.renderedName = application.getString(it.displayName)
-                val based = allBasedUnits.firstOrNull { based -> based.unitId == it.unitId }
-                // Loading paired units
-                it.pairedUnit = based?.pairedUnitId
-                // Loading favorite state
-                it.isFavorite = based?.isFavorite ?: false
-                it.counter = based?.frequency ?: 0
-            }
+            allUnitsRepository.loadFromDatabase(application, allBasedUnits)
 
             // User is free to convert values and units on units screen can be sorted properly
             mainUIState = mainUIState.copy(isLoadingDatabase = false)
