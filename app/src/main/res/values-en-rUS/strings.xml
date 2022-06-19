@@ -720,5 +720,6 @@
     <string name="empty_search_result_description">Empty search result</string>
     <string name="send_usage_statistics">Send usage statistics</string>
     <string name="send_usage_statistics_support">All data is anonymous and encrypted</string>
+    <string name="app_version_name_setting">Version name</string>
 
 </resources>

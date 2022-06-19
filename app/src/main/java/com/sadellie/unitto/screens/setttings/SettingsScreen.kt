@@ -20,17 +20,12 @@ package com.sadellie.unitto.screens.setttings
 
 import android.os.Build
 import androidx.compose.animation.rememberSplineBasedDecay
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -44,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.ABOUT_SCREEN
@@ -54,7 +48,9 @@ import com.sadellie.unitto.data.preferences.PRECISIONS
 import com.sadellie.unitto.data.preferences.SEPARATORS
 import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.openLink
-
+import com.sadellie.unitto.screens.setttings.components.AlertDialogWithList
+import com.sadellie.unitto.screens.setttings.components.SettingsHeader
+import com.sadellie.unitto.screens.setttings.components.SettingsListItem
 
 @Composable
 fun SettingsScreen(
@@ -64,9 +60,13 @@ fun SettingsScreen(
 ) {
     val mContext = LocalContext.current
     // Scrollable
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberSplineBasedDecay(), rememberTopAppBarScrollState())
-
-    var currentDialogState: Int by rememberSaveable { mutableStateOf(0) }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
+        rememberSplineBasedDecay(),
+        rememberTopAppBarScrollState()
+    )
+    var dialogState: DialogState by rememberSaveable {
+        mutableStateOf(DialogState.NONE)
+    }
 
     Scaffold(
         modifier = Modifier
@@ -89,144 +89,148 @@ fun SettingsScreen(
         },
         content = { padding ->
             LazyColumn(contentPadding = padding) {
+
+                // GENERAL GROUP
+                item { SettingsHeader(stringResource(R.string.general_settings_group)) }
+
+                // PRECISION
                 item {
-                    Column {
-                        // Group header
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
-                            text = stringResource(id = R.string.general_settings_group),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        SettingsListItem(
-                            label = stringResource(R.string.precision_setting),
-                            supportText = stringResource(R.string.precision_setting_support),
-                            onClick = { currentDialogState = 1 }
-                        )
-                        SettingsListItem(
-                            label = stringResource(R.string.separator_setting),
-                            supportText = stringResource(R.string.separator_setting_support),
-                            onClick = { currentDialogState = 2 }
-                        )
-                        SettingsListItem(
-                            label = stringResource(R.string.output_format_setting),
-                            supportText = stringResource(id = R.string.output_format_setting_support),
-                            onClick = { currentDialogState = 3 }
-                        )
-                        SettingsListItem(
-                            label = stringResource(R.string.theme_setting),
-                            supportText = stringResource(R.string.theme_setting_support),
-                            onClick = { currentDialogState = 4 }
-                        )
-                        SettingsListItem(
-                            label = stringResource(id = R.string.currency_rates_note_setting),
-                            onClick = { currentDialogState = 5 }
-                        )
+                    SettingsListItem(
+                        stringResource(R.string.precision_setting),
+                        stringResource(R.string.precision_setting_support)
+                    ) { dialogState = DialogState.PRECISION }
+                }
 
-                        // Group header
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
-                            text = stringResource(id = R.string.additional_settings_group),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        SettingsListItem(
-                            label = stringResource(R.string.terms_and_conditions),
-                            onClick = {
-                                openLink(
-                                    mContext,
-                                    "http://sadellie.github.io/unitto/terms-app.html"
-                                )
-                            }
-                        )
-                        SettingsListItem(
-                            label = stringResource(R.string.privacy_policy),
-                            onClick = {
-                                openLink(
-                                    mContext,
-                                    "http://sadellie.github.io/unitto/privacy-app.html"
-                                )
-                            }
-                        )
-                        SettingsListItem(
-                            label = stringResource(id = R.string.send_usage_statistics),
-                            supportText = stringResource(id = R.string.send_usage_statistics_support),
-                            switchState = mainViewModel.enableAnalytics,
-                            onSwitchChange = { mainViewModel.updateEnableAnalytics(!it) })
-                        SettingsListItem(
-                            label = stringResource(R.string.third_party_licenses),
-                            onClick = { navControllerAction(ABOUT_SCREEN) }
-                        )
+                // SEPARATOR
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.separator_setting),
+                        stringResource(R.string.separator_setting_support)
+                    ) { dialogState = DialogState.SEPARATOR }
+                }
 
-                        BuildConfig.StoreLink.let {
-                            SettingsListItem(
-                                label = stringResource(R.string.rate_this_app),
-                                onClick = {
-                                    openLink(
-                                        mContext,
-                                        it
-                                    )
-                                }
-                            )
-                        }
-                    }
+                // OUTPUT FORMAT
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.output_format_setting),
+                        stringResource(R.string.output_format_setting_support)
+                    ) { dialogState = DialogState.OUTPUT_FORMAT }
+                }
+
+                // THEME
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.theme_setting),
+                        stringResource(R.string.theme_setting)
+                    ) { dialogState = DialogState.THEME }
+                }
+
+                // CURRENCY RATE NOTE
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.currency_rates_note_setting)
+                    ) { dialogState = DialogState.CURRENCY_RATE }
+                }
+
+                // ADDITIONAL GROUP
+                item { SettingsHeader(stringResource(R.string.additional_settings_group)) }
+
+                // TERMS AND CONDITIONS
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.terms_and_conditions)
+                    ) { openLink(mContext, "http://sadellie.github.io/unitto/terms-app.html") }
+                }
+
+                // PRIVACY POLICY
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.privacy_policy)
+                    ) { openLink(mContext, "http://sadellie.github.io/unitto/privacy-app.html") }
+                }
+
+                // ANALYTICS
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.send_usage_statistics),
+                        stringResource(R.string.send_usage_statistics_support),
+                        mainViewModel.enableAnalytics
+                    ) { mainViewModel.updateEnableAnalytics(!it) }
+                }
+
+                // THIRD PARTY
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.third_party_licenses)
+                    ) { navControllerAction(ABOUT_SCREEN) }
+                }
+
+                // APP VERSION
+                item {
+                    SettingsListItem(
+                        label = stringResource(id = R.string.app_version_name_setting),
+                        supportText = BuildConfig.VERSION_NAME
+                    ) {}
                 }
             }
         },
     )
 
+    /**
+     * Function to reset currently displayed dialog.
+     */
+    fun resetDialog() {
+        dialogState = DialogState.NONE
+    }
+
     // Showing dialog
-    when (currentDialogState) {
-        1 -> {
+    when (dialogState) {
+        DialogState.PRECISION -> {
             AlertDialogWithList(
                 title = stringResource(id = R.string.precision_setting),
                 listItems = PRECISIONS,
                 selectedItemIndex = mainViewModel.precision,
                 selectAction = { mainViewModel.updatePrecision(it) },
-                dismissAction = { currentDialogState = 0 },
+                dismissAction = { resetDialog() },
                 supportText = stringResource(id = R.string.precision_setting_info)
             )
         }
-        2 -> {
+        DialogState.SEPARATOR -> {
             AlertDialogWithList(
                 title = stringResource(id = R.string.separator_setting),
                 listItems = SEPARATORS,
                 selectedItemIndex = mainViewModel.separator,
                 selectAction = { mainViewModel.updateSeparator(it) },
-                dismissAction = { currentDialogState = 0 }
+                dismissAction = { resetDialog() }
             )
         }
-        3 -> {
+        DialogState.OUTPUT_FORMAT -> {
             AlertDialogWithList(
                 title = stringResource(id = R.string.output_format_setting),
                 listItems = OUTPUT_FORMAT,
                 selectedItemIndex = mainViewModel.outputFormat,
                 selectAction = { mainViewModel.updateOutputFormat(it) },
-                dismissAction = { currentDialogState = 0 },
+                dismissAction = { resetDialog() },
                 supportText = stringResource(id = R.string.output_format_setting_info)
             )
         }
-        4 -> {
+        DialogState.THEME -> {
             AlertDialogWithList(
                 title = stringResource(id = R.string.theme_setting),
                 listItems = APP_THEMES,
                 selectedItemIndex = mainViewModel.currentTheme,
                 selectAction = { mainViewModel.updateCurrentAppTheme(it) },
-                dismissAction = { currentDialogState = 0 },
+                dismissAction = { resetDialog() },
                 // Show note for users with devices that support custom Dynamic theming
                 supportText = if (Build.VERSION.SDK_INT in (Build.VERSION_CODES.O_MR1..Build.VERSION_CODES.R)) stringResource(
                     id = R.string.theme_setting_info
                 ) else null
             )
         }
-        5 -> {
+        DialogState.CURRENCY_RATE -> {
             AlertDialogWithList(
                 title = stringResource(id = R.string.currency_rates_note_title),
-                dismissAction = { currentDialogState = 0 },
+                dismissAction = { resetDialog() },
                 supportText = stringResource(id = R.string.currency_rates_note_text),
                 dismissButtonLabel = stringResource(id = R.string.ok_label)
             )
@@ -234,4 +238,11 @@ fun SettingsScreen(
         // Dismissing alert dialog
         else -> {}
     }
+}
+
+/**
+ * All possible states for alert dialog that opens when user clicks on settings.
+ */
+private enum class DialogState {
+    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, THEME, CURRENCY_RATE,
 }

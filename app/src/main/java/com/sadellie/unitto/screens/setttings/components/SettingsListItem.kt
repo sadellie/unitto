@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.screens.setttings
+package com.sadellie.unitto.screens.setttings.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -39,12 +39,12 @@ import androidx.compose.ui.unit.dp
 /**
  * Basic list item for settings screen. By default only has label and support text, clickable.
  * This component can be easily modified if you provide additional component to it,
- * for example a switch or a checkbox
+ * for example a switch or a checkbox.
  *
- * @param label Main text
- * @param supportText Text that is located below label
- * @param onClick Action to perform when user clicks on this component (whole component is clickable)
- * @param content Additional composable: buttons, switches, checkboxes or something else
+ * @param label Main text.
+ * @param supportText Text that is located below label.
+ * @param onClick Action to perform when user clicks on this component (whole component is clickable).
+ * @param content Additional composable: buttons, switches, checkboxes or something else.
  */
 @Composable
 private fun BasicSettingsListItem(
@@ -91,11 +91,11 @@ private fun BasicSettingsListItem(
 }
 
 /**
- * Represents one item in list on Settings screen
+ * Represents one item in list on Settings screen.
  *
- * @param label Main text
- * @param supportText Text that is located below label
- * @param onClick Action to perform when user clicks on this component (whole component is clickable)
+ * @param label Main text.
+ * @param supportText Text that is located below label.
+ * @param onClick Action to perform when user clicks on this component (whole component is clickable).
  */
 @Composable
 fun SettingsListItem(
@@ -105,12 +105,12 @@ fun SettingsListItem(
 ) = BasicSettingsListItem(label, supportText, onClick)
 
 /**
- * Represents one item in list on Settings screen
+ * Represents one item in list on Settings screen.
  *
- * @param label Main text
- * @param supportText Text that is located below label
- * @param switchState Current switch state
- * @param onSwitchChange Action to perform when user clicks on this component or just switch
+ * @param label Main text.
+ * @param supportText Text that is located below label.
+ * @param switchState Current switch state.
+ * @param onSwitchChange Action to perform when user clicks on this component or just switch.
  */
 @Composable
 fun SettingsListItem(

@@ -672,5 +672,6 @@
     <string name="acceleration">Ускорение</string>
     <string name="send_usage_statistics">Отправлять статистику использования</string>
     <string name="send_usage_statistics_support">Все данные анонимны и зашифрованы</string>
+    <string name="app_version_name_setting">Название версии</string>
 
 </resources>

@@ -932,6 +932,7 @@
     <string name="rate_this_app">Rate this app</string>
     <string name="send_usage_statistics">Send usage statistics</string>
     <string name="send_usage_statistics_support">All data is anonymous and encrypted</string>
+    <string name="app_version_name_setting">Version name</string>
     <string name="general_settings_group">General</string>
     <string name="additional_settings_group">Additional</string>
 
