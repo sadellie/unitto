@@ -88,11 +88,7 @@ fun SettingsScreen(
             )
         },
         content = { padding ->
-            LazyColumn(
-                Modifier
-                    .padding(padding)
-                    .fillMaxHeight()
-            ) {
+            LazyColumn(contentPadding = padding) {
                 item {
                     Column {
                         // Group header

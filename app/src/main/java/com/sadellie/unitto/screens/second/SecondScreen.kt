@@ -78,51 +78,49 @@ private fun BasicUnitListScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            Column {
-                SearchBar(
-                    title = title,
-                    value = uiState.searchQuery,
-                    onValueChange = {
-                        viewModel.onSearchQueryChange(it)
-                        viewModel.loadUnitsToShow(noBrokenCurrencies)
-                    },
-                    favoritesOnly = uiState.favoritesOnly,
-                    favoriteAction = {
-                        viewModel.toggleFavoritesOnly()
-                        viewModel.loadUnitsToShow(noBrokenCurrencies)
-                    },
-                    navigateUpAction = navigateUp,
-                    focusManager = focusManager,
-                    scrollBehavior = scrollBehavior
-                )
-                chipsRow(
-                    uiState.chosenUnitGroup,
-                    {
-                        viewModel.toggleSelectedChip(it)
-                        viewModel.loadUnitsToShow(noBrokenCurrencies)
-                    },
-                    chipsRowLazyListState
-                )
-            }
+            SearchBar(
+                title = title,
+                value = uiState.searchQuery,
+                onValueChange = {
+                    viewModel.onSearchQueryChange(it)
+                    viewModel.loadUnitsToShow(noBrokenCurrencies)
+                },
+                favoritesOnly = uiState.favoritesOnly,
+                favoriteAction = {
+                    viewModel.toggleFavoritesOnly()
+                    viewModel.loadUnitsToShow(noBrokenCurrencies)
+                },
+                navigateUpAction = navigateUp,
+                focusManager = focusManager,
+                scrollBehavior = scrollBehavior
+            )
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues)
+        Column(
+            Modifier.padding(paddingValues)
         ) {
-            if (uiState.unitsToShow.isEmpty()) {
-                item { SearchPlaceholder() }
-                return@LazyColumn
-            }
-            uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
-                stickyHeader { Header(text = stringResource(id = unitGroup.res)) }
-                items(items = listOfUnits, key = { it.unitId }) { unit ->
-                    unitsListItem(
-                        unit
-                    ) {
-                        selectAction(it)
-                        viewModel.onSearchQueryChange("")
-                        focusManager.clearFocus(true)
-                        navigateUp()
+            chipsRow(
+                uiState.chosenUnitGroup,
+                {
+                    viewModel.toggleSelectedChip(it)
+                    viewModel.loadUnitsToShow(noBrokenCurrencies)
+                },
+                chipsRowLazyListState
+            )
+            LazyColumn {
+                if (uiState.unitsToShow.isEmpty()) {
+                    item { SearchPlaceholder() }
+                    return@LazyColumn
+                }
+                uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
+                    stickyHeader { Header(text = stringResource(id = unitGroup.res)) }
+                    items(items = listOfUnits, key = { it.unitId }) { unit ->
+                        unitsListItem(unit) {
+                            selectAction(it)
+                            viewModel.onSearchQueryChange("")
+                            focusManager.clearFocus(true)
+                            navigateUp()
+                        }
                     }
                 }
             }
