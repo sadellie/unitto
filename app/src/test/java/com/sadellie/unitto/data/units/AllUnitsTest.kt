@@ -30,7 +30,7 @@ import java.math.BigDecimal
 class AllUnitsTest {
 
     // Group and it's tested unit ids
-    var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
+    private var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
     private val allUnitsRepository = AllUnitsRepository()
 
     @Test

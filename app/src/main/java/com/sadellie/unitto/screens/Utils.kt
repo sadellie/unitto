@@ -198,7 +198,7 @@ fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
         /**
          * Levenshtein Distance for this specific name of this unit
          *
-         * We use substring so that we compare not the whole unit name, but only part of it
+         * We use substring so that we compare not the whole unit name, but only part of it.
          * It's required because without it levDist will be too high for units with longer
          * names than the search query
          *
