@@ -14,7 +14,7 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion = "1.2.0-beta02"
+val composeVersion = "1.2.0-beta03"
 
 kapt {
     correctErrorTypes = true
@@ -124,7 +124,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
+    implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
 
     // Material Design 3
     implementation("androidx.compose.material3:material3:1.0.0-alpha13")
@@ -145,7 +145,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:30.0.2"))
+    implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Crashlytics and Analytics
