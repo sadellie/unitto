@@ -121,7 +121,7 @@ fun SettingsScreen(
                 item {
                     SettingsListItem(
                         stringResource(R.string.theme_setting),
-                        stringResource(R.string.theme_setting)
+                        stringResource(R.string.theme_setting_support)
                     ) { dialogState = DialogState.THEME }
                 }
 
