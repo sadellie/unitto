@@ -22,6 +22,7 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.data.preferences.AppTheme
@@ -34,6 +35,7 @@ fun UnittoTheme(
 ) {
     // Dynamic color is only for Android 12 and higher
     val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
+    val sysUiController = rememberSystemUiController()
 
     val colors = when (currentAppTheme) {
         AppTheme.DARK -> DarkThemeColors
@@ -54,13 +56,15 @@ fun UnittoTheme(
         }
     }
 
-    rememberSystemUiController().setSystemBarsColor(
-        color = colors.background
-    )
-
     MaterialTheme(
         colorScheme = colors,
         typography = AppTypography,
         content = content
     )
+
+    SideEffect {
+        sysUiController.setSystemBarsColor(
+            color = colors.background
+        )
+    }
 }
