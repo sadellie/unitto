@@ -47,6 +47,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 
@@ -114,7 +115,8 @@ class MainViewModel @Inject constructor(
     fun updateEnableAnalytics(enableAnalytics: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateEnableAnalytics(enableAnalytics)
-            FirebaseAnalytics.getInstance(application).setAnalyticsCollectionEnabled(enableAnalytics)
+            FirebaseAnalytics.getInstance(application)
+                .setAnalyticsCollectionEnabled(enableAnalytics)
         }
     }
 
@@ -143,14 +145,24 @@ class MainViewModel @Inject constructor(
         // Converting value using a specified precision
         val convertedValue: BigDecimal =
             unitFrom.convert(unitTo, mainUIState.inputValue.toBigDecimal(), precision)
-        // Setting result value using a specified OutputFormat
-        mainUIState = mainUIState.copy(
-            resultValue = when (outputFormat) {
-                OutputFormat.ALLOW_ENGINEERING -> convertedValue.toString()
-                OutputFormat.FORCE_ENGINEERING -> convertedValue.toEngineeringString()
-                else -> convertedValue.toPlainString()
+
+        /**
+         * There is a very interesting bug when trailing zeros are not stripped when input
+         * consists of ZEROS only (0.00000 as an example). This check is a workaround. If the result
+         * is zero, than we make sure there are no trailing zeros.
+         */
+        val resultValue =
+            if (convertedValue == BigDecimal.ZERO.setScale(precision, RoundingMode.HALF_EVEN)) {
+                KEY_0
+            } else {
+                // Setting result value using a specified OutputFormat
+                when (outputFormat) {
+                    OutputFormat.ALLOW_ENGINEERING -> convertedValue.toString()
+                    OutputFormat.FORCE_ENGINEERING -> convertedValue.toEngineeringString()
+                    else -> convertedValue.toPlainString()
+                }
             }
-        )
+        mainUIState = mainUIState.copy(resultValue = resultValue)
     }
 
     /**
