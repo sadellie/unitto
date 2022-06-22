@@ -18,8 +18,6 @@
 
 package com.sadellie.unitto.screens.second
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -30,6 +28,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
@@ -65,13 +66,17 @@ private fun BasicUnitListScreen(
     navigateUp: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
     viewModel: SecondViewModel,
-    chipsRow: @Composable ColumnScope.(UnitGroup?, (UnitGroup) -> Unit, LazyListState) -> Unit = {_,_,_->},
+    chipsRow: @Composable (UnitGroup?, LazyListState) -> Unit = {_, _->},
     unitsListItem: @Composable (AbstractUnit, (AbstractUnit) -> Unit) -> Unit,
     noBrokenCurrencies: Boolean,
     title: String,
 ) {
     val uiState = viewModel.uiState
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarScrollState())
+    val currentUnitGroup: UnitGroup? by rememberSaveable {
+        viewModel.setSelectedChip(currentUnit.group)
+        mutableStateOf(currentUnit.group)
+    }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarScrollState())
     val focusManager = LocalFocusManager.current
     val chipsRowLazyListState = rememberLazyListState()
 
@@ -96,31 +101,25 @@ private fun BasicUnitListScreen(
             )
         }
     ) { paddingValues ->
-        Column(
-            Modifier.padding(paddingValues)
-        ) {
-            chipsRow(
-                uiState.chosenUnitGroup,
-                {
-                    viewModel.toggleSelectedChip(it)
-                    viewModel.loadUnitsToShow(noBrokenCurrencies)
-                },
-                chipsRowLazyListState
-            )
-            LazyColumn {
-                if (uiState.unitsToShow.isEmpty()) {
-                    item { SearchPlaceholder() }
-                    return@LazyColumn
-                }
-                uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
-                    stickyHeader { Header(text = stringResource(id = unitGroup.res)) }
-                    items(items = listOfUnits, key = { it.unitId }) { unit ->
-                        unitsListItem(unit) {
-                            selectAction(it)
-                            viewModel.onSearchQueryChange("")
-                            focusManager.clearFocus(true)
-                            navigateUp()
-                        }
+        LazyColumn(Modifier.padding(paddingValues)) {
+            stickyHeader {
+                chipsRow(
+                    viewModel.uiState.chosenUnitGroup,
+                    chipsRowLazyListState
+                )
+            }
+            if (uiState.unitsToShow.isEmpty()) {
+                item { SearchPlaceholder() }
+                return@LazyColumn
+            }
+            uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
+                item { Header(text = stringResource(id = unitGroup.res)) }
+                items(items = listOfUnits, key = { it.unitId }) { unit ->
+                    unitsListItem(unit) {
+                        selectAction(it)
+                        viewModel.onSearchQueryChange("")
+                        focusManager.clearFocus(true)
+                        navigateUp()
                     }
                 }
             }
@@ -129,12 +128,11 @@ private fun BasicUnitListScreen(
 
     // This block is called only once on initial composition
     LaunchedEffect(Unit) {
-        viewModel.setSelectedChip(currentUnit.group)
         /**
          * Telling viewModel that it needs to update the list
          */
         viewModel.loadUnitsToShow(noBrokenCurrencies)
-        currentUnit.group.let {
+        currentUnitGroup?.let {
             chipsRowLazyListState.animateScrollToItem(ALL_UNIT_GROUPS.indexOf(it))
         }
     }
@@ -159,10 +157,13 @@ fun LeftSideScreen(
     navigateUp = navigateUp,
     selectAction = selectAction,
     viewModel = viewModel,
-    chipsRow = { chosenUnitGroup, selectUnitGroupAction, lazyListState ->
+    chipsRow = { unitGroup, lazyListState ->
         ChipsRow(
-            chosenUnitGroup = chosenUnitGroup,
-            selectAction = selectUnitGroupAction,
+            chosenUnitGroup = unitGroup,
+            selectAction = {
+                viewModel.toggleSelectedChip(it)
+                viewModel.loadUnitsToShow(true)
+            },
             lazyListState = lazyListState
         )
     },

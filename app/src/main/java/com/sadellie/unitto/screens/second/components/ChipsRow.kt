@@ -64,6 +64,7 @@ fun ChipsRow(
 ) {
     val chipShape = RoundedCornerShape(8.dp)
     LazyRow(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
         state = lazyListState,
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
