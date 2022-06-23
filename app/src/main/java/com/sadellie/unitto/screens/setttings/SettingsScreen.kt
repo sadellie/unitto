@@ -165,6 +165,15 @@ fun SettingsScreen(
                     ) { navControllerAction(ABOUT_SCREEN) }
                 }
 
+                // RATE THIS APP
+                if (BuildConfig.StoreLink.isNotEmpty()) {
+                    item {
+                        SettingsListItem(
+                            stringResource(R.string.rate_this_app)
+                        ) { openLink(mContext, BuildConfig.StoreLink) }
+                    }
+                }
+
                 // APP VERSION
                 item {
                     SettingsListItem(
