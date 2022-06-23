@@ -172,7 +172,7 @@ fun LeftSideScreen(
 )
 
 /**
- * Right side screen. Unit to convert from.
+ * Right side screen. Unit to convert to.
  *
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
