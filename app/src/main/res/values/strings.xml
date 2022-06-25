@@ -1,22 +1,40 @@
+<!--
+  ~ Unitto is a unit converter for Android
+  ~ Copyright (c) 2022 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="app_name" translatable="false">Unitto</string>
 
     <!--Length-->
-    <string name="attometer">Attometre</string>
+    <string name="attometer">Attometer</string>
     <string name="attometer_short">am</string>
-    <string name="nanometer">Nanometre</string>
+    <string name="nanometer">Nanometer</string>
     <string name="nanometer_short">nm</string>
-    <string name="micrometer">Micrometre</string>
+    <string name="micrometer">Micrometer</string>
     <string name="micrometer_short">μm</string>
-    <string name="millimeter">Millimetre</string>
+    <string name="millimeter">Millimeter</string>
     <string name="millimeter_short">mm</string>
-    <string name="centimeter">Centimetre</string>
+    <string name="centimeter">Centimeter</string>
     <string name="centimeter_short">cm</string>
-    <string name="decimeter">Decimetre</string>
+    <string name="decimeter">Decimeter</string>
     <string name="decimeter_short">dm</string>
-    <string name="meter">Metre</string>
+    <string name="meter">Meter</string>
     <string name="meter_short">m</string>
-    <string name="kilometer">Kilometre</string>
+    <string name="kilometer">Kilometer</string>
     <string name="kilometer_short">km</string>
     <string name="mile">Mile</string>
     <string name="mile_short">Mi</string>
@@ -102,29 +120,29 @@
     <string name="kelvin_short" translatable="false">K</string>
 
     <!--Speed-->
-    <string name="millimeter_per_hour">Millimetre per hour</string>
+    <string name="millimeter_per_hour">Millimeter per hour</string>
     <string name="millimeter_per_hour_short">mm/h</string>
-    <string name="millimeter_per_minute">Millimetre per minute</string>
+    <string name="millimeter_per_minute">Millimeter per minute</string>
     <string name="millimeter_per_minute_short">mm/m</string>
-    <string name="millimeter_per_second">Millimetre per second</string>
+    <string name="millimeter_per_second">Millimeter per second</string>
     <string name="millimeter_per_second_short">mm/s</string>
-    <string name="centimeter_per_hour">Centimetre per hour</string>
+    <string name="centimeter_per_hour">Centimeter per hour</string>
     <string name="centimeter_per_hour_short">cm/h</string>
-    <string name="centimeter_per_minute">Centimetre per minute</string>
+    <string name="centimeter_per_minute">Centimeter per minute</string>
     <string name="centimeter_per_minute_short">cm/m</string>
-    <string name="centimeter_per_second">Centimetre per second</string>
+    <string name="centimeter_per_second">Centimeter per second</string>
     <string name="centimeter_per_second_short">cm/s</string>
-    <string name="meter_per_hour">Metre per hour</string>
+    <string name="meter_per_hour">Meter per hour</string>
     <string name="meter_per_hour_short">m/h</string>
-    <string name="meter_per_minute">Metre per minute</string>
+    <string name="meter_per_minute">Meter per minute</string>
     <string name="meter_per_minute_short">m/m</string>
-    <string name="meter_per_second">Metre per second</string>
+    <string name="meter_per_second">Meter per second</string>
     <string name="meter_per_second_short">m/s</string>
-    <string name="kilometer_per_hour">Kilometre per hour</string>
+    <string name="kilometer_per_hour">Kilometer per hour</string>
     <string name="kilometer_per_hour_short">km/h</string>
-    <string name="kilometer_per_minute">Kilometre per minute</string>
+    <string name="kilometer_per_minute">Kilometer per minute</string>
     <string name="kilometer_per_minute_short">km/m</string>
-    <string name="kilometer_per_second">Kilometre per second</string>
+    <string name="kilometer_per_second">Kilometer per second</string>
     <string name="kilometer_per_second_short">km/s</string>
     <string name="foot_per_hour">Foot per hour</string>
     <string name="foot_per_hour_short">ft/h</string>
@@ -272,13 +290,13 @@
     <string name="imperial_tablespoon_short">tablespoon (UK)</string>
     <string name="imperial_teaspoon">Imperial teaspoon</string>
     <string name="imperial_teaspoon_short">teaspoon (UK)</string>
-    <string name="cubic_millimeter">Cubic millimetre</string>
+    <string name="cubic_millimeter">Cubic millimeter</string>
     <string name="cubic_millimeter_short">mm^3</string>
-    <string name="cubic_centimeter">Cubic centimetre</string>
+    <string name="cubic_centimeter">Cubic centimeter</string>
     <string name="cubic_centimeter_short">cm^3</string>
-    <string name="cubic_meter">Cubic metre</string>
+    <string name="cubic_meter">Cubic meter</string>
     <string name="cubic_meter_short">m^3</string>
-    <string name="cubic_kilometer">Cubic kilometre</string>
+    <string name="cubic_kilometer">Cubic kilometer</string>
     <string name="cubic_kilometer_short">km^3</string>
 
     <!--Time-->
@@ -318,17 +336,17 @@
     <string name="square_yard_short">yd^2</string>
     <string name="square_inch">Square inch</string>
     <string name="square_inch_short">in^2</string>
-    <string name="square_micrometer">Square micrometre</string>
+    <string name="square_micrometer">Square micrometer</string>
     <string name="square_micrometer_short">µm^2</string>
-    <string name="square_millimeter">Square millimetre</string>
+    <string name="square_millimeter">Square millimeter</string>
     <string name="square_millimeter_short">mm^2</string>
-    <string name="square_centimeter">Square centimetre</string>
+    <string name="square_centimeter">Square centimeter</string>
     <string name="square_centimeter_short">cm^2</string>
-    <string name="square_decimeter">Square decimetre</string>
+    <string name="square_decimeter">Square decimeter</string>
     <string name="square_decimeter_short">dm^2</string>
-    <string name="square_meter">Square metre</string>
+    <string name="square_meter">Square meter</string>
     <string name="square_meter_short">m^2</string>
-    <string name="square_kilometer">Square kilometre</string>
+    <string name="square_kilometer">Square kilometer</string>
     <string name="square_kilometer_short">km^2</string>
 
     <!--Energy-->
@@ -428,33 +446,33 @@
     <string name="standard_atmosphere_short">atm</string>
     <string name="torr">Torr</string>
     <string name="torr_short">torr</string>
-    <string name="millimeter_of_mercury">Millimetre of mercury</string>
+    <string name="millimeter_of_mercury">Millimeter of mercury</string>
     <string name="millimeter_of_mercury_short">mm Hg</string>
 
     <!--Acceleration-->
-    <string name="attometer_per_square_second">Attometre per square second</string>
+    <string name="attometer_per_square_second">Attometer per square second</string>
     <string name="attometer_per_square_second_short">am/s^2</string>
-    <string name="femtometer_per_square_second">Femtometre per square second</string>
+    <string name="femtometer_per_square_second">Femtometer per square second</string>
     <string name="femtometer_per_square_second_short">fm/s^2</string>
-    <string name="picometer_per_square_second">Picometre per square second</string>
+    <string name="picometer_per_square_second">Picometer per square second</string>
     <string name="picometer_per_square_second_short">pm/s^2</string>
-    <string name="nanometer_per_square_second">Nanometre per square second</string>
+    <string name="nanometer_per_square_second">Nanometer per square second</string>
     <string name="nanometer_per_square_second_short">nm/s^2</string>
-    <string name="micrometer_per_square_second">Micrometre per square second</string>
+    <string name="micrometer_per_square_second">Micrometer per square second</string>
     <string name="micrometer_per_square_second_short">µm/s^2</string>
-    <string name="millimeter_per_square_second">Millimetre per square second</string>
+    <string name="millimeter_per_square_second">Millimeter per square second</string>
     <string name="millimeter_per_square_second_short">mm/s^2</string>
-    <string name="centimeter_per_square_second">Centimetre per square second</string>
+    <string name="centimeter_per_square_second">Centimeter per square second</string>
     <string name="centimeter_per_square_second_short">cm/s^2</string>
-    <string name="decimeter_per_square_second">Decimetre per square second</string>
+    <string name="decimeter_per_square_second">Decimeter per square second</string>
     <string name="decimeter_per_square_second_short">dm/s^2</string>
-    <string name="meter_per_square_second">Metre per square second</string>
+    <string name="meter_per_square_second">Meter per square second</string>
     <string name="meter_per_square_second_short">m/s^2</string>
-    <string name="kilometer_per_square_second">Kilometre per square second</string>
+    <string name="kilometer_per_square_second">Kilometer per square second</string>
     <string name="kilometer_per_square_second_short">km/s^2</string>
-    <string name="dekameter_per_square_second">Dekametre per square second</string>
+    <string name="dekameter_per_square_second">Dekameter per square second</string>
     <string name="dekameter_per_square_second_short">dam/s^2</string>
-    <string name="hectometer_per_square_second">Hectometre per square second</string>
+    <string name="hectometer_per_square_second">Hectometer per square second</string>
     <string name="hectometer_per_square_second_short">hm/s^2</string>
     <string name="gal">Gal</string>
     <string name="gal_short">Gal</string>
@@ -895,7 +913,6 @@
     <string name="currency_zwl">Zimbabwean Dollar</string>
     <string name="currency_zwl_short" translatable="false">ZWL</string>
 
-
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -930,9 +947,6 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="third_party_licenses">Third party licenses</string>
     <string name="rate_this_app">Rate this app</string>
-    <string name="send_usage_statistics">Send usage statistics</string>
-    <string name="send_usage_statistics_support">All data is anonymous and encrypted</string>
-    <string name="app_version_name_setting">Version name</string>
     <string name="general_settings_group">General</string>
     <string name="additional_settings_group">Additional</string>
 
@@ -999,5 +1013,8 @@
     <string name="clear_input_description">Clear input</string>
     <string name="favorite_button_description">Add or remove unit from favorites</string>
     <string name="empty_search_result_description">Empty search result</string>
+    <string name="send_usage_statistics">Send usage statistics</string>
+    <string name="send_usage_statistics_support">All data is anonymous and encrypted</string>
+    <string name="app_version_name_setting">Version name</string>
 
 </resources>
