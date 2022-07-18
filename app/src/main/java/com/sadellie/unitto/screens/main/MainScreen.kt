@@ -44,7 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
-import com.sadellie.unitto.data.SETTINGS_SCREEN
+import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.screens.MainScreenUIState
 import com.sadellie.unitto.screens.MainViewModel

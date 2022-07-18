@@ -32,8 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
-import com.sadellie.unitto.data.LEFT_LIST_SCREEN
-import com.sadellie.unitto.data.RIGHT_LIST_SCREEN
+import com.sadellie.unitto.data.NavRoutes.LEFT_LIST_SCREEN
+import com.sadellie.unitto.data.NavRoutes.RIGHT_LIST_SCREEN
 import com.sadellie.unitto.data.units.AbstractUnit
 
 /**

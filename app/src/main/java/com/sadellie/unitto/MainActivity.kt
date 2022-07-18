@@ -27,11 +27,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.sadellie.unitto.data.ABOUT_SCREEN
-import com.sadellie.unitto.data.LEFT_LIST_SCREEN
-import com.sadellie.unitto.data.MAIN_SCREEN
-import com.sadellie.unitto.data.RIGHT_LIST_SCREEN
-import com.sadellie.unitto.data.SETTINGS_SCREEN
+import com.sadellie.unitto.data.NavRoutes.ABOUT_SCREEN
+import com.sadellie.unitto.data.NavRoutes.LEFT_LIST_SCREEN
+import com.sadellie.unitto.data.NavRoutes.MAIN_SCREEN
+import com.sadellie.unitto.data.NavRoutes.RIGHT_LIST_SCREEN
+import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.preferences.AppTheme
 import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.about.AboutScreen

@@ -41,7 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
-import com.sadellie.unitto.data.ABOUT_SCREEN
+import com.sadellie.unitto.data.NavRoutes.ABOUT_SCREEN
 import com.sadellie.unitto.data.preferences.APP_THEMES
 import com.sadellie.unitto.data.preferences.OUTPUT_FORMAT
 import com.sadellie.unitto.data.preferences.PRECISIONS
