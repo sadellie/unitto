@@ -19,34 +19,24 @@
 package com.sadellie.unitto.screens.setttings
 
 import android.os.Build
-import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.ABOUT_SCREEN
+import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
 import com.sadellie.unitto.data.preferences.APP_THEMES
 import com.sadellie.unitto.data.preferences.OUTPUT_FORMAT
 import com.sadellie.unitto.data.preferences.PRECISIONS
 import com.sadellie.unitto.data.preferences.SEPARATORS
 import com.sadellie.unitto.screens.MainViewModel
+import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.openLink
 import com.sadellie.unitto.screens.setttings.components.AlertDialogWithList
 import com.sadellie.unitto.screens.setttings.components.SettingsHeader
@@ -59,131 +49,110 @@ fun SettingsScreen(
     navControllerAction: (String) -> Unit
 ) {
     val mContext = LocalContext.current
-    // Scrollable
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
-        rememberSplineBasedDecay(),
-        rememberTopAppBarScrollState()
-    )
     var dialogState: DialogState by rememberSaveable {
         mutableStateOf(DialogState.NONE)
     }
 
-    Scaffold(
-        modifier = Modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            LargeTopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.settings_screen))
-                },
-                navigationIcon = {
-                    IconButton(onClick = navigateUpAction) {
-                        Icon(
-                            Icons.Outlined.ArrowBack,
-                            contentDescription = stringResource(id = R.string.navigate_up_description)
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior
-            )
-        },
-        content = { padding ->
-            LazyColumn(contentPadding = padding) {
+    UnittoLargeTopAppBar(
+        title = stringResource(id = R.string.settings_screen),
+        navigateUpAction = navigateUpAction
+    ) { padding ->
+        LazyColumn(contentPadding = padding) {
 
-                // GENERAL GROUP
-                item { SettingsHeader(stringResource(R.string.general_settings_group)) }
+            // GENERAL GROUP
+            item { SettingsHeader(stringResource(R.string.general_settings_group)) }
 
-                // PRECISION
+            // PRECISION
+            item {
+                SettingsListItem(
+                    stringResource(R.string.precision_setting),
+                    stringResource(R.string.precision_setting_support)
+                ) { dialogState = DialogState.PRECISION }
+            }
+
+            // SEPARATOR
+            item {
+                SettingsListItem(
+                    stringResource(R.string.separator_setting),
+                    stringResource(R.string.separator_setting_support)
+                ) { dialogState = DialogState.SEPARATOR }
+            }
+
+            // OUTPUT FORMAT
+            item {
+                SettingsListItem(
+                    stringResource(R.string.output_format_setting),
+                    stringResource(R.string.output_format_setting_support)
+                ) { dialogState = DialogState.OUTPUT_FORMAT }
+            }
+
+            // THEME
+            item {
+                SettingsListItem(
+                    stringResource(R.string.theme_setting),
+                    stringResource(R.string.theme_setting_support)
+                ) { dialogState = DialogState.THEME }
+            }
+
+            // CURRENCY RATE NOTE
+            item {
+                SettingsListItem(
+                    stringResource(R.string.currency_rates_note_setting)
+                ) { dialogState = DialogState.CURRENCY_RATE }
+            }
+
+            // ADDITIONAL GROUP
+            item { SettingsHeader(stringResource(R.string.additional_settings_group)) }
+
+            // TERMS AND CONDITIONS
+            item {
+                SettingsListItem(
+                    stringResource(R.string.terms_and_conditions)
+                ) { openLink(mContext, "http://sadellie.github.io/unitto/terms-app.html") }
+            }
+
+            // PRIVACY POLICY
+            item {
+                SettingsListItem(
+                    stringResource(R.string.privacy_policy)
+                ) { openLink(mContext, "http://sadellie.github.io/unitto/privacy-app.html") }
+            }
+
+            // ANALYTICS
+            item {
+                SettingsListItem(
+                    stringResource(R.string.send_usage_statistics),
+                    stringResource(R.string.send_usage_statistics_support),
+                    mainViewModel.enableAnalytics
+                ) { mainViewModel.updateEnableAnalytics(!it) }
+            }
+
+            // THIRD PARTY
+            item {
+                SettingsListItem(
+                    stringResource(R.string.third_party_licenses)
+                ) { navControllerAction(ABOUT_SCREEN) }
+            }
+
+            // RATE THIS APP
+            if (BuildConfig.StoreLink.isNotEmpty()) {
                 item {
                     SettingsListItem(
-                        stringResource(R.string.precision_setting),
-                        stringResource(R.string.precision_setting_support)
-                    ) { dialogState = DialogState.PRECISION }
-                }
-
-                // SEPARATOR
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.separator_setting),
-                        stringResource(R.string.separator_setting_support)
-                    ) { dialogState = DialogState.SEPARATOR }
-                }
-
-                // OUTPUT FORMAT
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.output_format_setting),
-                        stringResource(R.string.output_format_setting_support)
-                    ) { dialogState = DialogState.OUTPUT_FORMAT }
-                }
-
-                // THEME
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.theme_setting),
-                        stringResource(R.string.theme_setting_support)
-                    ) { dialogState = DialogState.THEME }
-                }
-
-                // CURRENCY RATE NOTE
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.currency_rates_note_setting)
-                    ) { dialogState = DialogState.CURRENCY_RATE }
-                }
-
-                // ADDITIONAL GROUP
-                item { SettingsHeader(stringResource(R.string.additional_settings_group)) }
-
-                // TERMS AND CONDITIONS
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.terms_and_conditions)
-                    ) { openLink(mContext, "http://sadellie.github.io/unitto/terms-app.html") }
-                }
-
-                // PRIVACY POLICY
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.privacy_policy)
-                    ) { openLink(mContext, "http://sadellie.github.io/unitto/privacy-app.html") }
-                }
-
-                // ANALYTICS
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.send_usage_statistics),
-                        stringResource(R.string.send_usage_statistics_support),
-                        mainViewModel.enableAnalytics
-                    ) { mainViewModel.updateEnableAnalytics(!it) }
-                }
-
-                // THIRD PARTY
-                item {
-                    SettingsListItem(
-                        stringResource(R.string.third_party_licenses)
-                    ) { navControllerAction(ABOUT_SCREEN) }
-                }
-
-                // RATE THIS APP
-                if (BuildConfig.StoreLink.isNotEmpty()) {
-                    item {
-                        SettingsListItem(
-                            stringResource(R.string.rate_this_app)
-                        ) { openLink(mContext, BuildConfig.StoreLink) }
-                    }
-                }
-
-                // APP VERSION
-                item {
-                    SettingsListItem(
-                        label = stringResource(id = R.string.app_version_name_setting),
-                        supportText = BuildConfig.VERSION_NAME
-                    ) {}
+                        stringResource(R.string.rate_this_app)
+                    ) { openLink(mContext, BuildConfig.StoreLink) }
                 }
             }
-        },
-    )
+
+            // APP VERSION
+            item {
+                SettingsListItem(
+                    label = stringResource(id = R.string.app_version_name_setting),
+                    supportText = BuildConfig.VERSION_NAME
+                ) {}
+            }
+        }
+    }
+
 
     /**
      * Function to reset currently displayed dialog.
