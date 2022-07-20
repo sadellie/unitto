@@ -44,8 +44,8 @@ val NumbersTextStyleDisplayLarge = TextStyle(
 val NumbersTextStyleTitleLarge = TextStyle(
     fontFamily = FontFamily(Font(R.font.lato_regular, weight = FontWeight.W700)),
     fontWeight = FontWeight.W400,
-    fontSize = 22.sp,
-    lineHeight = 28.sp,
+    fontSize = 26.sp,
+    lineHeight = 32.sp,
     letterSpacing = 0.sp,
 )
 
