@@ -122,7 +122,7 @@ fun SettingsScreen(
                     stringResource(R.string.send_usage_statistics),
                     stringResource(R.string.send_usage_statistics_support),
                     mainViewModel.enableAnalytics
-                ) { mainViewModel.updateEnableAnalytics(!it) }
+                ) { mainViewModel.updateEnableAnalytics(it) }
             }
 
             // THIRD PARTY

@@ -61,8 +61,8 @@ fun ThemesScreen(
                     supportText = stringResource(R.string.enable_dynamic_colors_support),
                     switchState = themmoController.isDynamicThemeEnabled,
                     onSwitchChange = {
-                        themmoController.enableDynamicTheme(!it)
-                        viewModel.updateDynamicTheme(!it)
+                        themmoController.enableDynamicTheme(it)
+                        viewModel.updateDynamicTheme(it)
                     }
                 )
             }
@@ -78,8 +78,8 @@ fun ThemesScreen(
                         supportText = stringResource(R.string.force_amoled_mode_support),
                         switchState = themmoController.isAmoledThemeEnabled,
                         onSwitchChange = {
-                            themmoController.enableAmoledTheme(!it)
-                            viewModel.updateAmoledTheme(!it)
+                            themmoController.enableAmoledTheme(it)
+                            viewModel.updateAmoledTheme(it)
                         }
                     )
                 }

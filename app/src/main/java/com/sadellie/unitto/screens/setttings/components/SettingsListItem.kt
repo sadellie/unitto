@@ -119,7 +119,8 @@ fun SettingsListItem(
  * @param label Main text.
  * @param supportText Text that is located below label.
  * @param switchState Current switch state.
- * @param onSwitchChange Action to perform when user clicks on this component or just switch.
+ * @param onSwitchChange Action to perform when user clicks on this component or just switch. Gives
+ * you new value.
  */
 @Composable
 fun SettingsListItem(
@@ -127,8 +128,8 @@ fun SettingsListItem(
     supportText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
-) = BasicSettingsListItem(label, supportText, { onSwitchChange(switchState) }) {
-    Switch(checked = switchState, onCheckedChange = { onSwitchChange(!it) })
+) = BasicSettingsListItem(label, supportText, { onSwitchChange(!switchState) }) {
+    Switch(checked = switchState, onCheckedChange = { onSwitchChange(it) })
 }
 
 /**
