@@ -80,10 +80,3 @@ val DarkThemeColors by lazy {
         inverseSurface = md_theme_dark_inverseSurface,
     )
 }
-
-val AmoledThemeColors by lazy {
-    DarkThemeColors.copy(
-        background = md_theme_amoled_black,
-        surface = md_theme_amoled_black,
-    )
-}

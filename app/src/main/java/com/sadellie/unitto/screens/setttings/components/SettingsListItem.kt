@@ -25,12 +25,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -120,4 +129,60 @@ fun SettingsListItem(
     onSwitchChange: (Boolean) -> Unit
 ) = BasicSettingsListItem(label, supportText, { onSwitchChange(switchState) }) {
     Switch(checked = switchState, onCheckedChange = { onSwitchChange(!it) })
+}
+
+/**
+ * Represents one item in list on Settings screen with drop-down menu.
+ *
+ * @param label Main text.
+ * @param supportText Text that is located below label.
+ * @param allOptions Options in drop-down menu.
+ * @param selected Selected option.
+ * @param onSelectedChange Action to perform when drop-down menu item is selected.
+ */
+@Composable
+fun <T> SettingsListItem(
+    label: String,
+    supportText: String? = null,
+    allOptions: Collection<T>,
+    selected: T,
+    onSelectedChange: (T) -> Unit
+) = BasicSettingsListItem(label, supportText, {}) {
+    var dropDownExpanded by rememberSaveable { mutableStateOf(false) }
+    var currentOption by rememberSaveable { mutableStateOf(selected) }
+
+    ExposedDropdownMenuBox(
+        modifier = Modifier,
+        expanded = dropDownExpanded,
+        onExpandedChange = { dropDownExpanded = it }
+    ) {
+        OutlinedTextField(
+            modifier = Modifier.widthIn(1.dp),
+            value = currentOption.toString(),
+            onValueChange = {},
+            readOnly = true,
+            singleLine = true,
+            enabled = false,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+            )
+        )
+        ExposedDropdownMenu(
+            modifier = Modifier.exposedDropdownSize(),
+            expanded = dropDownExpanded,
+            onDismissRequest = { dropDownExpanded = false }
+        ) {
+            allOptions.forEach {
+                DropdownMenuItem(
+                    text = { Text(it.toString()) },
+                    onClick = {
+                        currentOption = it
+                        onSelectedChange(it)
+                        dropDownExpanded = false
+                    }
+                )
+            }
+        }
+    }
 }

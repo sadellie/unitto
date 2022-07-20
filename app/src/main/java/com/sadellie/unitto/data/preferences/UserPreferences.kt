@@ -22,19 +22,24 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
+import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import okio.IOException
 import javax.inject.Inject
-
 
 /**
  * Represents user preferences that are user across the app
  *
- * @property currentAppTheme Current [AppTheme] to be used
+ * @property themingMode [ThemingMode] from Themmo
+ * @property enableDynamicTheme Use dynamic color scheme
+ * @property enableAmoledTheme Use amoled color scheme
  * @property digitsPrecision Current [PRECISIONS]. Number of digits in fractional part
  * @property separator Current [Separator] that used to separate thousands
  * @property outputFormat Current [OutputFormat] that is applied to converted value (not input)
@@ -43,7 +48,9 @@ import javax.inject.Inject
  * @property enableAnalytics Whether or not user wants to share application usage data
  */
 data class UserPreferences(
-    val currentAppTheme: Int,
+    val themingMode: ThemingMode,
+    val enableDynamicTheme: Boolean,
+    val enableAmoledTheme: Boolean,
     val digitsPrecision: Int,
     val separator: Int,
     val outputFormat: Int,
@@ -61,7 +68,9 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
      * Keys for DataStore
      */
     private object PrefsKeys {
-        val CURRENT_APP_THEME = intPreferencesKey("CURRENT_APP_THEME")
+        val THEMING_MODE = stringPreferencesKey("THEMING_MODE_PREF_KEY")
+        val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")
+        val ENABLE_AMOLED_THEME = booleanPreferencesKey("ENABLE_AMOLED_THEME_PREF_KEY")
         val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
         val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
         val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
@@ -71,9 +80,21 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
         .map { preferences ->
-            val currentAppTheme: Int =
-                preferences[PrefsKeys.CURRENT_APP_THEME] ?: AppTheme.AUTO
+            val themingMode: ThemingMode =
+                preferences[PrefsKeys.THEMING_MODE]?.let { ThemingMode.valueOf(it) }
+                    ?: ThemingMode.AUTO
+            val enableDynamicTheme: Boolean =
+                preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: false
+            val enableAmoledTheme: Boolean =
+                preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
             val digitsPrecision: Int =
                 preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
             val separator: Int =
@@ -88,7 +109,9 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 preferences[PrefsKeys.ENABLE_ANALYTICS] ?: true
 
             UserPreferences(
-                currentAppTheme = currentAppTheme,
+                themingMode = themingMode,
+                enableDynamicTheme = enableDynamicTheme,
+                enableAmoledTheme = enableAmoledTheme,
                 digitsPrecision = digitsPrecision,
                 separator = separator,
                 outputFormat = outputFormat,
@@ -97,17 +120,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 enableAnalytics = enableAnalytics
             )
         }
-
-    /**
-     * Update current theme preference in DataStore
-     *
-     * @param appTheme [AppTheme] to change to
-     */
-    suspend fun updateCurrentAppTheme(appTheme: Int) {
-        dataStore.edit { preferences ->
-            preferences[PrefsKeys.CURRENT_APP_THEME] = appTheme
-        }
-    }
 
     /**
      * Update precision preference in DataStore
@@ -164,6 +176,39 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         dataStore.edit { preferences ->
             preferences[PrefsKeys.LATEST_LEFT_SIDE] = leftSideUnit.unitId
             preferences[PrefsKeys.LATEST_RIGHT_SIDE] = rightSideUnit.unitId
+        }
+    }
+
+    /**
+     * Update [ThemingMode]. Saves value as a string.
+     *
+     * @param themingMode [ThemingMode] to save.
+     */
+    suspend fun updateThemingMode(themingMode: ThemingMode) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.THEMING_MODE] = themingMode.name
+        }
+    }
+
+    /**
+     * Update preference on whether or not generate color scheme from device wallpaper.
+     *
+     * @param enabled True if user wants to enable this feature.
+     */
+    suspend fun updateDynamicTheme(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] = enabled
+        }
+    }
+
+    /**
+     * Update preference on whether or not use true black colors.
+     *
+     * @param enabled True if user wants to enable this feature.
+     */
+    suspend fun updateAmoledTheme(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.ENABLE_AMOLED_THEME] = enabled
         }
     }
 }

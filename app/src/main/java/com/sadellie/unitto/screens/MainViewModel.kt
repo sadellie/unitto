@@ -30,7 +30,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_MINUS
-import com.sadellie.unitto.data.preferences.AppTheme
 import com.sadellie.unitto.data.preferences.MAX_PRECISION
 import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.Separator
@@ -59,8 +58,6 @@ class MainViewModel @Inject constructor(
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
-    var currentTheme: Int by mutableStateOf(AppTheme.NOT_SET)
-        private set
     var precision: Int by mutableStateOf(3)
         private set
     var separator: Int by mutableStateOf(Separator.SPACES)
@@ -69,15 +66,6 @@ class MainViewModel @Inject constructor(
         private set
     var enableAnalytics: Boolean by mutableStateOf(false)
         private set
-
-    /**
-     * See [UserPreferencesRepository.updateCurrentAppTheme]
-     */
-    fun updateCurrentAppTheme(appTheme: Int) {
-        viewModelScope.launch {
-            userPrefsRepository.updateCurrentAppTheme(appTheme)
-        }
-    }
 
     /**
      * See [UserPreferencesRepository.updateDigitsPrecision]
@@ -407,13 +395,11 @@ class MainViewModel @Inject constructor(
      *
      * Any change in user preferences will update mutableStateOf so composables, that rely on this
      * values recompose when actually needed. For example, when you change output format, composable
-     * in MainActivity will not be recomposed even though it needs currentTheme which is also in
-     * user preferences/
+     * in MainActivity will not be recomposed.
      */
     private fun observePreferenceChanges() {
         viewModelScope.launch {
             userPrefsRepository.userPreferencesFlow.collect { userPref ->
-                currentTheme = userPref.currentAppTheme
                 precision = userPref.digitsPrecision
                 separator = userPref.separator.also { Formatter.setSeparator(it) }
                 outputFormat = userPref.outputFormat

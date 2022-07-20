@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.screens.setttings
 
-import android.os.Build
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +30,6 @@ import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.ABOUT_SCREEN
 import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
-import com.sadellie.unitto.data.preferences.APP_THEMES
 import com.sadellie.unitto.data.preferences.OUTPUT_FORMAT
 import com.sadellie.unitto.data.preferences.PRECISIONS
 import com.sadellie.unitto.data.preferences.SEPARATORS
@@ -91,7 +89,7 @@ fun SettingsScreen(
                 SettingsListItem(
                     stringResource(R.string.theme_setting),
                     stringResource(R.string.theme_setting_support)
-                ) { dialogState = DialogState.THEME }
+                ) { navControllerAction(THEMES_SCREEN) }
             }
 
             // CURRENCY RATE NOTE
@@ -192,19 +190,6 @@ fun SettingsScreen(
                 supportText = stringResource(id = R.string.output_format_setting_info)
             )
         }
-        DialogState.THEME -> {
-            AlertDialogWithList(
-                title = stringResource(id = R.string.theme_setting),
-                listItems = APP_THEMES,
-                selectedItemIndex = mainViewModel.currentTheme,
-                selectAction = { mainViewModel.updateCurrentAppTheme(it) },
-                dismissAction = { resetDialog() },
-                // Show note for users with devices that support custom Dynamic theming
-                supportText = if (Build.VERSION.SDK_INT in (Build.VERSION_CODES.O_MR1..Build.VERSION_CODES.R)) stringResource(
-                    id = R.string.theme_setting_info
-                ) else null
-            )
-        }
         DialogState.CURRENCY_RATE -> {
             AlertDialogWithList(
                 title = stringResource(id = R.string.currency_rates_note_title),
@@ -222,5 +207,5 @@ fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, THEME, CURRENCY_RATE,
+    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, CURRENCY_RATE,
 }

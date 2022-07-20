@@ -492,7 +492,7 @@
     <string name="units_screen_from">Перевести из</string>
     <string name="units_screen_to">Перевести в</string>
     <string name="settings_screen">Настройки</string>
-    <string name="theme_setting">Тема</string>
+    <string name="theme_setting">Темы</string>
     <string name="precision_setting">Точность</string>
     <string name="separator_setting">Разделитель</string>
     <string name="output_format_setting">Формат вывода</string>
@@ -523,8 +523,6 @@
     <string name="force_light_mode">Светлая</string>
     <string name="force_dark_mode">Темная</string>
     <string name="force_amoled_mode">Темная AMOLED</string>
-    <string name="force_light_dynamic_mode">Динамическая светлая</string>
-    <string name="force_dark_dynamic_mode">Динамическая темная</string>
     <string name="loading_label">Загрузка…</string>
     <string name="error_label">Ошибка</string>
     <string name="copied">Скопировано %1$s!</string>
@@ -673,5 +671,8 @@
     <string name="send_usage_statistics">Отправлять статистику использования</string>
     <string name="send_usage_statistics_support">Все данные анонимны и зашифрованы</string>
     <string name="app_version_name_setting">Название версии</string>
+    <string name="enable_dynamic_colors">Динамичные цвета</string>
+    <string name="enable_dynamic_colors_support">Использовать цвета обоев рабочего стола</string>
+    <string name="force_amoled_mode_support">Использовать черный фон в темных темах</string>
 
 </resources>

@@ -162,4 +162,7 @@ dependencies {
 
     // Retrofit with Moshi Converter
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    // Themmo
+    implementation("com.github.sadellie:themmo:0.0.2")
 }

@@ -675,7 +675,7 @@
     <string name="settings_screen">Settings</string>
 
     <!--Settings items-->
-    <string name="theme_setting">Theme</string>
+    <string name="theme_setting">Themes</string>
     <string name="precision_setting">Precision</string>
     <string name="separator_setting">Separator</string>
     <string name="output_format_setting">Output format</string>
@@ -717,8 +717,6 @@
     <string name="force_light_mode">Light</string>
     <string name="force_dark_mode">Dark</string>
     <string name="force_amoled_mode">AMOLED Dark</string>
-    <string name="force_light_dynamic_mode">Dynamic light</string>
-    <string name="force_dark_dynamic_mode">Dynamic dark</string>
 
     <!--MISC.-->
     <string name="loading_label">Loading…</string>
@@ -738,5 +736,8 @@
     <string name="clear_input_description">Clear input</string>
     <string name="favorite_button_description">Add or remove unit from favorites</string>
     <string name="empty_search_result_description">Empty search result</string>
+    <string name="enable_dynamic_colors">Dynamic colors</string>
+    <string name="enable_dynamic_colors_support">Generate theme from your current wallpaper</string>
+    <string name="force_amoled_mode_support">Use black background for dark themes</string>
 
 </resources>

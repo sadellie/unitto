@@ -28,5 +28,6 @@ object NavRoutes {
     const val RIGHT_LIST_SCREEN = "RightScreen"
 
     const val SETTINGS_SCREEN = "SettingsScreen"
+    const val THEMES_SCREEN = "ThemesScreen"
     const val ABOUT_SCREEN = "AboutScreen"
 }
