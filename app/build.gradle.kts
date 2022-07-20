@@ -84,7 +84,7 @@ android {
             )
         }
         create("ruPlayStore") {
-            buildConfigField("String", "StoreLink", "")
+            buildConfigField("String", "StoreLink", "\"\"")
         }
     }
 
