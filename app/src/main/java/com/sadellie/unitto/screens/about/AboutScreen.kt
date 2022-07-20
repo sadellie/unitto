@@ -21,6 +21,7 @@ package com.sadellie.unitto.screens.about
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -58,25 +59,36 @@ fun AboutScreen(
         navigateUpAction = navigateUpAction
     ) { padding ->
         LazyColumn(
-            Modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = padding
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                top = padding.calculateTopPadding(),
+                bottom = 24.dp
+            )
         ) {
-            items(items = ALL_LIBRARIES.value) {
+            items(ALL_LIBRARIES.value) {
                 OutlinedCard(
                     Modifier.clickable { it.website?.let { url -> openLink(mContext, url) } }
                 ) {
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp)
                     ) {
-                        Text(text = it.name, style = MaterialTheme.typography.titleLarge)
+                        Text(
+                            text = it.name,
+                            style = MaterialTheme.typography.titleLarge
+                        )
                         Text(
                             modifier = Modifier.padding(top = 4.dp, bottom = 12.dp),
                             text = it.dev ?: "",
                             style = MaterialTheme.typography.bodyLarge
                         )
-                        Text(text = it.description ?: "", style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            text = it.description ?: "",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                         Text(
                             modifier = Modifier.align(Alignment.End),
                             text = it.license ?: "",
