@@ -18,6 +18,9 @@
 
 package com.sadellie.unitto.screens.setttings.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -26,9 +29,12 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
@@ -42,8 +48,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.R
 
 /**
  * Basic list item for settings screen. By default only has label and support text, clickable.
@@ -137,7 +146,8 @@ fun SettingsListItem(
  *
  * @param label Main text.
  * @param supportText Text that is located below label.
- * @param allOptions Options in drop-down menu.
+ * @param allOptions Options in drop-down menu. Key is option itself and value is the string that
+ * will be shown.
  * @param selected Selected option.
  * @param onSelectedChange Action to perform when drop-down menu item is selected.
  */
@@ -145,12 +155,16 @@ fun SettingsListItem(
 fun <T> SettingsListItem(
     label: String,
     supportText: String? = null,
-    allOptions: Collection<T>,
+    allOptions: Map<T, String>,
     selected: T,
     onSelectedChange: (T) -> Unit
 ) = BasicSettingsListItem(label, supportText, {}) {
     var dropDownExpanded by rememberSaveable { mutableStateOf(false) }
     var currentOption by rememberSaveable { mutableStateOf(selected) }
+    val dropDownRotation: Float by animateFloatAsState(
+        targetValue = if (dropDownExpanded) 180f else 0f,
+        animationSpec = tween(easing = FastOutSlowInEasing)
+    )
 
     ExposedDropdownMenuBox(
         modifier = Modifier,
@@ -159,7 +173,7 @@ fun <T> SettingsListItem(
     ) {
         OutlinedTextField(
             modifier = Modifier.widthIn(1.dp),
-            value = currentOption.toString(),
+            value = allOptions[currentOption] ?: selected.toString(),
             onValueChange = {},
             readOnly = true,
             singleLine = true,
@@ -167,7 +181,15 @@ fun <T> SettingsListItem(
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 disabledBorderColor = MaterialTheme.colorScheme.outline,
                 disabledTextColor = MaterialTheme.colorScheme.onSurface,
-            )
+                disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowDropDown,
+                    modifier = Modifier.rotate(dropDownRotation),
+                    contentDescription = stringResource(R.string.drop_down_description)
+                )
+            }
         )
         ExposedDropdownMenu(
             modifier = Modifier.exposedDropdownSize(),
@@ -176,10 +198,10 @@ fun <T> SettingsListItem(
         ) {
             allOptions.forEach {
                 DropdownMenuItem(
-                    text = { Text(it.toString()) },
+                    text = { Text(it.value) },
                     onClick = {
-                        currentOption = it
-                        onSelectedChange(it)
+                        currentOption = it.key
+                        onSelectedChange(it.key)
                         dropDownExpanded = false
                     }
                 )

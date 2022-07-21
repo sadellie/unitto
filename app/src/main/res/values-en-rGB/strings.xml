@@ -737,7 +737,9 @@
     <string name="favorite_button_description">Add or remove unit from favorites</string>
     <string name="empty_search_result_description">Empty search result</string>
     <string name="enable_dynamic_colors">Dynamic colors</string>
-    <string name="enable_dynamic_colors_support">Generate theme from your current wallpaper</string>
+    <string name="enable_dynamic_colors_support">Use colours from your wallpaper</string>
     <string name="force_amoled_mode_support">Use black background for dark themes</string>
+    <string name="color_theme">Colour theme</string>
+    <string name="drop_down_description">Open or close drop down menu</string>
 
 </resources>

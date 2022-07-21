@@ -39,14 +39,18 @@ fun ThemesScreen(
     viewModel: ThemesViewModel
 ) {
     UnittoLargeTopAppBar(
-        title = stringResource(id = R.string.theme_setting),
+        title = stringResource(R.string.theme_setting),
         navigateUpAction = navigateUpAction
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
             item {
                 SettingsListItem(
-                    label = stringResource(R.string.theme_setting),
-                    allOptions = ThemingMode.values().toList(),
+                    label = stringResource(R.string.color_theme),
+                    allOptions = mapOf(
+                        ThemingMode.AUTO to stringResource(R.string.force_auto_mode),
+                        ThemingMode.FORCE_LIGHT to stringResource(R.string.force_light_mode),
+                        ThemingMode.FORCE_DARK to stringResource(R.string.force_dark_mode)
+                    ),
                     selected = themmoController.currentThemingMode,
                     onSelectedChange = {
                         themmoController.setThemingMode(it)

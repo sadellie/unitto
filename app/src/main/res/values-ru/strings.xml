@@ -672,7 +672,9 @@
     <string name="send_usage_statistics_support">Все данные анонимны и зашифрованы</string>
     <string name="app_version_name_setting">Название версии</string>
     <string name="enable_dynamic_colors">Динамичные цвета</string>
-    <string name="enable_dynamic_colors_support">Использовать цвета обоев рабочего стола</string>
+    <string name="enable_dynamic_colors_support">Использовать цвета обоев</string>
     <string name="force_amoled_mode_support">Использовать черный фон в темных темах</string>
+    <string name="color_theme">Цветовая тема</string>
+    <string name="drop_down_description">Открыть или закрыть меню</string>
 
 </resources>
