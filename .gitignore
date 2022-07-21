@@ -33,6 +33,7 @@ proguard/
 
 # Log Files
 *.log
+output-metadata.json
 
 # Android Studio Navigation editor temp files
 .navigation/
@@ -89,3 +90,5 @@ lint/tmp/
 # lint/reports/
 /.idea/
 /app/google-services.json
+
+/tools
