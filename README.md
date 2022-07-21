@@ -4,7 +4,7 @@ Unit converter for Android
 This is Unitto, a free unit converter mobile app for Android devices. It uses Material Design 3 guidelines and supports all the latest Android features.
 
 Key features:
-- More than 360 units
+- More than 430 units
 - SI Standard
 - No ads, obviously
 - Supports Dynamic Theming
