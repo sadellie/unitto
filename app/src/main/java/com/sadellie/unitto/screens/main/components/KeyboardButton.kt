@@ -18,13 +18,20 @@
 
 package com.sadellie.unitto.screens.main.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.ui.theme.NumbersTextStyleTitleLarge
@@ -44,9 +51,17 @@ fun KeyboardButton(
     enabled: Boolean = true,
     onClick: (String) -> Unit = {},
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val cornerRadius: Int by animateIntAsState(
+        targetValue = if (isPressed) 30 else 50,
+        animationSpec = tween(easing = FastOutSlowInEasing)
+    )
+
     Button(
         modifier = modifier,
-        shape = CircleShape,
+        interactionSource = interactionSource,
+        shape = RoundedCornerShape(cornerRadius),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         ),
