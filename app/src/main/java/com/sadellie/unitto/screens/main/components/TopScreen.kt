@@ -18,6 +18,9 @@
 
 package com.sadellie.unitto.screens.main.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,8 +30,14 @@ import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
@@ -65,6 +74,12 @@ fun TopScreenPart(
     onUnitSelectionClick: (String) -> Unit,
     swapUnits: () -> Unit
 ) {
+    var swapped by remember { mutableStateOf(false) }
+    val swapButtonRotation: Float by animateFloatAsState(
+        targetValue = if (swapped) 0f else 180f,
+        animationSpec = tween(easing = FastOutSlowInEasing)
+    )
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -96,11 +111,17 @@ fun TopScreenPart(
                 label = unitFrom.displayName,
                 isLoading = loadingDatabase
             )
-            IconButton({ swapUnits() }, enabled = !loadingDatabase) {
+            IconButton(
+                onClick = {
+                    swapUnits()
+                    swapped = !swapped
+                },
+                enabled = !loadingDatabase
+            ) {
                 Icon(
-                    Icons.Outlined.SwapHoriz, contentDescription = stringResource(
-                        id = R.string.swap_units_description
-                    )
+                    modifier = Modifier.rotate(swapButtonRotation),
+                    imageVector = Icons.Outlined.SwapHoriz,
+                    contentDescription = stringResource(R.string.swap_units_description)
                 )
             }
             UnitSelectionButton(
