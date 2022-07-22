@@ -20,10 +20,6 @@ package com.sadellie.unitto.screens.common
 
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,8 +28,6 @@ import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
-import com.sadellie.unitto.R
 
 /**
  * Commonly used LargeTopAppBar with scroll behavior.
@@ -61,9 +55,7 @@ fun UnittoLargeTopAppBar(
                     Text(text = title)
                 },
                 navigationIcon = {
-                    IconButton(onClick = navigateUpAction) {
-                        Icon(Icons.Outlined.ArrowBack, stringResource(R.string.navigate_up_description))
-                    }
+                    NavigateUpButton { navigateUpAction() }
                 },
                 scrollBehavior = scrollBehavior
             )

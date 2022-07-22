@@ -38,7 +38,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -63,6 +62,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.sadellie.unitto.R
+import com.sadellie.unitto.screens.common.NavigateUpButton
 
 /**
  * Search bar on the Second screen. Controls what will be shown in the list above this component
@@ -170,12 +170,7 @@ fun SearchBar(
             }
         },
         navigationIcon = {
-            IconButton(onClick = { stagedNavigateUp() }) {
-                Icon(
-                    Icons.Outlined.ArrowBack,
-                    contentDescription = stringResource(id = R.string.navigate_up_description)
-                )
-            }
+            NavigateUpButton { stagedNavigateUp() }
         },
         scrollBehavior = scrollBehavior
     )
