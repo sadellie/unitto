@@ -20,14 +20,18 @@ package com.sadellie.unitto.screens.second.components
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -117,38 +121,20 @@ fun SearchBar(
                         }
                         // With text field
                         true -> {
-                            BasicTextField(
+                            SearchTextField(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
                                     .focusRequester(focusRequester),
                                 value = value,
                                 onValueChange = onValueChange,
-                                singleLine = true,
-                                textStyle = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onSurface),
-                                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
-                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                                keyboardActions = KeyboardActions(onSearch = {
+                                onSearch = {
                                     // Close searchbar if there is nothing in search query and user
                                     // clicks search button on his keyboard
                                     if (value.isEmpty()) {
                                         showSearch = false
                                     } else {
                                         focusManager.clearFocus()
-                                    }
-                                }),
-                                decorationBox = { innerTextField ->
-                                    // Showing placeholder only when there is query is empty
-                                    if (value.isEmpty()) {
-                                        innerTextField()
-                                        Text(
-                                            modifier = Modifier.alpha(0.7f),
-                                            text = stringResource(id = R.string.search_bar_placeholder),
-                                            style = MaterialTheme.typography.titleLarge,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    } else {
-                                        innerTextField()
                                     }
                                 }
                             )
@@ -168,36 +154,16 @@ fun SearchBar(
                     when (it) {
                         false -> {
                             // Search button
-                            IconButton(onClick = { onValueChange(""); showSearch = true }) {
-                                Icon(
-                                    Icons.Default.Search,
-                                    contentDescription = stringResource(id = R.string.search_button_description)
-                                )
+                            SearchButton {
+                                onValueChange("")
+                                showSearch = true
                             }
                             // Favorites button
-                            IconButton(onClick = favoriteAction) {
-                                AnimatedContent(
-                                    targetState = favoritesOnly,
-                                    transitionSpec = {
-                                        (scaleIn() with scaleOut()).using(SizeTransform(clip = false))
-                                    }
-                                ) {
-                                    Icon(
-                                        if (favoritesOnly) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                                        contentDescription = stringResource(id = R.string.favorite_button_description)
-                                    )
-                                }
-                            }
+                            FavoritesButton(favoritesOnly, favoriteAction)
                         }
                         true -> {
                             // Clear button
-                            IconButton(onClick = { onValueChange("") }) {
-                                Icon(
-                                    modifier = Modifier.alpha(if (value.isBlank()) 0f else 1f),
-                                    imageVector = Icons.Outlined.Clear,
-                                    contentDescription = stringResource(id = R.string.clear_input_description)
-                                )
-                            }
+                            ClearButton(value.isNotBlank()) { onValueChange("") }
                         }
                     }
                 }
@@ -215,4 +181,88 @@ fun SearchBar(
     )
 
     BackHandler { stagedNavigateUp() }
+}
+
+@Composable
+private fun SearchTextField(
+    modifier: Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    onSearch: KeyboardActionScope.() -> Unit
+) {
+    BasicTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        singleLine = true,
+        textStyle = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(onSearch = onSearch),
+        decorationBox = { innerTextField ->
+            // Showing placeholder only when there is query is empty
+            if (value.isEmpty()) {
+                innerTextField()
+                Text(
+                    modifier = Modifier.alpha(0.7f),
+                    text = stringResource(id = R.string.search_bar_placeholder),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            } else {
+                innerTextField()
+            }
+        }
+    )
+}
+
+@Composable
+private fun SearchButton(
+    onClick: () -> Unit
+) {
+    IconButton(onClick) {
+        Icon(
+            Icons.Default.Search,
+            contentDescription = stringResource(id = R.string.search_button_description)
+        )
+    }
+}
+
+@Composable
+private fun FavoritesButton(
+    favoritesOnly: Boolean,
+    favoriteAction: () -> Unit
+) {
+    IconButton(onClick = favoriteAction) {
+        AnimatedContent(
+            targetState = favoritesOnly,
+            transitionSpec = {
+                (scaleIn() with scaleOut()).using(SizeTransform(clip = false))
+            }
+        ) {
+            Icon(
+                if (favoritesOnly) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                contentDescription = stringResource(id = R.string.favorite_button_description)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ClearButton(
+    visible: Boolean,
+    onClick: () -> Unit
+) {
+    IconButton(onClick = onClick) {
+        AnimatedVisibility(
+            visible = visible,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Clear,
+                contentDescription = stringResource(R.string.clear_input_description)
+            )
+        }
+    }
 }
