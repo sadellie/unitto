@@ -41,7 +41,6 @@ import com.sadellie.unitto.data.ALL_LIBRARIES
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.openLink
 
-
 /**
  * Screen with used third party libraries
  *

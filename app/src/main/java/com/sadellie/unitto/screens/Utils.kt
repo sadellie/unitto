@@ -36,7 +36,6 @@ import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.max
 
-
 object Formatter {
     private var nf: NumberFormat = NumberFormat.getInstance(Locale.GERMANY)
 

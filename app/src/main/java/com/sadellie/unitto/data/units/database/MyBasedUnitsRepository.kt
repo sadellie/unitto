@@ -21,7 +21,6 @@ package com.sadellie.unitto.data.units.database
 import javax.inject.Inject
 
 class MyBasedUnitsRepository @Inject constructor (private val myBasedUnitDao: MyBasedUnitDao) {
-
     /**
      * Method to insert units. Will rewrite row if unit's id is already in database
      *

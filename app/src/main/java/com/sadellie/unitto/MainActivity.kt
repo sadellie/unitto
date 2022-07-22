@@ -26,6 +26,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,19 +55,15 @@ import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.rememberThemmoController
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
-    private val secondViewModel: SecondViewModel by viewModels()
     private val themesViewModel: ThemesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            themesViewModel.collectThemeOptions()
-
             val themmoController = rememberThemmoController(
                 lightColorScheme = LightThemeColors,
                 darkColorScheme = DarkThemeColors,
@@ -88,14 +85,12 @@ class MainActivity : ComponentActivity() {
                 UnittoApp(
                     navController = navController,
                     mainViewModel = mainViewModel,
-                    secondViewModel = secondViewModel,
                     themesViewModel = themesViewModel,
                     themmoController = it
                 )
 
                 SideEffect { sysUiController.setSystemBarsColor(backgroundColor) }
             }
-
         }
     }
 
@@ -109,15 +104,14 @@ class MainActivity : ComponentActivity() {
 fun UnittoApp(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    secondViewModel: SecondViewModel,
     themesViewModel: ThemesViewModel,
     themmoController: ThemmoController
 ) {
+    val secondViewModel: SecondViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = MAIN_SCREEN
     ) {
-
         composable(MAIN_SCREEN) {
             MainScreen(
                 navControllerAction = { route -> navController.navigate(route) },

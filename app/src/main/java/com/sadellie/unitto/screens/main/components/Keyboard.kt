@@ -41,7 +41,6 @@ import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_NEGATE
 import com.sadellie.unitto.screens.Formatter
 
-
 /**
  * Keyboard with button that looks like a calculator
  *

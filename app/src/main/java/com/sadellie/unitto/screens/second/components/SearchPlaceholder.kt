@@ -36,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
 
-
 /**
  * Placeholder that can be seen when there are no units found
  *

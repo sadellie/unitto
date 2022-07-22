@@ -49,7 +49,6 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
 
-
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
@@ -57,7 +56,6 @@ class MainViewModel @Inject constructor(
     private val application: Application,
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
-
     var precision: Int by mutableStateOf(3)
         private set
     var separator: Int by mutableStateOf(Separator.SPACES)

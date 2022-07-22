@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.data
 
-
 data class AppLibrary(
     val name: String,
     val dev: String?,
@@ -26,7 +25,6 @@ data class AppLibrary(
     val license: String?,
     val description: String?
 )
-
 
 val ALL_LIBRARIES = lazy {
     listOf(

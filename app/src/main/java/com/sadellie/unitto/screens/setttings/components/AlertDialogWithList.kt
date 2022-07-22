@@ -40,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
 
-
 /**
  * Alert dialog that has a list of options in it
  *
@@ -59,12 +58,12 @@ fun AlertDialogWithList(
     selectAction: (Int) -> Unit = {},
     dismissAction: () -> Unit,
     supportText: String? = null,
-    dismissButtonLabel: String = stringResource(id = R.string.cancel_label)
+    dismissButtonLabel: String = stringResource(R.string.cancel_label)
 ) {
     AlertDialog(
         onDismissRequest = dismissAction,
         title = {
-            Text(text = title)
+            Text(title)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -93,7 +92,6 @@ fun AlertDialogWithList(
     )
 }
 
-
 /**
  * An item that represents one option item
  *
@@ -117,12 +115,7 @@ private fun CustomDialogContentListItem(
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RadioButton(
-            selected = selected,
-            onClick = onClick
-        )
-        Text(
-            text = label
-        )
+        RadioButton(selected, onClick)
+        Text(label)
     }
 }

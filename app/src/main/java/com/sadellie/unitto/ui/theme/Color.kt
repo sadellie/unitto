@@ -20,7 +20,6 @@ package com.sadellie.unitto.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-
 val md_theme_light_primary = Color(0xFF186c31)
 val md_theme_light_onPrimary = Color(0xFFffffff)
 val md_theme_light_primaryContainer = Color(0xFFa3f6ab)

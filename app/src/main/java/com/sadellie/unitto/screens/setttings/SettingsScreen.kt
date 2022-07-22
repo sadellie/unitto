@@ -151,7 +151,6 @@ fun SettingsScreen(
         }
     }
 
-
     /**
      * Function to reset currently displayed dialog.
      */

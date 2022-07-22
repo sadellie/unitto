@@ -63,7 +63,6 @@ data class UserPreferences(
  * Repository that works with DataStore
  */
 class UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
-
     /**
      * Keys for DataStore
      */

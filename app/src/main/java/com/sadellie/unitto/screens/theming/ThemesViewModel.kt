@@ -34,6 +34,9 @@ import javax.inject.Inject
 class ThemesViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository
 ) : ViewModel() {
+    var themingMode: ThemingMode? by mutableStateOf(null)
+    var enableDynamic by mutableStateOf(false)
+    var enableAmoled by mutableStateOf(false)
 
     /**
      * @see [UserPreferencesRepository.updateThemingMode]
@@ -62,19 +65,19 @@ class ThemesViewModel @Inject constructor(
         }
     }
 
-    var themingMode: ThemingMode? by mutableStateOf(null)
-    var enableDynamic by mutableStateOf(false)
-    var enableAmoled by mutableStateOf(false)
-
     /**
      * Collect saved theming options. Used on app launch.
      */
-    fun collectThemeOptions() {
+    private fun collectThemeOptions() {
         viewModelScope.launch {
             val userPref = userPrefsRepository.userPreferencesFlow.first()
             themingMode = userPref.themingMode
             enableDynamic = userPref.enableDynamicTheme
             enableAmoled = userPref.enableAmoledTheme
         }
+    }
+
+    init {
+        collectThemeOptions()
     }
 }

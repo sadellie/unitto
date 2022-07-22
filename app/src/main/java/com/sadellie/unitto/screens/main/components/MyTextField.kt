@@ -48,7 +48,6 @@ import com.sadellie.unitto.R
 import com.sadellie.unitto.screens.Formatter
 import com.sadellie.unitto.ui.theme.NumbersTextStyleDisplayLarge
 
-
 /**
  * Component for input and output
  *

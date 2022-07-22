@@ -37,7 +37,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
 
-
 /**
  * Button to select a unit
  *

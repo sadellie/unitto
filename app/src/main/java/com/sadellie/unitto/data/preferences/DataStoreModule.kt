@@ -41,7 +41,6 @@ private const val USER_PREFERENCES = "settings"
 @InstallIn(SingletonComponent::class)
 @Module
 class DataStoreModule {
-
     /**
      * Tells Hilt to use this method to get [DataStore]
      *

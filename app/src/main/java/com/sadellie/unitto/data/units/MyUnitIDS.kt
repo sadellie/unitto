@@ -24,7 +24,6 @@ package com.sadellie.unitto.data.units
  * NEVER CHANGE IDS THAT ARE ALREADY HERE, THESE IDS ARE USED IN DATABASE
  */
 object MyUnitIDS {
-
     // LENGTH
     const val attometer = "attometer"
     const val nanometer = "nanometer"

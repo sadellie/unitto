@@ -27,7 +27,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 /**
  * Module for database. Used to access same instance of database
  *
@@ -35,7 +34,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class BasedUnitDatabaseModule {
-
     /**
      * Tells Hilt to use this method to get [MyBasedUnitDao]
      *

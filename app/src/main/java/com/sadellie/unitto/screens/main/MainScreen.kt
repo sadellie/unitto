@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.screens.main
 
-
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,7 +52,6 @@ import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.main.components.Keyboard
 import com.sadellie.unitto.screens.main.components.TopScreenPart
 import kotlinx.coroutines.delay
-
 
 @Composable
 fun MainScreen(
