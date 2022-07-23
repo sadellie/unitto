@@ -33,7 +33,6 @@ import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
 import com.sadellie.unitto.data.preferences.OUTPUT_FORMAT
 import com.sadellie.unitto.data.preferences.PRECISIONS
 import com.sadellie.unitto.data.preferences.SEPARATORS
-import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.openLink
 import com.sadellie.unitto.screens.setttings.components.AlertDialogWithList
@@ -42,7 +41,7 @@ import com.sadellie.unitto.screens.setttings.components.SettingsListItem
 
 @Composable
 fun SettingsScreen(
-    mainViewModel: MainViewModel,
+    viewModel: SettingsViewModel,
     navigateUpAction: () -> Unit,
     navControllerAction: (String) -> Unit
 ) {
@@ -121,8 +120,8 @@ fun SettingsScreen(
                 SettingsListItem(
                     stringResource(R.string.send_usage_statistics),
                     stringResource(R.string.send_usage_statistics_support),
-                    mainViewModel.enableAnalytics
-                ) { mainViewModel.updateEnableAnalytics(it) }
+                    viewModel.userPrefs.enableAnalytics
+                ) { viewModel.updateEnableAnalytics(it) }
             }
 
             // THIRD PARTY
@@ -164,8 +163,8 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(id = R.string.precision_setting),
                 listItems = PRECISIONS,
-                selectedItemIndex = mainViewModel.precision,
-                selectAction = { mainViewModel.updatePrecision(it) },
+                selectedItemIndex = viewModel.userPrefs.digitsPrecision,
+                selectAction = { viewModel.updatePrecision(it) },
                 dismissAction = { resetDialog() },
                 supportText = stringResource(id = R.string.precision_setting_info)
             )
@@ -174,8 +173,8 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(id = R.string.separator_setting),
                 listItems = SEPARATORS,
-                selectedItemIndex = mainViewModel.separator,
-                selectAction = { mainViewModel.updateSeparator(it) },
+                selectedItemIndex = viewModel.userPrefs.separator,
+                selectAction = { viewModel.updateSeparator(it) },
                 dismissAction = { resetDialog() }
             )
         }
@@ -183,8 +182,8 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(id = R.string.output_format_setting),
                 listItems = OUTPUT_FORMAT,
-                selectedItemIndex = mainViewModel.outputFormat,
-                selectAction = { mainViewModel.updateOutputFormat(it) },
+                selectedItemIndex = viewModel.userPrefs.outputFormat,
+                selectAction = { viewModel.updateOutputFormat(it) },
                 dismissAction = { resetDialog() },
                 supportText = stringResource(id = R.string.output_format_setting_info)
             )

@@ -37,7 +37,8 @@ import javax.inject.Inject
 /**
  * Represents user preferences that are user across the app
  *
- * @property themingMode [ThemingMode] from Themmo
+ * @property themingMode [ThemingMode] from Themmo. Nullable just to indicate that preferences are
+ * still loading.
  * @property enableDynamicTheme Use dynamic color scheme
  * @property enableAmoledTheme Use amoled color scheme
  * @property digitsPrecision Current [PRECISIONS]. Number of digits in fractional part
@@ -48,15 +49,15 @@ import javax.inject.Inject
  * @property enableAnalytics Whether or not user wants to share application usage data
  */
 data class UserPreferences(
-    val themingMode: ThemingMode,
-    val enableDynamicTheme: Boolean,
-    val enableAmoledTheme: Boolean,
-    val digitsPrecision: Int,
-    val separator: Int,
-    val outputFormat: Int,
-    val latestLeftSideUnit: String,
-    val latestRightSideUnit: String,
-    val enableAnalytics: Boolean
+    val themingMode: ThemingMode? = null,
+    val enableDynamicTheme: Boolean = false,
+    val enableAmoledTheme: Boolean = false,
+    val digitsPrecision: Int = 3,
+    val separator: Int = Separator.SPACES,
+    val outputFormat: Int = OutputFormat.PLAIN,
+    val latestLeftSideUnit: String = MyUnitIDS.kilometer,
+    val latestRightSideUnit: String = MyUnitIDS.mile,
+    val enableAnalytics: Boolean = true
 )
 
 /**

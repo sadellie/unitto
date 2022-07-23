@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.screens.theming
+package com.sadellie.unitto.screens.setttings
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -36,7 +36,7 @@ import io.github.sadellie.themmo.ThemmoController
 fun ThemesScreen(
     navigateUpAction: () -> Unit = {},
     themmoController: ThemmoController,
-    viewModel: ThemesViewModel
+    viewModel: SettingsViewModel
 ) {
     UnittoLargeTopAppBar(
         title = stringResource(R.string.theme_setting),

@@ -21,32 +21,34 @@ package com.sadellie.unitto
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.data.NavRoutes.ABOUT_SCREEN
 import com.sadellie.unitto.data.NavRoutes.LEFT_LIST_SCREEN
 import com.sadellie.unitto.data.NavRoutes.MAIN_SCREEN
 import com.sadellie.unitto.data.NavRoutes.RIGHT_LIST_SCREEN
+import com.sadellie.unitto.data.NavRoutes.SETTINGS_GRAPH
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
 import com.sadellie.unitto.screens.MainViewModel
-import com.sadellie.unitto.screens.about.AboutScreen
+import com.sadellie.unitto.screens.setttings.SettingsViewModel
+import com.sadellie.unitto.screens.setttings.AboutScreen
 import com.sadellie.unitto.screens.main.MainScreen
 import com.sadellie.unitto.screens.second.LeftSideScreen
 import com.sadellie.unitto.screens.second.RightSideScreen
 import com.sadellie.unitto.screens.second.SecondViewModel
 import com.sadellie.unitto.screens.setttings.SettingsScreen
-import com.sadellie.unitto.screens.theming.ThemesScreen
-import com.sadellie.unitto.screens.theming.ThemesViewModel
+import com.sadellie.unitto.screens.setttings.ThemesScreen
 import com.sadellie.unitto.ui.theme.AppTypography
 import com.sadellie.unitto.ui.theme.DarkThemeColors
 import com.sadellie.unitto.ui.theme.LightThemeColors
@@ -57,20 +59,21 @@ import io.github.sadellie.themmo.rememberThemmoController
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val mainViewModel: MainViewModel by viewModels()
-    private val themesViewModel: ThemesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val settingsViewModel: SettingsViewModel = hiltViewModel()
+            val userPrefs = settingsViewModel.userPrefs
+
             val themmoController = rememberThemmoController(
                 lightColorScheme = LightThemeColors,
                 darkColorScheme = DarkThemeColors,
-                // Anything below  will not called if theming mode is still loading from DataStore
-                themingMode = themesViewModel.themingMode ?: return@setContent,
-                dynamicThemeEnabled = themesViewModel.enableDynamic,
-                amoledThemeEnabled = themesViewModel.enableAmoled
+                // Anything below will not called if theming mode is still loading from DataStore
+                themingMode = userPrefs.themingMode ?: return@setContent,
+                dynamicThemeEnabled = userPrefs.enableDynamicTheme,
+                amoledThemeEnabled = userPrefs.enableAmoledTheme
             )
             val navController = rememberNavController()
             val sysUiController = rememberSystemUiController()
@@ -84,8 +87,7 @@ class MainActivity : ComponentActivity() {
 
                 UnittoApp(
                     navController = navController,
-                    mainViewModel = mainViewModel,
-                    themesViewModel = themesViewModel,
+                    settingsViewModel = settingsViewModel,
                     themmoController = it
                 )
 
@@ -93,21 +95,16 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    override fun onPause() {
-        mainViewModel.saveLatestPairOfUnits()
-        super.onPause()
-    }
 }
 
 @Composable
 fun UnittoApp(
     navController: NavHostController,
-    mainViewModel: MainViewModel,
-    themesViewModel: ThemesViewModel,
+    settingsViewModel: SettingsViewModel,
     themmoController: ThemmoController
 ) {
     val secondViewModel: SecondViewModel = hiltViewModel()
+    val mainViewModel: MainViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = MAIN_SCREEN
@@ -139,19 +136,32 @@ fun UnittoApp(
             )
         }
 
+        settingGraph(
+            settingsViewModel = settingsViewModel,
+            themmoController = themmoController,
+            navController = navController
+        )
+    }
+}
+
+private fun NavGraphBuilder.settingGraph(
+    settingsViewModel: SettingsViewModel,
+    themmoController: ThemmoController,
+    navController: NavHostController
+) {
+    navigation(SETTINGS_SCREEN, SETTINGS_GRAPH) {
         composable(SETTINGS_SCREEN) {
             SettingsScreen(
-                mainViewModel = mainViewModel,
-                navigateUpAction = { navController.navigateUp() },
-                navControllerAction = { route -> navController.navigate(route) }
-            )
+                viewModel = settingsViewModel,
+                navigateUpAction = { navController.navigateUp() }
+            ) { route -> navController.navigate(route) }
         }
 
         composable(THEMES_SCREEN) {
             ThemesScreen(
                 navigateUpAction = { navController.navigateUp() },
                 themmoController = themmoController,
-                viewModel = themesViewModel
+                viewModel = settingsViewModel
             )
         }
 

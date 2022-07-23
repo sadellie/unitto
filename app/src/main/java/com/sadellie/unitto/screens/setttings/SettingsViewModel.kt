@@ -16,27 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.screens.theming
+package com.sadellie.unitto.screens.setttings
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
+import com.sadellie.unitto.screens.Formatter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.ThemingMode
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ThemesViewModel @Inject constructor(
-    private val userPrefsRepository: UserPreferencesRepository
+class SettingsViewModel @Inject constructor(
+    private val userPrefsRepository: UserPreferencesRepository,
+    private val application: Application,
 ) : ViewModel() {
-    var themingMode: ThemingMode? by mutableStateOf(null)
-    var enableDynamic by mutableStateOf(false)
-    var enableAmoled by mutableStateOf(false)
+    var userPrefs: UserPreferences by mutableStateOf(UserPreferences())
 
     /**
      * @see [UserPreferencesRepository.updateThemingMode]
@@ -66,18 +68,49 @@ class ThemesViewModel @Inject constructor(
     }
 
     /**
-     * Collect saved theming options. Used on app launch.
+     * See [UserPreferencesRepository.updateDigitsPrecision]
      */
-    private fun collectThemeOptions() {
+    fun updatePrecision(precision: Int) {
         viewModelScope.launch {
-            val userPref = userPrefsRepository.userPreferencesFlow.first()
-            themingMode = userPref.themingMode
-            enableDynamic = userPref.enableDynamicTheme
-            enableAmoled = userPref.enableAmoledTheme
+            userPrefsRepository.updateDigitsPrecision(precision)
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateSeparator]
+     */
+    fun updateSeparator(separator: Int) {
+        viewModelScope.launch {
+            userPrefsRepository.updateSeparator(separator)
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateOutputFormat]
+     */
+    fun updateOutputFormat(outputFormat: Int) {
+        viewModelScope.launch {
+            userPrefsRepository.updateOutputFormat(outputFormat)
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateEnableAnalytics]
+     */
+    fun updateEnableAnalytics(enableAnalytics: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updateEnableAnalytics(enableAnalytics)
+            FirebaseAnalytics.getInstance(application)
+                .setAnalyticsCollectionEnabled(enableAnalytics)
         }
     }
 
     init {
-        collectThemeOptions()
+        viewModelScope.launch {
+            userPrefsRepository.userPreferencesFlow.collect {
+                userPrefs = it
+                Formatter.setSeparator(it.separator)
+            }
+        }
     }
 }

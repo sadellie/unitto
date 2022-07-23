@@ -34,8 +34,8 @@ object Separator {
  */
 val SEPARATORS: Map<Int, Int> by lazy {
     mapOf(
+        Separator.SPACES to R.string.spaces,
         Separator.PERIOD to R.string.period,
-        Separator.COMMA to R.string.comma,
-        Separator.SPACES to R.string.spaces
+        Separator.COMMA to R.string.comma
     )
 }

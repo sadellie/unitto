@@ -25,14 +25,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_MINUS
 import com.sadellie.unitto.data.preferences.MAX_PRECISION
 import com.sadellie.unitto.data.preferences.OutputFormat
-import com.sadellie.unitto.data.preferences.Separator
+import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.AllUnitsRepository
@@ -56,55 +55,7 @@ class MainViewModel @Inject constructor(
     private val application: Application,
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
-    var precision: Int by mutableStateOf(3)
-        private set
-    var separator: Int by mutableStateOf(Separator.SPACES)
-        private set
-    var outputFormat: Int by mutableStateOf(OutputFormat.PLAIN)
-        private set
-    var enableAnalytics: Boolean by mutableStateOf(false)
-        private set
-
-    /**
-     * See [UserPreferencesRepository.updateDigitsPrecision]
-     */
-    fun updatePrecision(precision: Int) {
-        viewModelScope.launch {
-            userPrefsRepository.updateDigitsPrecision(precision)
-            convertValue()
-        }
-    }
-
-    /**
-     * See [UserPreferencesRepository.updateSeparator]
-     */
-    fun updateSeparator(separator: Int) {
-        viewModelScope.launch {
-            userPrefsRepository.updateSeparator(separator)
-            convertValue()
-        }
-    }
-
-    /**
-     * See [UserPreferencesRepository.updateOutputFormat]
-     */
-    fun updateOutputFormat(outputFormat: Int) {
-        viewModelScope.launch {
-            userPrefsRepository.updateOutputFormat(outputFormat)
-            convertValue()
-        }
-    }
-
-    /**
-     * See [UserPreferencesRepository.updateEnableAnalytics]
-     */
-    fun updateEnableAnalytics(enableAnalytics: Boolean) {
-        viewModelScope.launch {
-            userPrefsRepository.updateEnableAnalytics(enableAnalytics)
-            FirebaseAnalytics.getInstance(application)
-                .setAnalyticsCollectionEnabled(enableAnalytics)
-        }
-    }
+    private var userPrefs = UserPreferences()
 
     /**
      * Unit we converting from (left side)
@@ -130,7 +81,11 @@ class MainViewModel @Inject constructor(
     private fun convertValue() {
         // Converting value using a specified precision
         val convertedValue: BigDecimal =
-            unitFrom.convert(unitTo, mainUIState.inputValue.toBigDecimal(), precision)
+            unitFrom.convert(
+                unitTo,
+                mainUIState.inputValue.toBigDecimal(),
+                userPrefs.digitsPrecision
+            )
 
         /**
          * There is a very interesting bug when trailing zeros are not stripped when input
@@ -138,11 +93,11 @@ class MainViewModel @Inject constructor(
          * is zero, than we make sure there are no trailing zeros.
          */
         val resultValue =
-            if (convertedValue == BigDecimal.ZERO.setScale(precision, RoundingMode.HALF_EVEN)) {
+            if (convertedValue == BigDecimal.ZERO.setScale(userPrefs.digitsPrecision, RoundingMode.HALF_EVEN)) {
                 KEY_0
             } else {
                 // Setting result value using a specified OutputFormat
-                when (outputFormat) {
+                when (userPrefs.outputFormat) {
                     OutputFormat.ALLOW_ENGINEERING -> convertedValue.toString()
                     OutputFormat.FORCE_ENGINEERING -> convertedValue.toEngineeringString()
                     else -> convertedValue.toPlainString()
@@ -183,6 +138,8 @@ class MainViewModel @Inject constructor(
             updateCurrenciesBasicUnits()
             // We can't call outside of this block. It will set precision to 0 in that case
             convertValue()
+            // Saving latest pair
+            saveLatestPairOfUnits()
         }
     }
 
@@ -209,6 +166,8 @@ class MainViewModel @Inject constructor(
             )
             // We also need to increment counter for the selected unit
             incrementCounter(clickedUnit)
+            // Saving latest pair
+            saveLatestPairOfUnits()
         }
 
         // Changed units, now we can convert
@@ -278,7 +237,10 @@ class MainViewModel @Inject constructor(
         unitFrom = unitTo.also {
             unitTo = unitFrom
         }
-        viewModelScope.launch { updateCurrenciesBasicUnits() }
+        viewModelScope.launch {
+            updateCurrenciesBasicUnits()
+            saveLatestPairOfUnits()
+        }
         // Swapped, can convert now
         convertValue()
     }
@@ -382,10 +344,8 @@ class MainViewModel @Inject constructor(
     /**
      * Saves latest pair of units into datastore
      */
-    fun saveLatestPairOfUnits() {
-        viewModelScope.launch {
-            userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
-        }
+    private suspend fun saveLatestPairOfUnits() {
+        userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
     }
 
     /**
@@ -395,36 +355,27 @@ class MainViewModel @Inject constructor(
      * values recompose when actually needed. For example, when you change output format, composable
      * in MainActivity will not be recomposed.
      */
-    private fun observePreferenceChanges() {
-        viewModelScope.launch {
-            userPrefsRepository.userPreferencesFlow.collect { userPref ->
-                precision = userPref.digitsPrecision
-                separator = userPref.separator.also { Formatter.setSeparator(it) }
-                outputFormat = userPref.outputFormat
-                enableAnalytics = userPref.enableAnalytics.also {
-                    // Maybe this is unnecessary
-                    if (it != enableAnalytics) FirebaseAnalytics.getInstance(application)
-                        .setAnalyticsCollectionEnabled(enableAnalytics)
-                }
-            }
+    suspend private fun observePreferenceChanges() {
+        userPrefsRepository.userPreferencesFlow.collect {
+            userPrefs = it
+            convertValue()
         }
     }
 
     init {
-        observePreferenceChanges()
         viewModelScope.launch {
-            val snapshot = userPrefsRepository.userPreferencesFlow.first()
+            userPrefs = userPrefsRepository.userPreferencesFlow.first()
 
             // First we load latest pair of units
             unitFrom = try {
-                allUnitsRepository.getById(snapshot.latestLeftSideUnit)
+                allUnitsRepository.getById(userPrefs.latestLeftSideUnit)
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
                 allUnitsRepository.getById(MyUnitIDS.kilometer)
             }
 
             unitTo = try {
-                allUnitsRepository.getById(snapshot.latestRightSideUnit)
+                allUnitsRepository.getById(userPrefs.latestRightSideUnit)
             } catch (e: java.util.NoSuchElementException) {
                 Log.w("MainViewModel", "No unit with the given unitId")
                 allUnitsRepository.getById(MyUnitIDS.mile)
@@ -440,6 +391,7 @@ class MainViewModel @Inject constructor(
             mainUIState = mainUIState.copy(isLoadingDatabase = false)
             updateCurrenciesBasicUnits()
             convertValue()
+            observePreferenceChanges()
         }
     }
 }
