@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.screens.main
+package com.sadellie.unitto.screens.common
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
