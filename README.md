@@ -1,6 +1,6 @@
 # unitto
 Unit converter for Android
-![Feature](./content/feature.png)
+![Feature](./fastlane/metadata/android/en-US/images/featureGraphic.png)
 This is Unitto, a free unit converter mobile app for Android devices. It uses Material Design 3 guidelines and supports all the latest Android features.
 
 Key features:
@@ -15,8 +15,8 @@ Some screenshots:
 
 |                                   |                                   |
 |-----------------------------------|:---------------------------------:|
-| ![Feature](./content/screen1.png) | ![Feature](./content/screen2.png) |
-| ![Feature](./content/screen3.png) | ![Feature](./content/screen4.png) |
+| ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png) | ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide2.png) |
+| ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide3.png) | ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide4.png) |
 
 
 ## Links

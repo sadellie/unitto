@@ -1,0 +1,11 @@
+"Cornsilk" update:
+1. Added new units and unit groups.
+2. You can control whether or not usage statistics is sent.
+3. Rechecked every single unit to make sure that the accuracy is still as high as possible.
+4. App now takes even less time to load.
+5. Fixed performance during list scrolling.
+6. Theme generation bug fixes.
+7. Added UK English localisation.
+
+Next update "Dark sea green" will focus on improving user experience.
+Roadmap: https://trello.com/b/cxAbRlvu/unitto
