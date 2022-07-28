@@ -24,7 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.sadellie.unitto.FirebaseHelper
 import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.screens.Formatter
@@ -100,8 +100,7 @@ class SettingsViewModel @Inject constructor(
     fun updateEnableAnalytics(enableAnalytics: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateEnableAnalytics(enableAnalytics)
-            FirebaseAnalytics.getInstance(application)
-                .setAnalyticsCollectionEnabled(enableAnalytics)
+            FirebaseHelper().setAnalyticsCollectionEnabled(application, enableAnalytics)
         }
     }
 

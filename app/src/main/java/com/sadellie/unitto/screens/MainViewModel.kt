@@ -25,7 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.sadellie.unitto.FirebaseHelper
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_MINUS
@@ -220,7 +220,7 @@ class MainViewModel @Inject constructor(
                 is retrofit2.HttpException, is java.net.UnknownHostException, is com.squareup.moshi.JsonDataException -> {}
                 else -> {
                     // Unexpected exception, should report it
-                    FirebaseCrashlytics.getInstance().recordException(e)
+                    FirebaseHelper().recordException(e)
                 }
             }
             mainUIState = mainUIState.copy(showError = true)

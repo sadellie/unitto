@@ -116,12 +116,14 @@ fun SettingsScreen(
             }
 
             // ANALYTICS
-            item {
-                SettingsListItem(
-                    stringResource(R.string.send_usage_statistics),
-                    stringResource(R.string.send_usage_statistics_support),
-                    viewModel.userPrefs.enableAnalytics
-                ) { viewModel.updateEnableAnalytics(it) }
+            if (BuildConfig.ANALYTICS) {
+                item {
+                    SettingsListItem(
+                        stringResource(R.string.send_usage_statistics),
+                        stringResource(R.string.send_usage_statistics_support),
+                        viewModel.userPrefs.enableAnalytics
+                    ) { viewModel.updateEnableAnalytics(it) }
+                }
             }
 
             // THIRD PARTY

@@ -22,7 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.sadellie.unitto.FirebaseHelper
 import com.sadellie.unitto.data.KEY_COMMA
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_E
@@ -83,7 +83,7 @@ object Formatter {
             result
         } catch (e: Exception) {
             Log.e("FormatterError", e.toString())
-            FirebaseCrashlytics.getInstance().recordException(e)
+            FirebaseHelper().recordException(e)
             input
         }
     }

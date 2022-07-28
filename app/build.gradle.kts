@@ -16,6 +16,12 @@ plugins {
 
 val composeVersion = "1.2.0-beta03"
 
+// Flavor names
+val playStore = "playStore"
+val appGallery = "appGallery"
+val ruPlayStore = "ruPlayStore"
+val fdroid = "fdroid"
+
 kapt {
     correctErrorTypes = true
     useBuildCache = true
@@ -31,6 +37,7 @@ android {
         targetSdk = 32
         versionCode = 8
         versionName = "Cornsilk"
+        buildConfigField("Boolean", "ANALYTICS", "true")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -69,22 +76,39 @@ android {
 
     flavorDimensions += "mainFlavorDimension"
     productFlavors {
-        create("playStore") {
+
+        create(playStore) {
             buildConfigField(
                 "String",
                 "StoreLink",
                 "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\""
             )
         }
-        create("appGallery") {
+        create(appGallery) {
             buildConfigField(
                 "String",
                 "StoreLink",
                 "\"https://appgallery.huawei.com/app/C105740875\""
             )
         }
-        create("ruPlayStore") {
+        create(ruPlayStore) {
             buildConfigField("String", "StoreLink", "\"\"")
+        }
+        create(fdroid) {
+            // Not uploaded yet, no store link
+            buildConfigField(
+                "String",
+                "StoreLink",
+                "\"https://f-droid.org/ru/packages/com.sadellie.unitto\""
+            )
+            buildConfigField("Boolean", "ANALYTICS", "false")
+        }
+    }
+
+    sourceSets {
+        // Making specified flavors use same source as "playStore" flavor
+        listOf(appGallery, ruPlayStore).forEach {
+            getByName(it).java.srcDirs("src/${playStore}/java")
         }
     }
 
@@ -109,6 +133,13 @@ android {
         resources.excludes.add("META-INF/licenses/**")
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")
+    }
+}
+
+configurations {
+    val playStoreImplementation = getByName("playStoreImplementation")
+    listOf(appGallery, ruPlayStore).forEach {
+        getByName("${it}Implementation").extendsFrom(playStoreImplementation)
     }
 }
 
@@ -145,12 +176,10 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-
+    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:30.1.0"))
+    "playStoreImplementation"("com.google.firebase:firebase-analytics-ktx")
     // Crashlytics and Analytics
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    "playStoreImplementation"("com.google.firebase:firebase-crashlytics-ktx")
 
     // Room
     implementation("androidx.room:room-runtime:2.4.2")
