@@ -134,11 +134,11 @@ fun SettingsScreen(
             }
 
             // RATE THIS APP
-            if (BuildConfig.StoreLink.isNotEmpty()) {
+            if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
                     SettingsListItem(
                         stringResource(R.string.rate_this_app)
-                    ) { openLink(mContext, BuildConfig.StoreLink) }
+                    ) { openLink(mContext, BuildConfig.STORE_LINK) }
                 }
             }
 

@@ -80,25 +80,25 @@ android {
         create(playStore) {
             buildConfigField(
                 "String",
-                "StoreLink",
+                "STORE_LINK",
                 "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\""
             )
         }
         create(appGallery) {
             buildConfigField(
                 "String",
-                "StoreLink",
+                "STORE_LINK",
                 "\"https://appgallery.huawei.com/app/C105740875\""
             )
         }
         create(ruPlayStore) {
-            buildConfigField("String", "StoreLink", "\"\"")
+            buildConfigField("String", "STORE_LINK", "\"\"")
         }
         create(fdroid) {
             // Not uploaded yet, no store link
             buildConfigField(
                 "String",
-                "StoreLink",
+                "STORE_LINK",
                 "\"https://f-droid.org/ru/packages/com.sadellie.unitto\""
             )
             buildConfigField("Boolean", "ANALYTICS", "false")
