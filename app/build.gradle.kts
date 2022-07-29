@@ -67,7 +67,7 @@ android {
         }
 
         // Release without analytics and not debuggable, but minified
-        create("releaseNoAnal") {
+        create("releaseNoAnalytics") {
             initWith(getByName("release"))
             manifestPlaceholders["analytics_deactivated"] = true
             manifestPlaceholders["crashlytics_enabled"] = false
