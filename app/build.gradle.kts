@@ -14,7 +14,7 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion = "1.2.0-beta03"
+val composeVersion = "1.3.0-alpha02"
 
 // Flavor names
 val playStore = "playStore"
@@ -126,7 +126,7 @@ android {
         shaders = false
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
+        kotlinCompilerExtensionVersion = "1.3.0-rc01"
     }
     packagingOptions {
         jniLibs.excludes.add("META-INF/licenses/**")
@@ -155,16 +155,16 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.0")
+    implementation("androidx.navigation:navigation-compose:2.5.1")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:dagger-android-processor:2.42")
-    implementation("com.google.dagger:hilt-android:2.42")
-    kapt("com.google.dagger:hilt-compiler:2.42")
+    kapt("com.google.dagger:dagger-android-processor:2.43")
+    implementation("com.google.dagger:hilt-android:2.43")
+    kapt("com.google.dagger:hilt-compiler:2.43")
 
     // There are a lot of icons
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
@@ -182,9 +182,9 @@ dependencies {
     "playStoreImplementation"("com.google.firebase:firebase-crashlytics-ktx")
 
     // Room
-    implementation("androidx.room:room-runtime:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
+    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
+    kapt("androidx.room:room-compiler:2.4.3")
 
     // Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
@@ -193,5 +193,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     // Themmo
-    implementation("com.github.sadellie:themmo:0.0.2")
+    implementation("com.github.sadellie:themmo:0.0.3")
 }
