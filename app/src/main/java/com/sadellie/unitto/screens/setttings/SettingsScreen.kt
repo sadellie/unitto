@@ -146,7 +146,7 @@ fun SettingsScreen(
             item {
                 SettingsListItem(
                     label = stringResource(id = R.string.app_version_name_setting),
-                    supportText = BuildConfig.VERSION_NAME
+                    supportText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
                 ) {}
             }
         }
