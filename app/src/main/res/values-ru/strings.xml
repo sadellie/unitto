@@ -518,7 +518,6 @@
     <string name="allow_engineering">Разрешить инженерный</string>
     <string name="force_engineering">Преимущественно инженерный</string>
     <string name="theme_setting_support">Внешний вид приложения</string>
-    <string name="theme_setting_info">Ваше устройство поддерживает экспериментальную реализацию Динамических тем.  Обратите внимание, что эта функция может работать некорректно на некоторых устройствах (будет использоваться тема по умолчанию).</string>
     <string name="force_auto_mode">Автоматическая</string>
     <string name="force_light_mode">Светлая</string>
     <string name="force_dark_mode">Темная</string>

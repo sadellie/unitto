@@ -986,7 +986,6 @@
 
     <!--Theme-->
     <string name="theme_setting_support">App look and feel</string>
-    <string name="theme_setting_info">Your device supports custom Dynamic Theming implementation. Note that this feature may not work properly for some devices (default theme will be used).</string>
     <string name="force_auto_mode">Auto</string>
     <string name="force_light_mode">Light</string>
     <string name="force_dark_mode">Dark</string>

@@ -355,7 +355,7 @@ class MainViewModel @Inject constructor(
      * values recompose when actually needed. For example, when you change output format, composable
      * in MainActivity will not be recomposed.
      */
-    suspend private fun observePreferenceChanges() {
+    private suspend fun observePreferenceChanges() {
         userPrefsRepository.userPreferencesFlow.collect {
             userPrefs = it
             convertValue()
