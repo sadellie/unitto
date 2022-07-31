@@ -34,5 +34,6 @@ class FirebaseHelper {
     /**
      * Methods that doesn't actually send exceptions.
      */
+    @Suppress("UNUSED_PARAMETER")
     fun recordException(e: Exception) {}
 }
