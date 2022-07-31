@@ -12,17 +12,19 @@ Key features:
 - Just looks good, I guess…
 
 Some screenshots:
-
-|                                   |                                   |
-|-----------------------------------|:---------------------------------:|
-| ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png) | ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide2.png) |
-| ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide3.png) | ![Feature](./fastlane/metadata/android/en-US/images/phoneScreenshots/slide4.png) |
-
+<p align="middle">
+    <!-- No, you can't make it 50% -->
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png" width="49%" />
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide2.png" width="49%" />
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide3.png" width="49%" />
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide4.png" width="49%" />
+</p>
 
 ## Links
-Play Store: https://play.google.com/store/apps/details?id=com.sadellie.unitto
-
-AppGallery: https://appgallery.huawei.com/app/C105740875
+<a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/googlePlay.png" width="49%"/></a>
+<a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="AppGallery" src="./content/appGallery.png" width="49%"/></a>
+<a href="https://store.nashstore.ru/store/627de8394891a527a6efe56a"><img alt="NashStore" src="./content/nashStore.png" width="49%"/></a>
+<a href="https://ruplay.market/apps/instrumenty/com.sadellie.unitto"><img alt="RuMarket" src="./content/ruMarket.png" width="49%"/></a>
 
 The app is in active development and has its own Trello board, where you can check out all the new stuff that will be added. You can also leave your feature requests.
 
