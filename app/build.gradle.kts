@@ -35,8 +35,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 32
-        versionCode = 8
-        versionName = "Cornsilk"
+        versionCode = 9
+        versionName = "Dark sea green"
         buildConfigField("Boolean", "ANALYTICS", "true")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

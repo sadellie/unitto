@@ -1,0 +1,11 @@
+"Dark sea green" update is here:
+1. Brand new screen for Themes
+2. Increased keyboard button text size
+3. Animated TopBar text on app launch
+4. Animated long press on keyboard buttons
+5. Animated "swap units" button
+6. Animated theme change
+7. App loads even faster now
+8. Tiny fixes
+
+Roadmap: https://trello.com/b/cxAbRlvu/unitto
