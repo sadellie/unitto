@@ -126,7 +126,7 @@ private fun BasicUnitListScreen(
          */
         viewModel.setSelectedChip(currentUnit.group)
         viewModel.loadUnitsToShow(noBrokenCurrencies)
-        chipsRowLazyListState.animateScrollToItem(ALL_UNIT_GROUPS.indexOf(currentUnit.group))
+        chipsRowLazyListState.animateScrollToItem(uiState.shownUnitGroups.indexOf(currentUnit.group))
     }
 }
 
