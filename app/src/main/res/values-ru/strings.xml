@@ -528,7 +528,7 @@
     <string name="cancel_label">Отмена</string>
     <string name="search_bar_placeholder">Поиск величин</string>
     <string name="search_placeholder">Не найдено</string>
-    <string name="search_placeholder_secondary">Убедитесь в отсутствии опечаток или попробуйте другие фильтры</string>
+    <string name="search_placeholder_secondary">Убедитесь в отсутствии опечаток, попробуйте другие фильтры или проверьте отключенные величины.</string>
     <string name="navigate_up_description">Навигация наверх</string>
     <string name="checked_filter_description">Выбранный фильтр</string>
     <string name="open_settings_description">Открыть настройки</string>
@@ -677,5 +677,6 @@
     <string name="drop_down_description">Открыть или закрыть меню</string>
     <string name="hello_label">Привет!</string>
     <string name="unit_groups_setting">Группы величин</string>
+    <string name="search_placeholder_button_label">Открыть настройки</string>
 
 </resources>

@@ -724,7 +724,7 @@
     <string name="cancel_label">Cancel</string>
     <string name="search_bar_placeholder">Search units</string>
     <string name="search_placeholder">No results found</string>
-    <string name="search_placeholder_secondary">Make sure there are no typos or try different filters</string>
+    <string name="search_placeholder_secondary">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
 
     <!--Content descriptions-->
     <string name="navigate_up_description">Navigate up</string>
@@ -742,5 +742,6 @@
     <string name="drop_down_description">Open or close drop down menu</string>
     <string name="hello_label">Hello!</string>
     <string name="unit_groups_setting">Unit groups</string>
+    <string name="search_placeholder_button_label">Open settings</string>
 
 </resources>

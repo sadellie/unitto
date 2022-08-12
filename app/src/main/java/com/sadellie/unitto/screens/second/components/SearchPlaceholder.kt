@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SearchOff
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,15 +40,16 @@ import com.sadellie.unitto.R
 /**
  * Placeholder that can be seen when there are no units found
  *
+ * @param navigateToSettingsActtion Action to perform when clicking open settings button.
  */
 @Composable
-fun SearchPlaceholder() {
+fun SearchPlaceholder(navigateToSettingsActtion: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Big icon in the middle
         Icon(
@@ -67,5 +69,9 @@ fun SearchPlaceholder() {
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall
         )
+        // Open settings button
+        ElevatedButton(onClick = navigateToSettingsActtion) {
+            Text(text = stringResource(id = R.string.search_placeholder_button_label))
+        }
     }
 }

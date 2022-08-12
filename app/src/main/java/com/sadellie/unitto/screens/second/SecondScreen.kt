@@ -49,6 +49,7 @@ import java.math.BigDecimal
  *
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
+ * @param navigateToSettingsActtion Action to perform when clicking open settings in placeholder.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
  * @param viewModel [SecondViewModel].
  * @param chipsRow Composable that is placed under TopAppBar. See [ChipsRow]
@@ -61,6 +62,7 @@ import java.math.BigDecimal
 private fun BasicUnitListScreen(
     currentUnit: AbstractUnit,
     navigateUp: () -> Unit,
+    navigateToSettingsActtion: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
     viewModel: SecondViewModel,
     chipsRow: @Composable (UnitGroup?, LazyListState) -> Unit = {_, _->},
@@ -102,7 +104,7 @@ private fun BasicUnitListScreen(
                 )
             }
             if (uiState.unitsToShow.isEmpty()) {
-                item { SearchPlaceholder() }
+                item { SearchPlaceholder(navigateToSettingsActtion) }
                 return@LazyColumn
             }
             uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
@@ -149,6 +151,7 @@ fun LeftSideScreen(
 ) = BasicUnitListScreen(
     currentUnit = currentUnit,
     navigateUp = navigateUp,
+    navigateToSettingsActtion = navigateToSettingsActtion,
     selectAction = selectAction,
     viewModel = viewModel,
     chipsRow = { unitGroup, lazyListState ->
@@ -180,6 +183,7 @@ fun LeftSideScreen(
  *
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
+ * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
  * @param viewModel [SecondViewModel].
  * @param inputValue Current input value (upper text field on MainScreen)
@@ -189,6 +193,7 @@ fun LeftSideScreen(
 fun RightSideScreen(
     currentUnit: AbstractUnit,
     navigateUp: () -> Unit,
+    navigateToSettingsActtion: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
     viewModel: SecondViewModel,
     inputValue: BigDecimal,
@@ -196,6 +201,7 @@ fun RightSideScreen(
 ) = BasicUnitListScreen(
     currentUnit = currentUnit,
     navigateUp = navigateUp,
+    navigateToSettingsActtion = navigateToSettingsActtion,
     selectAction = selectAction,
     viewModel = viewModel,
     unitsListItem = { unit, selectUnitAction ->
