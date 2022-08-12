@@ -678,5 +678,7 @@
     <string name="hello_label">Привет!</string>
     <string name="unit_groups_setting">Группы величин</string>
     <string name="search_placeholder_button_label">Открыть настройки</string>
+    <string name="enabled_label">Включено</string>
+    <string name="disabled_label">Отключено</string>
 
 </resources>

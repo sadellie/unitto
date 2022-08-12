@@ -1007,6 +1007,8 @@
     <string name="search_placeholder_button_label">Open settings</string>
     <string name="search_placeholder_secondary">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
     <string name="hello_label">Hello!</string>
+    <string name="enabled_label">Enabled</string>
+    <string name="disabled_label">Disabled</string>
 
     <!--Content descriptions-->
     <string name="navigate_up_description">Navigate up</string>

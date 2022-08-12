@@ -743,5 +743,7 @@
     <string name="hello_label">Hello!</string>
     <string name="unit_groups_setting">Unit groups</string>
     <string name="search_placeholder_button_label">Open settings</string>
+    <string name="enabled_label">Enabled</string>
+    <string name="disabled_label">Disabled</string>
 
 </resources>

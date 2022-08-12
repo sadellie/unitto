@@ -67,7 +67,7 @@ fun UnitGroupsScreen(
                 .detectReorderAfterLongPress(state)
         ) {
             item(key = "enabled") {
-                Header(text = "Enabled")
+                Header(text = stringResource(id = R.string.enabled_label))
             }
 
             items(shownUnits.value, { it }) { item ->
@@ -90,7 +90,7 @@ fun UnitGroupsScreen(
 
             item(key = "disabled") {
                 Header(
-                    text = "Disabled",
+                    text = stringResource(id = R.string.disabled_label),
                     modifier = Modifier.animateItemPlacement()
                 )
             }
