@@ -40,15 +40,17 @@ import com.sadellie.unitto.data.NavRoutes.RIGHT_LIST_SCREEN
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_GRAPH
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
+import com.sadellie.unitto.data.NavRoutes.UNIT_GROUPS_SCREEN
 import com.sadellie.unitto.screens.MainViewModel
-import com.sadellie.unitto.screens.setttings.SettingsViewModel
-import com.sadellie.unitto.screens.setttings.AboutScreen
 import com.sadellie.unitto.screens.main.MainScreen
 import com.sadellie.unitto.screens.second.LeftSideScreen
 import com.sadellie.unitto.screens.second.RightSideScreen
 import com.sadellie.unitto.screens.second.SecondViewModel
+import com.sadellie.unitto.screens.setttings.AboutScreen
 import com.sadellie.unitto.screens.setttings.SettingsScreen
+import com.sadellie.unitto.screens.setttings.SettingsViewModel
 import com.sadellie.unitto.screens.setttings.ThemesScreen
+import com.sadellie.unitto.screens.setttings.UnitGroupsScreen
 import com.sadellie.unitto.ui.theme.AppTypography
 import com.sadellie.unitto.ui.theme.DarkThemeColors
 import com.sadellie.unitto.ui.theme.LightThemeColors
@@ -167,6 +169,13 @@ private fun NavGraphBuilder.settingGraph(
 
         composable(ABOUT_SCREEN) {
             AboutScreen(navigateUpAction = { navController.navigateUp() })
+        }
+
+        composable(UNIT_GROUPS_SCREEN) {
+            UnitGroupsScreen(
+                viewModel = settingsViewModel,
+                navigateUpAction = { navController.navigateUp() }
+            )
         }
     }
 }

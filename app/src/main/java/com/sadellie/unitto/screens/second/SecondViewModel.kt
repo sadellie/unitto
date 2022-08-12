@@ -26,6 +26,7 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.UnitGroup
+import com.sadellie.unitto.data.units.UnitGroupsRepository
 import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +38,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SecondViewModel @Inject constructor(
     private val basedUnitRepository: MyBasedUnitsRepository,
-    private val allUnitsRepository: AllUnitsRepository
+    private val allUnitsRepository: AllUnitsRepository,
+    private val unitGroupsRepository: UnitGroupsRepository
 ) : ViewModel() {
 
     var uiState: SecondScreenUIState by mutableStateOf(SecondScreenUIState())
@@ -93,7 +95,8 @@ class SecondViewModel @Inject constructor(
                     hideBrokenCurrencies = hideBrokenCurrencies,
                     chosenUnitGroup = uiState.chosenUnitGroup,
                     favoritesOnly = uiState.favoritesOnly,
-                    searchQuery = uiState.searchQuery
+                    searchQuery = uiState.searchQuery,
+                    allUnitsGroups = uiState.shownUnitGroups
                 )
 
                 uiState = uiState.copy(unitsToShow = unitsToShow)
@@ -117,6 +120,14 @@ class SecondViewModel @Inject constructor(
                     frequency = unit.counter
                 )
             )
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            unitGroupsRepository.shownUnitGroups.collect {
+                uiState = uiState.copy(shownUnitGroups = it)
+            }
         }
     }
 }

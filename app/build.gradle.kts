@@ -194,4 +194,7 @@ dependencies {
 
     // Themmo
     implementation("com.github.sadellie:themmo:0.0.3")
+
+    // ComposeReorderable
+    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.2")
 }

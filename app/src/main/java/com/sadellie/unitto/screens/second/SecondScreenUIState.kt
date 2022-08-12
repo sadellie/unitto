@@ -27,11 +27,13 @@ import com.sadellie.unitto.data.units.UnitGroup
  * @property favoritesOnly Whether or not show only favorite [AbstractUnit]s.
  * @property unitsToShow Grouped list of [AbstractUnit]s.
  * @property searchQuery Search query in search bar.
+ * @property shownUnitGroups All [UnitGroup]s that can be seen in chips row
  * @property chosenUnitGroup Currently selected chip. Nul means that no chip is selected.
  */
 data class SecondScreenUIState(
     val favoritesOnly: Boolean = false,
     val unitsToShow: Map<UnitGroup, List<AbstractUnit>> = emptyMap(),
     val searchQuery: String = "",
+    val shownUnitGroups: List<UnitGroup> = listOf(),
     val chosenUnitGroup: UnitGroup? = null
 )

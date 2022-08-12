@@ -96,16 +96,21 @@ class AllUnitsRepository @Inject constructor() {
      * @param favoritesOnly When True will filter only [AbstractUnit]s with [AbstractUnit.isFavorite]
      * set to True.
      * @param searchQuery When not empty, will search by [AbstractUnit.renderedName] using [sortByLev].
+     * @param allUnitsGroups All [UnitGroup]s. Determines which units will be used for filtering.
      * @return Grouped by [UnitGroup] list of [AbstractUnit]s.
      */
     fun filterUnits(
         hideBrokenCurrencies: Boolean,
         chosenUnitGroup: UnitGroup?,
         favoritesOnly: Boolean,
-        searchQuery: String
+        searchQuery: String,
+        allUnitsGroups: List<UnitGroup>
     ): Map<UnitGroup, List<AbstractUnit>> {
+        val shownUnits: List<AbstractUnit> =
+            allUnitsGroups.flatMap { getCollectionByGroup(it) ?: listOf() }
+
         var basicFilteredUnits: Sequence<AbstractUnit> =
-            getCollectionByGroup(unitGroup = chosenUnitGroup)?.asSequence() ?: allUnits.asSequence()
+            getCollectionByGroup(unitGroup = chosenUnitGroup)?.asSequence() ?: shownUnits.asSequence()
 
         if (favoritesOnly) {
             basicFilteredUnits = basicFilteredUnits.filter { it.isFavorite }

@@ -30,6 +30,7 @@ import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.ABOUT_SCREEN
 import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
+import com.sadellie.unitto.data.NavRoutes.UNIT_GROUPS_SCREEN
 import com.sadellie.unitto.data.preferences.OUTPUT_FORMAT
 import com.sadellie.unitto.data.preferences.PRECISIONS
 import com.sadellie.unitto.data.preferences.SEPARATORS
@@ -59,42 +60,49 @@ fun SettingsScreen(
             // GENERAL GROUP
             item { SettingsHeader(stringResource(R.string.general_settings_group)) }
 
+            // THEME
+            item {
+                SettingsListItem(
+                    label = stringResource(id = R.string.unit_groups_setting)
+                ) { navControllerAction(UNIT_GROUPS_SCREEN) }
+            }
+
             // PRECISION
             item {
                 SettingsListItem(
-                    stringResource(R.string.precision_setting),
-                    stringResource(R.string.precision_setting_support)
+                    label = stringResource(R.string.precision_setting),
+                    supportText = stringResource(R.string.precision_setting_support)
                 ) { dialogState = DialogState.PRECISION }
             }
 
             // SEPARATOR
             item {
                 SettingsListItem(
-                    stringResource(R.string.separator_setting),
-                    stringResource(R.string.separator_setting_support)
+                    label = stringResource(R.string.separator_setting),
+                    supportText = stringResource(R.string.separator_setting_support)
                 ) { dialogState = DialogState.SEPARATOR }
             }
 
             // OUTPUT FORMAT
             item {
                 SettingsListItem(
-                    stringResource(R.string.output_format_setting),
-                    stringResource(R.string.output_format_setting_support)
+                    label = stringResource(R.string.output_format_setting),
+                    supportText = stringResource(R.string.output_format_setting_support)
                 ) { dialogState = DialogState.OUTPUT_FORMAT }
             }
 
             // THEME
             item {
                 SettingsListItem(
-                    stringResource(R.string.theme_setting),
-                    stringResource(R.string.theme_setting_support)
+                    label = stringResource(R.string.theme_setting),
+                    supportText = stringResource(R.string.theme_setting_support)
                 ) { navControllerAction(THEMES_SCREEN) }
             }
 
             // CURRENCY RATE NOTE
             item {
                 SettingsListItem(
-                    stringResource(R.string.currency_rates_note_setting)
+                    label = stringResource(R.string.currency_rates_note_setting)
                 ) { dialogState = DialogState.CURRENCY_RATE }
             }
 
@@ -104,14 +112,14 @@ fun SettingsScreen(
             // TERMS AND CONDITIONS
             item {
                 SettingsListItem(
-                    stringResource(R.string.terms_and_conditions)
+                    label = stringResource(R.string.terms_and_conditions)
                 ) { openLink(mContext, "http://sadellie.github.io/unitto/terms-app.html") }
             }
 
             // PRIVACY POLICY
             item {
                 SettingsListItem(
-                    stringResource(R.string.privacy_policy)
+                    label = stringResource(R.string.privacy_policy)
                 ) { openLink(mContext, "http://sadellie.github.io/unitto/privacy-app.html") }
             }
 
@@ -119,9 +127,9 @@ fun SettingsScreen(
             if (BuildConfig.ANALYTICS) {
                 item {
                     SettingsListItem(
-                        stringResource(R.string.send_usage_statistics),
-                        stringResource(R.string.send_usage_statistics_support),
-                        viewModel.userPrefs.enableAnalytics
+                        label = stringResource(R.string.send_usage_statistics),
+                        supportText = stringResource(R.string.send_usage_statistics_support),
+                        switchState = viewModel.userPrefs.enableAnalytics
                     ) { viewModel.updateEnableAnalytics(it) }
                 }
             }
@@ -129,7 +137,7 @@ fun SettingsScreen(
             // THIRD PARTY
             item {
                 SettingsListItem(
-                    stringResource(R.string.third_party_licenses)
+                    label = stringResource(R.string.third_party_licenses)
                 ) { navControllerAction(ABOUT_SCREEN) }
             }
 
@@ -137,7 +145,7 @@ fun SettingsScreen(
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
                     SettingsListItem(
-                        stringResource(R.string.rate_this_app)
+                        label = stringResource(R.string.rate_this_app)
                     ) { openLink(mContext, BuildConfig.STORE_LINK) }
                 }
             }

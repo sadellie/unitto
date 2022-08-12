@@ -676,5 +676,6 @@
     <string name="color_theme">Цветовая тема</string>
     <string name="drop_down_description">Открыть или закрыть меню</string>
     <string name="hello_label">Привет!</string>
+    <string name="unit_groups_setting">Группы величин</string>
 
 </resources>

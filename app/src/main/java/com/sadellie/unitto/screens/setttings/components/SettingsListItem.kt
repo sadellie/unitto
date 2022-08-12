@@ -59,6 +59,7 @@ import com.sadellie.unitto.R
  * This component can be easily modified if you provide additional component to it,
  * for example a switch or a checkbox.
  *
+ * @param modifier Modifier that will be applied to a Row.
  * @param label Main text.
  * @param supportText Text that is located below label.
  * @param onClick Action to perform when user clicks on this component (whole component is clickable).
@@ -66,13 +67,14 @@ import com.sadellie.unitto.R
  */
 @Composable
 private fun BasicSettingsListItem(
+    modifier: Modifier = Modifier,
     label: String,
     supportText: String? = null,
     onClick: () -> Unit = {},
     content: @Composable RowScope.() -> Unit = {}
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -111,16 +113,18 @@ private fun BasicSettingsListItem(
 /**
  * Represents one item in list on Settings screen.
  *
+ * @param modifier Modifier that will be applied to a Row.
  * @param label Main text.
  * @param supportText Text that is located below label.
  * @param onClick Action to perform when user clicks on this component (whole component is clickable).
  */
 @Composable
 fun SettingsListItem(
+    modifier: Modifier = Modifier,
     label: String,
     supportText: String? = null,
     onClick: () -> Unit,
-) = BasicSettingsListItem(label, supportText, onClick)
+) = BasicSettingsListItem(modifier, label, supportText, onClick)
 
 /**
  * Represents one item in list on Settings screen.
@@ -137,7 +141,7 @@ fun SettingsListItem(
     supportText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
-) = BasicSettingsListItem(label, supportText, { onSwitchChange(!switchState) }) {
+) = BasicSettingsListItem(Modifier, label, supportText, { onSwitchChange(!switchState) }) {
     Switch(checked = switchState, onCheckedChange = { onSwitchChange(it) })
 }
 
@@ -158,7 +162,7 @@ fun <T> SettingsListItem(
     allOptions: Map<T, String>,
     selected: T,
     onSelectedChange: (T) -> Unit
-) = BasicSettingsListItem(label, supportText, {}) {
+) = BasicSettingsListItem(Modifier, label, supportText, {}) {
     var dropDownExpanded by rememberSaveable { mutableStateOf(false) }
     var currentOption by rememberSaveable { mutableStateOf(selected) }
     val dropDownRotation: Float by animateFloatAsState(

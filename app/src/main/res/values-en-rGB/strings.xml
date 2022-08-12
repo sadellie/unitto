@@ -741,5 +741,6 @@
     <string name="color_theme">Colour theme</string>
     <string name="drop_down_description">Open or close drop down menu</string>
     <string name="hello_label">Hello!</string>
+    <string name="unit_groups_setting">Unit groups</string>
 
 </resources>

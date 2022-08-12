@@ -151,6 +151,7 @@ fun LeftSideScreen(
     viewModel = viewModel,
     chipsRow = { unitGroup, lazyListState ->
         ChipsRow(
+            items = viewModel.uiState.shownUnitGroups,
             chosenUnitGroup = unitGroup,
             selectAction = {
                 viewModel.toggleSelectedChip(it)

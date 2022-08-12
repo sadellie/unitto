@@ -31,11 +31,12 @@ import androidx.compose.ui.unit.dp
  * Unit group header.
  *
  * @param text Unit group name.
+ * @param modifier Modifier that will be applied to Text composable.
  */
 @Composable
-fun Header(text: String) {
+fun Header(text: String, modifier: Modifier = Modifier) {
     Text(
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 8.dp),
