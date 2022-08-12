@@ -123,6 +123,7 @@ fun UnittoApp(
                 currentUnit = mainViewModel.unitFrom,
                 navigateUp = { navController.navigateUp() },
                 selectAction = { mainViewModel.changeUnitFrom(it) },
+                navigateToSettingsActtion = { navController.navigate(UNIT_GROUPS_SCREEN) },
                 viewModel = secondViewModel
             )
         }

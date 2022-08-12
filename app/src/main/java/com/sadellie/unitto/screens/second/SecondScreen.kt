@@ -135,6 +135,7 @@ private fun BasicUnitListScreen(
  *
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
+ * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
  * @param viewModel [SecondViewModel].
  */
@@ -142,6 +143,7 @@ private fun BasicUnitListScreen(
 fun LeftSideScreen(
     currentUnit: AbstractUnit,
     navigateUp: () -> Unit,
+    navigateToSettingsActtion: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
     viewModel: SecondViewModel
 ) = BasicUnitListScreen(
@@ -157,6 +159,7 @@ fun LeftSideScreen(
                 viewModel.toggleSelectedChip(it)
                 viewModel.loadUnitsToShow(true)
             },
+            navigateToSettingsActtion = navigateToSettingsActtion,
             lazyListState = lazyListState
         )
     },
