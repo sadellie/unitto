@@ -22,7 +22,7 @@ Some screenshots:
 
 ## Links
 <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/googlePlay.png" width="49%"/></a>
-<a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="AppGallery" src="./content/appGallery.png" width="49%"/></a>
+<a href="https://appgallery.huawei.com/app/C105740875"><img alt="AppGallery" src="./content/appGallery.png" width="49%"/></a>
 <a href="https://store.nashstore.ru/store/627de8394891a527a6efe56a"><img alt="NashStore" src="./content/nashStore.png" width="49%"/></a>
 <a href="https://ruplay.market/apps/instrumenty/com.sadellie.unitto"><img alt="RuMarket" src="./content/ruMarket.png" width="49%"/></a>
 
