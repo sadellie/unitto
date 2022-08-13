@@ -52,7 +52,7 @@ fun SettingsScreen(
     }
 
     UnittoLargeTopAppBar(
-        title = stringResource(id = R.string.settings_screen),
+        title = stringResource(R.string.settings_screen),
         navigateUpAction = navigateUpAction
     ) { padding ->
         LazyColumn(contentPadding = padding) {
@@ -63,7 +63,7 @@ fun SettingsScreen(
             // THEME
             item {
                 UnittoListItem(
-                    label = stringResource(id = R.string.unit_groups_setting),
+                    label = stringResource(R.string.unit_groups_setting),
                     onClick = { navControllerAction(UNIT_GROUPS_SCREEN) }
                 )
             }
@@ -173,7 +173,7 @@ fun SettingsScreen(
             // APP VERSION
             item {
                 UnittoListItem(
-                    label = stringResource(id = R.string.app_version_name_setting),
+                    label = stringResource(R.string.app_version_name_setting),
                     supportText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                     onClick = {}
                 )
@@ -192,17 +192,17 @@ fun SettingsScreen(
     when (dialogState) {
         DialogState.PRECISION -> {
             AlertDialogWithList(
-                title = stringResource(id = R.string.precision_setting),
+                title = stringResource(R.string.precision_setting),
                 listItems = PRECISIONS,
                 selectedItemIndex = viewModel.userPrefs.digitsPrecision,
                 selectAction = { viewModel.updatePrecision(it) },
                 dismissAction = { resetDialog() },
-                supportText = stringResource(id = R.string.precision_setting_info)
+                supportText = stringResource(R.string.precision_setting_info)
             )
         }
         DialogState.SEPARATOR -> {
             AlertDialogWithList(
-                title = stringResource(id = R.string.separator_setting),
+                title = stringResource(R.string.separator_setting),
                 listItems = SEPARATORS,
                 selectedItemIndex = viewModel.userPrefs.separator,
                 selectAction = { viewModel.updateSeparator(it) },
@@ -211,20 +211,20 @@ fun SettingsScreen(
         }
         DialogState.OUTPUT_FORMAT -> {
             AlertDialogWithList(
-                title = stringResource(id = R.string.output_format_setting),
+                title = stringResource(R.string.output_format_setting),
                 listItems = OUTPUT_FORMAT,
                 selectedItemIndex = viewModel.userPrefs.outputFormat,
                 selectAction = { viewModel.updateOutputFormat(it) },
                 dismissAction = { resetDialog() },
-                supportText = stringResource(id = R.string.output_format_setting_info)
+                supportText = stringResource(R.string.output_format_setting_info)
             )
         }
         DialogState.CURRENCY_RATE -> {
             AlertDialogWithList(
-                title = stringResource(id = R.string.currency_rates_note_title),
+                title = stringResource(R.string.currency_rates_note_title),
                 dismissAction = { resetDialog() },
-                supportText = stringResource(id = R.string.currency_rates_note_text),
-                dismissButtonLabel = stringResource(id = R.string.ok_label)
+                supportText = stringResource(R.string.currency_rates_note_text),
+                dismissButtonLabel = stringResource(R.string.ok_label)
             )
         }
         // Dismissing alert dialog

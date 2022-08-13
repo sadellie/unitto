@@ -68,8 +68,8 @@ fun MyTextField(
     val clipboardManager = LocalClipboardManager.current
     val mc = LocalContext.current
     val textToShow = when {
-        showError -> stringResource(id = R.string.error_label)
-        showLoading -> stringResource(id = R.string.loading_label)
+        showError -> stringResource(R.string.error_label)
+        showLoading -> stringResource(R.string.loading_label)
         else -> Formatter.format(currentText)
     }
     val copiedText: String = stringResource(R.string.copied, textToShow)

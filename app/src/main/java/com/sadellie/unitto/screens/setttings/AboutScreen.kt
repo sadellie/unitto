@@ -54,7 +54,7 @@ fun AboutScreen(
     val mContext = LocalContext.current
 
     UnittoLargeTopAppBar(
-        title = stringResource(id = R.string.third_party_licenses),
+        title = stringResource(R.string.third_party_licenses),
         navigateUpAction = navigateUpAction
     ) { padding ->
         LazyColumn(

@@ -76,7 +76,7 @@ fun UnitGroupsScreen(
                 .reorderable(state)
         ) {
             item(key = "enabled") {
-                Header(text = stringResource(id = R.string.enabled_label))
+                Header(text = stringResource(R.string.enabled_label))
             }
 
             items(shownUnits.value, { it }) { item ->
@@ -97,7 +97,7 @@ fun UnitGroupsScreen(
                         leadingItem = {
                             Icon(
                                 Icons.Default.RemoveCircle,
-                                stringResource(id = R.string.disable_unit_group_description),
+                                stringResource(R.string.disable_unit_group_description),
                                 tint= MaterialTheme.colorScheme.outline,
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
@@ -109,7 +109,7 @@ fun UnitGroupsScreen(
                         trailingItem = {
                             Icon(
                                 Icons.Default.DragIndicator,
-                                stringResource(id = R.string.reorder_unit_group_description),
+                                stringResource(R.string.reorder_unit_group_description),
                                 tint= MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
                                     .clickable(
@@ -126,7 +126,7 @@ fun UnitGroupsScreen(
 
             item(key = "disabled") {
                 Header(
-                    text = stringResource(id = R.string.disabled_label),
+                    text = stringResource(R.string.disabled_label),
                     modifier = Modifier.animateItemPlacement()
                 )
             }
@@ -141,7 +141,7 @@ fun UnitGroupsScreen(
                     trailingItem = {
                         Icon(
                             Icons.Default.AddCircleOutline,
-                            stringResource(id = R.string.enable_unit_group_description),
+                            stringResource(R.string.enable_unit_group_description),
                             tint= MaterialTheme.colorScheme.outline,
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },

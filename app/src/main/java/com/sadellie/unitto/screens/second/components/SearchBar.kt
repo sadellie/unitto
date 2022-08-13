@@ -200,7 +200,7 @@ private fun SearchTextField(
                 innerTextField()
                 Text(
                     modifier = Modifier.alpha(0.7f),
-                    text = stringResource(id = R.string.search_bar_placeholder),
+                    text = stringResource(R.string.search_bar_placeholder),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -218,7 +218,7 @@ private fun SearchButton(
     IconButton(onClick) {
         Icon(
             Icons.Default.Search,
-            contentDescription = stringResource(id = R.string.search_button_description)
+            contentDescription = stringResource(R.string.search_button_description)
         )
     }
 }
@@ -237,7 +237,7 @@ private fun FavoritesButton(
         ) {
             Icon(
                 if (favoritesOnly) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                contentDescription = stringResource(id = R.string.favorite_button_description)
+                contentDescription = stringResource(R.string.favorite_button_description)
             )
         }
     }

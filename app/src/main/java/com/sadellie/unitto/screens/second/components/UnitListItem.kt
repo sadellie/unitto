@@ -84,7 +84,7 @@ private fun BasicUnitListItem(
                     RoundedCornerShape(24.dp)
                 ),
             paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-            label = stringResource(id = unit.displayName),
+            label = stringResource(unit.displayName),
             supportText = shortNameLabel,
             trailingItem = {
                 AnimatedContent(
@@ -101,7 +101,7 @@ private fun BasicUnitListItem(
                 ) {
                     Icon(
                         if (unit.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                        contentDescription = stringResource(id = R.string.favorite_button_description)
+                        contentDescription = stringResource(R.string.favorite_button_description)
                     )
                 }
             }
@@ -128,7 +128,7 @@ fun UnitListItem(
     isSelected = isSelected,
     selectAction = selectAction,
     favoriteAction = favoriteAction,
-    shortNameLabel = stringResource(id = unit.shortName)
+    shortNameLabel = stringResource(unit.shortName)
 )
 
 /**
@@ -152,5 +152,5 @@ fun UnitListItem(
     isSelected = isSelected,
     selectAction = selectAction,
     favoriteAction = favoriteAction,
-    shortNameLabel = "${convertValue(unit)} ${stringResource(id = unit.shortName)}"
+    shortNameLabel = "${convertValue(unit)} ${stringResource(unit.shortName)}"
 )

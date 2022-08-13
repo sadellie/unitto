@@ -82,12 +82,12 @@ fun ChipsRow(
                     Icon(
                         modifier = Modifier.height(18.dp),
                         imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(id = R.string.checked_filter_description)
+                        contentDescription = stringResource(R.string.checked_filter_description)
                     )
                 }
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = stringResource(id = item.res),
+                    text = stringResource(item.res),
                     style = MaterialTheme.typography.labelLarge,
                     color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -108,7 +108,7 @@ fun ChipsRow(
                 Icon(
                     modifier = Modifier.height(18.dp),
                     imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(id = R.string.open_settings_description)
+                    contentDescription = stringResource(R.string.open_settings_description)
                 )
             }
         }

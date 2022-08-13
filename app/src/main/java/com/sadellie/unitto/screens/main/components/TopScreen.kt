@@ -87,14 +87,14 @@ fun TopScreenPart(
         MyTextField(
             Modifier.fillMaxWidth(),
             inputValue,
-            stringResource(id = if (loadingDatabase) R.string.loading_label else unitFrom.shortName),
+            stringResource(if (loadingDatabase) R.string.loading_label else unitFrom.shortName),
             loadingNetwork,
             networkError
         )
         MyTextField(
             Modifier.fillMaxWidth(),
             outputValue,
-            stringResource(id = if (loadingDatabase) R.string.loading_label else unitTo.shortName),
+            stringResource(if (loadingDatabase) R.string.loading_label else unitTo.shortName),
             loadingNetwork,
             networkError
         )

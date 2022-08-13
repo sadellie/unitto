@@ -107,7 +107,7 @@ private fun BasicUnitListScreen(
                 return@LazyColumn
             }
             uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
-                item { Header(text = stringResource(id = unitGroup.res)) }
+                item { Header(text = stringResource(unitGroup.res)) }
                 items(items = listOfUnits, key = { it.unitId }) { unit ->
                     unitsListItem(unit) {
                         selectAction(it)

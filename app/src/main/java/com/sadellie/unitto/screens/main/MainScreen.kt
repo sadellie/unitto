@@ -69,7 +69,7 @@ fun MainScreen(
                     IconButton(onClick = { navControllerAction(SETTINGS_SCREEN) }) {
                         Icon(
                             Icons.Outlined.MoreVert,
-                            contentDescription = stringResource(id = R.string.open_settings_description)
+                            contentDescription = stringResource(R.string.open_settings_description)
                         )
                     }
                 },
