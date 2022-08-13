@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.screens
+package com.sadellie.unitto.screens.main
 
 import com.sadellie.unitto.data.KEY_0
 

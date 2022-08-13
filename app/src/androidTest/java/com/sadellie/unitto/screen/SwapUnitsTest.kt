@@ -11,7 +11,7 @@ import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.database.MyBasedUnitDatabase
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
-import com.sadellie.unitto.screens.MainViewModel
+import com.sadellie.unitto.screens.main.MainViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

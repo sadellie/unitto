@@ -41,7 +41,7 @@ import com.sadellie.unitto.data.NavRoutes.SETTINGS_GRAPH
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
 import com.sadellie.unitto.data.NavRoutes.UNIT_GROUPS_SCREEN
-import com.sadellie.unitto.screens.MainViewModel
+import com.sadellie.unitto.screens.main.MainViewModel
 import com.sadellie.unitto.screens.main.MainScreen
 import com.sadellie.unitto.screens.second.LeftSideScreen
 import com.sadellie.unitto.screens.second.RightSideScreen

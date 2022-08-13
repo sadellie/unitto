@@ -47,8 +47,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.units.AbstractUnit
-import com.sadellie.unitto.screens.MainScreenUIState
-import com.sadellie.unitto.screens.MainViewModel
 import com.sadellie.unitto.screens.common.AnimatedTopBarText
 import com.sadellie.unitto.screens.main.components.Keyboard
 import com.sadellie.unitto.screens.main.components.TopScreenPart
