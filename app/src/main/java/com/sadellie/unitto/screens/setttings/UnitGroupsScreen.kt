@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.common.Header
-import com.sadellie.unitto.screens.setttings.components.SettingsListItem
+import com.sadellie.unitto.screens.common.UnittoListItem
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
@@ -86,7 +86,7 @@ fun UnitGroupsScreen(
                     )
                     val cornerRadius = animateDpAsState(if (isDragging) 16.dp else 0.dp)
 
-                    SettingsListItem(
+                    UnittoListItem(
                         modifier = Modifier
                             .padding(horizontal = cornerRadius.value)
                             .clip(RoundedCornerShape(cornerRadius.value))
@@ -132,7 +132,7 @@ fun UnitGroupsScreen(
             }
 
             items(hiddenUnits.value, { it }) {
-                SettingsListItem(
+                UnittoListItem(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
                         .clickable { viewModel.returnUnitGroup(it) }

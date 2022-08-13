@@ -28,7 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.R
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
-import com.sadellie.unitto.screens.setttings.components.SettingsListItem
+import com.sadellie.unitto.screens.common.UnittoListItem
 import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.ThemmoController
 
@@ -44,7 +44,7 @@ fun ThemesScreen(
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.color_theme),
                     allOptions = mapOf(
                         ThemingMode.AUTO to stringResource(R.string.force_auto_mode),
@@ -60,7 +60,7 @@ fun ThemesScreen(
             }
 
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.enable_dynamic_colors),
                     supportText = stringResource(R.string.enable_dynamic_colors_support),
                     switchState = themmoController.isDynamicThemeEnabled,
@@ -77,7 +77,7 @@ fun ThemesScreen(
                     enter = expandVertically() + fadeIn(),
                     exit = shrinkVertically() + fadeOut(),
                 ) {
-                    SettingsListItem(
+                    UnittoListItem(
                         label = stringResource(R.string.force_amoled_mode),
                         supportText = stringResource(R.string.force_amoled_mode_support),
                         switchState = themmoController.isAmoledThemeEnabled,

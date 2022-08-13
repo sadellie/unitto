@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.screens.setttings.components
+package com.sadellie.unitto.screens.common
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -25,6 +25,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -67,7 +68,7 @@ import com.sadellie.unitto.R
  * @param leadingItem Additional composable: buttons, switches, checkboxes or something else.
  */
 @Composable
-private fun BasicSettingsListItem(
+private fun BasicUnittoListItem(
     modifier: Modifier = Modifier,
     label: String,
     supportText: String? = null,
@@ -76,8 +77,7 @@ private fun BasicSettingsListItem(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -88,7 +88,9 @@ private fun BasicSettingsListItem(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = label
+                text = label,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             supportText?.let {
                 Text(
@@ -115,17 +117,19 @@ private fun BasicSettingsListItem(
  * @param onClick Action to perform when user clicks on this component (whole component is clickable).
  */
 @Composable
-fun SettingsListItem(
+fun UnittoListItem(
     modifier: Modifier = Modifier,
     label: String,
     supportText: String? = null,
     onClick: () -> Unit,
-) = BasicSettingsListItem(
-    modifier = modifier.clickable(
-        interactionSource = remember { MutableInteractionSource() },
-        indication = rememberRipple(),
-        onClick = onClick
-    ),
+) = BasicUnittoListItem(
+    modifier = modifier
+        .clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = rememberRipple(),
+            onClick = onClick
+        )
+        .padding(horizontal = 16.dp, vertical = 12.dp),
     label = label,
     supportText = supportText
 )
@@ -140,17 +144,19 @@ fun SettingsListItem(
  * you new value.
  */
 @Composable
-fun SettingsListItem(
+fun UnittoListItem(
     label: String,
     supportText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
-) = BasicSettingsListItem(
-    modifier = Modifier.clickable(
-        interactionSource = remember { MutableInteractionSource() },
-        indication = rememberRipple(),
-        onClick = { onSwitchChange(!switchState) }
-    ),
+) = BasicUnittoListItem(
+    modifier = Modifier
+        .clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = rememberRipple(),
+            onClick = { onSwitchChange(!switchState) }
+        )
+        .padding(horizontal = 16.dp, vertical = 12.dp),
     label = label,
     supportText = supportText
 ) {
@@ -168,59 +174,65 @@ fun SettingsListItem(
  * @param onSelectedChange Action to perform when drop-down menu item is selected.
  */
 @Composable
-fun <T> SettingsListItem(
+fun <T> UnittoListItem(
     label: String,
     supportText: String? = null,
     allOptions: Map<T, String>,
     selected: T,
     onSelectedChange: (T) -> Unit
-) = BasicSettingsListItem(Modifier, label, supportText) {
-    var dropDownExpanded by rememberSaveable { mutableStateOf(false) }
-    var currentOption by rememberSaveable { mutableStateOf(selected) }
-    val dropDownRotation: Float by animateFloatAsState(
-        targetValue = if (dropDownExpanded) 180f else 0f,
-        animationSpec = tween(easing = FastOutSlowInEasing)
-    )
-
-    ExposedDropdownMenuBox(
-        modifier = Modifier,
-        expanded = dropDownExpanded,
-        onExpandedChange = { dropDownExpanded = it }
+) {
+    BasicUnittoListItem(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+        label = label,
+        supportText = supportText
     ) {
-        OutlinedTextField(
-            modifier = Modifier.widthIn(1.dp),
-            value = allOptions[currentOption] ?: selected.toString(),
-            onValueChange = {},
-            readOnly = true,
-            singleLine = true,
-            enabled = false,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                disabledBorderColor = MaterialTheme.colorScheme.outline,
-                disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowDropDown,
-                    modifier = Modifier.rotate(dropDownRotation),
-                    contentDescription = stringResource(R.string.drop_down_description)
-                )
-            }
+        var dropDownExpanded by rememberSaveable { mutableStateOf(false) }
+        var currentOption by rememberSaveable { mutableStateOf(selected) }
+        val dropDownRotation: Float by animateFloatAsState(
+            targetValue = if (dropDownExpanded) 180f else 0f,
+            animationSpec = tween(easing = FastOutSlowInEasing)
         )
-        ExposedDropdownMenu(
-            modifier = Modifier.exposedDropdownSize(),
+
+        ExposedDropdownMenuBox(
+            modifier = Modifier,
             expanded = dropDownExpanded,
-            onDismissRequest = { dropDownExpanded = false }
+            onExpandedChange = { dropDownExpanded = it }
         ) {
-            allOptions.forEach {
-                DropdownMenuItem(
-                    text = { Text(it.value) },
-                    onClick = {
-                        currentOption = it.key
-                        onSelectedChange(it.key)
-                        dropDownExpanded = false
-                    }
-                )
+            OutlinedTextField(
+                modifier = Modifier.widthIn(1.dp),
+                value = allOptions[currentOption] ?: selected.toString(),
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                enabled = false,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    disabledBorderColor = MaterialTheme.colorScheme.outline,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.ArrowDropDown,
+                        modifier = Modifier.rotate(dropDownRotation),
+                        contentDescription = stringResource(R.string.drop_down_description)
+                    )
+                }
+            )
+            ExposedDropdownMenu(
+                modifier = Modifier.exposedDropdownSize(),
+                expanded = dropDownExpanded,
+                onDismissRequest = { dropDownExpanded = false }
+            ) {
+                allOptions.forEach {
+                    DropdownMenuItem(
+                        text = { Text(it.value) },
+                        onClick = {
+                            currentOption = it.key
+                            onSelectedChange(it.key)
+                            dropDownExpanded = false
+                        }
+                    )
+                }
             }
         }
     }
@@ -235,11 +247,21 @@ fun <T> SettingsListItem(
  * @param leadingItem Additional composable: buttons, switches, checkboxes or something else.
  */
 @Composable
-fun SettingsListItem(
+fun UnittoListItem(
     label: String,
+    supportText: String? = null,
     modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     leadingItem: @Composable RowScope.() -> Unit = {},
     trailingItem: @Composable RowScope.() -> Unit = {}
 ) {
-    BasicSettingsListItem(modifier = modifier, label = label, trailingItem = trailingItem, leadingItem = leadingItem)
+    BasicUnittoListItem(
+        modifier = modifier.padding(paddingValues),
+        label = label,
+        supportText = supportText,
+        trailingItem = trailingItem,
+        leadingItem = leadingItem
+    )
 }
+
+

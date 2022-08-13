@@ -36,9 +36,9 @@ import com.sadellie.unitto.data.preferences.PRECISIONS
 import com.sadellie.unitto.data.preferences.SEPARATORS
 import com.sadellie.unitto.screens.common.Header
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.screens.common.UnittoListItem
 import com.sadellie.unitto.screens.openLink
 import com.sadellie.unitto.screens.setttings.components.AlertDialogWithList
-import com.sadellie.unitto.screens.setttings.components.SettingsListItem
 
 @Composable
 fun SettingsScreen(
@@ -62,47 +62,51 @@ fun SettingsScreen(
 
             // THEME
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(id = R.string.unit_groups_setting),
-                    onClick =  { navControllerAction(UNIT_GROUPS_SCREEN) }
+                    onClick = { navControllerAction(UNIT_GROUPS_SCREEN) }
                 )
             }
 
             // PRECISION
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.precision_setting),
-                    supportText = stringResource(R.string.precision_setting_support)
-                ) { dialogState = DialogState.PRECISION }
+                    supportText = stringResource(R.string.precision_setting_support),
+                    onClick = { dialogState = DialogState.PRECISION }
+                )
             }
 
             // SEPARATOR
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.separator_setting),
-                    supportText = stringResource(R.string.separator_setting_support)
-                ) { dialogState = DialogState.SEPARATOR }
+                    supportText = stringResource(R.string.separator_setting_support),
+                    onClick = { dialogState = DialogState.SEPARATOR }
+                )
             }
 
             // OUTPUT FORMAT
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.output_format_setting),
-                    supportText = stringResource(R.string.output_format_setting_support)
-                ) { dialogState = DialogState.OUTPUT_FORMAT }
+                    supportText = stringResource(R.string.output_format_setting_support),
+                    onClick = { dialogState = DialogState.OUTPUT_FORMAT }
+                )
             }
 
             // THEME
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.theme_setting),
-                    supportText = stringResource(R.string.theme_setting_support)
-                ) { navControllerAction(THEMES_SCREEN) }
+                    supportText = stringResource(R.string.theme_setting_support),
+                    onClick = { navControllerAction(THEMES_SCREEN) }
+                )
             }
 
             // CURRENCY RATE NOTE
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.currency_rates_note_setting),
                     onClick = { dialogState = DialogState.CURRENCY_RATE }
                 )
@@ -113,24 +117,34 @@ fun SettingsScreen(
 
             // TERMS AND CONDITIONS
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.terms_and_conditions),
-                    onClick = { openLink(mContext, "http://sadellie.github.io/unitto/terms-app.html") }
+                    onClick = {
+                        openLink(
+                            mContext,
+                            "http://sadellie.github.io/unitto/terms-app.html"
+                        )
+                    }
                 )
             }
 
             // PRIVACY POLICY
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.privacy_policy),
-                    onClick = { openLink(mContext, "http://sadellie.github.io/unitto/privacy-app.html") }
+                    onClick = {
+                        openLink(
+                            mContext,
+                            "http://sadellie.github.io/unitto/privacy-app.html"
+                        )
+                    }
                 )
             }
 
             // ANALYTICS
             if (BuildConfig.ANALYTICS) {
                 item {
-                    SettingsListItem(
+                    UnittoListItem(
                         label = stringResource(R.string.send_usage_statistics),
                         supportText = stringResource(R.string.send_usage_statistics_support),
                         switchState = viewModel.userPrefs.enableAnalytics
@@ -140,7 +154,7 @@ fun SettingsScreen(
 
             // THIRD PARTY
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(R.string.third_party_licenses),
                     onClick = { navControllerAction(ABOUT_SCREEN) }
                 )
@@ -149,19 +163,20 @@ fun SettingsScreen(
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
-                    SettingsListItem(
+                    UnittoListItem(
                         label = stringResource(R.string.rate_this_app),
-                        onClick =  { openLink(mContext, BuildConfig.STORE_LINK) }
+                        onClick = { openLink(mContext, BuildConfig.STORE_LINK) }
                     )
                 }
             }
 
             // APP VERSION
             item {
-                SettingsListItem(
+                UnittoListItem(
                     label = stringResource(id = R.string.app_version_name_setting),
-                    supportText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-                ) {}
+                    supportText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                    onClick = {}
+                )
             }
         }
     }
