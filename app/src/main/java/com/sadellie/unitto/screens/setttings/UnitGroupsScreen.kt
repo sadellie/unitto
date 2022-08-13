@@ -28,9 +28,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.AddCircleOutline
+import androidx.compose.material.icons.filled.DragIndicator
 import androidx.compose.material.icons.filled.RemoveCircle
-import androidx.compose.material.icons.filled.Reorder
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -98,6 +98,7 @@ fun UnitGroupsScreen(
                             Icon(
                                 Icons.Default.RemoveCircle,
                                 stringResource(id = R.string.disable_unit_group_description),
+                                tint= MaterialTheme.colorScheme.outline,
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = rememberRipple(false),
@@ -107,8 +108,9 @@ fun UnitGroupsScreen(
                         },
                         trailingItem = {
                             Icon(
-                                Icons.Default.Reorder,
+                                Icons.Default.DragIndicator,
                                 stringResource(id = R.string.reorder_unit_group_description),
+                                tint= MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
                                     .clickable(
                                         interactionSource = remember { MutableInteractionSource() },
@@ -138,8 +140,9 @@ fun UnitGroupsScreen(
                     label = stringResource(it.res),
                     trailingItem = {
                         Icon(
-                            Icons.Default.AddCircle,
+                            Icons.Default.AddCircleOutline,
                             stringResource(id = R.string.enable_unit_group_description),
+                            tint= MaterialTheme.colorScheme.outline,
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(false),
