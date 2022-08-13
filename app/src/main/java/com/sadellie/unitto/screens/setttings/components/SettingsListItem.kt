@@ -23,6 +23,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -62,32 +63,27 @@ import com.sadellie.unitto.R
  * @param modifier Modifier that will be applied to a Row.
  * @param label Main text.
  * @param supportText Text that is located below label.
- * @param onClick Action to perform when user clicks on this component (whole component is clickable).
- * @param content Additional composable: buttons, switches, checkboxes or something else.
+ * @param trailingItem Additional composable, icons for example.
+ * @param leadingItem Additional composable: buttons, switches, checkboxes or something else.
  */
 @Composable
 private fun BasicSettingsListItem(
     modifier: Modifier = Modifier,
     label: String,
     supportText: String? = null,
-    onClick: () -> Unit = {},
-    content: @Composable RowScope.() -> Unit = {}
+    leadingItem: @Composable() (RowScope.() -> Unit) = {},
+    trailingItem: @Composable() (RowScope.() -> Unit) = {}
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = onClick
-            )
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        leadingItem()
         Column(
-            Modifier
-                .padding(horizontal = 0.dp)
-                .weight(1f)  // This makes additional composable to be seen
+            Modifier.weight(1f),  // This makes additional composable to be seen
         ) {
             Text(
                 modifier = Modifier
@@ -106,7 +102,7 @@ private fun BasicSettingsListItem(
                 )
             }
         }
-        content()
+        trailingItem()
     }
 }
 
@@ -124,7 +120,15 @@ fun SettingsListItem(
     label: String,
     supportText: String? = null,
     onClick: () -> Unit,
-) = BasicSettingsListItem(modifier, label, supportText, onClick)
+) = BasicSettingsListItem(
+    modifier = modifier.clickable(
+        interactionSource = remember { MutableInteractionSource() },
+        indication = rememberRipple(),
+        onClick = onClick
+    ),
+    label = label,
+    supportText = supportText
+)
 
 /**
  * Represents one item in list on Settings screen.
@@ -141,7 +145,15 @@ fun SettingsListItem(
     supportText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
-) = BasicSettingsListItem(Modifier, label, supportText, { onSwitchChange(!switchState) }) {
+) = BasicSettingsListItem(
+    modifier = Modifier.clickable(
+        interactionSource = remember { MutableInteractionSource() },
+        indication = rememberRipple(),
+        onClick = { onSwitchChange(!switchState) }
+    ),
+    label = label,
+    supportText = supportText
+) {
     Switch(checked = switchState, onCheckedChange = { onSwitchChange(it) })
 }
 
@@ -162,7 +174,7 @@ fun <T> SettingsListItem(
     allOptions: Map<T, String>,
     selected: T,
     onSelectedChange: (T) -> Unit
-) = BasicSettingsListItem(Modifier, label, supportText, {}) {
+) = BasicSettingsListItem(Modifier, label, supportText) {
     var dropDownExpanded by rememberSaveable { mutableStateOf(false) }
     var currentOption by rememberSaveable { mutableStateOf(selected) }
     val dropDownRotation: Float by animateFloatAsState(
@@ -212,4 +224,22 @@ fun <T> SettingsListItem(
             }
         }
     }
+}
+
+/**
+ * Composable with leading and trailing items.
+ *
+ * @param label Main text.
+ * @param modifier Modifier that will be applied to a Row.
+ * @param trailingItem Additional composable, icons for example.
+ * @param leadingItem Additional composable: buttons, switches, checkboxes or something else.
+ */
+@Composable
+fun SettingsListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    leadingItem: @Composable RowScope.() -> Unit = {},
+    trailingItem: @Composable RowScope.() -> Unit = {}
+) {
+    BasicSettingsListItem(modifier = modifier, label = label, trailingItem = trailingItem, leadingItem = leadingItem)
 }

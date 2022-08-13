@@ -21,13 +21,22 @@ package com.sadellie.unitto.screens.setttings
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.RemoveCircle
+import androidx.compose.material.icons.filled.Reorder
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -37,6 +46,7 @@ import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.second.components.Header
 import com.sadellie.unitto.screens.setttings.components.SettingsListItem
 import org.burnoutcrew.reorderable.ReorderableItem
+import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
@@ -53,7 +63,7 @@ fun UnitGroupsScreen(
 
         val shownUnits = viewModel.shownUnitGroups.collectAsState()
         val hiddenUnits = viewModel.hiddenUnitGroups.collectAsState()
-        
+
         val state = rememberReorderableLazyListState(
             onMove = viewModel::onMove,
             canDragOver = viewModel::canDragOver
@@ -64,7 +74,6 @@ fun UnitGroupsScreen(
             modifier = Modifier
                 .padding(paddingValues)
                 .reorderable(state)
-                .detectReorderAfterLongPress(state)
         ) {
             item(key = "enabled") {
                 Header(text = stringResource(id = R.string.enabled_label))
@@ -81,9 +90,34 @@ fun UnitGroupsScreen(
                         modifier = Modifier
                             .padding(horizontal = cornerRadius.value)
                             .clip(RoundedCornerShape(cornerRadius.value))
-                            .background(background.value),
+                            .background(background.value)
+                            .clickable { viewModel.hideUnitGroup(item) }
+                            .detectReorderAfterLongPress(state),
                         label = stringResource(item.res),
-                        onClick = { viewModel.hideUnitGroup(item) }
+                        leadingItem = {
+                            Icon(
+                                Icons.Default.RemoveCircle,
+                                stringResource(id = R.string.disable_unit_group_description),
+                                modifier = Modifier.clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = rememberRipple(false),
+                                    onClick = { viewModel.hideUnitGroup(item) }
+                                )
+                            )
+                        },
+                        trailingItem = {
+                            Icon(
+                                Icons.Default.Reorder,
+                                stringResource(id = R.string.reorder_unit_group_description),
+                                modifier = Modifier
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = rememberRipple(false),
+                                        onClick = {}
+                                    )
+                                    .detectReorder(state)
+                            )
+                        }
                     )
                 }
             }
@@ -97,9 +131,22 @@ fun UnitGroupsScreen(
 
             items(hiddenUnits.value, { it }) {
                 SettingsListItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .clickable { viewModel.returnUnitGroup(it) }
+                        .animateItemPlacement(),
                     label = stringResource(it.res),
-                    onClick = { viewModel.returnUnitGroup(it) }
+                    trailingItem = {
+                        Icon(
+                            Icons.Default.AddCircle,
+                            stringResource(id = R.string.enable_unit_group_description),
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = rememberRipple(false),
+                                onClick = { viewModel.returnUnitGroup(it) }
+                            )
+                        )
+                    }
                 )
             }
         }

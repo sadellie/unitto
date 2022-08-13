@@ -63,8 +63,9 @@ fun SettingsScreen(
             // THEME
             item {
                 SettingsListItem(
-                    label = stringResource(id = R.string.unit_groups_setting)
-                ) { navControllerAction(UNIT_GROUPS_SCREEN) }
+                    label = stringResource(id = R.string.unit_groups_setting),
+                    onClick =  { navControllerAction(UNIT_GROUPS_SCREEN) }
+                )
             }
 
             // PRECISION
@@ -102,8 +103,9 @@ fun SettingsScreen(
             // CURRENCY RATE NOTE
             item {
                 SettingsListItem(
-                    label = stringResource(R.string.currency_rates_note_setting)
-                ) { dialogState = DialogState.CURRENCY_RATE }
+                    label = stringResource(R.string.currency_rates_note_setting),
+                    onClick = { dialogState = DialogState.CURRENCY_RATE }
+                )
             }
 
             // ADDITIONAL GROUP
@@ -112,15 +114,17 @@ fun SettingsScreen(
             // TERMS AND CONDITIONS
             item {
                 SettingsListItem(
-                    label = stringResource(R.string.terms_and_conditions)
-                ) { openLink(mContext, "http://sadellie.github.io/unitto/terms-app.html") }
+                    label = stringResource(R.string.terms_and_conditions),
+                    onClick = { openLink(mContext, "http://sadellie.github.io/unitto/terms-app.html") }
+                )
             }
 
             // PRIVACY POLICY
             item {
                 SettingsListItem(
-                    label = stringResource(R.string.privacy_policy)
-                ) { openLink(mContext, "http://sadellie.github.io/unitto/privacy-app.html") }
+                    label = stringResource(R.string.privacy_policy),
+                    onClick = { openLink(mContext, "http://sadellie.github.io/unitto/privacy-app.html") }
+                )
             }
 
             // ANALYTICS
@@ -137,16 +141,18 @@ fun SettingsScreen(
             // THIRD PARTY
             item {
                 SettingsListItem(
-                    label = stringResource(R.string.third_party_licenses)
-                ) { navControllerAction(ABOUT_SCREEN) }
+                    label = stringResource(R.string.third_party_licenses),
+                    onClick = { navControllerAction(ABOUT_SCREEN) }
+                )
             }
 
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
                     SettingsListItem(
-                        label = stringResource(R.string.rate_this_app)
-                    ) { openLink(mContext, BuildConfig.STORE_LINK) }
+                        label = stringResource(R.string.rate_this_app),
+                        onClick =  { openLink(mContext, BuildConfig.STORE_LINK) }
+                    )
                 }
             }
 

@@ -745,5 +745,8 @@
     <string name="search_placeholder_button_label">Open settings</string>
     <string name="enabled_label">Enabled</string>
     <string name="disabled_label">Disabled</string>
+    <string name="enable_unit_group_description">Enable unit group</string>
+    <string name="disable_unit_group_description">Disable unit group</string>
+    <string name="reorder_unit_group_description">Reorder unit group</string>
 
 </resources>
