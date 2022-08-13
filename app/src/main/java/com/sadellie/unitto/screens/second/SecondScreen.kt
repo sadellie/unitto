@@ -128,7 +128,11 @@ private fun BasicUnitListScreen(
          */
         viewModel.setSelectedChip(currentUnit.group)
         viewModel.loadUnitsToShow(noBrokenCurrencies)
-        chipsRowLazyListState.animateScrollToItem(uiState.shownUnitGroups.indexOf(currentUnit.group))
+
+        val groupToSelect = uiState.shownUnitGroups.indexOf(currentUnit.group)
+        if (groupToSelect > -1) {
+            chipsRowLazyListState.animateScrollToItem(groupToSelect)
+        }
     }
 }
 
