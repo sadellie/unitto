@@ -14,7 +14,7 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion = "1.3.0-alpha02"
+val composeVersion = "1.3.0-alpha03"
 
 // Flavor names
 val playStore = "playStore"
@@ -29,12 +29,12 @@ kapt {
 
 android {
     namespace = "com.sadellie.unitto"
-    compileSdkVersion = "android-32"
+    compileSdkVersion = "android-33"
 
     defaultConfig {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 9
         versionName = "Dark sea green"
         buildConfigField("Boolean", "ANALYTICS", "true")
@@ -158,13 +158,13 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.1")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha16")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:dagger-android-processor:2.43")
-    implementation("com.google.dagger:hilt-android:2.43")
-    kapt("com.google.dagger:hilt-compiler:2.43")
+    kapt("com.google.dagger:dagger-android-processor:2.43.2")
+    implementation("com.google.dagger:hilt-android:2.43.2")
+    kapt("com.google.dagger:hilt-compiler:2.43.2")
 
     // There are a lot of icons
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
@@ -176,7 +176,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
 
     // Firebase
-    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:30.1.0"))
+    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:30.3.2"))
     "playStoreImplementation"("com.google.firebase:firebase-analytics-ktx")
     // Crashlytics and Analytics
     "playStoreImplementation"("com.google.firebase:firebase-crashlytics-ktx")
@@ -193,7 +193,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     // Themmo
-    implementation("com.github.sadellie:themmo:0.0.3")
+    implementation("com.github.sadellie:themmo:0.0.4")
 
     // ComposeReorderable
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.2")
