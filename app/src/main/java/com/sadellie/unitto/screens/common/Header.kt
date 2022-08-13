@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022 Elshan Agaev
+ * Copyright (c) 2022-2022 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.screens.setttings.components
+package com.sadellie.unitto.screens.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -26,13 +27,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Basic list header.
+ *
+ * @param text Group label.
+ * @param modifier Modifier that will be applied to Text composable.
+ */
 @Composable
-fun SettingsHeader(text: String) =
+fun Header(
+    text: String,
+    modifier: Modifier = Modifier
+) {
     Text(
-        modifier = Modifier
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
         text = text,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary
     )
+}

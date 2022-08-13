@@ -43,7 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
-import com.sadellie.unitto.screens.second.components.Header
+import com.sadellie.unitto.screens.common.Header
 import com.sadellie.unitto.screens.setttings.components.SettingsListItem
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder

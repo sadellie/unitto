@@ -33,12 +33,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.R
-import com.sadellie.unitto.data.units.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.screens.Formatter
 import com.sadellie.unitto.screens.second.components.ChipsRow
-import com.sadellie.unitto.screens.second.components.Header
+import com.sadellie.unitto.screens.common.Header
 import com.sadellie.unitto.screens.second.components.SearchBar
 import com.sadellie.unitto.screens.second.components.SearchPlaceholder
 import com.sadellie.unitto.screens.second.components.UnitListItem

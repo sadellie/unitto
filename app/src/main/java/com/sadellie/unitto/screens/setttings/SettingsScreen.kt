@@ -34,10 +34,10 @@ import com.sadellie.unitto.data.NavRoutes.UNIT_GROUPS_SCREEN
 import com.sadellie.unitto.data.preferences.OUTPUT_FORMAT
 import com.sadellie.unitto.data.preferences.PRECISIONS
 import com.sadellie.unitto.data.preferences.SEPARATORS
+import com.sadellie.unitto.screens.common.Header
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.openLink
 import com.sadellie.unitto.screens.setttings.components.AlertDialogWithList
-import com.sadellie.unitto.screens.setttings.components.SettingsHeader
 import com.sadellie.unitto.screens.setttings.components.SettingsListItem
 
 @Composable
@@ -58,7 +58,7 @@ fun SettingsScreen(
         LazyColumn(contentPadding = padding) {
 
             // GENERAL GROUP
-            item { SettingsHeader(stringResource(R.string.general_settings_group)) }
+            item { Header(stringResource(R.string.general_settings_group)) }
 
             // THEME
             item {
@@ -109,7 +109,7 @@ fun SettingsScreen(
             }
 
             // ADDITIONAL GROUP
-            item { SettingsHeader(stringResource(R.string.additional_settings_group)) }
+            item { Header(stringResource(R.string.additional_settings_group)) }
 
             // TERMS AND CONDITIONS
             item {
