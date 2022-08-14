@@ -134,12 +134,19 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UnitGroupsRepository.moveShownUnitGroups] and
-     * [UserPreferencesRepository.updateShownUnitGroups]
+     * See [UnitGroupsRepository.moveShownUnitGroups]
      */
     fun onMove(from: ItemPosition, to: ItemPosition) {
         viewModelScope.launch {
             unitGroupsRepository.moveShownUnitGroups(from, to)
+        }
+    }
+
+    /**
+     * See [UserPreferencesRepository.updateShownUnitGroups]
+     */
+    fun onDragEnd() {
+        viewModelScope.launch {
             userPrefsRepository.updateShownUnitGroups(unitGroupsRepository.shownUnitGroups.value)
         }
     }
