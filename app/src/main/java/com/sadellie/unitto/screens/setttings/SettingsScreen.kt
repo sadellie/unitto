@@ -18,12 +18,16 @@
 
 package com.sadellie.unitto.screens.setttings
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.BuildConfig
@@ -62,53 +66,53 @@ fun SettingsScreen(
 
             // THEME
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.unit_groups_setting),
-                    onClick = { navControllerAction(UNIT_GROUPS_SCREEN) }
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.unit_groups_setting)) },
+                    modifier = Modifier.clickable { navControllerAction(UNIT_GROUPS_SCREEN) }
                 )
             }
 
             // PRECISION
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.precision_setting),
-                    supportText = stringResource(R.string.precision_setting_support),
-                    onClick = { dialogState = DialogState.PRECISION }
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.precision_setting)) },
+                    supportingText = { Text(stringResource(R.string.precision_setting_support)) },
+                    modifier = Modifier.clickable { dialogState = DialogState.PRECISION }
                 )
             }
 
             // SEPARATOR
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.separator_setting),
-                    supportText = stringResource(R.string.separator_setting_support),
-                    onClick = { dialogState = DialogState.SEPARATOR }
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.separator_setting)) },
+                    supportingText = { Text(stringResource(R.string.separator_setting_support)) },
+                    modifier = Modifier.clickable { dialogState = DialogState.SEPARATOR }
                 )
             }
 
             // OUTPUT FORMAT
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.output_format_setting),
-                    supportText = stringResource(R.string.output_format_setting_support),
-                    onClick = { dialogState = DialogState.OUTPUT_FORMAT }
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.output_format_setting)) },
+                    supportingText = { Text(stringResource(R.string.output_format_setting_support)) },
+                    modifier = Modifier.clickable { dialogState = DialogState.OUTPUT_FORMAT }
                 )
             }
 
             // THEME
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.theme_setting),
-                    supportText = stringResource(R.string.theme_setting_support),
-                    onClick = { navControllerAction(THEMES_SCREEN) }
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.theme_setting)) },
+                    supportingText = { Text(stringResource(R.string.theme_setting_support)) },
+                    modifier = Modifier.clickable { navControllerAction(THEMES_SCREEN) }
                 )
             }
 
             // CURRENCY RATE NOTE
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.currency_rates_note_setting),
-                    onClick = { dialogState = DialogState.CURRENCY_RATE }
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.currency_rates_note_setting)) },
+                    modifier = Modifier.clickable { dialogState = DialogState.CURRENCY_RATE }
                 )
             }
 
@@ -117,9 +121,9 @@ fun SettingsScreen(
 
             // TERMS AND CONDITIONS
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.terms_and_conditions),
-                    onClick = {
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.terms_and_conditions)) },
+                    modifier = Modifier.clickable {
                         openLink(
                             mContext,
                             "http://sadellie.github.io/unitto/terms-app.html"
@@ -130,9 +134,9 @@ fun SettingsScreen(
 
             // PRIVACY POLICY
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.privacy_policy),
-                    onClick = {
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.privacy_policy)) },
+                    modifier = Modifier.clickable {
                         openLink(
                             mContext,
                             "http://sadellie.github.io/unitto/privacy-app.html"
@@ -154,28 +158,28 @@ fun SettingsScreen(
 
             // THIRD PARTY
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.third_party_licenses),
-                    onClick = { navControllerAction(ABOUT_SCREEN) }
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.third_party_licenses)) },
+                    modifier = Modifier.clickable { navControllerAction(ABOUT_SCREEN) }
                 )
             }
 
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
-                    UnittoListItem(
-                        label = stringResource(R.string.rate_this_app),
-                        onClick = { openLink(mContext, BuildConfig.STORE_LINK) }
+                    ListItem(
+                        headlineText = { Text(stringResource(R.string.rate_this_app)) },
+                        modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                     )
                 }
             }
 
             // APP VERSION
             item {
-                UnittoListItem(
-                    label = stringResource(R.string.app_version_name_setting),
-                    supportText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                    onClick = {}
+                ListItem(
+                    headlineText = { Text(stringResource(R.string.app_version_name_setting)) },
+                    supportingText = { Text("${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})") },
+                    modifier = Modifier.clickable {}
                 )
             }
         }

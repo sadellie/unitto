@@ -33,7 +33,10 @@ import androidx.compose.material.icons.filled.DragIndicator
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -42,9 +45,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
-import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.common.Header
-import com.sadellie.unitto.screens.common.UnittoListItem
+import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
@@ -87,19 +89,21 @@ fun UnitGroupsScreen(
                     )
                     val cornerRadius = animateDpAsState(if (isDragging) 16.dp else 0.dp)
 
-                    UnittoListItem(
+                    ListItem(
+                        headlineText = { Text(stringResource(item.res)) },
                         modifier = Modifier
                             .padding(horizontal = cornerRadius.value)
                             .clip(RoundedCornerShape(cornerRadius.value))
-                            .background(background.value)
                             .clickable { viewModel.hideUnitGroup(item) }
                             .detectReorderAfterLongPress(state),
-                        label = stringResource(item.res),
-                        leadingItem = {
+                        colors = ListItemDefaults.colors(
+                            containerColor = background.value
+                        ),
+                        leadingContent = {
                             Icon(
                                 Icons.Default.RemoveCircle,
                                 stringResource(R.string.disable_unit_group_description),
-                                tint= MaterialTheme.colorScheme.outline,
+                                tint = MaterialTheme.colorScheme.outline,
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = rememberRipple(false),
@@ -107,11 +111,11 @@ fun UnitGroupsScreen(
                                 )
                             )
                         },
-                        trailingItem = {
+                        trailingContent = {
                             Icon(
                                 Icons.Default.DragIndicator,
                                 stringResource(R.string.reorder_unit_group_description),
-                                tint= MaterialTheme.colorScheme.outline,
+                                tint = MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
                                     .clickable(
                                         interactionSource = remember { MutableInteractionSource() },
@@ -120,7 +124,7 @@ fun UnitGroupsScreen(
                                     )
                                     .detectReorder(state)
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -133,17 +137,17 @@ fun UnitGroupsScreen(
             }
 
             items(hiddenUnits.value, { it }) {
-                UnittoListItem(
+                ListItem(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
                         .clickable { viewModel.returnUnitGroup(it) }
                         .animateItemPlacement(),
-                    label = stringResource(it.res),
-                    trailingItem = {
+                    headlineText = { Text(stringResource(it.res)) },
+                    trailingContent = {
                         Icon(
                             Icons.Default.AddCircleOutline,
                             stringResource(R.string.enable_unit_group_description),
-                            tint= MaterialTheme.colorScheme.outline,
+                            tint = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(false),
