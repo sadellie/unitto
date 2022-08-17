@@ -96,9 +96,16 @@ class UnitGroupsRepository @Inject constructor() {
     suspend fun moveShownUnitGroups(from: ItemPosition, to: ItemPosition) {
         mutex.withLock {
             shownUnitGroups.value = shownUnitGroups.value.toMutableList().apply {
+                val initialIndex = shownUnitGroups.value.indexOfFirst { it == from.key }
+                /**
+                 * No such item. Happens when dragging item and clicking "remove" while item is
+                 * still being dragged.
+                 */
+                if (initialIndex == -1) return
+
                 add(
                     shownUnitGroups.value.indexOfFirst { it == to.key },
-                    removeAt(shownUnitGroups.value.indexOfFirst { it == from.key })
+                    removeAt(initialIndex)
                 )
             }
         }
