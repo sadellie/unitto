@@ -18,26 +18,35 @@
 
 package com.sadellie.unitto.screens.second
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.screens.Formatter
-import com.sadellie.unitto.screens.second.components.ChipsRow
 import com.sadellie.unitto.screens.common.Header
+import com.sadellie.unitto.screens.second.components.ChipsRow
 import com.sadellie.unitto.screens.second.components.SearchBar
 import com.sadellie.unitto.screens.second.components.SearchPlaceholder
 import com.sadellie.unitto.screens.second.components.UnitListItem
@@ -64,7 +73,7 @@ private fun BasicUnitListScreen(
     navigateToSettingsActtion: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
     viewModel: SecondViewModel,
-    chipsRow: @Composable (UnitGroup?, LazyListState) -> Unit = {_, _->},
+    chipsRow: @Composable (UnitGroup?, LazyListState) -> Unit = { _, _ -> },
     unitsListItem: @Composable (AbstractUnit, (AbstractUnit) -> Unit) -> Unit,
     noBrokenCurrencies: Boolean,
     title: String,
@@ -73,41 +82,66 @@ private fun BasicUnitListScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val focusManager = LocalFocusManager.current
     val chipsRowLazyListState = rememberLazyListState()
+    val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
+
+    val chipsBackground = animateColorAsState(
+        if (scrollBehavior.state.overlappedFraction > 0.01f) {
+            elevatedColor
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
+        animationSpec = tween(
+            durationMillis = 500,
+            easing = LinearOutSlowInEasing
+        )
+    )
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SearchBar(
-                title = title,
-                value = uiState.searchQuery,
-                onValueChange = {
-                    viewModel.onSearchQueryChange(it)
-                    viewModel.loadUnitsToShow(noBrokenCurrencies)
-                },
-                favoritesOnly = uiState.favoritesOnly,
-                favoriteAction = {
-                    viewModel.toggleFavoritesOnly()
-                    viewModel.loadUnitsToShow(noBrokenCurrencies)
-                },
-                navigateUpAction = navigateUp,
-                focusManager = focusManager,
-                scrollBehavior = scrollBehavior
-            )
-        }
-    ) { paddingValues ->
-        LazyColumn(Modifier.padding(paddingValues)) {
-            stickyHeader {
+            Column(
+                Modifier.background(chipsBackground.value)
+            ) {
+                SearchBar(
+                    title = title,
+                    value = uiState.searchQuery,
+                    onValueChange = {
+                        viewModel.onSearchQueryChange(it)
+                        viewModel.loadUnitsToShow(noBrokenCurrencies)
+                    },
+                    favoritesOnly = uiState.favoritesOnly,
+                    favoriteAction = {
+                        viewModel.toggleFavoritesOnly()
+                        viewModel.loadUnitsToShow(noBrokenCurrencies)
+                    },
+                    navigateUpAction = navigateUp,
+                    focusManager = focusManager,
+                    scrollBehavior = scrollBehavior
+                )
                 chipsRow(
                     viewModel.uiState.chosenUnitGroup,
                     chipsRowLazyListState
                 )
             }
+        }
+    ) { paddingValues ->
+        LazyColumn(Modifier.padding(paddingValues)) {
             if (uiState.unitsToShow.isEmpty()) {
                 item { SearchPlaceholder(navigateToSettingsActtion) }
                 return@LazyColumn
             }
             uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
-                item { Header(text = stringResource(unitGroup.res)) }
+                item {
+                    Header(
+                        text = stringResource(unitGroup.res),
+                        paddingValues = PaddingValues(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 8.dp,
+                            bottom = 12.dp
+                        )
+                    )
+                }
                 items(items = listOfUnits, key = { it.unitId }) { unit ->
                     unitsListItem(unit) {
                         selectAction(it)
@@ -213,7 +247,11 @@ fun RightSideScreen(
             isSelected = currentUnit == unit,
             selectAction = selectUnitAction,
             favoriteAction = { viewModel.favoriteUnit(it) },
-            convertValue = { Formatter.format(unitFrom.convert(unit, inputValue, 3).toPlainString()) }
+            convertValue = {
+                Formatter.format(
+                    unitFrom.convert(unit, inputValue, 3).toPlainString()
+                )
+            }
         )
     },
     noBrokenCurrencies = false,

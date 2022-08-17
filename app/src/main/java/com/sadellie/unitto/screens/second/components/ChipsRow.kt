@@ -69,7 +69,7 @@ fun ChipsRow(
 ) {
     LazyRow(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
+            .padding(bottom = 4.dp)
             .fillMaxWidth(),
         state = lazyListState,
         contentPadding = PaddingValues(8.dp),

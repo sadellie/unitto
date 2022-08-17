@@ -19,6 +19,7 @@
 package com.sadellie.unitto.screens.common
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -32,17 +33,24 @@ import androidx.compose.ui.unit.dp
  *
  * @param text Group label.
  * @param modifier Modifier that will be applied to Text composable.
+ * @param paddingValues Paddings that will be applied to a modifier.
  */
 @Composable
 fun Header(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues(
+        start = 16.dp,
+        end = 16.dp,
+        top = 24.dp,
+        bottom = 12.dp
+    )
 ) {
     Text(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
+            .padding(paddingValues)
+            .fillMaxWidth(),
         text = text,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary
