@@ -18,15 +18,16 @@
 
 package com.sadellie.unitto.screens.second
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -53,37 +54,28 @@ import com.sadellie.unitto.screens.second.components.UnitListItem
 import java.math.BigDecimal
 
 /**
- * Basic Unit list screen for left and right sides screens.
+ * Left side screen. Unit to convert from.
  *
+ * @param viewModel [SecondViewModel].
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
- * @param navigateToSettingsActtion Action to perform when clicking open settings in placeholder.
+ * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
- * @param viewModel [SecondViewModel].
- * @param chipsRow Composable that is placed under TopAppBar. See [ChipsRow]
- * @param unitsListItem Composable that holds all units. See [UnitListItem].
- * @param noBrokenCurrencies When True will hide [AbstractUnit] with [AbstractUnit.isEnabled] set
- * to False.
- * @param title TopAppBar text.
  */
 @Composable
-private fun BasicUnitListScreen(
+fun LeftSideScreen(
+    viewModel: SecondViewModel,
     currentUnit: AbstractUnit,
     navigateUp: () -> Unit,
     navigateToSettingsActtion: () -> Unit,
-    selectAction: (AbstractUnit) -> Unit,
-    viewModel: SecondViewModel,
-    chipsRow: @Composable (UnitGroup?, LazyListState) -> Unit = { _, _ -> },
-    unitsListItem: @Composable (AbstractUnit, (AbstractUnit) -> Unit) -> Unit,
-    noBrokenCurrencies: Boolean,
-    title: String,
+    selectAction: (AbstractUnit) -> Unit
 ) {
     val uiState = viewModel.uiState
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val focusManager = LocalFocusManager.current
     val chipsRowLazyListState = rememberLazyListState()
-    val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
+    val focusManager = LocalFocusManager.current
 
+    val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
     val chipsBackground = animateColorAsState(
         if (scrollBehavior.state.overlappedFraction > 0.01f) {
             elevatedColor
@@ -103,51 +95,60 @@ private fun BasicUnitListScreen(
                 Modifier.background(chipsBackground.value)
             ) {
                 SearchBar(
-                    title = title,
+                    title = stringResource(R.string.units_screen_from),
                     value = uiState.searchQuery,
                     onValueChange = {
                         viewModel.onSearchQueryChange(it)
-                        viewModel.loadUnitsToShow(noBrokenCurrencies)
+                        viewModel.loadUnitsToShow(true)
                     },
                     favoritesOnly = uiState.favoritesOnly,
                     favoriteAction = {
                         viewModel.toggleFavoritesOnly()
-                        viewModel.loadUnitsToShow(noBrokenCurrencies)
+                        viewModel.loadUnitsToShow(true)
                     },
                     navigateUpAction = navigateUp,
                     focusManager = focusManager,
                     scrollBehavior = scrollBehavior
                 )
-                chipsRow(
-                    viewModel.uiState.chosenUnitGroup,
-                    chipsRowLazyListState
+                ChipsRow(
+                    chosenUnitGroup = viewModel.uiState.chosenUnitGroup,
+                    items = uiState.shownUnitGroups,
+                    selectAction = {
+                        viewModel.toggleSelectedChip(it)
+                        viewModel.loadUnitsToShow(true)
+                    },
+                    lazyListState = chipsRowLazyListState,
+                    navigateToSettingsActtion = navigateToSettingsActtion
                 )
             }
         }
     ) { paddingValues ->
-        LazyColumn(Modifier.padding(paddingValues)) {
-            if (uiState.unitsToShow.isEmpty()) {
-                item { SearchPlaceholder(navigateToSettingsActtion) }
-                return@LazyColumn
-            }
-            uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
-                item {
-                    Header(
-                        text = stringResource(unitGroup.res),
-                        paddingValues = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = 8.dp,
-                            bottom = 12.dp
-                        )
-                    )
-                }
-                items(items = listOfUnits, key = { it.unitId }) { unit ->
-                    unitsListItem(unit) {
-                        selectAction(it)
-                        viewModel.onSearchQueryChange("")
-                        focusManager.clearFocus(true)
-                        navigateUp()
+        Crossfade(
+            targetState = uiState.unitsToShow.isEmpty(),
+            modifier = Modifier.padding(paddingValues)
+        ) { noUnits ->
+            if (noUnits) {
+                SearchPlaceholder(navigateToSettingsActtion = navigateToSettingsActtion)
+            } else {
+                LazyColumn(Modifier.fillMaxSize()) {
+                    uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
+                        item(unitGroup.name) {
+                            UnitGroupHeader(Modifier.animateItemPlacement(), unitGroup)
+                        }
+                        items(listOfUnits, { it.unitId }) { unit ->
+                            UnitListItem(
+                                modifier = Modifier.animateItemPlacement(),
+                                unit = unit,
+                                isSelected = currentUnit == unit,
+                                selectAction = {
+                                    selectAction(it)
+                                    viewModel.onSearchQueryChange("")
+                                    focusManager.clearFocus(true)
+                                    navigateUp()
+                                },
+                                favoriteAction = { viewModel.favoriteUnit(it) },
+                            )
+                        }
                     }
                 }
             }
@@ -160,7 +161,7 @@ private fun BasicUnitListScreen(
          * Telling viewModel that it needs to update the list
          */
         viewModel.setSelectedChip(currentUnit.group)
-        viewModel.loadUnitsToShow(noBrokenCurrencies)
+        viewModel.loadUnitsToShow(true)
 
         val groupToSelect = uiState.shownUnitGroups.indexOf(currentUnit.group)
         if (groupToSelect > -1) {
@@ -170,90 +171,103 @@ private fun BasicUnitListScreen(
 }
 
 /**
- * Left side screen. Unit to convert from.
- *
- * @param currentUnit Currently selected [AbstractUnit].
- * @param navigateUp Action to navigate up. Called when user click back button.
- * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end.
- * @param selectAction Action to perform when user clicks on [UnitListItem].
- * @param viewModel [SecondViewModel].
- */
-@Composable
-fun LeftSideScreen(
-    currentUnit: AbstractUnit,
-    navigateUp: () -> Unit,
-    navigateToSettingsActtion: () -> Unit,
-    selectAction: (AbstractUnit) -> Unit,
-    viewModel: SecondViewModel
-) = BasicUnitListScreen(
-    currentUnit = currentUnit,
-    navigateUp = navigateUp,
-    navigateToSettingsActtion = navigateToSettingsActtion,
-    selectAction = selectAction,
-    viewModel = viewModel,
-    chipsRow = { unitGroup, lazyListState ->
-        ChipsRow(
-            items = viewModel.uiState.shownUnitGroups,
-            chosenUnitGroup = unitGroup,
-            selectAction = {
-                viewModel.toggleSelectedChip(it)
-                viewModel.loadUnitsToShow(true)
-            },
-            navigateToSettingsActtion = navigateToSettingsActtion,
-            lazyListState = lazyListState
-        )
-    },
-    unitsListItem = { unit, selectUnitAction ->
-        UnitListItem(
-            unit = unit,
-            isSelected = currentUnit == unit,
-            selectAction = selectUnitAction,
-            favoriteAction = { viewModel.favoriteUnit(it) },
-        )
-    },
-    noBrokenCurrencies = true,
-    title = stringResource(R.string.units_screen_from)
-)
-
-/**
  * Right side screen. Unit to convert to.
  *
+ * @param viewModel [SecondViewModel].
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
  * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
- * @param viewModel [SecondViewModel].
  * @param inputValue Current input value (upper text field on MainScreen)
  * @param unitFrom Unit we are converting from. Need it for conversion.
  */
 @Composable
 fun RightSideScreen(
+    viewModel: SecondViewModel,
     currentUnit: AbstractUnit,
     navigateUp: () -> Unit,
     navigateToSettingsActtion: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
-    viewModel: SecondViewModel,
     inputValue: BigDecimal,
     unitFrom: AbstractUnit
-) = BasicUnitListScreen(
-    currentUnit = currentUnit,
-    navigateUp = navigateUp,
-    navigateToSettingsActtion = navigateToSettingsActtion,
-    selectAction = selectAction,
-    viewModel = viewModel,
-    unitsListItem = { unit, selectUnitAction ->
-        UnitListItem(
-            unit = unit,
-            isSelected = currentUnit == unit,
-            selectAction = selectUnitAction,
-            favoriteAction = { viewModel.favoriteUnit(it) },
-            convertValue = {
-                Formatter.format(
-                    unitFrom.convert(unit, inputValue, 3).toPlainString()
-                )
+) {
+    val uiState = viewModel.uiState
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val focusManager = LocalFocusManager.current
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            SearchBar(
+                title = stringResource(R.string.units_screen_from),
+                value = uiState.searchQuery,
+                onValueChange = {
+                    viewModel.onSearchQueryChange(it)
+                    viewModel.loadUnitsToShow(false)
+                },
+                favoritesOnly = uiState.favoritesOnly,
+                favoriteAction = {
+                    viewModel.toggleFavoritesOnly()
+                    viewModel.loadUnitsToShow(false)
+                },
+                navigateUpAction = navigateUp,
+                focusManager = focusManager,
+                scrollBehavior = scrollBehavior
+            )
+        }
+    ) { paddingValues ->
+        Crossfade(
+            targetState = uiState.unitsToShow.isEmpty(),
+            modifier = Modifier.padding(paddingValues)
+        ) { noUnits ->
+            if (noUnits) {
+                SearchPlaceholder(navigateToSettingsActtion = navigateToSettingsActtion)
+            } else {
+                LazyColumn(Modifier.fillMaxSize()) {
+                    uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
+                        item(unitGroup.name) {
+                            UnitGroupHeader(Modifier.animateItemPlacement(), unitGroup)
+                        }
+                        items(listOfUnits, { it.unitId }) { unit ->
+                            UnitListItem(
+                                modifier = Modifier.animateItemPlacement(),
+                                unit = unit,
+                                isSelected = currentUnit == unit,
+                                selectAction = {
+                                    selectAction(it)
+                                    viewModel.onSearchQueryChange("")
+                                    focusManager.clearFocus(true)
+                                    navigateUp()
+                                },
+                                favoriteAction = { viewModel.favoriteUnit(it) },
+                                convertValue = {
+                                    Formatter.format(
+                                        unitFrom.convert(unit, inputValue, 3).toPlainString()
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
             }
-        )
-    },
-    noBrokenCurrencies = false,
-    title = stringResource(R.string.units_screen_to)
-)
+        }
+    }
+
+    // This block is called only once on initial composition
+    LaunchedEffect(Unit) {
+        /**
+         * Telling viewModel that it needs to update the list
+         */
+        viewModel.setSelectedChip(currentUnit.group)
+        viewModel.loadUnitsToShow(false)
+    }
+}
+
+@Composable
+private fun UnitGroupHeader(modifier: Modifier, unitGroup: UnitGroup) {
+    Header(
+        text = stringResource(unitGroup.res),
+        modifier = modifier,
+        paddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp)
+    )
+}

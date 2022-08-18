@@ -27,6 +27,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -66,6 +67,7 @@ import com.sadellie.unitto.data.units.AbstractUnit
  */
 @Composable
 private fun BasicUnitListItem(
+    modifier: Modifier,
     unit: AbstractUnit,
     isSelected: Boolean,
     selectAction: (AbstractUnit) -> Unit,
@@ -73,8 +75,9 @@ private fun BasicUnitListItem(
     shortNameLabel: String
 ) {
     var isFavorite: Boolean by rememberSaveable { mutableStateOf(unit.isFavorite) }
-    Column(
-        modifier = Modifier
+    Box(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.surface)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
@@ -145,11 +148,13 @@ private fun BasicUnitListItem(
  */
 @Composable
 fun UnitListItem(
+    modifier: Modifier,
     unit: AbstractUnit,
     isSelected: Boolean,
     selectAction: (AbstractUnit) -> Unit,
     favoriteAction: (AbstractUnit) -> Unit,
 ) = BasicUnitListItem(
+    modifier = modifier,
     unit = unit,
     isSelected = isSelected,
     selectAction = selectAction,
@@ -168,12 +173,14 @@ fun UnitListItem(
  */
 @Composable
 fun UnitListItem(
+    modifier: Modifier,
     unit: AbstractUnit,
     isSelected: Boolean,
     selectAction: (AbstractUnit) -> Unit,
     favoriteAction: (AbstractUnit) -> Unit,
     convertValue: (AbstractUnit) -> String
 ) = BasicUnitListItem(
+    modifier = modifier,
     unit = unit,
     isSelected = isSelected,
     selectAction = selectAction,

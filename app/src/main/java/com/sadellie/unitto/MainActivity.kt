@@ -120,21 +120,21 @@ fun UnittoApp(
 
         composable(LEFT_LIST_SCREEN) {
             LeftSideScreen(
+                viewModel = secondViewModel,
                 currentUnit = mainViewModel.unitFrom,
                 navigateUp = { navController.navigateUp() },
-                selectAction = { mainViewModel.changeUnitFrom(it) },
                 navigateToSettingsActtion = { navController.navigate(UNIT_GROUPS_SCREEN) },
-                viewModel = secondViewModel
+                selectAction = { mainViewModel.changeUnitFrom(it) }
             )
         }
 
         composable(RIGHT_LIST_SCREEN) {
             RightSideScreen(
+                viewModel = secondViewModel,
                 currentUnit = mainViewModel.unitTo,
                 navigateUp = { navController.navigateUp() },
-                selectAction = { mainViewModel.changeUnitTo(it) },
                 navigateToSettingsActtion = { navController.navigate(UNIT_GROUPS_SCREEN) },
-                viewModel = secondViewModel,
+                selectAction = { mainViewModel.changeUnitTo(it) },
                 inputValue = mainViewModel.mainUIState.inputValue.toBigDecimal(),
                 unitFrom = mainViewModel.unitFrom
             )
