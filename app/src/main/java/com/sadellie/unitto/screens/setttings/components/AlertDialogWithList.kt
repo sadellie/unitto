@@ -71,12 +71,12 @@ fun AlertDialogWithList(
                     Text(supportText)
                 }
                 LazyColumn {
-                    items(listItems.toList()) {
+                    items(listItems.toList()) { (option, label) ->
                         CustomDialogContentListItem(
-                            label = stringResource(it.second),
-                            selected = selectedItemIndex == it.first,
+                            label = stringResource(label),
+                            selected = selectedItemIndex == option,
                             onClick = {
-                                selectAction(it.first)
+                                selectAction(option)
                                 dismissAction()
                             }
                         )
