@@ -32,7 +32,8 @@ class AllUnitsRepositoryTest {
             hideBrokenCurrencies = false,
             chosenUnitGroup = null,
             favoritesOnly = false,
-            searchQuery = ""
+            searchQuery = "",
+            allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(allUnitsRepository.allUnits.groupBy { it.group }, result)
     }
@@ -48,7 +49,8 @@ class AllUnitsRepositoryTest {
             hideBrokenCurrencies = false,
             chosenUnitGroup = UnitGroup.SPEED,
             favoritesOnly = true,
-            searchQuery = "kilometer per hour"
+            searchQuery = "kilometer per hour",
+            allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(
             mapOf(UnitGroup.SPEED to listOf(allUnitsRepository.getCollectionByGroup(UnitGroup.SPEED)?.first { it.unitId == MyUnitIDS.kilometer_per_hour })),
@@ -63,7 +65,8 @@ class AllUnitsRepositoryTest {
             hideBrokenCurrencies = false,
             chosenUnitGroup = UnitGroup.TIME,
             favoritesOnly = false,
-            searchQuery = ""
+            searchQuery = "",
+            allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(allUnitsRepository.allUnits.filter { it.group == UnitGroup.TIME }
             .groupBy { it.group }, result)
@@ -77,7 +80,8 @@ class AllUnitsRepositoryTest {
             hideBrokenCurrencies = false,
             chosenUnitGroup = null,
             favoritesOnly = true,
-            searchQuery = ""
+            searchQuery = "",
+            allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(allUnitsRepository.allUnits.filter { it.unitId == MyUnitIDS.kilometer }
             .groupBy { it.group }, result)
@@ -94,7 +98,8 @@ class AllUnitsRepositoryTest {
             hideBrokenCurrencies = false,
             chosenUnitGroup = null,
             favoritesOnly = false,
-            searchQuery = "kilometer per hour"
+            searchQuery = "kilometer per hour",
+            allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(
             mapOf(UnitGroup.SPEED to listOf(allUnitsRepository.getCollectionByGroup(UnitGroup.SPEED)?.first { it.unitId == MyUnitIDS.kilometer_per_hour })),
@@ -112,7 +117,8 @@ class AllUnitsRepositoryTest {
             hideBrokenCurrencies = true,
             chosenUnitGroup = UnitGroup.CURRENCY,
             favoritesOnly = false,
-            searchQuery = ""
+            searchQuery = "",
+            allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(
             mapOf(UnitGroup.CURRENCY to allUnitsRepository.getCollectionByGroup(UnitGroup.CURRENCY)?.filter { it.unitId != MyUnitIDS.currency_btc }),
