@@ -18,15 +18,16 @@
 
 package com.sadellie.unitto.screens.setttings
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.DragIndicator
@@ -39,6 +40,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -84,20 +86,23 @@ fun UnitGroupsScreen(
 
             items(shownUnits.value, { it }) { item ->
                 ReorderableItem(state, key = item) { isDragging ->
-                    val background = animateColorAsState(
-                        if (isDragging) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
-                    )
-                    val cornerRadius = animateDpAsState(if (isDragging) 16.dp else 0.dp)
+                    val transition = updateTransition(isDragging, label = "draggedTransition")
+                    val background by transition.animateColor(label = "background") {
+                        if (it) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
+                    }
+                    val itemPadding by transition.animateDp(label = "itemPadding") {
+                        if (it) 16.dp else 0.dp
+                    }
 
                     ListItem(
                         headlineText = { Text(stringResource(item.res)) },
                         modifier = Modifier
-                            .padding(horizontal = cornerRadius.value)
-                            .clip(RoundedCornerShape(cornerRadius.value))
+                            .padding(horizontal = itemPadding)
+                            .clip(CircleShape)
                             .clickable { viewModel.hideUnitGroup(item) }
                             .detectReorderAfterLongPress(state),
                         colors = ListItemDefaults.colors(
-                            containerColor = background.value
+                            containerColor = background
                         ),
                         leadingContent = {
                             Icon(
