@@ -4,9 +4,6 @@
 *.ap_
 *.aab
 
-# Fonts
-*.ttf
-
 # Files for the ART/Dalvik VM
 *.dex
 
