@@ -37,6 +37,9 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
@@ -76,16 +79,13 @@ fun LeftSideScreen(
     val focusManager = LocalFocusManager.current
 
     val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
+    val needToTint by remember {
+        derivedStateOf { scrollBehavior.state.overlappedFraction > 0.01f }
+    }
+
     val chipsBackground = animateColorAsState(
-        if (scrollBehavior.state.overlappedFraction > 0.01f) {
-            elevatedColor
-        } else {
-            MaterialTheme.colorScheme.surface
-        },
-        animationSpec = tween(
-            durationMillis = 500,
-            easing = LinearOutSlowInEasing
-        )
+        if (needToTint) elevatedColor else MaterialTheme.colorScheme.surface,
+        tween(durationMillis = 500, easing = LinearOutSlowInEasing)
     )
 
     Scaffold(
