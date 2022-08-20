@@ -29,7 +29,6 @@ import com.sadellie.unitto.FirebaseHelper
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_MINUS
-import com.sadellie.unitto.data.preferences.MAX_PRECISION
 import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
@@ -225,18 +224,7 @@ class MainViewModel @Inject constructor(
         try {
             val pairs: CurrencyUnitResponse =
                 CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId)
-            allUnitsRepository.getCollectionByGroup(UnitGroup.CURRENCY)?.forEach {
-                // Getting rates from map. We set ZERO as default so that it can be skipped
-                val rate = pairs.currency.getOrElse(it.unitId) { BigDecimal.ZERO }
-                // We make sure that we don't divide by zero
-                if (rate > BigDecimal.ZERO) {
-                    it.isEnabled = true
-                    it.basicUnit = BigDecimal.ONE.setScale(MAX_PRECISION).div(rate)
-                } else {
-                    // Hiding broken currencies
-                    it.isEnabled = false
-                }
-            }
+            allUnitsRepository.updateBasicUnitsForCurrencies(pairs.currency)
         } catch (e: Exception) {
             when (e) {
                 // 403, Network and Adapter exceptions can be ignored
