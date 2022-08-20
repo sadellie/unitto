@@ -30,6 +30,7 @@ allprojects {
                 "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
                 "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                 "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
+                "-opt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
             )
         }
     }

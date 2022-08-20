@@ -42,7 +42,11 @@ import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -58,6 +62,11 @@ class MainViewModel @Inject constructor(
     private var userPrefs = UserPreferences()
 
     /**
+     * UI state
+     */
+    private val _mainUIState = MutableStateFlow(MainScreenUIState())
+
+    /**
      * Unit we converting from (left side)
      */
     var unitFrom: AbstractUnit by mutableStateOf(allUnitsRepository.getById(MyUnitIDS.kilometer))
@@ -69,11 +78,16 @@ class MainViewModel @Inject constructor(
     var unitTo: AbstractUnit by mutableStateOf(allUnitsRepository.getById(MyUnitIDS.mile))
         private set
 
-    /**
-     * UI state
-     */
-    var mainUIState: MainScreenUIState by mutableStateOf(MainScreenUIState())
-        private set
+    val mainFlow = combine(_mainUIState, userPrefsRepository.userPreferencesFlow) { UIState, prefs ->
+        userPrefs = prefs
+        convertValue()
+        return@combine UIState
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = MainScreenUIState()
+        )
 
     /**
      * This function takes local variables, converts values and then causes the UI to update
@@ -83,7 +97,7 @@ class MainViewModel @Inject constructor(
         val convertedValue: BigDecimal =
             unitFrom.convert(
                 unitTo,
-                mainUIState.inputValue.toBigDecimal(),
+                _mainUIState.value.inputValue.toBigDecimal(),
                 userPrefs.digitsPrecision
             )
 
@@ -93,7 +107,11 @@ class MainViewModel @Inject constructor(
          * is zero, than we make sure there are no trailing zeros.
          */
         val resultValue =
-            if (convertedValue == BigDecimal.ZERO.setScale(userPrefs.digitsPrecision, RoundingMode.HALF_EVEN)) {
+            if (convertedValue == BigDecimal.ZERO.setScale(
+                    userPrefs.digitsPrecision,
+                    RoundingMode.HALF_EVEN
+                )
+            ) {
                 KEY_0
             } else {
                 // Setting result value using a specified OutputFormat
@@ -103,7 +121,7 @@ class MainViewModel @Inject constructor(
                     else -> convertedValue.toPlainString()
                 }
             }
-        mainUIState = mainUIState.copy(resultValue = resultValue)
+        _mainUIState.value = _mainUIState.value.copy(resultValue = resultValue)
     }
 
     /**
@@ -116,11 +134,16 @@ class MainViewModel @Inject constructor(
         unitFrom = clickedUnit
 
         // Now we check for negate button
-        mainUIState = mainUIState.copy(negateButtonEnabled = clickedUnit.group.canNegate)
+        _mainUIState.value =
+            _mainUIState.value.copy(negateButtonEnabled = clickedUnit.group.canNegate)
         // Now we change to positive if the group we switched to supports negate
         if (!clickedUnit.group.canNegate) {
-            mainUIState =
-                mainUIState.copy(inputValue = mainUIState.inputValue.removePrefix(KEY_MINUS))
+            _mainUIState.value =
+                _mainUIState.value.copy(
+                    inputValue = _mainUIState.value.inputValue.removePrefix(
+                        KEY_MINUS
+                    )
+                )
         }
 
         // Now setting up right unit (pair for the left one)
@@ -192,12 +215,12 @@ class MainViewModel @Inject constructor(
      */
     private suspend fun updateCurrenciesBasicUnits() {
         // Resetting error and network loading states in case we are not gonna do anything below
-        mainUIState = mainUIState.copy(isLoadingNetwork = false, showError = false)
+        _mainUIState.value = _mainUIState.value.copy(isLoadingNetwork = false, showError = false)
         // We update currencies only when needed
         if (unitFrom.group != UnitGroup.CURRENCY) return
 
         // Starting to load stuff
-        mainUIState = mainUIState.copy(isLoadingNetwork = true)
+        _mainUIState.value = _mainUIState.value.copy(isLoadingNetwork = true)
 
         try {
             val pairs: CurrencyUnitResponse =
@@ -223,10 +246,10 @@ class MainViewModel @Inject constructor(
                     FirebaseHelper().recordException(e)
                 }
             }
-            mainUIState = mainUIState.copy(showError = true)
+            _mainUIState.value = _mainUIState.value.copy(showError = true)
         } finally {
             // Loaded
-            mainUIState = mainUIState.copy(isLoadingNetwork = false)
+            _mainUIState.value = _mainUIState.value.copy(isLoadingNetwork = false)
         }
     }
 
@@ -256,16 +279,17 @@ class MainViewModel @Inject constructor(
                 // Here we add a dot to input
                 // Disabling dot button to avoid multiple dots in input value
                 // Enabling delete button to so that we can delete this dot from input
-                mainUIState = mainUIState.copy(
-                    inputValue = mainUIState.inputValue + digitToAdd,
+                _mainUIState.value = _mainUIState.value.copy(
+                    inputValue = _mainUIState.value.inputValue + digitToAdd,
                     dotButtonEnabled = false,
                     deleteButtonEnabled = true
                 )
             }
             KEY_0 -> {
                 // We shouldn't add zero to another zero in input, i.e. 00
-                if (mainUIState.inputValue != KEY_0) {
-                    mainUIState = mainUIState.copy(inputValue = mainUIState.inputValue + digitToAdd)
+                if (_mainUIState.value.inputValue != KEY_0) {
+                    _mainUIState.value =
+                        _mainUIState.value.copy(inputValue = _mainUIState.value.inputValue + digitToAdd)
                 }
             }
             else -> {
@@ -274,8 +298,8 @@ class MainViewModel @Inject constructor(
                 When there is just a zero, we should replace it with the digit we want to add,
                 avoids input to be like 03 (with this check it will be just 3)
                 */
-                mainUIState = mainUIState.copy(
-                    inputValue = if (mainUIState.inputValue == KEY_0) digitToAdd else mainUIState.inputValue + digitToAdd,
+                _mainUIState.value = _mainUIState.value.copy(
+                    inputValue = if (_mainUIState.value.inputValue == KEY_0) digitToAdd else _mainUIState.value.inputValue + digitToAdd,
                     deleteButtonEnabled = true
                 )
             }
@@ -289,12 +313,13 @@ class MainViewModel @Inject constructor(
     fun deleteDigit() {
         // Last symbol is a dot
         // We enable DOT button
-        if (mainUIState.inputValue.endsWith(KEY_DOT)) {
-            mainUIState = mainUIState.copy(dotButtonEnabled = true)
+        if (_mainUIState.value.inputValue.endsWith(KEY_DOT)) {
+            _mainUIState.value = _mainUIState.value.copy(dotButtonEnabled = true)
         }
 
         // Deleting last symbol
-        mainUIState = mainUIState.copy(inputValue = mainUIState.inputValue.dropLast(1))
+        _mainUIState.value =
+            _mainUIState.value.copy(inputValue = _mainUIState.value.inputValue.dropLast(1))
 
         /*
         Now we check what we have left
@@ -304,9 +329,10 @@ class MainViewModel @Inject constructor(
         Skipping this block means that we are left we acceptable value, i.e. 123.03
         */
         if (
-            mainUIState.inputValue in listOf(String(), KEY_MINUS, KEY_0)
+            _mainUIState.value.inputValue in listOf(String(), KEY_MINUS, KEY_0)
         ) {
-            mainUIState = mainUIState.copy(deleteButtonEnabled = false, inputValue = KEY_0)
+            _mainUIState.value =
+                _mainUIState.value.copy(deleteButtonEnabled = false, inputValue = KEY_0)
         }
 
         // We are sure that input has acceptable value, so we convert it
@@ -317,7 +343,7 @@ class MainViewModel @Inject constructor(
      * Clears input value and sets it to default (ZERO)
      */
     fun clearInput() {
-        mainUIState = mainUIState.copy(
+        _mainUIState.value = _mainUIState.value.copy(
             inputValue = KEY_0,
             deleteButtonEnabled = false,
             dotButtonEnabled = true
@@ -329,13 +355,13 @@ class MainViewModel @Inject constructor(
      * Changes input from positive to negative and vice versa
      */
     fun negateInput() {
-        mainUIState = mainUIState.copy(
-            inputValue = if (mainUIState.inputValue.getOrNull(0) != KEY_MINUS.single()) {
+        _mainUIState.value = _mainUIState.value.copy(
+            inputValue = if (_mainUIState.value.inputValue.getOrNull(0) != KEY_MINUS.single()) {
                 // If input doesn't have minus at the beginning, we give it to it
-                KEY_MINUS + mainUIState.inputValue
+                KEY_MINUS + _mainUIState.value.inputValue
             } else {
                 // Input has minus, meaning we need to remove it
-                mainUIState.inputValue.removePrefix(KEY_MINUS)
+                _mainUIState.value.inputValue.removePrefix(KEY_MINUS)
             }
         )
         convertValue()
@@ -346,20 +372,6 @@ class MainViewModel @Inject constructor(
      */
     private suspend fun saveLatestPairOfUnits() {
         userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
-    }
-
-    /**
-     * Observes changes in user preferences and updated values in this ViewModel.
-     *
-     * Any change in user preferences will update mutableStateOf so composables, that rely on this
-     * values recompose when actually needed. For example, when you change output format, composable
-     * in MainActivity will not be recomposed.
-     */
-    private suspend fun observePreferenceChanges() {
-        userPrefsRepository.userPreferencesFlow.collect {
-            userPrefs = it
-            convertValue()
-        }
     }
 
     init {
@@ -381,17 +393,17 @@ class MainViewModel @Inject constructor(
                 allUnitsRepository.getById(MyUnitIDS.mile)
             }
 
-            mainUIState = mainUIState.copy(negateButtonEnabled = unitFrom.group.canNegate)
+            _mainUIState.value =
+                _mainUIState.value.copy(negateButtonEnabled = unitFrom.group.canNegate)
 
             // Now we load units data from database
             val allBasedUnits = basedUnitRepository.getAll()
             allUnitsRepository.loadFromDatabase(application, allBasedUnits)
 
             // User is free to convert values and units on units screen can be sorted properly
-            mainUIState = mainUIState.copy(isLoadingDatabase = false)
+            _mainUIState.value = _mainUIState.value.copy(isLoadingDatabase = false)
             updateCurrenciesBasicUnits()
             convertValue()
-            observePreferenceChanges()
         }
     }
 }

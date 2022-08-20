@@ -135,7 +135,7 @@ fun UnittoApp(
                 navigateUp = { navController.navigateUp() },
                 navigateToSettingsActtion = { navController.navigate(UNIT_GROUPS_SCREEN) },
                 selectAction = { mainViewModel.changeUnitTo(it) },
-                inputValue = mainViewModel.mainUIState.inputValue.toBigDecimal(),
+                inputValue = mainViewModel.mainFlow.value.inputValue.toBigDecimal(),
                 unitFrom = mainViewModel.unitFrom
             )
         }

@@ -156,6 +156,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01")
 
     // Material Design 3
     implementation("androidx.compose.material3:material3:1.0.0-alpha16")

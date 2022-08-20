@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
@@ -58,6 +59,8 @@ fun MainScreen(
     viewModel: MainViewModel = viewModel()
 ) {
     var launched: Boolean by rememberSaveable { mutableStateOf(false) }
+
+    val mainScreenUIState = viewModel.mainFlow.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier,
@@ -84,7 +87,7 @@ fun MainScreen(
                 unitFrom = viewModel.unitFrom,
                 unitTo = viewModel.unitTo,
                 portrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT,
-                mainScreenUIState = viewModel.mainUIState,
+                mainScreenUIState = mainScreenUIState.value,
                 navControllerAction = { navControllerAction(it) },
                 swapMeasurements = { viewModel.swapUnits() },
                 processInput = { viewModel.processInput(it) },
