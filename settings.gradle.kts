@@ -8,4 +8,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Unitto"
 include(":app")
-include(":tools")
