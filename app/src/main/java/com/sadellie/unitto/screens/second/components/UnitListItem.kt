@@ -105,17 +105,15 @@ private fun BasicUnitListItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                shortNameLabel.let {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        text = it,
-                        style = MaterialTheme.typography.bodySmall,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = shortNameLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
             AnimatedContent(
                 modifier = Modifier
