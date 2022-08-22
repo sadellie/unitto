@@ -26,14 +26,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.R
 
-val OPEN_SANS_FONT = FontFamily(
+private val OPEN_SANS_FONT = FontFamily(
     Font(R.font.opensans_regular, weight = FontWeight.W400),
     Font(R.font.opensans_medium, weight = FontWeight.Medium)
 )
 
+private val LATO_FONT = FontFamily(
+    Font(R.font.lato_regular)
+)
+
 // This text style is used for text field
 val NumbersTextStyleDisplayLarge = TextStyle(
-    fontFamily = FontFamily(Font(R.font.lato_regular, weight = FontWeight.W400)),
+    fontFamily = LATO_FONT,
     fontWeight = FontWeight.W400,
     fontSize = 57.sp,
     lineHeight = 64.sp,
@@ -42,8 +46,8 @@ val NumbersTextStyleDisplayLarge = TextStyle(
 
 // This text style is used for keyboard button
 val NumbersTextStyleTitleLarge = TextStyle(
-    fontFamily = FontFamily(Font(R.font.lato_regular, weight = FontWeight.W700)),
-    fontWeight = FontWeight.W400,
+    fontFamily = LATO_FONT,
+    fontWeight = FontWeight.W600,
     fontSize = 26.sp,
     lineHeight = 32.sp,
     letterSpacing = 0.sp,
