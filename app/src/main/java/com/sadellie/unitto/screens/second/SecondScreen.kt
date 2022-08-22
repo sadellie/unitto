@@ -45,6 +45,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.UnitGroup
@@ -73,7 +74,7 @@ fun LeftSideScreen(
     navigateToSettingsActtion: () -> Unit,
     selectAction: (AbstractUnit) -> Unit
 ) {
-    val uiState = viewModel.uiState
+    val uiState = viewModel.mainFlow.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val chipsRowLazyListState = rememberLazyListState()
     val focusManager = LocalFocusManager.current
@@ -96,12 +97,12 @@ fun LeftSideScreen(
             ) {
                 SearchBar(
                     title = stringResource(R.string.units_screen_from),
-                    value = uiState.searchQuery,
+                    value = uiState.value.searchQuery,
                     onValueChange = {
                         viewModel.onSearchQueryChange(it)
                         viewModel.loadUnitsToShow(true)
                     },
-                    favoritesOnly = uiState.favoritesOnly,
+                    favoritesOnly = uiState.value.favoritesOnly,
                     favoriteAction = {
                         viewModel.toggleFavoritesOnly()
                         viewModel.loadUnitsToShow(true)
@@ -111,8 +112,8 @@ fun LeftSideScreen(
                     scrollBehavior = scrollBehavior
                 )
                 ChipsRow(
-                    chosenUnitGroup = viewModel.uiState.chosenUnitGroup,
-                    items = uiState.shownUnitGroups,
+                    chosenUnitGroup = uiState.value.chosenUnitGroup,
+                    items = uiState.value.shownUnitGroups,
                     selectAction = {
                         viewModel.toggleSelectedChip(it)
                         viewModel.loadUnitsToShow(true)
@@ -124,14 +125,14 @@ fun LeftSideScreen(
         }
     ) { paddingValues ->
         Crossfade(
-            targetState = uiState.unitsToShow.isEmpty(),
+            targetState = uiState.value.unitsToShow.isEmpty(),
             modifier = Modifier.padding(paddingValues)
         ) { noUnits ->
             if (noUnits) {
                 SearchPlaceholder(navigateToSettingsActtion = navigateToSettingsActtion)
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
-                    uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
+                    uiState.value.unitsToShow.forEach { (unitGroup, listOfUnits) ->
                         item(unitGroup.name) {
                             UnitGroupHeader(Modifier.animateItemPlacement(), unitGroup)
                         }
@@ -163,7 +164,7 @@ fun LeftSideScreen(
         viewModel.setSelectedChip(currentUnit.group)
         viewModel.loadUnitsToShow(true)
 
-        val groupToSelect = uiState.shownUnitGroups.indexOf(currentUnit.group)
+        val groupToSelect = uiState.value.shownUnitGroups.indexOf(currentUnit.group)
         if (groupToSelect > -1) {
             chipsRowLazyListState.animateScrollToItem(groupToSelect)
         }
@@ -191,7 +192,7 @@ fun RightSideScreen(
     inputValue: BigDecimal,
     unitFrom: AbstractUnit
 ) {
-    val uiState = viewModel.uiState
+    val uiState = viewModel.mainFlow.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val focusManager = LocalFocusManager.current
 
@@ -200,12 +201,12 @@ fun RightSideScreen(
         topBar = {
             SearchBar(
                 title = stringResource(R.string.units_screen_from),
-                value = uiState.searchQuery,
+                value = uiState.value.searchQuery,
                 onValueChange = {
                     viewModel.onSearchQueryChange(it)
                     viewModel.loadUnitsToShow(false)
                 },
-                favoritesOnly = uiState.favoritesOnly,
+                favoritesOnly = uiState.value.favoritesOnly,
                 favoriteAction = {
                     viewModel.toggleFavoritesOnly()
                     viewModel.loadUnitsToShow(false)
@@ -217,14 +218,14 @@ fun RightSideScreen(
         }
     ) { paddingValues ->
         Crossfade(
-            targetState = uiState.unitsToShow.isEmpty(),
+            targetState = uiState.value.unitsToShow.isEmpty(),
             modifier = Modifier.padding(paddingValues)
         ) { noUnits ->
             if (noUnits) {
                 SearchPlaceholder(navigateToSettingsActtion = navigateToSettingsActtion)
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
-                    uiState.unitsToShow.forEach { (unitGroup, listOfUnits) ->
+                    uiState.value.unitsToShow.forEach { (unitGroup, listOfUnits) ->
                         item(unitGroup.name) {
                             UnitGroupHeader(Modifier.animateItemPlacement(), unitGroup)
                         }

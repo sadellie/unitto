@@ -18,9 +18,6 @@
 
 package com.sadellie.unitto.screens.second
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.units.AbstractUnit
@@ -31,6 +28,10 @@ import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -39,18 +40,26 @@ import javax.inject.Inject
 class SecondViewModel @Inject constructor(
     private val basedUnitRepository: MyBasedUnitsRepository,
     private val allUnitsRepository: AllUnitsRepository,
-    private val unitGroupsRepository: UnitGroupsRepository
+    unitGroupsRepository: UnitGroupsRepository
 ) : ViewModel() {
 
-    var uiState: SecondScreenUIState by mutableStateOf(SecondScreenUIState())
-        private set
+    private val _uiStateFlow = MutableStateFlow(SecondScreenUIState())
+
+    val mainFlow = combine(_uiStateFlow, unitGroupsRepository.shownUnitGroups) { uiState, shown ->
+        return@combine uiState.copy(shownUnitGroups = shown)
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SecondScreenUIState()
+        )
 
     fun toggleFavoritesOnly() {
-        uiState = uiState.copy(favoritesOnly = !uiState.favoritesOnly)
+        _uiStateFlow.value = _uiStateFlow.value.copy(favoritesOnly = !_uiStateFlow.value.favoritesOnly)
     }
 
     fun onSearchQueryChange(newValue: String) {
-        uiState = uiState.copy(searchQuery = newValue)
+        _uiStateFlow.value = _uiStateFlow.value.copy(searchQuery = newValue)
     }
 
     /**
@@ -59,7 +68,7 @@ class SecondViewModel @Inject constructor(
      * @param unitGroup Chip to change to.
      */
     fun setSelectedChip(unitGroup: UnitGroup) {
-        uiState = uiState.copy(chosenUnitGroup = unitGroup)
+        _uiStateFlow.value = _uiStateFlow.value.copy(chosenUnitGroup = unitGroup)
     }
 
     /**
@@ -71,8 +80,8 @@ class SecondViewModel @Inject constructor(
      * @param unitGroup [UnitGroup], currently selected chip.
      */
     fun toggleSelectedChip(unitGroup: UnitGroup) {
-        val newUnitGroup = if (uiState.chosenUnitGroup == unitGroup) null else unitGroup
-        uiState = uiState.copy(chosenUnitGroup = newUnitGroup)
+        val newUnitGroup = if (_uiStateFlow.value.chosenUnitGroup == unitGroup) null else unitGroup
+        _uiStateFlow.value = _uiStateFlow.value.copy(chosenUnitGroup = newUnitGroup)
     }
 
     /**
@@ -90,13 +99,13 @@ class SecondViewModel @Inject constructor(
             withContext(Dispatchers.Default) {
                 val unitsToShow = allUnitsRepository.filterUnits(
                     hideBrokenCurrencies = hideBrokenCurrencies,
-                    chosenUnitGroup = uiState.chosenUnitGroup,
-                    favoritesOnly = uiState.favoritesOnly,
-                    searchQuery = uiState.searchQuery,
-                    allUnitsGroups = uiState.shownUnitGroups
+                    chosenUnitGroup = _uiStateFlow.value.chosenUnitGroup,
+                    favoritesOnly = _uiStateFlow.value.favoritesOnly,
+                    searchQuery = _uiStateFlow.value.searchQuery,
+                    allUnitsGroups = _uiStateFlow.value.shownUnitGroups
                 )
 
-                uiState = uiState.copy(unitsToShow = unitsToShow)
+                _uiStateFlow.value = _uiStateFlow.value.copy(unitsToShow = unitsToShow)
             }
         }
     }
@@ -117,14 +126,6 @@ class SecondViewModel @Inject constructor(
                     frequency = unit.counter
                 )
             )
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-            unitGroupsRepository.shownUnitGroups.collect {
-                uiState = uiState.copy(shownUnitGroups = it)
-            }
         }
     }
 }
