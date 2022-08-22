@@ -147,8 +147,7 @@ class MainViewModel @Inject constructor(
 
         // Now setting up right unit (pair for the left one)
         unitTo = if (unitFrom.pairedUnit == null) {
-            // Dangerous btw
-            allUnitsRepository.getCollectionByGroup(unitFrom.group)!!.first()
+            allUnitsRepository.getCollectionByGroup(unitFrom.group).first()
         } else {
             allUnitsRepository.getById(unitFrom.pairedUnit!!)
         }

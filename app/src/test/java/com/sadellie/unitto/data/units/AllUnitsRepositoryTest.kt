@@ -25,6 +25,8 @@ class AllUnitsRepositoryTest {
 
     private val allUnitsRepository = AllUnitsRepository()
 
+    private val allUnits: List<AbstractUnit> = ALL_UNIT_GROUPS.flatMap { allUnitsRepository.getCollectionByGroup(it) }
+
     @Test
     fun filterAllUnitsNoFiltersLeft() {
         //  No filters applied, empty search query, from Left side list
@@ -35,7 +37,7 @@ class AllUnitsRepositoryTest {
             searchQuery = "",
             allUnitsGroups = ALL_UNIT_GROUPS
         )
-        assertEquals(allUnitsRepository.allUnits.groupBy { it.group }, result)
+        assertEquals(allUnits.groupBy { it.group }, result)
     }
 
     @Test
@@ -53,7 +55,8 @@ class AllUnitsRepositoryTest {
             allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(
-            mapOf(UnitGroup.SPEED to listOf(allUnitsRepository.getCollectionByGroup(UnitGroup.SPEED)?.first { it.unitId == MyUnitIDS.kilometer_per_hour })),
+            mapOf(UnitGroup.SPEED to listOf(allUnitsRepository.getCollectionByGroup(UnitGroup.SPEED)
+                .first { it.unitId == MyUnitIDS.kilometer_per_hour })),
             result
         )
     }
@@ -68,7 +71,7 @@ class AllUnitsRepositoryTest {
             searchQuery = "",
             allUnitsGroups = ALL_UNIT_GROUPS
         )
-        assertEquals(allUnitsRepository.allUnits.filter { it.group == UnitGroup.TIME }
+        assertEquals(allUnits.filter { it.group == UnitGroup.TIME }
             .groupBy { it.group }, result)
     }
 
@@ -83,7 +86,7 @@ class AllUnitsRepositoryTest {
             searchQuery = "",
             allUnitsGroups = ALL_UNIT_GROUPS
         )
-        assertEquals(allUnitsRepository.allUnits.filter { it.unitId == MyUnitIDS.kilometer }
+        assertEquals(allUnits.filter { it.unitId == MyUnitIDS.kilometer }
             .groupBy { it.group }, result)
     }
 
@@ -102,7 +105,8 @@ class AllUnitsRepositoryTest {
             allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(
-            mapOf(UnitGroup.SPEED to listOf(allUnitsRepository.getCollectionByGroup(UnitGroup.SPEED)?.first { it.unitId == MyUnitIDS.kilometer_per_hour })),
+            mapOf(UnitGroup.SPEED to listOf(allUnitsRepository.getCollectionByGroup(UnitGroup.SPEED)
+                .first { it.unitId == MyUnitIDS.kilometer_per_hour })),
             result
         )
     }
@@ -121,7 +125,8 @@ class AllUnitsRepositoryTest {
             allUnitsGroups = ALL_UNIT_GROUPS
         )
         assertEquals(
-            mapOf(UnitGroup.CURRENCY to allUnitsRepository.getCollectionByGroup(UnitGroup.CURRENCY)?.filter { it.unitId != MyUnitIDS.currency_btc }),
+            mapOf(UnitGroup.CURRENCY to allUnitsRepository.getCollectionByGroup(UnitGroup.CURRENCY)
+                .filter { it.unitId != MyUnitIDS.currency_btc }),
             result
         )
     }

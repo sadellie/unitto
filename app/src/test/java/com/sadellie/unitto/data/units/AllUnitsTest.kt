@@ -354,6 +354,6 @@ class AllUnitsTest {
     fun after() {
         val unitGroup = history.keys.first()
         // GROUP : testedCount / totalCount
-        println("${unitGroup.name} : ${history[unitGroup]?.size} / ${allUnitsRepository.getCollectionByGroup(unitGroup)?.size}")
+        println("${unitGroup.name} : ${history[unitGroup]?.size} / ${allUnitsRepository.getCollectionByGroup(unitGroup).size}")
     }
 }

@@ -85,9 +85,6 @@ class SecondViewModel @Inject constructor(
         hideBrokenCurrencies: Boolean
     ) {
         viewModelScope.launch {
-            // Prevent user from seeing invalid list
-            uiState = uiState.copy(unitsToShow = emptyMap())
-
             // This is mostly not UI related stuff and viewModelScope.launch uses Dispatchers.Main
             // So we switch to Default
             withContext(Dispatchers.Default) {

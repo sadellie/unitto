@@ -37,7 +37,7 @@ class AllUnitsRepository @Inject constructor() {
     /**
      * This is a collection of all available units.
      */
-    val allUnits: List<AbstractUnit> by lazy {
+    private val allUnits: List<AbstractUnit> by lazy {
         mapOfCollections.values.flatten()
     }
 
@@ -79,12 +79,14 @@ class AllUnitsRepository @Inject constructor() {
     /**
      * Looks for a collection of units of the given [UnitGroup].
      *
-     * @param unitGroup Requested [UnitGroup]. If you give it null, you will likely get null.
+     * @param unitGroup Requested [UnitGroup]
      * @return List of [AbstractUnit]s. Will return null if the is no collection for the specified
      * [UnitGroup].
+     *
+     * @throws [NoSuchElementException] from [Map.getValue]
      */
-    fun getCollectionByGroup(unitGroup: UnitGroup?): List<AbstractUnit>? {
-        return mapOfCollections[unitGroup]
+    fun getCollectionByGroup(unitGroup: UnitGroup): List<AbstractUnit> {
+        return mapOfCollections.getValue(unitGroup)
     }
 
     /**
@@ -106,11 +108,12 @@ class AllUnitsRepository @Inject constructor() {
         searchQuery: String,
         allUnitsGroups: List<UnitGroup>
     ): Map<UnitGroup, List<AbstractUnit>> {
-        val shownUnits: List<AbstractUnit> =
-            allUnitsGroups.flatMap { getCollectionByGroup(it) ?: listOf() }
-
-        var basicFilteredUnits: Sequence<AbstractUnit> =
-            getCollectionByGroup(unitGroup = chosenUnitGroup)?.asSequence() ?: shownUnits.asSequence()
+        var basicFilteredUnits: Sequence<AbstractUnit> = if (chosenUnitGroup == null) {
+            allUnits.filter { it.group in allUnitsGroups }
+        } else {
+            val collection = getCollectionByGroup(chosenUnitGroup)
+            collection
+        }.asSequence()
 
         if (favoritesOnly) {
             basicFilteredUnits = basicFilteredUnits.filter { it.isFavorite }
@@ -159,7 +162,7 @@ class AllUnitsRepository @Inject constructor() {
     fun updateBasicUnitsForCurrencies(
         conversions: Map<String, BigDecimal>
     ) {
-        getCollectionByGroup(UnitGroup.CURRENCY)?.forEach {
+        getCollectionByGroup(UnitGroup.CURRENCY).forEach {
             // Getting rates from map. We set ZERO as default so that it can be skipped
             val rate = conversions.getOrElse(it.unitId) { BigDecimal.ZERO }
             // We make sure that we don't divide by zero
