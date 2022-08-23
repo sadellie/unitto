@@ -46,7 +46,9 @@ class SecondViewModel @Inject constructor(
     private val _uiStateFlow = MutableStateFlow(SecondScreenUIState())
 
     val mainFlow = combine(_uiStateFlow, unitGroupsRepository.shownUnitGroups) { uiState, shown ->
-        return@combine uiState.copy(shownUnitGroups = shown)
+        val newState = uiState.copy(shownUnitGroups = shown)
+        _uiStateFlow.value = newState
+        return@combine newState
     }
         .stateIn(
             scope = viewModelScope,
