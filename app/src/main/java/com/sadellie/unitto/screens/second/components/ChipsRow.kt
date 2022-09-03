@@ -56,7 +56,7 @@ import com.sadellie.unitto.data.units.UnitGroup
  * @param items All [UnitGroup]s
  * @param chosenUnitGroup Currently selected [UnitGroup]
  * @param selectAction Action to perform when a chip is clicked
- * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end
+ * @param navigateToSettingsAction Action to perform when clicking settings chip at the end
  * @param lazyListState Used for animated scroll when entering unit selection screen
  */
 @Composable
@@ -64,7 +64,7 @@ fun ChipsRow(
     items: List<UnitGroup> = ALL_UNIT_GROUPS,
     chosenUnitGroup: UnitGroup?,
     selectAction: (UnitGroup) -> Unit,
-    navigateToSettingsActtion: () -> Unit,
+    navigateToSettingsAction: () -> Unit,
     lazyListState: LazyListState
 ) {
     LazyRow(
@@ -105,7 +105,7 @@ fun ChipsRow(
         item("settings") {
             UnittoFilterChip(
                 isSelected = false,
-                selectAction = navigateToSettingsActtion,
+                selectAction = navigateToSettingsAction,
                 paddingValues = PaddingValues(horizontal = 8.dp)
             ) {
                 Icon(

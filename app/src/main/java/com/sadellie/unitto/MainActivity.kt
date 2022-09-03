@@ -124,7 +124,7 @@ fun UnittoApp(
                 viewModel = secondViewModel,
                 currentUnit = mainViewModel.unitFrom,
                 navigateUp = { navController.navigateUp() },
-                navigateToSettingsActtion = { navController.navigate(UNIT_GROUPS_SCREEN) },
+                navigateToSettingsAction = { navController.navigate(UNIT_GROUPS_SCREEN) },
                 selectAction = { mainViewModel.changeUnitFrom(it) }
             )
         }
@@ -134,7 +134,7 @@ fun UnittoApp(
                 viewModel = secondViewModel,
                 currentUnit = mainViewModel.unitTo,
                 navigateUp = { navController.navigateUp() },
-                navigateToSettingsActtion = { navController.navigate(UNIT_GROUPS_SCREEN) },
+                navigateToSettingsAction = { navController.navigate(UNIT_GROUPS_SCREEN) },
                 selectAction = { mainViewModel.changeUnitTo(it) },
                 inputValue = mainViewModel.mainFlow.value.inputValue.toBigDecimal(),
                 unitFrom = mainViewModel.unitFrom

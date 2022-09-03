@@ -154,7 +154,7 @@ class AllUnitsRepository @Inject constructor() {
     }
 
     /**
-     * Update [AbstractUnit.basicUnit] properties for currncies from [currencyCollection].
+     * Update [AbstractUnit.basicUnit] properties for currencies from [currencyCollection].
      *
      * @param conversions Map: [AbstractUnit.unitId] and [BigDecimal] that will replace current
      * [AbstractUnit.basicUnit].

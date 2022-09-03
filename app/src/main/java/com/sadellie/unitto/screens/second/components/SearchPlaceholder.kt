@@ -40,10 +40,10 @@ import com.sadellie.unitto.R
 /**
  * Placeholder that can be seen when there are no units found
  *
- * @param navigateToSettingsActtion Action to perform when clicking open settings button.
+ * @param navigateToSettingsAction Action to perform when clicking open settings button.
  */
 @Composable
-fun SearchPlaceholder(navigateToSettingsActtion: () -> Unit) {
+fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +70,7 @@ fun SearchPlaceholder(navigateToSettingsActtion: () -> Unit) {
             style = MaterialTheme.typography.bodySmall
         )
         // Open settings button
-        ElevatedButton(onClick = navigateToSettingsActtion) {
+        ElevatedButton(onClick = navigateToSettingsAction) {
             Text(text = stringResource(R.string.search_placeholder_button_label))
         }
     }

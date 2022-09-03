@@ -63,7 +63,7 @@ import java.math.BigDecimal
  * @param viewModel [SecondViewModel].
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
- * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end.
+ * @param navigateToSettingsAction Action to perform when clicking settings chip at the end.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
  */
 @Composable
@@ -71,7 +71,7 @@ fun LeftSideScreen(
     viewModel: SecondViewModel,
     currentUnit: AbstractUnit,
     navigateUp: () -> Unit,
-    navigateToSettingsActtion: () -> Unit,
+    navigateToSettingsAction: () -> Unit,
     selectAction: (AbstractUnit) -> Unit
 ) {
     val uiState = viewModel.mainFlow.collectAsStateWithLifecycle()
@@ -119,7 +119,7 @@ fun LeftSideScreen(
                         viewModel.loadUnitsToShow(true)
                     },
                     lazyListState = chipsRowLazyListState,
-                    navigateToSettingsActtion = navigateToSettingsActtion
+                    navigateToSettingsAction = navigateToSettingsAction
                 )
             }
         }
@@ -129,7 +129,7 @@ fun LeftSideScreen(
             modifier = Modifier.padding(paddingValues)
         ) { noUnits ->
             if (noUnits) {
-                SearchPlaceholder(navigateToSettingsActtion = navigateToSettingsActtion)
+                SearchPlaceholder(navigateToSettingsAction = navigateToSettingsAction)
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     uiState.value.unitsToShow.forEach { (unitGroup, listOfUnits) ->
@@ -177,7 +177,7 @@ fun LeftSideScreen(
  * @param viewModel [SecondViewModel].
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
- * @param navigateToSettingsActtion Action to perform when clicking settings chip at the end.
+ * @param navigateToSettingsAction Action to perform when clicking settings chip at the end.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
  * @param inputValue Current input value (upper text field on MainScreen)
  * @param unitFrom Unit we are converting from. Need it for conversion.
@@ -187,7 +187,7 @@ fun RightSideScreen(
     viewModel: SecondViewModel,
     currentUnit: AbstractUnit,
     navigateUp: () -> Unit,
-    navigateToSettingsActtion: () -> Unit,
+    navigateToSettingsAction: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
     inputValue: BigDecimal,
     unitFrom: AbstractUnit
@@ -222,7 +222,7 @@ fun RightSideScreen(
             modifier = Modifier.padding(paddingValues)
         ) { noUnits ->
             if (noUnits) {
-                SearchPlaceholder(navigateToSettingsActtion = navigateToSettingsActtion)
+                SearchPlaceholder(navigateToSettingsAction = navigateToSettingsAction)
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     uiState.value.unitsToShow.forEach { (unitGroup, listOfUnits) ->

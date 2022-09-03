@@ -18,8 +18,6 @@
 
 package com.sadellie.unitto.data.preferences
 
-import android.text.TextUtils.split
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
