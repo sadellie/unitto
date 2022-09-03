@@ -131,8 +131,8 @@ fun openLink(mContext: Context, url: String) {
  * @return The amount of changes that are needed to transform one string into another
  */
 fun String.lev(stringToCompare: String): Int {
-    val stringA = this.lowercase()
-    val stringB = stringToCompare.lowercase()
+    val stringA = this
+    val stringB = stringToCompare
 
     // Skipping computation for this cases
     if (stringA == stringB) return 0
@@ -172,8 +172,9 @@ fun String.lev(stringToCompare: String): Int {
  * @return Sorted sequence of units. Units with lower Levenshtein distance are higher
  */
 fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
+    val stringToCompare = stringA.lowercase()
     // We don't need units where name is too different, half of the symbols is wrong in this situation
-    val threshold: Int = stringA.length / 2
+    val threshold: Int = stringToCompare.length / 2
     // List of pair: Unit and it's levDist
     val unitsWithDist = mutableListOf<Pair<AbstractUnit, Int>>()
     this.forEach { unit ->
@@ -185,12 +186,12 @@ fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
          */
         when {
             // It's the best possible match if it start with
-            unitName.startsWith(stringA) -> {
+            unitName.startsWith(stringToCompare) -> {
                 unitsWithDist.add(Pair(unit, 0))
                 return@forEach
             }
             // It's a little bit worse when it just contains part of the query
-            unitName.contains(stringA) -> {
+            unitName.contains(stringToCompare) -> {
                 unitsWithDist.add(Pair(unit, 1))
                 return@forEach
             }
@@ -210,8 +211,8 @@ fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
          * With substring levDist will be 3 so unit will be included
          */
         val levDist = unitName
-            .substring(0, minOf(stringA.length, unitName.length))
-            .lev(stringA)
+            .substring(0, minOf(stringToCompare.length, unitName.length))
+            .lev(stringToCompare)
 
         // Threshold
         if (levDist < threshold) {

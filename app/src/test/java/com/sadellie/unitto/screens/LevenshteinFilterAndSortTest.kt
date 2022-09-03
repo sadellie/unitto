@@ -84,4 +84,15 @@ class LevenshteinFilterAndSortTest {
             result
         )
     }
+
+    @Test
+    fun testLowerAndUpperCases() {
+        val searchQuery = "T"
+        val result = baseList.asSequence().sortByLev(searchQuery).map { it.renderedName }.toList()
+        println(result)
+        assertEquals(
+            listOf("Attometer", "Nanometer", "Millimeter", "Meter", "Kilometer", "Kilometer per square"),
+            result
+        )
+    }
 }
