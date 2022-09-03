@@ -14,7 +14,7 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion = "1.3.0-alpha03"
+val composeVersion = "1.3.0-beta01"
 
 // Flavor names
 val playStore = "playStore"
@@ -159,7 +159,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.0.0-alpha16")
+    implementation("androidx.compose.material3:material3:1.0.0-beta01")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
@@ -194,7 +194,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     // Themmo
-    implementation("com.github.sadellie:themmo:0.0.4")
+    implementation("com.github.sadellie:themmo:0.0.5")
 
     // ComposeReorderable
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.2")

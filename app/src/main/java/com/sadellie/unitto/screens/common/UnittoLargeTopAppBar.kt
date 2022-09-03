@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.screens.common
 
-import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
@@ -43,7 +42,6 @@ fun UnittoLargeTopAppBar(
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
-        rememberSplineBasedDecay(),
         rememberTopAppBarState()
     )
     Scaffold(
