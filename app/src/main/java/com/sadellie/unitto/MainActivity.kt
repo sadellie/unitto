@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -41,8 +42,8 @@ import com.sadellie.unitto.data.NavRoutes.SETTINGS_GRAPH
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
 import com.sadellie.unitto.data.NavRoutes.UNIT_GROUPS_SCREEN
-import com.sadellie.unitto.screens.main.MainViewModel
 import com.sadellie.unitto.screens.main.MainScreen
+import com.sadellie.unitto.screens.main.MainViewModel
 import com.sadellie.unitto.screens.second.LeftSideScreen
 import com.sadellie.unitto.screens.second.RightSideScreen
 import com.sadellie.unitto.screens.second.SecondViewModel
@@ -67,15 +68,15 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val settingsViewModel: SettingsViewModel = hiltViewModel()
-            val userPrefs = settingsViewModel.userPrefs
+            val userPrefs = settingsViewModel.userPrefs.collectAsStateWithLifecycle()
 
             val themmoController = rememberThemmoController(
                 lightColorScheme = LightThemeColors,
                 darkColorScheme = DarkThemeColors,
                 // Anything below will not called if theming mode is still loading from DataStore
-                themingMode = userPrefs.themingMode ?: return@setContent,
-                dynamicThemeEnabled = userPrefs.enableDynamicTheme,
-                amoledThemeEnabled = userPrefs.enableAmoledTheme
+                themingMode = userPrefs.value.themingMode ?: return@setContent,
+                dynamicThemeEnabled = userPrefs.value.enableDynamicTheme,
+                amoledThemeEnabled = userPrefs.value.enableAmoledTheme
             )
             val navController = rememberNavController()
             val sysUiController = rememberSystemUiController()

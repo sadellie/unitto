@@ -19,9 +19,6 @@
 package com.sadellie.unitto.screens.setttings
 
 import android.app.Application
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.FirebaseHelper
@@ -32,7 +29,10 @@ import com.sadellie.unitto.data.units.UnitGroupsRepository
 import com.sadellie.unitto.screens.Formatter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.ThemingMode
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.burnoutcrew.reorderable.ItemPosition
 import javax.inject.Inject
@@ -43,7 +43,9 @@ class SettingsViewModel @Inject constructor(
     private val unitGroupsRepository: UnitGroupsRepository,
     private val application: Application,
 ) : ViewModel() {
-    var userPrefs: UserPreferences by mutableStateOf(UserPreferences())
+    var userPrefs = userPrefsRepository.userPreferencesFlow
+        .onEach { Formatter.setSeparator(it.separator) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UserPreferences())
     val shownUnitGroups = unitGroupsRepository.shownUnitGroups
     val hiddenUnitGroups = unitGroupsRepository.hiddenUnitGroups
 
@@ -164,11 +166,6 @@ class SettingsViewModel @Inject constructor(
             unitGroupsRepository.updateShownGroups(
                 userPrefsRepository.userPreferencesFlow.first().shownUnitGroups
             )
-
-            userPrefsRepository.userPreferencesFlow.collect {
-                userPrefs = it
-                Formatter.setSeparator(it.separator)
-            }
         }
     }
 }

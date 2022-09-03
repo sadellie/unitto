@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.ABOUT_SCREEN
@@ -51,6 +52,7 @@ fun SettingsScreen(
     navControllerAction: (String) -> Unit
 ) {
     val mContext = LocalContext.current
+    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
     var dialogState: DialogState by rememberSaveable {
         mutableStateOf(DialogState.NONE)
     }
@@ -151,7 +153,7 @@ fun SettingsScreen(
                     UnittoListItem(
                         label = stringResource(R.string.send_usage_statistics),
                         supportText = stringResource(R.string.send_usage_statistics_support),
-                        switchState = viewModel.userPrefs.enableAnalytics
+                        switchState = userPrefs.value.enableAnalytics
                     ) { viewModel.updateEnableAnalytics(it) }
                 }
             }
@@ -198,7 +200,7 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(R.string.precision_setting),
                 listItems = PRECISIONS,
-                selectedItemIndex = viewModel.userPrefs.digitsPrecision,
+                selectedItemIndex = userPrefs.value.digitsPrecision,
                 selectAction = { viewModel.updatePrecision(it) },
                 dismissAction = { resetDialog() },
                 supportText = stringResource(R.string.precision_setting_info)
@@ -208,7 +210,7 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(R.string.separator_setting),
                 listItems = SEPARATORS,
-                selectedItemIndex = viewModel.userPrefs.separator,
+                selectedItemIndex = userPrefs.value.separator,
                 selectAction = { viewModel.updateSeparator(it) },
                 dismissAction = { resetDialog() }
             )
@@ -217,7 +219,7 @@ fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(R.string.output_format_setting),
                 listItems = OUTPUT_FORMAT,
-                selectedItemIndex = viewModel.userPrefs.outputFormat,
+                selectedItemIndex = userPrefs.value.outputFormat,
                 selectAction = { viewModel.updateOutputFormat(it) },
                 dismissAction = { resetDialog() },
                 supportText = stringResource(R.string.output_format_setting_info)

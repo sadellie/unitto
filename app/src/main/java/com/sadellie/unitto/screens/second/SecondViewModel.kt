@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -43,25 +44,35 @@ class SecondViewModel @Inject constructor(
     unitGroupsRepository: UnitGroupsRepository
 ) : ViewModel() {
 
-    private val _uiStateFlow = MutableStateFlow(SecondScreenUIState())
+    private val _favoritesOnly = MutableStateFlow(false)
+    private val _unitsToShow = MutableStateFlow(emptyMap<UnitGroup, List<AbstractUnit>>())
+    private val _searchQuery = MutableStateFlow("")
+    private val _chosenUnitGroup: MutableStateFlow<UnitGroup?> = MutableStateFlow(null)
+    private val _shownUnitGroups = unitGroupsRepository.shownUnitGroups
 
-    val mainFlow = combine(_uiStateFlow, unitGroupsRepository.shownUnitGroups) { uiState, shown ->
-        val newState = uiState.copy(shownUnitGroups = shown)
-        _uiStateFlow.value = newState
-        return@combine newState
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = SecondScreenUIState()
+    val mainFlow = combine(
+        _favoritesOnly,
+        _unitsToShow,
+        _searchQuery,
+        _chosenUnitGroup,
+        _shownUnitGroups
+    ) { favoritesOnly, unitsToShow, searchQuery, chosenUnitGroup, shownUnitGroups ->
+        return@combine SecondScreenUIState(
+            favoritesOnly = favoritesOnly,
+            unitsToShow = unitsToShow,
+            searchQuery = searchQuery,
+            chosenUnitGroup = chosenUnitGroup,
+            shownUnitGroups = shownUnitGroups
         )
+    }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SecondScreenUIState())
 
     fun toggleFavoritesOnly() {
-        _uiStateFlow.value = _uiStateFlow.value.copy(favoritesOnly = !_uiStateFlow.value.favoritesOnly)
+        _favoritesOnly.update { !_favoritesOnly.value }
     }
 
     fun onSearchQueryChange(newValue: String) {
-        _uiStateFlow.value = _uiStateFlow.value.copy(searchQuery = newValue)
+        _searchQuery.update { newValue }
     }
 
     /**
@@ -70,7 +81,7 @@ class SecondViewModel @Inject constructor(
      * @param unitGroup Chip to change to.
      */
     fun setSelectedChip(unitGroup: UnitGroup) {
-        _uiStateFlow.value = _uiStateFlow.value.copy(chosenUnitGroup = unitGroup)
+        _chosenUnitGroup.update { unitGroup }
     }
 
     /**
@@ -82,8 +93,8 @@ class SecondViewModel @Inject constructor(
      * @param unitGroup [UnitGroup], currently selected chip.
      */
     fun toggleSelectedChip(unitGroup: UnitGroup) {
-        val newUnitGroup = if (_uiStateFlow.value.chosenUnitGroup == unitGroup) null else unitGroup
-        _uiStateFlow.value = _uiStateFlow.value.copy(chosenUnitGroup = newUnitGroup)
+        val newUnitGroup = if (_chosenUnitGroup.value == unitGroup) null else unitGroup
+        _chosenUnitGroup.update { newUnitGroup }
     }
 
     /**
@@ -101,13 +112,13 @@ class SecondViewModel @Inject constructor(
             withContext(Dispatchers.Default) {
                 val unitsToShow = allUnitsRepository.filterUnits(
                     hideBrokenCurrencies = hideBrokenCurrencies,
-                    chosenUnitGroup = _uiStateFlow.value.chosenUnitGroup,
-                    favoritesOnly = _uiStateFlow.value.favoritesOnly,
-                    searchQuery = _uiStateFlow.value.searchQuery,
-                    allUnitsGroups = _uiStateFlow.value.shownUnitGroups
+                    chosenUnitGroup = _chosenUnitGroup.value,
+                    favoritesOnly = _favoritesOnly.value,
+                    searchQuery = _searchQuery.value,
+                    allUnitsGroups = _shownUnitGroups.value
                 )
 
-                _uiStateFlow.value = _uiStateFlow.value.copy(unitsToShow = unitsToShow)
+                _unitsToShow.update { unitsToShow }
             }
         }
     }
