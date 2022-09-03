@@ -99,7 +99,7 @@ android {
             buildConfigField(
                 "String",
                 "STORE_LINK",
-                "\"https://f-droid.org/packages/com.sadellie.unitto\""
+                "\"https://github.com/sadellie/unitto\""
             )
             buildConfigField("Boolean", "ANALYTICS", "false")
         }
