@@ -200,7 +200,7 @@ fun RightSideScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SearchBar(
-                title = stringResource(R.string.units_screen_from),
+                title = stringResource(R.string.units_screen_to),
                 value = uiState.value.searchQuery,
                 onValueChange = {
                     viewModel.onSearchQueryChange(it)
