@@ -98,15 +98,9 @@ fun LeftSideScreen(
                 SearchBar(
                     title = stringResource(R.string.units_screen_from),
                     value = uiState.value.searchQuery,
-                    onValueChange = {
-                        viewModel.onSearchQueryChange(it)
-                        viewModel.loadUnitsToShow(true)
-                    },
+                    onValueChange = { viewModel.onSearchQueryChange(it) },
                     favoritesOnly = uiState.value.favoritesOnly,
-                    favoriteAction = {
-                        viewModel.toggleFavoritesOnly()
-                        viewModel.loadUnitsToShow(true)
-                    },
+                    favoriteAction = { viewModel.toggleFavoritesOnly() },
                     navigateUpAction = navigateUp,
                     focusManager = focusManager,
                     scrollBehavior = scrollBehavior
@@ -114,10 +108,7 @@ fun LeftSideScreen(
                 ChipsRow(
                     chosenUnitGroup = uiState.value.chosenUnitGroup,
                     items = uiState.value.shownUnitGroups,
-                    selectAction = {
-                        viewModel.toggleSelectedChip(it)
-                        viewModel.loadUnitsToShow(true)
-                    },
+                    selectAction = { viewModel.toggleSelectedChip(it) },
                     lazyListState = chipsRowLazyListState,
                     navigateToSettingsAction = navigateToSettingsAction
                 )
@@ -157,14 +148,8 @@ fun LeftSideScreen(
     }
 
     // This block is called only once on initial composition
-    LaunchedEffect(Unit) {
-        /**
-         * Telling viewModel that it needs to update the list
-         */
-        viewModel.setSelectedChip(currentUnit.group)
-        viewModel.loadUnitsToShow(true)
-
-        val groupToSelect = uiState.value.shownUnitGroups.indexOf(currentUnit.group)
+    LaunchedEffect(uiState.value.shownUnitGroups) {
+        val groupToSelect = uiState.value.shownUnitGroups.indexOf(uiState.value.chosenUnitGroup)
         if (groupToSelect > -1) {
             chipsRowLazyListState.animateScrollToItem(groupToSelect)
         }
@@ -203,13 +188,11 @@ fun RightSideScreen(
                 title = stringResource(R.string.units_screen_to),
                 value = uiState.value.searchQuery,
                 onValueChange = {
-                    viewModel.onSearchQueryChange(it)
-                    viewModel.loadUnitsToShow(false)
+                    viewModel.onSearchQueryChange(it, false)
                 },
                 favoritesOnly = uiState.value.favoritesOnly,
                 favoriteAction = {
-                    viewModel.toggleFavoritesOnly()
-                    viewModel.loadUnitsToShow(false)
+                    viewModel.toggleFavoritesOnly(false)
                 },
                 navigateUpAction = navigateUp,
                 focusManager = focusManager,
@@ -252,15 +235,6 @@ fun RightSideScreen(
                 }
             }
         }
-    }
-
-    // This block is called only once on initial composition
-    LaunchedEffect(Unit) {
-        /**
-         * Telling viewModel that it needs to update the list
-         */
-        viewModel.setSelectedChip(currentUnit.group)
-        viewModel.loadUnitsToShow(false)
     }
 }
 

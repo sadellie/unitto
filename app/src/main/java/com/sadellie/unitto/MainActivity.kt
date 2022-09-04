@@ -120,6 +120,9 @@ fun UnittoApp(
         }
 
         composable(LEFT_LIST_SCREEN) {
+            // Initial group
+            secondViewModel.setSelectedChip(mainViewModel.unitFrom.group, true)
+
             LeftSideScreen(
                 viewModel = secondViewModel,
                 currentUnit = mainViewModel.unitFrom,
@@ -130,6 +133,9 @@ fun UnittoApp(
         }
 
         composable(RIGHT_LIST_SCREEN) {
+            // Initial group
+            secondViewModel.setSelectedChip(mainViewModel.unitFrom.group, false)
+
             RightSideScreen(
                 viewModel = secondViewModel,
                 currentUnit = mainViewModel.unitTo,

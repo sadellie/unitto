@@ -67,12 +67,14 @@ class SecondViewModel @Inject constructor(
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SecondScreenUIState())
 
-    fun toggleFavoritesOnly() {
+    fun toggleFavoritesOnly(hideBrokenCurrencies: Boolean = true) {
         _favoritesOnly.update { !_favoritesOnly.value }
+        loadUnitsToShow(hideBrokenCurrencies)
     }
 
-    fun onSearchQueryChange(newValue: String) {
+    fun onSearchQueryChange(newValue: String, hideBrokenCurrencies: Boolean = true) {
         _searchQuery.update { newValue }
+        loadUnitsToShow(hideBrokenCurrencies)
     }
 
     /**
@@ -80,8 +82,9 @@ class SecondViewModel @Inject constructor(
      *
      * @param unitGroup Chip to change to.
      */
-    fun setSelectedChip(unitGroup: UnitGroup) {
+    fun setSelectedChip(unitGroup: UnitGroup, hideBrokenCurrencies: Boolean = true) {
         _chosenUnitGroup.update { unitGroup }
+        loadUnitsToShow(hideBrokenCurrencies)
     }
 
     /**
@@ -92,9 +95,10 @@ class SecondViewModel @Inject constructor(
      *
      * @param unitGroup [UnitGroup], currently selected chip.
      */
-    fun toggleSelectedChip(unitGroup: UnitGroup) {
+    fun toggleSelectedChip(unitGroup: UnitGroup, hideBrokenCurrencies: Boolean = true) {
         val newUnitGroup = if (_chosenUnitGroup.value == unitGroup) null else unitGroup
         _chosenUnitGroup.update { newUnitGroup }
+        loadUnitsToShow(hideBrokenCurrencies)
     }
 
     /**
@@ -103,7 +107,7 @@ class SecondViewModel @Inject constructor(
      * @param hideBrokenCurrencies Decide whether or not we are on left side. Need it because right side requires
      * us to mark disabled currency units
      */
-    fun loadUnitsToShow(
+    private fun loadUnitsToShow(
         hideBrokenCurrencies: Boolean
     ) {
         viewModelScope.launch {
