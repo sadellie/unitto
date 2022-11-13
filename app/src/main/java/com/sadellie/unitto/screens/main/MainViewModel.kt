@@ -24,11 +24,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.keelar.exprk.ExpressionException
+import com.github.keelar.exprk.Expressions
 import com.sadellie.unitto.FirebaseHelper
-import com.sadellie.unitto.data.KEY_0
-import com.sadellie.unitto.data.KEY_DOT
-import com.sadellie.unitto.data.KEY_MINUS
-import com.sadellie.unitto.data.preferences.OutputFormat
+import com.sadellie.unitto.data.*
 import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.units.AbstractUnit
@@ -39,13 +38,9 @@ import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
-import com.sadellie.unitto.screens.combine
+import com.sadellie.unitto.screens.toStringWith
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -61,36 +56,34 @@ class MainViewModel @Inject constructor(
 
     private val _inputValue: MutableStateFlow<String> = MutableStateFlow(KEY_0)
     private val _deleteButtonEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val _dotButtonEnabled: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _negateButtonEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _isLoadingDatabase: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _isLoadingNetwork: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val _userPrefs = userPrefsRepository.userPreferencesFlow
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UserPreferences())
+    private val _calculatedValue: MutableStateFlow<String?> = MutableStateFlow(null)
+    private val _userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        UserPreferences()
+    )
 
     val mainFlow = combine(
-        _inputValue,
-        _deleteButtonEnabled,
-        _dotButtonEnabled,
-        _negateButtonEnabled,
-        _isLoadingDatabase,
-        _isLoadingNetwork,
-        _showError,
-        _userPrefs
-    ) { inputValue, deleteButtonEnabled, dotButtonEnabled, negateButtonEnabled, isLoadingDatabase, isLoadingNetwork, showError, _ ->
+        _inputValue, _isLoadingDatabase, _isLoadingNetwork, _showError, _userPrefs
+    ) { inputValue, isLoadingDatabase, isLoadingNetwork, showError, _ ->
         return@combine MainScreenUIState(
             inputValue = inputValue,
             resultValue = convertValue(),
-            deleteButtonEnabled = deleteButtonEnabled,
-            dotButtonEnabled = dotButtonEnabled,
-            negateButtonEnabled = negateButtonEnabled,
+            deleteButtonEnabled = _deleteButtonEnabled.value,
+            dotButtonEnabled = !_inputValue.value.takeLastWhile {
+                it.toString() !in OPERATORS.minus(KEY_DOT)
+            }.contains(KEY_DOT),
+            negateButtonEnabled = _negateButtonEnabled.value,
             isLoadingDatabase = isLoadingDatabase,
             isLoadingNetwork = isLoadingNetwork,
-            showError = showError
+            showError = showError,
+            calculatedValue = _calculatedValue.value
         )
-    }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainScreenUIState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainScreenUIState())
 
     /**
      * Unit we converting from (left side)
@@ -108,34 +101,50 @@ class MainViewModel @Inject constructor(
      * This function takes local variables, converts values and then causes the UI to update
      */
     private fun convertValue(): String {
+
+        val cleanInput = _inputValue.value.dropLastWhile { !it.isDigit() }
+
+        // Kotlin doesn't have a multi catch
+        val calculatedInput = try {
+            Expressions()
+                .setPrecision(_userPrefs.value.digitsPrecision)
+                .eval(cleanInput)
+        } catch (e: Exception) {
+            // Kotlin doesn't have a multi catch
+            when (e) {
+                is ExpressionException, is ArrayIndexOutOfBoundsException, is NumberFormatException -> return mainFlow.value.resultValue
+                else -> throw e
+            }
+        }
+
+        // Ugly way of determining when to hide calculated value
+        _calculatedValue.value = if (calculatedInput.toPlainString() != cleanInput) {
+            // Expression is not same as the result, show result
+            calculatedInput.toStringWith(_userPrefs.value.outputFormat)
+        } else {
+            // Expression is same as the result, don't show result, the input text is enough
+            null
+        }
+
         // Converting value using a specified precision
-        val convertedValue: BigDecimal =
-            unitFrom.convert(
-                unitTo,
-                _inputValue.value.toBigDecimal(),
-                _userPrefs.value.digitsPrecision
-            )
+        val convertedValue: BigDecimal = unitFrom.convert(
+            unitTo, calculatedInput, _userPrefs.value.digitsPrecision
+        )
 
         /**
          * There is a very interesting bug when trailing zeros are not stripped when input
          * consists of ZEROS only (0.00000 as an example). This check is a workaround. If the result
          * is zero, than we make sure there are no trailing zeros.
          */
-        val resultValue =
-            if (convertedValue == BigDecimal.ZERO.setScale(
-                    _userPrefs.value.digitsPrecision,
-                    RoundingMode.HALF_EVEN
-                )
-            ) {
-                KEY_0
-            } else {
-                // Setting result value using a specified OutputFormat
-                when (_userPrefs.value.outputFormat) {
-                    OutputFormat.ALLOW_ENGINEERING -> convertedValue.toString()
-                    OutputFormat.FORCE_ENGINEERING -> convertedValue.toEngineeringString()
-                    else -> convertedValue.toPlainString()
-                }
-            }
+        val resultValue = if (convertedValue == BigDecimal.ZERO.setScale(
+                _userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN
+            )
+        ) {
+            KEY_0
+        } else {
+            convertedValue.toStringWith(_userPrefs.value.outputFormat)
+        }
+
         return resultValue
     }
 
@@ -203,9 +212,7 @@ class MainViewModel @Inject constructor(
     private suspend fun incrementCounter(unit: AbstractUnit) {
         basedUnitRepository.insertUnits(
             MyBasedUnit(
-                unitId = unit.unitId,
-                isFavorite = unit.isFavorite,
-                pairedUnitId = unit.pairedUnit,
+                unitId = unit.unitId, isFavorite = unit.isFavorite, pairedUnitId = unit.pairedUnit,
                 // This will increment counter on unit in list too
                 frequency = ++unit.counter
             )
@@ -262,34 +269,69 @@ class MainViewModel @Inject constructor(
     /**
      * Function to process input when we click keyboard. Make sure that digits/symbols will be
      * added properly
-     * @param[digitToAdd] Digit/Symbol we want to add, can be any digit 0..9 or a dot symbol
+     * @param[symbolToAdd] Digit/Symbol we want to add, can be any digit 0..9 or a dot symbol
      */
-    fun processInput(digitToAdd: String) {
-        when (digitToAdd) {
-            KEY_DOT -> {
-                // Here we add a dot to input
-                // Disabling dot button to avoid multiple dots in input value
-                // Enabling delete button to so that we can delete this dot from input
-                _inputValue.update { _inputValue.value + digitToAdd }
-                _dotButtonEnabled.update { false }
-                _deleteButtonEnabled.update { true }
-            }
+    fun processInput(symbolToAdd: String) {
+        val lastSymbol = _inputValue.value.last().toString()
+        val lastSecondSymbol = _inputValue.value.takeLast(2).dropLast(1)
+        _deleteButtonEnabled.update { true }
+
+        when (symbolToAdd) {
             KEY_0 -> {
-                // We shouldn't add zero to another zero in input, i.e. 00
-                if (_inputValue.value != KEY_0) {
-                    _inputValue.update { _inputValue.value + digitToAdd }
+                // Don't add zero if the input is already a zero
+                if (_inputValue.value == KEY_0) return
+                // Don't add zero if there is a zero and operator in front
+                if ((lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_0)) return
+                _inputValue.update { _inputValue.value + symbolToAdd }
+            }
+            KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 -> {
+                // Replace single zero (default input) if it's here
+                if (_inputValue.value == KEY_0) {
+                    _inputValue.update { symbolToAdd }
+                } else {
+                    _inputValue.update { _inputValue.value + symbolToAdd }
                 }
             }
-            else -> {
-                /*
-                We want to add digit to input.
-                When there is just a zero, we should replace it with the digit we want to add,
-                avoids input to be like 03 (with this check it will be just 3)
-                */
-                _inputValue.update {
-                    if (_inputValue.value == KEY_0) digitToAdd else _inputValue.value + digitToAdd
+            KEY_DOT -> {
+                _inputValue.update { _inputValue.value + symbolToAdd }
+            }
+            KEY_MINUS -> {
+                when {
+                    // Replace single zero with minus (to support negative numbers)
+                    (_inputValue.value == KEY_0) -> {
+                        if (symbolToAdd == KEY_MINUS) _inputValue.update { symbolToAdd }
+                    }
+                    // Don't allow multiple minuses near each other
+                    (lastSymbol == KEY_MINUS) -> {}
+                    // Don't allow plus and minus be near each other
+                    (lastSymbol == KEY_PLUS) -> {
+                        _inputValue.update { _inputValue.value.dropLast(1) + symbolToAdd }
+                    }
+                    else -> {
+                        _inputValue.update { _inputValue.value + symbolToAdd }
+                    }
                 }
-                _deleteButtonEnabled.update { true }
+            }
+            KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY -> {
+                when {
+                    // Don't need expressions that start with zero
+                    (_inputValue.value == KEY_0) or (_inputValue.value == KEY_MINUS) -> {}
+                    /**
+                     * For situations like "50+-", when user clicks "/" we delete "-" so it becomes
+                     * "50+". We don't add "/' here. User will click "/" second time and the input
+                     * will be "50/".
+                     */
+                    (lastSecondSymbol in OPERATORS) -> {
+                        deleteDigit()
+                    }
+                    // Don't allow multiple operators near each other
+                    (lastSymbol in OPERATORS) -> {
+                        _inputValue.update { _inputValue.value.dropLast(1) + symbolToAdd }
+                    }
+                    else -> {
+                        _inputValue.update { _inputValue.value + symbolToAdd }
+                    }
+                }
             }
         }
     }
@@ -298,12 +340,6 @@ class MainViewModel @Inject constructor(
      * Deletes last symbol from input and handles buttons state (enabled/disabled)
      */
     fun deleteDigit() {
-        // Last symbol is a dot
-        // We enable DOT button
-        if (_inputValue.value.endsWith(KEY_DOT)) {
-            _dotButtonEnabled.update { true }
-        }
-
         // Deleting last symbol
         var inputToSet = _inputValue.value.dropLast(1)
 
@@ -314,9 +350,7 @@ class MainViewModel @Inject constructor(
         Set input to default (zero)
         Skipping this block means that we are left we acceptable value, i.e. 123.03
         */
-        if (
-            inputToSet in listOf(String(), KEY_MINUS, KEY_0)
-        ) {
+        if (inputToSet in listOf(String(), KEY_MINUS, KEY_0)) {
             _deleteButtonEnabled.update { false }
             inputToSet = KEY_0
         }
@@ -328,24 +362,8 @@ class MainViewModel @Inject constructor(
      * Clears input value and sets it to default (ZERO)
      */
     fun clearInput() {
-        _inputValue.update { KEY_0 }
         _deleteButtonEnabled.update { false }
-        _dotButtonEnabled.update { true }
-    }
-
-    /**
-     * Changes input from positive to negative and vice versa
-     */
-    fun negateInput() {
-        _inputValue.update {
-            if (_inputValue.value.getOrNull(0) != KEY_MINUS.single()) {
-                // If input doesn't have minus at the beginning, we give it to it
-                KEY_MINUS + _inputValue.value
-            } else {
-                // Input has minus, meaning we need to remove it
-                _inputValue.value.removePrefix(KEY_MINUS)
-            }
-        }
+        _inputValue.update { KEY_0 }
     }
 
     /**

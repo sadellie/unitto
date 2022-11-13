@@ -39,31 +39,37 @@ import com.sadellie.unitto.ui.theme.NumbersTextStyleTitleLarge
 /**
  * Button for keyboard
  *
- * @param modifier Modifier that is applied to a [Button] component
- * @param digit Symbol to show on button
- * @param enabled Current state of this button
- * @param onClick Action to perform when clicking this button
+ * @param modifier Modifier that is applied to a [Button] component.
+ * @param digit Symbol to show on button.
+ * @param enabled Current state of this button.
+ * @param isPrimary If true will use `inverseOnSurface` color, else `secondaryContainer`.
+ * @param onLongClick Action to perform when holding this button.
+ * @param onClick Action to perform when clicking this button.
  */
 @Composable
 fun KeyboardButton(
     modifier: Modifier = Modifier,
     digit: String,
     enabled: Boolean = true,
-    onClick: (String) -> Unit = {},
+    isPrimary: Boolean = true,
+    onLongClick: () -> Unit = {},
+    onClick: (String) -> Unit = {}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val cornerRadius: Int by animateIntAsState(
         targetValue = if (isPressed) 30 else 50,
-        animationSpec = tween(easing = FastOutSlowInEasing)
-    )
+        animationSpec = tween(easing = FastOutSlowInEasing),
+        finishedListener = { if (it == 30) onLongClick() })
 
     Button(
         modifier = modifier,
         interactionSource = interactionSource,
         shape = RoundedCornerShape(cornerRadius),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
+            containerColor = if (isPrimary) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
         ),
         onClick = { onClick(digit) },
         enabled = enabled,
@@ -71,8 +77,7 @@ fun KeyboardButton(
     ) {
         Text(
             text = digit,
-            style = NumbersTextStyleTitleLarge,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            style = NumbersTextStyleTitleLarge
         )
     }
 }

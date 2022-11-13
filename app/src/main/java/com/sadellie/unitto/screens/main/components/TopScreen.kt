@@ -51,6 +51,8 @@ import com.sadellie.unitto.data.units.AbstractUnit
  *
  * @param modifier Modifier that is applied to Column
  * @param inputValue Current input value (like big decimal)
+ * @param calculatedValue Current calculated value (like big decimal), will be shown under input when it
+ * has an expression in it.
  * @param outputValue Current output value (like big decimal)
  * @param unitFrom [AbstractUnit] on the left
  * @param unitTo [AbstractUnit] on the right
@@ -65,6 +67,7 @@ import com.sadellie.unitto.data.units.AbstractUnit
 fun TopScreenPart(
     modifier: Modifier,
     inputValue: String,
+    calculatedValue: String?,
     outputValue: String,
     unitFrom: AbstractUnit,
     unitTo: AbstractUnit,
@@ -87,6 +90,7 @@ fun TopScreenPart(
         MyTextField(
             Modifier.fillMaxWidth(),
             inputValue,
+            calculatedValue,
             stringResource(if (loadingDatabase) R.string.loading_label else unitFrom.shortName),
             loadingNetwork,
             networkError
@@ -94,6 +98,7 @@ fun TopScreenPart(
         MyTextField(
             Modifier.fillMaxWidth(),
             outputValue,
+            null,
             stringResource(if (loadingDatabase) R.string.loading_label else unitTo.shortName),
             loadingNetwork,
             networkError

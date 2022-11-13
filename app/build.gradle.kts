@@ -198,4 +198,7 @@ dependencies {
 
     // ComposeReorderable
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.2")
+
+    // ExprK
+    implementation("com.github.Keelar:ExprK:30c00415a8")
 }

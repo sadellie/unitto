@@ -25,20 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.data.KEY_0
-import com.sadellie.unitto.data.KEY_1
-import com.sadellie.unitto.data.KEY_2
-import com.sadellie.unitto.data.KEY_3
-import com.sadellie.unitto.data.KEY_4
-import com.sadellie.unitto.data.KEY_5
-import com.sadellie.unitto.data.KEY_6
-import com.sadellie.unitto.data.KEY_7
-import com.sadellie.unitto.data.KEY_8
-import com.sadellie.unitto.data.KEY_9
-import com.sadellie.unitto.data.KEY_AC
-import com.sadellie.unitto.data.KEY_CLEAR
-import com.sadellie.unitto.data.KEY_DOT
-import com.sadellie.unitto.data.KEY_NEGATE
+import com.sadellie.unitto.data.*
 import com.sadellie.unitto.screens.Formatter
 
 /**
@@ -48,10 +35,8 @@ import com.sadellie.unitto.screens.Formatter
  * @param addDigit Function that is called when clicking number and dot buttons
  * @param deleteDigit Function that is called when clicking delete "<" button
  * @param clearInput Function that is called when clicking clear "AC" button
- * @param negateAction Function that is called when clicking negate "±" button
  * @param deleteButtonEnabled Current state of delete "<" button
  * @param dotButtonEnabled Current state of clear "AC" button
- * @param negateButtonEnabled Current state of negate "±" button
  */
 @Composable
 fun Keyboard(
@@ -59,10 +44,8 @@ fun Keyboard(
     addDigit: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
-    negateAction: () -> Unit = {},
     deleteButtonEnabled: Boolean = false,
-    dotButtonEnabled: Boolean = true,
-    negateButtonEnabled: Boolean = false,
+    dotButtonEnabled: Boolean = true
 ) {
     Row(
         modifier = modifier.fillMaxSize()
@@ -84,17 +67,19 @@ fun Keyboard(
             KeyboardButton(bModifier, KEY_8, onClick = addDigit)
             KeyboardButton(bModifier, KEY_5, onClick = addDigit)
             KeyboardButton(bModifier, KEY_2, onClick = addDigit)
-            KeyboardButton(bModifier, Formatter.fractional, dotButtonEnabled) { addDigit(KEY_DOT) }
+            KeyboardButton(bModifier, Formatter.fractional, enabled = dotButtonEnabled) { addDigit(KEY_DOT) }
         }
         Column(cModifier) {
             KeyboardButton(bModifier, KEY_9, onClick = addDigit)
             KeyboardButton(bModifier, KEY_6, onClick = addDigit)
             KeyboardButton(bModifier, KEY_3, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_CLEAR, deleteButtonEnabled) { deleteDigit() }
+            KeyboardButton(bModifier, KEY_CLEAR, enabled = deleteButtonEnabled, onLongClick = clearInput) { deleteDigit() }
         }
         Column(cModifier) {
-            KeyboardButton(bModifier, KEY_AC, deleteButtonEnabled) { clearInput() }
-            KeyboardButton(bModifier, KEY_NEGATE, negateButtonEnabled) { negateAction() }
+            KeyboardButton(bModifier, KEY_DIVIDE_DISPLAY, isPrimary = false) { addDigit(KEY_DIVIDE) }
+            KeyboardButton(bModifier, KEY_MULTIPLY_DISPLAY, isPrimary = false) { addDigit(KEY_MULTIPLY) }
+            KeyboardButton(bModifier, KEY_MINUS_DISPLAY, isPrimary = false) { addDigit(KEY_MINUS) }
+            KeyboardButton(bModifier, KEY_PLUS, isPrimary = false) { addDigit(KEY_PLUS) }
         }
     }
 }

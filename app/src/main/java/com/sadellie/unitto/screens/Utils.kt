@@ -23,13 +23,10 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import com.sadellie.unitto.FirebaseHelper
-import com.sadellie.unitto.data.KEY_COMMA
-import com.sadellie.unitto.data.KEY_DOT
-import com.sadellie.unitto.data.KEY_E
+import com.sadellie.unitto.data.*
+import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.Separator
 import com.sadellie.unitto.data.units.AbstractUnit
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -53,10 +50,9 @@ object Formatter {
      */
     fun setSeparator(separator: Int) {
         nf = when (separator) {
-            Separator.PERIOD -> NumberFormat.getInstance(Locale.GERMANY)
-            Separator.COMMA -> NumberFormat.getInstance(Locale.US)
-            // SPACE BASICALLY
-            else -> NumberFormat.getInstance(Locale.FRANCE)
+            Separator.PERIOD -> NumberFormat.getInstance(Locale.GERMANY) // .
+            Separator.COMMA -> NumberFormat.getInstance(Locale.US) // ,
+            else -> NumberFormat.getInstance(Locale.FRANCE) //  
         }
         fractional = if (separator == Separator.PERIOD) KEY_COMMA else KEY_DOT
     }
@@ -70,24 +66,66 @@ object Formatter {
         // NOTE: We receive input like 1234 or 1234. or 1234.5
         // NOTICE DOTS, not COMMAS
 
-        // For engineering string we only replace decimal separator
-        if (input.contains(KEY_E)) return input.replace(KEY_DOT, fractional)
+        var formattedInput = input
 
-        // Stupid Huawei catching impossible bugs, stupid workaround
-        return try {
-            var result = String()
-            // Formatting everything before fractional part
-            result += nf.format(input.substringBefore(KEY_DOT).toBigInteger())
-            // Now we add the part after dot
-            if (input.contains(KEY_DOT)) {
-                result += fractional + input.substringAfter(KEY_DOT)
+        val allNumbers = input.split(
+            KEY_PLUS,
+            KEY_MINUS_DISPLAY,
+            KEY_MULTIPLY_DISPLAY,
+            KEY_DIVIDE_DISPLAY,
+        )
+
+        fun innerFormat(str: String): String {
+            // For engineering string we only replace decimal separator
+            if (str.contains(KEY_E)) return str.replace(KEY_DOT, fractional)
+
+            return try {
+                var result = String()
+                // Formatting everything before fractional part
+                result += nf.format(str.substringBefore(KEY_DOT).toBigInteger())
+                // Now we add the part after dot
+                if (str.contains(KEY_DOT)) {
+                    result += fractional + str.substringAfter(KEY_DOT)
+                }
+
+                /**
+                 * When user input is like "+123" (with plus) it gets lost after formatting, but returns
+                 * on unformattable input, i.e. "+123-23"
+                 */
+                if (str.startsWith(KEY_PLUS)) {
+                    result = KEY_PLUS + result
+                }
+                result
+            } catch (e: NumberFormatException) {
+                str
+            } catch (e: Exception) {
+                // Bad practise, but still
+                Log.e("FormatterError", e.toString())
+                FirebaseHelper().recordException(e)
+                str
             }
-            result
-        } catch (e: Exception) {
-            Log.e("FormatterError", e.toString())
-            FirebaseHelper().recordException(e)
-            input
         }
+
+        allNumbers.forEach {
+            formattedInput = formattedInput.replace(it, innerFormat(it))
+        }
+
+        return formattedInput.replace(KEY_MINUS, KEY_MINUS_DISPLAY)
+            .replace(KEY_DIVIDE, KEY_DIVIDE_DISPLAY)
+            .replace(KEY_MULTIPLY, KEY_MULTIPLY_DISPLAY)
+    }
+
+}
+
+/**
+ * Shorthand function to use correct `toString` method according to [outputFormat].
+ */
+fun BigDecimal.toStringWith(outputFormat: Int): String {
+    // Setting result value using a specified OutputFormat
+    return when (outputFormat) {
+        OutputFormat.ALLOW_ENGINEERING -> this.toString()
+        OutputFormat.FORCE_ENGINEERING -> this.toEngineeringString()
+        else -> this.toPlainString()
     }
 }
 
@@ -224,28 +262,4 @@ fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
         .sortedBy { it.second }
         .map { it.first }
         .asSequence()
-}
-
-@Suppress("UNCHECKED_CAST")
-fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combine(
-    flow: Flow<T1>,
-    flow2: Flow<T2>,
-    flow3: Flow<T3>,
-    flow4: Flow<T4>,
-    flow5: Flow<T5>,
-    flow6: Flow<T6>,
-    flow7: Flow<T7>,
-    flow8: Flow<T8>,
-    transform: suspend (T1, T2, T3, T4, T5, T6, T7, T8) -> R
-): Flow<R> = combine(flow, flow2, flow3, flow4, flow5, flow6, flow7, flow8) { args: Array<*> ->
-    transform(
-        args[0] as T1,
-        args[1] as T2,
-        args[2] as T3,
-        args[3] as T4,
-        args[4] as T5,
-        args[5] as T6,
-        args[6] as T7,
-        args[7] as T8
-    )
 }

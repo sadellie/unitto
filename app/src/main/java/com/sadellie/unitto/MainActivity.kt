@@ -47,11 +47,7 @@ import com.sadellie.unitto.screens.main.MainViewModel
 import com.sadellie.unitto.screens.second.LeftSideScreen
 import com.sadellie.unitto.screens.second.RightSideScreen
 import com.sadellie.unitto.screens.second.SecondViewModel
-import com.sadellie.unitto.screens.setttings.AboutScreen
-import com.sadellie.unitto.screens.setttings.SettingsScreen
-import com.sadellie.unitto.screens.setttings.SettingsViewModel
-import com.sadellie.unitto.screens.setttings.ThemesScreen
-import com.sadellie.unitto.screens.setttings.UnitGroupsScreen
+import com.sadellie.unitto.screens.setttings.*
 import com.sadellie.unitto.ui.theme.AppTypography
 import com.sadellie.unitto.ui.theme.DarkThemeColors
 import com.sadellie.unitto.ui.theme.LightThemeColors
@@ -142,7 +138,8 @@ fun UnittoApp(
                 navigateUp = { navController.navigateUp() },
                 navigateToSettingsAction = { navController.navigate(UNIT_GROUPS_SCREEN) },
                 selectAction = { mainViewModel.changeUnitTo(it) },
-                inputValue = mainViewModel.mainFlow.value.inputValue.toBigDecimal(),
+                inputValue = (mainViewModel.mainFlow.value.calculatedValue
+                    ?: mainViewModel.mainFlow.value.inputValue).toBigDecimal(),
                 unitFrom = mainViewModel.unitFrom
             )
         }

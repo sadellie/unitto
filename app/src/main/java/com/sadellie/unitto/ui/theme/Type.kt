@@ -44,6 +44,15 @@ val NumbersTextStyleDisplayLarge = TextStyle(
     letterSpacing = (-0.25).sp,
 )
 
+// This text style is used for secondary text field
+val NumbersTextStyleDisplayMedium = TextStyle(
+    fontFamily = LATO_FONT,
+    fontWeight = FontWeight.W400,
+    fontSize = 38.sp,
+    lineHeight = 42.sp,
+    letterSpacing = (-0.25).sp,
+)
+
 // This text style is used for keyboard button
 val NumbersTextStyleTitleLarge = TextStyle(
     fontFamily = LATO_FONT,

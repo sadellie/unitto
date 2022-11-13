@@ -23,8 +23,10 @@ import com.sadellie.unitto.data.KEY_0
 /**
  * Represents current state of the MainScreen
  *
- * @property inputValue Current input value
+ * @property inputValue Current input value. Can be expression or a simple number.
  * @property resultValue Current output value
+ * @property calculatedValue Currently calculated value. Can be null if not needed (same as input or
+ * expression in input is invalid)
  * @property deleteButtonEnabled Delete last symbol from input button state
  * @property dotButtonEnabled Add dot to input button state
  * @property negateButtonEnabled Switch input between positive and negative button state
@@ -42,4 +44,5 @@ data class MainScreenUIState(
     var isLoadingDatabase: Boolean = true,
     var isLoadingNetwork: Boolean = false,
     var showError: Boolean = false,
+    var calculatedValue: String? = null
 )

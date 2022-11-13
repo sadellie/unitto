@@ -19,18 +19,10 @@
 package com.sadellie.unitto.screens.main.components
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.with
+import androidx.compose.animation.*
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
@@ -44,15 +36,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
 import com.sadellie.unitto.screens.Formatter
 import com.sadellie.unitto.ui.theme.NumbersTextStyleDisplayLarge
+import com.sadellie.unitto.ui.theme.NumbersTextStyleDisplayMedium
 
 /**
  * Component for input and output
  *
  * @param modifier Modifier that is applied to [LazyRow]
- * @param currentText Current text to show
+ * @param primaryText Primary text to show (input/output).
+ * @param secondaryText Secondary text to show (input, calculated result).
  * @param helperText Helper text below current text (short unit name)
  * @param showLoading Show "Loading" text
  * @param showError Show "Error" text
@@ -60,7 +55,8 @@ import com.sadellie.unitto.ui.theme.NumbersTextStyleDisplayLarge
 @Composable
 fun MyTextField(
     modifier: Modifier = Modifier,
-    currentText: String = String(),
+    primaryText: String = String(),
+    secondaryText: String? = null,
     helperText: String = String(),
     showLoading: Boolean = false,
     showError: Boolean = false
@@ -70,28 +66,30 @@ fun MyTextField(
     val textToShow = when {
         showError -> stringResource(R.string.error_label)
         showLoading -> stringResource(R.string.loading_label)
-        else -> Formatter.format(currentText)
+        else -> Formatter.format(primaryText)
     }
-    val copiedText: String = stringResource(R.string.copied, textToShow)
+    val copiedText: String =
+        stringResource(R.string.copied, secondaryText?.let { Formatter.format(it) } ?: textToShow)
 
-    Column {
+    Column(modifier = Modifier
+        .combinedClickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = rememberRipple(),
+            onClick = {},
+            onLongClick = {
+                clipboardManager.setText(AnnotatedString(secondaryText ?: textToShow))
+                Toast
+                    .makeText(mc, copiedText, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        )
+    ) {
         LazyRow(
             modifier = modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .combinedClickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(),
-                    onClick = {},
-                    onLongClick = {
-                        clipboardManager.setText(AnnotatedString(currentText))
-                        Toast
-                            .makeText(mc, copiedText, Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                ),
+                .wrapContentHeight(),
             reverseLayout = true,
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
+            contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             item {
                 AnimatedContent(
@@ -114,8 +112,46 @@ fun MyTextField(
                 }
             }
         }
+
+        LazyRow(
+            modifier = modifier
+                .wrapContentHeight(),
+            reverseLayout = true,
+            horizontalArrangement = Arrangement.End,
+            contentPadding = PaddingValues(horizontal = 8.dp)
+        ) {
+            item {
+                AnimatedVisibility(visible = !secondaryText.isNullOrEmpty()) {
+                    AnimatedContent(targetState = secondaryText,
+                        transitionSpec = {
+                            // Enter animation
+                            (expandHorizontally(
+                                clip = false,
+                                expandFrom = Alignment.Start
+                            ) + fadeIn()
+                                    // Exit animation
+                                    with fadeOut())
+                                .using(SizeTransform(clip = false))
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            text = Formatter.format(secondaryText ?: ""),
+                            textAlign = TextAlign.End,
+                            softWrap = false,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            style = NumbersTextStyleDisplayMedium
+                        )
+                    }
+                }
+            }
+        }
+
         AnimatedContent(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(horizontal = 8.dp),
             targetState = helperText
         ) {
             Text(

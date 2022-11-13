@@ -31,8 +31,25 @@ const val KEY_0 = "0"
 
 const val KEY_DOT = "."
 const val KEY_COMMA = ","
-const val KEY_AC = "AC"
 const val KEY_CLEAR = "<"
-const val KEY_NEGATE = "±"
-const val KEY_MINUS = "-"
 const val KEY_E = "E"
+const val KEY_PLUS = "+"
+
+const val KEY_MINUS = "-"
+const val KEY_MINUS_DISPLAY = "–"
+
+const val KEY_DIVIDE = "/"
+const val KEY_DIVIDE_DISPLAY = "÷"
+
+const val KEY_MULTIPLY = "*"
+const val KEY_MULTIPLY_DISPLAY = "×"
+
+val OPERATORS = listOf(
+    KEY_PLUS,
+    KEY_MINUS,
+    KEY_MINUS_DISPLAY,
+    KEY_MULTIPLY,
+    KEY_MULTIPLY_DISPLAY,
+    KEY_DIVIDE,
+    KEY_DIVIDE_DISPLAY,
+)

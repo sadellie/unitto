@@ -133,6 +133,7 @@ private fun PortraitMainScreenContent(
             TopScreenPart(
                 modifier = Modifier,
                 inputValue = mainScreenUIState.inputValue,
+                calculatedValue = mainScreenUIState.calculatedValue,
                 outputValue = mainScreenUIState.resultValue,
                 unitFrom = unitFrom,
                 unitTo = unitTo,
@@ -149,10 +150,8 @@ private fun PortraitMainScreenContent(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                negateAction = negateInput,
-                dotButtonEnabled = mainScreenUIState.dotButtonEnabled,
                 deleteButtonEnabled = mainScreenUIState.deleteButtonEnabled,
-                negateButtonEnabled = mainScreenUIState.negateButtonEnabled,
+                dotButtonEnabled = mainScreenUIState.dotButtonEnabled,
             )
         }
     } else {
@@ -167,6 +166,7 @@ private fun PortraitMainScreenContent(
                     .weight(1f)
                     .fillMaxHeight(),
                 inputValue = mainScreenUIState.inputValue,
+                calculatedValue = mainScreenUIState.calculatedValue,
                 outputValue = mainScreenUIState.resultValue,
                 unitFrom = unitFrom,
                 unitTo = unitTo,
@@ -185,10 +185,7 @@ private fun PortraitMainScreenContent(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                negateAction = negateInput,
-                dotButtonEnabled = mainScreenUIState.dotButtonEnabled,
                 deleteButtonEnabled = mainScreenUIState.deleteButtonEnabled,
-                negateButtonEnabled = mainScreenUIState.negateButtonEnabled,
             )
         }
     }
