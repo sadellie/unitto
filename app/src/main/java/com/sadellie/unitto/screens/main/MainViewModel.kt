@@ -321,7 +321,7 @@ class MainViewModel @Inject constructor(
                      * "50+". We don't add "/' here. User will click "/" second time and the input
                      * will be "50/".
                      */
-                    (lastSecondSymbol in OPERATORS) -> {
+                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS)-> {
                         deleteDigit()
                     }
                     // Don't allow multiple operators near each other
