@@ -116,7 +116,7 @@ fun <T> UnittoListItem(
                 onExpandedChange = { dropDownExpanded = it }
             ) {
                 OutlinedTextField(
-                    modifier = Modifier.widthIn(1.dp),
+                    modifier = Modifier.menuAnchor().widthIn(1.dp),
                     value = allOptions[currentOption] ?: selected.toString(),
                     onValueChange = {},
                     readOnly = true,

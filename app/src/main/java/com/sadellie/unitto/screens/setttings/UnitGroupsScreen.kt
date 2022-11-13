@@ -70,7 +70,7 @@ fun UnitGroupsScreen(
 
         val state = rememberReorderableLazyListState(
             onMove = viewModel::onMove,
-            canDragOver = viewModel::canDragOver,
+            canDragOver = { from, _ -> viewModel.canDragOver(from) },
             onDragEnd = { _, _ -> viewModel.onDragEnd() }
         )
 

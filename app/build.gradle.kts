@@ -14,7 +14,7 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion = "1.3.0-beta01"
+val composeVersion = "1.4.0-alpha01"
 
 // Flavor names
 val playStore = "playStore"
@@ -27,6 +27,7 @@ kapt {
     useBuildCache = true
 }
 
+@Suppress("UnstableApiUsage")
 android {
     namespace = "com.sadellie.unitto"
     compileSdkVersion = "android-33"
@@ -144,28 +145,28 @@ configurations {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.8.0")
-    androidTestImplementation("androidx.test:core:1.4.0")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    implementation("androidx.core:core-ktx:1.9.0")
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.4")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test:runner:1.4.0")
-    androidTestImplementation("androidx.test:rules:1.4.0")
+    androidTestImplementation("androidx.test:runner:1.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
 
     // Compose and navigation
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.0.0-beta01")
+    implementation("androidx.compose.material3:material3:1.1.0-alpha02")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:dagger-android-processor:2.43.2")
-    implementation("com.google.dagger:hilt-android:2.43.2")
-    kapt("com.google.dagger:hilt-compiler:2.43.2")
+    kapt("com.google.dagger:dagger-android-processor:2.44.1")
+    implementation("com.google.dagger:hilt-android:2.44.1")
+    kapt("com.google.dagger:hilt-compiler:2.44.1")
 
     // There are a lot of icons
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
@@ -174,10 +175,10 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // This is for system status bar color
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 
     // Firebase
-    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:30.3.2"))
+    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:31.0.2"))
     "playStoreImplementation"("com.google.firebase:firebase-analytics-ktx")
     // Crashlytics and Analytics
     "playStoreImplementation"("com.google.firebase:firebase-crashlytics-ktx")
@@ -188,7 +189,7 @@ dependencies {
     kapt("androidx.room:room-compiler:2.4.3")
 
     // Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 
     // Retrofit with Moshi Converter
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
@@ -197,7 +198,7 @@ dependencies {
     implementation("com.github.sadellie:themmo:0.0.5")
 
     // ComposeReorderable
-    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.2")
+    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
 
     // ExprK
     implementation("com.github.Keelar:ExprK:30c00415a8")
