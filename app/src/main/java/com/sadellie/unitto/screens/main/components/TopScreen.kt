@@ -21,10 +21,7 @@ package com.sadellie.unitto.screens.main.components
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.Icon
@@ -105,7 +102,7 @@ fun TopScreenPart(
         )
         // Unit selection buttons
         Row(
-            modifier = Modifier,
+            modifier = Modifier.padding(horizontal = 8.dp),
             verticalAlignment = Alignment.Bottom,
         ) {
             UnitSelectionButton(

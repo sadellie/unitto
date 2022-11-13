@@ -91,10 +91,8 @@ fun MainScreen(
                 navControllerAction = { navControllerAction(it) },
                 swapMeasurements = { viewModel.swapUnits() },
                 processInput = { viewModel.processInput(it) },
-                deleteDigit = { viewModel.deleteDigit() },
-                clearInput = { viewModel.clearInput() },
-                negateInput = { viewModel.negateInput() }
-            )
+                deleteDigit = { viewModel.deleteDigit() }
+            ) { viewModel.clearInput() }
         }
     )
 
@@ -121,14 +119,12 @@ private fun PortraitMainScreenContent(
     processInput: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
-    negateInput: () -> Unit = {},
 ) {
     if (portrait) {
         Column(
             modifier
-                .fillMaxSize()
-                .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TopScreenPart(
                 modifier = Modifier,
@@ -146,7 +142,8 @@ private fun PortraitMainScreenContent(
             // Keyboard which takes half the screen
             Keyboard(
                 Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
@@ -157,8 +154,7 @@ private fun PortraitMainScreenContent(
     } else {
         Row(
             modifier
-                .fillMaxSize()
-                .padding(8.dp),
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TopScreenPart(
@@ -181,7 +177,8 @@ private fun PortraitMainScreenContent(
             Keyboard(
                 Modifier
                     .weight(1f)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
