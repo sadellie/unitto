@@ -27,7 +27,22 @@ import androidx.lifecycle.viewModelScope
 import com.github.keelar.exprk.ExpressionException
 import com.github.keelar.exprk.Expressions
 import com.sadellie.unitto.FirebaseHelper
-import com.sadellie.unitto.data.*
+import com.sadellie.unitto.data.KEY_0
+import com.sadellie.unitto.data.KEY_1
+import com.sadellie.unitto.data.KEY_2
+import com.sadellie.unitto.data.KEY_3
+import com.sadellie.unitto.data.KEY_4
+import com.sadellie.unitto.data.KEY_5
+import com.sadellie.unitto.data.KEY_6
+import com.sadellie.unitto.data.KEY_7
+import com.sadellie.unitto.data.KEY_8
+import com.sadellie.unitto.data.KEY_9
+import com.sadellie.unitto.data.KEY_DIVIDE
+import com.sadellie.unitto.data.KEY_DOT
+import com.sadellie.unitto.data.KEY_MINUS
+import com.sadellie.unitto.data.KEY_MULTIPLY
+import com.sadellie.unitto.data.KEY_PLUS
+import com.sadellie.unitto.data.OPERATORS
 import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.units.AbstractUnit
@@ -40,7 +55,12 @@ import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import com.sadellie.unitto.screens.toStringWith
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -366,6 +386,11 @@ class MainViewModel @Inject constructor(
         _deleteButtonEnabled.update { false }
         _inputValue.update { KEY_0 }
     }
+
+    /**
+     * Returns value to be used when converting value on the right side screen (unit selection)
+     */
+    fun inputValue() = (mainFlow.value.calculatedValue ?: mainFlow.value.inputValue).toBigDecimal()
 
     /**
      * Saves latest pair of units into datastore

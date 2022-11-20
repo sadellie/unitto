@@ -21,7 +21,16 @@ package com.sadellie.unitto.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.sadellie.unitto.data.*
+import com.sadellie.unitto.data.KEY_COMMA
+import com.sadellie.unitto.data.KEY_DIVIDE
+import com.sadellie.unitto.data.KEY_DIVIDE_DISPLAY
+import com.sadellie.unitto.data.KEY_DOT
+import com.sadellie.unitto.data.KEY_E
+import com.sadellie.unitto.data.KEY_MINUS
+import com.sadellie.unitto.data.KEY_MINUS_DISPLAY
+import com.sadellie.unitto.data.KEY_MULTIPLY
+import com.sadellie.unitto.data.KEY_MULTIPLY_DISPLAY
+import com.sadellie.unitto.data.KEY_PLUS
 import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.Separator
 import com.sadellie.unitto.data.units.AbstractUnit
@@ -80,10 +89,7 @@ object Formatter {
         // We may receive expressions
         // Find all numbers in that expression
         val allNumbers: List<String> = input.split(
-            KEY_MINUS,
-            KEY_DIVIDE,
-            KEY_PLUS,
-            KEY_MULTIPLY
+            KEY_MINUS, KEY_DIVIDE, KEY_PLUS, KEY_MULTIPLY
         )
 
         allNumbers.forEach {
@@ -173,19 +179,18 @@ fun openLink(mContext: Context, url: String) {
 }
 
 /**
- * Compute Levenshtein Distance. Doesn't really matter which string goes first
+ * Compute Levenshtein Distance between this string and [stringB]. Doesn't matter which string is
+ * first.
  *
- * @param stringToCompare Second string
  * @return The amount of changes that are needed to transform one string into another
  */
-fun String.lev(stringToCompare: String): Int {
+fun String.lev(stringB: String): Int {
     val stringA = this
-    val stringB = stringToCompare
 
     // Skipping computation for this cases
     if (stringA == stringB) return 0
     if (stringA.isEmpty()) return stringB.length
-    // This case is basically unreal in this app, because stringToCompare is a unit name and they are never empty
+    // This case is basically unreal in this app, because stringB is a unit name and they are never empty
     if (stringB.isEmpty()) return stringA.length
 
     var cost = IntArray(stringA.length + 1) { it }

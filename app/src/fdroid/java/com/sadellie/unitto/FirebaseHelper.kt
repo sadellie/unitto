@@ -23,6 +23,7 @@ import android.content.Context
 /**
  * This class is NOT actually using firebase. Used for flavors WITHOUT Firebase dependency.
  */
+@Suppress("EmptyMethod")
 class FirebaseHelper {
 
     /**

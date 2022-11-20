@@ -14,7 +14,7 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion = "1.4.0-alpha01"
+val composeVersion = "1.4.0-alpha02"
 
 // Flavor names
 val playStore = "playStore"
@@ -127,7 +127,7 @@ android {
         shaders = false
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0-rc01"
+        kotlinCompilerExtensionVersion = "1.4.0-alpha02"
     }
     packagingOptions {
         jniLibs.excludes.add("META-INF/licenses/**")
@@ -164,9 +164,9 @@ dependencies {
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:dagger-android-processor:2.44.1")
-    implementation("com.google.dagger:hilt-android:2.44.1")
-    kapt("com.google.dagger:hilt-compiler:2.44.1")
+    kapt("com.google.dagger:dagger-android-processor:2.44.2")
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    kapt("com.google.dagger:hilt-compiler:2.44.2")
 
     // There are a lot of icons
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
@@ -175,10 +175,10 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // This is for system status bar color
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.1")
 
     // Firebase
-    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:31.0.2"))
+    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:31.1.0"))
     "playStoreImplementation"("com.google.firebase:firebase-analytics-ktx")
     // Crashlytics and Analytics
     "playStoreImplementation"("com.google.firebase:firebase-crashlytics-ktx")

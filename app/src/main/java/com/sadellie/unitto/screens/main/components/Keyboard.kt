@@ -25,7 +25,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.data.*
+import com.sadellie.unitto.data.KEY_0
+import com.sadellie.unitto.data.KEY_1
+import com.sadellie.unitto.data.KEY_2
+import com.sadellie.unitto.data.KEY_3
+import com.sadellie.unitto.data.KEY_4
+import com.sadellie.unitto.data.KEY_5
+import com.sadellie.unitto.data.KEY_6
+import com.sadellie.unitto.data.KEY_7
+import com.sadellie.unitto.data.KEY_8
+import com.sadellie.unitto.data.KEY_9
+import com.sadellie.unitto.data.KEY_CLEAR
+import com.sadellie.unitto.data.KEY_DIVIDE
+import com.sadellie.unitto.data.KEY_DIVIDE_DISPLAY
+import com.sadellie.unitto.data.KEY_DOT
+import com.sadellie.unitto.data.KEY_MINUS
+import com.sadellie.unitto.data.KEY_MINUS_DISPLAY
+import com.sadellie.unitto.data.KEY_MULTIPLY
+import com.sadellie.unitto.data.KEY_MULTIPLY_DISPLAY
+import com.sadellie.unitto.data.KEY_PLUS
 import com.sadellie.unitto.screens.Formatter
 
 /**
