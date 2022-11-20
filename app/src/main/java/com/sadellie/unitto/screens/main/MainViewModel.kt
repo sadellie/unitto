@@ -107,12 +107,13 @@ class MainViewModel @Inject constructor(
         // Kotlin doesn't have a multi catch
         val calculatedInput = try {
             Expressions()
-                .setPrecision(_userPrefs.value.digitsPrecision)
+                // Optimal precision, not too low, not too high. Balanced for performance and UX.
+                .setPrecision(128)
                 .eval(cleanInput)
         } catch (e: Exception) {
             // Kotlin doesn't have a multi catch
             when (e) {
-                is ExpressionException, is ArrayIndexOutOfBoundsException, is NumberFormatException -> return mainFlow.value.resultValue
+                is ExpressionException, is ArrayIndexOutOfBoundsException, is NumberFormatException, is ArithmeticException -> return mainFlow.value.resultValue
                 else -> throw e
             }
         }
