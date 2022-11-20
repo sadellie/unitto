@@ -21,98 +21,108 @@ package com.sadellie.unitto.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import com.sadellie.unitto.FirebaseHelper
 import com.sadellie.unitto.data.*
 import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.Separator
 import com.sadellie.unitto.data.units.AbstractUnit
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.NumberFormat
-import java.util.*
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.max
 
 object Formatter {
-    private var nf: NumberFormat = NumberFormat.getInstance(Locale.GERMANY)
+    private const val SPACE = " "
+    private const val PERIOD = "."
+    private const val COMMA = ","
 
     /**
-     * Currently used symbol to separate fractional part
+     * Grouping separator.
+     */
+    private var grouping: String = SPACE
+
+    /**
+     * Fractional part separator.
      */
     var fractional = KEY_COMMA
 
     /**
-     * Change current separator
+     * Change current separator to another [separator].
      *
-     * @param separator [Separator] to change to
+     * @see [Separator]
      */
     fun setSeparator(separator: Int) {
-        nf = when (separator) {
-            Separator.PERIOD -> NumberFormat.getInstance(Locale.GERMANY) // .
-            Separator.COMMA -> NumberFormat.getInstance(Locale.US) // ,
-            else -> NumberFormat.getInstance(Locale.FRANCE) //  
+        grouping = when (separator) {
+            Separator.PERIOD -> PERIOD
+            Separator.COMMA -> COMMA
+            else -> SPACE
         }
         fractional = if (separator == Separator.PERIOD) KEY_COMMA else KEY_DOT
     }
 
+
     /**
-     * Custom formatter function which work with big decimals and with strings ending with a dot.
-     * Also doesn't lose any precision
-     * @param[input] The string we want to format. Will be split with dot symbol
+     * Format [input].
+     *
+     * This will replace operators to their more appealing variants: divide, multiply and minus.
+     * Plus operator remains unchanged.
+     *
+     * Numbers will also be formatted.
+     *
+     * @see [formatNumber]
      */
     fun format(input: String): String {
-        // NOTE: We receive input like 1234 or 1234. or 1234.5
-        // NOTICE DOTS, not COMMAS
+        // Don't do anything to engineering string.
+        if (input.contains(KEY_E)) return formatNumber(input)
 
-        var formattedInput = input
+        var output = input
 
-        val allNumbers = input.split(
+        // We may receive expressions
+        // Find all numbers in that expression
+        val allNumbers: List<String> = input.split(
+            KEY_MINUS,
+            KEY_DIVIDE,
             KEY_PLUS,
-            KEY_MINUS_DISPLAY,
-            KEY_MULTIPLY_DISPLAY,
-            KEY_DIVIDE_DISPLAY,
+            KEY_MULTIPLY
         )
 
-        fun innerFormat(str: String): String {
-            // For engineering string we only replace decimal separator
-            if (str.contains(KEY_E)) return str.replace(KEY_DOT, fractional)
-
-            return try {
-                var result = String()
-                // Formatting everything before fractional part
-                result += nf.format(str.substringBefore(KEY_DOT).toBigInteger())
-                // Now we add the part after dot
-                if (str.contains(KEY_DOT)) {
-                    result += fractional + str.substringAfter(KEY_DOT)
-                }
-
-                /**
-                 * When user input is like "+123" (with plus) it gets lost after formatting, but returns
-                 * on unformattable input, i.e. "+123-23"
-                 */
-                if (str.startsWith(KEY_PLUS)) {
-                    result = KEY_PLUS + result
-                }
-                result
-            } catch (e: NumberFormatException) {
-                str
-            } catch (e: Exception) {
-                // Bad practise, but still
-                Log.e("FormatterError", e.toString())
-                FirebaseHelper().recordException(e)
-                str
-            }
-        }
-
         allNumbers.forEach {
-            formattedInput = formattedInput.replace(it, innerFormat(it))
+            output = output.replace(it, formatNumber(it))
         }
 
-        return formattedInput.replace(KEY_MINUS, KEY_MINUS_DISPLAY)
+        return output.replace(KEY_MINUS, KEY_MINUS_DISPLAY)
             .replace(KEY_DIVIDE, KEY_DIVIDE_DISPLAY)
             .replace(KEY_MULTIPLY, KEY_MULTIPLY_DISPLAY)
+    }
+
+    /**
+     * Format given [input].
+     *
+     * Input must be a number. Will replace grouping separators and fractional part separators.
+     *
+     * @see grouping
+     * @see fractional
+     */
+    private fun formatNumber(input: String): String {
+        val splitInput = input.split(".")
+        var firstPart = splitInput[0]
+
+        // Number of empty symbols (spaces) we need to add to correctly  split into chunks.
+        val offset = 3 - firstPart.length.mod(3)
+        var output = if (offset != 3) {
+            // We add some spaces at the begging so that last chunk has 3 symbols
+            firstPart = " ".repeat(offset) + firstPart
+            firstPart.chunked(3).joinToString(this.grouping).drop(offset)
+        } else {
+            firstPart.chunked(3).joinToString(this.grouping)
+        }
+
+        // Handling fractional part
+        if (input.contains(".")) {
+            output = output + fractional + splitInput.getOrElse(1) { "" }
+        }
+
+        return output
     }
 
 }

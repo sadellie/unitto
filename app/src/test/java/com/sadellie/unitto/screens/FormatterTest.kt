@@ -27,6 +27,9 @@ private val formatter = Formatter
 private const val ENG_VALUE = "123.3E+21"
 private const val COMPLETE_VALUE = "123456.789"
 private const val INCOMPLETE_VALUE = "123456."
+private const val NO_FRACTIONAL_VALUE = "123456"
+private const val INCOMPLETE_EXPR = "50+123456/8*0.8-12+"
+private const val COMPLETE_EXPR = "50+123456/8*0.8-12+0"
 
 class FormatterTest {
 
@@ -34,75 +37,36 @@ class FormatterTest {
     fun setSeparatorSpaces() {
         formatter.setSeparator(Separator.SPACES)
         assertEquals(".", formatter.fractional)
+        assertEquals("123.3E+21", formatter.format(ENG_VALUE))
+        assertEquals("123 456.789", formatter.format(COMPLETE_VALUE))
+        assertEquals("123 456.", formatter.format(INCOMPLETE_VALUE))
+        assertEquals("123 456", formatter.format(NO_FRACTIONAL_VALUE))
+        assertEquals("50+123 456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
+        assertEquals("50+123 456÷8×0.8–12+0", formatter.format(COMPLETE_EXPR))
     }
 
     @Test
     fun setSeparatorComma() {
         formatter.setSeparator(Separator.COMMA)
         assertEquals(".", formatter.fractional)
+        assertEquals("123.3E+21", formatter.format(ENG_VALUE))
+        assertEquals("123,456.789", formatter.format(COMPLETE_VALUE))
+        assertEquals("123,456.", formatter.format(INCOMPLETE_VALUE))
+        assertEquals("123,456", formatter.format(NO_FRACTIONAL_VALUE))
+        assertEquals("50+123,456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
+        assertEquals("50+123,456÷8×0.8–12+0", formatter.format(COMPLETE_EXPR))
     }
 
     @Test
     fun setSeparatorPeriod() {
         formatter.setSeparator(Separator.PERIOD)
         assertEquals(",", formatter.fractional)
-    }
-
-    // ENGINEERING
-    @Test
-    fun formatEngineeringWithSpaces() {
-        formatter.setSeparator(Separator.SPACES)
-        assertEquals("123.3E+21", formatter.format(ENG_VALUE))
-    }
-
-    @Test
-    fun formatEngineeringWithComma() {
-        formatter.setSeparator(Separator.COMMA)
-        assertEquals("123.3E+21", formatter.format(ENG_VALUE))
-    }
-
-    @Test
-    fun formatEngineeringWithPeriod() {
-        formatter.setSeparator(Separator.PERIOD)
         assertEquals("123,3E+21", formatter.format(ENG_VALUE))
-    }
-
-    // COMPLETE
-    @Test
-    fun formatCompleteWithSpaces() {
-        formatter.setSeparator(Separator.SPACES)
-        assertEquals("123 456.789", formatter.format(COMPLETE_VALUE))
-    }
-
-    @Test
-    fun formatCompleteWithComma() {
-        formatter.setSeparator(Separator.COMMA)
-        assertEquals("123,456.789", formatter.format(COMPLETE_VALUE))
-    }
-
-    @Test
-    fun formatCompleteWithPeriod() {
-        formatter.setSeparator(Separator.PERIOD)
         assertEquals("123.456,789", formatter.format(COMPLETE_VALUE))
-    }
-
-    // INCOMPLETE
-    @Test
-    fun formatIncompleteWithSpaces() {
-        formatter.setSeparator(Separator.SPACES)
-        assertEquals("123 456.", formatter.format(INCOMPLETE_VALUE))
-    }
-
-    @Test
-    fun formatIncompleteWithComma() {
-        formatter.setSeparator(Separator.COMMA)
-        assertEquals("123,456.", formatter.format(INCOMPLETE_VALUE))
-    }
-
-    @Test
-    fun formatIncompleteWithPeriod() {
-        formatter.setSeparator(Separator.PERIOD)
         assertEquals("123.456,", formatter.format(INCOMPLETE_VALUE))
+        assertEquals("123.456", formatter.format(NO_FRACTIONAL_VALUE))
+        assertEquals("50+123.456÷8×0,8–12+", formatter.format(INCOMPLETE_EXPR))
+        assertEquals("50+123.456÷8×0,8–12+0", formatter.format(COMPLETE_EXPR))
     }
 
 }
