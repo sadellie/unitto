@@ -974,9 +974,9 @@
 
     <!--Separator-->
     <string name="separator_setting_support">Group separator symbol</string>
-    <string name="period">Period</string>
-    <string name="comma">Comma</string>
-    <string name="spaces">Spaces</string>
+    <string name="period">Period (42.069,12)</string>
+    <string name="comma">Comma (42,069.12)</string>
+    <string name="spaces">Spaces (42 069.12)</string>
 
     <!--Output format-->
     <string name="output_format_setting_support">Result value formatting</string>
