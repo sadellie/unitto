@@ -23,8 +23,10 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -124,31 +126,32 @@ fun MyTextField(
             }
         }
 
-        LazyRow(
-            modifier = modifier
-                .wrapContentHeight(),
-            reverseLayout = true,
-            horizontalArrangement = Arrangement.End,
-            contentPadding = PaddingValues(horizontal = 8.dp)
+        AnimatedVisibility(
+            visible = !secondaryText.isNullOrEmpty(),
+            enter = expandVertically(),
+            exit = shrinkVertically()
         ) {
-            item {
-                AnimatedVisibility(visible = !secondaryText.isNullOrEmpty()) {
-                    AnimatedContent(targetState = secondaryText,
+            LazyRow(
+                modifier = modifier
+                    .wrapContentHeight(),
+                reverseLayout = true,
+                horizontalArrangement = Arrangement.End,
+                contentPadding = PaddingValues(horizontal = 8.dp)
+            ) {
+                item {
+                    AnimatedContent(
+                        targetState = secondaryText,
                         transitionSpec = {
                             // Enter animation
-                            (expandHorizontally(
-                                clip = false,
-                                expandFrom = Alignment.Start
-                            ) + fadeIn()
+                            (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
                                     // Exit animation
                                     with fadeOut())
                                 .using(SizeTransform(clip = false))
                         }
                     ) {
                         Text(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            text = Formatter.format(secondaryText ?: ""),
+                            modifier = Modifier,
+                            text = Formatter.format(it ?: ""),
                             textAlign = TextAlign.End,
                             softWrap = false,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
