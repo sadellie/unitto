@@ -29,6 +29,20 @@ data class AppLibrary(
 val ALL_LIBRARIES = lazy {
     listOf(
         AppLibrary(
+            name = "ExprK",
+            dev = "Keelar",
+            website = "https://github.com/Keelar/ExprK",
+            license = "MIT license",
+            description = "A simple mathematical expression evaluator for Kotlin and Java, written in Kotlin."
+        ),
+        AppLibrary(
+            name = "currency-api",
+            dev = "Fawaz Ahmed (fawazahmed0)",
+            website = "https://github.com/fawazahmed0/currency-api",
+            license = "The Unlicense",
+            description = "Free Currency Rates API"
+        ),
+        AppLibrary(
             name = "Core Kotlin Extensions",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/core",
@@ -111,13 +125,6 @@ val ALL_LIBRARIES = lazy {
             website = "https://developer.android.com/studio/terms.html",
             license = "Apache-2.0",
             description = "Library to collect and send crash logs"
-        ),
-        AppLibrary(
-            name = "currency-api",
-            dev = "Fawaz Ahmed (fawazahmed0)",
-            website = "https://github.com/fawazahmed0/currency-api",
-            license = "The Unlicense",
-            description = "Free Currency Rates API"
         ),
         AppLibrary(
             name = "Compose Tooling API",
