@@ -29,11 +29,11 @@ data class AppLibrary(
 val ALL_LIBRARIES = lazy {
     listOf(
         AppLibrary(
-            name = "ExprK",
-            dev = "Keelar",
-            website = "https://github.com/Keelar/ExprK",
-            license = "MIT license",
-            description = "A simple mathematical expression evaluator for Kotlin and Java, written in Kotlin."
+            name = "EvalEx",
+            dev = "ezylang",
+            website = "https://github.com/ezylang/EvalEx",
+            license = "Apache-2.0",
+            description = "EvalEx is a handy expression evaluator for Java, that allows to evaluate simple mathematical and boolean expressions."
         ),
         AppLibrary(
             name = "currency-api",

@@ -200,6 +200,6 @@ dependencies {
     // ComposeReorderable
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
 
-    // ExprK
-    implementation("com.github.Keelar:ExprK:30c00415a8")
+    // EvalEx
+    implementation("com.ezylang:EvalEx:3.0.1")
 }

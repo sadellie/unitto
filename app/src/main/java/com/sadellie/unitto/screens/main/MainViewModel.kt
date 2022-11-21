@@ -24,8 +24,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.keelar.exprk.ExpressionException
-import com.github.keelar.exprk.Expressions
+import com.ezylang.evalex.BaseException
+import com.ezylang.evalex.Expression
 import com.sadellie.unitto.FirebaseHelper
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_1
@@ -126,14 +126,17 @@ class MainViewModel @Inject constructor(
 
         // Kotlin doesn't have a multi catch
         val calculatedInput = try {
-            Expressions()
+            val evaluated = Expression(cleanInput)
                 // Optimal precision, not too low, not too high. Balanced for performance and UX.
-                .setPrecision(128)
-                .eval(cleanInput)
+                .evaluate()
+                .numberValue
+                .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
+                .stripTrailingZeros()
+            if (evaluated.compareTo(BigDecimal.ZERO) == 0) BigDecimal.ZERO else evaluated
         } catch (e: Exception) {
             // Kotlin doesn't have a multi catch
             when (e) {
-                is ExpressionException, is ArrayIndexOutOfBoundsException, is NumberFormatException, is ArithmeticException -> return mainFlow.value.resultValue
+                is BaseException, is ArrayIndexOutOfBoundsException, is NumberFormatException, is ArithmeticException -> return mainFlow.value.resultValue
                 else -> throw e
             }
         }
@@ -157,10 +160,7 @@ class MainViewModel @Inject constructor(
          * consists of ZEROS only (0.00000 as an example). This check is a workaround. If the result
          * is zero, than we make sure there are no trailing zeros.
          */
-        val resultValue = if (convertedValue == BigDecimal.ZERO.setScale(
-                _userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN
-            )
-        ) {
+        val resultValue = if (convertedValue.compareTo(BigDecimal.ZERO) == 0) {
             KEY_0
         } else {
             convertedValue.toStringWith(_userPrefs.value.outputFormat)
@@ -342,7 +342,7 @@ class MainViewModel @Inject constructor(
                      * "50+". We don't add "/' here. User will click "/" second time and the input
                      * will be "50/".
                      */
-                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS)-> {
+                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS) -> {
                         deleteDigit()
                     }
                     // Don't allow multiple operators near each other
