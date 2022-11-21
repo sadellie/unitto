@@ -39,11 +39,16 @@ import com.sadellie.unitto.data.KEY_CLEAR
 import com.sadellie.unitto.data.KEY_DIVIDE
 import com.sadellie.unitto.data.KEY_DIVIDE_DISPLAY
 import com.sadellie.unitto.data.KEY_DOT
+import com.sadellie.unitto.data.KEY_EXPONENT
+import com.sadellie.unitto.data.KEY_EXPONENT_DISPLAY
+import com.sadellie.unitto.data.KEY_LEFT_BRACKET
 import com.sadellie.unitto.data.KEY_MINUS
 import com.sadellie.unitto.data.KEY_MINUS_DISPLAY
 import com.sadellie.unitto.data.KEY_MULTIPLY
 import com.sadellie.unitto.data.KEY_MULTIPLY_DISPLAY
 import com.sadellie.unitto.data.KEY_PLUS
+import com.sadellie.unitto.data.KEY_RIGHT_BRACKET
+import com.sadellie.unitto.data.KEY_SQRT
 import com.sadellie.unitto.screens.Formatter
 
 /**
@@ -76,24 +81,28 @@ fun Keyboard(
         // Column modifier
         val cModifier = Modifier.weight(1f)
         Column(cModifier) {
+            KeyboardButton(bModifier, KEY_LEFT_BRACKET, isPrimary = false, onClick = addDigit)
             KeyboardButton(bModifier, KEY_7, onClick = addDigit)
             KeyboardButton(bModifier, KEY_4, onClick = addDigit)
             KeyboardButton(bModifier, KEY_1, onClick = addDigit)
             KeyboardButton(bModifier, KEY_0, onClick = addDigit)
         }
         Column(cModifier) {
+            KeyboardButton(bModifier, KEY_RIGHT_BRACKET, isPrimary = false, onClick = addDigit)
             KeyboardButton(bModifier, KEY_8, onClick = addDigit)
             KeyboardButton(bModifier, KEY_5, onClick = addDigit)
             KeyboardButton(bModifier, KEY_2, onClick = addDigit)
             KeyboardButton(bModifier, Formatter.fractional, enabled = dotButtonEnabled) { addDigit(KEY_DOT) }
         }
         Column(cModifier) {
+            KeyboardButton(bModifier, KEY_EXPONENT_DISPLAY, isPrimary = false, onClick = { addDigit(KEY_EXPONENT) })
             KeyboardButton(bModifier, KEY_9, onClick = addDigit)
             KeyboardButton(bModifier, KEY_6, onClick = addDigit)
             KeyboardButton(bModifier, KEY_3, onClick = addDigit)
             KeyboardButton(bModifier, KEY_CLEAR, enabled = deleteButtonEnabled, onLongClick = clearInput) { deleteDigit() }
         }
         Column(cModifier) {
+            KeyboardButton(bModifier, KEY_SQRT, isPrimary = false, onClick = { addDigit(KEY_SQRT) })
             KeyboardButton(bModifier, KEY_DIVIDE_DISPLAY, isPrimary = false) { addDigit(KEY_DIVIDE) }
             KeyboardButton(bModifier, KEY_MULTIPLY_DISPLAY, isPrimary = false) { addDigit(KEY_MULTIPLY) }
             KeyboardButton(bModifier, KEY_MINUS_DISPLAY, isPrimary = false) { addDigit(KEY_MINUS) }

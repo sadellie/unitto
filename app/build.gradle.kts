@@ -12,6 +12,8 @@ plugins {
 
     // Firebase Crashlytics
     id("com.google.firebase.crashlytics")
+
+//    id("io.freefair.lombok") version "6.6"
 }
 
 val composeVersion = "1.4.0-alpha02"
@@ -151,6 +153,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test:runner:1.5.1")
     androidTestImplementation("androidx.test:rules:1.5.0")
+    testImplementation("org.robolectric:robolectric:4.9")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
     // Compose and navigation
     implementation("androidx.compose.ui:ui:$composeVersion")
@@ -200,6 +204,6 @@ dependencies {
     // ComposeReorderable
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
 
-    // EvalEx
-    implementation("com.ezylang:EvalEx:3.0.1")
+    // ExprK
+    implementation("com.github.sadellie:ExprK:e55cba8f41")
 }

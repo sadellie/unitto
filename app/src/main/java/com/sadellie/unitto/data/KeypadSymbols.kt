@@ -44,12 +44,26 @@ const val KEY_DIVIDE_DISPLAY = "÷"
 const val KEY_MULTIPLY = "*"
 const val KEY_MULTIPLY_DISPLAY = "×"
 
+const val KEY_LEFT_BRACKET = "("
+const val KEY_RIGHT_BRACKET = ")"
+
+const val KEY_EXPONENT = "^"
+const val KEY_EXPONENT_DISPLAY = "^"
+
+const val KEY_SQRT = "√"
+
 val OPERATORS = listOf(
     KEY_PLUS,
     KEY_MINUS,
-    KEY_MINUS_DISPLAY,
     KEY_MULTIPLY,
-    KEY_MULTIPLY_DISPLAY,
     KEY_DIVIDE,
-    KEY_DIVIDE_DISPLAY,
+    KEY_SQRT,
+    KEY_EXPONENT,
+)
+
+val INTERNAL_DISPLAY: Map<String, String> = hashMapOf(
+    KEY_MINUS to KEY_MINUS_DISPLAY,
+    KEY_MULTIPLY to KEY_MULTIPLY_DISPLAY,
+    KEY_DIVIDE to KEY_DIVIDE_DISPLAY,
+    KEY_EXPONENT to KEY_EXPONENT_DISPLAY,
 )
