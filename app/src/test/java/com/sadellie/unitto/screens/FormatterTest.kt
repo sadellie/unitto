@@ -24,7 +24,8 @@ import org.junit.Test
 
 private val formatter = Formatter
 
-private const val ENG_VALUE = "123.3E+21"
+private const val ENG_VALUE = "123E+21"
+private const val ENG_VALUE_FRACTIONAL = "123.3E+21"
 private const val COMPLETE_VALUE = "123456.789"
 private const val INCOMPLETE_VALUE = "123456."
 private const val NO_FRACTIONAL_VALUE = "123456"
@@ -37,7 +38,8 @@ class FormatterTest {
     fun setSeparatorSpaces() {
         formatter.setSeparator(Separator.SPACES)
         assertEquals(".", formatter.fractional)
-        assertEquals("123.3E+21", formatter.format(ENG_VALUE))
+        assertEquals("123E+21", formatter.format(ENG_VALUE))
+        assertEquals("123.3E+21", formatter.format(ENG_VALUE_FRACTIONAL))
         assertEquals("123 456.789", formatter.format(COMPLETE_VALUE))
         assertEquals("123 456.", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123 456", formatter.format(NO_FRACTIONAL_VALUE))
@@ -49,7 +51,8 @@ class FormatterTest {
     fun setSeparatorComma() {
         formatter.setSeparator(Separator.COMMA)
         assertEquals(".", formatter.fractional)
-        assertEquals("123.3E+21", formatter.format(ENG_VALUE))
+        assertEquals("123E+21", formatter.format(ENG_VALUE))
+        assertEquals("123.3E+21", formatter.format(ENG_VALUE_FRACTIONAL))
         assertEquals("123,456.789", formatter.format(COMPLETE_VALUE))
         assertEquals("123,456.", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123,456", formatter.format(NO_FRACTIONAL_VALUE))
@@ -61,7 +64,8 @@ class FormatterTest {
     fun setSeparatorPeriod() {
         formatter.setSeparator(Separator.PERIOD)
         assertEquals(",", formatter.fractional)
-        assertEquals("123,3E+21", formatter.format(ENG_VALUE))
+        assertEquals("123E+21", formatter.format(ENG_VALUE))
+        assertEquals("123,3E+21", formatter.format(ENG_VALUE_FRACTIONAL))
         assertEquals("123.456,789", formatter.format(COMPLETE_VALUE))
         assertEquals("123.456,", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123.456", formatter.format(NO_FRACTIONAL_VALUE))

@@ -82,7 +82,7 @@ object Formatter {
      */
     fun format(input: String): String {
         // Don't do anything to engineering string.
-        if (input.contains(KEY_E)) return formatNumber(input)
+        if (input.contains(KEY_E)) return input.replace(KEY_DOT, fractional)
 
         var output = input
 
