@@ -1,4 +1,4 @@
-# unitto
+# Unitto
 Unit converter for Android
 ![Feature](./fastlane/metadata/android/en-US/images/featureGraphic.png)
 This is Unitto, a free unit converter mobile app for Android devices. It uses Material Design 3 guidelines and supports all the latest Android features.
@@ -23,6 +23,7 @@ Some screenshots:
 ## Links
 <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/googlePlay.png" width="32%"/></a>
 <a href="https://appgallery.huawei.com/app/C105740875"><img alt="AppGallery" src="./content/appGallery.png" width="32%"/></a>
+<a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fDroid.png" width="32%"/></a>
 <a href="https://store.nashstore.ru/store/627de8394891a527a6efe56a"><img alt="NashStore" src="./content/nashStore.png" width="32%"/></a>
 <a href="https://ruplay.market/apps/instrumenty/com.sadellie.unitto"><img alt="RuMarket" src="./content/ruMarket.png" width="32%"/></a>
 <a href="https://apps.rustore.ru/app/com.sadellie.unitto"><img alt="RuMarket" src="./content/ruStore.png" width="32%"/></a>
