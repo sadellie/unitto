@@ -48,7 +48,6 @@ const val KEY_LEFT_BRACKET = "("
 const val KEY_RIGHT_BRACKET = ")"
 
 const val KEY_EXPONENT = "^"
-const val KEY_EXPONENT_DISPLAY = "^"
 
 const val KEY_SQRT = "√"
 
@@ -67,6 +66,5 @@ val OPERATORS = listOf(
 val INTERNAL_DISPLAY: Map<String, String> = hashMapOf(
     KEY_MINUS to KEY_MINUS_DISPLAY,
     KEY_MULTIPLY to KEY_MULTIPLY_DISPLAY,
-    KEY_DIVIDE to KEY_DIVIDE_DISPLAY,
-    KEY_EXPONENT to KEY_EXPONENT_DISPLAY,
+    KEY_DIVIDE to KEY_DIVIDE_DISPLAY
 )

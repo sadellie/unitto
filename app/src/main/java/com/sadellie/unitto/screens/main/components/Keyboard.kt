@@ -40,7 +40,6 @@ import com.sadellie.unitto.data.KEY_DIVIDE
 import com.sadellie.unitto.data.KEY_DIVIDE_DISPLAY
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_EXPONENT
-import com.sadellie.unitto.data.KEY_EXPONENT_DISPLAY
 import com.sadellie.unitto.data.KEY_LEFT_BRACKET
 import com.sadellie.unitto.data.KEY_MINUS
 import com.sadellie.unitto.data.KEY_MINUS_DISPLAY
@@ -95,7 +94,7 @@ fun Keyboard(
             KeyboardButton(bModifier, Formatter.fractional, enabled = dotButtonEnabled) { addDigit(KEY_DOT) }
         }
         Column(cModifier) {
-            KeyboardButton(bModifier, KEY_EXPONENT_DISPLAY, isPrimary = false, onClick = { addDigit(KEY_EXPONENT) })
+            KeyboardButton(bModifier, KEY_EXPONENT, isPrimary = false, onClick = { addDigit(KEY_EXPONENT) })
             KeyboardButton(bModifier, KEY_9, onClick = addDigit)
             KeyboardButton(bModifier, KEY_6, onClick = addDigit)
             KeyboardButton(bModifier, KEY_3, onClick = addDigit)
