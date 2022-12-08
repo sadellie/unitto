@@ -40,6 +40,7 @@ import com.sadellie.unitto.data.KEY_8
 import com.sadellie.unitto.data.KEY_9
 import com.sadellie.unitto.data.KEY_DIVIDE
 import com.sadellie.unitto.data.KEY_DOT
+import com.sadellie.unitto.data.KEY_EXPONENT
 import com.sadellie.unitto.data.KEY_LEFT_BRACKET
 import com.sadellie.unitto.data.KEY_MINUS
 import com.sadellie.unitto.data.KEY_MULTIPLY
@@ -309,16 +310,18 @@ class MainViewModel @Inject constructor(
         _deleteButtonEnabled.update { true }
 
         when (symbolToAdd) {
-            KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY -> {
+            KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY, KEY_EXPONENT -> {
                 when {
                     // Don't need expressions that start with zero
-                    (inputValue.value == KEY_0) or (inputValue.value == KEY_MINUS) -> {}
+                    (inputValue.value == KEY_0) -> {}
+                    (inputValue.value == KEY_MINUS) -> {}
+                    (lastSymbol == KEY_SQRT) -> {}
                     /**
                      * For situations like "50+-", when user clicks "/" we delete "-" so it becomes
                      * "50+". We don't add "/' here. User will click "/" second time and the input
                      * will be "50/".
                      */
-                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS)-> {
+                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS) -> {
                         deleteDigit()
                     }
                     // Don't allow multiple operators near each other

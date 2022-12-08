@@ -98,10 +98,11 @@ class MainViewModelTest {
          */
         `test 0`()
         `test digits from 1 to 9`()
-        `test plus, divide and multiply operators`()
+        `test plus, divide, multiply and exponent operators`()
         `test dot`()
         `test minus`()
         `test brackets`()
+        `test square root`()
 
         Dispatchers.resetMain()
     }
@@ -184,7 +185,7 @@ class MainViewModelTest {
         viewModel.clearInput()
     }
 
-    private fun `test plus, divide and multiply operators`() {
+    private fun `test plus, divide, multiply and exponent operators`() {
         // 0 | +++ | 0
         viewModel.processInput(KEY_PLUS)
         assertEquals("0", viewModel.inputValue.value)
@@ -221,6 +222,24 @@ class MainViewModelTest {
         viewModel.processInput(KEY_PLUS)
         assertEquals("1+", viewModel.inputValue.value)
         assertEquals("1+", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // 0 | ^^^ | 0
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        assertEquals("0", viewModel.inputValue.value)
+        assertEquals("0", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // 12 | ^^^ | 12^
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        assertEquals("12^", viewModel.inputValue.value)
+        assertEquals("12^", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
     }
 
@@ -303,6 +322,26 @@ class MainViewModelTest {
         assertEquals("√-", viewModel.inputValue.value)
         assertEquals("√–", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
+
+        // √ | /// | √
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_DIVIDE)
+        viewModel.processInput(KEY_DIVIDE)
+        viewModel.processInput(KEY_DIVIDE)
+        assertEquals("√", viewModel.inputValue.value)
+        assertEquals("√", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // 12^- | --- | 12^-
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_MINUS)
+        viewModel.processInput(KEY_MINUS)
+        viewModel.processInput(KEY_MINUS)
+        assertEquals("12^-", viewModel.inputValue.value)
+        assertEquals("12^–", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
     }
 
     private fun `test brackets`() {
@@ -330,6 +369,17 @@ class MainViewModelTest {
         viewModel.processInput(KEY_RIGHT_BRACKET)
         assertEquals("√(10+2)", viewModel.inputValue.value)
         assertEquals("√(10+2)", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+    }
+
+    private fun `test square root`() {
+        // 0 | √√√ | √√√
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_SQRT)
+        assertEquals("√√√", viewModel.inputValue.value)
+        assertEquals("√√√", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
     }
 
     @Test
