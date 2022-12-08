@@ -171,18 +171,19 @@ fun openLink(mContext: Context, url: String) {
 }
 
 /**
- * Compute Levenshtein Distance between this string and [stringB]. Doesn't matter which string is
+ * Compute Levenshtein Distance between this string and [secondString]. Doesn't matter which string is
  * first.
  *
  * @return The amount of changes that are needed to transform one string into another
  */
-fun String.lev(stringB: String): Int {
-    val stringA = this
+fun String.lev(secondString: String): Int {
+    val stringA = this.lowercase()
+    val stringB = secondString.lowercase()
 
     // Skipping computation for this cases
     if (stringA == stringB) return 0
     if (stringA.isEmpty()) return stringB.length
-    // This case is basically unreal in this app, because stringB is a unit name and they are never empty
+    // This case is basically unreal in this app, because secondString is a unit name and they are never empty
     if (stringB.isEmpty()) return stringA.length
 
     var cost = IntArray(stringA.length + 1) { it }
