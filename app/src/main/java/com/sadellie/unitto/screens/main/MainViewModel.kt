@@ -82,8 +82,6 @@ class MainViewModel @Inject constructor(
     val inputValue: MutableStateFlow<String> = MutableStateFlow(KEY_0)
     private val latestInputStack: MutableList<String> = mutableListOf(KEY_0)
     private val _inputDisplayValue: MutableStateFlow<String> = MutableStateFlow(KEY_0)
-    private val _deleteButtonEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val _negateButtonEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _isLoadingDatabase: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _isLoadingNetwork: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -100,9 +98,6 @@ class MainViewModel @Inject constructor(
         return@combine MainScreenUIState(
             inputValue = inputDisplayValue,
             resultValue = convertValue(),
-            deleteButtonEnabled = inputValue.value != KEY_0,
-            dotButtonEnabled = canEnterDot(),
-            negateButtonEnabled = _negateButtonEnabled.value,
             isLoadingDatabase = isLoadingDatabase,
             isLoadingNetwork = isLoadingNetwork,
             showError = showError,
@@ -189,8 +184,6 @@ class MainViewModel @Inject constructor(
         // First we change unit
         unitFrom = clickedUnit
 
-        // Now we check for negate button
-        _negateButtonEnabled.update { clickedUnit.group.canNegate }
         // Now we change to positive if the group we switched to supports negate
         if (!clickedUnit.group.canNegate) {
             inputValue.update { inputValue.value.removePrefix(KEY_MINUS) }
@@ -307,7 +300,6 @@ class MainViewModel @Inject constructor(
         val lastTwoSymbols = latestInputStack.takeLast(2)
         val lastSymbol: String = lastTwoSymbols.getOrNull(1) ?: lastTwoSymbols[0]
         val lastSecondSymbol: String? = lastTwoSymbols.getOrNull(0)
-        _deleteButtonEnabled.update { true }
 
         when (symbolToAdd) {
             KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY, KEY_EXPONENT -> {
@@ -368,7 +360,9 @@ class MainViewModel @Inject constructor(
                 }
             }
             KEY_DOT -> {
-                setInputSymbols(symbolToAdd)
+                if (canEnterDot()) {
+                    setInputSymbols(symbolToAdd)
+                }
             }
             KEY_LEFT_BRACKET, KEY_RIGHT_BRACKET -> {
                 when {
@@ -411,6 +405,9 @@ class MainViewModel @Inject constructor(
      * Deletes last symbol from input and handles buttons state (enabled/disabled)
      */
     fun deleteDigit() {
+        // Default input, don't delete
+        if (inputValue.value == KEY_0) return
+
         val lastSymbol = latestInputStack.removeLast()
 
         // We will need to delete last symbol from both values
@@ -443,6 +440,7 @@ class MainViewModel @Inject constructor(
             else -> {
                 inputValue.update { symbol }
                 _inputDisplayValue.update { displaySymbol }
+                latestInputStack.clear()
                 latestInputStack.add(symbol)
             }
         }
@@ -452,7 +450,6 @@ class MainViewModel @Inject constructor(
      * Clears input value and sets it to default (ZERO)
      */
     fun clearInput() {
-        _deleteButtonEnabled.update { false }
         setInputSymbols(KEY_0, false)
     }
 
@@ -497,7 +494,6 @@ class MainViewModel @Inject constructor(
             allUnitsRepository.loadFromDatabase(mContext, allBasedUnits)
 
             // User is free to convert values and units on units screen can be sorted properly
-            _negateButtonEnabled.update { unitFrom.group.canNegate }
             _isLoadingDatabase.update { false }
             updateCurrenciesBasicUnits()
         }

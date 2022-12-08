@@ -147,8 +147,6 @@ private fun PortraitMainScreenContent(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                deleteButtonEnabled = mainScreenUIState.deleteButtonEnabled,
-                dotButtonEnabled = mainScreenUIState.dotButtonEnabled,
             )
         }
     } else {
@@ -182,7 +180,6 @@ private fun PortraitMainScreenContent(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                deleteButtonEnabled = mainScreenUIState.deleteButtonEnabled,
             )
         }
     }

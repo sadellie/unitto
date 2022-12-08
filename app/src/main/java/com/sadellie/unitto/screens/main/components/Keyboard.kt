@@ -57,8 +57,6 @@ import com.sadellie.unitto.screens.Formatter
  * @param addDigit Function that is called when clicking number and dot buttons
  * @param deleteDigit Function that is called when clicking delete "<" button
  * @param clearInput Function that is called when clicking clear "AC" button
- * @param deleteButtonEnabled Current state of delete "<" button
- * @param dotButtonEnabled Current state of clear "AC" button
  */
 @Composable
 fun Keyboard(
@@ -66,8 +64,6 @@ fun Keyboard(
     addDigit: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
-    deleteButtonEnabled: Boolean = false,
-    dotButtonEnabled: Boolean = true
 ) {
     Row(
         modifier = modifier.fillMaxSize()
@@ -91,14 +87,14 @@ fun Keyboard(
             KeyboardButton(bModifier, KEY_8, onClick = addDigit)
             KeyboardButton(bModifier, KEY_5, onClick = addDigit)
             KeyboardButton(bModifier, KEY_2, onClick = addDigit)
-            KeyboardButton(bModifier, Formatter.fractional, enabled = dotButtonEnabled) { addDigit(KEY_DOT) }
+            KeyboardButton(bModifier, Formatter.fractional) { addDigit(KEY_DOT) }
         }
         Column(cModifier) {
             KeyboardButton(bModifier, KEY_EXPONENT, isPrimary = false, onClick = { addDigit(KEY_EXPONENT) })
             KeyboardButton(bModifier, KEY_9, onClick = addDigit)
             KeyboardButton(bModifier, KEY_6, onClick = addDigit)
             KeyboardButton(bModifier, KEY_3, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_CLEAR, enabled = deleteButtonEnabled, onLongClick = clearInput) { deleteDigit() }
+            KeyboardButton(bModifier, KEY_CLEAR, onLongClick = clearInput) { deleteDigit() }
         }
         Column(cModifier) {
             KeyboardButton(bModifier, KEY_SQRT, isPrimary = false, onClick = { addDigit(KEY_SQRT) })

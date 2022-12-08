@@ -244,33 +244,73 @@ class MainViewModelTest {
     }
 
     private fun `test dot`() {
-        // 0 | . | 0.
+        // 0 | ... | 0.
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
         viewModel.processInput(KEY_DOT)
         assertEquals("0.", viewModel.inputValue.value)
         assertEquals("0.", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
 
-        // 1 | . | 1.
+        // 1 | ... | 1.
         viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
         viewModel.processInput(KEY_DOT)
         assertEquals("1.", viewModel.inputValue.value)
         assertEquals("1.", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
 
-        // 1+ | . | 1+.
+        // 1+ | ... | 1+.
         viewModel.processInput(KEY_1)
         viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
         viewModel.processInput(KEY_DOT)
         assertEquals("1+.", viewModel.inputValue.value)
         assertEquals("1+.", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
 
-        // √ | . | √.
+        // √ | ... | √.
         viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
         viewModel.processInput(KEY_DOT)
         assertEquals("√.", viewModel.inputValue.value)
         assertEquals("√.", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
+
+        // √21 | ... | √21.
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
+        assertEquals("√21.", viewModel.inputValue.value)
+        assertEquals("√21.", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // √21+1.01-.23 | ... | √21+1.01-.23
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_MINUS)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_3)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DOT)
+        assertEquals("√21+1.01-.23", viewModel.inputValue.value)
+        assertEquals("√21+1.01–.23", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
     }
 
     private fun `test minus`() {
@@ -399,6 +439,9 @@ class MainViewModelTest {
         }
         viewModel.clearInput()
 
+        // This should not delete default input (0)
+        viewModel.deleteDigit()
+
         // Now we check that we can delete multiple values
         viewModel.processInput(KEY_3)
         viewModel.processInput(KEY_SQRT)
@@ -409,5 +452,4 @@ class MainViewModelTest {
 
         Dispatchers.resetMain()
     }
-
 }

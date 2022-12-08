@@ -41,7 +41,6 @@ import com.sadellie.unitto.ui.theme.NumbersTextStyleTitleLarge
  *
  * @param modifier Modifier that is applied to a [Button] component.
  * @param digit Symbol to show on button.
- * @param enabled Current state of this button.
  * @param isPrimary If true will use `inverseOnSurface` color, else `secondaryContainer`.
  * @param onLongClick Action to perform when holding this button.
  * @param onClick Action to perform when clicking this button.
@@ -50,7 +49,6 @@ import com.sadellie.unitto.ui.theme.NumbersTextStyleTitleLarge
 fun KeyboardButton(
     modifier: Modifier = Modifier,
     digit: String,
-    enabled: Boolean = true,
     isPrimary: Boolean = true,
     onLongClick: () -> Unit = {},
     onClick: (String) -> Unit = {}
@@ -67,12 +65,11 @@ fun KeyboardButton(
         interactionSource = interactionSource,
         shape = RoundedCornerShape(cornerRadius),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isPrimary) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.secondaryContainer,
+            containerColor = if (isPrimary) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
         ),
         onClick = { onClick(digit) },
-        enabled = enabled,
         contentPadding = PaddingValues(0.dp)
     ) {
         Text(
