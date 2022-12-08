@@ -18,8 +18,8 @@
 
 package com.sadellie.unitto.screens
 
-import android.os.StrictMode
 import androidx.room.Room
+import com.sadellie.unitto.CoroutineTestRule
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_1
 import com.sadellie.unitto.data.KEY_2
@@ -46,42 +46,19 @@ import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.database.MyBasedUnitDatabase
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.screens.main.MainViewModel
-import kotlinx.coroutines.CoroutineScope
+import com.sadellie.unitto.testInViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestWatcher
-import org.junit.runner.Description
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-
-
-@ExperimentalCoroutinesApi
-class CoroutineTestRule(private val dispatcher: TestDispatcher = UnconfinedTestDispatcher()) :
-    TestWatcher() {
-
-    override fun starting(description: Description) {
-        super.starting(description)
-        Dispatchers.setMain(dispatcher)
-    }
-
-    override fun finished(description: Description) {
-        super.finished(description)
-        Dispatchers.resetMain()
-    }
-
-}
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -112,12 +89,8 @@ class MainViewModelTest {
     }
 
     @Test
-    fun processInputTest() = runTest {
-        // https://github.com/robolectric/robolectric/issues/6377#issuecomment-843779001
-        StrictMode.enableDefaults()
-        val testDispatcher = UnconfinedTestDispatcher(testScheduler)
-        Dispatchers.setMain(testDispatcher)
-        viewModel.mainFlow.launchIn(CoroutineScope(testDispatcher))
+    fun processInputTest() = testInViewModel { coroutineScope ->
+        viewModel.mainFlow.launchIn(coroutineScope)
 
         /**
          * For simplicity comments will have structure:
@@ -360,12 +333,8 @@ class MainViewModelTest {
     }
 
     @Test
-    fun deleteSymbolTest() = runTest {
-        // https://github.com/robolectric/robolectric/issues/6377#issuecomment-843779001
-        StrictMode.enableDefaults()
-        val testDispatcher = UnconfinedTestDispatcher(testScheduler)
-        Dispatchers.setMain(testDispatcher)
-        viewModel.mainFlow.launchIn(CoroutineScope(testDispatcher))
+    fun deleteSymbolTest() = testInViewModel { coroutineScope ->
+        viewModel.mainFlow.launchIn(coroutineScope)
 
         listOf(
             KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0,
