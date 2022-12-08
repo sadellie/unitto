@@ -22,15 +22,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.sadellie.unitto.data.KEY_COMMA
-import com.sadellie.unitto.data.KEY_DIVIDE
-import com.sadellie.unitto.data.KEY_DIVIDE_DISPLAY
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_E
-import com.sadellie.unitto.data.KEY_MINUS
-import com.sadellie.unitto.data.KEY_MINUS_DISPLAY
-import com.sadellie.unitto.data.KEY_MULTIPLY
-import com.sadellie.unitto.data.KEY_MULTIPLY_DISPLAY
-import com.sadellie.unitto.data.KEY_PLUS
+import com.sadellie.unitto.data.OPERATORS
 import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.Separator
 import com.sadellie.unitto.data.units.AbstractUnit
@@ -89,16 +83,14 @@ object Formatter {
         // We may receive expressions
         // Find all numbers in that expression
         val allNumbers: List<String> = input.split(
-            KEY_MINUS, KEY_DIVIDE, KEY_PLUS, KEY_MULTIPLY
+            *OPERATORS.toTypedArray()
         )
 
         allNumbers.forEach {
             output = output.replace(it, formatNumber(it))
         }
 
-        return output.replace(KEY_MINUS, KEY_MINUS_DISPLAY)
-            .replace(KEY_DIVIDE, KEY_DIVIDE_DISPLAY)
-            .replace(KEY_MULTIPLY, KEY_MULTIPLY_DISPLAY)
+        return output
     }
 
     /**

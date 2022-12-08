@@ -29,8 +29,8 @@ private const val ENG_VALUE_FRACTIONAL = "123.3E+21"
 private const val COMPLETE_VALUE = "123456.789"
 private const val INCOMPLETE_VALUE = "123456."
 private const val NO_FRACTIONAL_VALUE = "123456"
-private const val INCOMPLETE_EXPR = "50+123456/8*0.8-12+"
-private const val COMPLETE_EXPR = "50+123456/8*0.8-12+0"
+private const val INCOMPLETE_EXPR = "50+123456÷8×0.8–12+"
+private const val COMPLETE_EXPR = "50+123456÷8×0.8–12+0-√9*4^9+2×(9+8×7)"
 
 class FormatterTest {
 
@@ -44,7 +44,7 @@ class FormatterTest {
         assertEquals("123 456.", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123 456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123 456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123 456÷8×0.8–12+0", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123 456÷8×0.8–12+0-√9*4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
     }
 
     @Test
@@ -57,7 +57,7 @@ class FormatterTest {
         assertEquals("123,456.", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123,456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123,456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123,456÷8×0.8–12+0", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123,456÷8×0.8–12+0-√9*4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
     }
 
     @Test
@@ -70,7 +70,7 @@ class FormatterTest {
         assertEquals("123.456,", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123.456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123.456÷8×0,8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123.456÷8×0,8–12+0", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123.456÷8×0,8–12+0-√9*4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
     }
 
 }
