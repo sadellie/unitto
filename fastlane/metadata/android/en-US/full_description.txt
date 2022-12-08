@@ -1,12 +1,20 @@
-This is Unitto, a free unit converter mobile app for Android devices. It uses Material Design 3 guidelines and supports all the latest Android features.
+This is Unitto — free unit converter and calculator mobile app for Android.
 
 Key features
 • More than 430 units
+• Built-in calculator
+• Smart units search
+• Adaptive units sorting algorithm
+• Small app size
+• Bulk convert units
+• Favorite units
+• Ability to disable unit groups
+• Customizable number formatter
 • SI Standard
 • No ads, obviously
 • Supports Dynamic Theming
-• Highly customizable
-• Just looks good, I guess…
+
+And many more!
 
 The app is in active development and has its own Trello board, where you can check out all the new stuff that will be added. You can also leave your feature requests.
 Trello board link: https://trello.com/b/cxAbRlvu/unitto

@@ -1,24 +1,39 @@
 # Unitto
 Unit converter for Android
 ![Feature](./fastlane/metadata/android/en-US/images/featureGraphic.png)
-This is Unitto, a free unit converter mobile app for Android devices. It uses Material Design 3 guidelines and supports all the latest Android features.
+This is Unitto — free unit converter and calculator mobile app for Android. 
 
-Key features:
+## Some screenshots:
+<p align="middle">
+    <!-- No, you can't make it 50% -->
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png" width="32%" />
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide2.png" width="32%" />
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide3.png" width="32%" />
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide4.png" width="32%" />
+    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide5.png" width="32%" />
+</p>
+
+## Some of the features:
 - More than 430 units
+- Built-in calculator
+- Smart units search
+- Adaptive units sorting algorithm
+- Small app size
+- Bulk convert units
+- Favorite units
+- Ability to disable unit groups
+- Customizable number formatter
 - SI Standard
 - No ads, obviously
 - Supports Dynamic Theming
-- Highly customizable
-- Just looks good, I guess…
 
-Some screenshots:
-<p align="middle">
-    <!-- No, you can't make it 50% -->
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png" width="49%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide2.png" width="49%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide3.png" width="49%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide4.png" width="49%" />
-</p>
+And many more!
+
+## Main goal
+The goal of this little project is to make an app that will allow it's users to convert units as quick as possible. This can be achieved by constant UX improvements and my coding skills.
+
+## Contribute
+Any sort of help is welcomed. Open issues, start threads in discussions or just use ***Unitto***. Thank you!
 
 ## Links
 <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/googlePlay.png" width="32%"/></a>
