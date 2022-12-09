@@ -57,7 +57,7 @@ fun UnitSelectionButton(
         onClick = { onClick() },
         enabled = !isLoading,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp)
     ) {

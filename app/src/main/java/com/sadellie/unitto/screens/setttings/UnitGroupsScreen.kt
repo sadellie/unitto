@@ -88,7 +88,7 @@ fun UnitGroupsScreen(
                 ReorderableItem(state, key = item) { isDragging ->
                     val transition = updateTransition(isDragging, label = "draggedTransition")
                     val background by transition.animateColor(label = "background") {
-                        if (it) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
+                        if (it) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
                     }
                     val itemPadding by transition.animateDp(label = "itemPadding") {
                         if (it) 16.dp else 0.dp

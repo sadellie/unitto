@@ -88,7 +88,7 @@ private fun BasicUnitListItem(
         Row(
             modifier = Modifier
                         .background(
-                            if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
+                            if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
                             RoundedCornerShape(24.dp)
                         ).padding(paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp))
                 .fillMaxWidth(),

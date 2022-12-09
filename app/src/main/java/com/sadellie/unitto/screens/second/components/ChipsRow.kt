@@ -139,7 +139,7 @@ private fun UnittoFilterChip(
             .height(32.dp)
             .clip(chipShape)
             .background(
-                if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
             )
             // Remove border when selected
             .border(
