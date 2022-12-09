@@ -30,7 +30,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.DragIndicator
+import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
@@ -118,7 +118,7 @@ fun UnitGroupsScreen(
                         },
                         trailingContent = {
                             Icon(
-                                Icons.Default.DragIndicator,
+                                Icons.Default.DragHandle,
                                 stringResource(R.string.reorder_unit_group_description),
                                 tint = MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
