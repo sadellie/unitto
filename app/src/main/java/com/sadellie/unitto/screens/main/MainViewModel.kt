@@ -307,6 +307,7 @@ class MainViewModel @Inject constructor(
                     // Don't need expressions that start with zero
                     (inputValue.value == KEY_0) -> {}
                     (inputValue.value == KEY_MINUS) -> {}
+                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
                     (lastSymbol == KEY_SQRT) -> {}
                     /**
                      * For situations like "50+-", when user clicks "/" we delete "-" so it becomes
@@ -364,12 +365,26 @@ class MainViewModel @Inject constructor(
                     setInputSymbols(symbolToAdd)
                 }
             }
-            KEY_LEFT_BRACKET, KEY_RIGHT_BRACKET -> {
+            KEY_LEFT_BRACKET -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
                     (inputValue.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            KEY_RIGHT_BRACKET -> {
+                when {
+                    // Replace single zero with minus (to support negative numbers)
+                    (inputValue.value == KEY_0) -> {
+                        setInputSymbols(symbolToAdd, false)
+                    }
+                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
+                    (latestInputStack.filter { it == KEY_LEFT_BRACKET }.size ==
+                            latestInputStack.filter { it == KEY_RIGHT_BRACKET }.size) -> {}
                     else -> {
                         setInputSymbols(symbolToAdd)
                     }

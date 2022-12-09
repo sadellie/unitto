@@ -241,6 +241,28 @@ class MainViewModelTest {
         assertEquals("12^", viewModel.inputValue.value)
         assertEquals("12^", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
+
+        // ( | ^^^ | (
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        assertEquals("(", viewModel.inputValue.value)
+        assertEquals("(", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // (8+9) | ^^^ | (8+9)^
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_8)
+        viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_9)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_EXPONENT)
+        assertEquals("(8+9)^", viewModel.inputValue.value)
+        assertEquals("(8+9)^", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
     }
 
     private fun `test dot`() {
@@ -409,6 +431,19 @@ class MainViewModelTest {
         viewModel.processInput(KEY_RIGHT_BRACKET)
         assertEquals("√(10+2)", viewModel.inputValue.value)
         assertEquals("√(10+2)", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // 0 | ()()))(( | ((((
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        assertEquals("((((", viewModel.inputValue.value)
+        assertEquals("((((", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
     }
 
