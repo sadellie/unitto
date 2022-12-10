@@ -475,9 +475,9 @@ class MainViewModel @Inject constructor(
                 latestInputStack.add(symbol)
             }
             else -> {
+                latestInputStack.clear()
                 inputValue.update { symbol }
                 _inputDisplayValue.update { displaySymbol }
-                latestInputStack.clear()
                 latestInputStack.add(symbol)
             }
         }
