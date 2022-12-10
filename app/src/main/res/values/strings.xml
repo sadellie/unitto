@@ -113,9 +113,9 @@
 
     <!--Temperature-->
     <string name="celsius">Celsius</string>
-    <string name="celsius_short" translatable="false">°C</string>
+    <string name="celsius_short" translatable="false">"℃ "</string>
     <string name="fahrenheit">Fahrenheit</string>
-    <string name="fahrenheit_short" translatable="false">°F</string>
+    <string name="fahrenheit_short" translatable="false">℉</string>
     <string name="kelvin">Kelvin</string>
     <string name="kelvin_short" translatable="false">K</string>
 
