@@ -51,17 +51,34 @@ const val KEY_EXPONENT = "^"
 
 const val KEY_SQRT = "√"
 
-val OPERATORS = listOf(
-    KEY_PLUS,
-    KEY_MINUS,
-    KEY_MINUS_DISPLAY,
-    KEY_MULTIPLY,
-    KEY_MULTIPLY_DISPLAY,
-    KEY_DIVIDE,
-    KEY_DIVIDE_DISPLAY,
-    KEY_SQRT,
-    KEY_EXPONENT,
-)
+val OPERATORS by lazy {
+    listOf(
+        KEY_PLUS,
+        KEY_MINUS,
+        KEY_MINUS_DISPLAY,
+        KEY_MULTIPLY,
+        KEY_MULTIPLY_DISPLAY,
+        KEY_DIVIDE,
+        KEY_DIVIDE_DISPLAY,
+        KEY_SQRT,
+        KEY_EXPONENT,
+    )
+}
+
+val DIGITS by lazy {
+    listOf(
+        KEY_1,
+        KEY_2,
+        KEY_3,
+        KEY_4,
+        KEY_5,
+        KEY_6,
+        KEY_7,
+        KEY_8,
+        KEY_9,
+        KEY_0,
+    )
+}
 
 val INTERNAL_DISPLAY: Map<String, String> = hashMapOf(
     KEY_MINUS to KEY_MINUS_DISPLAY,

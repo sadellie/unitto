@@ -167,6 +167,48 @@ class MainViewModelTest {
         assertEquals("√0", viewModel.inputValue.value)
         assertEquals("√0", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
+
+        // ( | 000 | (0
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_0)
+        assertEquals("(0", viewModel.inputValue.value)
+        assertEquals("(0", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // (1+12) | 000 | (1+12)*0
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_0)
+        assertEquals("(1+12)*0", viewModel.inputValue.value)
+        assertEquals("(1+12)×0", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // (1.002+120) | 000 | (1+120)*0
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_0)
+        assertEquals("(1.002+120)*0", viewModel.inputValue.value)
+        assertEquals("(1.002+120)×0", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
     }
 
     private fun `test digits from 1 to 9`() {
@@ -182,6 +224,19 @@ class MainViewModelTest {
         viewModel.processInput(KEY_9)
         assertEquals("123456789", viewModel.inputValue.value)
         assertEquals("123456789", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // (1+1) | 111 | (1+1)*111
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_1)
+        assertEquals("(1+1)*111", viewModel.inputValue.value)
+        assertEquals("(1+1)×111", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
     }
 
@@ -407,10 +462,12 @@ class MainViewModelTest {
     }
 
     private fun `test brackets`() {
-        // 0 | ( | (
-        viewModel.processInput(KEY_LEFT_BRACKET)
-        assertEquals("(", viewModel.inputValue.value)
-        assertEquals("(", viewModel.mainFlow.value.inputValue)
+        // 0 | ))) | 0
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        assertEquals("0", viewModel.inputValue.value)
+        assertEquals("0", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
 
         // 0 | ((( | (((
@@ -421,7 +478,7 @@ class MainViewModelTest {
         assertEquals("(((", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
 
-        // √ | (10+2) | √(10+2)
+        // √(10+2 | )( | √(10+2)*(
         viewModel.processInput(KEY_SQRT)
         viewModel.processInput(KEY_LEFT_BRACKET)
         viewModel.processInput(KEY_1)
@@ -429,8 +486,23 @@ class MainViewModelTest {
         viewModel.processInput(KEY_PLUS)
         viewModel.processInput(KEY_2)
         viewModel.processInput(KEY_RIGHT_BRACKET)
-        assertEquals("√(10+2)", viewModel.inputValue.value)
-        assertEquals("√(10+2)", viewModel.mainFlow.value.inputValue)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        assertEquals("√(10+2)*(", viewModel.inputValue.value)
+        assertEquals("√(10+2)×(", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // √(10+2./ | ( | √(10+2./(
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_DOT)
+        viewModel.processInput(KEY_DIVIDE)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        assertEquals("√(10+2./(", viewModel.inputValue.value)
+        assertEquals("√(10+2.÷(", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
 
         // 0 | ()()))(( | ((((
@@ -445,6 +517,20 @@ class MainViewModelTest {
         assertEquals("((((", viewModel.inputValue.value)
         assertEquals("((((", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
+
+        // √(10+2)^ | ( | √(10+2)^(
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_0)
+        viewModel.processInput(KEY_PLUS)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_RIGHT_BRACKET)
+        viewModel.processInput(KEY_EXPONENT)
+        viewModel.processInput(KEY_LEFT_BRACKET)
+        assertEquals("√(10+2)^(", viewModel.inputValue.value)
+        assertEquals("√(10+2)^(", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
     }
 
     private fun `test square root`() {
@@ -454,6 +540,17 @@ class MainViewModelTest {
         viewModel.processInput(KEY_SQRT)
         assertEquals("√√√", viewModel.inputValue.value)
         assertEquals("√√√", viewModel.mainFlow.value.inputValue)
+        viewModel.clearInput()
+
+        // 123 | √√√ | 123*√√√
+        viewModel.processInput(KEY_1)
+        viewModel.processInput(KEY_2)
+        viewModel.processInput(KEY_3)
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_SQRT)
+        viewModel.processInput(KEY_SQRT)
+        assertEquals("123*√√√", viewModel.inputValue.value)
+        assertEquals("123×√√√", viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
     }
 

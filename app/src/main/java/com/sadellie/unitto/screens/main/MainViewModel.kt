@@ -27,6 +27,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.keelar.exprk.ExpressionException
 import com.github.keelar.exprk.Expressions
 import com.sadellie.unitto.FirebaseHelper
+import com.sadellie.unitto.data.DIGITS
 import com.sadellie.unitto.data.INTERNAL_DISPLAY
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_1
@@ -328,18 +329,33 @@ class MainViewModel @Inject constructor(
                 }
             }
             KEY_0 -> {
-                // Don't add zero if the input is already a zero
-                if (inputValue.value == KEY_0) return
-                // Prevents things like "-00" and "4+000"
-                if ((lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_0)) return
-                setInputSymbols(symbolToAdd)
+                when {
+                    // Don't add zero if the input is already a zero
+                    (inputValue.value == KEY_0) -> {}
+                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
+                    }
+                    // Prevents things like "-00" and "4+000"
+                    ((lastSecondSymbol in OPERATORS + KEY_LEFT_BRACKET) and (lastSymbol == KEY_0)) -> {}
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
             }
             KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 -> {
                 // Replace single zero (default input) if it's here
-                if (inputValue.value == KEY_0) {
-                    setInputSymbols(symbolToAdd, false)
-                } else {
-                    setInputSymbols(symbolToAdd)
+                when {
+                    (inputValue.value == KEY_0) -> {
+                        setInputSymbols(symbolToAdd, false)
+                    }
+                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
                 }
             }
             KEY_MINUS -> {
@@ -371,6 +387,10 @@ class MainViewModel @Inject constructor(
                     (inputValue.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
+                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
+                    }
                     else -> {
                         setInputSymbols(symbolToAdd)
                     }
@@ -379,9 +399,7 @@ class MainViewModel @Inject constructor(
             KEY_RIGHT_BRACKET -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (inputValue.value == KEY_0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
+                    (inputValue.value == KEY_0) -> {}
                     (lastSymbol == KEY_LEFT_BRACKET) -> {}
                     (latestInputStack.filter { it == KEY_LEFT_BRACKET }.size ==
                             latestInputStack.filter { it == KEY_RIGHT_BRACKET }.size) -> {}
@@ -395,6 +413,10 @@ class MainViewModel @Inject constructor(
                     // Replace single zero with minus (to support negative numbers)
                     (inputValue.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
+                    }
+                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
                     }
                     else -> {
                         setInputSymbols(symbolToAdd)
