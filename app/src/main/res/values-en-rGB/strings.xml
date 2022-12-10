@@ -727,7 +727,7 @@
     <string name="search_placeholder_secondary">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
 
     <!--Content descriptions-->
-    <string name="navigate_up_description">Nach oben navigieren</string>
+    <string name="navigate_up_description">Navigate up</string>
     <string name="checked_filter_description">Checked filter</string>
     <string name="open_settings_description">Open settings</string>
     <string name="swap_units_description">Swap units</string>
