@@ -7,13 +7,15 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 
-    // Google Services
-    id("com.google.gms.google-services")
-
     // Firebase Crashlytics
     id("com.google.firebase.crashlytics")
+}
 
-//    id("io.freefair.lombok") version "6.6"
+if (!gradle.startParameter.taskRequests.toString().contains("Fdroid")) {
+    // Google Services are for all flavors except fdroid
+    apply(plugin="com.google.gms.google-services")
+} else {
+    println("Didn't add Google Services since F-Droid flavor was chosen.")
 }
 
 val composeVersion = "1.4.0-alpha02"
