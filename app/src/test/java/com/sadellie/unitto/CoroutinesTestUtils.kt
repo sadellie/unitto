@@ -29,7 +29,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Test
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
@@ -50,7 +49,6 @@ class CoroutineTestRule(private val dispatcher: TestDispatcher = UnconfinedTestD
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Test
 fun testInViewModel(testBody: suspend TestScope.(CoroutineScope) -> Unit): TestResult = runTest {
     // https://github.com/robolectric/robolectric/issues/6377#issuecomment-843779001
     StrictMode.enableDefaults()
