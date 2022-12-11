@@ -24,6 +24,8 @@ import android.net.Uri
 import com.sadellie.unitto.data.KEY_COMMA
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_E
+import com.sadellie.unitto.data.KEY_LEFT_BRACKET
+import com.sadellie.unitto.data.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.data.OPERATORS
 import com.sadellie.unitto.data.preferences.OutputFormat
 import com.sadellie.unitto.data.preferences.Separator
@@ -83,7 +85,7 @@ object Formatter {
         // We may receive expressions
         // Find all numbers in that expression
         val allNumbers: List<String> = input.split(
-            *OPERATORS.toTypedArray()
+            *OPERATORS.toTypedArray(), KEY_LEFT_BRACKET, KEY_RIGHT_BRACKET
         )
 
         allNumbers.forEach {
