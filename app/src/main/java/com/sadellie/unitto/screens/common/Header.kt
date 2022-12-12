@@ -40,7 +40,7 @@ fun Header(
     text: String,
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(
-        start = 16.dp,
+        start = 56.dp,
         end = 16.dp,
         top = 24.dp,
         bottom = 12.dp

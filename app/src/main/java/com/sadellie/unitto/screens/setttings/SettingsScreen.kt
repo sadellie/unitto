@@ -19,7 +19,16 @@
 package com.sadellie.unitto.screens.setttings
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.RateReview
+import androidx.compose.material.icons.filled.Rule
+import androidx.compose.material.icons.filled._123
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
@@ -63,20 +73,48 @@ fun SettingsScreen(
     ) { padding ->
         LazyColumn(contentPadding = padding) {
 
-            // GENERAL GROUP
-            item { Header(stringResource(R.string.general_settings_group)) }
-
-            // THEME
+            // UNIT GROUPS
             item {
                 ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Rule,
+                            stringResource(R.string.disable_unit_group_description),
+                        )
+                    },
                     headlineText = { Text(stringResource(R.string.unit_groups_setting)) },
+                    supportingText = { Text(stringResource(R.string.unit_groups_support)) },
                     modifier = Modifier.clickable { navControllerAction(UNIT_GROUPS_SCREEN) }
                 )
             }
 
+            // THEME
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Palette,
+                            stringResource(R.string.theme_setting),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.theme_setting)) },
+                    supportingText = { Text(stringResource(R.string.theme_setting_support)) },
+                    modifier = Modifier.clickable { navControllerAction(THEMES_SCREEN) }
+                )
+            }
+
+            // GENERAL GROUP
+            item { Header(stringResource(R.string.formatting_settings_group)) }
+
             // PRECISION
             item {
                 ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default._123,
+                            stringResource(R.string.precision_setting),
+                        )
+                    },
                     headlineText = { Text(stringResource(R.string.precision_setting)) },
                     supportingText = { Text(stringResource(R.string.precision_setting_support)) },
                     modifier = Modifier.clickable { dialogState = DialogState.PRECISION }
@@ -88,7 +126,9 @@ fun SettingsScreen(
                 ListItem(
                     headlineText = { Text(stringResource(R.string.separator_setting)) },
                     supportingText = { Text(stringResource(R.string.separator_setting_support)) },
-                    modifier = Modifier.clickable { dialogState = DialogState.SEPARATOR }
+                    modifier = Modifier
+                        .clickable { dialogState = DialogState.SEPARATOR }
+                        .padding(start = 40.dp)
                 )
             }
 
@@ -97,60 +137,25 @@ fun SettingsScreen(
                 ListItem(
                     headlineText = { Text(stringResource(R.string.output_format_setting)) },
                     supportingText = { Text(stringResource(R.string.output_format_setting_support)) },
-                    modifier = Modifier.clickable { dialogState = DialogState.OUTPUT_FORMAT }
-                )
-            }
-
-            // THEME
-            item {
-                ListItem(
-                    headlineText = { Text(stringResource(R.string.theme_setting)) },
-                    supportingText = { Text(stringResource(R.string.theme_setting_support)) },
-                    modifier = Modifier.clickable { navControllerAction(THEMES_SCREEN) }
-                )
-            }
-
-            // CURRENCY RATE NOTE
-            item {
-                ListItem(
-                    headlineText = { Text(stringResource(R.string.currency_rates_note_setting)) },
-                    modifier = Modifier.clickable { dialogState = DialogState.CURRENCY_RATE }
+                    modifier = Modifier
+                        .clickable { dialogState = DialogState.OUTPUT_FORMAT }
+                        .padding(start = 40.dp)
                 )
             }
 
             // ADDITIONAL GROUP
             item { Header(stringResource(R.string.additional_settings_group)) }
 
-            // TERMS AND CONDITIONS
-            item {
-                ListItem(
-                    headlineText = { Text(stringResource(R.string.terms_and_conditions)) },
-                    modifier = Modifier.clickable {
-                        openLink(
-                            mContext,
-                            "http://sadellie.github.io/unitto/terms-app.html"
-                        )
-                    }
-                )
-            }
-
-            // PRIVACY POLICY
-            item {
-                ListItem(
-                    headlineText = { Text(stringResource(R.string.privacy_policy)) },
-                    modifier = Modifier.clickable {
-                        openLink(
-                            mContext,
-                            "http://sadellie.github.io/unitto/privacy-app.html"
-                        )
-                    }
-                )
-            }
-
             // ANALYTICS
             if (BuildConfig.ANALYTICS) {
                 item {
                     UnittoListItem(
+                        leadingContent = {
+                            Icon(
+                                Icons.Default.Insights,
+                                stringResource(R.string.send_usage_statistics),
+                            )
+                        },
                         label = stringResource(R.string.send_usage_statistics),
                         supportText = stringResource(R.string.send_usage_statistics_support),
                         switchState = userPrefs.value.enableAnalytics
@@ -158,30 +163,34 @@ fun SettingsScreen(
                 }
             }
 
-            // THIRD PARTY
-            item {
-                ListItem(
-                    headlineText = { Text(stringResource(R.string.third_party_licenses)) },
-                    modifier = Modifier.clickable { navControllerAction(ABOUT_SCREEN) }
-                )
-            }
-
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
                     ListItem(
+                        leadingContent = {
+                            Icon(
+                                Icons.Default.RateReview,
+                                stringResource(R.string.rate_this_app),
+                            )
+                        },
                         headlineText = { Text(stringResource(R.string.rate_this_app)) },
                         modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                     )
                 }
             }
 
-            // APP VERSION
+            // More settings
             item {
                 ListItem(
-                    headlineText = { Text(stringResource(R.string.app_version_name_setting)) },
-                    supportingText = { Text("${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})") },
-                    modifier = Modifier.clickable {}
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Info,
+                            stringResource(R.string.about_unitto),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.about_unitto)) },
+                    supportingText = { Text(stringResource(R.string.about_unitto_support)) },
+                    modifier = Modifier.clickable { navControllerAction(ABOUT_SCREEN) }
                 )
             }
         }
@@ -225,14 +234,6 @@ fun SettingsScreen(
                 supportText = stringResource(R.string.output_format_setting_info)
             )
         }
-        DialogState.CURRENCY_RATE -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.currency_rates_note_title),
-                dismissAction = { resetDialog() },
-                supportText = stringResource(R.string.currency_rates_note_text),
-                dismissButtonLabel = stringResource(R.string.ok_label)
-            )
-        }
         // Dismissing alert dialog
         else -> {}
     }
@@ -242,5 +243,5 @@ fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, CURRENCY_RATE,
+    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT,
 }

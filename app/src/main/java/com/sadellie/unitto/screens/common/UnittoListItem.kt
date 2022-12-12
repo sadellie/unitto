@@ -60,6 +60,7 @@ import com.sadellie.unitto.R
 @Composable
 fun UnittoListItem(
     label: String,
+    leadingContent: @Composable (() -> Unit)?,
     supportText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
@@ -73,10 +74,12 @@ fun UnittoListItem(
             ),
         headlineText = { Text(label) },
         supportingText = { supportText?.let { Text(text = it) } },
+        leadingContent = leadingContent,
         trailingContent = {
             Switch(
                 checked = switchState,
-                onCheckedChange = { onSwitchChange(it) })
+                onCheckedChange = { onSwitchChange(it) }
+            )
         }
     )
 }
@@ -96,6 +99,7 @@ fun <T> UnittoListItem(
     label: String,
     supportText: String? = null,
     allOptions: Map<T, String>,
+    leadingContent: @Composable (() -> Unit)?,
     selected: T,
     onSelectedChange: (T) -> Unit
 ) {
@@ -109,6 +113,7 @@ fun <T> UnittoListItem(
     ListItem(
         headlineText = { Text(label) },
         supportingText = { supportText?.let { Text(text = it) } },
+        leadingContent = leadingContent,
         trailingContent = {
             ExposedDropdownMenuBox(
                 modifier = Modifier,
@@ -116,7 +121,9 @@ fun <T> UnittoListItem(
                 onExpandedChange = { dropDownExpanded = it }
             ) {
                 OutlinedTextField(
-                    modifier = Modifier.menuAnchor().widthIn(1.dp),
+                    modifier = Modifier
+                        .menuAnchor()
+                        .widthIn(1.dp),
                     value = allOptions[currentOption] ?: selected.toString(),
                     onValueChange = {},
                     readOnly = true,

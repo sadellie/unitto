@@ -19,83 +19,138 @@
 package com.sadellie.unitto.screens.setttings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Copyright
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Policy
+import androidx.compose.material.icons.filled.PrivacyTip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.BuildConfig
 import com.sadellie.unitto.R
-import com.sadellie.unitto.data.ALL_LIBRARIES
+import com.sadellie.unitto.data.NavRoutes.THIRD_PARTY_LICENSES_SCREEN
 import com.sadellie.unitto.screens.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.screens.openLink
+import com.sadellie.unitto.screens.setttings.components.AlertDialogWithList
 
-/**
- * Screen with used third party libraries
- *
- * @param navigateUpAction Action to be called when clicking back button in top bar
- */
-@Stable
+
 @Composable
 fun AboutScreen(
-    navigateUpAction: () -> Unit = {}
+    navigateUpAction: () -> Unit,
+    navControllerAction: (String) -> Unit
 ) {
     val mContext = LocalContext.current
 
+    var showDialog: Boolean by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     UnittoLargeTopAppBar(
-        title = stringResource(R.string.third_party_licenses),
+        title = "About Unitto",
         navigateUpAction = navigateUpAction
     ) { padding ->
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
-                top = padding.calculateTopPadding(),
-                bottom = 24.dp
-            )
-        ) {
-            items(ALL_LIBRARIES.value) {
-                OutlinedCard(
-                    Modifier.clickable { it.website?.let { url -> openLink(mContext, url) } }
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp)
-                    ) {
-                        Text(
-                            text = it.name,
-                            style = MaterialTheme.typography.titleLarge
+        LazyColumn(contentPadding = padding) {
+
+            // CURRENCY RATE NOTE
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Help,
+                            stringResource(R.string.currency_rates_note_setting),
                         )
-                        Text(
-                            modifier = Modifier.padding(top = 4.dp, bottom = 12.dp),
-                            text = it.dev ?: "",
-                            style = MaterialTheme.typography.bodyLarge
+                    },
+                    headlineText = { Text(stringResource(R.string.currency_rates_note_setting)) },
+                    modifier = Modifier.clickable { showDialog = true }
+                )
+            }
+
+            // TERMS AND CONDITIONS
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.PrivacyTip,
+                            stringResource(R.string.terms_and_conditions),
                         )
-                        Text(
-                            text = it.description ?: "",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            modifier = Modifier.align(Alignment.End),
-                            text = it.license ?: "",
-                            style = MaterialTheme.typography.labelLarge
+                    },
+                    headlineText = { Text(stringResource(R.string.terms_and_conditions)) },
+                    modifier = Modifier.clickable {
+                        openLink(
+                            mContext,
+                            "http://sadellie.github.io/unitto/terms-app.html"
                         )
                     }
-                }
+                )
+            }
+
+            // PRIVACY POLICY
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Policy,
+                            stringResource(R.string.privacy_policy),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.privacy_policy)) },
+                    modifier = Modifier.clickable {
+                        openLink(
+                            mContext,
+                            "http://sadellie.github.io/unitto/privacy-app.html"
+                        )
+                    }
+                )
+            }
+
+            // THIRD PARTY
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Copyright,
+                            stringResource(R.string.third_party_licenses),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.third_party_licenses)) },
+                    modifier = Modifier.clickable { navControllerAction(THIRD_PARTY_LICENSES_SCREEN) }
+                )
+            }
+
+            // APP VERSION
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Info,
+                            stringResource(R.string.app_version_name_setting),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.app_version_name_setting)) },
+                    supportingText = { Text("${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})") },
+                    modifier = Modifier.clickable {}
+                )
             }
         }
+    }
+
+    if (showDialog) {
+        AlertDialogWithList(
+            title = stringResource(R.string.currency_rates_note_title),
+            dismissAction = { showDialog = false },
+            supportText = stringResource(R.string.currency_rates_note_text),
+            dismissButtonLabel = stringResource(R.string.ok_label)
+        )
     }
 }

@@ -31,5 +31,6 @@ object NavRoutes {
     const val SETTINGS_SCREEN = "SettingsScreen"
     const val THEMES_SCREEN = "ThemesScreen"
     const val ABOUT_SCREEN = "AboutScreen"
+    const val THIRD_PARTY_LICENSES_SCREEN = "ThirdPartyLicensesScreen"
     const val UNIT_GROUPS_SCREEN = "UnitGroupScreen"
 }

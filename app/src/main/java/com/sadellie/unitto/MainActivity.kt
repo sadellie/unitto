@@ -41,13 +41,19 @@ import com.sadellie.unitto.data.NavRoutes.RIGHT_LIST_SCREEN
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_GRAPH
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.NavRoutes.THEMES_SCREEN
+import com.sadellie.unitto.data.NavRoutes.THIRD_PARTY_LICENSES_SCREEN
 import com.sadellie.unitto.data.NavRoutes.UNIT_GROUPS_SCREEN
 import com.sadellie.unitto.screens.main.MainScreen
 import com.sadellie.unitto.screens.main.MainViewModel
 import com.sadellie.unitto.screens.second.LeftSideScreen
 import com.sadellie.unitto.screens.second.RightSideScreen
 import com.sadellie.unitto.screens.second.SecondViewModel
-import com.sadellie.unitto.screens.setttings.*
+import com.sadellie.unitto.screens.setttings.AboutScreen
+import com.sadellie.unitto.screens.setttings.SettingsScreen
+import com.sadellie.unitto.screens.setttings.SettingsViewModel
+import com.sadellie.unitto.screens.setttings.ThemesScreen
+import com.sadellie.unitto.screens.setttings.ThirdPartyLicensesScreen
+import com.sadellie.unitto.screens.setttings.UnitGroupsScreen
 import com.sadellie.unitto.ui.theme.AppTypography
 import com.sadellie.unitto.ui.theme.DarkThemeColors
 import com.sadellie.unitto.ui.theme.LightThemeColors
@@ -172,8 +178,14 @@ private fun NavGraphBuilder.settingGraph(
             )
         }
 
+        composable(THIRD_PARTY_LICENSES_SCREEN) {
+            ThirdPartyLicensesScreen(navigateUpAction = { navController.navigateUp() })
+        }
+
         composable(ABOUT_SCREEN) {
-            AboutScreen(navigateUpAction = { navController.navigateUp() })
+            AboutScreen(
+                navigateUpAction = { navController.navigateUp() }
+            ) { route -> navController.navigate(route) }
         }
 
         composable(UNIT_GROUPS_SCREEN) {

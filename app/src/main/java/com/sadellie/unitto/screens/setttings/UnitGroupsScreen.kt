@@ -24,6 +24,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -81,7 +82,10 @@ fun UnitGroupsScreen(
                 .reorderable(state)
         ) {
             item(key = "enabled") {
-                Header(text = stringResource(R.string.enabled_label))
+                Header(
+                    text = stringResource(R.string.enabled_label),
+                    paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+                )
             }
 
             items(shownUnits.value, { it }) { item ->
@@ -137,7 +141,8 @@ fun UnitGroupsScreen(
             item(key = "disabled") {
                 Header(
                     text = stringResource(R.string.disabled_label),
-                    modifier = Modifier.animateItemPlacement()
+                    modifier = Modifier.animateItemPlacement(),
+                    paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
                 )
             }
 

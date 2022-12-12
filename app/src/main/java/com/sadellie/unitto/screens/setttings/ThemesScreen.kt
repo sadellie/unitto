@@ -24,6 +24,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Colorize
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.R
@@ -45,6 +50,12 @@ fun ThemesScreen(
         LazyColumn(contentPadding = paddingValues) {
             item {
                 UnittoListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Palette,
+                            stringResource(R.string.color_theme),
+                        )
+                    },
                     label = stringResource(R.string.color_theme),
                     allOptions = mapOf(
                         ThemingMode.AUTO to stringResource(R.string.force_auto_mode),
@@ -61,6 +72,12 @@ fun ThemesScreen(
 
             item {
                 UnittoListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Colorize,
+                            stringResource(R.string.enable_dynamic_colors),
+                        )
+                    },
                     label = stringResource(R.string.enable_dynamic_colors),
                     supportText = stringResource(R.string.enable_dynamic_colors_support),
                     switchState = themmoController.isDynamicThemeEnabled,
@@ -78,6 +95,12 @@ fun ThemesScreen(
                     exit = shrinkVertically() + fadeOut(),
                 ) {
                     UnittoListItem(
+                        leadingContent = {
+                            Icon(
+                                Icons.Default.DarkMode,
+                                stringResource(R.string.force_amoled_mode),
+                            )
+                        },
                         label = stringResource(R.string.force_amoled_mode),
                         supportText = stringResource(R.string.force_amoled_mode_support),
                         switchState = themmoController.isAmoledThemeEnabled,
