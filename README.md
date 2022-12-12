@@ -50,7 +50,6 @@ If you don't need all build variants, you can:
    Didn't add Google Services since F-Droid flavor was chosen.
    ...
    ```
-   There should some warnings from Firebase, ignore them.
 
 Open issue in case you need any sort of help. It's free.
 

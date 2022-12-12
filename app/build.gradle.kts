@@ -6,14 +6,12 @@ plugins {
     // Hilt
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-
-    // Firebase Crashlytics
-    id("com.google.firebase.crashlytics")
 }
 
 if (!gradle.startParameter.taskRequests.toString().contains("Fdroid")) {
-    // Google Services are for all flavors except fdroid
+    // Google Services and Firebase Crashlytics are for all flavors except fdroid
     apply(plugin="com.google.gms.google-services")
+    apply(plugin="com.google.firebase.crashlytics")
 } else {
     println("Didn't add Google Services since F-Droid flavor was chosen.")
 }
