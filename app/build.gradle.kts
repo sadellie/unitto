@@ -18,7 +18,7 @@ if (!gradle.startParameter.taskRequests.toString().contains("Fdroid")) {
     println("Didn't add Google Services since F-Droid flavor was chosen.")
 }
 
-val composeVersion = "1.4.0-alpha02"
+val composeVersion = "1.4.0-alpha03"
 
 // Flavor names
 val playStore = "playStore"
@@ -166,7 +166,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.1.0-alpha02")
+    implementation("androidx.compose.material3:material3:1.1.0-alpha03")
 
     // Hilt and navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
