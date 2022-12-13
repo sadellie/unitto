@@ -38,8 +38,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 33
-        versionCode = 10
-        versionName = "Electric purple"
+        versionCode = 11
+        versionName = "Fire engine red"
         buildConfigField("Boolean", "ANALYTICS", "true")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
