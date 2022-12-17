@@ -500,7 +500,13 @@ class MainViewModel @Inject constructor(
     /**
      * Returns value to be used when converting value on the right side screen (unit selection)
      */
-    fun inputValue() = (mainFlow.value.calculatedValue ?: mainFlow.value.inputValue).toBigDecimal()
+    fun inputValue(): BigDecimal? {
+        return try {
+            (mainFlow.value.calculatedValue ?: mainFlow.value.inputValue).toBigDecimal()
+        } catch (e: NumberFormatException) {
+            null
+        }
+    }
 
     /**
      * Returns True if can be placed.

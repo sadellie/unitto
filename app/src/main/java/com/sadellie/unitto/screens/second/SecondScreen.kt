@@ -174,7 +174,7 @@ fun RightSideScreen(
     navigateUp: () -> Unit,
     navigateToSettingsAction: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
-    inputValue: BigDecimal,
+    inputValue: BigDecimal?,
     unitFrom: AbstractUnit
 ) {
     val uiState = viewModel.mainFlow.collectAsStateWithLifecycle()
@@ -225,9 +225,11 @@ fun RightSideScreen(
                                 },
                                 favoriteAction = { viewModel.favoriteUnit(it) },
                                 convertValue = {
-                                    Formatter.format(
-                                        unitFrom.convert(unit, inputValue, 3).toPlainString()
-                                    )
+                                    inputValue?.let {
+                                        Formatter.format(
+                                            unitFrom.convert(unit, it, 3).toPlainString()
+                                        ) + " "
+                                    } ?: ""
                                 }
                             )
                         }

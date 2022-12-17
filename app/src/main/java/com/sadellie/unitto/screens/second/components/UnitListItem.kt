@@ -183,5 +183,5 @@ fun UnitListItem(
     isSelected = isSelected,
     selectAction = selectAction,
     favoriteAction = favoriteAction,
-    shortNameLabel = "${convertValue(unit)} ${stringResource(unit.shortName)}"
+    shortNameLabel = "${convertValue(unit)}${stringResource(unit.shortName)}"
 )
