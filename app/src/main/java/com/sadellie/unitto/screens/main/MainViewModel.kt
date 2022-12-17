@@ -137,10 +137,17 @@ class MainViewModel @Inject constructor(
         // Kotlin doesn't have a multi catch
         val calculatedInput = try {
             val evaluated = Expressions()
-                // Optimal precision, not too low, not too high. Balanced for performance and UX.
                 .eval(cleanInput)
                 .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
                 .stripTrailingZeros()
+            /**
+             * Too long values crash the UI. If the number is too big, we don't do conversion.
+             * User probably wouldn't need numbers beyond infinity.
+             */
+            if (evaluated.abs() > BigDecimal.valueOf(Double.MAX_VALUE)) {
+                _calculatedValue.value = null
+                return ""
+            }
             if (evaluated.compareTo(BigDecimal.ZERO) == 0) BigDecimal.ZERO else evaluated
         } catch (e: Exception) {
             // Kotlin doesn't have a multi catch
