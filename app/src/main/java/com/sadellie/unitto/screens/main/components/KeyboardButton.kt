@@ -75,7 +75,8 @@ fun KeyboardButton(
     ) {
         Text(
             text = digit,
-            style = NumbersTextStyleTitleLarge
+            style = NumbersTextStyleTitleLarge,
+            color = if (isPrimary) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSecondaryContainer,
         )
     }
 }
