@@ -177,7 +177,7 @@ class MainViewModelTest {
             viewModel.processInput(it)
             viewModel.deleteDigit()
             assertEquals("0", viewModel.mainFlow.value.inputValue)
-            assertEquals("0", viewModel.inputValue.value)
+            assertEquals("0", viewModel.input.value)
         }
         viewModel.clearInput()
 
@@ -189,7 +189,7 @@ class MainViewModelTest {
         viewModel.processInput(KEY_SQRT)
         viewModel.processInput(KEY_9)
         viewModel.deleteDigit()
-        assertEquals("3*√", viewModel.inputValue.value)
+        assertEquals("3*√", viewModel.input.value)
         assertEquals("3×√", viewModel.mainFlow.value.inputValue)
     }
 
@@ -217,7 +217,7 @@ class MainViewModelTest {
         input.forEach {
             viewModel.processInput(it.toString())
         }
-        assertEquals(output, viewModel.inputValue.value)
+        assertEquals(output, viewModel.input.value)
         assertEquals(outputDisplay, viewModel.mainFlow.value.inputValue)
         viewModel.clearInput()
     }

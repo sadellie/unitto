@@ -117,7 +117,8 @@ fun MyTextField(
                 ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = it,
+                        // Quick fix to prevent the UI from crashing
+                        text = it.take(1000),
                         textAlign = TextAlign.End,
                         softWrap = false,
                         style = NumbersTextStyleDisplayLarge
@@ -151,7 +152,8 @@ fun MyTextField(
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = Formatter.format(it ?: ""),
+                            // Quick fix to prevent the UI from crashing
+                            text = Formatter.format(it?.take(1000) ?: ""),
                             textAlign = TextAlign.End,
                             softWrap = false,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),

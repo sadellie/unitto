@@ -59,15 +59,22 @@ import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
+import com.sadellie.unitto.screens.combine
 import com.sadellie.unitto.screens.toStringWith
+import com.sadellie.unitto.screens.trimZeros
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
@@ -80,29 +87,38 @@ class MainViewModel @Inject constructor(
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
-    val inputValue: MutableStateFlow<String> = MutableStateFlow(KEY_0)
-    private val latestInputStack: MutableList<String> = mutableListOf(KEY_0)
-    private val _inputDisplayValue: MutableStateFlow<String> = MutableStateFlow(KEY_0)
+    val input: MutableStateFlow<String> = MutableStateFlow(KEY_0)
+    private val _calculated: MutableStateFlow<String?> = MutableStateFlow(null)
+    private val _result: MutableStateFlow<String> = MutableStateFlow(KEY_0)
+    private val _latestInputStack: MutableList<String> = mutableListOf(KEY_0)
+    private val _inputDisplay: MutableStateFlow<String> = MutableStateFlow(KEY_0)
     private val _isLoadingDatabase: MutableStateFlow<Boolean> = MutableStateFlow(true)
     private val _isLoadingNetwork: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val _calculatedValue: MutableStateFlow<String?> = MutableStateFlow(null)
     private val _userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        UserPreferences()
+        viewModelScope, SharingStarted.WhileSubscribed(5000), UserPreferences()
     )
 
-    val mainFlow = combine(
-        _inputDisplayValue, _isLoadingDatabase, _isLoadingNetwork, _showError, _userPrefs
-    ) { inputDisplayValue, isLoadingDatabase, isLoadingNetwork, showError, _ ->
+    val mainFlow: StateFlow<MainScreenUIState> = combine(
+        _inputDisplay,
+        _calculated,
+        _result,
+        _isLoadingNetwork,
+        _isLoadingDatabase,
+        _showError,
+    ) { inputValue: String,
+        calculatedValue: String?,
+        resultValue: String,
+        showLoadingNetwork: Boolean,
+        showLoadingDatabase: Boolean,
+        showError: Boolean ->
         return@combine MainScreenUIState(
-            inputValue = inputDisplayValue,
-            resultValue = convertValue(),
-            isLoadingDatabase = isLoadingDatabase,
-            isLoadingNetwork = isLoadingNetwork,
+            inputValue = inputValue,
+            calculatedValue = calculatedValue,
+            resultValue = resultValue,
+            isLoadingNetwork = showLoadingNetwork,
+            isLoadingDatabase = showLoadingDatabase,
             showError = showError,
-            calculatedValue = _calculatedValue.value
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainScreenUIState())
 
@@ -121,66 +137,62 @@ class MainViewModel @Inject constructor(
     /**
      * This function takes local variables, converts values and then causes the UI to update
      */
-    private fun convertValue(): String {
+    private suspend fun convertInput() {
+        withContext(Dispatchers.Default) {
+            while (isActive) {
+                // First we clean the input from garbage at the end
+                var cleanInput = input.value.dropLastWhile { !it.isDigit() }
 
-        var cleanInput = inputValue.value.dropLastWhile { !it.isDigit() }
+                // Now we close open brackets that user didn't close
+                // AUTOCLOSE ALL BRACKETS
+                val leftBrackets = input.value.count { it.toString() == KEY_LEFT_BRACKET }
+                val rightBrackets = input.value.count { it.toString() == KEY_RIGHT_BRACKET }
+                val neededBrackets = leftBrackets - rightBrackets
+                if (neededBrackets > 0) cleanInput += KEY_RIGHT_BRACKET.repeat(neededBrackets)
 
-        // AUTOCLOSE ALL BRACKETS
-        val leftBrackets = inputValue.value.count { it.toString() == KEY_LEFT_BRACKET }
-        val rightBrackets = inputValue.value.count { it.toString() == KEY_RIGHT_BRACKET }
+                // Now we evaluate expression in input
+                val evaluationResult: BigDecimal = try {
+                    Expressions().eval(cleanInput)
+                        .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
+                        .trimZeros()
+                } catch (e: Exception) {
+                    when (e) {
+                        is ExpressionException,
+                        is ArrayIndexOutOfBoundsException,
+                        is IndexOutOfBoundsException,
+                        is NumberFormatException,
+                        is ArithmeticException -> {
+                            // Invalid expression, can't do anything further
+                            cancel()
+                            return@withContext
+                        }
+                        else -> throw e
+                    }
+                }
 
-        val neededBrackets = leftBrackets - rightBrackets
-        if (neededBrackets > 0) {
-            cleanInput += KEY_RIGHT_BRACKET.repeat(neededBrackets)
-        }
+                // Evaluated. Hide calculated result if no expression entered.
+                // 123.456 will be true
+                // -123.456 will be true
+                // -123.456-123 will be false (first minus gets removed, ending with 123.456)
+                if (input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
+                    // No operators
+                    _calculated.update { null }
+                } else {
+                    _calculated.update { evaluationResult.toStringWith(_userPrefs.value.outputFormat) }
+                }
 
-        // Kotlin doesn't have a multi catch
-        val calculatedInput = try {
-            val evaluated = Expressions()
-                .eval(cleanInput)
-                .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
-                .stripTrailingZeros()
-            /**
-             * Too long values crash the UI. If the number is too big, we don't do conversion.
-             * User probably wouldn't need numbers beyond infinity.
-             */
-            if (evaluated.abs() > BigDecimal.valueOf(Double.MAX_VALUE)) {
-                _calculatedValue.value = null
-                return ""
+                // Now we just convert.
+                // We can use evaluation result here, input is valid
+                val conversionResult: BigDecimal = unitFrom.convert(
+                    unitTo, evaluationResult, _userPrefs.value.digitsPrecision
+                )
+
+                // Converted
+                _result.update { conversionResult.toStringWith(_userPrefs.value.outputFormat) }
+
+                cancel()
             }
-            if (evaluated.compareTo(BigDecimal.ZERO) == 0) BigDecimal.ZERO else evaluated
-        } catch (e: Exception) {
-            // Kotlin doesn't have a multi catch
-            when (e) {
-                is ExpressionException, is ArrayIndexOutOfBoundsException, is IndexOutOfBoundsException, is NumberFormatException, is ArithmeticException -> return mainFlow.value.resultValue
-                else -> throw e
-            }
         }
-
-        // Ugly way of determining when to hide calculated value
-        _calculatedValue.value = if (!latestInputStack.none { it in OPERATORS }) {
-            calculatedInput.toStringWith(_userPrefs.value.outputFormat)
-        } else {
-            null
-        }
-
-        // Converting value using a specified precision
-        val convertedValue: BigDecimal = unitFrom.convert(
-            unitTo, calculatedInput, _userPrefs.value.digitsPrecision
-        )
-
-        /**
-         * There is a very interesting bug when trailing zeros are not stripped when input
-         * consists of ZEROS only (0.00000 as an example). This check is a workaround. If the result
-         * is zero, than we make sure there are no trailing zeros.
-         */
-        val resultValue = if (convertedValue.compareTo(BigDecimal.ZERO) == 0) {
-            KEY_0
-        } else {
-            convertedValue.toStringWith(_userPrefs.value.outputFormat)
-        }
-
-        return resultValue
     }
 
     /**
@@ -194,7 +206,7 @@ class MainViewModel @Inject constructor(
 
         // Now we change to positive if the group we switched to supports negate
         if (!clickedUnit.group.canNegate) {
-            inputValue.update { inputValue.value.removePrefix(KEY_MINUS) }
+            input.update { input.value.removePrefix(KEY_MINUS) }
         }
 
         // Now setting up right unit (pair for the left one)
@@ -305,7 +317,7 @@ class MainViewModel @Inject constructor(
      * @param[symbolToAdd] Digit/Symbol we want to add, can be any digit 0..9 or a dot symbol
      */
     fun processInput(symbolToAdd: String) {
-        val lastTwoSymbols = latestInputStack.takeLast(2)
+        val lastTwoSymbols = _latestInputStack.takeLast(2)
         val lastSymbol: String = lastTwoSymbols.getOrNull(1) ?: lastTwoSymbols[0]
         val lastSecondSymbol: String? = lastTwoSymbols.getOrNull(0)
 
@@ -313,8 +325,8 @@ class MainViewModel @Inject constructor(
             KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY, KEY_EXPONENT -> {
                 when {
                     // Don't need expressions that start with zero
-                    (inputValue.value == KEY_0) -> {}
-                    (inputValue.value == KEY_MINUS) -> {}
+                    (input.value == KEY_0) -> {}
+                    (input.value == KEY_MINUS) -> {}
                     (lastSymbol == KEY_LEFT_BRACKET) -> {}
                     (lastSymbol == KEY_SQRT) -> {}
                     /**
@@ -338,7 +350,7 @@ class MainViewModel @Inject constructor(
             KEY_0 -> {
                 when {
                     // Don't add zero if the input is already a zero
-                    (inputValue.value == KEY_0) -> {}
+                    (input.value == KEY_0) -> {}
                     (lastSymbol == KEY_RIGHT_BRACKET) -> {
                         processInput(KEY_MULTIPLY)
                         setInputSymbols(symbolToAdd)
@@ -353,7 +365,7 @@ class MainViewModel @Inject constructor(
             KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 -> {
                 // Replace single zero (default input) if it's here
                 when {
-                    (inputValue.value == KEY_0) -> {
+                    (input.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
                     (lastSymbol == KEY_RIGHT_BRACKET) -> {
@@ -368,7 +380,7 @@ class MainViewModel @Inject constructor(
             KEY_MINUS -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (inputValue.value == KEY_0) -> {
+                    (input.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
                     // Don't allow multiple minuses near each other
@@ -391,7 +403,7 @@ class MainViewModel @Inject constructor(
             KEY_LEFT_BRACKET -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (inputValue.value == KEY_0) -> {
+                    (input.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
                     (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
@@ -406,10 +418,11 @@ class MainViewModel @Inject constructor(
             KEY_RIGHT_BRACKET -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (inputValue.value == KEY_0) -> {}
+                    (input.value == KEY_0) -> {}
                     (lastSymbol == KEY_LEFT_BRACKET) -> {}
-                    (latestInputStack.filter { it == KEY_LEFT_BRACKET }.size ==
-                            latestInputStack.filter { it == KEY_RIGHT_BRACKET }.size) -> {}
+                    (_latestInputStack.filter { it == KEY_LEFT_BRACKET }.size ==
+                            _latestInputStack.filter { it == KEY_RIGHT_BRACKET }.size) -> {
+                    }
                     else -> {
                         setInputSymbols(symbolToAdd)
                     }
@@ -418,7 +431,7 @@ class MainViewModel @Inject constructor(
             KEY_SQRT -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (inputValue.value == KEY_0) -> {
+                    (input.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
                     (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
@@ -433,7 +446,7 @@ class MainViewModel @Inject constructor(
             else -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (inputValue.value == KEY_0) -> {
+                    (input.value == KEY_0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
                     else -> {
@@ -442,7 +455,6 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     /**
@@ -450,24 +462,24 @@ class MainViewModel @Inject constructor(
      */
     fun deleteDigit() {
         // Default input, don't delete
-        if (inputValue.value == KEY_0) return
+        if (input.value == KEY_0) return
 
-        val lastSymbol = latestInputStack.removeLast()
+        val lastSymbol = _latestInputStack.removeLast()
 
         // We will need to delete last symbol from both values
         val displayRepresentation: String = INTERNAL_DISPLAY[lastSymbol] ?: lastSymbol
 
         // If this value are same, it means that after deleting there will be no symbols left, set to default
-        if (lastSymbol == inputValue.value) {
+        if (lastSymbol == input.value) {
             setInputSymbols(KEY_0, false)
         } else {
-            inputValue.update { it.removeSuffix(lastSymbol) }
-            _inputDisplayValue.update { it.removeSuffix(displayRepresentation) }
+            input.update { it.removeSuffix(lastSymbol) }
+            _inputDisplay.update { it.removeSuffix(displayRepresentation) }
         }
     }
 
     /**
-     * Adds given [symbol] to [inputValue] and [_inputDisplayValue] and updates [latestInputStack].
+     * Adds given [symbol] to [input] and [_inputDisplay] and updates [_latestInputStack].
      *
      * By default add symbol, but if [add] is False, will replace current input (when replacing
      * default [KEY_0] input).
@@ -477,15 +489,15 @@ class MainViewModel @Inject constructor(
 
         when {
             add -> {
-                inputValue.update { it + symbol }
-                _inputDisplayValue.update { it + displaySymbol }
-                latestInputStack.add(symbol)
+                input.update { it + symbol }
+                _inputDisplay.update { it + displaySymbol }
+                _latestInputStack.add(symbol)
             }
             else -> {
-                latestInputStack.clear()
-                inputValue.update { symbol }
-                _inputDisplayValue.update { displaySymbol }
-                latestInputStack.add(symbol)
+                _latestInputStack.clear()
+                input.update { symbol }
+                _inputDisplay.update { displaySymbol }
+                _latestInputStack.add(symbol)
             }
         }
     }
@@ -511,7 +523,7 @@ class MainViewModel @Inject constructor(
     /**
      * Returns True if can be placed.
      */
-    private fun canEnterDot(): Boolean = !inputValue.value.takeLastWhile {
+    private fun canEnterDot(): Boolean = !input.value.takeLastWhile {
         it.toString() !in OPERATORS.minus(KEY_DOT)
     }.contains(KEY_DOT)
 
@@ -520,6 +532,15 @@ class MainViewModel @Inject constructor(
      */
     private suspend fun saveLatestPairOfUnits() {
         userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
+    }
+
+    private fun startObserving() {
+        viewModelScope.launch(Dispatchers.Default) {
+            _userPrefs.collectLatest { convertInput() }
+        }
+        viewModelScope.launch(Dispatchers.Default) {
+            input.collectLatest { convertInput() }
+        }
     }
 
     init {
@@ -546,6 +567,8 @@ class MainViewModel @Inject constructor(
             // User is free to convert values and units on units screen can be sorted properly
             _isLoadingDatabase.update { false }
             updateCurrenciesBasicUnits()
+
+            startObserving()
         }
     }
 }

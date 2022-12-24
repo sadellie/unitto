@@ -21,6 +21,7 @@ package com.sadellie.unitto.data.units
 import androidx.annotation.StringRes
 import com.sadellie.unitto.data.preferences.MAX_PRECISION
 import com.sadellie.unitto.screens.setMinimumRequiredScale
+import com.sadellie.unitto.screens.trimZeros
 import java.math.BigDecimal
 
 /**
@@ -54,6 +55,6 @@ class MyUnit(
             .multiply(value)
             .div(unitTo.basicUnit)
             .setMinimumRequiredScale(scale)
-            .stripTrailingZeros()
+            .trimZeros()
     }
 }

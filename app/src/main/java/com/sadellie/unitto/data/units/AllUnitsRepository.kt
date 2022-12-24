@@ -24,6 +24,7 @@ import com.sadellie.unitto.data.preferences.MAX_PRECISION
 import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.screens.setMinimumRequiredScale
 import com.sadellie.unitto.screens.sortByLev
+import com.sadellie.unitto.screens.trimZeros
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
@@ -499,7 +500,7 @@ class AllUnitsRepository @Inject constructor() {
                         else -> value
                     }
                         .setMinimumRequiredScale(scale)
-                        .stripTrailingZeros()
+                        .trimZeros()
                 }
             },
             object : AbstractUnit(
@@ -529,7 +530,7 @@ class AllUnitsRepository @Inject constructor() {
                         else -> value
                     }
                         .setMinimumRequiredScale(scale)
-                        .stripTrailingZeros()
+                        .trimZeros()
                 }
             },
             object : AbstractUnit(
@@ -556,7 +557,7 @@ class AllUnitsRepository @Inject constructor() {
                         else -> value
                     }
                         .setMinimumRequiredScale(scale)
-                        .stripTrailingZeros()
+                        .trimZeros()
                 }
             },
         )
