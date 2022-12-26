@@ -199,7 +199,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     // Themmo
-    implementation("com.github.sadellie:themmo:74865c7650")
+    implementation("com.github.sadellie:themmo:cf6be7e592")
 
     // ComposeReorderable
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
