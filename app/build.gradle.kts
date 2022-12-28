@@ -38,7 +38,7 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 33
-        versionCode = 12
+        versionCode = 13
         versionName = "Fire engine red"
         buildConfigField("Boolean", "ANALYTICS", "true")
 
