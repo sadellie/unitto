@@ -44,6 +44,7 @@ import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.LEFT_LIST_SCREEN
 import com.sadellie.unitto.data.NavRoutes.RIGHT_LIST_SCREEN
 import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.screens.Formatter
 
 /**
  * Top of the main screen. Contains input and output TextFields, and unit selection row of buttons.
@@ -88,20 +89,30 @@ fun TopScreenPart(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         MyTextField(
-            Modifier.fillMaxWidth(),
-            inputValue,
-            calculatedValue,
-            stringResource(if (loadingDatabase) R.string.loading_label else unitFrom.shortName),
-            loadingNetwork,
-            networkError
+            modifier = Modifier.fillMaxWidth(),
+            primaryText = {
+                when {
+                    loadingDatabase || loadingNetwork -> stringResource(R.string.loading_label)
+                    networkError -> stringResource(R.string.error_label)
+                    else -> Formatter.format(inputValue)
+                }
+            },
+            secondaryText = calculatedValue?.let { Formatter.format(it) },
+            helperText = stringResource(if (loadingDatabase) R.string.loading_label else unitFrom.shortName),
+            textToCopy = calculatedValue ?: inputValue,
         )
         MyTextField(
-            Modifier.fillMaxWidth(),
-            outputValue,
-            null,
-            stringResource(if (loadingDatabase) R.string.loading_label else unitTo.shortName),
-            loadingNetwork,
-            networkError
+            modifier = Modifier.fillMaxWidth(),
+            primaryText = {
+                when {
+                    loadingDatabase || loadingNetwork -> stringResource(R.string.loading_label)
+                    networkError -> stringResource(R.string.error_label)
+                    else -> Formatter.format(outputValue)
+                }
+            },
+            secondaryText = null,
+            helperText = stringResource(if (loadingDatabase) R.string.loading_label else unitTo.shortName),
+            textToCopy = outputValue,
         )
         // Unit selection buttons
         Row(

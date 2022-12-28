@@ -51,51 +51,45 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.R
-import com.sadellie.unitto.screens.Formatter
 import com.sadellie.unitto.ui.theme.NumbersTextStyleDisplayLarge
 import com.sadellie.unitto.ui.theme.NumbersTextStyleDisplayMedium
 
 /**
  * Component for input and output
  *
- * @param modifier Modifier that is applied to [LazyRow]
+ * @param modifier Modifier that is applied to [LazyRow].
  * @param primaryText Primary text to show (input/output).
  * @param secondaryText Secondary text to show (input, calculated result).
- * @param helperText Helper text below current text (short unit name)
- * @param showLoading Show "Loading" text
- * @param showError Show "Error" text
+ * @param helperText Helper text below current text (short unit name).
+ * @param textToCopy Text that will be copied to clipboard when long-clicking.
  */
 @Composable
 fun MyTextField(
-    modifier: Modifier = Modifier,
-    primaryText: String = String(),
-    secondaryText: String? = null,
-    helperText: String = String(),
-    showLoading: Boolean = false,
-    showError: Boolean = false
+    modifier: Modifier,
+    primaryText: @Composable () -> String,
+    secondaryText: String?,
+    helperText: String,
+    textToCopy: String,
 ) {
     val clipboardManager = LocalClipboardManager.current
     val mc = LocalContext.current
-    val textToShow = when {
-        showError -> stringResource(R.string.error_label)
-        showLoading -> stringResource(R.string.loading_label)
-        else -> Formatter.format(primaryText)
-    }
+    val textToShow: String = primaryText()
     val copiedText: String =
-        stringResource(R.string.copied, secondaryText?.let { Formatter.format(it) } ?: textToShow)
+        stringResource(R.string.copied, textToCopy)
 
-    Column(modifier = Modifier
-        .combinedClickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = rememberRipple(),
-            onClick = {},
-            onLongClick = {
-                clipboardManager.setText(AnnotatedString(secondaryText ?: textToShow))
-                Toast
-                    .makeText(mc, copiedText, Toast.LENGTH_SHORT)
-                    .show()
-            }
-        )
+    Column(
+        modifier = Modifier
+            .combinedClickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(),
+                onClick = {},
+                onLongClick = {
+                    clipboardManager.setText(AnnotatedString(secondaryText ?: textToShow))
+                    Toast
+                        .makeText(mc, copiedText, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            )
     ) {
         LazyRow(
             modifier = modifier
@@ -153,7 +147,7 @@ fun MyTextField(
                         Text(
                             modifier = Modifier,
                             // Quick fix to prevent the UI from crashing
-                            text = Formatter.format(it?.take(1000) ?: ""),
+                            text = it?.take(1000) ?: "",
                             textAlign = TextAlign.End,
                             softWrap = false,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),

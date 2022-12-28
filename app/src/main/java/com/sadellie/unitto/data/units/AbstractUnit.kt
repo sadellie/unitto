@@ -19,6 +19,7 @@
 package com.sadellie.unitto.data.units
 
 import androidx.annotation.StringRes
+import com.sadellie.unitto.screens.lev
 import java.math.BigDecimal
 
 /**
@@ -63,4 +64,65 @@ abstract class AbstractUnit(
         value: BigDecimal,
         scale: Int
     ): BigDecimal
+}
+
+/**
+ * Sorts sequence of units by Levenshtein distance
+ *
+ * @param stringA String for Levenshtein distance
+ * @return Sorted sequence of units. Units with lower Levenshtein distance are higher
+ */
+fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
+    val stringToCompare = stringA.lowercase()
+    // We don't need units where name is too different, half of the symbols is wrong in this situation
+    val threshold: Int = stringToCompare.length / 2
+    // List of pair: Unit and it's levDist
+    val unitsWithDist = mutableListOf<Pair<AbstractUnit, Int>>()
+    this.forEach { unit ->
+        val unitName: String = unit.renderedName.lowercase()
+
+        /**
+         * There is chance that unit name doesn't need any edits (contains part of the query)
+         * So computing levDist is a waste of resources
+         */
+        when {
+            // It's the best possible match if it start with
+            unitName.startsWith(stringToCompare) -> {
+                unitsWithDist.add(Pair(unit, 0))
+                return@forEach
+            }
+            // It's a little bit worse when it just contains part of the query
+            unitName.contains(stringToCompare) -> {
+                unitsWithDist.add(Pair(unit, 1))
+                return@forEach
+            }
+        }
+
+        /**
+         * Levenshtein Distance for this specific name of this unit
+         *
+         * We use substring so that we compare not the whole unit name, but only part of it.
+         * It's required because without it levDist will be too high for units with longer
+         * names than the search query
+         *
+         * For example:
+         * Search query is 'Kelometer' and unit name is 'Kilometer per hour'
+         * Without substring levDist will be 9 which means that this unit will be skipped
+         *
+         * With substring levDist will be 3 so unit will be included
+         */
+        val levDist = unitName
+            .substring(0, minOf(stringToCompare.length, unitName.length))
+            .lev(stringToCompare)
+
+        // Threshold
+        if (levDist < threshold) {
+            unitsWithDist.add(Pair(unit, levDist))
+        }
+    }
+    // Sorting by levDist and getting units
+    return unitsWithDist
+        .sortedBy { it.second }
+        .map { it.first }
+        .asSequence()
 }
