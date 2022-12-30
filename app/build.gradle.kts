@@ -128,6 +128,9 @@ android {
         renderScript = false
         shaders = false
     }
+    lint {
+        this.warning.add("MissingTranslation")
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.0-alpha02"
     }

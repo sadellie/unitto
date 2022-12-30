@@ -339,6 +339,17 @@ class AllUnitsTest {
         MyUnitIDS.cubic_kilometer.checkWith(MyUnitIDS.us_liquid_gallon, "0.0000001507", "39810.72829")
     }
 
+    @Test
+    fun testFlux() {
+        MyUnitIDS.maxwell.checkWith(MyUnitIDS.milliweber, "68.2", "0.00068")
+        MyUnitIDS.weber.checkWith(MyUnitIDS.milliweber, "68.2", "68200")
+        MyUnitIDS.milliweber.checkWith(MyUnitIDS.weber, "68.2", "0.0682")
+        MyUnitIDS.microweber.checkWith(MyUnitIDS.milliweber, "68.2", "0.0682")
+        MyUnitIDS.kiloweber.checkWith(MyUnitIDS.weber, "68.2", "68200")
+        MyUnitIDS.megaweber.checkWith(MyUnitIDS.weber, "68.2", "68200000")
+        MyUnitIDS.gigaweber.checkWith(MyUnitIDS.weber, "68.2", "68200000000")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unit = allUnitsRepository.getById(this)
         val actual = unit

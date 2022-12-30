@@ -78,7 +78,7 @@ object MyUnitIDS {
     const val kelvin = "kelvin"
 
     // SPEED
-    const val millimeter_per_hour = "millimeter_per_hour"  // BASIC UNIT
+    const val millimeter_per_hour = "millimeter_per_hour"
     const val millimeter_per_minute = "millimeter_per_minute"
     const val millimeter_per_second = "millimeter_per_second"
     const val centimeter_per_hour = "centimeter_per_hour"
@@ -485,4 +485,13 @@ object MyUnitIDS {
     const val currency_zmk = "zmk"
     const val currency_zmw = "zmw"
     const val currency_zwl = "zwl"
+
+    // FLUX
+    const val maxwell = "maxwell"
+    const val weber = "weber"
+    const val milliweber = "milliweber"
+    const val microweber = "microweber"
+    const val kiloweber = "kiloweber"
+    const val megaweber = "megaweber"
+    const val gigaweber = "gigaweber"
 }

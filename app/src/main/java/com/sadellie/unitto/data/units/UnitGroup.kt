@@ -47,5 +47,6 @@ enum class UnitGroup(
     ENERGY(res = R.string.energy),
     POWER(res = R.string.power),
     ANGLE(res = R.string.angle),
-    DATA_TRANSFER(res = R.string.data_transfer)
+    DATA_TRANSFER(res = R.string.data_transfer),
+    FLUX(res = R.string.flux),
 }

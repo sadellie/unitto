@@ -686,5 +686,20 @@
     <string name="about_unitto">О Unitto</string>
     <string name="about_unitto_support">Узнайте больше о приложении</string>
     <string name="unit_groups_support">Отключите или отсортируйте единицы измерений</string>
+    <string name="maxwell">Максвелл</string>
+    <string name="maxwell_short">Мкс</string>
+    <string name="weber">Вебер</string>
+    <string name="weber_short">Вб</string>
+    <string name="milliweber">Милливебер</string>
+    <string name="milliweber_short">мВб</string>
+    <string name="microweber">Микровебер</string>
+    <string name="microweber_short">мкВб</string>
+    <string name="kiloweber">Киловебер</string>
+    <string name="kiloweber_short">кВб</string>
+    <string name="megaweber">Мегавебер</string>
+    <string name="megaweber_short">МВб</string>
+    <string name="gigaweber">Гигавебер</string>
+    <string name="gigaweber_short">ГВб</string>
+    <string name="flux">Поток</string>
 
 </resources>

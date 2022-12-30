@@ -913,6 +913,22 @@
     <string name="currency_zwl">Zimbabwean Dollar</string>
     <string name="currency_zwl_short" translatable="false">ZWL</string>
 
+    <!--Flux-->
+    <string name="maxwell">Maxwell</string>
+    <string name="maxwell_short">Mx</string>
+    <string name="weber">Weber</string>
+    <string name="weber_short">Wb</string>
+    <string name="milliweber">Milliweber</string>
+    <string name="milliweber_short">mWb</string>
+    <string name="microweber">Microweber</string>
+    <string name="microweber_short">μWb</string>
+    <string name="kiloweber">Kiloweber</string>
+    <string name="kiloweber_short">kWb</string>
+    <string name="megaweber">Megaweber</string>
+    <string name="megaweber_short">MWb</string>
+    <string name="gigaweber">Gigaweber</string>
+    <string name="gigaweber_short">GWb</string>
+
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -929,6 +945,7 @@
     <string name="pressure">Pressure</string>
     <string name="acceleration">Acceleration</string>
     <string name="currency">Currency</string>
+    <string name="flux">Flux</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>
