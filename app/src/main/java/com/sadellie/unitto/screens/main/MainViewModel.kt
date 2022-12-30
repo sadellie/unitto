@@ -59,9 +59,9 @@ import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
-import com.sadellie.unitto.screens.combine
-import com.sadellie.unitto.screens.toStringWith
-import com.sadellie.unitto.screens.trimZeros
+import com.sadellie.unitto.data.combine
+import com.sadellie.unitto.data.toStringWith
+import com.sadellie.unitto.data.trimZeros
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel

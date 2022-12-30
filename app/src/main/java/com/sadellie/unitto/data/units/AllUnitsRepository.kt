@@ -21,10 +21,9 @@ package com.sadellie.unitto.data.units
 import android.content.Context
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.preferences.MAX_PRECISION
+import com.sadellie.unitto.data.setMinimumRequiredScale
+import com.sadellie.unitto.data.trimZeros
 import com.sadellie.unitto.data.units.database.MyBasedUnit
-import com.sadellie.unitto.screens.setMinimumRequiredScale
-import com.sadellie.unitto.screens.sortByLev
-import com.sadellie.unitto.screens.trimZeros
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject

@@ -21,6 +21,7 @@ package com.sadellie.unitto.screens
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.MyUnit
 import com.sadellie.unitto.data.units.UnitGroup
+import com.sadellie.unitto.data.units.sortByLev
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigDecimal

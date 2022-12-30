@@ -20,8 +20,8 @@ package com.sadellie.unitto.data.units
 
 import androidx.annotation.StringRes
 import com.sadellie.unitto.data.preferences.MAX_PRECISION
-import com.sadellie.unitto.screens.setMinimumRequiredScale
-import com.sadellie.unitto.screens.trimZeros
+import com.sadellie.unitto.data.setMinimumRequiredScale
+import com.sadellie.unitto.data.trimZeros
 import java.math.BigDecimal
 
 /**

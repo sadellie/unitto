@@ -18,12 +18,6 @@
 
 package com.sadellie.unitto.screens.main
 
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
@@ -40,9 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
@@ -59,7 +51,6 @@ fun MainScreen(
     viewModel: MainViewModel = viewModel()
 ) {
     var launched: Boolean by rememberSaveable { mutableStateOf(false) }
-
     val mainScreenUIState = viewModel.mainFlow.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -82,11 +73,10 @@ fun MainScreen(
             )
         },
         content = { padding ->
-            PortraitMainScreenContent(
+            MainScreenContent(
                 modifier = Modifier.padding(padding),
                 unitFrom = viewModel.unitFrom,
                 unitTo = viewModel.unitTo,
-                portrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT,
                 mainScreenUIState = mainScreenUIState.value,
                 navControllerAction = { navControllerAction(it) },
                 swapMeasurements = { viewModel.swapUnits() },
@@ -108,11 +98,10 @@ fun MainScreen(
 }
 
 @Composable
-private fun PortraitMainScreenContent(
+private fun MainScreenContent(
     modifier: Modifier,
     unitFrom: AbstractUnit,
     unitTo: AbstractUnit,
-    portrait: Boolean = true,
     mainScreenUIState: MainScreenUIState = MainScreenUIState(),
     navControllerAction: (String) -> Unit = {},
     swapMeasurements: () -> Unit = {},
@@ -120,14 +109,11 @@ private fun PortraitMainScreenContent(
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
 ) {
-    if (portrait) {
-        Column(
-            modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+    PortraitLandscape(
+        modifier = modifier,
+        content1 = {
             TopScreenPart(
-                modifier = Modifier,
+                modifier = it,
                 inputValue = mainScreenUIState.inputValue,
                 calculatedValue = mainScreenUIState.calculatedValue,
                 outputValue = mainScreenUIState.resultValue,
@@ -139,48 +125,14 @@ private fun PortraitMainScreenContent(
                 onUnitSelectionClick = navControllerAction,
                 swapUnits = swapMeasurements
             )
-            // Keyboard which takes half the screen
+        },
+        content2 = {
             Keyboard(
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp),
+                modifier = it,
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
             )
         }
-    } else {
-        Row(
-            modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            TopScreenPart(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                inputValue = mainScreenUIState.inputValue,
-                calculatedValue = mainScreenUIState.calculatedValue,
-                outputValue = mainScreenUIState.resultValue,
-                unitFrom = unitFrom,
-                unitTo = unitTo,
-                loadingDatabase = mainScreenUIState.isLoadingDatabase,
-                loadingNetwork = mainScreenUIState.isLoadingNetwork,
-                networkError = mainScreenUIState.showError,
-                onUnitSelectionClick = navControllerAction,
-                swapUnits = swapMeasurements
-            )
-
-            // Keyboard which takes half the screen
-            Keyboard(
-                Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp),
-                addDigit = processInput,
-                deleteDigit = deleteDigit,
-                clearInput = clearInput,
-            )
-        }
-    }
+    )
 }
