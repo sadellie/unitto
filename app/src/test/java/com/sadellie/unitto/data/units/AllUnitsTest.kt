@@ -71,6 +71,7 @@ class AllUnitsTest {
 
     @Test
     fun testArea() {
+        MyUnitIDS.cent.checkWith(MyUnitIDS.acre, "75.9", "7590")
         MyUnitIDS.acre.checkWith(MyUnitIDS.square_kilometer, "75.9", "0.30716")
         MyUnitIDS.hectare.checkWith(MyUnitIDS.square_foot, "75.9", "8169808.00585")
         MyUnitIDS.square_foot.checkWith(MyUnitIDS.square_decimeter, "75.9", "705.13407")

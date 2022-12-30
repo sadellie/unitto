@@ -165,6 +165,7 @@ object MyUnitIDS {
 
     // AREA
     const val electron_cross_section = "electron_cross_section"
+    const val cent = "cent"
     const val acre = "acre"
     const val hectare = "hectare"
     const val square_foot = "square_foot"

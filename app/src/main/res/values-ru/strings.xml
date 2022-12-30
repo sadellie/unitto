@@ -701,5 +701,7 @@
     <string name="gigaweber">Гигавебер</string>
     <string name="gigaweber_short">ГВб</string>
     <string name="flux">Поток</string>
+    <string name="cent">Цент</string>
+    <string name="cent_short">цент</string>
 
 </resources>
