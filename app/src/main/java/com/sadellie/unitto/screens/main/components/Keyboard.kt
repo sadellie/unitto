@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_1
@@ -63,9 +64,9 @@ fun Keyboard(
     modifier: Modifier = Modifier,
     addDigit: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
-    clearInput: () -> Unit = {},
+    clearInput: () -> Unit = {}
 ) {
-    Row(
+    Column(
         modifier = modifier.fillMaxSize()
     ) {
         // Button modifier
@@ -75,33 +76,41 @@ fun Keyboard(
             .padding(4.dp)
         // Column modifier
         val cModifier = Modifier.weight(1f)
-        Column(cModifier) {
+        Row(cModifier) {
             KeyboardButton(bModifier, KEY_LEFT_BRACKET, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_7, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_4, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_1, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_0, onClick = addDigit)
-        }
-        Column(cModifier) {
             KeyboardButton(bModifier, KEY_RIGHT_BRACKET, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_8, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_5, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_2, onClick = addDigit)
-            KeyboardButton(bModifier, Formatter.fractional) { addDigit(KEY_DOT) }
-        }
-        Column(cModifier) {
             KeyboardButton(bModifier, KEY_EXPONENT, isPrimary = false, onClick = { addDigit(KEY_EXPONENT) })
-            KeyboardButton(bModifier, KEY_9, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_6, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_3, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_CLEAR, onLongClick = clearInput) { deleteDigit() }
-        }
-        Column(cModifier) {
             KeyboardButton(bModifier, KEY_SQRT, isPrimary = false, onClick = { addDigit(KEY_SQRT) })
+        }
+        Row(cModifier) {
+            KeyboardButton(bModifier, KEY_7, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_8, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_9, onClick = addDigit)
             KeyboardButton(bModifier, KEY_DIVIDE_DISPLAY, isPrimary = false) { addDigit(KEY_DIVIDE) }
+        }
+        Row(cModifier) {
+            KeyboardButton(bModifier, KEY_4, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_5, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_6, onClick = addDigit)
             KeyboardButton(bModifier, KEY_MULTIPLY_DISPLAY, isPrimary = false) { addDigit(KEY_MULTIPLY) }
+        }
+        Row(cModifier) {
+            KeyboardButton(bModifier, KEY_1, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_2, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_3, onClick = addDigit)
             KeyboardButton(bModifier, KEY_MINUS_DISPLAY, isPrimary = false) { addDigit(KEY_MINUS) }
+        }
+        Row(cModifier) {
+            KeyboardButton(bModifier, KEY_0, onClick = addDigit)
+            KeyboardButton(bModifier, Formatter.fractional) { addDigit(KEY_DOT) }
+            KeyboardButton(Modifier.fillMaxSize().weight(2f).padding(4.dp), KEY_CLEAR, onLongClick = clearInput) { deleteDigit() }
             KeyboardButton(bModifier, KEY_PLUS, isPrimary = false) { addDigit(KEY_PLUS) }
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewKeyboard() {
+    Keyboard()
 }
