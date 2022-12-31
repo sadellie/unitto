@@ -965,6 +965,9 @@
     <string name="currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="open_source">View source code</string>
+    <string name="translate_app">Translate this app</string>
+    <string name="translate_app_support">Join POEditor project to help</string>
     <string name="third_party_licenses">Third party licenses</string>
     <string name="rate_this_app">Rate this app</string>
     <string name="formatting_settings_group">Formatting</string>

@@ -703,5 +703,8 @@
     <string name="flux">Поток</string>
     <string name="cent">Цент</string>
     <string name="cent_short">цент</string>
+    <string name="open_source">Посмотреть исходный код</string>
+    <string name="translate_app">Перевести приложение</string>
+    <string name="translate_app_support">Помогите с переводом на POEditor</string>
 
 </resources>

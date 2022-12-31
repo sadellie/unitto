@@ -21,11 +21,13 @@ package com.sadellie.unitto.screens.setttings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Copyright
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.PrivacyTip
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -89,7 +91,7 @@ fun AboutScreen(
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
-                            "http://sadellie.github.io/unitto/terms-app.html"
+                            "https://sadellie.github.io/unitto/terms"
                         )
                     }
                 )
@@ -108,7 +110,46 @@ fun AboutScreen(
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
-                            "http://sadellie.github.io/unitto/privacy-app.html"
+                            "https://sadellie.github.io/unitto/privacy"
+                        )
+                    }
+                )
+            }
+
+            // OPEN SOURCE
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Code,
+                            stringResource(R.string.open_source),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.open_source)) },
+                    modifier = Modifier.clickable {
+                        openLink(
+                            mContext,
+                            "https://github.com/sadellie/unitto"
+                        )
+                    }
+                )
+            }
+
+            // TRANSLATE
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Translate,
+                            stringResource(R.string.translate_app),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.translate_app)) },
+                    supportingText = { Text(stringResource(R.string.translate_app_support)) },
+                    modifier = Modifier.clickable {
+                        openLink(
+                            mContext,
+                            "https://poeditor.com/join/project/T4zjmoq8dx"
                         )
                     }
                 )
