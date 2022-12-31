@@ -29,7 +29,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.sadellie.unitto.R
 
@@ -52,7 +51,7 @@ fun AnimatedTopBarText(showAppName: Boolean) {
             text = if (showAppName) stringResource(R.string.app_name) else stringResource(R.string.hello_label),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.W600)
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
