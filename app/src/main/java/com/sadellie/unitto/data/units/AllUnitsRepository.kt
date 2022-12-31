@@ -126,9 +126,8 @@ class AllUnitsRepository @Inject constructor() {
             // Query is empty, i.e. we want to see all units and they need to be sorted by usage
             basicFilteredUnits.sortedByDescending { it.counter }
         } else {
-            // We are searching for a specific unit, we don't care about popularity
-            // We need search accuracy
-            basicFilteredUnits.sortByLev(searchQuery)
+            // We sort by popularity and Levenshtein distance (short and long name).
+            basicFilteredUnits.sortedByDescending { it.counter }.sortByLev(searchQuery)
         }
 
         return unitsToShow.groupBy { it.group }
@@ -145,6 +144,7 @@ class AllUnitsRepository @Inject constructor() {
         allUnits.forEach {
             // Loading unit names so that we can search through them
             it.renderedName = context.getString(it.displayName)
+            it.renderedShortName = context.getString(it.shortName)
             val based = allBasedUnits.firstOrNull { based -> based.unitId == it.unitId }
             // Loading paired units
             it.pairedUnit = based?.pairedUnitId

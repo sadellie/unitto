@@ -32,8 +32,10 @@ import java.math.BigDecimal
  * basicUnit. For example, in [UnitGroup.LENGTH] basic unit is an attometer (1), then nanometer is
  * 1.0E+9 times bigger than that. This number (1.0E+9) is a basic unit for nanometer
  * @property group [UnitGroup] of this unit
- * @property renderedName Used a cache. Stores long name string for this specific device. Need for
- * search functionality
+ * @property renderedName Used as cache. Stores long name string for this specific device. Need for
+ * search functionality.
+ * @property renderedShortName Used as cache. Stores short name string for this specific device. Need for
+ * search functionality.
  * @property isFavorite Whether this unit is favorite.
  * @property isEnabled Whether we need to show this unit or not
  * @property pairedUnit Latest paired unit on the right
@@ -46,6 +48,7 @@ abstract class AbstractUnit(
     var basicUnit: BigDecimal,
     val group: UnitGroup,
     var renderedName: String = String(),
+    var renderedShortName: String = String(),
     var isFavorite: Boolean = false,
     var isEnabled: Boolean = true,
     var pairedUnit: String? = null,
@@ -79,21 +82,31 @@ fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
     // List of pair: Unit and it's levDist
     val unitsWithDist = mutableListOf<Pair<AbstractUnit, Int>>()
     this.forEach { unit ->
-        val unitName: String = unit.renderedName.lowercase()
+        val unitShortName: String = unit.renderedShortName.lowercase()
+        /**
+         * There is a chance that we search for unit with a specific short name. Such cases are
+         * should be higher in the list. Best possible match.
+         */
+        if (stringToCompare == unitShortName) {
+            unitsWithDist.add(Pair(unit, 0))
+            return@forEach
+        }
+
+        val unitFullName: String = unit.renderedName.lowercase()
 
         /**
          * There is chance that unit name doesn't need any edits (contains part of the query)
          * So computing levDist is a waste of resources
          */
         when {
-            // It's the best possible match if it start with
-            unitName.startsWith(stringToCompare) -> {
-                unitsWithDist.add(Pair(unit, 0))
+            // It's the second best possible match if it start with
+            unitFullName.startsWith(stringToCompare) -> {
+                unitsWithDist.add(Pair(unit, 1))
                 return@forEach
             }
             // It's a little bit worse when it just contains part of the query
-            unitName.contains(stringToCompare) -> {
-                unitsWithDist.add(Pair(unit, 1))
+            unitFullName.contains(stringToCompare) -> {
+                unitsWithDist.add(Pair(unit, 2))
                 return@forEach
             }
         }
@@ -111,8 +124,8 @@ fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
          *
          * With substring levDist will be 3 so unit will be included
          */
-        val levDist = unitName
-            .substring(0, minOf(stringToCompare.length, unitName.length))
+        val levDist = unitFullName
+            .substring(0, minOf(stringToCompare.length, unitFullName.length))
             .lev(stringToCompare)
 
         // Threshold
