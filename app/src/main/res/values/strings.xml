@@ -931,6 +931,38 @@
     <string name="gigaweber">Gigaweber</string>
     <string name="gigaweber_short">GWb</string>
 
+    <!--Number base-->
+    <string name="binary">Binary</string>
+    <string name="binary_short">base2</string>
+    <string name="ternary">Ternary</string>
+    <string name="ternary_short">base3</string>
+    <string name="quaternary">Quaternary</string>
+    <string name="quaternary_short">base4</string>
+    <string name="quinary">Quinary</string>
+    <string name="quinary_short">base5</string>
+    <string name="senary">Senary</string>
+    <string name="senary_short">base6</string>
+    <string name="septenary">Septenary</string>
+    <string name="septenary_short">base7</string>
+    <string name="octal">Octal</string>
+    <string name="octal_short">base8</string>
+    <string name="nonary">Nonary</string>
+    <string name="nonary_short">base9</string>
+    <string name="decimal">Decimal</string>
+    <string name="decimal_short">base10</string>
+    <string name="undecimal">Undecimal</string>
+    <string name="undecimal_short">base11</string>
+    <string name="duodecimal">Duodecimal</string>
+    <string name="duodecimal_short">base12</string>
+    <string name="tridecimal">Tridecimal</string>
+    <string name="tridecimal_short">base13</string>
+    <string name="tetradecimal">Tetradecimal</string>
+    <string name="tetradecimal_short">base14</string>
+    <string name="pentadecimal">Pentadecimal</string>
+    <string name="pentadecimal_short">base15</string>
+    <string name="hexadecimal">Hexadecimal</string>
+    <string name="hexadecimal_short">base16</string>
+
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -948,6 +980,7 @@
     <string name="acceleration">Acceleration</string>
     <string name="currency">Currency</string>
     <string name="flux">Flux</string>
+    <string name="number_base">Base</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>

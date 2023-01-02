@@ -29,6 +29,13 @@ const val KEY_8 = "8"
 const val KEY_9 = "9"
 const val KEY_0 = "0"
 
+const val KEY_BASE_A = "A"
+const val KEY_BASE_B = "B"
+const val KEY_BASE_C = "C"
+const val KEY_BASE_D = "D"
+const val KEY_BASE_E = "E"
+const val KEY_BASE_F = "F"
+
 const val KEY_DOT = "."
 const val KEY_COMMA = ","
 const val KEY_CLEAR = "<"

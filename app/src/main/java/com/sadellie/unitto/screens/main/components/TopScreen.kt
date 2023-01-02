@@ -76,7 +76,8 @@ fun TopScreenPart(
     loadingNetwork: Boolean,
     networkError: Boolean,
     onUnitSelectionClick: (String) -> Unit,
-    swapUnits: () -> Unit
+    swapUnits: () -> Unit,
+    baseConverterMode: Boolean,
 ) {
     var swapped by remember { mutableStateOf(false) }
     val swapButtonRotation: Float by animateFloatAsState(
@@ -94,6 +95,7 @@ fun TopScreenPart(
                 when {
                     loadingDatabase || loadingNetwork -> stringResource(R.string.loading_label)
                     networkError -> stringResource(R.string.error_label)
+                    baseConverterMode -> inputValue.uppercase()
                     else -> Formatter.format(inputValue)
                 }
             },
@@ -107,6 +109,7 @@ fun TopScreenPart(
                 when {
                     loadingDatabase || loadingNetwork -> stringResource(R.string.loading_label)
                     networkError -> stringResource(R.string.error_label)
+                    baseConverterMode -> outputValue.uppercase()
                     else -> Formatter.format(outputValue)
                 }
             },

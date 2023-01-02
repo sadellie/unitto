@@ -40,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
 import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.screens.common.AnimatedTopBarText
 import com.sadellie.unitto.screens.main.components.Keyboard
 import com.sadellie.unitto.screens.main.components.TopScreenPart
@@ -81,8 +82,10 @@ fun MainScreen(
                 navControllerAction = { navControllerAction(it) },
                 swapMeasurements = { viewModel.swapUnits() },
                 processInput = { viewModel.processInput(it) },
-                deleteDigit = { viewModel.deleteDigit() }
-            ) { viewModel.clearInput() }
+                deleteDigit = { viewModel.deleteDigit() },
+                clearInput = { viewModel.clearInput() },
+                baseConverterMode = viewModel.unitFrom.group == UnitGroup.NUMBER_BASE
+            )
         }
     )
 
@@ -108,6 +111,7 @@ private fun MainScreenContent(
     processInput: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
+    baseConverterMode: Boolean,
 ) {
     PortraitLandscape(
         modifier = modifier,
@@ -123,7 +127,8 @@ private fun MainScreenContent(
                 loadingNetwork = mainScreenUIState.isLoadingNetwork,
                 networkError = mainScreenUIState.showError,
                 onUnitSelectionClick = navControllerAction,
-                swapUnits = swapMeasurements
+                swapUnits = swapMeasurements,
+                baseConverterMode = baseConverterMode,
             )
         },
         content2 = {
@@ -132,6 +137,7 @@ private fun MainScreenContent(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
+                baseConverter = baseConverterMode,
             )
         }
     )

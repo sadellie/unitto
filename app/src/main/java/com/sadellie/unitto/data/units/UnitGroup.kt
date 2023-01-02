@@ -49,4 +49,5 @@ enum class UnitGroup(
     ANGLE(res = R.string.angle),
     DATA_TRANSFER(res = R.string.data_transfer),
     FLUX(res = R.string.flux),
+    NUMBER_BASE(res = R.string.number_base),
 }

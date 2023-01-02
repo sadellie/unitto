@@ -49,19 +49,20 @@ import com.sadellie.unitto.data.KEY_PLUS
 import com.sadellie.unitto.data.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.data.KEY_SQRT
 import com.sadellie.unitto.data.OPERATORS
+import com.sadellie.unitto.data.combine
 import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
+import com.sadellie.unitto.data.toStringWith
+import com.sadellie.unitto.data.trimZeros
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.MyUnitIDS
+import com.sadellie.unitto.data.units.NumberBaseUnit
 import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
-import com.sadellie.unitto.data.combine
-import com.sadellie.unitto.data.toStringWith
-import com.sadellie.unitto.data.trimZeros
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -134,10 +135,35 @@ class MainViewModel @Inject constructor(
     var unitTo: AbstractUnit by mutableStateOf(allUnitsRepository.getById(MyUnitIDS.mile))
         private set
 
-    /**
-     * This function takes local variables, converts values and then causes the UI to update
-     */
-    private suspend fun convertInput() {
+    private suspend fun convertAsNumberBase() {
+        withContext(Dispatchers.Default) {
+            while (isActive) {
+                val conversionResult = try {
+                    (unitFrom as NumberBaseUnit).convertToBase(
+                        input = input.value,
+                        toBase = (unitTo as NumberBaseUnit).base,
+                    )
+                } catch (e: Exception) {
+                    when (e) {
+                        is NumberFormatException, is IllegalArgumentException -> {
+                            ""
+                        }
+                        is ClassCastException -> {
+                            cancel()
+                            return@withContext
+                        }
+                        else -> {
+                            throw e
+                        }
+                    }
+                }
+                _result.update { conversionResult }
+                cancel()
+            }
+        }
+    }
+
+    private suspend fun convertAsExpression() {
         withContext(Dispatchers.Default) {
             while (isActive) {
                 // First we clean the input from garbage at the end
@@ -196,11 +222,33 @@ class MainViewModel @Inject constructor(
     }
 
     /**
+     * This function takes local variables, converts values and then causes the UI to update
+     */
+    private suspend fun convertInput() {
+        if (unitFrom.group == UnitGroup.NUMBER_BASE) {
+            convertAsNumberBase()
+        } else {
+            convertAsExpression()
+        }
+    }
+
+    /**
      * Change left side unit. Unit to convert from
      *
      * @param clickedUnit Unit we need to change to
      */
     fun changeUnitFrom(clickedUnit: AbstractUnit) {
+        // Do we change to NumberBase?
+        if ((unitFrom.group != UnitGroup.NUMBER_BASE) and (clickedUnit.group == UnitGroup.NUMBER_BASE)) {
+            // It was not NUMBER_BASE, but now we change to it. Clear input.
+            clearInput()
+        }
+
+        if ((unitFrom.group == UnitGroup.NUMBER_BASE) and (clickedUnit.group != UnitGroup.NUMBER_BASE)) {
+            // It was NUMBER_BASE, but now we change to something else. Clear input.
+            clearInput()
+        }
+
         // First we change unit
         unitFrom = clickedUnit
 
@@ -512,12 +560,8 @@ class MainViewModel @Inject constructor(
     /**
      * Returns value to be used when converting value on the right side screen (unit selection)
      */
-    fun inputValue(): BigDecimal? {
-        return try {
-            (mainFlow.value.calculatedValue ?: mainFlow.value.inputValue).toBigDecimal()
-        } catch (e: NumberFormatException) {
-            null
-        }
+    fun inputValue(): String {
+        return mainFlow.value.calculatedValue ?: mainFlow.value.inputValue
     }
 
     /**

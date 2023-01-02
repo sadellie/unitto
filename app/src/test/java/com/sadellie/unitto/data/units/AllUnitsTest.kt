@@ -351,15 +351,41 @@ class AllUnitsTest {
         MyUnitIDS.gigaweber.checkWith(MyUnitIDS.weber, "68.2", "68200000000")
     }
 
+    @Test
+    fun testNumberBase() {
+        MyUnitIDS.binary.checkWith(MyUnitIDS.octal, "1000001001", "1011")
+        MyUnitIDS.ternary.checkWith(MyUnitIDS.decimal, "10112020111", "69430")
+        MyUnitIDS.quaternary.checkWith(MyUnitIDS.quinary, "20321", "4234")
+        MyUnitIDS.quinary.checkWith(MyUnitIDS.nonary, "4234", "702")
+        MyUnitIDS.senary.checkWith(MyUnitIDS.nonary, "4234", "1274")
+        MyUnitIDS.septenary.checkWith(MyUnitIDS.nonary, "4234", "2041")
+        MyUnitIDS.octal.checkWith(MyUnitIDS.undecimal, "42343277", "5107945")
+        MyUnitIDS.nonary.checkWith(MyUnitIDS.duodecimal, "42343287", "69b9a81")
+        MyUnitIDS.decimal.checkWith(MyUnitIDS.duodecimal, "42343287", "12220273")
+        MyUnitIDS.undecimal.checkWith(MyUnitIDS.hexadecimal, "4234a287", "4e3f0c2")
+        MyUnitIDS.duodecimal.checkWith(MyUnitIDS.hexadecimal, "4234a287", "8f30d07")
+        MyUnitIDS.tridecimal.checkWith(MyUnitIDS.hexadecimal, "4234a287", "f9c3ff4")
+        MyUnitIDS.tetradecimal.checkWith(MyUnitIDS.hexadecimal, "bb", "a5")
+        MyUnitIDS.pentadecimal.checkWith(MyUnitIDS.hexadecimal, "BABE", "9a82")
+        MyUnitIDS.hexadecimal.checkWith(MyUnitIDS.quinary, "FADE", "4023342")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
-        val unit = allUnitsRepository.getById(this)
-        val actual = unit
-            .convert(allUnitsRepository.getById(checkingId), BigDecimal(value), 5)
-            .toPlainString()
+        val unitFrom = allUnitsRepository.getById(this)
+        val unitTo = allUnitsRepository.getById(checkingId)
+
+        val actual = if (unitFrom.group == UnitGroup.NUMBER_BASE) {
+            (unitFrom as NumberBaseUnit)
+                .convertToBase(value, (unitTo as NumberBaseUnit).base)
+        } else {
+            unitFrom
+                .convert(unitTo, BigDecimal(value), 5)
+                .toPlainString()
+        }
         assertEquals("Failed at $this to $checkingId", expected, actual)
         println("PASSED: $this -> $expected == $actual")
-        val content: Set<String> = history.getOrDefault(unit.group, setOf())
-        history[unit.group] = content.plus(this)
+        val content: Set<String> = history.getOrDefault(unitFrom.group, setOf())
+        history[unitFrom.group] = content.plus(this)
     }
 
     @After

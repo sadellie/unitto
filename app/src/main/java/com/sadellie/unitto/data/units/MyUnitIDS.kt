@@ -495,4 +495,21 @@ object MyUnitIDS {
     const val kiloweber = "kiloweber"
     const val megaweber = "megaweber"
     const val gigaweber = "gigaweber"
+
+    // NUMBER BASE
+    const val binary = "binary"
+    const val ternary = "ternary"
+    const val quaternary = "quaternary"
+    const val quinary = "quinary"
+    const val senary = "senary"
+    const val septenary = "septenary"
+    const val octal = "octal"
+    const val nonary = "nonary"
+    const val decimal = "decimal"
+    const val undecimal = "undecimal"
+    const val duodecimal = "duodecimal"
+    const val tridecimal = "tridecimal"
+    const val tetradecimal = "tetradecimal"
+    const val pentadecimal = "pentadecimal"
+    const val hexadecimal = "hexadecimal"
 }

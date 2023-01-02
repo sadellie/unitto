@@ -62,6 +62,7 @@ class AllUnitsRepository @Inject constructor() {
             UnitGroup.ANGLE to angleCollection,
             UnitGroup.DATA_TRANSFER to dataTransferCollection,
             UnitGroup.FLUX to fluxCollection,
+            UnitGroup.NUMBER_BASE to numberBaseCollection,
         )
     }
 
@@ -760,6 +761,25 @@ class AllUnitsRepository @Inject constructor() {
             MyUnit(MyUnitIDS.kiloweber,  BigDecimal.valueOf(100000000000),          UnitGroup.FLUX, R.string.kiloweber,     R.string.kiloweber_short),
             MyUnit(MyUnitIDS.megaweber,  BigDecimal.valueOf(100000000000000),       UnitGroup.FLUX, R.string.megaweber,     R.string.megaweber_short),
             MyUnit(MyUnitIDS.gigaweber,  BigDecimal.valueOf(100000000000000000),    UnitGroup.FLUX, R.string.gigaweber,     R.string.gigaweber_short),
+        )
+    }
+    private val numberBaseCollection: List<AbstractUnit> by lazy {
+        listOf(
+            NumberBaseUnit(MyUnitIDS.binary,        2,  UnitGroup.NUMBER_BASE,  R.string.binary,        R.string.binary_short),
+            NumberBaseUnit(MyUnitIDS.ternary,       3,  UnitGroup.NUMBER_BASE,  R.string.ternary,       R.string.ternary_short),
+            NumberBaseUnit(MyUnitIDS.quaternary,    4,  UnitGroup.NUMBER_BASE,  R.string.quaternary,    R.string.quaternary_short),
+            NumberBaseUnit(MyUnitIDS.quinary,       5,  UnitGroup.NUMBER_BASE,  R.string.quinary,       R.string.quinary_short),
+            NumberBaseUnit(MyUnitIDS.senary,        6,  UnitGroup.NUMBER_BASE,  R.string.senary,        R.string.senary_short),
+            NumberBaseUnit(MyUnitIDS.septenary,     7,  UnitGroup.NUMBER_BASE,  R.string.septenary,     R.string.septenary_short),
+            NumberBaseUnit(MyUnitIDS.octal,         8,  UnitGroup.NUMBER_BASE,  R.string.octal,         R.string.octal_short),
+            NumberBaseUnit(MyUnitIDS.nonary,        9,  UnitGroup.NUMBER_BASE,  R.string.nonary,        R.string.nonary_short),
+            NumberBaseUnit(MyUnitIDS.decimal,       10, UnitGroup.NUMBER_BASE,  R.string.decimal,       R.string.decimal_short),
+            NumberBaseUnit(MyUnitIDS.undecimal,     11, UnitGroup.NUMBER_BASE,  R.string.undecimal,     R.string.undecimal_short),
+            NumberBaseUnit(MyUnitIDS.duodecimal,    12, UnitGroup.NUMBER_BASE,  R.string.duodecimal,    R.string.duodecimal_short),
+            NumberBaseUnit(MyUnitIDS.tridecimal,    13, UnitGroup.NUMBER_BASE,  R.string.tridecimal,    R.string.tridecimal_short),
+            NumberBaseUnit(MyUnitIDS.tetradecimal,  14, UnitGroup.NUMBER_BASE,  R.string.tetradecimal,  R.string.tetradecimal_short),
+            NumberBaseUnit(MyUnitIDS.pentadecimal,  15, UnitGroup.NUMBER_BASE,  R.string.pentadecimal,  R.string.pentadecimal_short),
+            NumberBaseUnit(MyUnitIDS.hexadecimal,   16, UnitGroup.NUMBER_BASE,  R.string.hexadecimal,   R.string.hexadecimal_short),
         )
     }
 }
