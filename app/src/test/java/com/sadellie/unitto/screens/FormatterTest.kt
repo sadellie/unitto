@@ -45,7 +45,7 @@ class FormatterTest {
         assertEquals("123 456.", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123 456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123 456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123 456÷8×0.8–12+0-√9*4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123 456÷8×0.8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
         assertEquals("((((((((", formatter.format(SOME_BRACKETS))
     }
 
@@ -59,7 +59,7 @@ class FormatterTest {
         assertEquals("123,456.", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123,456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123,456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123,456÷8×0.8–12+0-√9*4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123,456÷8×0.8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
         assertEquals("((((((((", formatter.format(SOME_BRACKETS))
     }
 
@@ -73,7 +73,7 @@ class FormatterTest {
         assertEquals("123.456,", formatter.format(INCOMPLETE_VALUE))
         assertEquals("123.456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123.456÷8×0,8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123.456÷8×0,8–12+0-√9*4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123.456÷8×0,8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
         assertEquals("((((((((", formatter.format(SOME_BRACKETS))
     }
 

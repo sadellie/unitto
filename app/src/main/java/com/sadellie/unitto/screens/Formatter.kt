@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.screens
 
+import com.sadellie.unitto.data.INTERNAL_DISPLAY
 import com.sadellie.unitto.data.KEY_COMMA
 import com.sadellie.unitto.data.KEY_DOT
 import com.sadellie.unitto.data.KEY_E
@@ -79,6 +80,10 @@ object Formatter {
 
         allNumbers.forEach {
             output = output.replace(it, formatNumber(it))
+        }
+
+        INTERNAL_DISPLAY.forEach {
+            output = output.replace(it.key, it.value)
         }
 
         return output

@@ -39,8 +39,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.R
 import com.sadellie.unitto.data.NavRoutes.SETTINGS_SCREEN
-import com.sadellie.unitto.data.units.AbstractUnit
-import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.screens.common.AnimatedTopBarText
 import com.sadellie.unitto.screens.main.components.Keyboard
 import com.sadellie.unitto.screens.main.components.TopScreenPart
@@ -52,7 +50,7 @@ fun MainScreen(
     viewModel: MainViewModel = viewModel()
 ) {
     var launched: Boolean by rememberSaveable { mutableStateOf(false) }
-    val mainScreenUIState = viewModel.mainFlow.collectAsStateWithLifecycle()
+    val mainScreenUIState = viewModel.uiStateFlow.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier,
@@ -76,15 +74,12 @@ fun MainScreen(
         content = { padding ->
             MainScreenContent(
                 modifier = Modifier.padding(padding),
-                unitFrom = viewModel.unitFrom,
-                unitTo = viewModel.unitTo,
                 mainScreenUIState = mainScreenUIState.value,
                 navControllerAction = { navControllerAction(it) },
                 swapMeasurements = { viewModel.swapUnits() },
                 processInput = { viewModel.processInput(it) },
                 deleteDigit = { viewModel.deleteDigit() },
                 clearInput = { viewModel.clearInput() },
-                baseConverterMode = viewModel.unitFrom.group == UnitGroup.NUMBER_BASE
             )
         }
     )
@@ -103,15 +98,12 @@ fun MainScreen(
 @Composable
 private fun MainScreenContent(
     modifier: Modifier,
-    unitFrom: AbstractUnit,
-    unitTo: AbstractUnit,
-    mainScreenUIState: MainScreenUIState = MainScreenUIState(),
+    mainScreenUIState: MainScreenUIState,
     navControllerAction: (String) -> Unit = {},
     swapMeasurements: () -> Unit = {},
     processInput: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
-    baseConverterMode: Boolean,
 ) {
     PortraitLandscape(
         modifier = modifier,
@@ -121,14 +113,13 @@ private fun MainScreenContent(
                 inputValue = mainScreenUIState.inputValue,
                 calculatedValue = mainScreenUIState.calculatedValue,
                 outputValue = mainScreenUIState.resultValue,
-                unitFrom = unitFrom,
-                unitTo = unitTo,
-                loadingDatabase = mainScreenUIState.isLoadingDatabase,
-                loadingNetwork = mainScreenUIState.isLoadingNetwork,
+                unitFrom = mainScreenUIState.unitFrom,
+                unitTo = mainScreenUIState.unitTo,
+                loadingNetwork = mainScreenUIState.showLoading,
                 networkError = mainScreenUIState.showError,
                 onUnitSelectionClick = navControllerAction,
                 swapUnits = swapMeasurements,
-                baseConverterMode = baseConverterMode,
+                converterMode = mainScreenUIState.mode,
             )
         },
         content2 = {
@@ -137,7 +128,7 @@ private fun MainScreenContent(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                baseConverter = baseConverterMode,
+                converterMode = mainScreenUIState.mode,
             )
         }
     )

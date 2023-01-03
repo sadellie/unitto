@@ -19,24 +19,33 @@
 package com.sadellie.unitto.screens.main
 
 import com.sadellie.unitto.data.KEY_0
+import com.sadellie.unitto.data.units.AbstractUnit
 
 /**
  * Represents current state of the MainScreen
  *
  * @property inputValue Current input value. Can be expression or a simple number.
- * @property resultValue Current output value
  * @property calculatedValue Currently calculated value. Can be null if not needed (same as input or
- * expression in input is invalid)
- * @property isLoadingDatabase Whether we are loading data from Database. Need on app launch, once
- * we are done loading list on Units list can be sorted by usage properly/
- * @property isLoadingNetwork Whether we are loading data from network
+ * expression in input is invalid).
+ * @property resultValue Current output value.
+ * @property showLoading Whether we are loading data from network.
  * @property showError Whether there was an error while loading data from network
+ * @property unitFrom Unit on the left.
+ * @property unitTo Unit on the right.
+ * @property mode
  */
 data class MainScreenUIState(
-    var inputValue: String = KEY_0,
-    var resultValue: String = KEY_0,
-    var isLoadingDatabase: Boolean = true,
-    var isLoadingNetwork: Boolean = false,
-    var showError: Boolean = false,
-    var calculatedValue: String? = null
+    val inputValue: String = KEY_0,
+    val calculatedValue: String? = null,
+    val resultValue: String = KEY_0,
+    val showLoading: Boolean = true,
+    val showError: Boolean = false,
+    val unitFrom: AbstractUnit? = null,
+    val unitTo: AbstractUnit? = null,
+    val mode: ConverterMode = ConverterMode.DEFAULT,
 )
+
+enum class ConverterMode {
+    DEFAULT,
+    BASE,
+}

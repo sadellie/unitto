@@ -25,6 +25,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -122,30 +123,36 @@ fun UnittoApp(
         }
 
         composable(LEFT_LIST_SCREEN) {
+            val mainUiState = mainViewModel.uiStateFlow.collectAsState()
+            val unitFrom = mainUiState.value.unitFrom ?: return@composable
             // Initial group
-            secondViewModel.setSelectedChip(mainViewModel.unitFrom.group, true)
+            secondViewModel.setSelectedChip(unitFrom.group, true)
 
             LeftSideScreen(
                 viewModel = secondViewModel,
-                currentUnit = mainViewModel.unitFrom,
+                currentUnit = unitFrom,
                 navigateUp = { navController.navigateUp() },
                 navigateToSettingsAction = { navController.navigate(UNIT_GROUPS_SCREEN) },
-                selectAction = { mainViewModel.changeUnitFrom(it) }
+                selectAction = { mainViewModel.updateUnitFrom(it) }
             )
         }
 
         composable(RIGHT_LIST_SCREEN) {
+            val mainUiState = mainViewModel.uiStateFlow.collectAsState()
+            val unitFrom = mainUiState.value.unitFrom ?: return@composable
+            val unitTo = mainUiState.value.unitTo ?: return@composable
+
             // Initial group
-            secondViewModel.setSelectedChip(mainViewModel.unitFrom.group, false)
+            secondViewModel.setSelectedChip(unitFrom.group, false)
 
             RightSideScreen(
                 viewModel = secondViewModel,
-                currentUnit = mainViewModel.unitTo,
+                currentUnit = unitTo,
                 navigateUp = { navController.navigateUp() },
                 navigateToSettingsAction = { navController.navigate(UNIT_GROUPS_SCREEN) },
-                selectAction = { mainViewModel.changeUnitTo(it) },
-                inputValue = mainViewModel.inputValue(),
-                unitFrom = mainViewModel.unitFrom
+                selectAction = { mainViewModel.updateUnitTo(it) },
+                inputValue = mainViewModel.getInputValue(),
+                unitFrom = unitFrom
             )
         }
 

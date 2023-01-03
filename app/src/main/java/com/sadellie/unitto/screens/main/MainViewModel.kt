@@ -18,17 +18,12 @@
 
 package com.sadellie.unitto.screens.main
 
-import android.app.Application
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.keelar.exprk.ExpressionException
 import com.github.keelar.exprk.Expressions
 import com.sadellie.unitto.FirebaseHelper
 import com.sadellie.unitto.data.DIGITS
-import com.sadellie.unitto.data.INTERNAL_DISPLAY
 import com.sadellie.unitto.data.KEY_0
 import com.sadellie.unitto.data.KEY_1
 import com.sadellie.unitto.data.KEY_2
@@ -71,6 +66,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
@@ -84,77 +81,345 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val basedUnitRepository: MyBasedUnitsRepository,
-    private val mContext: Application,
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
-    val input: MutableStateFlow<String> = MutableStateFlow(KEY_0)
-    private val _calculated: MutableStateFlow<String?> = MutableStateFlow(null)
-    private val _result: MutableStateFlow<String> = MutableStateFlow(KEY_0)
-    private val _latestInputStack: MutableList<String> = mutableListOf(KEY_0)
-    private val _inputDisplay: MutableStateFlow<String> = MutableStateFlow(KEY_0)
-    private val _isLoadingDatabase: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    private val _isLoadingNetwork: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000), UserPreferences()
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        UserPreferences()
     )
 
-    val mainFlow: StateFlow<MainScreenUIState> = combine(
-        _inputDisplay,
+    /**
+     * Unit on the left, the one we convert from. Initially null, meaning we didn't restore it yet.
+     */
+    private val _unitFrom: MutableStateFlow<AbstractUnit?> = MutableStateFlow(null)
+
+    /**
+     * Unit on the right, the one we convert to. Initially null, meaning we didn't restore it yet.
+     */
+    private val _unitTo: MutableStateFlow<AbstractUnit?> = MutableStateFlow(null)
+
+    /**
+     * Current input. Used when converting units.
+     */
+    private val _input: MutableStateFlow<String> = MutableStateFlow(KEY_0)
+
+    /**
+     * Calculation result. Null when [_input] is not an expression.
+     */
+    private val _calculated: MutableStateFlow<String?> = MutableStateFlow(null)
+
+    /**
+     * List of latest symbols that were entered.
+     */
+    private val _latestInputStack: MutableList<String> = mutableListOf(_input.value)
+
+    /**
+     * Conversion result.
+     */
+    private val _result: MutableStateFlow<String> = MutableStateFlow(KEY_0)
+
+    /**
+     * True when loading something from network.
+     */
+    private val _showLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+    /**
+     * True if there was error while loading data.
+     */
+    private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+    /**
+     * Current state of UI.
+     */
+    val uiStateFlow: StateFlow<MainScreenUIState> = combine(
+        _input,
+        _unitFrom,
+        _unitTo,
         _calculated,
         _result,
-        _isLoadingNetwork,
-        _isLoadingDatabase,
-        _showError,
-    ) { inputValue: String,
-        calculatedValue: String?,
-        resultValue: String,
-        showLoadingNetwork: Boolean,
-        showLoadingDatabase: Boolean,
-        showError: Boolean ->
+        _showLoading,
+        _showError
+    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue ->
         return@combine MainScreenUIState(
             inputValue = inputValue,
             calculatedValue = calculatedValue,
             resultValue = resultValue,
-            isLoadingNetwork = showLoadingNetwork,
-            isLoadingDatabase = showLoadingDatabase,
-            showError = showError,
+            showLoading = showLoadingValue,
+            showError = showErrorValue,
+            unitFrom = unitFromValue,
+            unitTo = unitToValue,
+            /**
+             * If there will be more modes, this should be a separate value which we update when
+             * changing units.
+             */
+            mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainScreenUIState())
+    }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            MainScreenUIState()
+        )
 
     /**
-     * Unit we converting from (left side)
+     * Process input with rules. Makes sure that user input is corrected when needed.
+     *
+     * @param symbolToAdd Use 'ugly' version of symbols.
      */
-    var unitFrom: AbstractUnit by mutableStateOf(allUnitsRepository.getById(MyUnitIDS.kilometer))
-        private set
+    fun processInput(symbolToAdd: String) {
+        // We are still loading data from network, don't accept any input yet
+        if (_showLoading.value) return
+
+        val lastTwoSymbols = _latestInputStack.takeLast(2)
+        val lastSymbol: String = lastTwoSymbols.getOrNull(1) ?: lastTwoSymbols[0]
+        val lastSecondSymbol: String? = lastTwoSymbols.getOrNull(0)
+
+        when (symbolToAdd) {
+            KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY, KEY_EXPONENT -> {
+                when {
+                    // Don't need expressions that start with zero
+                    (_input.value == KEY_0) -> {}
+                    (_input.value == KEY_MINUS) -> {}
+                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
+                    (lastSymbol == KEY_SQRT) -> {}
+                    /**
+                     * For situations like "50+-", when user clicks "/" we delete "-" so it becomes
+                     * "50+". We don't add "/' here. User will click "/" second time and the input
+                     * will be "50/".
+                     */
+                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS) -> {
+                        deleteDigit()
+                    }
+                    // Don't allow multiple operators near each other
+                    (lastSymbol in OPERATORS) -> {
+                        deleteDigit()
+                        setInputSymbols(symbolToAdd)
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            KEY_0 -> {
+                when {
+                    // Don't add zero if the input is already a zero
+                    (_input.value == KEY_0) -> {}
+                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
+                    }
+                    // Prevents things like "-00" and "4+000"
+                    ((lastSecondSymbol in OPERATORS + KEY_LEFT_BRACKET) and (lastSymbol == KEY_0)) -> {}
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 -> {
+                // Replace single zero (default input) if it's here
+                when {
+                    (_input.value == KEY_0) -> {
+                        setInputSymbols(symbolToAdd, false)
+                    }
+                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            KEY_MINUS -> {
+                when {
+                    // Replace single zero with minus (to support negative numbers)
+                    (_input.value == KEY_0) -> {
+                        setInputSymbols(symbolToAdd, false)
+                    }
+                    // Don't allow multiple minuses near each other
+                    (lastSymbol.compareTo(KEY_MINUS) == 0) -> {}
+                    // Don't allow plus and minus be near each other
+                    (lastSymbol == KEY_PLUS) -> {
+                        deleteDigit()
+                        setInputSymbols(symbolToAdd)
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            KEY_DOT -> {
+                if (!_input.value
+                    .takeLastWhile { it.toString() !in OPERATORS.minus(KEY_DOT) }
+                    .contains(KEY_DOT)
+                ) {
+                    setInputSymbols(symbolToAdd)
+                }
+            }
+            KEY_LEFT_BRACKET -> {
+                when {
+                    // Replace single zero with minus (to support negative numbers)
+                    (_input.value == KEY_0) -> {
+                        setInputSymbols(symbolToAdd, false)
+                    }
+                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            KEY_RIGHT_BRACKET -> {
+                when {
+                    // Replace single zero with minus (to support negative numbers)
+                    (_input.value == KEY_0) -> {}
+                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
+                    (
+                        _latestInputStack.filter { it == KEY_LEFT_BRACKET }.size ==
+                            _latestInputStack.filter { it == KEY_RIGHT_BRACKET }.size
+                        ) -> {
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            KEY_SQRT -> {
+                when {
+                    // Replace single zero with minus (to support negative numbers)
+                    (_input.value == KEY_0) -> {
+                        setInputSymbols(symbolToAdd, false)
+                    }
+                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
+                        processInput(KEY_MULTIPLY)
+                        setInputSymbols(symbolToAdd)
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+            else -> {
+                when {
+                    // Replace single zero with minus (to support negative numbers)
+                    (_input.value == KEY_0) -> {
+                        setInputSymbols(symbolToAdd, false)
+                    }
+                    else -> {
+                        setInputSymbols(symbolToAdd)
+                    }
+                }
+            }
+        }
+    }
 
     /**
-     * Unit we are converting to (right side)
+     * Update [_unitFrom] and set [_unitTo] from pair. Also updates stats for this [unit].
      */
-    var unitTo: AbstractUnit by mutableStateOf(allUnitsRepository.getById(MyUnitIDS.mile))
-        private set
+    fun updateUnitFrom(unit: AbstractUnit) {
+        // We change from something to base converter or the other way around
+        if ((_unitFrom.value?.group != UnitGroup.NUMBER_BASE) xor (unit.group == UnitGroup.NUMBER_BASE)) {
+            _calculated.update { null }
+            clearInput()
+        }
+
+        _unitFrom.update { unit }
+
+        /**
+         * Update pair [_unitTo] if it exists
+         */
+        val pair = unit.pairedUnit
+        if (pair != null) {
+            _unitTo.update { allUnitsRepository.getById(pair) }
+        } else {
+            // No pair, get something from same group
+            _unitTo.update { allUnitsRepository.getCollectionByGroup(unit.group).first() }
+        }
+        incrementCounter(unit)
+        updateCurrenciesRatesIfNeeded()
+        saveLatestPairOfUnits()
+    }
+
+    /**
+     * Update [_unitTo] and update pair for [_unitFrom].
+     */
+    fun updateUnitTo(unit: AbstractUnit) {
+        _unitTo.update { unit }
+        _unitFrom.value?.pairedUnit = unit.unitId
+        updatePairedUnit(_unitFrom.value ?: return)
+        incrementCounter(unit)
+        saveLatestPairOfUnits()
+    }
+
+    /**
+     * Swap [_unitFrom] and [_unitTo].
+     */
+    fun swapUnits() {
+        _unitFrom
+            .getAndUpdate { _unitTo.value }
+            .also { oldUnitFrom -> _unitTo.update { oldUnitFrom } }
+    }
+
+    /**
+     * Delete last symbol from [_input].
+     */
+    fun deleteDigit() {
+        // Default input, don't delete
+        if (_input.value == KEY_0) return
+
+        val lastSymbol = _latestInputStack.removeLast()
+
+        // If this value are same, it means that after deleting there will be no symbols left, set to default
+        if (lastSymbol == _input.value) {
+            setInputSymbols(KEY_0, false)
+        } else {
+            _input.update { it.removeSuffix(lastSymbol) }
+        }
+    }
+
+    /**
+     * Clear [_input].
+     */
+    fun clearInput() {
+        setInputSymbols(KEY_0, false)
+    }
+
+    fun getInputValue(): String {
+        return _calculated.value ?: _input.value
+    }
+
+    private suspend fun convertInput() {
+        if (_unitFrom.value?.group == UnitGroup.NUMBER_BASE) {
+            convertAsNumberBase()
+        } else {
+            convertAsExpression()
+        }
+    }
 
     private suspend fun convertAsNumberBase() {
         withContext(Dispatchers.Default) {
             while (isActive) {
+                // Units are still loading, don't convert anything yet
+                val unitFrom = _unitFrom.value ?: return@withContext
+                val unitTo = _unitTo.value ?: return@withContext
+
                 val conversionResult = try {
                     (unitFrom as NumberBaseUnit).convertToBase(
-                        input = input.value,
-                        toBase = (unitTo as NumberBaseUnit).base,
+                        input = _input.value,
+                        toBase = (unitTo as NumberBaseUnit).base
                     )
                 } catch (e: Exception) {
                     when (e) {
-                        is NumberFormatException, is IllegalArgumentException -> {
-                            ""
-                        }
                         is ClassCastException -> {
                             cancel()
                             return@withContext
                         }
-                        else -> {
-                            throw e
-                        }
+                        is NumberFormatException, is IllegalArgumentException -> ""
+                        else -> throw e
                     }
                 }
                 _result.update { conversionResult }
@@ -166,13 +431,17 @@ class MainViewModel @Inject constructor(
     private suspend fun convertAsExpression() {
         withContext(Dispatchers.Default) {
             while (isActive) {
+                // Units are still loading, don't convert anything yet
+                val unitFrom = _unitFrom.value ?: return@withContext
+                val unitTo = _unitTo.value ?: return@withContext
+
                 // First we clean the input from garbage at the end
-                var cleanInput = input.value.dropLastWhile { !it.isDigit() }
+                var cleanInput = _input.value.dropLastWhile { !it.isDigit() }
 
                 // Now we close open brackets that user didn't close
                 // AUTOCLOSE ALL BRACKETS
-                val leftBrackets = input.value.count { it.toString() == KEY_LEFT_BRACKET }
-                val rightBrackets = input.value.count { it.toString() == KEY_RIGHT_BRACKET }
+                val leftBrackets = _input.value.count { it.toString() == KEY_LEFT_BRACKET }
+                val rightBrackets = _input.value.count { it.toString() == KEY_RIGHT_BRACKET }
                 val neededBrackets = leftBrackets - rightBrackets
                 if (neededBrackets > 0) cleanInput += KEY_RIGHT_BRACKET.repeat(neededBrackets)
 
@@ -200,17 +469,23 @@ class MainViewModel @Inject constructor(
                 // 123.456 will be true
                 // -123.456 will be true
                 // -123.456-123 will be false (first minus gets removed, ending with 123.456)
-                if (input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
+                if (_input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
                     // No operators
                     _calculated.update { null }
                 } else {
-                    _calculated.update { evaluationResult.toStringWith(_userPrefs.value.outputFormat) }
+                    _calculated.update {
+                        evaluationResult.toStringWith(
+                            _userPrefs.value.outputFormat
+                        )
+                    }
                 }
 
                 // Now we just convert.
                 // We can use evaluation result here, input is valid
                 val conversionResult: BigDecimal = unitFrom.convert(
-                    unitTo, evaluationResult, _userPrefs.value.digitsPrecision
+                    unitTo,
+                    evaluationResult,
+                    _userPrefs.value.digitsPrecision
                 )
 
                 // Converted
@@ -221,398 +496,116 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    /**
-     * This function takes local variables, converts values and then causes the UI to update
-     */
-    private suspend fun convertInput() {
-        if (unitFrom.group == UnitGroup.NUMBER_BASE) {
-            convertAsNumberBase()
+    private fun setInputSymbols(symbol: String, add: Boolean = true) {
+        if (add) {
+            _input.update { it + symbol }
         } else {
-            convertAsExpression()
+            // We don't need previous input, clear entirely
+            _latestInputStack.clear()
+            _input.update { symbol }
         }
+        _latestInputStack.add(symbol)
     }
 
-    /**
-     * Change left side unit. Unit to convert from
-     *
-     * @param clickedUnit Unit we need to change to
-     */
-    fun changeUnitFrom(clickedUnit: AbstractUnit) {
-        // Do we change to NumberBase?
-        if ((unitFrom.group != UnitGroup.NUMBER_BASE) and (clickedUnit.group == UnitGroup.NUMBER_BASE)) {
-            // It was not NUMBER_BASE, but now we change to it. Clear input.
-            clearInput()
-        }
-
-        if ((unitFrom.group == UnitGroup.NUMBER_BASE) and (clickedUnit.group != UnitGroup.NUMBER_BASE)) {
-            // It was NUMBER_BASE, but now we change to something else. Clear input.
-            clearInput()
-        }
-
-        // First we change unit
-        unitFrom = clickedUnit
-
-        // Now we change to positive if the group we switched to supports negate
-        if (!clickedUnit.group.canNegate) {
-            input.update { input.value.removePrefix(KEY_MINUS) }
-        }
-
-        // Now setting up right unit (pair for the left one)
-        unitTo = if (unitFrom.pairedUnit == null) {
-            allUnitsRepository.getCollectionByGroup(unitFrom.group).first()
-        } else {
-            allUnitsRepository.getById(unitFrom.pairedUnit!!)
-        }
-
-        viewModelScope.launch {
-            // We need to increment counter for the clicked unit
-            incrementCounter(clickedUnit)
-            // Currencies require us to get data from the internet
-            updateCurrenciesBasicUnits()
-            // Saving latest pair
-            saveLatestPairOfUnits()
-        }
-    }
-
-    /**
-     * Change right side unit. Unit to convert to
-     *
-     * @param clickedUnit Unit we need to change to
-     */
-    fun changeUnitTo(clickedUnit: AbstractUnit) {
-        // First we change unit
-        unitTo = clickedUnit
-        // Updating paired unit for left side unit in memory (same thing for database below)
-        unitFrom.pairedUnit = unitTo.unitId
-
-        viewModelScope.launch {
-            // Updating paired unit for left side unit in database
+    private fun incrementCounter(unit: AbstractUnit) {
+        viewModelScope.launch(Dispatchers.IO) {
             basedUnitRepository.insertUnits(
                 MyBasedUnit(
-                    unitId = unitFrom.unitId,
-                    isFavorite = unitFrom.isFavorite,
-                    pairedUnitId = unitFrom.pairedUnit,
-                    frequency = unitFrom.counter
+                    unitId = unit.unitId,
+                    isFavorite = unit.isFavorite,
+                    pairedUnitId = unit.pairedUnit,
+                    // This will increment counter on unit in list too
+                    frequency = ++unit.counter
                 )
             )
-            // We also need to increment counter for the selected unit
-            incrementCounter(clickedUnit)
-            // Saving latest pair
-            saveLatestPairOfUnits()
         }
     }
 
-    private suspend fun incrementCounter(unit: AbstractUnit) {
-        basedUnitRepository.insertUnits(
-            MyBasedUnit(
-                unitId = unit.unitId, isFavorite = unit.isFavorite, pairedUnitId = unit.pairedUnit,
-                // This will increment counter on unit in list too
-                frequency = ++unit.counter
+    private fun updatePairedUnit(unit: AbstractUnit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            basedUnitRepository.insertUnits(
+                MyBasedUnit(
+                    unitId = unit.unitId,
+                    isFavorite = unit.isFavorite,
+                    pairedUnitId = unit.pairedUnit,
+                    frequency = unit.counter
+                )
             )
-        )
-    }
-
-    /**
-     * Updates basic units properties for all currencies, BUT only when [unitFrom]'s group is set
-     * to [UnitGroup.CURRENCY].
-     */
-    private suspend fun updateCurrenciesBasicUnits() {
-        // Resetting error and network loading states in case we are not gonna do anything below
-        _isLoadingNetwork.update { false }
-        _showError.update { false }
-        // We update currencies only when needed
-        if (unitFrom.group != UnitGroup.CURRENCY) return
-
-        // Starting to load stuff
-        _isLoadingNetwork.update { true }
-
-        try {
-            val pairs: CurrencyUnitResponse =
-                CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId)
-            allUnitsRepository.updateBasicUnitsForCurrencies(pairs.currency)
-        } catch (e: Exception) {
-            when (e) {
-                // 403, Network and Adapter exceptions can be ignored
-                is retrofit2.HttpException, is java.net.UnknownHostException, is com.squareup.moshi.JsonDataException -> {}
-                else -> {
-                    // Unexpected exception, should report it
-                    FirebaseHelper().recordException(e)
-                }
-            }
-            _showError.update { true }
-        } finally {
-            // Loaded
-            _isLoadingNetwork.update { false }
         }
     }
 
-    /**
-     * Swaps measurement, left to right and vice versa
-     */
-    fun swapUnits() {
-        unitFrom = unitTo.also {
-            unitTo = unitFrom
-        }
-        viewModelScope.launch {
-            updateCurrenciesBasicUnits()
-            saveLatestPairOfUnits()
-        }
-    }
+    private fun updateCurrenciesRatesIfNeeded() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _showError.update { false }
+            _showLoading.update { false }
+            // Units are still loading, don't convert anything yet
+            val unitFrom = _unitFrom.value ?: return@launch
+            if (_unitFrom.value?.group != UnitGroup.CURRENCY) return@launch
+            // Starting to load stuff
+            _showLoading.update { true }
 
-    /**
-     * Function to process input when we click keyboard. Make sure that digits/symbols will be
-     * added properly
-     * @param[symbolToAdd] Digit/Symbol we want to add, can be any digit 0..9 or a dot symbol
-     */
-    fun processInput(symbolToAdd: String) {
-        val lastTwoSymbols = _latestInputStack.takeLast(2)
-        val lastSymbol: String = lastTwoSymbols.getOrNull(1) ?: lastTwoSymbols[0]
-        val lastSecondSymbol: String? = lastTwoSymbols.getOrNull(0)
-
-        when (symbolToAdd) {
-            KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY, KEY_EXPONENT -> {
-                when {
-                    // Don't need expressions that start with zero
-                    (input.value == KEY_0) -> {}
-                    (input.value == KEY_MINUS) -> {}
-                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
-                    (lastSymbol == KEY_SQRT) -> {}
-                    /**
-                     * For situations like "50+-", when user clicks "/" we delete "-" so it becomes
-                     * "50+". We don't add "/' here. User will click "/" second time and the input
-                     * will be "50/".
-                     */
-                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS) -> {
-                        deleteDigit()
-                    }
-                    // Don't allow multiple operators near each other
-                    (lastSymbol in OPERATORS) -> {
-                        deleteDigit()
-                        setInputSymbols(symbolToAdd)
-                    }
+            try {
+                val pairs: CurrencyUnitResponse =
+                    CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId)
+                allUnitsRepository.updateBasicUnitsForCurrencies(pairs.currency)
+            } catch (e: Exception) {
+                when (e) {
+                    // 403, Network and Adapter exceptions can be ignored
+                    is retrofit2.HttpException, is java.net.UnknownHostException, is com.squareup.moshi.JsonDataException -> {}
                     else -> {
-                        setInputSymbols(symbolToAdd)
+                        // Unexpected exception, should report it
+                        FirebaseHelper().recordException(e)
                     }
                 }
-            }
-            KEY_0 -> {
-                when {
-                    // Don't add zero if the input is already a zero
-                    (input.value == KEY_0) -> {}
-                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
-                        processInput(KEY_MULTIPLY)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    // Prevents things like "-00" and "4+000"
-                    ((lastSecondSymbol in OPERATORS + KEY_LEFT_BRACKET) and (lastSymbol == KEY_0)) -> {}
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 -> {
-                // Replace single zero (default input) if it's here
-                when {
-                    (input.value == KEY_0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
-                        processInput(KEY_MULTIPLY)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            KEY_MINUS -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (input.value == KEY_0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    // Don't allow multiple minuses near each other
-                    (lastSymbol.compareTo(KEY_MINUS) == 0) -> {}
-                    // Don't allow plus and minus be near each other
-                    (lastSymbol == KEY_PLUS) -> {
-                        deleteDigit()
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            KEY_DOT -> {
-                if (canEnterDot()) {
-                    setInputSymbols(symbolToAdd)
-                }
-            }
-            KEY_LEFT_BRACKET -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (input.value == KEY_0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
-                        processInput(KEY_MULTIPLY)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            KEY_RIGHT_BRACKET -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (input.value == KEY_0) -> {}
-                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
-                    (_latestInputStack.filter { it == KEY_LEFT_BRACKET }.size ==
-                            _latestInputStack.filter { it == KEY_RIGHT_BRACKET }.size) -> {
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            KEY_SQRT -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (input.value == KEY_0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
-                        processInput(KEY_MULTIPLY)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            else -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (input.value == KEY_0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
+                _showError.update { true }
+            } finally {
+                _showLoading.update { false }
             }
         }
     }
 
-    /**
-     * Deletes last symbol from input and handles buttons state (enabled/disabled)
-     */
-    fun deleteDigit() {
-        // Default input, don't delete
-        if (input.value == KEY_0) return
-
-        val lastSymbol = _latestInputStack.removeLast()
-
-        // We will need to delete last symbol from both values
-        val displayRepresentation: String = INTERNAL_DISPLAY[lastSymbol] ?: lastSymbol
-
-        // If this value are same, it means that after deleting there will be no symbols left, set to default
-        if (lastSymbol == input.value) {
-            setInputSymbols(KEY_0, false)
-        } else {
-            input.update { it.removeSuffix(lastSymbol) }
-            _inputDisplay.update { it.removeSuffix(displayRepresentation) }
+    private fun saveLatestPairOfUnits() {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Units are still loading, don't convert anything yet
+            val unitFrom = _unitFrom.value ?: return@launch
+            val unitTo = _unitTo.value ?: return@launch
+            userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
         }
-    }
-
-    /**
-     * Adds given [symbol] to [input] and [_inputDisplay] and updates [_latestInputStack].
-     *
-     * By default add symbol, but if [add] is False, will replace current input (when replacing
-     * default [KEY_0] input).
-     */
-    private fun setInputSymbols(symbol: String, add: Boolean = true) {
-        val displaySymbol: String = INTERNAL_DISPLAY[symbol] ?: symbol
-
-        when {
-            add -> {
-                input.update { it + symbol }
-                _inputDisplay.update { it + displaySymbol }
-                _latestInputStack.add(symbol)
-            }
-            else -> {
-                _latestInputStack.clear()
-                input.update { symbol }
-                _inputDisplay.update { displaySymbol }
-                _latestInputStack.add(symbol)
-            }
-        }
-    }
-
-    /**
-     * Clears input value and sets it to default (ZERO)
-     */
-    fun clearInput() {
-        setInputSymbols(KEY_0, false)
-    }
-
-    /**
-     * Returns value to be used when converting value on the right side screen (unit selection)
-     */
-    fun inputValue(): String {
-        return mainFlow.value.calculatedValue ?: mainFlow.value.inputValue
-    }
-
-    /**
-     * Returns True if can be placed.
-     */
-    private fun canEnterDot(): Boolean = !input.value.takeLastWhile {
-        it.toString() !in OPERATORS.minus(KEY_DOT)
-    }.contains(KEY_DOT)
-
-    /**
-     * Saves latest pair of units into datastore
-     */
-    private suspend fun saveLatestPairOfUnits() {
-        userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
     }
 
     private fun startObserving() {
         viewModelScope.launch(Dispatchers.Default) {
-            _userPrefs.collectLatest { convertInput() }
+            merge(_input, _unitFrom, _unitTo, _userPrefs).collectLatest { convertInput() }
         }
-        viewModelScope.launch(Dispatchers.Default) {
-            input.collectLatest { convertInput() }
+    }
+
+    private fun loadInitialUnitPair() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val initialUserPrefs = userPrefsRepository.userPreferencesFlow.first()
+
+            // First we load latest pair of units
+            _unitFrom.update {
+                try {
+                    allUnitsRepository.getById(initialUserPrefs.latestLeftSideUnit)
+                } catch (e: java.util.NoSuchElementException) {
+                    allUnitsRepository.getById(MyUnitIDS.kilometer)
+                }
+            }
+
+            _unitTo.update {
+                try {
+                    allUnitsRepository.getById(initialUserPrefs.latestRightSideUnit)
+                } catch (e: java.util.NoSuchElementException) {
+                    allUnitsRepository.getById(MyUnitIDS.mile)
+                }
+            }
+
+            updateCurrenciesRatesIfNeeded()
         }
     }
 
     init {
-        viewModelScope.launch {
-            val initialUserPrefs = userPrefsRepository.userPreferencesFlow.first()
-
-            // First we load latest pair of units
-            unitFrom = try {
-                allUnitsRepository.getById(initialUserPrefs.latestLeftSideUnit)
-            } catch (e: java.util.NoSuchElementException) {
-                allUnitsRepository.getById(MyUnitIDS.kilometer)
-            }
-
-            unitTo = try {
-                allUnitsRepository.getById(initialUserPrefs.latestRightSideUnit)
-            } catch (e: java.util.NoSuchElementException) {
-                allUnitsRepository.getById(MyUnitIDS.mile)
-            }
-
-            // Now we load units data from database
-            val allBasedUnits = basedUnitRepository.getAll()
-            allUnitsRepository.loadFromDatabase(mContext, allBasedUnits)
-
-            // User is free to convert values and units on units screen can be sorted properly
-            _isLoadingDatabase.update { false }
-            updateCurrenciesBasicUnits()
-
-            startObserving()
-        }
+        loadInitialUnitPair()
+        startObserving()
     }
 }

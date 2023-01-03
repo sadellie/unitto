@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.screens.second
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.units.AbstractUnit
@@ -41,7 +42,8 @@ import javax.inject.Inject
 class SecondViewModel @Inject constructor(
     private val basedUnitRepository: MyBasedUnitsRepository,
     private val allUnitsRepository: AllUnitsRepository,
-    unitGroupsRepository: UnitGroupsRepository
+    private val mContext: Application,
+    unitGroupsRepository: UnitGroupsRepository,
 ) : ViewModel() {
 
     private val _favoritesOnly = MutableStateFlow(false)
@@ -144,5 +146,17 @@ class SecondViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    private fun loadBasedUnits() {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Now we load units data from database
+            val allBasedUnits = basedUnitRepository.getAll()
+            allUnitsRepository.loadFromDatabase(mContext, allBasedUnits)
+        }
+    }
+
+    init {
+        loadBasedUnits()
     }
 }
