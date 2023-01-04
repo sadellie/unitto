@@ -76,7 +76,7 @@ abstract class AbstractUnit(
  * @return Sorted sequence of units. Units with lower Levenshtein distance are higher
  */
 fun Sequence<AbstractUnit>.sortByLev(stringA: String): Sequence<AbstractUnit> {
-    val stringToCompare = stringA.lowercase()
+    val stringToCompare = stringA.trim().lowercase()
     // We don't need units where name is too different, half of the symbols is wrong in this situation
     val threshold: Int = stringToCompare.length / 2
     // List of pair: Unit and it's levDist
