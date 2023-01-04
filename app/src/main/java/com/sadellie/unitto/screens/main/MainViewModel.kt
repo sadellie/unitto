@@ -322,7 +322,7 @@ class MainViewModel @Inject constructor(
      */
     fun updateUnitFrom(unit: AbstractUnit) {
         // We change from something to base converter or the other way around
-        if ((_unitFrom.value?.group != UnitGroup.NUMBER_BASE) xor (unit.group == UnitGroup.NUMBER_BASE)) {
+        if ((_unitFrom.value?.group == UnitGroup.NUMBER_BASE) xor (unit.group == UnitGroup.NUMBER_BASE)) {
             _calculated.update { null }
             clearInput()
         }
