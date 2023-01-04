@@ -252,8 +252,8 @@ fun RightSideScreen(
 
 internal fun convertForSecondary(inputValue: BigDecimal, unitFrom: AbstractUnit, unitTo: AbstractUnit): String {
     return Formatter.format(
-        unitFrom.convert(unitTo, inputValue, 3).toPlainString() + " "
-    )
+        unitFrom.convert(unitTo, inputValue, 3).toPlainString()
+    )  + " "
 }
 
 internal fun convertForSecondaryNumberBase(inputValue: String, unitFrom: NumberBaseUnit, unitTo: NumberBaseUnit): String {
