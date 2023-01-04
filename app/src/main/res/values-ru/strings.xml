@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Length -->
     <string name="attometer">Аттометр</string>
-    <string name="nanometer">Нанометр</string>
-    <string name="micrometer">Микрометр</string>
-    <string name="millimeter">Миллиметр</string>
-    <string name="centimeter">Сантиметр</string>
     <string name="attometer_short">ам</string>
+    <string name="nanometer">Нанометр</string>
     <string name="nanometer_short">нм</string>
+    <string name="micrometer">Микрометр</string>
     <string name="micrometer_short">мкм</string>
+    <string name="millimeter">Миллиметр</string>
     <string name="millimeter_short">мм</string>
+    <string name="centimeter">Сантиметр</string>
     <string name="centimeter_short">см</string>
     <string name="decimeter">Дециметр</string>
     <string name="decimeter_short">дм</string>
@@ -26,6 +28,32 @@
     <string name="inch_short">дюйм</string>
     <string name="light_year">Световой год</string>
     <string name="light_year_short">св. год</string>
+    <string name="parsec">Парсек</string>
+    <string name="parsec_short">пк</string>
+    <string name="kiloparsec">Килопарсек</string>
+    <string name="kiloparsec_short">кпк</string>
+    <string name="megaparsec">Мегапарсек</string>
+    <string name="megaparsec_short">Мпк</string>
+    <string name="mercury_equatorial_radius">Экваториальный радиус Меркурия</string>
+    <string name="mercury_equatorial_radius_short">Меркурий R</string>
+    <string name="venus_equatorial_radius">Экваториальный радиус Венеры</string>
+    <string name="venus_equatorial_radius_short">Венера R</string>
+    <string name="earth_equatorial_radius">Экваториальный радиус Земля</string>
+    <string name="earth_equatorial_radius_short">Земля R</string>
+    <string name="mars_equatorial_radius">Экваториальный радиус Марса</string>
+    <string name="mars_equatorial_radius_short">Марс R</string>
+    <string name="jupiter_equatorial_radius">Экваториальный радиус Юпитера</string>
+    <string name="jupiter_equatorial_radius_short">Юпитер R</string>
+    <string name="saturn_equatorial_radius">Экваториальный радиус Сатурна</string>
+    <string name="saturn_equatorial_radius_short">Сатурн R</string>
+    <string name="uranus_equatorial_radius">Экваториальный радиус Урана</string>
+    <string name="uranus_equatorial_radius_short">Уран R</string>
+    <string name="neptune_equatorial_radius">Экваториальный радиус Нептуна</string>
+    <string name="neptune_equatorial_radius_short">Нептун R</string>
+    <string name="sun_equatorial_radius">Экваториальный радиус Солнца</string>
+    <string name="sun_equatorial_radius_short">Солнце R</string>
+
+    <!-- Mass -->
     <string name="electron_mass_rest">Масса электрона</string>
     <string name="electron_mass_rest_short">м. э.</string>
     <string name="atomic_mass_unit">Дальтон</string>
@@ -46,9 +74,31 @@
     <string name="ounce_short">унция</string>
     <string name="carat">Карат</string>
     <string name="carat_short">кар</string>
+    <string name="mercury_mass">Масса Меркурия</string>
+    <string name="mercury_mass_short">Меркурий M</string>
+    <string name="venus_mass">Масса Венеры</string>
+    <string name="venus_mass_short">Венера M</string>
+    <string name="earth_mass">Масса Земля</string>
+    <string name="earth_mass_short">Земля M</string>
+    <string name="mars_mass">Масса Марса</string>
+    <string name="mars_mass_short">Марс M</string>
+    <string name="jupiter_mass">Масса Юпитера</string>
+    <string name="jupiter_mass_short">Юпитер M</string>
+    <string name="saturn_mass">Масса Сатурна</string>
+    <string name="saturn_mass_short">Сатурн M</string>
+    <string name="uranus_mass">Масса Урана</string>
+    <string name="uranus_mass_short">Уран M</string>
+    <string name="neptune_mass">Масса Нептуна</string>
+    <string name="neptune_mass_short">Нептун M</string>
+    <string name="sun_mass">Масса Солнца</string>
+    <string name="sun_mass_short">Солнце M</string>
+
+    <!-- Temperature -->
     <string name="celsius">Цельсий</string>
     <string name="fahrenheit">Фаренгейт</string>
     <string name="kelvin">Кельвин</string>
+
+    <!-- Speed -->
     <string name="millimeter_per_hour">Миллиметр в час</string>
     <string name="millimeter_per_hour_short">мм/ч</string>
     <string name="millimeter_per_minute">Миллиметр в минуту</string>
@@ -56,10 +106,10 @@
     <string name="millimeter_per_second">Миллиметр в секунду</string>
     <string name="millimeter_per_second_short">мм/с</string>
     <string name="centimeter_per_hour">Сантиметр в час</string>
-    <string name="centimeter_per_minute">Сантиметр в минуту</string>
-    <string name="centimeter_per_second">Сантиметр в секунду</string>
     <string name="centimeter_per_hour_short">см/ч</string>
+    <string name="centimeter_per_minute">Сантиметр в минуту</string>
     <string name="centimeter_per_minute_short">см/м</string>
+    <string name="centimeter_per_second">Сантиметр в секунду</string>
     <string name="centimeter_per_second_short">см/с</string>
     <string name="meter_per_hour">Метр в час</string>
     <string name="meter_per_hour_short">м/ч</string>
@@ -100,6 +150,8 @@
     <string name="earths_orbital_speed">Орбитальная скорость земли</string>
     <string name="mach">Мах</string>
     <string name="mach_si_standard">Мах (SI)</string>
+
+    <!-- File size -->
     <string name="bit">Бит</string>
     <string name="bit_short">б</string>
     <string name="kibibit">Кибибит</string>
@@ -116,6 +168,8 @@
     <string name="terabit_short">Тб</string>
     <string name="petabit">Петабит</string>
     <string name="petabit_short">Пб</string>
+    <string name="exabit">Эксабит</string>
+    <string name="exabit_short">Эб</string>
     <string name="byte_">Байт</string>
     <string name="byte_short">Б</string>
     <string name="kibibyte">Кибибит</string>
@@ -132,10 +186,10 @@
     <string name="terabyte_short">ТБ</string>
     <string name="petabyte">Петабайт</string>
     <string name="petabyte_short">ПБ</string>
-    <string name="exabit">Эксабит</string>
-    <string name="exabit_short">Эб</string>
     <string name="exabyte">Эксабайт</string>
     <string name="exabyte_short">ЭБ</string>
+
+    <!-- Data transfer -->
     <string name="bit_per_second">Бит в секунду</string>
     <string name="bit_per_second_short">б/с</string>
     <string name="kibibit_per_second">Кибибит в секунду</string>
@@ -172,6 +226,8 @@
     <string name="petabyte_per_second_short">ПБ/с</string>
     <string name="exabyte_per_second">Эксабайт в секунду</string>
     <string name="exabyte_per_second_short">ЭБ/с</string>
+
+    <!-- Volume -->
     <string name="attoliter">Аттолитр</string>
     <string name="attoliter_short">ал</string>
     <string name="milliliter">Миллилитр</string>
@@ -214,6 +270,8 @@
     <string name="cubic_meter_short">м^3</string>
     <string name="cubic_kilometer">Кубический километр</string>
     <string name="cubic_kilometer_short">км^3</string>
+
+    <!-- Time -->
     <string name="attosecond">Аттосекунда</string>
     <string name="attosecond_short">ас</string>
     <string name="nanosecond">Наносекунда</string>
@@ -234,6 +292,8 @@
     <string name="day_short">д</string>
     <string name="week">Неделя</string>
     <string name="week_short">н</string>
+
+    <!-- Area -->
     <string name="electron_cross_section">Эффективное сечение электрона</string>
     <string name="electron_cross_section_short">э. с. э.</string>
     <string name="acre">Акр</string>
@@ -260,6 +320,8 @@
     <string name="square_meter_short">м^2</string>
     <string name="square_kilometer">Квадратный километр</string>
     <string name="square_kilometer_short">км^2</string>
+
+    <!-- Energy -->
     <string name="electron_volt">Вольт</string>
     <string name="electron_volt_short">В</string>
     <string name="attojoule">Аттоджоуль</string>
@@ -286,6 +348,8 @@
     <string name="calorie_th_short">кал</string>
     <string name="kilocalorie_th">Килокалория</string>
     <string name="kilocalorie_th_short">ккал</string>
+
+    <!-- Power -->
     <string name="attowatt">Аттоватт</string>
     <string name="attowatt_short">аВт</string>
     <string name="watt">Ватт</string>
@@ -296,6 +360,8 @@
     <string name="megawatt_short">МВт</string>
     <string name="horse_power_mechanical">Лошадиная сила</string>
     <string name="horse_power_mechanical_short">л. с.</string>
+
+    <!-- Angle -->
     <string name="angle_second">Секунда</string>
     <string name="angle_minute">Минута</string>
     <string name="degree">Градус</string>
@@ -305,6 +371,96 @@
     <string name="sextant_short">скст</string>
     <string name="turn">Оборот</string>
     <string name="turn_short">о</string>
+
+    <!-- Pressure -->
+    <string name="attopascal">Аттопаскаль</string>
+    <string name="attopascal_short">аПа</string>
+    <string name="femtopascal">Фемтопаскаль</string>
+    <string name="femtopascal_short">фПа</string>
+    <string name="picopascal">Пикопаскаль</string>
+    <string name="picopascal_short">пПа</string>
+    <string name="nanopascal">Нанопаскаль</string>
+    <string name="nanopascal_short">нПа</string>
+    <string name="micropascal">Микропаскаль</string>
+    <string name="micropascal_short">мкПа</string>
+    <string name="millipascal">Миллипаскаль</string>
+    <string name="millipascal_short">мПа</string>
+    <string name="centipascal">Сантипаскаль</string>
+    <string name="centipascal_short">сПа</string>
+    <string name="decipascal">Деципаскаль</string>
+    <string name="decipascal_short">дПа</string>
+    <string name="pascal">Паскаль</string>
+    <string name="pascal_short">Па</string>
+    <string name="dekapascal">Декапаскаль</string>
+    <string name="dekapascal_short">даПа</string>
+    <string name="hectopascal">Гектопаскаль</string>
+    <string name="hectopascal_short">гПа</string>
+    <string name="bar">Бар</string>
+    <string name="bar_short">бар</string>
+    <string name="megapascal">Мегапаскаль</string>
+    <string name="megapascal_short">МПа</string>
+    <string name="gigapascal">Гигапаскаль</string>
+    <string name="gigapascal_short">ГПа</string>
+    <string name="terapascal">Терапаскаль</string>
+    <string name="terapascal_short">ТПа</string>
+    <string name="petapascal">Петапаскаль</string>
+    <string name="petapascal_short">ППа</string>
+    <string name="exapascal">Экзапаскаль</string>
+    <string name="exapascal_short">ЭПа</string>
+    <string name="psi">Фунт на квадратный дюйм</string>
+    <string name="ksi">Килофунт на квадратный дюйм</string>
+    <string name="standard_atmosphere">Физическая атмосфера</string>
+    <string name="standard_atmosphere_short">атм</string>
+    <string name="torr">Торр</string>
+    <string name="torr_short">торр</string>
+    <string name="millimeter_of_mercury">Миллиметр ртутного столба</string>
+    <string name="millimeter_of_mercury_short">мм рт.ст.</string>
+
+    <!-- Acceleration -->
+    <string name="attometer_per_square_second">Аттометер на секунду в квадрате</string>
+    <string name="attometer_per_square_second_short">ам/с^2</string>
+    <string name="femtometer_per_square_second">Фемтометер на секунду в квадрате</string>
+    <string name="femtometer_per_square_second_short">фм/с^2</string>
+    <string name="picometer_per_square_second">Пикометер на секунду в квадрате</string>
+    <string name="picometer_per_square_second_short">пм/с^2</string>
+    <string name="nanometer_per_square_second">Нанометер на секунду в квадрате</string>
+    <string name="nanometer_per_square_second_short">нм/с^2</string>
+    <string name="micrometer_per_square_second">Микрометер на секунду в квадрате</string>
+    <string name="micrometer_per_square_second_short">мкм/с^2</string>
+    <string name="millimeter_per_square_second">Миллиметер на секунду в квадрате</string>
+    <string name="millimeter_per_square_second_short">мм/с^2</string>
+    <string name="centimeter_per_square_second">Сантиметер на секунду в квадрате</string>
+    <string name="centimeter_per_square_second_short">см/с^2</string>
+    <string name="decimeter_per_square_second">Дециметер на секунду в квадрате</string>
+    <string name="decimeter_per_square_second_short">дм/с^2</string>
+    <string name="meter_per_square_second">Метер на секунду в квадрате</string>
+    <string name="meter_per_square_second_short">м/с^2</string>
+    <string name="kilometer_per_square_second">Километер на секунду в квадрате</string>
+    <string name="kilometer_per_square_second_short">км/с^2</string>
+    <string name="dekameter_per_square_second">Декаметер на секунду в квадрате</string>
+    <string name="dekameter_per_square_second_short">дам/с^2</string>
+    <string name="hectometer_per_square_second">Гектометер на секунду в квадрате</string>
+    <string name="hectometer_per_square_second_short">гм/с^2</string>
+    <string name="gal">Гал</string>
+    <string name="gal_short">Гал</string>
+    <string name="mercury_surface_gravity">Поверхностная гравитация Меркурия</string>
+    <string name="mercury_surface_gravity_short">Меркурий g</string>
+    <string name="venus_surface_gravity">Поверхностная гравитация Венеры</string>
+    <string name="venus_surface_gravity_short">Венера g</string>
+    <string name="earth_surface_gravity">Поверхностная гравитация Земля</string>
+    <string name="earth_surface_gravity_short">Земля g</string>
+    <string name="mars_surface_gravity">Поверхностная гравитация Марса</string>
+    <string name="mars_surface_gravity_short">Марс g</string>
+    <string name="jupiter_surface_gravity">Поверхностная гравитация Юпитера</string>
+    <string name="jupiter_surface_gravity_short">Юпитер g</string>
+    <string name="saturn_surface_gravity">Поверхностная гравитация Сатурна</string>
+    <string name="saturn_surface_gravity_short">Сатурн g</string>
+    <string name="uranus_surface_gravity">Поверхностная гравитация Урана</string>
+    <string name="uranus_surface_gravity_short">Уран g</string>
+    <string name="neptune_surface_gravity">Поверхностная гравитация Нептуна</string>
+    <string name="neptune_surface_gravity_short">Нептун g</string>
+    <string name="sun_surface_gravity">Поверхностная гравитация Солнца</string>
+    <string name="sun_surface_gravity_short">Солнце g</string>
     <string name="currency_ada">Кардано</string>
     <string name="currency_aed">Дирхам ОАЭ</string>
     <string name="currency_afn">Афганский афгани</string>
@@ -476,6 +632,8 @@
     <string name="currency_zmk">Замбийская квача</string>
     <string name="currency_zmw">Замбийская квача</string>
     <string name="currency_zwl">Зимбабвийский доллар</string>
+
+    <!-- Groups -->
     <string name="length">Длина</string>
     <string name="time">Время</string>
     <string name="volume">Объем</string>
@@ -488,47 +646,74 @@
     <string name="power">Мощность</string>
     <string name="angle">Угол</string>
     <string name="data_transfer">Передача данных</string>
+    <string name="pressure">Давление</string>
+    <string name="acceleration">Ускорение</string>
     <string name="currency">Валюта</string>
+
+    <!-- Screen names -->
     <string name="units_screen_from">Перевести из</string>
     <string name="units_screen_to">Перевести в</string>
     <string name="settings_screen">Настройки</string>
+
+    <!-- Settings items -->
     <string name="theme_setting">Темы</string>
     <string name="precision_setting">Точность</string>
     <string name="separator_setting">Разделитель</string>
     <string name="output_format_setting">Формат вывода</string>
+    <string name="unit_groups_setting">Группы величин</string>
     <string name="currency_rates_note_setting">Неправильные курсы валют?</string>
     <string name="currency_rates_note_title">Внимание</string>
-    <string name="currency_rates_note_text">Курсы валют обновляются ежедневно.  В приложении нет мониторинга рынка в реальном времени.</string>
+    <string name="currency_rates_note_text">Курсы валют обновляются ежедневно. В приложении нет мониторинга рынка в реальном времени.</string>
     <string name="terms_and_conditions">Условия и положения</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="third_party_licenses">Лицензии третьих лиц</string>
     <string name="rate_this_app">Оценить приложение</string>
     <string name="formatting_settings_group">Форматирование</string>
     <string name="additional_settings_group">Дополнительное</string>
+
+    <!-- Precision -->
     <string name="precision_setting_support">Количество десятичных знаков</string>
     <string name="precision_setting_info">Переводимые значения могут иметь точность выше предпочтительной.</string>
     <string name="max_precision">1 000 (Максимум)</string>
+
+    <!-- Separator -->
     <string name="separator_setting_support">Символ разделителя</string>
-    <string name="period">"Точка (42.069,12)"</string>
+    <string name="period">Точка (42.069,12)</string>
     <string name="comma">Запятая (42,069.12)</string>
     <string name="spaces">Пробел (42 069.12)</string>
+
+    <!-- Output format -->
     <string name="output_format_setting_support">Формат результата перевода</string>
     <string name="output_format_setting_info">Инженерный формат выглядит как 1E-21</string>
     <string name="plain">По умолчанию</string>
     <string name="allow_engineering">Разрешить инженерный</string>
     <string name="force_engineering">Преимущественно инженерный</string>
+
+    <!-- Theme -->
     <string name="theme_setting_support">Внешний вид приложения</string>
     <string name="force_auto_mode">Автоматическая</string>
     <string name="force_light_mode">Светлая</string>
     <string name="force_dark_mode">Темная</string>
+    <string name="color_theme">Цветовая тема</string>
     <string name="force_amoled_mode">Темная AMOLED</string>
+    <string name="force_amoled_mode_support">Использовать черный фон в темных темах</string>
+    <string name="enable_dynamic_colors">Динамичные цвета</string>
+    <string name="enable_dynamic_colors_support">Использовать цвета обоев</string>
+
+    <!-- MISC. -->
     <string name="loading_label">Загрузка…</string>
     <string name="error_label">Ошибка</string>
     <string name="copied">Скопировано %1$s!</string>
     <string name="cancel_label">Отмена</string>
     <string name="search_bar_placeholder">Поиск величин</string>
     <string name="search_placeholder">Не найдено</string>
+    <string name="search_placeholder_button_label">Открыть настройки</string>
     <string name="search_placeholder_secondary">Убедитесь в отсутствии опечаток, попробуйте другие фильтры или проверьте отключенные величины.</string>
+    <string name="hello_label">Привет!</string>
+    <string name="enabled_label">Включено</string>
+    <string name="disabled_label">Отключено</string>
+
+    <!-- Content descriptions -->
     <string name="navigate_up_description">Навигация наверх</string>
     <string name="checked_filter_description">Выбранный фильтр</string>
     <string name="open_settings_description">Открыть настройки</string>
@@ -537,155 +722,20 @@
     <string name="clear_input_description">Очистить ввод</string>
     <string name="favorite_button_description">Добавить или убрать величину из избранных</string>
     <string name="empty_search_result_description">Пустой результат поиска</string>
-    <string name="parsec">Парсек</string>
-    <string name="parsec_short">пк</string>
-    <string name="kiloparsec">Килопарсек</string>
-    <string name="kiloparsec_short">кпк</string>
-    <string name="megaparsec">Мегапарсек</string>
-    <string name="megaparsec_short">Мпк</string>
-    <string name="mercury_equatorial_radius">Экваториальный радиус Меркурия</string>
-    <string name="mercury_equatorial_radius_short">Меркурий R</string>
-    <string name="venus_equatorial_radius">Экваториальный радиус Венеры</string>
-    <string name="venus_equatorial_radius_short">Венера R</string>
-    <string name="earth_equatorial_radius">Экваториальный радиус Земля</string>
-    <string name="earth_equatorial_radius_short">Земля R</string>
-    <string name="mars_equatorial_radius">Экваториальный радиус Марса</string>
-    <string name="mars_equatorial_radius_short">Марс R</string>
-    <string name="jupiter_equatorial_radius">Экваториальный радиус Юпитера</string>
-    <string name="jupiter_equatorial_radius_short">Юпитер R</string>
-    <string name="saturn_equatorial_radius">Экваториальный радиус Сатурна</string>
-    <string name="saturn_equatorial_radius_short">Сатурн R</string>
-    <string name="uranus_equatorial_radius">Экваториальный радиус Урана</string>
-    <string name="uranus_equatorial_radius_short">Уран R</string>
-    <string name="neptune_equatorial_radius">Экваториальный радиус Нептуна</string>
-    <string name="neptune_equatorial_radius_short">Нептун R</string>
-    <string name="sun_equatorial_radius">Экваториальный радиус Солнца</string>
-    <string name="sun_equatorial_radius_short">Солнце R</string>
-    <string name="attopascal">Аттопаскаль</string>
-    <string name="attopascal_short">аПа</string>
-    <string name="femtopascal">Фемтопаскаль</string>
-    <string name="femtopascal_short">фПа</string>
-    <string name="picopascal">Пикопаскаль</string>
-    <string name="picopascal_short">пПа</string>
-    <string name="nanopascal">Нанопаскаль</string>
-    <string name="nanopascal_short">нПа</string>
-    <string name="micropascal">Микропаскаль</string>
-    <string name="micropascal_short">мкПа</string>
-    <string name="millipascal">Миллипаскаль</string>
-    <string name="millipascal_short">мПа</string>
-    <string name="centipascal">Сантипаскаль</string>
-    <string name="centipascal_short">сПа</string>
-    <string name="decipascal">Деципаскаль</string>
-    <string name="decipascal_short">дПа</string>
-    <string name="pascal">Паскаль</string>
-    <string name="pascal_short">Па</string>
-    <string name="dekapascal">Декапаскаль</string>
-    <string name="dekapascal_short">даПа</string>
-    <string name="hectopascal">Гектопаскаль</string>
-    <string name="hectopascal_short">гПа</string>
-    <string name="bar">Бар</string>
-    <string name="bar_short">бар</string>
-    <string name="megapascal">Мегапаскаль</string>
-    <string name="megapascal_short">МПа</string>
-    <string name="gigapascal">Гигапаскаль</string>
-    <string name="gigapascal_short">ГПа</string>
-    <string name="terapascal">Терапаскаль</string>
-    <string name="terapascal_short">ТПа</string>
-    <string name="petapascal">Петапаскаль</string>
-    <string name="petapascal_short">ППа</string>
-    <string name="exapascal">Экзапаскаль</string>
-    <string name="exapascal_short">ЭПа</string>
-    <string name="psi">Фунт на квадратный дюйм</string>
-    <string name="ksi">Килофунт на квадратный дюйм</string>
-    <string name="standard_atmosphere">Физическая атмосфера</string>
-    <string name="standard_atmosphere_short">атм</string>
-    <string name="torr">Торр</string>
-    <string name="torr_short">торр</string>
-    <string name="millimeter_of_mercury">Миллиметр ртутного столба</string>
-    <string name="millimeter_of_mercury_short">мм рт.ст.</string>
-    <string name="attometer_per_square_second">Аттометер на секунду в квадрате</string>
-    <string name="attometer_per_square_second_short">ам/с^2</string>
-    <string name="femtometer_per_square_second">Фемтометер на секунду в квадрате</string>
-    <string name="femtometer_per_square_second_short">фм/с^2</string>
-    <string name="picometer_per_square_second">Пикометер на секунду в квадрате</string>
-    <string name="picometer_per_square_second_short">пм/с^2</string>
-    <string name="nanometer_per_square_second">Нанометер на секунду в квадрате</string>
-    <string name="nanometer_per_square_second_short">нм/с^2</string>
-    <string name="micrometer_per_square_second">Микрометер на секунду в квадрате</string>
-    <string name="micrometer_per_square_second_short">мкм/с^2</string>
-    <string name="millimeter_per_square_second">Миллиметер на секунду в квадрате</string>
-    <string name="millimeter_per_square_second_short">мм/с^2</string>
-    <string name="centimeter_per_square_second">Сантиметер на секунду в квадрате</string>
-    <string name="centimeter_per_square_second_short">см/с^2</string>
-    <string name="decimeter_per_square_second">Дециметер на секунду в квадрате</string>
-    <string name="decimeter_per_square_second_short">дм/с^2</string>
-    <string name="meter_per_square_second">Метер на секунду в квадрате</string>
-    <string name="meter_per_square_second_short">м/с^2</string>
-    <string name="kilometer_per_square_second">Километер на секунду в квадрате</string>
-    <string name="kilometer_per_square_second_short">км/с^2</string>
-    <string name="dekameter_per_square_second">Декаметер на секунду в квадрате</string>
-    <string name="dekameter_per_square_second_short">дам/с^2</string>
-    <string name="hectometer_per_square_second">Гектометер на секунду в квадрате</string>
-    <string name="hectometer_per_square_second_short">гм/с^2</string>
-    <string name="gal">Гал</string>
-    <string name="gal_short">Гал</string>
-    <string name="mercury_surface_gravity">Поверхностная гравитация Меркурия</string>
-    <string name="mercury_surface_gravity_short">Меркурий g</string>
-    <string name="venus_surface_gravity">Поверхностная гравитация Венеры</string>
-    <string name="venus_surface_gravity_short">Венера g</string>
-    <string name="earth_surface_gravity">Поверхностная гравитация Земля</string>
-    <string name="earth_surface_gravity_short">Земля g</string>
-    <string name="mars_surface_gravity">Поверхностная гравитация Марса</string>
-    <string name="mars_surface_gravity_short">Марс g</string>
-    <string name="jupiter_surface_gravity">Поверхностная гравитация Юпитера</string>
-    <string name="jupiter_surface_gravity_short">Юпитер g</string>
-    <string name="saturn_surface_gravity">Поверхностная гравитация Сатурна</string>
-    <string name="saturn_surface_gravity_short">Сатурн g</string>
-    <string name="uranus_surface_gravity">Поверхностная гравитация Урана</string>
-    <string name="uranus_surface_gravity_short">Уран g</string>
-    <string name="neptune_surface_gravity">Поверхностная гравитация Нептуна</string>
-    <string name="neptune_surface_gravity_short">Нептун g</string>
-    <string name="sun_surface_gravity">Поверхностная гравитация Солнца</string>
-    <string name="sun_surface_gravity_short">Солнце g</string>
-    <string name="mercury_mass">Масса Меркурия</string>
-    <string name="mercury_mass_short">Меркурий M</string>
-    <string name="venus_mass">Масса Венеры</string>
-    <string name="venus_mass_short">Венера M</string>
-    <string name="earth_mass">Масса Земля</string>
-    <string name="earth_mass_short">Земля M</string>
-    <string name="mars_mass">Масса Марса</string>
-    <string name="mars_mass_short">Марс M</string>
-    <string name="jupiter_mass">Масса Юпитера</string>
-    <string name="jupiter_mass_short">Юпитер M</string>
-    <string name="saturn_mass">Масса Сатурна</string>
-    <string name="saturn_mass_short">Сатурн M</string>
-    <string name="uranus_mass">Масса Урана</string>
-    <string name="uranus_mass_short">Уран M</string>
-    <string name="neptune_mass">Масса Нептуна</string>
-    <string name="neptune_mass_short">Нептун M</string>
-    <string name="sun_mass">Масса Солнца</string>
-    <string name="sun_mass_short">Солнце M</string>
-    <string name="pressure">Давление</string>
-    <string name="acceleration">Ускорение</string>
+    <string name="drop_down_description">Открыть или закрыть меню</string>
+    <string name="enable_unit_group_description">Включить группу величин</string>
+    <string name="reorder_unit_group_description">Переместить группу величин</string>
+    <string name="disable_unit_group_description">Отключить группу величин</string>
     <string name="send_usage_statistics">Отправлять статистику использования</string>
     <string name="send_usage_statistics_support">Все данные анонимны и зашифрованы</string>
     <string name="app_version_name_setting">Название версии</string>
-    <string name="enable_dynamic_colors">Динамичные цвета</string>
-    <string name="enable_dynamic_colors_support">Использовать цвета обоев</string>
-    <string name="force_amoled_mode_support">Использовать черный фон в темных темах</string>
-    <string name="color_theme">Цветовая тема</string>
-    <string name="drop_down_description">Открыть или закрыть меню</string>
-    <string name="hello_label">Привет!</string>
-    <string name="unit_groups_setting">Группы величин</string>
-    <string name="search_placeholder_button_label">Открыть настройки</string>
-    <string name="enabled_label">Включено</string>
-    <string name="disabled_label">Отключено</string>
-    <string name="enable_unit_group_description">Включить группу величин</string>
-    <string name="disable_unit_group_description">Отключить группу величин</string>
-    <string name="reorder_unit_group_description">Переместить группу величин</string>
     <string name="about_unitto">О Unitto</string>
     <string name="about_unitto_support">Узнайте больше о приложении</string>
     <string name="unit_groups_support">Отключите или отсортируйте единицы измерений</string>
+    <string name="cent">Цент</string>
+    <string name="cent_short">цент</string>
+
+    <!-- Flux -->
     <string name="maxwell">Максвелл</string>
     <string name="maxwell_short">Мкс</string>
     <string name="weber">Вебер</string>
@@ -701,10 +751,25 @@
     <string name="gigaweber">Гигавебер</string>
     <string name="gigaweber_short">ГВб</string>
     <string name="flux">Поток</string>
-    <string name="cent">Цент</string>
-    <string name="cent_short">цент</string>
     <string name="open_source">Посмотреть исходный код</string>
     <string name="translate_app">Перевести приложение</string>
     <string name="translate_app_support">Помогите с переводом на POEditor</string>
 
+    <!-- Number base -->
+    <string name="binary">Двоичная</string>
+    <string name="ternary">Троичная</string>
+    <string name="quaternary">Четверичная</string>
+    <string name="quinary">Пятеричная</string>
+    <string name="senary">Шестиричная</string>
+    <string name="septenary">Семиричная</string>
+    <string name="octal">Восьмиричная</string>
+    <string name="nonary">Девятиричная</string>
+    <string name="decimal">Десятиричная</string>
+    <string name="undecimal">Одиннадцатиричная</string>
+    <string name="duodecimal">Двенадцатеричная</string>
+    <string name="tridecimal">Тринадцатеричная</string>
+    <string name="tetradecimal">Четырнадцатеричная</string>
+    <string name="pentadecimal">Пятнадцатеричная</string>
+    <string name="hexadecimal">Шестнадцатеричная</string>
+    <string name="number_base">Счисление</string>
 </resources>
