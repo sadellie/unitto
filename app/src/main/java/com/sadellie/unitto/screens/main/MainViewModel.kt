@@ -169,9 +169,6 @@ class MainViewModel @Inject constructor(
      * @param symbolToAdd Use 'ugly' version of symbols.
      */
     fun processInput(symbolToAdd: String) {
-        // We are still loading data from network, don't accept any input yet
-        if (_showLoading.value) return
-
         val lastTwoSymbols = _latestInputStack.takeLast(2)
         val lastSymbol: String = lastTwoSymbols.getOrNull(1) ?: lastTwoSymbols[0]
         val lastSecondSymbol: String? = lastTwoSymbols.getOrNull(0)
@@ -362,6 +359,7 @@ class MainViewModel @Inject constructor(
         _unitFrom
             .getAndUpdate { _unitTo.value }
             .also { oldUnitFrom -> _unitTo.update { oldUnitFrom } }
+        updateCurrenciesRatesIfNeeded()
     }
 
     /**
@@ -559,6 +557,10 @@ class MainViewModel @Inject constructor(
                 }
                 _showError.update { true }
             } finally {
+                /**
+                 * Loaded, convert (this will trigger flow to call convertInput). Even if there was
+                 * an error, it's OK and user will not see conversion result in that case.
+                 */
                 _showLoading.update { false }
             }
         }
@@ -575,7 +577,9 @@ class MainViewModel @Inject constructor(
 
     private fun startObserving() {
         viewModelScope.launch(Dispatchers.Default) {
-            merge(_input, _unitFrom, _unitTo, _userPrefs).collectLatest { convertInput() }
+            merge(_input, _unitFrom, _unitTo, _showLoading, _userPrefs).collectLatest {
+                convertInput()
+            }
         }
     }
 

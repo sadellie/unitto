@@ -58,7 +58,7 @@ import com.sadellie.unitto.screens.main.ConverterMode
  * @param outputValue Current output value (like big decimal).
  * @param unitFrom [AbstractUnit] on the left.
  * @param unitTo [AbstractUnit] on the right.
- * @param loadingNetwork Are we loading data from network? Shows loading text in TextFields.
+ * @param networkLoading Are we loading data from network? Shows loading text in TextFields.
  * @param networkError Did we got errors while trying to get data from network.
  * @param onUnitSelectionClick Function that is called when clicking unit selection buttons.
  * @param swapUnits Method to swap units.
@@ -72,7 +72,7 @@ fun TopScreenPart(
     outputValue: String,
     unitFrom: AbstractUnit?,
     unitTo: AbstractUnit?,
-    loadingNetwork: Boolean,
+    networkLoading: Boolean,
     networkError: Boolean,
     onUnitSelectionClick: (String) -> Unit,
     swapUnits: () -> Unit,
@@ -92,8 +92,6 @@ fun TopScreenPart(
             modifier = Modifier.fillMaxWidth(),
             primaryText = {
                 when {
-                    loadingNetwork -> stringResource(R.string.loading_label)
-                    networkError -> stringResource(R.string.error_label)
                     converterMode == ConverterMode.BASE -> inputValue.uppercase()
                     else -> Formatter.format(inputValue)
                 }
@@ -106,7 +104,7 @@ fun TopScreenPart(
             modifier = Modifier.fillMaxWidth(),
             primaryText = {
                 when {
-                    loadingNetwork -> stringResource(R.string.loading_label)
+                    networkLoading -> stringResource(R.string.loading_label)
                     networkError -> stringResource(R.string.error_label)
                     converterMode == ConverterMode.BASE -> outputValue.uppercase()
                     else -> Formatter.format(outputValue)

@@ -115,7 +115,7 @@ private fun MainScreenContent(
                 outputValue = mainScreenUIState.resultValue,
                 unitFrom = mainScreenUIState.unitFrom,
                 unitTo = mainScreenUIState.unitTo,
-                loadingNetwork = mainScreenUIState.showLoading,
+                networkLoading = mainScreenUIState.showLoading,
                 networkError = mainScreenUIState.showError,
                 onUnitSelectionClick = navControllerAction,
                 swapUnits = swapMeasurements,
