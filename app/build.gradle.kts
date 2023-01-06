@@ -16,8 +16,6 @@ if (!gradle.startParameter.taskRequests.toString().contains("Fdroid")) {
     println("Didn't add Google Services since F-Droid flavor was chosen.")
 }
 
-val composeVersion = "1.4.0-alpha03"
-
 // Flavor names
 val playStore = "playStore"
 val appGallery = "appGallery"
@@ -149,64 +147,65 @@ configurations {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
-    androidTestImplementation("androidx.test:core:1.5.0")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test:runner:1.5.1")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    testImplementation("org.robolectric:robolectric:4.9")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    implementation(libs.androidx.core)
+    androidTestImplementation(libs.androidx.test)
+    androidTestImplementation(libs.androidx.test.ext)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    testImplementation(libs.org.robolectric)
+    testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
 
     // Compose and navigation
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.navigation)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:1.1.0-alpha03")
+    implementation(libs.androidx.compose.material3)
 
     // Hilt and navigation
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:dagger-android-processor:2.44.2")
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    kapt("com.google.dagger:hilt-compiler:2.44.2")
+    implementation(libs.androidx.hilt)
+    kapt(libs.com.google.dagger.processor)
+    implementation(libs.com.google.dagger.android)
+    kapt(libs.com.google.dagger.complier)
 
     // There are a lot of icons
-    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+    implementation(libs.androidx.compose.material.icons.extended)
 
     // DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.datastore)
 
     // This is for system status bar color
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.1")
+    implementation(libs.com.google.accompanist.systemuicontroller)
 
     // Firebase
-    "playStoreImplementation"(platform("com.google.firebase:firebase-bom:31.1.0"))
-    "playStoreImplementation"("com.google.firebase:firebase-analytics-ktx")
+    "playStoreImplementation"(platform(libs.com.google.firebase.bom))
     // Crashlytics and Analytics
-    "playStoreImplementation"("com.google.firebase:firebase-crashlytics-ktx")
+    "playStoreImplementation"(libs.com.google.firebase.analytics)
+    "playStoreImplementation"(libs.com.google.firebase.crashlytics)
 
     // Room
-    implementation("androidx.room:room-runtime:2.4.3")
-    implementation("androidx.room:room-ktx:2.4.3")
-    kapt("androidx.room:room-compiler:2.4.3")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
     // Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation(libs.com.squareup.moshi)
 
     // Retrofit with Moshi Converter
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation(libs.com.squareup.retrofit2)
 
     // Themmo
-    implementation("com.github.sadellie:themmo:cf6be7e592")
+    implementation(libs.com.github.sadellie.themmo)
 
     // ComposeReorderable
-    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
+    implementation(libs.org.burnoutcrew.composereorderable)
 
     // ExprK
-    implementation("com.github.sadellie:ExprK:e55cba8f41")
+    implementation(libs.com.github.sadellie.exprk)
 }

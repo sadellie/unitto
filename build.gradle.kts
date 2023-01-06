@@ -5,15 +5,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.21")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.44.2")
+        classpath(libs.com.android.tools.build)
+        classpath(libs.org.jetbrains.kotlin)
+        classpath(libs.com.google.dagger)
 
         // Google services
-        classpath("com.google.gms:google-services:4.3.14")
+        classpath(libs.com.google.gms)
 
         // Crashlytics
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
+        classpath(libs.com.google.firebase)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files

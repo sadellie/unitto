@@ -1,0 +1,71 @@
+[versions]
+androidxCore = "1.9.0"
+androidxTest = "1.5.0"
+androidxTestExt = "1.1.4"
+junit = "4.13.2"
+androidxTestRunner = "1.5.1"
+androidxTestRules = "1.5.0"
+orgRobolectric = "4.9"
+orgJetbrainsKotlinxCoroutinesTest = "1.6.4"
+androidxComposeUi = "1.4.0-alpha03"
+androidxNavigation = "2.5.3"
+androidxLifecycleRuntimeCompose = "2.6.0-alpha03"
+androidxComposeMaterial3 = "1.1.0-alpha03"
+androidxHilt = "1.0.0"
+comGoogleDagger = "2.44.2"
+androidxComposeMaterialIconsExtended = "1.4.0-alpha03"
+androidxDatastore = "1.0.0"
+comGoogleAccompanist = "0.27.1"
+androidxRoom = "2.4.3"
+comSquareupMoshi = "1.14.0"
+comSquareupRetrofit2 = "2.9.0"
+comGithubSadellieThemmo = "cf6be7e592"
+orgBurnoutcrewComposereorderable = "0.9.6"
+comGithubSadellieExprk = "e55cba8f41"
+firebaseBom = "31.1.0"
+comAndroidToolsBuild = "7.3.1"
+orgJetbrainsKotlin = "1.7.21"
+comGoogleGms = "4.3.14"
+comGoogleFirebase = "2.9.2"
+
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-test = { group = "androidx.test", name = "core", version.ref = "androidxTest" }
+androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
+org-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "orgRobolectric" }
+org-jetbrains-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "orgJetbrainsKotlinxCoroutinesTest" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxComposeUi" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxComposeUi" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxComposeUi" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycleRuntimeCompose" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
+androidx-hilt = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHilt" }
+com-google-dagger-processor = { group = "com.google.dagger", name = "dagger-android-processor", version.ref = "comGoogleDagger" }
+com-google-dagger-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "comGoogleDagger" }
+com-google-dagger-complier = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "comGoogleDagger" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidxComposeMaterialIconsExtended" }
+androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDatastore" }
+com-google-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "comGoogleAccompanist" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
+com-squareup-moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "comSquareupMoshi" }
+com-squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "comSquareupRetrofit2" }
+com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
+org-burnoutcrew-composereorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "orgBurnoutcrewComposereorderable" }
+com-github-sadellie-exprk = { group = "com.github.sadellie", name = "ExprK", version.ref = "comGithubSadellieExprk" }
+com-google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+com-google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+com-google-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+
+# classpath
+com-android-tools-build = { group = "com.android.tools.build", name = "gradle", version.ref = "comAndroidToolsBuild" }
+org-jetbrains-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "orgJetbrainsKotlin" }
+com-google-dagger = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "comGoogleDagger" }
+com-google-gms = { group = "com.google.gms", name = "google-services", version.ref = "comGoogleGms" }
+com-google-firebase = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "comGoogleFirebase" }
