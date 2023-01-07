@@ -59,7 +59,7 @@ fun AboutScreen(
     }
 
     UnittoLargeTopAppBar(
-        title = "About Unitto",
+        title = stringResource(R.string.about_unitto),
         navigateUpAction = navigateUpAction
     ) { padding ->
         LazyColumn(contentPadding = padding) {
