@@ -661,7 +661,6 @@
     <string name="separator_setting">Séparateur</string>
     <string name="output_format_setting">Format de sortie</string>
     <string name="unit_groups_setting">Groupes d\'unités</string>
-    <string name="currency_rates_note_setting">Wrong currency rates?</string>
     <string name="currency_rates_note_title">Note</string>
     <string name="currency_rates_note_text">Les taux de change sont mis à jour quotidiennement. L\'application ne permet pas de suivre le marché en temps réel.</string>
     <string name="terms_and_conditions">Termes et conditions</string>
@@ -681,20 +680,10 @@
     <string name="period">Période (42.069,12)</string>
     <string name="comma">Virgule (42,069.12)</string>
     <string name="spaces">Espaces (42 069.12)</string>
-
-    <!-- Output format -->
-    <string name="output_format_setting_support">Result value formatting</string>
-    <string name="output_format_setting_info">Engineering strings look like 1E-21</string>
     <string name="plain">Défaut</string>
-    <string name="allow_engineering">Allow engineering</string>
-    <string name="force_engineering">Force engineering</string>
-
-    <!-- Theme -->
-    <string name="theme_setting_support">App look and feel</string>
     <string name="force_auto_mode">Auto</string>
     <string name="force_light_mode">Clair</string>
     <string name="force_dark_mode">Sombre</string>
-    <string name="color_theme">Color theme</string>
     <string name="force_amoled_mode">AMOLED Noir</string>
     <string name="force_amoled_mode_support">Utiliser un fond noir pour les thèmes sombres</string>
     <string name="enable_dynamic_colors">Couleurs dynamiques</string>
@@ -703,7 +692,6 @@
     <!-- MISC. -->
     <string name="loading_label">Chargement…</string>
     <string name="error_label">Erreur</string>
-    <string name="copied">Copied %1$s!</string>
     <string name="cancel_label">Annuler</string>
     <string name="search_bar_placeholder">Rechercher des unités</string>
     <string name="search_placeholder">Aucun résultat trouvé</string>
