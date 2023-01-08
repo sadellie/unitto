@@ -26,7 +26,6 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.screens.common.UnittoButton
 import com.sadellie.unitto.ui.theme.NumbersTextStyleTitleLarge
 
 /**
@@ -51,7 +51,7 @@ fun KeyboardButton(
     modifier: Modifier = Modifier,
     digit: String,
     isPrimary: Boolean = true,
-    onLongClick: () -> Unit = {},
+    onLongClick: (() -> Unit)? = null,
     onClick: (String) -> Unit = {}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -59,24 +59,22 @@ fun KeyboardButton(
     val cornerRadius: Int by animateIntAsState(
         targetValue = if (isPressed) 30 else 50,
         animationSpec = tween(easing = FastOutSlowInEasing),
-        finishedListener = { if (it == 30) onLongClick() })
+    )
 
-    Button(
-        modifier = modifier,
-        interactionSource = interactionSource,
-        shape = RoundedCornerShape(cornerRadius),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isPrimary) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-        ),
+    UnittoButton(
         onClick = { onClick(digit) },
-        contentPadding = PaddingValues(0.dp)
+        onLongClick = onLongClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(cornerRadius),
+        containerColor = if (isPrimary) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        contentPadding = PaddingValues(0.dp),
+        interactionSource = interactionSource,
     ) {
         Text(
             text = digit,
             style = NumbersTextStyleTitleLarge,
-            color = if (isPrimary) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSecondaryContainer,
+            color = if (isPrimary) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }
