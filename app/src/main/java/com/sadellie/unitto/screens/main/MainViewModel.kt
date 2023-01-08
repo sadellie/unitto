@@ -47,6 +47,7 @@ import com.sadellie.unitto.data.OPERATORS
 import com.sadellie.unitto.data.combine
 import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
+import com.sadellie.unitto.data.setMinimumRequiredScale
 import com.sadellie.unitto.data.toStringWith
 import com.sadellie.unitto.data.trimZeros
 import com.sadellie.unitto.data.units.AbstractUnit
@@ -59,6 +60,8 @@ import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.math.BigDecimal
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -73,9 +76,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
-import java.math.RoundingMode
-import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -391,107 +391,84 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun convertInput() {
-        if (_unitFrom.value?.group == UnitGroup.NUMBER_BASE) {
-            convertAsNumberBase()
-        } else {
-            convertAsExpression()
-        }
-    }
-
-    private suspend fun convertAsNumberBase() {
+        // Loading don't do anything
+        if ((_unitFrom.value == null) or (_unitTo.value == null)) return
         withContext(Dispatchers.Default) {
             while (isActive) {
-                // Units are still loading, don't convert anything yet
-                val unitFrom = _unitFrom.value ?: return@withContext
-                val unitTo = _unitTo.value ?: return@withContext
-
-                val conversionResult = try {
-                    (unitFrom as NumberBaseUnit).convertToBase(
-                        input = _input.value,
-                        toBase = (unitTo as NumberBaseUnit).base
-                    )
-                } catch (e: Exception) {
-                    when (e) {
-                        is ClassCastException -> {
-                            cancel()
-                            return@withContext
-                        }
-                        is NumberFormatException, is IllegalArgumentException -> ""
-                        else -> throw e
-                    }
+                when (_unitFrom.value?.group) {
+                    UnitGroup.NUMBER_BASE -> convertAsNumberBase()
+                    else -> convertAsExpression()
                 }
-                _result.update { conversionResult }
                 cancel()
             }
         }
     }
 
-    private suspend fun convertAsExpression() {
-        withContext(Dispatchers.Default) {
-            while (isActive) {
-                // Units are still loading, don't convert anything yet
-                val unitFrom = _unitFrom.value ?: return@withContext
-                val unitTo = _unitTo.value ?: return@withContext
-
-                // First we clean the input from garbage at the end
-                var cleanInput = _input.value.dropLastWhile { !it.isDigit() }
-
-                // Now we close open brackets that user didn't close
-                // AUTOCLOSE ALL BRACKETS
-                val leftBrackets = _input.value.count { it.toString() == KEY_LEFT_BRACKET }
-                val rightBrackets = _input.value.count { it.toString() == KEY_RIGHT_BRACKET }
-                val neededBrackets = leftBrackets - rightBrackets
-                if (neededBrackets > 0) cleanInput += KEY_RIGHT_BRACKET.repeat(neededBrackets)
-
-                // Now we evaluate expression in input
-                val evaluationResult: BigDecimal = try {
-                    Expressions().eval(cleanInput)
-                        .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
-                        .trimZeros()
-                } catch (e: Exception) {
-                    when (e) {
-                        is ExpressionException,
-                        is ArrayIndexOutOfBoundsException,
-                        is IndexOutOfBoundsException,
-                        is NumberFormatException,
-                        is ArithmeticException -> {
-                            // Invalid expression, can't do anything further
-                            cancel()
-                            return@withContext
-                        }
-                        else -> throw e
-                    }
-                }
-
-                // Evaluated. Hide calculated result if no expression entered.
-                // 123.456 will be true
-                // -123.456 will be true
-                // -123.456-123 will be false (first minus gets removed, ending with 123.456)
-                if (_input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
-                    // No operators
-                    _calculated.update { null }
-                } else {
-                    _calculated.update {
-                        evaluationResult.toStringWith(
-                            _userPrefs.value.outputFormat
-                        )
-                    }
-                }
-
-                // Now we just convert.
-                // We can use evaluation result here, input is valid
-                val conversionResult: BigDecimal = unitFrom.convert(
-                    unitTo,
-                    evaluationResult,
-                    _userPrefs.value.digitsPrecision
-                )
-
-                // Converted
-                _result.update { conversionResult.toStringWith(_userPrefs.value.outputFormat) }
-
-                cancel()
+    private fun convertAsNumberBase() {
+        val conversionResult: String = try {
+            (_unitFrom.value as NumberBaseUnit).convertToBase(
+                input = _input.value,
+                toBase = (_unitTo.value as NumberBaseUnit).base
+            )
+        } catch (e: Exception) {
+            when (e) {
+                is ClassCastException -> return
+                is NumberFormatException, is IllegalArgumentException -> ""
+                else -> throw e
             }
         }
+        _result.update { conversionResult }
+    }
+
+    private fun convertAsExpression() {
+        // First we clean the input from garbage at the end
+        var cleanInput = _input.value.dropLastWhile { !it.isDigit() }
+
+        // Now we close open brackets that user didn't close
+        // AUTO-CLOSE ALL BRACKETS
+        val leftBrackets = _input.value.count { it.toString() == KEY_LEFT_BRACKET }
+        val rightBrackets = _input.value.count { it.toString() == KEY_RIGHT_BRACKET }
+        val neededBrackets = leftBrackets - rightBrackets
+        if (neededBrackets > 0) cleanInput += KEY_RIGHT_BRACKET.repeat(neededBrackets)
+
+        // Now we evaluate expression in input
+        val evaluationResult: BigDecimal = try {
+            Expressions().eval(cleanInput)
+        } catch (e: Exception) {
+            when (e) {
+                is ArrayIndexOutOfBoundsException,
+                is IndexOutOfBoundsException,
+                is NumberFormatException,
+                is ExpressionException,
+                is ArithmeticException -> return
+                else -> throw e
+            }
+        }
+
+        // Now we just convert.
+        // We can use evaluation result here, input is valid
+        val conversionResult: BigDecimal = _unitFrom.value!!.convert(
+            _unitTo.value!!,
+            evaluationResult,
+            _userPrefs.value.digitsPrecision
+        )
+
+        // Evaluated. Hide calculated result if no expression entered.
+        // 123.456 will be true
+        // -123.456 will be true
+        // -123.456-123 will be false (first minus gets removed, ending with 123.456)
+        _calculated.update {
+            if (_input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
+                null
+            } else {
+                evaluationResult
+                    .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
+                    .trimZeros()
+                    .toStringWith(_userPrefs.value.outputFormat)
+            }
+        }
+
+        _result.update { conversionResult.toStringWith(_userPrefs.value.outputFormat) }
     }
 
     private fun setInputSymbols(symbol: String, add: Boolean = true) {
