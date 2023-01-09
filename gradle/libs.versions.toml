@@ -1,4 +1,6 @@
 [versions]
+appCode = "13"
+appName = "Fire engine red"
 androidxCore = "1.9.0"
 androidxTest = "1.5.0"
 androidxTestExt = "1.1.4"
@@ -7,6 +9,7 @@ androidxTestRunner = "1.5.1"
 androidxTestRules = "1.5.0"
 orgRobolectric = "4.9"
 orgJetbrainsKotlinxCoroutinesTest = "1.6.4"
+androidxCompose = "1.4.0-alpha02"
 androidxComposeUi = "1.4.0-alpha03"
 androidxNavigation = "2.5.3"
 androidxLifecycleRuntimeCompose = "2.6.0-alpha03"
@@ -23,8 +26,8 @@ comGithubSadellieThemmo = "cf6be7e592"
 orgBurnoutcrewComposereorderable = "0.9.6"
 comGithubSadellieExprk = "e55cba8f41"
 firebaseBom = "31.1.0"
-comAndroidToolsBuild = "7.3.1"
-orgJetbrainsKotlin = "1.7.21"
+androidGradlePlugin = "7.3.1"
+kotlin = "1.7.21"
 comGoogleGms = "4.3.14"
 comGoogleFirebase = "2.9.2"
 
@@ -47,7 +50,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-hilt = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHilt" }
 com-google-dagger-processor = { group = "com.google.dagger", name = "dagger-android-processor", version.ref = "comGoogleDagger" }
 com-google-dagger-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "comGoogleDagger" }
-com-google-dagger-complier = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "comGoogleDagger" }
+com-google-dagger-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "comGoogleDagger" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidxComposeMaterialIconsExtended" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDatastore" }
 com-google-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "comGoogleAccompanist" }
@@ -64,8 +67,13 @@ com-google-firebase-analytics = { group = "com.google.firebase", name = "firebas
 com-google-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 
 # classpath
-com-android-tools-build = { group = "com.android.tools.build", name = "gradle", version.ref = "comAndroidToolsBuild" }
-org-jetbrains-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "orgJetbrainsKotlin" }
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 com-google-dagger = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "comGoogleDagger" }
 com-google-gms = { group = "com.google.gms", name = "google-services", version.ref = "comGoogleGms" }
 com-google-firebase = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "comGoogleFirebase" }
+
+[plugins]
+android-gradlePlugin = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "comGoogleDagger" }

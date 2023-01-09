@@ -83,3 +83,7 @@ Trello board link: https://trello.com/b/cxAbRlvu/unitto
 
 Also, this app has a cool open source page, where you can find Terms and Conditions, Privacy Policy, Press Kit and contact links:
 https://sadellie.github.io/unitto/
+
+## Unitto modules
+Unitto is made of modules.
+![unitto modules](./content/unittoModules.png)
