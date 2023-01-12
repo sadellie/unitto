@@ -75,10 +75,10 @@ fun Keyboard(
     clearInput: () -> Unit = {},
     converterMode: ConverterMode,
 ) {
-    Crossfade(converterMode) {
+    Crossfade(converterMode, modifier = modifier) {
         when (it) {
-            ConverterMode.DEFAULT -> DefaultKeyboard(modifier, addDigit, clearInput, deleteDigit)
-            ConverterMode.BASE -> BaseKeyboard(modifier, addDigit, clearInput, deleteDigit)
+            ConverterMode.DEFAULT -> DefaultKeyboard(addDigit, clearInput, deleteDigit)
+            ConverterMode.BASE -> BaseKeyboard(addDigit, clearInput, deleteDigit)
         }
     }
 
@@ -86,14 +86,11 @@ fun Keyboard(
 
 @Composable
 private fun DefaultKeyboard(
-    modifier: Modifier,
     addDigit: (String) -> Unit,
     clearInput: () -> Unit,
     deleteDigit: () -> Unit
 ) {
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
+    Column {
         // Button modifier
         val bModifier = Modifier
             .fillMaxSize()
@@ -140,14 +137,11 @@ private fun DefaultKeyboard(
 
 @Composable
 private fun BaseKeyboard(
-    modifier: Modifier,
     addDigit: (String) -> Unit,
     clearInput: () -> Unit,
     deleteDigit: () -> Unit
 ) {
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
+    Column {
         // Button modifier
         val bModifier = Modifier
             .fillMaxSize()
