@@ -80,12 +80,12 @@ class SecondViewModel @Inject constructor(
     }
 
     /**
-     * Changes currently selected chip.
+     * Changes currently selected chip. Used only when navigating
      *
-     * @param unitGroup Chip to change to.
+     * @param unit Will find group for unit with this id.
      */
-    fun setSelectedChip(unitGroup: UnitGroup, hideBrokenCurrencies: Boolean = true) {
-        _chosenUnitGroup.update { unitGroup }
+    fun setSelectedChip(unit: String, hideBrokenCurrencies: Boolean = true) {
+        _chosenUnitGroup.update { allUnitsRepository.getById(unit).group }
         loadUnitsToShow(hideBrokenCurrencies)
     }
 

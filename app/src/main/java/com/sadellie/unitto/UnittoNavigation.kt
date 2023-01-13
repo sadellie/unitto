@@ -19,10 +19,8 @@
 package com.sadellie.unitto
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.sadellie.unitto.feature.converter.MainViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterRoute
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
@@ -30,13 +28,11 @@ import com.sadellie.unitto.feature.settings.SettingsViewModel
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
-import com.sadellie.unitto.feature.unitslist.LeftSideScreen
-import com.sadellie.unitto.feature.unitslist.RightSideScreen
 import com.sadellie.unitto.feature.unitslist.SecondViewModel
-import com.sadellie.unitto.feature.unitslist.navigation.leftSideRoute
+import com.sadellie.unitto.feature.unitslist.navigation.leftScreen
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToLeftSide
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToRightSide
-import com.sadellie.unitto.feature.unitslist.navigation.rightSideRoute
+import com.sadellie.unitto.feature.unitslist.navigation.rightScreen
 import io.github.sadellie.themmo.ThemmoController
 
 @Composable
@@ -52,47 +48,27 @@ fun UnittoNavigation(
         startDestination = converterRoute
     ) {
         converterScreen(
-            navigateToLeftScreen = { navController.navigateToLeftSide() },
-            navigateToRightScreen = { navController.navigateToRightSide() },
+            navigateToLeftScreen = { navController.navigateToLeftSide(it) },
+            navigateToRightScreen = { unitFrom, unitTo, input ->
+                navController.navigateToRightSide(unitFrom, unitTo, input)
+            },
             navigateToSettings = { navController.navigateToSettings() },
             viewModel = mainViewModel
         )
 
-        composable(leftSideRoute) {
-            // Don't do this in your app
-            val mainUiState = mainViewModel.uiStateFlow.collectAsState()
-            val unitFrom = mainUiState.value.unitFrom ?: return@composable
-            // Initial group
-            secondViewModel.setSelectedChip(unitFrom.group, true)
+        leftScreen(
+            viewModel = secondViewModel,
+            navigateUp = { navController.navigateUp() },
+            navigateToUnitGroups = { navController.navigateToUnitGroups() },
+            onSelect = { mainViewModel.updateUnitFrom(it) }
+        )
 
-            LeftSideScreen(
-                viewModel = secondViewModel,
-                currentUnit = unitFrom,
-                navigateUp = { navController.navigateUp() },
-                navigateToSettingsAction = { navController.navigateToUnitGroups() },
-                selectAction = { mainViewModel.updateUnitFrom(it) }
-            )
-        }
-
-        composable(rightSideRoute) {
-            // Don't do this in your app
-            val mainUiState = mainViewModel.uiStateFlow.collectAsState()
-            val unitFrom = mainUiState.value.unitFrom ?: return@composable
-            val unitTo = mainUiState.value.unitTo ?: return@composable
-
-            // Initial group
-            secondViewModel.setSelectedChip(unitFrom.group, false)
-
-            RightSideScreen(
-                viewModel = secondViewModel,
-                currentUnit = unitTo,
-                navigateUp = { navController.navigateUp() },
-                navigateToSettingsAction = { navController.navigateToUnitGroups() },
-                selectAction = { mainViewModel.updateUnitTo(it) },
-                inputValue = mainViewModel.getInputValue(),
-                unitFrom = unitFrom
-            )
-        }
+        rightScreen(
+            viewModel = secondViewModel,
+            navigateUp = { navController.navigateUp() },
+            navigateToUnitGroups = { navController.navigateToUnitGroups() },
+            onSelect = { mainViewModel.updateUnitTo(it) }
+        )
 
         settingGraph(
             settingsViewModel = settingsViewModel,

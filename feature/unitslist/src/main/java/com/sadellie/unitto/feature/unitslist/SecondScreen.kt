@@ -60,7 +60,7 @@ import java.math.BigDecimal
  * Left side screen. Unit to convert from.
  *
  * @param viewModel [SecondViewModel].
- * @param currentUnit Currently selected [AbstractUnit].
+ * @param currentUnitId Currently selected [AbstractUnit] (by ID).
  * @param navigateUp Action to navigate up. Called when user click back button.
  * @param navigateToSettingsAction Action to perform when clicking settings chip at the end.
  * @param selectAction Action to perform when user clicks on [UnitListItem].
@@ -68,7 +68,7 @@ import java.math.BigDecimal
 @Composable
 fun LeftSideScreen(
     viewModel: SecondViewModel,
-    currentUnit: AbstractUnit,
+    currentUnitId: String,
     navigateUp: () -> Unit,
     navigateToSettingsAction: () -> Unit,
     selectAction: (AbstractUnit) -> Unit
@@ -130,7 +130,7 @@ fun LeftSideScreen(
                             UnitListItem(
                                 modifier = Modifier.animateItemPlacement(),
                                 unit = unit,
-                                isSelected = currentUnit == unit,
+                                isSelected = currentUnitId == unit.unitId,
                                 selectAction = {
                                     selectAction(it)
                                     viewModel.onSearchQueryChange("")
@@ -169,7 +169,7 @@ fun LeftSideScreen(
 @Composable
 fun RightSideScreen(
     viewModel: SecondViewModel,
-    currentUnit: AbstractUnit,
+    currentUnit: String,
     navigateUp: () -> Unit,
     navigateToSettingsAction: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
@@ -230,7 +230,7 @@ fun RightSideScreen(
                             UnitListItem(
                                 modifier = Modifier.animateItemPlacement(),
                                 unit = unit,
-                                isSelected = currentUnit == unit,
+                                isSelected = currentUnit == unit.unitId,
                                 selectAction = {
                                     selectAction(it)
                                     viewModel.onSearchQueryChange("")

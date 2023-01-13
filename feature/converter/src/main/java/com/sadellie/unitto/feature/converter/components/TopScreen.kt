@@ -73,8 +73,8 @@ fun TopScreenPart(
     unitTo: AbstractUnit?,
     networkLoading: Boolean,
     networkError: Boolean,
-    navigateToLeftScreen: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToLeftScreen: (String) -> Unit,
+    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     swapUnits: () -> Unit,
     converterMode: ConverterMode,
 ) {
@@ -123,7 +123,7 @@ fun TopScreenPart(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onClick = navigateToLeftScreen,
+                onClick = { unitFrom?.let { navigateToLeftScreen(it.unitId) } },
                 label = unitFrom?.displayName ?: R.string.loading_label,
             )
             IconButton(
@@ -143,7 +143,15 @@ fun TopScreenPart(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onClick = navigateToRightScreen,
+                onClick = {
+                    if (unitTo == null) return@UnitSelectionButton
+                    if (unitFrom == null) return@UnitSelectionButton
+                    navigateToRightScreen(
+                        unitFrom.unitId,
+                        unitTo.unitId,
+                        calculatedValue ?: inputValue
+                    )
+                },
                 label = unitTo?.displayName ?: R.string.loading_label,
             )
         }

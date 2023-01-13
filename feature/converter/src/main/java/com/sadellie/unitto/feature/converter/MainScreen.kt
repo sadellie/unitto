@@ -45,8 +45,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MainScreen(
-    navigateToLeftScreen: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToLeftScreen: (String) -> Unit,
+    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     navigateToSettings: () -> Unit,
     viewModel: MainViewModel = viewModel()
 ) {
@@ -101,8 +101,8 @@ fun MainScreen(
 private fun MainScreenContent(
     modifier: Modifier,
     mainScreenUIState: MainScreenUIState,
-    navigateToLeftScreen: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToLeftScreen: (String) -> Unit,
+    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     swapMeasurements: () -> Unit = {},
     processInput: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},

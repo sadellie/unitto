@@ -26,8 +26,8 @@ import com.sadellie.unitto.feature.converter.MainViewModel
 const val converterRoute = "converter_route"
 
 fun NavGraphBuilder.converterScreen(
-    navigateToLeftScreen: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToLeftScreen: (String) -> Unit,
+    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     navigateToSettings: () -> Unit,
     viewModel: MainViewModel
 ) {
