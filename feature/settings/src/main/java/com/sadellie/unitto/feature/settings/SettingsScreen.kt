@@ -56,7 +56,7 @@ import com.sadellie.unitto.feature.settings.navigation.themesRoute
 import com.sadellie.unitto.feature.settings.navigation.unitsGroupRoute
 
 @Composable
-fun SettingsScreen(
+internal fun SettingsScreen(
     viewModel: SettingsViewModel,
     navigateUpAction: () -> Unit,
     navControllerAction: (String) -> Unit

@@ -47,7 +47,7 @@ import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
  * @param onClick Action to perform when clicking this button.
  */
 @Composable
-fun KeyboardButton(
+internal fun KeyboardButton(
     modifier: Modifier = Modifier,
     digit: String,
     isPrimary: Boolean = true,

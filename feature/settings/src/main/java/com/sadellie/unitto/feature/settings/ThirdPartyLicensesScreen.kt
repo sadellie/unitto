@@ -48,7 +48,7 @@ import com.sadellie.unitto.feature.R
  */
 @Stable
 @Composable
-fun ThirdPartyLicensesScreen(
+internal fun ThirdPartyLicensesScreen(
     navigateUpAction: () -> Unit = {}
 ) {
     val mContext = LocalContext.current

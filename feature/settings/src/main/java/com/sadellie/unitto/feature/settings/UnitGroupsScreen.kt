@@ -47,9 +47,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.feature.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.feature.R
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
@@ -57,7 +57,7 @@ import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
 
 @Composable
-fun UnitGroupsScreen(
+internal fun UnitGroupsScreen(
     viewModel: SettingsViewModel,
     navigateUpAction: () -> Unit
 ) {

@@ -64,7 +64,7 @@ import com.sadellie.unitto.feature.R
  * @param textToCopy Text that will be copied to clipboard when long-clicking.
  */
 @Composable
-fun MyTextField(
+internal fun MyTextField(
     modifier: Modifier,
     primaryText: @Composable () -> String,
     secondaryText: String?,

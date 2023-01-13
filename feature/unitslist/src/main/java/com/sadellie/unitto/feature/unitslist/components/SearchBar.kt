@@ -77,7 +77,7 @@ import com.sadellie.unitto.feature.unitslist.R
  * @param scrollBehavior [TopAppBarScrollBehavior] that is used for collapsing and container color
  */
 @Composable
-fun SearchBar(
+internal fun SearchBar(
     title: String,
     value: String,
     onValueChange: (String) -> Unit,

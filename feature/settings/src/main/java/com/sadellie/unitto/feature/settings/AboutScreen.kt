@@ -46,7 +46,7 @@ import com.sadellie.unitto.feature.R
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable
-fun AboutScreen(
+internal fun AboutScreen(
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit
 ) {

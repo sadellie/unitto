@@ -32,11 +32,11 @@ import com.sadellie.unitto.feature.settings.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
 const val settingsGraph = "settings_graph"
-const val settingsRoute = "settings_route"
-const val themesRoute = "themes_route"
-const val unitsGroupRoute = "units_group_route"
-const val thirdPartyRoute = "third_party_route"
-const val aboutRoute = "about_route"
+private const val settingsRoute = "settings_route"
+internal const val themesRoute = "themes_route"
+internal const val unitsGroupRoute = "units_group_route"
+internal const val thirdPartyRoute = "third_party_route"
+internal const val aboutRoute = "about_route"
 
 fun NavController.navigateToSettings() {
     navigate(settingsRoute)

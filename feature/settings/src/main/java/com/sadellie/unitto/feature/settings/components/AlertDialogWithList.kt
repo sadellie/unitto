@@ -51,7 +51,7 @@ import com.sadellie.unitto.feature.settings.R
  * @param supportText Text above list of options
  */
 @Composable
-fun AlertDialogWithList(
+internal fun AlertDialogWithList(
     title: String,
     listItems: Map<Int, Int> = emptyMap(),
     selectedItemIndex: Int = 0,

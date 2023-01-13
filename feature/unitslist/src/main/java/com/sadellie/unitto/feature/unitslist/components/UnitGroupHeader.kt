@@ -27,7 +27,7 @@ import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.data.units.UnitGroup
 
 @Composable
-fun UnitGroupHeader(modifier: Modifier, unitGroup: UnitGroup) {
+internal fun UnitGroupHeader(modifier: Modifier, unitGroup: UnitGroup) {
     Header(
         text = stringResource(unitGroup.res),
         modifier = modifier,

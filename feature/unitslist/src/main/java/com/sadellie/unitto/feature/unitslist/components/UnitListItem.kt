@@ -145,7 +145,7 @@ private fun BasicUnitListItem(
  * @param favoriteAction Function to mark unit as favorite. It's a toggle.
  */
 @Composable
-fun UnitListItem(
+internal fun UnitListItem(
     modifier: Modifier,
     unit: AbstractUnit,
     isSelected: Boolean,
@@ -170,7 +170,7 @@ fun UnitListItem(
  * @param convertValue Function to call that will convert this unit.
  */
 @Composable
-fun UnitListItem(
+internal fun UnitListItem(
     modifier: Modifier,
     unit: AbstractUnit,
     isSelected: Boolean,

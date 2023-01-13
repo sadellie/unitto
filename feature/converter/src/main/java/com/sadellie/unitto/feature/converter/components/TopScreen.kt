@@ -64,7 +64,7 @@ import com.sadellie.unitto.feature.converter.ConverterMode
  * @param converterMode [ConverterMode.BASE] doesn't use formatting for input/output.
  */
 @Composable
-fun TopScreenPart(
+internal fun TopScreenPart(
     modifier: Modifier,
     inputValue: String,
     calculatedValue: String?,

@@ -45,7 +45,7 @@ import com.sadellie.unitto.feature.R
  * @param label Text on button
  */
 @Composable
-fun UnitSelectionButton(
+internal fun UnitSelectionButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     label: Int?,

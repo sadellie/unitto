@@ -43,7 +43,7 @@ import com.sadellie.unitto.feature.unitslist.R
  * @param navigateToSettingsAction Action to perform when clicking open settings button.
  */
 @Composable
-fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
+internal fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

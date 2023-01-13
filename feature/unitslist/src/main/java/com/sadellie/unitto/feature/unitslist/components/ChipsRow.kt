@@ -60,7 +60,7 @@ import com.sadellie.unitto.feature.unitslist.R
  * @param lazyListState Used for animated scroll when entering unit selection screen
  */
 @Composable
-fun ChipsRow(
+internal fun ChipsRow(
     items: List<UnitGroup> = ALL_UNIT_GROUPS,
     chosenUnitGroup: UnitGroup?,
     selectAction: (UnitGroup) -> Unit,

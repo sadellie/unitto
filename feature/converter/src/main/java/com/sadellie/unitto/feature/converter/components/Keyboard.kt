@@ -68,7 +68,7 @@ import com.sadellie.unitto.feature.converter.ConverterMode
  * @param converterMode
  */
 @Composable
-fun Keyboard(
+internal fun Keyboard(
     modifier: Modifier = Modifier,
     addDigit: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
