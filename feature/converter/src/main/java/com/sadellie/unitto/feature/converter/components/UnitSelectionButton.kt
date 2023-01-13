@@ -52,7 +52,7 @@ fun UnitSelectionButton(
 ) {
     Button(
         modifier = modifier,
-        onClick = { onClick() },
+        onClick = onClick,
         enabled = label != null,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
