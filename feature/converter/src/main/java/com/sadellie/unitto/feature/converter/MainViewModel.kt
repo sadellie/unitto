@@ -436,11 +436,16 @@ class MainViewModel @Inject constructor(
             Expressions().eval(cleanInput)
         } catch (e: Exception) {
             when (e) {
+                // Invalid expression, don't do anything
                 is ArrayIndexOutOfBoundsException,
                 is IndexOutOfBoundsException,
-                is NumberFormatException,
-                is ExpressionException,
-                is ArithmeticException -> return
+                is ExpressionException -> return
+                // Divide by zero or SQRT of negative
+                is NumberFormatException, is ArithmeticException -> {
+                    _calculated.update { null }
+                    _result.update { "" }
+                    return
+                }
                 else -> throw e
             }
         }
