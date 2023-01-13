@@ -24,7 +24,6 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,13 +46,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.Formatter
-import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.NumberBaseUnit
 import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.feature.unitslist.components.ChipsRow
 import com.sadellie.unitto.feature.unitslist.components.SearchBar
 import com.sadellie.unitto.feature.unitslist.components.SearchPlaceholder
+import com.sadellie.unitto.feature.unitslist.components.UnitGroupHeader
 import com.sadellie.unitto.feature.unitslist.components.UnitListItem
 import java.math.BigDecimal
 
@@ -261,13 +260,4 @@ internal fun convertForSecondaryNumberBase(inputValue: String, unitFrom: NumberB
     } catch (e: NumberFormatException) {
         ""
     }
-}
-
-@Composable
-private fun UnitGroupHeader(modifier: Modifier, unitGroup: UnitGroup) {
-    Header(
-        text = stringResource(unitGroup.res),
-        modifier = modifier,
-        paddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp)
-    )
 }
