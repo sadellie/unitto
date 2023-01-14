@@ -1,6 +1,6 @@
 [versions]
-appCode = "13"
-appName = "Fire engine red"
+appCode = "14"
+appName = "Glaucous"
 androidxCore = "1.9.0"
 androidxTest = "1.5.0"
 androidxTestExt = "1.1.4"
