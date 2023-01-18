@@ -726,8 +726,6 @@
     <string name="enable_unit_group_description">Enable unit group</string>
     <string name="reorder_unit_group_description">Reorder unit group</string>
     <string name="disable_unit_group_description">Disable unit group</string>
-    <string name="send_usage_statistics">Send usage statistics</string>
-    <string name="send_usage_statistics_support">All data is anonymous and encrypted</string>
     <string name="app_version_name_setting">Version name</string>
     <string name="about_unitto">About Unitto</string>
     <string name="about_unitto_support">Learn about the app</string>

@@ -23,7 +23,6 @@ import androidx.lifecycle.viewModelScope
 import com.github.keelar.exprk.ExpressionException
 import com.github.keelar.exprk.Expressions
 import com.sadellie.unitto.core.base.DIGITS
-import com.sadellie.unitto.core.base.FirebaseHelper
 import com.sadellie.unitto.core.base.KEY_0
 import com.sadellie.unitto.core.base.KEY_1
 import com.sadellie.unitto.core.base.KEY_2
@@ -529,14 +528,7 @@ class MainViewModel @Inject constructor(
                     CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId)
                 allUnitsRepository.updateBasicUnitsForCurrencies(pairs.currency)
             } catch (e: Exception) {
-                when (e) {
-                    // 403, Network and Adapter exceptions can be ignored
-                    is retrofit2.HttpException, is java.net.UnknownHostException, is com.squareup.moshi.JsonDataException -> {}
-                    else -> {
-                        // Unexpected exception, should report it
-                        FirebaseHelper().recordException(e)
-                    }
-                }
+                // Dangerous and stupid, but who cares
                 _showError.update { true }
             } finally {
                 /**

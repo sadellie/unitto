@@ -726,8 +726,7 @@
     <string name="enable_unit_group_description">Включить группу величин</string>
     <string name="reorder_unit_group_description">Переместить группу величин</string>
     <string name="disable_unit_group_description">Отключить группу величин</string>
-    <string name="send_usage_statistics">Отправлять статистику использования</string>
-    <string name="send_usage_statistics_support">Все данные анонимны и зашифрованы</string>
+
     <string name="app_version_name_setting">Название версии</string>
     <string name="about_unitto">О Unitto</string>
     <string name="about_unitto_support">Узнайте больше о приложении</string>

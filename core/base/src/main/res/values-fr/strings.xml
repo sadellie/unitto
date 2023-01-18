@@ -714,8 +714,6 @@
     <string name="enable_unit_group_description">Activer le groupe d\'unités</string>
     <string name="reorder_unit_group_description">Réorganiser le groupe d\'unités</string>
     <string name="disable_unit_group_description">Désactiver le groupe d\'unités</string>
-    <string name="send_usage_statistics">Envoyer des statistiques d\'utilisation</string>
-    <string name="send_usage_statistics_support">Toutes les données sont anonymes et chiffrées</string>
     <string name="app_version_name_setting">Nom de la version</string>
     <string name="about_unitto">À propos d\'Unitto</string>
     <string name="about_unitto_support">En savoir plus sur l\'application</string>

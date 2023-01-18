@@ -20,21 +20,12 @@ plugins {
     id("unitto.library")
 }
 
-if (!gradle.startParameter.taskRequests.toString().contains("Fdroid")) {
-    // Google Services and Firebase Crashlytics are for all flavors except fdroid
-    apply(plugin="com.google.gms.google-services")
-    apply(plugin="com.google.firebase.crashlytics")
-} else {
-    println("Didn't add Google Services since F-Droid flavor was chosen.")
-}
-
 android {
     namespace = "com.sadellie.unitto.core.base"
 
     defaultConfig {
         buildConfigField("String", "APP_NAME", """"${libs.versions.appName.get()}"""")
         buildConfigField("String", "APP_CODE", """"${libs.versions.appCode.get()}"""")
-        buildConfigField("Boolean", "ANALYTICS", "true")
     }
 
     productFlavors {
@@ -61,15 +52,6 @@ android {
                 "STORE_LINK",
                 "\"https://github.com/sadellie/unitto\""
             )
-            buildConfigField("Boolean", "ANALYTICS", "false")
-        }
-    }
-
-    sourceSets {
-        // Making specified flavors use same source as "playStore" flavor
-        listOf("appGallery", "ruPlayStore").forEach {
-            getByName(it).java.srcDirs("src/playStore/java")
-            getByName(it).manifest.srcFile("src/playStore")
         }
     }
 
@@ -80,17 +62,4 @@ android {
     lint {
         this.warning.add("MissingTranslation")
     }
-}
-
-configurations {
-    val playStoreImplementation = getByName("playStoreImplementation")
-    listOf("appGallery", "ruPlayStore").forEach {
-        getByName("${it}Implementation").extendsFrom(playStoreImplementation)
-    }
-}
-
-dependencies {
-    "playStoreImplementation"(platform(libs.com.google.firebase.bom))
-    "playStoreImplementation"(libs.com.google.firebase.analytics)
-    "playStoreImplementation"(libs.com.google.firebase.crashlytics)
 }

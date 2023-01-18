@@ -25,12 +25,8 @@ comSquareupRetrofit2 = "2.9.0"
 comGithubSadellieThemmo = "cf6be7e592"
 orgBurnoutcrewComposereorderable = "0.9.6"
 comGithubSadellieExprk = "e55cba8f41"
-firebaseBom = "31.1.0"
 androidGradlePlugin = "7.3.1"
 kotlin = "1.7.21"
-comGoogleGms = "4.3.14"
-comGoogleFirebase = "2.9.2"
-
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -62,16 +58,11 @@ com-squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "converter-m
 com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
 org-burnoutcrew-composereorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "orgBurnoutcrewComposereorderable" }
 com-github-sadellie-exprk = { group = "com.github.sadellie", name = "ExprK", version.ref = "comGithubSadellieExprk" }
-com-google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
-com-google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-com-google-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 
 # classpath
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 com-google-dagger = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "comGoogleDagger" }
-com-google-gms = { group = "com.google.gms", name = "google-services", version.ref = "comGoogleGms" }
-com-google-firebase = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "comGoogleFirebase" }
 
 [plugins]
 android-gradlePlugin = { id = "com.android.application", version.ref = "androidGradlePlugin" }

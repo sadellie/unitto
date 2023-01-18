@@ -32,8 +32,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 33
-        versionCode = libs.versions.appCode.get().toInt()
-        versionName = libs.versions.appName.get()
+        versionCode = 14
+        versionName = "Glaucous"
     }
 
     buildTypes {
@@ -42,7 +42,6 @@ android {
             isDebuggable = true
             isShrinkResources = false
             isMinifyEnabled = false
-            manifestPlaceholders["crashlytics_enabled"] = false
         }
 
         // Release with analytics and minified, not debuggable
@@ -51,16 +50,10 @@ android {
             isShrinkResources = true
             isDebuggable = false
             isMinifyEnabled = true
-            manifestPlaceholders["crashlytics_enabled"] = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-
-        create("releaseNoCrashlytics") {
-            initWith(getByName("release"))
-            manifestPlaceholders["crashlytics_enabled"] = false
         }
     }
 

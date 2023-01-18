@@ -34,12 +34,6 @@ internal fun Project.configureKotlinAndroid(
             minSdk = 21
         }
 
-        buildTypes {
-            create("releaseNoCrashlytics") {
-                initWith(getByName("release"))
-            }
-        }
-
         flavorDimensions += "mainFlavorDimension"
         productFlavors {
             create("playStore") {}

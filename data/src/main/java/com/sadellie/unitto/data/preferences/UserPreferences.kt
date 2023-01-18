@@ -50,7 +50,6 @@ import javax.inject.Inject
  * @property outputFormat Current [OutputFormat] that is applied to converted value (not input)
  * @property latestLeftSideUnit Latest [AbstractUnit] that was on the left side
  * @property latestRightSideUnit Latest [AbstractUnit] that was on the right side
- * @property enableAnalytics Whether or not user wants to share application usage data
  * @property shownUnitGroups [UnitGroup]s that user wants to see. Excludes other [UnitGroup]s
  */
 data class UserPreferences(
@@ -62,14 +61,14 @@ data class UserPreferences(
     val outputFormat: Int = OutputFormat.PLAIN,
     val latestLeftSideUnit: String = MyUnitIDS.kilometer,
     val latestRightSideUnit: String = MyUnitIDS.mile,
-    val enableAnalytics: Boolean = true,
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS
 )
 
 /**
  * Repository that works with DataStore
  */
-class UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
+class
+UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
     /**
      * Keys for DataStore
      */
@@ -82,7 +81,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
         val LATEST_LEFT_SIDE = stringPreferencesKey("LATEST_LEFT_SIDE_PREF_KEY")
         val LATEST_RIGHT_SIDE = stringPreferencesKey("LATEST_RIGHT_SIDE_PREF_KEY")
-        val ENABLE_ANALYTICS = booleanPreferencesKey("ENABLE_ANALYTICS_PREF_KEY")
         val SHOWN_UNIT_GROUPS = stringPreferencesKey("SHOWN_UNIT_GROUPS_PREF_KEY")
     }
 
@@ -112,8 +110,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
             val latestRightSideUnit: String =
                 preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
-            val enableAnalytics: Boolean =
-                preferences[PrefsKeys.ENABLE_ANALYTICS] ?: true
             val shownUnitGroups: List<UnitGroup> =
                 preferences[PrefsKeys.SHOWN_UNIT_GROUPS]?.let { list ->
                     // Everything is in hidden (nothing in shown)
@@ -137,7 +133,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 outputFormat = outputFormat,
                 latestLeftSideUnit = latestLeftSideUnit,
                 latestRightSideUnit = latestRightSideUnit,
-                enableAnalytics = enableAnalytics,
                 shownUnitGroups = shownUnitGroups
             )
         }
@@ -172,17 +167,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateOutputFormat(outputFormat: Int) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.OUTPUT_FORMAT] = outputFormat
-        }
-    }
-
-    /**
-     * Update analytics preference in DataStore
-     *
-     * @param enableAnalytics True if user wants to share data, False if not
-     */
-    suspend fun updateEnableAnalytics(enableAnalytics: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PrefsKeys.ENABLE_ANALYTICS] = enableAnalytics
         }
     }
 

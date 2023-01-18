@@ -18,15 +18,13 @@
 
 package com.sadellie.unitto.feature.settings
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.base.FirebaseHelper
+import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.data.preferences.UserPreferences
 import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.data.units.UnitGroupsRepository
-import com.sadellie.unitto.core.ui.Formatter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.SharingStarted
@@ -41,7 +39,6 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val unitGroupsRepository: UnitGroupsRepository,
-    private val application: Application,
 ) : ViewModel() {
     var userPrefs = userPrefsRepository.userPreferencesFlow
         .onEach { Formatter.setSeparator(it.separator) }
@@ -100,16 +97,6 @@ class SettingsViewModel @Inject constructor(
     fun updateOutputFormat(outputFormat: Int) {
         viewModelScope.launch {
             userPrefsRepository.updateOutputFormat(outputFormat)
-        }
-    }
-
-    /**
-     * See [UserPreferencesRepository.updateEnableAnalytics]
-     */
-    fun updateEnableAnalytics(enableAnalytics: Boolean) {
-        viewModelScope.launch {
-            userPrefsRepository.updateEnableAnalytics(enableAnalytics)
-            FirebaseHelper().setAnalyticsCollectionEnabled(application, enableAnalytics)
         }
     }
 

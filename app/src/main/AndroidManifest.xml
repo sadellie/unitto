@@ -10,12 +10,6 @@
 
         android:supportsRtl="true"
         android:theme="@style/Theme.Unitto">
-        <meta-data
-            android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-        <meta-data
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="${crashlytics_enabled}" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

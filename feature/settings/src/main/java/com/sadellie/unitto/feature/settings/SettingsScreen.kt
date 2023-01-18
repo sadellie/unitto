@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Insights
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Rule
@@ -47,7 +46,6 @@ import com.sadellie.unitto.core.base.PRECISIONS
 import com.sadellie.unitto.core.base.SEPARATORS
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
-import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.feature.R
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
@@ -145,23 +143,6 @@ internal fun SettingsScreen(
 
             // ADDITIONAL GROUP
             item { Header(stringResource(R.string.additional_settings_group)) }
-
-            // ANALYTICS
-            if (BuildConfig.ANALYTICS) {
-                item {
-                    UnittoListItem(
-                        leadingContent = {
-                            Icon(
-                                Icons.Default.Insights,
-                                stringResource(R.string.send_usage_statistics),
-                            )
-                        },
-                        label = stringResource(R.string.send_usage_statistics),
-                        supportText = stringResource(R.string.send_usage_statistics_support),
-                        switchState = userPrefs.value.enableAnalytics
-                    ) { viewModel.updateEnableAnalytics(it) }
-                }
-            }
 
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {

@@ -725,7 +725,5 @@
     <string name="enable_unit_group_description">Einheitengruppe aktivieren</string>
     <string name="reorder_unit_group_description">Einheitengruppe umordnen</string>
     <string name="disable_unit_group_description">Einheitengruppe deaktivieren</string>
-    <string name="send_usage_statistics">Nutzungsstatistiken senden</string>
-    <string name="send_usage_statistics_support">Allen Daten sind anonymisiert und verschlüsselt</string>
     <string name="app_version_name_setting">Versionsname</string>
 </resources>
