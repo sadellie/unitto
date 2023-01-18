@@ -222,7 +222,9 @@ class AllUnitsTest {
         MyUnitIDS.pascal.checkWith(MyUnitIDS.bar, "456", "0.00456")
         MyUnitIDS.dekapascal.checkWith(MyUnitIDS.bar, "456", "0.0456")
         MyUnitIDS.hectopascal.checkWith(MyUnitIDS.psi, "456", "6.61372")
+        MyUnitIDS.millibar.checkWith(MyUnitIDS.psi, "456", "6.61372")
         MyUnitIDS.bar.checkWith(MyUnitIDS.ksi, "456", "6.61372")
+        MyUnitIDS.kilopascal.checkWith(MyUnitIDS.psi, "456", "66.13721")
         MyUnitIDS.megapascal.checkWith(MyUnitIDS.ksi, "456", "66.13721")
         MyUnitIDS.gigapascal.checkWith(MyUnitIDS.torr, "456", "3420281273.13024")
         MyUnitIDS.terapascal.checkWith(MyUnitIDS.gigapascal, "456", "456000")
@@ -232,6 +234,7 @@ class AllUnitsTest {
         MyUnitIDS.ksi.checkWith(MyUnitIDS.gigapascal, "456", "3.14401")
         MyUnitIDS.standard_atmosphere.checkWith(MyUnitIDS.torr, "456", "346560")
         MyUnitIDS.torr.checkWith(MyUnitIDS.hectopascal, "456", "607.95")
+        MyUnitIDS.micron_of_mercury.checkWith(MyUnitIDS.hectopascal, "456", "0.60795")
         MyUnitIDS.millimeter_of_mercury.checkWith(MyUnitIDS.hectopascal, "456", "607.95")
     }
 

@@ -38,7 +38,9 @@ internal val pressureCollection: List<AbstractUnit> by lazy {
         MyUnit(MyUnitIDS.pascal,                BigDecimal.valueOf(1E+18),                  UnitGroup.PRESSURE, R.string.pascal,                R.string.pascal_short),
         MyUnit(MyUnitIDS.dekapascal,            BigDecimal.valueOf(1E+19),                  UnitGroup.PRESSURE, R.string.dekapascal,            R.string.dekapascal_short),
         MyUnit(MyUnitIDS.hectopascal,           BigDecimal.valueOf(1E+20),                  UnitGroup.PRESSURE, R.string.hectopascal,           R.string.hectopascal_short),
+        MyUnit(MyUnitIDS.millibar,              BigDecimal.valueOf(1E+20),                  UnitGroup.PRESSURE, R.string.millibar,              R.string.millibar_short),
         MyUnit(MyUnitIDS.bar,                   BigDecimal.valueOf(1E+23),                  UnitGroup.PRESSURE, R.string.bar,                   R.string.bar_short),
+        MyUnit(MyUnitIDS.kilopascal,            BigDecimal.valueOf(1E+21),                  UnitGroup.PRESSURE, R.string.kilopascal,            R.string.kilopascal_short),
         MyUnit(MyUnitIDS.megapascal,            BigDecimal.valueOf(1E+24),                  UnitGroup.PRESSURE, R.string.megapascal,            R.string.megapascal_short),
         MyUnit(MyUnitIDS.gigapascal,            BigDecimal.valueOf(1E+27),                  UnitGroup.PRESSURE, R.string.gigapascal,            R.string.gigapascal_short),
         MyUnit(MyUnitIDS.terapascal,            BigDecimal.valueOf(1E+30),                  UnitGroup.PRESSURE, R.string.terapascal,            R.string.terapascal_short),
@@ -48,6 +50,7 @@ internal val pressureCollection: List<AbstractUnit> by lazy {
         MyUnit(MyUnitIDS.ksi,                   BigDecimal.valueOf(6.8947572931783E+24),    UnitGroup.PRESSURE, R.string.ksi,                   R.string.ksi_short),
         MyUnit(MyUnitIDS.standard_atmosphere,   BigDecimal.valueOf(101.325E+21),            UnitGroup.PRESSURE, R.string.standard_atmosphere,   R.string.standard_atmosphere_short),
         MyUnit(MyUnitIDS.torr,                  BigDecimal.valueOf(1.3332236842108281E+20), UnitGroup.PRESSURE, R.string.torr,                  R.string.torr_short),
+        MyUnit(MyUnitIDS.micron_of_mercury,     BigDecimal.valueOf(1.3332236842108281E+17), UnitGroup.PRESSURE, R.string.micron_of_mercury,     R.string.micron_of_mercury_short),
         MyUnit(MyUnitIDS.millimeter_of_mercury, BigDecimal.valueOf(1.3332236842108281E+20), UnitGroup.PRESSURE, R.string.millimeter_of_mercury, R.string.millimeter_of_mercury_short),
     )
 }

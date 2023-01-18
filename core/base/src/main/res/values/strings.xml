@@ -428,8 +428,12 @@
     <string name="dekapascal_short">daPa</string>
     <string name="hectopascal">Hectopascal</string>
     <string name="hectopascal_short">hPa</string>
+    <string name="millibar">Millibar</string>
+    <string name="millibar_short">mbar</string>
     <string name="bar">Bar</string>
     <string name="bar_short">bar</string>
+    <string name="kilopascal">Kilopascal</string>
+    <string name="kilopascal_short">kPa</string>
     <string name="megapascal">Megapascal</string>
     <string name="megapascal_short">MPa</string>
     <string name="gigapascal">Gigapascal</string>
@@ -448,6 +452,8 @@
     <string name="standard_atmosphere_short">atm</string>
     <string name="torr">Torr</string>
     <string name="torr_short">torr</string>
+    <string name="micron_of_mercury">Millimeter of mercury</string>
+    <string name="micron_of_mercury_short">μmHg</string>
     <string name="millimeter_of_mercury">Millimeter of mercury</string>
     <string name="millimeter_of_mercury_short">mm Hg</string>
 

@@ -241,7 +241,9 @@ object MyUnitIDS {
     const val pascal = "pascal"
     const val dekapascal = "dekapascal"
     const val hectopascal = "hectopascal"
+    const val millibar = "millibar"
     const val bar = "bar"
+    const val kilopascal = "kilopascal"
     const val megapascal = "megapascal"
     const val gigapascal = "gigapascal"
     const val terapascal = "terapascal"
@@ -251,6 +253,7 @@ object MyUnitIDS {
     const val ksi = "ksi"
     const val standard_atmosphere = "standard_atmosphere"
     const val torr = "torr"
+    const val micron_of_mercury = "micron_of_mercury"
     const val millimeter_of_mercury = "millimeter_of_mercury"
 
     // ACCELERATION
