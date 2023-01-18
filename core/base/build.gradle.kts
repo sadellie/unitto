@@ -30,28 +30,22 @@ android {
 
     productFlavors {
         getByName("playStore") {
-            buildConfigField(
-                "String",
-                "STORE_LINK",
-                "\"http://play.google.com/store/apps/details?id=com.sadellie.unitto\""
-            )
+            storeLink("http://play.google.com/store/apps/details?id=com.sadellie.unitto")
         }
         getByName("appGallery") {
-            buildConfigField(
-                "String",
-                "STORE_LINK",
-                "\"https://appgallery.huawei.com/app/C105740875\""
-            )
+            storeLink("https://appgallery.huawei.com/app/C105740875")
         }
-        getByName("ruPlayStore") {
-            buildConfigField("String", "STORE_LINK", "\"\"")
+        getByName("nashStore") {
+            storeLink("https://store.nashstore.ru/store/627de8394891a527a6efe56a")
+        }
+        getByName("ruStore") {
+            storeLink("https://apps.rustore.ru/app/com.sadellie.unitto")
+        }
+        getByName("ruMarket") {
+            storeLink("https://store.ruplay.market/app/com.sadellie.unitto")
         }
         getByName("fdroid") {
-            buildConfigField(
-                "String",
-                "STORE_LINK",
-                "\"https://github.com/sadellie/unitto\""
-            )
+            storeLink("https://github.com/sadellie/unitto")
         }
     }
 
@@ -62,4 +56,12 @@ android {
     lint {
         this.warning.add("MissingTranslation")
     }
+}
+
+fun com.android.build.api.dsl.VariantDimension.storeLink(url: String) {
+    buildConfigField(
+        "String",
+        "STORE_LINK",
+        "\"${url}\""
+    )
 }

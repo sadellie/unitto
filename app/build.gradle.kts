@@ -61,7 +61,9 @@ android {
     productFlavors {
         create("playStore") {}
         create("appGallery") {}
-        create("ruPlayStore") {}
+        create("ruStore") {}
+        create("nashStore") {}
+        create("ruMarket") {}
         create("fdroid") {}
     }
 
