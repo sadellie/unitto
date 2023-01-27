@@ -30,7 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 
 /**
  * Composable for MainScreen top bar title. Changes from "Hello" to "Unitto".

@@ -23,7 +23,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sadellie.unitto.feature"
+    namespace = "com.sadellie.unitto.core.ui"
 }
 
 dependencies {

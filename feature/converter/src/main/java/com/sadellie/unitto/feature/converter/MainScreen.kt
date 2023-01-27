@@ -38,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.core.ui.common.AnimatedTopBarText
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.feature.converter.components.Keyboard
 import com.sadellie.unitto.feature.converter.components.PortraitLandscape
 import com.sadellie.unitto.feature.converter.components.TopScreenPart

@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.ALL_LIBRARIES
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 
 /**
  * Screen with used third party libraries

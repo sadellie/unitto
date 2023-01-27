@@ -47,7 +47,7 @@ import com.sadellie.unitto.core.base.SEPARATORS
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.themesRoute

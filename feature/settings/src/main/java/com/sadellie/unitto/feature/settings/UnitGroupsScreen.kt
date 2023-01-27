@@ -49,7 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress

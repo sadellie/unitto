@@ -33,7 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.ThemmoController
 

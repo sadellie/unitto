@@ -42,7 +42,7 @@ import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable

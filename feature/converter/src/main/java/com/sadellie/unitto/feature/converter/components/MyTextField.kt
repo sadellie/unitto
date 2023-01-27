@@ -52,7 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
-import com.sadellie.unitto.feature.R
+import com.sadellie.unitto.core.ui.R
 
 /**
  * Component for input and output
