@@ -74,6 +74,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -394,8 +395,6 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun convertInput() {
-        // Loading don't do anything
-        if ((_unitFrom.value == null) or (_unitTo.value == null)) return
         withContext(Dispatchers.Default) {
             while (isActive) {
                 when (_unitFrom.value?.group) {
@@ -408,10 +407,14 @@ class MainViewModel @Inject constructor(
     }
 
     private fun convertAsNumberBase() {
-        val conversionResult: String = try {
-            (_unitFrom.value as NumberBaseUnit).convertToBase(
+        // Units are still loading, don't convert anything yet
+        val unitFrom = _unitFrom.value ?: return
+        val unitTo = _unitTo.value ?: return
+
+        val conversionResult = try {
+            (unitFrom as NumberBaseUnit).convertToBase(
                 input = _input.value,
-                toBase = (_unitTo.value as NumberBaseUnit).base
+                toBase = (unitTo as NumberBaseUnit).base
             )
         } catch (e: Exception) {
             when (e) {
@@ -424,11 +427,15 @@ class MainViewModel @Inject constructor(
     }
 
     private fun convertAsExpression() {
+        // Units are still loading, don't convert anything yet
+        val unitFrom = _unitFrom.value ?: return
+        val unitTo = _unitTo.value ?: return
+
         // First we clean the input from garbage at the end
         var cleanInput = _input.value.dropLastWhile { !it.isDigit() }
 
         // Now we close open brackets that user didn't close
-        // AUTO-CLOSE ALL BRACKETS
+        // AUTOCLOSE ALL BRACKETS
         val leftBrackets = _input.value.count { it.toString() == KEY_LEFT_BRACKET }
         val rightBrackets = _input.value.count { it.toString() == KEY_RIGHT_BRACKET }
         val neededBrackets = leftBrackets - rightBrackets
@@ -437,38 +444,31 @@ class MainViewModel @Inject constructor(
         // Now we evaluate expression in input
         val evaluationResult: BigDecimal = try {
             Expressions().eval(cleanInput)
+                .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
+                .trimZeros()
         } catch (e: Exception) {
             when (e) {
-                // Invalid expression, don't do anything
+                is ExpressionException,
                 is ArrayIndexOutOfBoundsException,
                 is IndexOutOfBoundsException,
-                is ExpressionException -> return
-                // Divide by zero or SQRT of negative
-                is NumberFormatException, is ArithmeticException -> {
-                    _calculated.update { null }
-                    _result.update { "" }
+                is NumberFormatException,
+                is ArithmeticException -> {
+                    // Invalid expression, can't do anything further
                     return
                 }
                 else -> throw e
             }
         }
 
-        // Now we just convert.
-        // We can use evaluation result here, input is valid
-        val conversionResult: BigDecimal = _unitFrom.value!!.convert(
-            _unitTo.value!!,
-            evaluationResult,
-            _userPrefs.value.digitsPrecision
-        )
-
         // Evaluated. Hide calculated result if no expression entered.
         // 123.456 will be true
         // -123.456 will be true
         // -123.456-123 will be false (first minus gets removed, ending with 123.456)
-        _calculated.update {
-            if (_input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
-                null
-            } else {
+        if (_input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
+            // No operators
+            _calculated.update { null }
+        } else {
+            _calculated.update {
                 evaluationResult
                     .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
                     .trimZeros()
@@ -476,6 +476,15 @@ class MainViewModel @Inject constructor(
             }
         }
 
+        // Now we just convert.
+        // We can use evaluation result here, input is valid.
+        val conversionResult: BigDecimal = unitFrom.convert(
+            unitTo,
+            evaluationResult,
+            _userPrefs.value.digitsPrecision
+        )
+
+        // Converted
         _result.update { conversionResult.toStringWith(_userPrefs.value.outputFormat) }
     }
 
