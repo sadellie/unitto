@@ -389,10 +389,6 @@ class MainViewModel @Inject constructor(
         setInputSymbols(KEY_0, false)
     }
 
-    fun getInputValue(): String {
-        return _calculated.value ?: _input.value
-    }
-
     fun toggleFormatTime() {
         _formatTime.update { !it }
     }
