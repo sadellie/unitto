@@ -661,6 +661,8 @@
     <string name="separator_setting">Разделитель</string>
     <string name="output_format_setting">Формат вывода</string>
     <string name="unit_groups_setting">Группы величин</string>
+    <string name="enable_vibrations">Вибрации</string>
+    <string name="enable_vibrations_support">Тактильный отклик при использовании клавиатуры</string>
     <string name="currency_rates_note_setting">Неправильные курсы валют?</string>
     <string name="currency_rates_note_title">Внимание</string>
     <string name="currency_rates_note_text">Курсы валют обновляются ежедневно. В приложении нет мониторинга рынка в реальном времени.</string>
