@@ -37,6 +37,8 @@ class UnittoLibraryComposePlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("androidx.compose.material3").get())
                 "implementation"(libs.findLibrary("androidx.lifecycle.runtime.compose").get())
                 "implementation"(libs.findLibrary("androidx.compose.material.icons.extended").get())
+                "implementation"(libs.findLibrary("androidx.compose.ui.tooling").get())
+                "implementation"(libs.findLibrary("androidx.compose.ui.tooling.preview").get())
             }
         }
     }

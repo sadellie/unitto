@@ -24,10 +24,20 @@ plugins {
 
 android {
     namespace = "com.sadellie.unitto.core.ui"
+
+    // Workaround from https://github.com/robolectric/robolectric/pull/4736
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     testImplementation(libs.junit)
+    testImplementation(libs.org.robolectric)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(project(mapOf("path" to ":core:base")))
 }

@@ -33,6 +33,7 @@ import com.sadellie.unitto.data.units.AbstractUnit
  * @property unitFrom Unit on the left.
  * @property unitTo Unit on the right.
  * @property mode
+ * @property formatTime If true will format output when converting time.
  */
 data class MainScreenUIState(
     val inputValue: String = KEY_0,
@@ -43,6 +44,7 @@ data class MainScreenUIState(
     val unitFrom: AbstractUnit? = null,
     val unitTo: AbstractUnit? = null,
     val mode: ConverterMode = ConverterMode.DEFAULT,
+    val formatTime: Boolean = true
 )
 
 enum class ConverterMode {

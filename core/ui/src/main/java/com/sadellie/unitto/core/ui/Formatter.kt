@@ -18,14 +18,20 @@
 
 package com.sadellie.unitto.core.ui
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.base.INTERNAL_DISPLAY
+import com.sadellie.unitto.core.base.KEY_0
 import com.sadellie.unitto.core.base.KEY_COMMA
 import com.sadellie.unitto.core.base.KEY_DOT
 import com.sadellie.unitto.core.base.KEY_E
 import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
+import com.sadellie.unitto.core.base.KEY_MINUS
 import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.core.base.OPERATORS
 import com.sadellie.unitto.core.base.Separator
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 object Formatter {
     private const val SPACE = " "
@@ -41,6 +47,19 @@ object Formatter {
      * Fractional part separator.
      */
     var fractional = KEY_COMMA
+
+    private val timeDivisions by lazy {
+        mapOf(
+            R.string.day_short to BigDecimal("86400000000000000000000"),
+            R.string.hour_short to BigDecimal("3600000000000000000000"),
+            R.string.minute_short to BigDecimal("60000000000000000000"),
+            R.string.second_short to BigDecimal("1000000000000000000"),
+            R.string.millisecond_short to BigDecimal("1000000000000000"),
+            R.string.microsecond_short to BigDecimal("1000000000000"),
+            R.string.nanosecond_short to BigDecimal("1000000000"),
+            R.string.attosecond_short to BigDecimal("1"),
+        )
+    }
 
     /**
      * Change current separator to another [separator].
@@ -117,5 +136,43 @@ object Formatter {
         }
 
         return output
+    }
+
+    /**
+     * Takes [input] and [basicUnit] of the  unit to format it to be more human readable.
+     *
+     * @return String like "1d 12h 12s".
+     */
+    @Composable
+    fun formatTime(input: String, basicUnit: BigDecimal?): String {
+        if (basicUnit == null) return KEY_0
+
+        try {
+            // Don't need magic if the input is zero
+            if (BigDecimal(input).compareTo(BigDecimal.ZERO) == 0) return KEY_0
+        } catch (e: NumberFormatException) {
+            // For case such as "10-" and "("
+            return KEY_0
+        }
+        // Attoseconds don't need "magic"
+        if (basicUnit.compareTo(BigDecimal.ONE) == 0) return formatNumber(input)
+
+        var result = if (input.startsWith(KEY_MINUS)) KEY_MINUS else ""
+        var remainingSeconds = BigDecimal(input)
+            .abs()
+            .multiply(basicUnit)
+            .setScale(0, RoundingMode.HALF_EVEN)
+
+        if (remainingSeconds.compareTo(BigDecimal.ZERO) == 0) return KEY_0
+
+        timeDivisions.forEach { (timeStr, divider) ->
+            val division = remainingSeconds.divideAndRemainder(divider)
+            val time = division.component1()
+            remainingSeconds = division.component2()
+            if (time.compareTo(BigDecimal.ZERO) == 1) {
+                result += "${formatNumber(time.toPlainString())}${stringResource(timeStr)} "
+            }
+        }
+        return result.trimEnd()
     }
 }

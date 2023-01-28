@@ -83,6 +83,7 @@ internal fun MainScreen(
                 processInput = { viewModel.processInput(it) },
                 deleteDigit = { viewModel.deleteDigit() },
                 clearInput = { viewModel.clearInput() },
+                onOutputTextFieldClick = { viewModel.toggleFormatTime() }
             )
         }
     )
@@ -108,6 +109,7 @@ private fun MainScreenContent(
     processInput: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
+    onOutputTextFieldClick: () -> Unit
 ) {
     PortraitLandscape(
         modifier = modifier,
@@ -125,6 +127,8 @@ private fun MainScreenContent(
                 navigateToRightScreen = navigateToRightScreen,
                 swapUnits = swapMeasurements,
                 converterMode = mainScreenUIState.mode,
+                formatTime = mainScreenUIState.formatTime,
+                onOutputTextFieldClick = onOutputTextFieldClick
             )
         },
         content2 = {

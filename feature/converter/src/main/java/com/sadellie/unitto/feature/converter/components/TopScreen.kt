@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.converter.components
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.feature.converter.ConverterMode
 
 /**
@@ -62,6 +64,8 @@ import com.sadellie.unitto.feature.converter.ConverterMode
  * @param navigateToRightScreen Function that is called when clicking right unit selection button.
  * @param swapUnits Method to swap units.
  * @param converterMode [ConverterMode.BASE] doesn't use formatting for input/output.
+ * @param formatTime If True will use [Formatter.formatTime].
+ * @param onOutputTextFieldClick Action to be called when user clicks on output text field.
  */
 @Composable
 internal fun TopScreenPart(
@@ -77,6 +81,8 @@ internal fun TopScreenPart(
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     swapUnits: () -> Unit,
     converterMode: ConverterMode,
+    formatTime: Boolean,
+    onOutputTextFieldClick: () -> Unit
 ) {
     var swapped by remember { mutableStateOf(false) }
     val swapButtonRotation: Float by animateFloatAsState(
@@ -101,12 +107,20 @@ internal fun TopScreenPart(
             textToCopy = calculatedValue ?: inputValue,
         )
         MyTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onOutputTextFieldClick),
             primaryText = {
                 when {
                     networkLoading -> stringResource(R.string.loading_label)
                     networkError -> stringResource(R.string.error_label)
                     converterMode == ConverterMode.BASE -> outputValue.uppercase()
+                    formatTime and (unitTo?.group == UnitGroup.TIME) -> {
+                        Formatter.formatTime(
+                            input = calculatedValue ?: inputValue,
+                            basicUnit = unitFrom?.basicUnit
+                        )
+                    }
                     else -> Formatter.format(outputValue)
                 }
             },

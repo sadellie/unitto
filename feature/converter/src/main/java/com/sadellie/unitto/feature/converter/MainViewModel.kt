@@ -129,6 +129,8 @@ class MainViewModel @Inject constructor(
      */
     private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
+    private val _formatTime: MutableStateFlow<Boolean> = MutableStateFlow(true)
+
     /**
      * Current state of UI.
      */
@@ -139,8 +141,9 @@ class MainViewModel @Inject constructor(
         _calculated,
         _result,
         _showLoading,
-        _showError
-    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue ->
+        _showError,
+        _formatTime
+    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, formatTime ->
         return@combine MainScreenUIState(
             inputValue = inputValue,
             calculatedValue = calculatedValue,
@@ -153,7 +156,8 @@ class MainViewModel @Inject constructor(
              * If there will be more modes, this should be a separate value which we update when
              * changing units.
              */
-            mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT
+            mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
+            formatTime = formatTime
         )
     }
         .stateIn(
@@ -387,6 +391,10 @@ class MainViewModel @Inject constructor(
 
     fun getInputValue(): String {
         return _calculated.value ?: _input.value
+    }
+
+    fun toggleFormatTime() {
+        _formatTime.update { !it }
     }
 
     private suspend fun convertInput() {
