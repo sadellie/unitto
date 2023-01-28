@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.converter.components
 
+import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -29,9 +30,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.UnittoButton
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
@@ -54,6 +57,7 @@ internal fun KeyboardButton(
     onLongClick: (() -> Unit)? = null,
     onClick: (String) -> Unit = {}
 ) {
+    val view = LocalView.current
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val cornerRadius: Int by animateIntAsState(
@@ -76,5 +80,9 @@ internal fun KeyboardButton(
             style = NumbersTextStyleTitleLarge,
             color = if (isPrimary) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSecondaryContainer
         )
+    }
+
+    LaunchedEffect(key1 = isPressed) {
+        if (isPressed) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
     }
 }
