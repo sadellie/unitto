@@ -84,7 +84,7 @@ class MainViewModel @Inject constructor(
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
-    private val _userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
+    val userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         UserPreferences()
@@ -444,7 +444,7 @@ class MainViewModel @Inject constructor(
         // Now we evaluate expression in input
         val evaluationResult: BigDecimal = try {
             Expressions().eval(cleanInput)
-                .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
+                .setScale(userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
                 .trimZeros()
         } catch (e: Exception) {
             when (e) {
@@ -470,9 +470,9 @@ class MainViewModel @Inject constructor(
         } else {
             _calculated.update {
                 evaluationResult
-                    .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
+                    .setMinimumRequiredScale(userPrefs.value.digitsPrecision)
                     .trimZeros()
-                    .toStringWith(_userPrefs.value.outputFormat)
+                    .toStringWith(userPrefs.value.outputFormat)
             }
         }
 
@@ -481,11 +481,11 @@ class MainViewModel @Inject constructor(
         val conversionResult: BigDecimal = unitFrom.convert(
             unitTo,
             evaluationResult,
-            _userPrefs.value.digitsPrecision
+            userPrefs.value.digitsPrecision
         )
 
         // Converted
-        _result.update { conversionResult.toStringWith(_userPrefs.value.outputFormat) }
+        _result.update { conversionResult.toStringWith(userPrefs.value.outputFormat) }
     }
 
     private fun setInputSymbols(symbol: String, add: Boolean = true) {
@@ -564,7 +564,7 @@ class MainViewModel @Inject constructor(
 
     private fun startObserving() {
         viewModelScope.launch(Dispatchers.Default) {
-            merge(_input, _unitFrom, _unitTo, _showLoading, _userPrefs).collectLatest {
+            merge(_input, _unitFrom, _unitTo, _showLoading, userPrefs).collectLatest {
                 convertInput()
             }
         }

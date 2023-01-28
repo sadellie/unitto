@@ -74,11 +74,12 @@ internal fun Keyboard(
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
     converterMode: ConverterMode,
+    allowVibration: Boolean
 ) {
     Crossfade(converterMode, modifier = modifier) {
         when (it) {
-            ConverterMode.DEFAULT -> DefaultKeyboard(addDigit, clearInput, deleteDigit)
-            ConverterMode.BASE -> BaseKeyboard(addDigit, clearInput, deleteDigit)
+            ConverterMode.DEFAULT -> DefaultKeyboard(addDigit, clearInput, deleteDigit, allowVibration)
+            ConverterMode.BASE -> BaseKeyboard(addDigit, clearInput, deleteDigit, allowVibration)
         }
     }
 
@@ -88,7 +89,8 @@ internal fun Keyboard(
 private fun DefaultKeyboard(
     addDigit: (String) -> Unit,
     clearInput: () -> Unit,
-    deleteDigit: () -> Unit
+    deleteDigit: () -> Unit,
+    allowVibration: Boolean
 ) {
     Column {
         // Button modifier
@@ -99,38 +101,34 @@ private fun DefaultKeyboard(
         // Column modifier
         val cModifier = Modifier.weight(1f)
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_LEFT_BRACKET, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_RIGHT_BRACKET, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_EXPONENT, isPrimary = false, onClick = { addDigit(
-                KEY_EXPONENT
-            ) })
-            KeyboardButton(bModifier, KEY_SQRT, isPrimary = false, onClick = { addDigit(KEY_SQRT) })
+            KeyboardButton(bModifier, KEY_LEFT_BRACKET, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_RIGHT_BRACKET, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_EXPONENT, isPrimary = false, allowVibration = allowVibration, onClick = { addDigit(KEY_EXPONENT) })
+            KeyboardButton(bModifier, KEY_SQRT, isPrimary = false, allowVibration = allowVibration, onClick = { addDigit(KEY_SQRT) })
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_7, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_8, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_9, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_DIVIDE_DISPLAY, isPrimary = false) { addDigit(KEY_DIVIDE) }
+            KeyboardButton(bModifier, KEY_7, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_8, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_9, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_DIVIDE_DISPLAY, isPrimary = false, allowVibration = allowVibration) { addDigit(KEY_DIVIDE) }
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_4, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_5, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_6, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_MULTIPLY_DISPLAY, isPrimary = false) { addDigit(
-                KEY_MULTIPLY
-            ) }
+            KeyboardButton(bModifier, KEY_4, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_5, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_6, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_MULTIPLY_DISPLAY, isPrimary = false, allowVibration = allowVibration, ) { addDigit(KEY_MULTIPLY) }
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_1, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_2, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_3, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_MINUS_DISPLAY, isPrimary = false) { addDigit(KEY_MINUS) }
+            KeyboardButton(bModifier, KEY_1, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_2, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_3, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_MINUS_DISPLAY, isPrimary = false, allowVibration = allowVibration) { addDigit(KEY_MINUS) }
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_0, onClick = addDigit)
-            KeyboardButton(bModifier, Formatter.fractional) { addDigit(KEY_DOT) }
-            KeyboardButton(bModifier, KEY_CLEAR, onLongClick = clearInput) { deleteDigit() }
-            KeyboardButton(bModifier, KEY_PLUS, isPrimary = false) { addDigit(KEY_PLUS) }
+            KeyboardButton(bModifier, KEY_0, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, Formatter.fractional, allowVibration = allowVibration, ) { addDigit(KEY_DOT) }
+            KeyboardButton(bModifier, KEY_CLEAR, allowVibration = allowVibration, onLongClick = clearInput) { deleteDigit() }
+            KeyboardButton(bModifier, KEY_PLUS, isPrimary = false, allowVibration = allowVibration, ) { addDigit(KEY_PLUS) }
         }
     }
 }
@@ -139,7 +137,8 @@ private fun DefaultKeyboard(
 private fun BaseKeyboard(
     addDigit: (String) -> Unit,
     clearInput: () -> Unit,
-    deleteDigit: () -> Unit
+    deleteDigit: () -> Unit,
+    allowVibration: Boolean
 ) {
     Column {
         // Button modifier
@@ -150,38 +149,39 @@ private fun BaseKeyboard(
         // Column modifier
         val cModifier = Modifier.weight(1f)
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_BASE_A, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_BASE_B, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_BASE_C, isPrimary = false, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_BASE_A, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_BASE_B, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_BASE_C, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_BASE_D, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_BASE_E, isPrimary = false, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_BASE_F, isPrimary = false, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_BASE_D, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_BASE_E, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_BASE_F, isPrimary = false, allowVibration = allowVibration, onClick = addDigit)
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_7, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_8, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_9, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_7, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_8, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_9, allowVibration = allowVibration, onClick = addDigit)
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_4, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_5, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_6, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_4, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_5, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_6, allowVibration = allowVibration, onClick = addDigit)
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_1, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_2, onClick = addDigit)
-            KeyboardButton(bModifier, KEY_3, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_1, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_2, allowVibration = allowVibration, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_3, allowVibration = allowVibration, onClick = addDigit)
         }
         Row(cModifier) {
-            KeyboardButton(bModifier, KEY_0, onClick = addDigit)
+            KeyboardButton(bModifier, KEY_0, allowVibration = allowVibration, onClick = addDigit)
             KeyboardButton(
                 Modifier
                     .fillMaxSize()
                     .weight(2f)
                     .padding(4.dp),
                 KEY_CLEAR,
+                allowVibration = allowVibration,
                 onLongClick = clearInput
             ) { deleteDigit() }
         }

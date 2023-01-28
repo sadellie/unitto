@@ -44,6 +44,7 @@ import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
  *
  * @param modifier Modifier that is applied to a [Button] component.
  * @param digit Symbol to show on button.
+ * @param allowVibration When true will vibrate on button press.
  * @param isPrimary If true will use `inverseOnSurface` color, else `secondaryContainer`. Primary
  * buttons are digits.
  * @param onLongClick Action to perform when holding this button.
@@ -53,6 +54,7 @@ import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
 internal fun KeyboardButton(
     modifier: Modifier = Modifier,
     digit: String,
+    allowVibration: Boolean,
     isPrimary: Boolean = true,
     onLongClick: (() -> Unit)? = null,
     onClick: (String) -> Unit = {}
@@ -83,6 +85,6 @@ internal fun KeyboardButton(
     }
 
     LaunchedEffect(key1 = isPressed) {
-        if (isPressed) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+        if (isPressed and allowVibration) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
     }
 }

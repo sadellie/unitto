@@ -53,6 +53,7 @@ internal fun MainScreen(
 ) {
     var launched: Boolean by rememberSaveable { mutableStateOf(false) }
     val mainScreenUIState = viewModel.uiStateFlow.collectAsStateWithLifecycle()
+    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier,
@@ -83,7 +84,8 @@ internal fun MainScreen(
                 processInput = { viewModel.processInput(it) },
                 deleteDigit = { viewModel.deleteDigit() },
                 clearInput = { viewModel.clearInput() },
-                onOutputTextFieldClick = { viewModel.toggleFormatTime() }
+                onOutputTextFieldClick = { viewModel.toggleFormatTime() },
+                allowVibration = userPrefs.value.enableVibrations
             )
         }
     )
@@ -109,7 +111,8 @@ private fun MainScreenContent(
     processInput: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
     clearInput: () -> Unit = {},
-    onOutputTextFieldClick: () -> Unit
+    onOutputTextFieldClick: () -> Unit,
+    allowVibration: Boolean
 ) {
     PortraitLandscape(
         modifier = modifier,
@@ -138,6 +141,7 @@ private fun MainScreenContent(
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
                 converterMode = mainScreenUIState.mode,
+                allowVibration = allowVibration
             )
         }
     )

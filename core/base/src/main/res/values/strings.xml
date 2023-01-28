@@ -999,6 +999,8 @@
     <string name="separator_setting">Separator</string>
     <string name="output_format_setting">Output format</string>
     <string name="unit_groups_setting">Unit groups</string>
+    <string name="enable_vibrations">Vibrations</string>
+    <string name="enable_vibrations_support">Haptic feedback when clicking keyboard buttons</string>
     <string name="currency_rates_note_setting">Wrong currency rates?</string>
     <string name="currency_rates_note_title">Note</string>
     <string name="currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>

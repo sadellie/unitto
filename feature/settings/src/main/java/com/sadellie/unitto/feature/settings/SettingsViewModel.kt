@@ -101,6 +101,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
+     * See [UserPreferencesRepository.updateVibrations]
+     */
+    fun updateVibrations(enabled: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updateVibrations(enabled)
+        }
+    }
+
+    /**
      * See [UnitGroupsRepository.markUnitGroupAsHidden] and
      * [UserPreferencesRepository.updateShownUnitGroups]
      */

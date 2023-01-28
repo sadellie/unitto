@@ -50,7 +50,8 @@ import javax.inject.Inject
  * @property outputFormat Current [OutputFormat] that is applied to converted value (not input)
  * @property latestLeftSideUnit Latest [AbstractUnit] that was on the left side
  * @property latestRightSideUnit Latest [AbstractUnit] that was on the right side
- * @property shownUnitGroups [UnitGroup]s that user wants to see. Excludes other [UnitGroup]s
+ * @property shownUnitGroups [UnitGroup]s that user wants to see. Excludes other [UnitGroup]s,
+ * @property enableVibrations When true will use haptic feedback in app.
  */
 data class UserPreferences(
     val themingMode: ThemingMode? = null,
@@ -61,7 +62,8 @@ data class UserPreferences(
     val outputFormat: Int = OutputFormat.PLAIN,
     val latestLeftSideUnit: String = MyUnitIDS.kilometer,
     val latestRightSideUnit: String = MyUnitIDS.mile,
-    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS
+    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
+    val enableVibrations: Boolean = true
 )
 
 /**
@@ -82,6 +84,7 @@ UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<P
         val LATEST_LEFT_SIDE = stringPreferencesKey("LATEST_LEFT_SIDE_PREF_KEY")
         val LATEST_RIGHT_SIDE = stringPreferencesKey("LATEST_RIGHT_SIDE_PREF_KEY")
         val SHOWN_UNIT_GROUPS = stringPreferencesKey("SHOWN_UNIT_GROUPS_PREF_KEY")
+        val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -123,6 +126,7 @@ UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<P
                     }
 
                 } ?: ALL_UNIT_GROUPS
+            val enableVibrations: Boolean = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true
 
             UserPreferences(
                 themingMode = themingMode,
@@ -133,7 +137,8 @@ UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<P
                 outputFormat = outputFormat,
                 latestLeftSideUnit = latestLeftSideUnit,
                 latestRightSideUnit = latestRightSideUnit,
-                shownUnitGroups = shownUnitGroups
+                shownUnitGroups = shownUnitGroups,
+                enableVibrations = enableVibrations
             )
         }
 
@@ -220,6 +225,17 @@ UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<P
     suspend fun updateShownUnitGroups(shownUnitGroups: List<UnitGroup>) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.SHOWN_UNIT_GROUPS] = shownUnitGroups.joinToString(",")
+        }
+    }
+
+    /**
+     * Update preference on whether or not use haptic feedback.
+     *
+     * @param enabled True if user wants to enable this feature.
+     */
+    suspend fun updateVibrations(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.ENABLE_VIBRATIONS] = enabled
         }
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Rule
+import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -44,10 +45,11 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.OUTPUT_FORMAT
 import com.sadellie.unitto.core.base.PRECISIONS
 import com.sadellie.unitto.core.base.SEPARATORS
+import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.themesRoute
@@ -143,6 +145,22 @@ internal fun SettingsScreen(
 
             // ADDITIONAL GROUP
             item { Header(stringResource(R.string.additional_settings_group)) }
+
+            // VIBRATIONS
+            item {
+                UnittoListItem(
+                    label = stringResource(R.string.enable_vibrations),
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Vibration,
+                            stringResource(R.string.enable_vibrations)
+                        )
+                    },
+                    supportText = stringResource(R.string.enable_vibrations_support),
+                    switchState = userPrefs.value.enableVibrations,
+                    onSwitchChange = viewModel::updateVibrations
+                )
+            }
 
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
