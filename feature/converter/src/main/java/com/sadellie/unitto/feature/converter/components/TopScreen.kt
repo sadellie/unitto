@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.converter.components
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,8 +41,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.Formatter
-import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.feature.converter.ConverterMode
 
@@ -107,9 +106,8 @@ internal fun TopScreenPart(
             textToCopy = calculatedValue ?: inputValue,
         )
         MyTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onOutputTextFieldClick),
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onOutputTextFieldClick,
             primaryText = {
                 when {
                     networkLoading -> stringResource(R.string.loading_label)

@@ -70,6 +70,7 @@ internal fun MyTextField(
     secondaryText: String?,
     helperText: String,
     textToCopy: String,
+    onClick: () -> Unit = {},
 ) {
     val clipboardManager = LocalClipboardManager.current
     val mc = LocalContext.current
@@ -82,7 +83,7 @@ internal fun MyTextField(
             .combinedClickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = {},
+                onClick = onClick,
                 onLongClick = {
                     clipboardManager.setText(AnnotatedString(secondaryText ?: textToShow))
                     Toast
