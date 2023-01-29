@@ -66,20 +66,16 @@ internal fun RightSideScreen(
     val uiState = viewModel.mainFlow.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val focusManager = LocalFocusManager.current
-    val inputAsBigDecimal: BigDecimal? = try {
-        inputValue.toBigDecimal()
-    } catch (e: NumberFormatException) {
-        null
-    }
 
-    val convertMethod: (AbstractUnit) -> String = when {
-        unitFrom.group == UnitGroup.NUMBER_BASE -> {{
-            convertForSecondaryNumberBase(inputValue, unitFrom as NumberBaseUnit, it as NumberBaseUnit)
-        }}
-        inputAsBigDecimal != null -> {{
-            convertForSecondary(inputAsBigDecimal, unitFrom, it)
-        }}
-        else -> {{""}}
+    val convertMethod: (AbstractUnit) -> String = try {
+        val inputAsBigDecimal = BigDecimal(inputValue)
+        if (unitFrom.group == UnitGroup.NUMBER_BASE) {
+            { (convertForSecondaryNumberBase(inputValue, unitFrom, it)) }
+        } else {
+            { convertForSecondary(inputAsBigDecimal, unitFrom, it) }
+        }
+    } catch(e: Exception) {
+        { "" }
     }
 
     Scaffold(
@@ -141,10 +137,12 @@ private fun convertForSecondary(inputValue: BigDecimal, unitFrom: AbstractUnit, 
     )  + " "
 }
 
-private fun convertForSecondaryNumberBase(inputValue: String, unitFrom: NumberBaseUnit, unitTo: NumberBaseUnit): String {
+private fun convertForSecondaryNumberBase(inputValue: String, unitFrom: AbstractUnit, unitTo: AbstractUnit): String {
     return try {
-        unitFrom.convertToBase(inputValue, unitTo.base) + " "
+        (unitFrom as NumberBaseUnit).convertToBase(inputValue, (unitTo as NumberBaseUnit).base) + " "
     } catch (e: NumberFormatException) {
+        ""
+    } catch (e: ClassCastException) {
         ""
     }
 }
