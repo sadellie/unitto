@@ -18,12 +18,17 @@
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 
 class UnittoLibraryFeaturePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
+                "implementation"(libs.findLibrary("androidx.navigation").get())
+
                 "implementation"(project(mapOf("path" to ":data")))
                 "implementation"(project(mapOf("path" to ":core:base")))
                 "implementation"(project(mapOf("path" to ":core:ui")))

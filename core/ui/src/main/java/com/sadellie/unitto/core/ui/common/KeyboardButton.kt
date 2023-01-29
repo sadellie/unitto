@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2022-2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.converter.components
+package com.sadellie.unitto.core.ui.common
 
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -36,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.common.UnittoButton
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
 
 /**
@@ -51,7 +50,7 @@ import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
  * @param onClick Action to perform when clicking this button.
  */
 @Composable
-internal fun KeyboardButton(
+fun KeyboardButton(
     modifier: Modifier = Modifier,
     digit: String,
     allowVibration: Boolean,

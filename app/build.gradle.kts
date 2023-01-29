@@ -110,6 +110,8 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:converter")))
     implementation(project(mapOf("path" to ":feature:settings")))
     implementation(project(mapOf("path" to ":feature:unitslist")))
+    implementation(project(mapOf("path" to ":feature:tools")))
+    implementation(project(mapOf("path" to ":feature:epoch")))
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core:base")))
     implementation(project(mapOf("path" to ":core:ui")))
