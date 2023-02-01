@@ -19,28 +19,36 @@
 package com.sadellie.unitto.feature.epoch.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun TopPart(
     modifier: Modifier,
     unixToDate: Boolean,
+    swap: () -> Unit,
     dateField: @Composable() (LazyItemScope.() -> Unit),
     unixField: @Composable() (LazyItemScope.() -> Unit),
 ) {
-    LazyColumn(
+    Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        if (unixToDate) {
-            item("unix") { unixField() }
-            item("date") { dateField() }
-        } else {
-            item("date") { dateField() }
-            item("unix") { unixField() }
+        LazyColumn(
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            if (unixToDate) {
+                item("unix") { unixField() }
+                item("date") { dateField() }
+            } else {
+                item("date") { dateField() }
+                item("unix") { unixField() }
+            }
         }
+        SwapButton(swap)
     }
 }

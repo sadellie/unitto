@@ -19,27 +19,19 @@
 package com.sadellie.unitto.feature.epoch
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.common.UnittoTopAppBar
+import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.feature.epoch.component.DateTextField
 import com.sadellie.unitto.feature.epoch.component.EpochKeyboard
 import com.sadellie.unitto.feature.epoch.component.TopPart
@@ -74,72 +66,57 @@ private fun EpochScreen(
         title = stringResource(R.string.epoch_converter),
         navigateUpAction = navigateUpAction
     ) { padding ->
-        Column(
+        PortraitLandscape(
             modifier = Modifier.padding(padding),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            TopPart(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-                    .weight(1f),
-                unixToDate = !uiState.dateToUnix,
-                dateField = {
-                    Column(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .animateItemPlacement()
-                    ) {
-                        DateTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            date = uiState.dateField
-                        )
-                        Text(
-                            text = "date",
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.End
-                        )
+            content1 = {
+                TopPart(
+                    modifier = it,
+                    swap = swap,
+                    unixToDate = !uiState.dateToUnix,
+                    dateField = {
+                        Column(
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.background)
+                                .animateItemPlacement()
+                        ) {
+                            DateTextField(
+                                modifier = Modifier.fillMaxWidth(),
+                                date = uiState.dateField
+                            )
+                            Text(
+                                text = "date",
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.End
+                            )
+                        }
+                    },
+                    unixField = {
+                        Column(
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.background)
+                                .animateItemPlacement()
+                        ) {
+                            UnixTextField(
+                                modifier = Modifier.fillMaxWidth(),
+                                unix = uiState.unixField
+                            )
+                            Text(
+                                text = "unix",
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.End
+                            )
+                        }
                     }
-                },
-                unixField = {
-                    Column(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .animateItemPlacement()
-                    ) {
-                        UnixTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            unix = uiState.unixField
-                        )
-                        Text(
-                            text = "unix",
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.End
-                        )
-                    }
-                }
-            )
-
-            Button(
-                onClick = swap,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-            ) {
-                Icon(Icons.Default.SwapHoriz, null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("SWAP")
+                )
+            },
+            content2 = {
+                EpochKeyboard(
+                    modifier = it,
+                    addSymbol = addSymbol,
+                    clearSymbols = clearSymbols,
+                    deleteSymbol = deleteSymbol
+                )
             }
-
-            EpochKeyboard(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-                    .weight(1f),
-                addSymbol = addSymbol,
-                clearSymbols = clearSymbols,
-                deleteSymbol = deleteSymbol
-            )
-        }
+        )
     }
 }

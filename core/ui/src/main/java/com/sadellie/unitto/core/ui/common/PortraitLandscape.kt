@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.converter.components
+package com.sadellie.unitto.core.ui.common
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
  * When Landscape mode will place [content1] and [content2] in a [Row].
  */
 @Composable
-internal fun PortraitLandscape(
+fun PortraitLandscape(
     modifier: Modifier,
     content1: @Composable (Modifier) -> Unit,
     content2: @Composable (Modifier) -> Unit,
