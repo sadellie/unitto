@@ -18,24 +18,33 @@
 
 package com.sadellie.unitto.feature.converter
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Science
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.core.ui.R
@@ -64,12 +73,25 @@ internal fun MainScreen(
                 modifier = Modifier,
                 title = { AnimatedTopBarText(launched) },
                 navigationIcon = {
-                    IconButton(onClick = navigateToTools) {
-                        Icon(
-                            Icons.Outlined.Science,
-                            contentDescription = stringResource(R.string.tools_screen)
-                        )
-                    }
+                    BadgedBox(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .clickable(
+                                onClick = navigateToTools,
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = rememberRipple(false),
+                                role = Role.Button
+                            ),
+                        badge = {
+                            Badge { Text("1") }
+                        },
+                        content = {
+                            Icon(
+                                Icons.Outlined.Science,
+                                contentDescription = stringResource(R.string.tools_screen)
+                            )
+                        }
+                    )
                 },
                 actions = {
                     IconButton(onClick = navigateToSettings) {
