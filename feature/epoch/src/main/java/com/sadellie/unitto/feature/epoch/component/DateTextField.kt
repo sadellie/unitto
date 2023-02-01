@@ -28,13 +28,11 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,52 +51,45 @@ fun DateTextField(
 ) {
     val inputWithPadding: String = date.padEnd(14, '0')
 
-    val day: String = inputWithPadding.substring(0, 2)
-    val month: String = inputWithPadding.substring(2, 4)
-    val year: String = inputWithPadding.substring(4, 8)
-    val hour: String = inputWithPadding.substring(8, 10)
-    val minute: String = inputWithPadding.substring(10, 12)
-    val second: String = inputWithPadding.substring(12, 14)
+    val hour = inputWithPadding.substring(0, 2)
+    val minute = inputWithPadding.substring(2, 4)
+    val second = inputWithPadding.substring(4, 6)
+    val day = inputWithPadding.substring(6, 8)
+    val month = inputWithPadding.substring(8, 10)
+    val year = inputWithPadding.substring(10, 14)
 
     fun inFocus(range: Int): Boolean = date.length > range
 
-    Row(
+    Column(
         modifier = modifier
             .height(IntrinsicSize.Min)
             .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End)
+        horizontalAlignment = Alignment.End
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Row {
-                DateTextAnimated(text = day, focus = inFocus(0))
-                DateText(text = stringResource(R.string.day_short), focus = inFocus(0))
-            }
-            Row {
-                DateTextAnimated(text = month, focus = inFocus(2))
-                DateText(text = stringResource(R.string.month_short), focus = inFocus(2))
-            }
-            Row {
-                DateTextAnimated(text = year, focus = inFocus(4))
-                DateText(text = stringResource(R.string.year_short), focus = inFocus(4))
-            }
+            DateTextAnimated(text = hour, focus = inFocus(0))
+            DateText(text = ":", focus = inFocus(0))
+            DateTextAnimated(text = minute, focus = inFocus(2))
+            DateText(text = ":", focus = inFocus(2))
+            DateTextAnimated(text = second, focus = inFocus(4))
         }
-
-        Divider(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp)
-        )
-
         Row(
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            DateTextAnimated(text = hour, focus = inFocus(8))
-            DateText(text = ":", focus = inFocus(8))
-            DateTextAnimated(text = minute, focus = inFocus(10))
-            DateText(text = ":", focus = inFocus(10))
-            DateTextAnimated(text = second, focus = inFocus(12))
+            Row {
+                DateTextAnimated(text = day, focus = inFocus(6))
+                DateText(text = stringResource(R.string.day_short), focus = inFocus(6))
+            }
+            Row {
+                DateTextAnimated(text = month, focus = inFocus(8))
+                DateText(text = stringResource(R.string.month_short), focus = inFocus(8))
+            }
+            Row {
+                DateTextAnimated(text = year, focus = inFocus(10))
+                DateText(text = stringResource(R.string.year_short), focus = inFocus(10))
+            }
         }
     }
 }

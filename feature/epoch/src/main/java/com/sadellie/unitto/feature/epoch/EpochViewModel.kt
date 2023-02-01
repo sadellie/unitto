@@ -82,12 +82,12 @@ class EpochViewModel @Inject constructor() : ViewModel() {
         val inputWithPadding = date.padEnd(14, '0')
 
         // Now we break input that is 14 symbols into pieces
-        val day = inputWithPadding.substring(0, 2)
-        val month = inputWithPadding.substring(2, 4)
-        val year = inputWithPadding.substring(4, 8)
-        val hour = inputWithPadding.substring(8, 10)
-        val minute = inputWithPadding.substring(10, 12)
-        val second = inputWithPadding.substring(12, 14)
+        val hour = inputWithPadding.substring(0, 2)
+        val minute = inputWithPadding.substring(2, 4)
+        val second = inputWithPadding.substring(4, 6)
+        val day = inputWithPadding.substring(6, 8)
+        val month = inputWithPadding.substring(8, 10)
+        val year = inputWithPadding.substring(10, 14)
 
         val cal = Calendar.getInstance()
         cal.set(
@@ -120,13 +120,13 @@ class EpochViewModel @Inject constructor() : ViewModel() {
         } catch (e: NumberFormatException) {
             return ""
         }
+        date += cal2.get(Calendar.HOUR_OF_DAY).toString().padStart(2, '0')
+        date += cal2.get(Calendar.MINUTE).toString().padStart(2, '0')
+        date += cal2.get(Calendar.SECOND).toString().padStart(2, '0')
         date += cal2.get(Calendar.DAY_OF_MONTH).toString().padStart(2, '0')
         date += (cal2.get(Calendar.MONTH) + 1).toString().padStart(2, '0')
         // Year is 4 symbols long
         date += cal2.get(Calendar.YEAR).toString().padStart(4, '0')
-        date += cal2.get(Calendar.HOUR_OF_DAY).toString().padStart(2, '0')
-        date += cal2.get(Calendar.MINUTE).toString().padStart(2, '0')
-        date += cal2.get(Calendar.SECOND).toString().padStart(2, '0')
         return date
     }
 }
