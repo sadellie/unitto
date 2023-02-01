@@ -67,7 +67,7 @@ internal fun MainScreen(
                     IconButton(onClick = navigateToTools) {
                         Icon(
                             Icons.Outlined.Science,
-                            contentDescription = stringResource(R.string.open_settings_description)
+                            contentDescription = stringResource(R.string.tools_screen)
                         )
                     }
                 },
