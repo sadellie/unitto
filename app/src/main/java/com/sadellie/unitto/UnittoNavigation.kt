@@ -24,10 +24,14 @@ import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.converter.MainViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterRoute
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
+import com.sadellie.unitto.feature.epoch.navigation.epochScreen
+import com.sadellie.unitto.feature.epoch.navigation.navigateToEpoch
 import com.sadellie.unitto.feature.settings.SettingsViewModel
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
+import com.sadellie.unitto.feature.tools.navigation.navigateToTools
+import com.sadellie.unitto.feature.tools.navigation.toolsScreen
 import com.sadellie.unitto.feature.unitslist.SecondViewModel
 import com.sadellie.unitto.feature.unitslist.navigation.leftScreen
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToLeftSide
@@ -53,6 +57,7 @@ fun UnittoNavigation(
                 navController.navigateToRightSide(unitFrom, unitTo, input)
             },
             navigateToSettings = { navController.navigateToSettings() },
+            navigateToTools = { navController.navigateToTools() },
             viewModel = mainViewModel
         )
 
@@ -74,6 +79,15 @@ fun UnittoNavigation(
             settingsViewModel = settingsViewModel,
             themmoController = themmoController,
             navController = navController
+        )
+
+        toolsScreen(
+            navigateUpAction = navController::navigateUp,
+            navigateToEpoch = navController::navigateToEpoch
+        )
+
+        epochScreen(
+            navigateUpAction = navController::navigateUp
         )
     }
 }

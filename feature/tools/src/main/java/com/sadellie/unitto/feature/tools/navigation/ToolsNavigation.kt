@@ -16,29 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.converter.navigation
+package com.sadellie.unitto.feature.tools.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.sadellie.unitto.feature.converter.MainScreen
-import com.sadellie.unitto.feature.converter.MainViewModel
+import com.sadellie.unitto.feature.tools.ToolsScreen
 
-const val converterRoute = "converter_route"
+private const val toolsRoute = "tools_route"
 
-fun NavGraphBuilder.converterScreen(
-    navigateToLeftScreen: (String) -> Unit,
-    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
-    navigateToSettings: () -> Unit,
-    navigateToTools: () -> Unit,
-    viewModel: MainViewModel
+fun NavController.navigateToTools() {
+    navigate(toolsRoute)
+}
+
+fun NavGraphBuilder.toolsScreen(
+    navigateUpAction: () -> Unit,
+    navigateToEpoch: () -> Unit
 ) {
-    composable(converterRoute) {
-        MainScreen(
-            navigateToLeftScreen = navigateToLeftScreen,
-            navigateToRightScreen = navigateToRightScreen,
-            navigateToSettings = navigateToSettings,
-            navigateToTools = navigateToTools,
-            viewModel = viewModel,
+    composable(toolsRoute) {
+        ToolsScreen(
+            navigateUpAction = navigateUpAction,
+            navigateToEpoch = navigateToEpoch
         )
     }
 }

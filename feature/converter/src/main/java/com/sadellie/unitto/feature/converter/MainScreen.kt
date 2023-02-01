@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.converter
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,8 +38,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sadellie.unitto.core.ui.common.AnimatedTopBarText
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.AnimatedTopBarText
 import com.sadellie.unitto.feature.converter.components.Keyboard
 import com.sadellie.unitto.feature.converter.components.PortraitLandscape
 import com.sadellie.unitto.feature.converter.components.TopScreenPart
@@ -49,6 +50,7 @@ internal fun MainScreen(
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     navigateToSettings: () -> Unit,
+    navigateToTools: () -> Unit,
     viewModel: MainViewModel = viewModel()
 ) {
     var launched: Boolean by rememberSaveable { mutableStateOf(false) }
@@ -61,6 +63,14 @@ internal fun MainScreen(
             CenterAlignedTopAppBar(
                 modifier = Modifier,
                 title = { AnimatedTopBarText(launched) },
+                navigationIcon = {
+                    IconButton(onClick = navigateToTools) {
+                        Icon(
+                            Icons.Outlined.Science,
+                            contentDescription = stringResource(R.string.open_settings_description)
+                        )
+                    }
+                },
                 actions = {
                     IconButton(onClick = navigateToSettings) {
                         Icon(

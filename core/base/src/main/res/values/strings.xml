@@ -992,6 +992,7 @@
     <string name="units_screen_from">Convert from</string>
     <string name="units_screen_to">Convert to</string>
     <string name="settings_screen">Settings</string>
+    <string name="tools_screen">Tools</string>
 
     <!--Settings items-->
     <string name="theme_setting">Themes</string>
@@ -1013,6 +1014,10 @@
     <string name="rate_this_app">Rate this app</string>
     <string name="formatting_settings_group">Formatting</string>
     <string name="additional_settings_group">Additional</string>
+
+    <!--Tools-->
+    <string name="epoch_converter">Epoch converter</string>
+    <string name="epoch_converter_support">Convert Unix timestamp</string>
 
     <!--Precision-->
     <string name="precision_setting_support">Number of decimal places</string>
@@ -1091,5 +1096,9 @@
     <string name="about_unitto">About Unitto</string>
     <string name="about_unitto_support">Learn about the app</string>
     <string name="unit_groups_support">Disable and rearrange units</string>
+
+    <!--Epoch-->
+    <string name="year_short">y</string>
+    <string name="month_short">m</string>
 
 </resources>
