@@ -36,13 +36,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.feature.epoch.R
+import kotlinx.coroutines.delay
 
 @Composable
 fun DateTextField(
@@ -50,13 +56,6 @@ fun DateTextField(
     date: String
 ) {
     val inputWithPadding: String = date.padEnd(14, '0')
-
-    val hour = inputWithPadding.substring(0, 2)
-    val minute = inputWithPadding.substring(2, 4)
-    val second = inputWithPadding.substring(4, 6)
-    val day = inputWithPadding.substring(6, 8)
-    val month = inputWithPadding.substring(8, 10)
-    val year = inputWithPadding.substring(10, 14)
 
     fun inFocus(range: Int): Boolean = date.length > range
 
@@ -69,85 +68,87 @@ fun DateTextField(
         Row(
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            DateTextAnimated(text = hour, focus = inFocus(0))
-            DateText(text = ":", focus = inFocus(0))
-            DateTextAnimated(text = minute, focus = inFocus(2))
-            DateText(text = ":", focus = inFocus(2))
-            DateTextAnimated(text = second, focus = inFocus(4))
+            // Hour
+            AnimatedText(text = inputWithPadding[0].toString(), focus = inFocus(0))
+            AnimatedText(text = inputWithPadding[1].toString(), focus = inFocus(1))
+            // Divider
+            SimpleText(text = ":", focus = inFocus(2))
+            // Minute
+            AnimatedText(text = inputWithPadding[2].toString(), focus = inFocus(2))
+            AnimatedText(text = inputWithPadding[3].toString(), focus = inFocus(3))
+            // Divider
+            SimpleText(text = ":", focus = inFocus(4))
+            // Second
+            AnimatedText(text = inputWithPadding[4].toString(), focus = inFocus(4))
+            AnimatedText(text = inputWithPadding[5].toString(), focus = inFocus(5))
         }
         Row(
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Row {
-                DateTextAnimated(text = day, focus = inFocus(6))
-                DateText(text = stringResource(R.string.day_short), focus = inFocus(6))
+                AnimatedText(text = inputWithPadding[6].toString(), focus = inFocus(6))
+                AnimatedText(text = inputWithPadding[7].toString(), focus = inFocus(7))
+                SimpleText(text = stringResource(R.string.day_short), focus = inFocus(6))
             }
             Row {
-                DateTextAnimated(text = month, focus = inFocus(8))
-                DateText(text = stringResource(R.string.month_short), focus = inFocus(8))
+                AnimatedText(text = inputWithPadding[8].toString(), focus = inFocus(8))
+                AnimatedText(text = inputWithPadding[9].toString(), focus = inFocus(9))
+                SimpleText(text = stringResource(R.string.month_short), focus = inFocus(8))
             }
             Row {
-                DateTextAnimated(text = year, focus = inFocus(10))
-                DateText(text = stringResource(R.string.year_short), focus = inFocus(10))
+                AnimatedText(text = inputWithPadding[10].toString(), focus = inFocus(10))
+                AnimatedText(text = inputWithPadding[11].toString(), focus = inFocus(11))
+                AnimatedText(text = inputWithPadding[12].toString(), focus = inFocus(12))
+                AnimatedText(text = inputWithPadding[13].toString(), focus = inFocus(13))
+                SimpleText(text = stringResource(R.string.year_short), focus = inFocus(10))
             }
         }
     }
 }
 
 @Composable
-private fun BaseDateText(
-    focus: Boolean,
-    content: @Composable (Color) -> Unit
-) {
-    val color = animateColorAsState(
-        if (focus) {
-            MaterialTheme.colorScheme.onBackground
-        } else {
-            MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
-        }
-    )
-    content(color.value)
-}
-
-@Composable
-private fun DateText(
-    focus: Boolean = true,
-    text: String
-) {
-    BaseDateText(focus = focus) { color ->
-        Text(
-            text = text,
-            style = NumbersTextStyleDisplayMedium,
-            color = color
-        )
-    }
-}
-
-@Composable
-private fun DateTextAnimated(
-    focus: Boolean = true,
-    text: String
-) {
-    BaseDateText(focus = focus) { color ->
-        AnimatedContent(
-            targetState = text,
-            transitionSpec = {
-                if (targetState.toInt() > initialState.toInt()) {
-                    slideInVertically { height -> height } + fadeIn() with
-                            slideOutVertically { height -> -height } + fadeOut()
-                } else {
-                    slideInVertically { height -> -height } + fadeIn() with
-                            slideOutVertically { height -> height } + fadeOut()
-                }.using(
-                    SizeTransform(clip = false)
-                )
-            }
-        ) {
-            Text(
-                text = it,
-                style = NumbersTextStyleDisplayMedium,
-                color = color
+private fun AnimatedText(text: String, focus: Boolean) {
+    AnimatedContent(
+        targetState = text,
+        transitionSpec = {
+            if (targetState.toInt() > initialState.toInt()) {
+                slideInVertically { height -> height } + fadeIn() with
+                        slideOutVertically { height -> -height } + fadeOut()
+            } else {
+                slideInVertically { height -> -height } + fadeIn() with
+                        slideOutVertically { height -> height } + fadeOut()
+            }.using(
+                SizeTransform(clip = false)
             )
+        }
+    ) {
+        SimpleText(text = text, focus = focus)
+    }
+}
+
+@Composable
+private fun SimpleText(text: String, focus: Boolean) {
+    val color = animateColorAsState(
+        if (focus) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline
+    )
+    Text(
+        text = text,
+        style = NumbersTextStyleDisplayMedium,
+        color = color.value
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewDateTextField() {
+    var date: String by remember { mutableStateOf("2") }
+
+    DateTextField(modifier = Modifier, date = date)
+
+    LaunchedEffect(Unit) {
+        "3550002011999".forEach {
+            date += it.toString()
+            delay(2500L)
         }
     }
 }
