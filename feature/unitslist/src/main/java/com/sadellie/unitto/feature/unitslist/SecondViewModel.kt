@@ -21,10 +21,9 @@ package com.sadellie.unitto.feature.unitslist
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.data.unitgroups.UnitGroup
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.AllUnitsRepository
-import com.sadellie.unitto.data.units.UnitGroup
-import com.sadellie.unitto.data.units.UnitGroupsRepository
 import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +42,7 @@ class SecondViewModel @Inject constructor(
     private val basedUnitRepository: MyBasedUnitsRepository,
     private val allUnitsRepository: AllUnitsRepository,
     private val mContext: Application,
-    unitGroupsRepository: UnitGroupsRepository,
+    unitGroupsRepository: com.sadellie.unitto.data.unitgroups.UnitGroupsRepository,
 ) : ViewModel() {
 
     private val _favoritesOnly = MutableStateFlow(false)

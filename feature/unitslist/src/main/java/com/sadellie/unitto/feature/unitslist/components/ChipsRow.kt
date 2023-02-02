@@ -46,8 +46,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.data.units.ALL_UNIT_GROUPS
-import com.sadellie.unitto.data.units.UnitGroup
+import com.sadellie.unitto.data.unitgroups.ALL_UNIT_GROUPS
+import com.sadellie.unitto.data.unitgroups.UnitGroup
 import com.sadellie.unitto.feature.unitslist.R
 
 /**

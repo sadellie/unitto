@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.Header
-import com.sadellie.unitto.data.units.UnitGroup
+import com.sadellie.unitto.data.unitgroups.UnitGroup
 
 @Composable
 internal fun UnitGroupHeader(modifier: Modifier, unitGroup: UnitGroup) {

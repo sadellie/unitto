@@ -26,3 +26,7 @@ plugins {
 android {
     namespace = "com.sadellie.unitto.feature.epoch"
 }
+
+dependencies {
+    implementation(project(mapOf("path" to ":data:epoch")))
+}

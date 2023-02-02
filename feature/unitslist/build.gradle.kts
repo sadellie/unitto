@@ -26,3 +26,8 @@ plugins {
 android {
     namespace = "com.sadellie.unitto.feature.unitslist"
 }
+
+dependencies {
+    implementation(project(mapOf("path" to ":data:units")))
+    implementation(project(mapOf("path" to ":data:unitgroups")))
+}

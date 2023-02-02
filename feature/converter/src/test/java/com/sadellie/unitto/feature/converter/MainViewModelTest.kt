@@ -39,11 +39,11 @@ import com.sadellie.unitto.core.base.KEY_MULTIPLY
 import com.sadellie.unitto.core.base.KEY_PLUS
 import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.core.base.KEY_SQRT
-import com.sadellie.unitto.data.preferences.DataStoreModule
-import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.database.MyBasedUnitDatabase
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
+import com.sadellie.unitto.data.userprefs.DataStoreModule
+import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -79,9 +79,10 @@ class MainViewModelTest {
     fun setUp() {
         viewModel = MainViewModel(
             userPrefsRepository = UserPreferencesRepository(
-                DataStoreModule().provideUserPreferencesDataStore(
-                    RuntimeEnvironment.getApplication()
-                )
+                DataStoreModule()
+                    .provideUserPreferencesDataStore(
+                        RuntimeEnvironment.getApplication()
+                    )
             ),
             basedUnitRepository = MyBasedUnitsRepository(
                 database.myBasedUnitDao()

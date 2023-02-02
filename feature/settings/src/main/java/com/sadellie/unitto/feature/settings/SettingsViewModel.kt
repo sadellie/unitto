@@ -21,10 +21,9 @@ package com.sadellie.unitto.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.ui.Formatter
-import com.sadellie.unitto.data.preferences.UserPreferences
-import com.sadellie.unitto.data.preferences.UserPreferencesRepository
-import com.sadellie.unitto.data.units.UnitGroup
-import com.sadellie.unitto.data.units.UnitGroupsRepository
+import com.sadellie.unitto.data.unitgroups.UnitGroup
+import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
+import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,7 +41,9 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
     var userPrefs = userPrefsRepository.userPreferencesFlow
         .onEach { Formatter.setSeparator(it.separator) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UserPreferences())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),
+            com.sadellie.unitto.data.userprefs.UserPreferences()
+        )
     val shownUnitGroups = unitGroupsRepository.shownUnitGroups
     val hiddenUnitGroups = unitGroupsRepository.hiddenUnitGroups
 

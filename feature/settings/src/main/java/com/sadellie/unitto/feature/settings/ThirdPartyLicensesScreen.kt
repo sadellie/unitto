@@ -36,10 +36,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.data.ALL_LIBRARIES
-import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.data.licenses.ALL_LIBRARIES
 
 /**
  * Screen with used third party libraries

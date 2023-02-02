@@ -112,7 +112,7 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:unitslist")))
     implementation(project(mapOf("path" to ":feature:tools")))
     implementation(project(mapOf("path" to ":feature:epoch")))
-    implementation(project(mapOf("path" to ":data")))
-    implementation(project(mapOf("path" to ":core:base")))
+    implementation(project(mapOf("path" to ":data:units")))
+    implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":core:ui")))
 }

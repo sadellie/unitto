@@ -30,4 +30,8 @@ android {
 dependencies {
     implementation(libs.com.github.sadellie.themmo)
     implementation(libs.org.burnoutcrew.composereorderable)
+
+    implementation(project(mapOf("path" to ":data:userprefs")))
+    implementation(project(mapOf("path" to ":data:licenses")))
+    implementation(project(mapOf("path" to ":data:unitgroups")))
 }

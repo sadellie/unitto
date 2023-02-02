@@ -18,8 +18,8 @@
 
 package com.sadellie.unitto.feature.unitslist
 
+import com.sadellie.unitto.data.unitgroups.UnitGroup
 import com.sadellie.unitto.data.units.AbstractUnit
-import com.sadellie.unitto.data.units.UnitGroup
 
 /**
  * Second (unit list) screen UI state.

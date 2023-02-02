@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Unitto"
 include(":app")
-include(":data")
+include(":data:units")
 include(":core:base")
 include(":core:ui")
 include(":feature:converter")
@@ -25,3 +25,7 @@ include(":feature:unitslist")
 include(":feature:settings")
 include(":feature:tools")
 include(":feature:epoch")
+include(":data:userprefs")
+include(":data:unitgroups")
+include(":data:licenses")
+include(":data:epoch")

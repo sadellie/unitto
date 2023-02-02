@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.data.units.AbstractUnit
-import com.sadellie.unitto.data.units.UnitGroup
+import com.sadellie.unitto.data.unitgroups.UnitGroup
 import com.sadellie.unitto.feature.converter.ConverterMode
 
 /**

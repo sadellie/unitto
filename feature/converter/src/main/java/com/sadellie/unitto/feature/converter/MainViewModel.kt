@@ -44,16 +44,14 @@ import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.core.base.KEY_SQRT
 import com.sadellie.unitto.core.base.OPERATORS
 import com.sadellie.unitto.data.combine
-import com.sadellie.unitto.data.preferences.UserPreferences
-import com.sadellie.unitto.data.preferences.UserPreferencesRepository
 import com.sadellie.unitto.data.setMinimumRequiredScale
 import com.sadellie.unitto.data.toStringWith
 import com.sadellie.unitto.data.trimZeros
+import com.sadellie.unitto.data.unitgroups.UnitGroup
 import com.sadellie.unitto.data.units.AbstractUnit
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.NumberBaseUnit
-import com.sadellie.unitto.data.units.UnitGroup
 import com.sadellie.unitto.data.units.database.MyBasedUnit
 import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import com.sadellie.unitto.data.units.remote.CurrencyApi
@@ -79,7 +77,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val userPrefsRepository: UserPreferencesRepository,
+    private val userPrefsRepository: com.sadellie.unitto.data.userprefs.UserPreferencesRepository,
     private val basedUnitRepository: MyBasedUnitsRepository,
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
@@ -87,7 +85,7 @@ class MainViewModel @Inject constructor(
     val userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
-        UserPreferences()
+        com.sadellie.unitto.data.userprefs.UserPreferences()
     )
 
     /**
