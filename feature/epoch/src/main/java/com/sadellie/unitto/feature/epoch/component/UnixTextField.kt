@@ -18,6 +18,13 @@
 
 package com.sadellie.unitto.feature.epoch.component
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -41,11 +48,26 @@ fun UnixTextField(
             .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.End
     ) {
-        Text(
-            text = unix.ifEmpty { "0" },
-            modifier = modifier,
-            style = NumbersTextStyleDisplayMedium,
-            textAlign = TextAlign.End
-        )
+        AnimatedContent(
+            targetState = unix.ifEmpty { "0" },
+            transitionSpec = {
+                if (targetState.toBigDecimal() > initialState.toBigDecimal()) {
+                    slideInVertically { height -> height } + fadeIn() with
+                            slideOutVertically { height -> -height } + fadeOut()
+                } else {
+                    slideInVertically { height -> -height } + fadeIn() with
+                            slideOutVertically { height -> height } + fadeOut()
+                }.using(
+                    SizeTransform(clip = false)
+                )
+            }
+        ) {
+            Text(
+                text = it,
+                modifier = modifier,
+                style = NumbersTextStyleDisplayMedium,
+                textAlign = TextAlign.End
+            )
+        }
     }
 }
