@@ -34,7 +34,7 @@ private const val epochRoute = "epoch_route"
 fun NavController.navigateToEpoch() {
     val shortcut = ShortcutInfoCompat
         .Builder(context, epochRoute)
-        .setLongLabel(context.getString(R.string.epoch_converter))
+        .setShortLabel(context.getString(R.string.epoch_converter))
         .setLongLabel(context.getString(R.string.epoch_converter))
         .setIntent(
             Intent(
