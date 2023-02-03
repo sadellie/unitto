@@ -25,8 +25,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,7 +39,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun SwapButton(swap: () -> Unit) {
+internal fun SwapButton(
+    modifier: Modifier,
+    swap: () -> Unit
+) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val cornerRadius: Int by animateIntAsState(
@@ -52,9 +53,7 @@ internal fun SwapButton(swap: () -> Unit) {
     Button(
         onClick = swap,
         shape = RoundedCornerShape(cornerRadius),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
+        modifier = modifier,
         contentPadding = PaddingValues(vertical = 26.dp, horizontal = 8.dp),
         interactionSource = interactionSource
     ) {

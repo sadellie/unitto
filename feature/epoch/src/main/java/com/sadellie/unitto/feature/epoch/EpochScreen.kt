@@ -18,24 +18,22 @@
 
 package com.sadellie.unitto.feature.epoch
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.common.UnittoTopAppBar
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
-import com.sadellie.unitto.feature.epoch.component.DateTextField
 import com.sadellie.unitto.feature.epoch.component.EpochKeyboard
 import com.sadellie.unitto.feature.epoch.component.TopPart
-import com.sadellie.unitto.feature.epoch.component.UnixTextField
 
 @Composable
 internal fun EpochRoute(
@@ -57,8 +55,8 @@ internal fun EpochRoute(
 private fun EpochScreen(
     navigateUpAction: () -> Unit,
     uiState: EpochUIState,
-    addSymbol: (String) -> Unit,
-    deleteSymbol: () -> Unit,
+    addSymbol: (String, Int) -> Unit,
+    deleteSymbol: (Int) -> Unit,
     clearSymbols: () -> Unit,
     swap: () -> Unit
 ) {
@@ -66,55 +64,41 @@ private fun EpochScreen(
         title = stringResource(R.string.epoch_converter),
         navigateUpAction = navigateUpAction
     ) { padding ->
+        var selection: TextRange by remember { mutableStateOf(TextRange.Zero) }
+
         PortraitLandscape(
             modifier = Modifier.padding(padding),
-            content1 = {
+            content1 = { topContentModifier ->
                 TopPart(
-                    modifier = it,
-                    swap = swap,
-                    unixToDate = !uiState.dateToUnix,
-                    dateField = {
-                        Column(
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.background)
-                                .animateItemPlacement()
-                        ) {
-                            DateTextField(
-                                modifier = Modifier.fillMaxWidth(),
-                                date = uiState.dateField
-                            )
-                            Text(
-                                text = "date",
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.End
-                            )
-                        }
+                    modifier = topContentModifier.padding(horizontal = 8.dp),
+                    dateToUnix = uiState.dateToUnix,
+                    dateValue = uiState.dateField,
+                    unixValue = uiState.unixField,
+                    swap = {
+                        swap()
+                        selection = TextRange.Zero
                     },
-                    unixField = {
-                        Column(
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.background)
-                                .animateItemPlacement()
-                        ) {
-                            UnixTextField(
-                                modifier = Modifier.fillMaxWidth(),
-                                unix = uiState.unixField
-                            )
-                            Text(
-                                text = "unix",
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.End
-                            )
-                        }
-                    }
+                    selection = selection,
+                    onCursorChange = { selection = it.selection }
                 )
             },
-            content2 = {
+            content2 = { bottomModifier ->
                 EpochKeyboard(
-                    modifier = it,
-                    addSymbol = addSymbol,
-                    clearSymbols = clearSymbols,
-                    deleteSymbol = deleteSymbol
+                    modifier = bottomModifier,
+                    addSymbol = {
+                        addSymbol(it, selection.start)
+                        selection = TextRange(selection.start + 1)
+                    },
+                    clearSymbols = {
+                        clearSymbols()
+                        selection = TextRange.Zero
+                    },
+                    deleteSymbol = {
+                        if (selection.start != 0) {
+                            deleteSymbol(selection.start - 1)
+                            selection = TextRange(selection.start - 1)
+                        }
+                    }
                 )
             }
         )

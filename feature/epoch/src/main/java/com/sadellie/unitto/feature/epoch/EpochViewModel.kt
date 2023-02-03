@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import java.lang.Integer.min
 import javax.inject.Inject
 
 data class EpochUIState(
@@ -68,12 +69,17 @@ class EpochViewModel @Inject constructor() : ViewModel() {
         viewModelScope, SharingStarted.WhileSubscribed(5000L), EpochUIState()
     )
 
-    fun addSymbol(symbol: String) {
+    fun addSymbol(symbol: String, position: Int) {
         val maxSymbols = if (_fromDateToUnix.value) 14 else 10
-        if (_input.value.length < maxSymbols) _input.update { it + symbol }
+        if (_input.value.length >= maxSymbols) return
+        _input.update { it.replaceRange(position, position, symbol) }
     }
 
-    fun deleteSymbol() = _input.update { it.dropLast(1) }
+    fun deleteSymbol(position: Int) {
+        _input.update {
+            it.removeRange(position, min(position + 1, _input.value.length))
+        }
+    }
 
     fun clearSymbols() = _input.update { "" }
 
