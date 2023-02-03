@@ -33,7 +33,7 @@ internal fun Project.configureCompose(
 
         composeOptions {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-            kotlinCompilerExtensionVersion = libs.findVersion("androidxCompose").get().toString()
+            kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
         }
     }
 }
