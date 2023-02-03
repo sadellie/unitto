@@ -52,9 +52,15 @@ class EpochViewModel @Inject constructor() : ViewModel() {
                 dateToUnix = fromDateToUnix
             )
         } else {
+            val date = try {
+                EpochDateConverter.convertUnixToDate(input)
+            } catch (e: IllegalArgumentException) {
+                ""
+            }
+
             EpochUIState(
                 unixField = input,
-                dateField = EpochDateConverter.convertUnixToDate(input),
+                dateField = date,
                 dateToUnix = fromDateToUnix
             )
         }

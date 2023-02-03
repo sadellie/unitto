@@ -24,3 +24,7 @@ plugins {
 android {
     namespace = "com.sadellie.unitto.data.epoch"
 }
+
+dependencies {
+    testImplementation(libs.junit)
+}

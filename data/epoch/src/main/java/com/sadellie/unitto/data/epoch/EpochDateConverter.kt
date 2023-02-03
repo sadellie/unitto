@@ -18,60 +18,33 @@
 
 package com.sadellie.unitto.data.epoch
 
-import java.math.BigDecimal
-import java.util.*
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 object EpochDateConverter {
+    private val pattern by lazy {
+        DateTimeFormatter.ofPattern("HHmmssddMMyyyy")
+    }
+
     fun convertDateToUnix(date: String): String {
-        // Here we add some zeros, so that input is 14 symbols long
-        val inputWithPadding = date.padEnd(14, '0')
-
-        // Now we break input that is 14 symbols into pieces
-        val hour = inputWithPadding.substring(0, 2)
-        val minute = inputWithPadding.substring(2, 4)
-        val second = inputWithPadding.substring(4, 6)
-        val day = inputWithPadding.substring(6, 8)
-        val month = inputWithPadding.substring(8, 10)
-        val year = inputWithPadding.substring(10, 14)
-
-        val cal = Calendar.getInstance()
-        cal.set(
-            year.toIntOrNull() ?: 1970,
-            (month.toIntOrNull() ?: 1) - 1,
-            day.toIntOrNull() ?: 0,
-            hour.toIntOrNull() ?: 0,
-            minute.toIntOrNull() ?: 0,
-            second.toIntOrNull() ?: 0,
-        )
-        return (cal.timeInMillis / 1000).toString()
+        return try {
+            // Here we add some zeros, so that input is 14 symbols long
+            LocalDateTime
+                .parse(date.padEnd(14, '0'), pattern)
+                .toEpochSecond(ZoneOffset.UTC)
+        } catch (e: DateTimeParseException) {
+            0
+        }.toString()
     }
 
     fun convertUnixToDate(unix: String): String {
-        var date = ""
-        val cal2 = Calendar.getInstance()
-        cal2.clear()
-        cal2.isLenient = true
+        val unixLong = unix.toLong().takeIf { it <= 253402300559L }
+            ?: throw IllegalArgumentException("Max unix is 253402300559")
 
-        // This lets us bypass calendars limits (it uses Int, we want BigDecimal)
-        try {
-            val unixBg = BigDecimal(unix.ifEmpty { "0" })
-            val division = unixBg.divideAndRemainder(BigDecimal(Int.MAX_VALUE))
-            val intTimes = division.component1()
-            val rem = division.component2()
-            repeat(intTimes.intValueExact()) {
-                cal2.add(Calendar.SECOND, Int.MAX_VALUE)
-            }
-            cal2.add(Calendar.SECOND, rem.intValueExact())
-        } catch (e: NumberFormatException) {
-            return ""
-        }
-        date += cal2.get(Calendar.HOUR_OF_DAY).toString().padStart(2, '0')
-        date += cal2.get(Calendar.MINUTE).toString().padStart(2, '0')
-        date += cal2.get(Calendar.SECOND).toString().padStart(2, '0')
-        date += cal2.get(Calendar.DAY_OF_MONTH).toString().padStart(2, '0')
-        date += (cal2.get(Calendar.MONTH) + 1).toString().padStart(2, '0')
-        // Year is 4 symbols long
-        date += cal2.get(Calendar.YEAR).toString().padStart(4, '0')
-        return date
+        return LocalDateTime
+            .ofEpochSecond(unixLong, 0, ZoneOffset.UTC)
+            .format(pattern)
     }
 }

@@ -4,6 +4,7 @@ appName = "Glaucous"
 androidxCore = "1.9.0"
 androidxTest = "1.5.0"
 androidxTestExt = "1.1.4"
+androidDesugarJdkLibs = "2.0.0"
 junit = "4.13.2"
 androidxTestRunner = "1.5.1"
 androidxTestRules = "1.5.0"
@@ -61,6 +62,7 @@ com-squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "converter-m
 com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
 org-burnoutcrew-composereorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "orgBurnoutcrewComposereorderable" }
 com-github-sadellie-exprk = { group = "com.github.sadellie", name = "ExprK", version.ref = "comGithubSadellieExprk" }
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 
 # classpath
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
