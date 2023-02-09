@@ -39,7 +39,9 @@ fun NavController.navigateToEpoch() {
         .setIntent(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("app://com.sadellie.unitto/$epochRoute")
+                Uri.parse("app://com.sadellie.unitto/$epochRoute"),
+                context,
+                context.javaClass
             )
         )
         .build()
