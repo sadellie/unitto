@@ -28,13 +28,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import java.lang.Integer.min
 import javax.inject.Inject
 
 data class EpochUIState(
     val dateField: String = "",
     val unixField: String = "",
-    val dateToUnix: Boolean = true
+    val dateToUnix: Boolean = true,
+    val selection: IntRange = 0..0
 )
 
 @HiltViewModel
@@ -42,15 +42,17 @@ class EpochViewModel @Inject constructor() : ViewModel() {
 
     private val _input: MutableStateFlow<String> = MutableStateFlow("")
     private val _fromDateToUnix: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    private val _selection: MutableStateFlow<IntRange> = MutableStateFlow(IntRange(0, 0))
 
     val uiState: StateFlow<EpochUIState> = combine(
-        _input, _fromDateToUnix
-    ) { input, fromDateToUnix ->
+        _input, _fromDateToUnix, _selection
+    ) { input, fromDateToUnix, selection ->
         if (fromDateToUnix) {
             EpochUIState(
                 dateField = input,
                 unixField = EpochDateConverter.convertDateToUnix(input),
-                dateToUnix = fromDateToUnix
+                dateToUnix = fromDateToUnix,
+                selection = selection
             )
         } else {
             val date = try {
@@ -62,29 +64,48 @@ class EpochViewModel @Inject constructor() : ViewModel() {
             EpochUIState(
                 unixField = input,
                 dateField = date,
-                dateToUnix = fromDateToUnix
+                dateToUnix = fromDateToUnix,
+                selection = selection
             )
         }
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), EpochUIState()
     )
 
-    fun addSymbol(symbol: String, position: Int) {
+    fun addSymbol(symbol: String) {
+        val selection = _selection.value
         val maxSymbols = if (_fromDateToUnix.value) 14 else 10
         if (_input.value.length >= maxSymbols) return
-        _input.update { it.replaceRange(position, position, symbol) }
-    }
 
-    fun deleteSymbol(position: Int) {
-        _input.update {
-            it.removeRange(position, min(position + 1, _input.value.length))
+        _input.update { 
+            if (it.isEmpty()) symbol else it.replaceRange(selection.first, selection.last, symbol)
         }
+        _selection.update { it.first + 1..it.first + 1 }
     }
 
-    fun clearSymbols() = _input.update { "" }
+    fun deleteSymbol() {
+        val selection = _selection.value
+        val newSelectionStart = when (selection.last) {
+            0 -> return
+            selection.first -> _selection.value.first - 1
+            else -> _selection.value.first
+        }
 
-    fun swap() = _fromDateToUnix.update {
+        _selection.update { newSelectionStart..newSelectionStart }
+        _input.update { it.removeRange(newSelectionStart, selection.last) }
+    }
+
+    fun clearSymbols() {
+        _selection.update { 0..0 }
+        _input.update { "" }
+    }
+
+    fun swap() {
         clearSymbols()
-        !it
+        _fromDateToUnix.update { !it }
+    }
+
+    fun onCursorChange(selectionRange: IntRange) {
+        _selection.update { selectionRange }
     }
 }

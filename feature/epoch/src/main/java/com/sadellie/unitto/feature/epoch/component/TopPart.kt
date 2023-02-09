@@ -37,7 +37,7 @@ fun TopPart(
     dateValue: String,
     unixValue: String,
     selection: TextRange,
-    onCursorChange: (TextFieldValue) -> Unit
+    onCursorChange: (IntRange) -> Unit
 ) {
     Column(
         modifier = modifier,

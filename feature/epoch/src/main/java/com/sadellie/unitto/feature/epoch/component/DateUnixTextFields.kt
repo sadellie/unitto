@@ -33,7 +33,7 @@ import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 @Composable
 internal fun DateUnixTextFields(
     fromTextFieldValue: TextFieldValue,
-    onCursorChange: (TextFieldValue) -> Unit,
+    onCursorChange: (IntRange) -> Unit,
     fromSupportText: String,
     toTextValue: String,
     toSupportText: String,
@@ -47,7 +47,7 @@ internal fun DateUnixTextFields(
         ) {
             BasicTextField(
                 value = fromTextFieldValue,
-                onValueChange = onCursorChange,
+                onValueChange = { onCursorChange(it.selection.start..it.selection.end) },
                 textStyle = NumbersTextStyleDisplayMedium.copy(
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.onBackground
