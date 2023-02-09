@@ -22,6 +22,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -36,6 +37,7 @@ fun NavController.navigateToEpoch() {
         .Builder(context, epochRoute)
         .setShortLabel(context.getString(R.string.epoch_converter))
         .setLongLabel(context.getString(R.string.epoch_converter))
+        .setIcon(IconCompat.createWithResource(context, R.drawable.ic_shortcut_epoch))
         .setIntent(
             Intent(
                 Intent.ACTION_VIEW,
