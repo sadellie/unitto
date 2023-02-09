@@ -22,19 +22,12 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 
 @Composable
 fun TopPart(
@@ -77,49 +70,5 @@ fun TopPart(
             }
         }
         SwapButton(modifier = Modifier.fillMaxWidth(), swap = swap)
-    }
-}
-
-@Composable
-fun DateUnixTextFields(
-    fromTextFieldValue: TextFieldValue,
-    onCursorChange: (TextFieldValue) -> Unit,
-    fromSupportText: String,
-    toTextValue: String,
-    toSupportText: String,
-    visualTransformation: VisualTransformation,
-    fromPlaceholderText: String,
-    toPlaceholderText: String
-) {
-    Column {
-        CompositionLocalProvider(
-            LocalTextInputService provides null
-        ) {
-            BasicTextField(
-                value = fromTextFieldValue,
-                onValueChange = onCursorChange,
-                textStyle = NumbersTextStyleDisplayMedium.copy(textAlign = TextAlign.Start),
-                minLines = 1,
-                maxLines = 2,
-                visualTransformation = visualTransformation,
-                decorationBox = { innerTextField ->
-                    Text(
-                        text = fromPlaceholderText,
-                        minLines = 1,
-                        maxLines = 2,
-                        style = NumbersTextStyleDisplayMedium,
-                        color = MaterialTheme.colorScheme.outline,
-                        textAlign = TextAlign.Start
-                    )
-                    innerTextField()
-                }
-            )
-        }
-        Text(text = fromSupportText)
-        Text(
-            text = toTextValue.ifEmpty { toPlaceholderText },
-            style = NumbersTextStyleDisplayMedium,
-        )
-        Text(text = toSupportText)
     }
 }
