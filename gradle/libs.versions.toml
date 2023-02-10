@@ -29,6 +29,7 @@ orgBurnoutcrewComposereorderable = "0.9.6"
 comGithubSadellieExprk = "e55cba8f41"
 androidGradlePlugin = "7.4.1"
 kotlin = "1.8.0"
+mxParser = "5.2.1"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -42,7 +43,7 @@ org-jetbrains-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name 
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxComposeUi" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxComposeUi" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxComposeUi" }
-androidx-compose-ui-test-junit4 = { group= "androidx.compose.ui", name = "ui-test-junit4", version.ref = "androidxCompose" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "androidxCompose" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "androidxCompose" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycleRuntimeCompose" }
@@ -63,6 +64,7 @@ com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", v
 org-burnoutcrew-composereorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "orgBurnoutcrewComposereorderable" }
 com-github-sadellie-exprk = { group = "com.github.sadellie", name = "ExprK", version.ref = "comGithubSadellieExprk" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+org-mariuszgromada-math-mxparser = { group = "org.mariuszgromada.math", name = "MathParser.org-mXparser", version.ref = "mxParser" }
 
 # classpath
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

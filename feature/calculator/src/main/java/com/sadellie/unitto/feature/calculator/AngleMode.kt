@@ -16,29 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.tools.navigation
+package com.sadellie.unitto.feature.calculator
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import com.sadellie.unitto.feature.tools.ToolsScreen
-
-private const val toolsRoute = "tools_route"
-
-fun NavController.navigateToTools() {
-    navigate(toolsRoute)
-}
-
-fun NavGraphBuilder.toolsScreen(
-    navigateUpAction: () -> Unit,
-    navigateToCalculator: () -> Unit,
-    navigateToEpoch: () -> Unit
-) {
-    composable(toolsRoute) {
-        ToolsScreen(
-            navigateUpAction = navigateUpAction,
-            navigateToCalculator = navigateToCalculator,
-            navigateToEpoch = navigateToEpoch
-        )
-    }
-}
+internal enum class AngleMode { DEG, RAD }

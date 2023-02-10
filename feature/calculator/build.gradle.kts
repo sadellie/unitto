@@ -16,29 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.tools.navigation
-
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import com.sadellie.unitto.feature.tools.ToolsScreen
-
-private const val toolsRoute = "tools_route"
-
-fun NavController.navigateToTools() {
-    navigate(toolsRoute)
+plugins {
+    id("unitto.library")
+    id("unitto.library.compose")
+    id("unitto.library.feature")
+    id("unitto.android.hilt")
 }
 
-fun NavGraphBuilder.toolsScreen(
-    navigateUpAction: () -> Unit,
-    navigateToCalculator: () -> Unit,
-    navigateToEpoch: () -> Unit
-) {
-    composable(toolsRoute) {
-        ToolsScreen(
-            navigateUpAction = navigateUpAction,
-            navigateToCalculator = navigateToCalculator,
-            navigateToEpoch = navigateToEpoch
-        )
-    }
+android {
+    namespace = "com.sadellie.unitto.feature.calculator"
+}
+
+dependencies {
+    testImplementation(libs.junit)
+    implementation(libs.org.mariuszgromada.math.mxparser)
+    implementation(libs.com.github.sadellie.themmo)
+
+    implementation(project(mapOf("path" to ":data:userprefs")))
+    implementation(project(mapOf("path" to ":data:unitgroups")))
+    implementation(project(mapOf("path" to ":data:units")))
 }

@@ -57,6 +57,17 @@ const val KEY_RIGHT_BRACKET = ")"
 const val KEY_EXPONENT = "^"
 
 const val KEY_SQRT = "√"
+const val KEY_PI = "π"
+const val KEY_FACTORIAL = "!"
+const val KEY_SIN = "sin("
+const val KEY_COS = "cos("
+const val KEY_TAN = "tan("
+const val KEY_E_SMALL = "e"
+const val KEY_MODULO = "#"
+const val KEY_LN = "ln("
+const val KEY_LOG = "log("
+const val KEY_PERCENT = "%"
+const val KEY_EVALUATE = "="
 
 val OPERATORS by lazy {
     listOf(

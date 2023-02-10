@@ -110,6 +110,7 @@ dependencies {
     implementation(libs.com.google.accompanist.systemuicontroller)
 
     implementation(project(mapOf("path" to ":feature:converter")))
+    implementation(project(mapOf("path" to ":feature:calculator")))
     implementation(project(mapOf("path" to ":feature:settings")))
     implementation(project(mapOf("path" to ":feature:unitslist")))
     implementation(project(mapOf("path" to ":feature:tools")))

@@ -21,6 +21,8 @@ package com.sadellie.unitto
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
+import com.sadellie.unitto.feature.calculator.navigation.navigateToCalculator
 import com.sadellie.unitto.feature.converter.MainViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterRoute
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
@@ -83,8 +85,11 @@ fun UnittoNavigation(
 
         toolsScreen(
             navigateUpAction = navController::navigateUp,
+            navigateToCalculator = navController::navigateToCalculator,
             navigateToEpoch = navController::navigateToEpoch
         )
+
+        calculatorScreen(navigateUpAction = navController::navigateUp)
 
         epochScreen(
             navigateUpAction = navController::navigateUp

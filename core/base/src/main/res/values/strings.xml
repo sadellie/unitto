@@ -1022,6 +1022,10 @@
     <string name="tools_notice_description">This screen is part of an experiment. It may change in the future.</string>
     <string name="click_to_read_more">Click to read more!</string>
 
+    <!--Calculator-->
+    <string name="calculator">Calculator</string>
+    <string name="calculator_support">Calculate, but don\'t convert</string>
+
     <!--Precision-->
     <string name="precision_setting_support">Number of decimal places</string>
     <string name="precision_setting_info">Converted values may have a precision higher than the preferred one.</string>

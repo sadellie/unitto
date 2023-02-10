@@ -16,29 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.tools.navigation
+package com.sadellie.unitto.feature.calculator.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.sadellie.unitto.feature.tools.ToolsScreen
+import androidx.navigation.navDeepLink
+import com.sadellie.unitto.feature.calculator.CalculatorRoute
 
-private const val toolsRoute = "tools_route"
+private const val calculatorRoute = "calculator_route"
 
-fun NavController.navigateToTools() {
-    navigate(toolsRoute)
+fun NavController.navigateToCalculator() {
+    navigate(calculatorRoute)
 }
 
-fun NavGraphBuilder.toolsScreen(
-    navigateUpAction: () -> Unit,
-    navigateToCalculator: () -> Unit,
-    navigateToEpoch: () -> Unit
+fun NavGraphBuilder.calculatorScreen(
+    navigateUpAction: () -> Unit
 ) {
-    composable(toolsRoute) {
-        ToolsScreen(
-            navigateUpAction = navigateUpAction,
-            navigateToCalculator = navigateToCalculator,
-            navigateToEpoch = navigateToEpoch
-        )
+    composable(
+        route = calculatorRoute,
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$calculatorRoute" }
+        )) {
+        CalculatorRoute(navigateUpAction = navigateUpAction)
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 @Composable
 internal fun ToolsScreen(
     navigateUpAction: () -> Unit,
+    navigateToCalculator: () -> Unit,
     navigateToEpoch: () -> Unit
 ) {
     UnittoLargeTopAppBar(
@@ -61,6 +63,19 @@ internal fun ToolsScreen(
                 ListItem(
                     leadingContent = {
                         Icon(
+                            Icons.Default.Calculate,
+                            stringResource(R.string.calculator)
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.calculator)) },
+                    supportingText = { Text(stringResource(R.string.calculator_support)) },
+                    modifier = Modifier.clickable { navigateToCalculator() }
+                )
+            }
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
                             Icons.Default.Schedule,
                             stringResource(R.string.epoch_converter)
                         )
@@ -79,6 +94,7 @@ internal fun ToolsScreen(
 internal fun PreviewToolsScreen() {
     ToolsScreen(
         navigateUpAction = {},
-        navigateToEpoch = {}
+        navigateToEpoch = {},
+        navigateToCalculator = {}
     )
 }

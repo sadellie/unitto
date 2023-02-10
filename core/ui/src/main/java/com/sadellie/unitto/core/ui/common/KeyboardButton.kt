@@ -29,14 +29,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
+import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleSmall
 
 /**
  * Button for keyboard
@@ -85,5 +89,107 @@ fun KeyboardButton(
 
     LaunchedEffect(key1 = isPressed) {
         if (isPressed and allowVibration) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+    }
+}
+
+@Composable
+fun BasicKeyboardButton(
+    modifier: Modifier,
+    onClick: () -> Unit,
+    onLongClick: (() -> Unit)?,
+    containerColor: Color,
+    contentColor: Color,
+    text: String,
+    textColor: Color,
+    fontSize: TextUnit,
+    allowVibration: Boolean
+) {
+    val view = LocalView.current
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val cornerRadius: Int by animateIntAsState(
+        targetValue = if (isPressed) 30 else 50,
+        animationSpec = tween(easing = FastOutSlowInEasing),
+    )
+
+    UnittoButton(
+        modifier = modifier,
+        onClick = onClick,
+        onLongClick = onLongClick,
+        shape = RoundedCornerShape(cornerRadius),
+        containerColor = containerColor,
+        contentColor = contentColor,
+        interactionSource = interactionSource
+    ) {
+        Text(
+            text = text,
+            style = NumbersTextStyleTitleLarge,
+            color = textColor,
+            fontSize = fontSize
+        )
+    }
+
+    LaunchedEffect(key1 = isPressed) {
+        if (isPressed and allowVibration) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+    }
+}
+
+@Composable
+fun KeyboardButtonLight(
+    modifier: Modifier,
+    symbol: String,
+    onClick: (String) -> Unit,
+    onLongClick: (() -> Unit)? = null,
+    allowVibration: Boolean = false
+) {
+    BasicKeyboardButton(
+        modifier = modifier,
+        onClick = { onClick(symbol) },
+        onLongClick = onLongClick,
+        containerColor = MaterialTheme.colorScheme.inverseOnSurface,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        text = symbol,
+        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        fontSize = TextUnit.Unspecified,
+        allowVibration = allowVibration,
+    )
+}
+
+@Composable
+fun KeyboardButtonFilled(
+    modifier: Modifier,
+    symbol: String,
+    onClick: (String) -> Unit,
+    onLongClick: (() -> Unit)? = null,
+    allowVibration: Boolean = false
+) {
+    BasicKeyboardButton(
+        modifier = modifier,
+        onClick = { onClick(symbol) },
+        onLongClick = onLongClick,
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        text = symbol,
+        textColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        fontSize = TextUnit.Unspecified,
+        allowVibration = allowVibration
+    )
+}
+
+@Composable
+fun KeyboardButtonAdditional(
+    modifier: Modifier,
+    symbol: String,
+    onClick: (String) -> Unit
+) {
+    TextButton(
+        onClick = { onClick(symbol) },
+        modifier = modifier
+    ) {
+        Text(
+            text = symbol,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            style = NumbersTextStyleTitleSmall
+        )
     }
 }
