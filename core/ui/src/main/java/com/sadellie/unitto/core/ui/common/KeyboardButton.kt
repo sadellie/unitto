@@ -26,7 +26,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,56 +40,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleSmall
-
-/**
- * Button for keyboard
- *
- * @param modifier Modifier that is applied to a [Button] component.
- * @param digit Symbol to show on button.
- * @param allowVibration When true will vibrate on button press.
- * @param isPrimary If true will use `inverseOnSurface` color, else `secondaryContainer`. Primary
- * buttons are digits.
- * @param onLongClick Action to perform when holding this button.
- * @param onClick Action to perform when clicking this button.
- */
-@Composable
-fun KeyboardButton(
-    modifier: Modifier = Modifier,
-    digit: String,
-    allowVibration: Boolean,
-    isPrimary: Boolean = true,
-    onLongClick: (() -> Unit)? = null,
-    onClick: (String) -> Unit = {}
-) {
-    val view = LocalView.current
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val cornerRadius: Int by animateIntAsState(
-        targetValue = if (isPressed) 30 else 50,
-        animationSpec = tween(easing = FastOutSlowInEasing),
-    )
-
-    UnittoButton(
-        onClick = { onClick(digit) },
-        onLongClick = onLongClick,
-        modifier = modifier,
-        shape = RoundedCornerShape(cornerRadius),
-        containerColor = if (isPrimary) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        contentPadding = PaddingValues(0.dp),
-        interactionSource = interactionSource,
-    ) {
-        Text(
-            text = digit,
-            style = NumbersTextStyleTitleLarge,
-            color = if (isPrimary) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSecondaryContainer
-        )
-    }
-
-    LaunchedEffect(key1 = isPressed) {
-        if (isPressed and allowVibration) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-    }
-}
 
 @Composable
 fun BasicKeyboardButton(
@@ -119,6 +68,7 @@ fun BasicKeyboardButton(
         shape = RoundedCornerShape(cornerRadius),
         containerColor = containerColor,
         contentColor = contentColor,
+        contentPadding = PaddingValues(0.dp),
         interactionSource = interactionSource
     ) {
         Text(
