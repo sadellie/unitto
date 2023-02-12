@@ -105,43 +105,36 @@ internal fun SearchBar(
     TopAppBar(
         title = {
             Crossfade(targetState = showSearch) { textFieldShown ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    when (textFieldShown) {
-                        // No search text field
-                        false -> {
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f),
-                                text = title,
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                        }
-                        // With text field
-                        true -> {
-                            SearchTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                                    .focusRequester(focusRequester),
-                                value = value,
-                                onValueChange = onValueChange,
-                                onSearch = {
-                                    // Close searchbar if there is nothing in search query and user
-                                    // clicks search button on his keyboard
-                                    if (value.isEmpty()) {
-                                        showSearch = false
-                                    } else {
-                                        focusManager.clearFocus()
-                                    }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (textFieldShown) {
+                        SearchTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .focusRequester(focusRequester),
+                            value = value,
+                            onValueChange = onValueChange,
+                            onSearch = {
+                                // Close searchbar if there is nothing in search query and user
+                                // clicks search button on his keyboard
+                                if (value.isEmpty()) {
+                                    showSearch = false
+                                } else {
+                                    focusManager.clearFocus()
                                 }
-                            )
-                            LaunchedEffect(Unit) {
-                                focusRequester.requestFocus()
                             }
+                        )
+                        LaunchedEffect(Unit) {
+                            focusRequester.requestFocus()
                         }
+                    } else {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            text = title,
+                            style = MaterialTheme.typography.titleLarge
+                        )
                     }
                 }
             }
@@ -195,17 +188,15 @@ private fun SearchTextField(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = onSearch),
         decorationBox = { innerTextField ->
+            innerTextField()
             // Showing placeholder only when there is query is empty
-            if (value.isEmpty()) {
-                innerTextField()
+            value.ifEmpty {
                 Text(
                     modifier = Modifier.alpha(0.7f),
                     text = stringResource(R.string.search_bar_placeholder),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-            } else {
-                innerTextField()
             }
         }
     )

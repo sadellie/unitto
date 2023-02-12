@@ -1,21 +1,16 @@
 [versions]
 appCode = "14"
 appName = "Glaucous"
+kotlin = "1.8.10"
 androidxCore = "1.9.0"
-androidxTest = "1.5.0"
-androidxTestExt = "1.1.4"
-androidDesugarJdkLibs = "2.0.0"
-junit = "4.13.2"
-androidxTestRunner = "1.5.1"
-androidxTestRules = "1.5.0"
-orgRobolectric = "4.9"
+androidGradlePlugin = "7.4.1"
 orgJetbrainsKotlinxCoroutinesTest = "1.6.4"
-androidxCompose = "1.4.0-alpha05"
-androidxComposeCompiler = "1.4.0"
-androidxComposeUi = "1.4.0-alpha05"
+androidxCompose = "1.4.0-beta01"
+androidxComposeCompiler = "1.4.2"
+androidxComposeUi = "1.4.0-beta01"
+androidxComposeMaterial3 = "1.1.0-alpha06"
 androidxNavigation = "2.5.3"
-androidxLifecycleRuntimeCompose = "2.6.0-alpha05"
-androidxComposeMaterial3 = "1.1.0-alpha05"
+androidxLifecycleRuntimeCompose = "2.6.0-beta01"
 androidxHilt = "1.0.0"
 comGoogleDagger = "2.44.2"
 androidxComposeMaterialIconsExtended = "1.4.0-alpha04"
@@ -27,9 +22,14 @@ comSquareupRetrofit2 = "2.9.0"
 comGithubSadellieThemmo = "cf6be7e592"
 orgBurnoutcrewComposereorderable = "0.9.6"
 comGithubSadellieExprk = "e55cba8f41"
-androidGradlePlugin = "7.4.1"
-kotlin = "1.8.0"
 mxParser = "5.2.1"
+junit = "4.13.2"
+androidxTest = "1.5.0"
+androidxTestExt = "1.1.4"
+androidDesugarJdkLibs = "2.0.2"
+androidxTestRunner = "1.5.1"
+androidxTestRules = "1.5.0"
+orgRobolectric = "4.9"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -45,9 +45,9 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxComposeUi" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "androidxCompose" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "androidxCompose" }
-androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
-androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycleRuntimeCompose" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycleRuntimeCompose" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-hilt = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHilt" }
 com-google-dagger-processor = { group = "com.google.dagger", name = "dagger-android-processor", version.ref = "comGoogleDagger" }
 com-google-dagger-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "comGoogleDagger" }
