@@ -54,6 +54,7 @@ import com.sadellie.unitto.core.base.KEY_8
 import com.sadellie.unitto.core.base.KEY_9
 import com.sadellie.unitto.core.base.KEY_CLEAR
 import com.sadellie.unitto.core.base.KEY_COS
+import com.sadellie.unitto.core.base.KEY_COS_DISPLAY
 import com.sadellie.unitto.core.base.KEY_DIVIDE_DISPLAY
 import com.sadellie.unitto.core.base.KEY_DOT
 import com.sadellie.unitto.core.base.KEY_EVALUATE
@@ -62,7 +63,9 @@ import com.sadellie.unitto.core.base.KEY_E_SMALL
 import com.sadellie.unitto.core.base.KEY_FACTORIAL
 import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
 import com.sadellie.unitto.core.base.KEY_LN
+import com.sadellie.unitto.core.base.KEY_LN_DISPLAY
 import com.sadellie.unitto.core.base.KEY_LOG
+import com.sadellie.unitto.core.base.KEY_LOG_DISPLAY
 import com.sadellie.unitto.core.base.KEY_MINUS_DISPLAY
 import com.sadellie.unitto.core.base.KEY_MODULO
 import com.sadellie.unitto.core.base.KEY_MULTIPLY_DISPLAY
@@ -71,8 +74,10 @@ import com.sadellie.unitto.core.base.KEY_PI
 import com.sadellie.unitto.core.base.KEY_PLUS
 import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.core.base.KEY_SIN
+import com.sadellie.unitto.core.base.KEY_SIN_DISPLAY
 import com.sadellie.unitto.core.base.KEY_SQRT
 import com.sadellie.unitto.core.base.KEY_TAN
+import com.sadellie.unitto.core.base.KEY_TAN_DISPLAY
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
@@ -116,15 +121,15 @@ internal fun CalculatorKeyboard(
                     Column {
                         Row(Modifier, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                             KeyboardButtonAdditional(weightModifier, angleMode.name, onClick = { toggleAngleMode() })
-                            KeyboardButtonAdditional(weightModifier, KEY_SIN, onClick = addSymbol)
-                            KeyboardButtonAdditional(weightModifier, KEY_COS, onClick = addSymbol)
-                            KeyboardButtonAdditional(weightModifier, KEY_TAN, onClick = addSymbol)
+                            KeyboardButtonAdditional(weightModifier, KEY_SIN_DISPLAY, onClick = { addSymbol(KEY_SIN) })
+                            KeyboardButtonAdditional(weightModifier, KEY_COS_DISPLAY, onClick = { addSymbol(KEY_COS) })
+                            KeyboardButtonAdditional(weightModifier, KEY_TAN_DISPLAY, onClick = { addSymbol(KEY_TAN) })
                         }
                         Row(Modifier, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                             KeyboardButtonAdditional(weightModifier, KEY_MODULO, onClick = addSymbol)
                             KeyboardButtonAdditional(weightModifier, KEY_E_SMALL, onClick = addSymbol)
-                            KeyboardButtonAdditional(weightModifier, KEY_LN, onClick = addSymbol)
-                            KeyboardButtonAdditional(weightModifier, KEY_LOG, onClick = addSymbol)
+                            KeyboardButtonAdditional(weightModifier, KEY_LN_DISPLAY, onClick = { addSymbol(KEY_LN) })
+                            KeyboardButtonAdditional(weightModifier, KEY_LOG_DISPLAY, onClick = { addSymbol(KEY_LOG) })
                         }
                     }
                 }
