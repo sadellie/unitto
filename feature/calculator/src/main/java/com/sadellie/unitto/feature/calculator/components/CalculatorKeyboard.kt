@@ -31,6 +31,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -128,7 +130,10 @@ internal fun CalculatorKeyboard(
                 }
             }
             // Expand/Collapse
-            IconButton({ showAdditional = !showAdditional }) {
+            IconButton(
+                onClick = { showAdditional = !showAdditional },
+                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface,)
+            ) {
                 Icon(Icons.Default.ExpandLess, null, Modifier.rotate(expandRotation))
             }
         }

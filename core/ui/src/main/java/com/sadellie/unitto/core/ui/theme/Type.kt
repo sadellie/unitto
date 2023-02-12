@@ -68,8 +68,8 @@ val NumbersTextStyleTitleLarge = TextStyle(
 val NumbersTextStyleTitleSmall = TextStyle(
     fontFamily = Lato,
     fontWeight = FontWeight.W500,
-    fontSize = 14.sp,
-    lineHeight = 20.sp,
+    fontSize = 20.sp,
+    lineHeight = 24.sp,
     letterSpacing = 0.sp,
 )
 
