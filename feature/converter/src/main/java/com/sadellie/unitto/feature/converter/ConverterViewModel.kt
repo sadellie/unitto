@@ -141,8 +141,9 @@ class ConverterViewModel @Inject constructor(
         _result,
         _showLoading,
         _showError,
-        _formatTime
-    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, formatTime ->
+        _formatTime,
+        userPrefs
+    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, formatTime, prefs ->
         return@combine ConverterUIState(
             inputValue = inputValue,
             calculatedValue = calculatedValue,
@@ -156,7 +157,8 @@ class ConverterViewModel @Inject constructor(
              * changing units.
              */
             mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
-            formatTime = formatTime
+            formatTime = formatTime,
+            showTools = prefs.enableToolsExperiment
         )
     }
         .stateIn(

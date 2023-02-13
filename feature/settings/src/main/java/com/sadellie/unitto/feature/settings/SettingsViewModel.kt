@@ -48,7 +48,7 @@ class SettingsViewModel @Inject constructor(
     val hiddenUnitGroups = unitGroupsRepository.hiddenUnitGroups
 
     /**
-     * @see [UserPreferencesRepository.updateThemingMode]
+     * @see UserPreferencesRepository.updateThemingMode
      */
     fun updateThemingMode(themingMode: ThemingMode) {
         viewModelScope.launch {
@@ -57,7 +57,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * @see [UserPreferencesRepository.updateDynamicTheme]
+     * @see UserPreferencesRepository.updateDynamicTheme
      */
     fun updateDynamicTheme(enabled: Boolean) {
         viewModelScope.launch {
@@ -66,7 +66,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * @see [UserPreferencesRepository.updateAmoledTheme]
+     * @see UserPreferencesRepository.updateAmoledTheme
      */
     fun updateAmoledTheme(enabled: Boolean) {
         viewModelScope.launch {
@@ -75,7 +75,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UserPreferencesRepository.updateDigitsPrecision]
+     * @see UserPreferencesRepository.updateDigitsPrecision
      */
     fun updatePrecision(precision: Int) {
         viewModelScope.launch {
@@ -84,7 +84,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UserPreferencesRepository.updateSeparator]
+     * @see UserPreferencesRepository.updateSeparator
      */
     fun updateSeparator(separator: Int) {
         viewModelScope.launch {
@@ -93,7 +93,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UserPreferencesRepository.updateOutputFormat]
+     * @see UserPreferencesRepository.updateOutputFormat
      */
     fun updateOutputFormat(outputFormat: Int) {
         viewModelScope.launch {
@@ -102,7 +102,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UserPreferencesRepository.updateVibrations]
+     * @see UserPreferencesRepository.updateVibrations
      */
     fun updateVibrations(enabled: Boolean) {
         viewModelScope.launch {
@@ -111,8 +111,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UnitGroupsRepository.markUnitGroupAsHidden] and
-     * [UserPreferencesRepository.updateShownUnitGroups]
+     * @see UnitGroupsRepository.markUnitGroupAsHidden
+     * @see UserPreferencesRepository.updateShownUnitGroups
      */
     fun hideUnitGroup(unitGroup: UnitGroup) {
         viewModelScope.launch {
@@ -122,8 +122,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UnitGroupsRepository.markUnitGroupAsShown] and
-     * [UserPreferencesRepository.updateShownUnitGroups]
+     * @see UnitGroupsRepository.markUnitGroupAsShown
+     * @see UserPreferencesRepository.updateShownUnitGroups
      */
     fun returnUnitGroup(unitGroup: UnitGroup) {
         viewModelScope.launch {
@@ -133,7 +133,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UnitGroupsRepository.moveShownUnitGroups]
+     * @see UnitGroupsRepository.moveShownUnitGroups
      */
     fun onMove(from: ItemPosition, to: ItemPosition) {
         viewModelScope.launch {
@@ -142,11 +142,20 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * See [UserPreferencesRepository.updateShownUnitGroups]
+     * @see UserPreferencesRepository.updateShownUnitGroups
      */
     fun onDragEnd() {
         viewModelScope.launch {
             userPrefsRepository.updateShownUnitGroups(unitGroupsRepository.shownUnitGroups.value)
+        }
+    }
+
+    /**
+     * @see UserPreferencesRepository.updateToolsExperiment
+     */
+    fun enableToolsExperiment() {
+        viewModelScope.launch {
+            userPrefsRepository.updateToolsExperiment(true)
         }
     }
 

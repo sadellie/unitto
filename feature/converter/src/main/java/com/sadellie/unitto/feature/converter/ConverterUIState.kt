@@ -34,6 +34,7 @@ import com.sadellie.unitto.data.units.AbstractUnit
  * @property unitTo Unit on the right.
  * @property mode
  * @property formatTime If true will format output when converting time.
+ * @property showTools If true will show tools button in TopBar.
  */
 data class ConverterUIState(
     val inputValue: String = KEY_0,
@@ -44,7 +45,8 @@ data class ConverterUIState(
     val unitFrom: AbstractUnit? = null,
     val unitTo: AbstractUnit? = null,
     val mode: ConverterMode = ConverterMode.DEFAULT,
-    val formatTime: Boolean = true
+    val formatTime: Boolean = true,
+    val showTools: Boolean = false
 )
 
 enum class ConverterMode {

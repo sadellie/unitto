@@ -73,25 +73,27 @@ internal fun ConverterScreen(
                 modifier = Modifier,
                 title = { AnimatedTopBarText(launched) },
                 navigationIcon = {
-                    BadgedBox(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .clickable(
-                                onClick = navigateToTools,
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = rememberRipple(false),
-                                role = Role.Button
-                            ),
-                        badge = {
-                            Badge { Text("1") }
-                        },
-                        content = {
-                            Icon(
-                                Icons.Outlined.Science,
-                                contentDescription = stringResource(R.string.tools_screen)
-                            )
-                        }
-                    )
+                    if (uiState.value.showTools) {
+                        BadgedBox(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .clickable(
+                                    onClick = navigateToTools,
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = rememberRipple(false),
+                                    role = Role.Button
+                                ),
+                            badge = {
+                                Badge { Text("1") }
+                            },
+                            content = {
+                                Icon(
+                                    Icons.Outlined.Science,
+                                    contentDescription = stringResource(R.string.tools_screen)
+                                )
+                            }
+                        )
+                    }
                 },
                 actions = {
                     IconButton(onClick = navigateToSettings) {

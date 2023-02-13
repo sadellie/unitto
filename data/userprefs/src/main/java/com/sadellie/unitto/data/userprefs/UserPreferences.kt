@@ -52,6 +52,7 @@ import javax.inject.Inject
  * @property latestRightSideUnit Latest [AbstractUnit] that was on the right side
  * @property shownUnitGroups [UnitGroup]s that user wants to see. Excludes other [UnitGroup]s,
  * @property enableVibrations When true will use haptic feedback in app.
+ * @property enableToolsExperiment When true will enable experimental Tools screen.
  */
 data class UserPreferences(
     val themingMode: ThemingMode? = null,
@@ -63,7 +64,8 @@ data class UserPreferences(
     val latestLeftSideUnit: String = MyUnitIDS.kilometer,
     val latestRightSideUnit: String = MyUnitIDS.mile,
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
-    val enableVibrations: Boolean = true
+    val enableVibrations: Boolean = true,
+    val enableToolsExperiment: Boolean = false
 )
 
 /**
@@ -84,6 +86,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val LATEST_RIGHT_SIDE = stringPreferencesKey("LATEST_RIGHT_SIDE_PREF_KEY")
         val SHOWN_UNIT_GROUPS = stringPreferencesKey("SHOWN_UNIT_GROUPS_PREF_KEY")
         val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
+        val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -126,6 +129,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
 
                 } ?: ALL_UNIT_GROUPS
             val enableVibrations: Boolean = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true
+            val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
 
             UserPreferences(
                 themingMode = themingMode,
@@ -137,7 +141,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 latestLeftSideUnit = latestLeftSideUnit,
                 latestRightSideUnit = latestRightSideUnit,
                 shownUnitGroups = shownUnitGroups,
-                enableVibrations = enableVibrations
+                enableVibrations = enableVibrations,
+                enableToolsExperiment = enableToolsExperiment
             )
         }
 
@@ -235,6 +240,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateVibrations(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_VIBRATIONS] = enabled
+        }
+    }
+
+    /**
+     * Update preference on whether or not show tools screen.
+     *
+     * @param enabled True if user wants to enable this feature.
+     */
+    suspend fun updateToolsExperiment(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] = enabled
         }
     }
 }

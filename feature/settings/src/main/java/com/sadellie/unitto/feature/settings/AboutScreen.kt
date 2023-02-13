@@ -18,7 +18,9 @@
 
 package com.sadellie.unitto.feature.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
@@ -39,22 +41,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
+import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable
 internal fun AboutScreen(
     navigateUpAction: () -> Unit,
-    navigateToThirdParty: () -> Unit
+    navigateToThirdParty: () -> Unit,
+    viewModel: SettingsViewModel
 ) {
     val mContext = LocalContext.current
-
-    var showDialog: Boolean by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+    var aboutItemClick: Int by rememberSaveable { mutableStateOf(0) }
+    var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     UnittoLargeTopAppBar(
         title = stringResource(R.string.about_unitto),
@@ -177,7 +180,18 @@ internal fun AboutScreen(
                     },
                     headlineText = { Text(stringResource(R.string.app_version_name_setting)) },
                     supportingText = { Text("${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})") },
-                    modifier = Modifier.clickable {}
+                    modifier = Modifier.combinedClickable {
+                        if (userPrefs.value.enableToolsExperiment) {
+                            Toast.makeText(mContext, "Tools already enabled!", Toast.LENGTH_LONG).show()
+                            return@combinedClickable
+                        }
+
+                        aboutItemClick++
+                        if (aboutItemClick < 7) return@combinedClickable
+
+                        viewModel.enableToolsExperiment()
+                        Toast.makeText(mContext, "Tools enabled!", Toast.LENGTH_LONG).show()
+                    }
                 )
             }
         }

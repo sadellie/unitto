@@ -76,7 +76,8 @@ fun NavGraphBuilder.settingGraph(
         composable(aboutRoute) {
             AboutScreen(
                 navigateUpAction = { navController.navigateUp() },
-                navigateToThirdParty = { navController.navigate(thirdPartyRoute) }
+                navigateToThirdParty = { navController.navigate(thirdPartyRoute) },
+                viewModel = settingsViewModel
             )
         }
 
