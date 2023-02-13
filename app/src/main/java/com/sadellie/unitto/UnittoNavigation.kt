@@ -54,27 +54,25 @@ fun UnittoNavigation(
         startDestination = converterRoute
     ) {
         converterScreen(
-            navigateToLeftScreen = { navController.navigateToLeftSide(it) },
-            navigateToRightScreen = { unitFrom, unitTo, input ->
-                navController.navigateToRightSide(unitFrom, unitTo, input)
-            },
-            navigateToSettings = { navController.navigateToSettings() },
-            navigateToTools = { navController.navigateToTools() },
+            navigateToLeftScreen = navController::navigateToLeftSide,
+            navigateToRightScreen = navController::navigateToRightSide,
+            navigateToSettings = navController::navigateToSettings,
+            navigateToTools = navController::navigateToTools,
             viewModel = converterViewModel
         )
 
         leftScreen(
             viewModel = secondViewModel,
-            navigateUp = { navController.navigateUp() },
-            navigateToUnitGroups = { navController.navigateToUnitGroups() },
-            onSelect = { converterViewModel.updateUnitFrom(it) }
+            navigateUp = navController::navigateUp,
+            navigateToUnitGroups = navController::navigateToUnitGroups,
+            onSelect = converterViewModel::updateUnitFrom
         )
 
         rightScreen(
             viewModel = secondViewModel,
-            navigateUp = { navController.navigateUp() },
-            navigateToUnitGroups = { navController.navigateToUnitGroups() },
-            onSelect = { converterViewModel.updateUnitTo(it) }
+            navigateUp = navController::navigateUp,
+            navigateToUnitGroups = navController::navigateToUnitGroups,
+            onSelect = converterViewModel::updateUnitTo
         )
 
         settingGraph(
