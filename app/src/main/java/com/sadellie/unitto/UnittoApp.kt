@@ -26,7 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.sadellie.unitto.feature.converter.MainViewModel
+import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.unitslist.SecondViewModel
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
@@ -37,7 +37,7 @@ import io.github.sadellie.themmo.rememberThemmoController
 
 @Composable
 fun UnittoApp() {
-    val mainViewModel: MainViewModel = hiltViewModel()
+    val converterViewModel: ConverterViewModel = hiltViewModel()
     val secondViewModel: SecondViewModel = hiltViewModel()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val userPrefs = settingsViewModel.userPrefs.collectAsStateWithLifecycle()
@@ -62,7 +62,7 @@ fun UnittoApp() {
 
         UnittoNavigation(
             navController = navController,
-            mainViewModel = mainViewModel,
+            converterViewModel = converterViewModel,
             secondViewModel = secondViewModel,
             settingsViewModel = settingsViewModel,
             themmoController = it

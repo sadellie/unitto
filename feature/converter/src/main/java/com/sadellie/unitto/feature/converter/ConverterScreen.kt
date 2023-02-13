@@ -55,15 +55,15 @@ import com.sadellie.unitto.feature.converter.components.TopScreenPart
 import kotlinx.coroutines.delay
 
 @Composable
-internal fun MainScreen(
+internal fun ConverterScreen(
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     navigateToSettings: () -> Unit,
     navigateToTools: () -> Unit,
-    viewModel: MainViewModel = viewModel()
+    viewModel: ConverterViewModel = viewModel()
 ) {
     var launched: Boolean by rememberSaveable { mutableStateOf(false) }
-    val mainScreenUIState = viewModel.uiStateFlow.collectAsStateWithLifecycle()
+    val uiState = viewModel.uiStateFlow.collectAsStateWithLifecycle()
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -107,9 +107,9 @@ internal fun MainScreen(
             )
         },
         content = { padding ->
-            MainScreenContent(
+            ConverterScreenContent(
                 modifier = Modifier.padding(padding),
-                mainScreenUIState = mainScreenUIState.value,
+                uiState = uiState.value,
                 navigateToLeftScreen = navigateToLeftScreen,
                 navigateToRightScreen = navigateToRightScreen,
                 swapMeasurements = { viewModel.swapUnits() },
@@ -134,9 +134,9 @@ internal fun MainScreen(
 }
 
 @Composable
-private fun MainScreenContent(
+private fun ConverterScreenContent(
     modifier: Modifier,
-    mainScreenUIState: MainScreenUIState,
+    uiState: ConverterUIState,
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     swapMeasurements: () -> Unit = {},
@@ -151,18 +151,18 @@ private fun MainScreenContent(
         content1 = {
             TopScreenPart(
                 modifier = it,
-                inputValue = mainScreenUIState.inputValue,
-                calculatedValue = mainScreenUIState.calculatedValue,
-                outputValue = mainScreenUIState.resultValue,
-                unitFrom = mainScreenUIState.unitFrom,
-                unitTo = mainScreenUIState.unitTo,
-                networkLoading = mainScreenUIState.showLoading,
-                networkError = mainScreenUIState.showError,
+                inputValue = uiState.inputValue,
+                calculatedValue = uiState.calculatedValue,
+                outputValue = uiState.resultValue,
+                unitFrom = uiState.unitFrom,
+                unitTo = uiState.unitTo,
+                networkLoading = uiState.showLoading,
+                networkError = uiState.showError,
                 navigateToLeftScreen = navigateToLeftScreen,
                 navigateToRightScreen = navigateToRightScreen,
                 swapUnits = swapMeasurements,
-                converterMode = mainScreenUIState.mode,
-                formatTime = mainScreenUIState.formatTime,
+                converterMode = uiState.mode,
+                formatTime = uiState.formatTime,
                 onOutputTextFieldClick = onOutputTextFieldClick
             )
         },
@@ -172,7 +172,7 @@ private fun MainScreenContent(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                converterMode = mainScreenUIState.mode,
+                converterMode = uiState.mode,
                 allowVibration = allowVibration
             )
         }

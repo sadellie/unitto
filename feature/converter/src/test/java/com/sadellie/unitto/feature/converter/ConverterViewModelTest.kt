@@ -62,13 +62,13 @@ import org.robolectric.annotation.Config
 @OptIn(ExperimentalCoroutinesApi::class)
 @Config(manifest = Config.NONE)
 @RunWith(RobolectricTestRunner::class)
-class MainViewModelTest {
+class ConverterViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: ConverterViewModel
     private val allUnitsRepository = AllUnitsRepository()
     private val database = Room.inMemoryDatabaseBuilder(
         RuntimeEnvironment.getApplication(),
@@ -77,7 +77,7 @@ class MainViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = MainViewModel(
+        viewModel = ConverterViewModel(
             userPrefsRepository = UserPreferencesRepository(
                 DataStoreModule()
                     .provideUserPreferencesDataStore(

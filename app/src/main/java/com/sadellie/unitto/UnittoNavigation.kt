@@ -23,7 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
 import com.sadellie.unitto.feature.calculator.navigation.navigateToCalculator
-import com.sadellie.unitto.feature.converter.MainViewModel
+import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterRoute
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
 import com.sadellie.unitto.feature.epoch.navigation.epochScreen
@@ -44,7 +44,7 @@ import io.github.sadellie.themmo.ThemmoController
 @Composable
 fun UnittoNavigation(
     navController: NavHostController,
-    mainViewModel: MainViewModel,
+    converterViewModel: ConverterViewModel,
     secondViewModel: SecondViewModel,
     settingsViewModel: SettingsViewModel,
     themmoController: ThemmoController
@@ -60,21 +60,21 @@ fun UnittoNavigation(
             },
             navigateToSettings = { navController.navigateToSettings() },
             navigateToTools = { navController.navigateToTools() },
-            viewModel = mainViewModel
+            viewModel = converterViewModel
         )
 
         leftScreen(
             viewModel = secondViewModel,
             navigateUp = { navController.navigateUp() },
             navigateToUnitGroups = { navController.navigateToUnitGroups() },
-            onSelect = { mainViewModel.updateUnitFrom(it) }
+            onSelect = { converterViewModel.updateUnitFrom(it) }
         )
 
         rightScreen(
             viewModel = secondViewModel,
             navigateUp = { navController.navigateUp() },
             navigateToUnitGroups = { navController.navigateToUnitGroups() },
-            onSelect = { mainViewModel.updateUnitTo(it) }
+            onSelect = { converterViewModel.updateUnitTo(it) }
         )
 
         settingGraph(

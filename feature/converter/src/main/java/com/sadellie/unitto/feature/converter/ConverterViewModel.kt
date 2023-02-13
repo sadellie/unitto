@@ -76,7 +76,7 @@ import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class ConverterViewModel @Inject constructor(
     private val userPrefsRepository: com.sadellie.unitto.data.userprefs.UserPreferencesRepository,
     private val basedUnitRepository: MyBasedUnitsRepository,
     private val allUnitsRepository: AllUnitsRepository
@@ -133,7 +133,7 @@ class MainViewModel @Inject constructor(
     /**
      * Current state of UI.
      */
-    val uiStateFlow: StateFlow<MainScreenUIState> = combine(
+    val uiStateFlow: StateFlow<ConverterUIState> = combine(
         _input,
         _unitFrom,
         _unitTo,
@@ -143,7 +143,7 @@ class MainViewModel @Inject constructor(
         _showError,
         _formatTime
     ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, formatTime ->
-        return@combine MainScreenUIState(
+        return@combine ConverterUIState(
             inputValue = inputValue,
             calculatedValue = calculatedValue,
             resultValue = resultValue,
@@ -162,7 +162,7 @@ class MainViewModel @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
-            MainScreenUIState()
+            ConverterUIState()
         )
 
     /**

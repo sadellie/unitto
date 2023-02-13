@@ -22,7 +22,7 @@ import com.sadellie.unitto.core.base.KEY_0
 import com.sadellie.unitto.data.units.AbstractUnit
 
 /**
- * Represents current state of the MainScreen
+ * Represents current state of the ConverterScreen
  *
  * @property inputValue Current input value. Can be expression or a simple number.
  * @property calculatedValue Currently calculated value. Can be null if not needed (same as input or
@@ -35,7 +35,7 @@ import com.sadellie.unitto.data.units.AbstractUnit
  * @property mode
  * @property formatTime If true will format output when converting time.
  */
-data class MainScreenUIState(
+data class ConverterUIState(
     val inputValue: String = KEY_0,
     val calculatedValue: String? = null,
     val resultValue: String = KEY_0,
