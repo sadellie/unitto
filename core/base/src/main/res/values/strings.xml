@@ -452,7 +452,7 @@
     <string name="standard_atmosphere_short">atm</string>
     <string name="torr">Torr</string>
     <string name="torr_short">torr</string>
-    <string name="micron_of_mercury">Millimeter of mercury</string>
+    <string name="micron_of_mercury">Micron of mercury</string>
     <string name="micron_of_mercury_short">μmHg</string>
     <string name="millimeter_of_mercury">Millimeter of mercury</string>
     <string name="millimeter_of_mercury_short">mm Hg</string>

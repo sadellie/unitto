@@ -661,8 +661,6 @@
     <string name="separator_setting">Разделитель</string>
     <string name="output_format_setting">Формат вывода</string>
     <string name="unit_groups_setting">Группы величин</string>
-    <string name="enable_vibrations">Вибрации</string>
-    <string name="enable_vibrations_support">Тактильный отклик при использовании клавиатуры</string>
     <string name="currency_rates_note_setting">Неправильные курсы валют?</string>
     <string name="currency_rates_note_title">Внимание</string>
     <string name="currency_rates_note_text">Курсы валют обновляются ежедневно. В приложении нет мониторинга рынка в реальном времени.</string>
@@ -728,7 +726,6 @@
     <string name="enable_unit_group_description">Включить группу величин</string>
     <string name="reorder_unit_group_description">Переместить группу величин</string>
     <string name="disable_unit_group_description">Отключить группу величин</string>
-
     <string name="app_version_name_setting">Название версии</string>
     <string name="about_unitto">О Unitto</string>
     <string name="about_unitto_support">Узнайте больше о приложении</string>
@@ -758,19 +755,46 @@
 
     <!-- Number base -->
     <string name="binary">Двоичная</string>
+    <string name="binary_short">base2</string>
     <string name="ternary">Троичная</string>
+    <string name="ternary_short">base3</string>
     <string name="quaternary">Четверичная</string>
+    <string name="quaternary_short">base4</string>
     <string name="quinary">Пятеричная</string>
+    <string name="quinary_short">base5</string>
     <string name="senary">Шестиричная</string>
+    <string name="senary_short">base6</string>
     <string name="septenary">Семиричная</string>
+    <string name="septenary_short">base7</string>
     <string name="octal">Восьмиричная</string>
+    <string name="octal_short">base8</string>
     <string name="nonary">Девятиричная</string>
+    <string name="nonary_short">base9</string>
     <string name="decimal">Десятиричная</string>
+    <string name="decimal_short">base10</string>
     <string name="undecimal">Одиннадцатиричная</string>
+    <string name="undecimal_short">base11</string>
     <string name="duodecimal">Двенадцатеричная</string>
+    <string name="duodecimal_short">base12</string>
     <string name="tridecimal">Тринадцатеричная</string>
+    <string name="tridecimal_short">base13</string>
     <string name="tetradecimal">Четырнадцатеричная</string>
+    <string name="tetradecimal_short">base14</string>
     <string name="pentadecimal">Пятнадцатеричная</string>
+    <string name="pentadecimal_short">base15</string>
     <string name="hexadecimal">Шестнадцатеричная</string>
+    <string name="hexadecimal_short">base16</string>
     <string name="number_base">Счисление</string>
+    <string name="enable_vibrations">Вибрации</string>
+    <string name="enable_vibrations_support">Тактильный отклик при использовании клавиатуры</string>
+    <string name="millibar">Миллибар</string>
+    <string name="millibar_short">мбар</string>
+    <string name="kilopascal">Килопаскаль</string>
+    <string name="kilopascal_short">кПа</string>
+    <string name="micron_of_mercury">Микрон ртутного столба</string>
+    <string name="micron_of_mercury_short">мк рт.ст.</string>
+
+    <!-- Epoch -->
+    <string name="year_short">г</string>
+    <string name="month_short">м</string>
 </resources>
