@@ -1,6 +1,6 @@
 [versions]
-appCode = "14"
-appName = "Glaucous"
+appCode = "16"
+appName = "Hot magenta"
 kotlin = "1.8.10"
 androidxCore = "1.9.0"
 androidGradlePlugin = "7.4.1"
