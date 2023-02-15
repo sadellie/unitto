@@ -22,11 +22,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 
 /**
  * Commonly used TopAppBar with scroll behavior.
@@ -41,12 +38,8 @@ fun UnittoTopAppBar(
     navigateUpAction: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
-        rememberTopAppBarState()
-    )
     Scaffold(
-        modifier = Modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier,
         topBar = {
             TopAppBar(
                 title = {
@@ -54,8 +47,7 @@ fun UnittoTopAppBar(
                 },
                 navigationIcon = {
                     NavigateUpButton { navigateUpAction() }
-                },
-                scrollBehavior = scrollBehavior
+                }
             )
         },
         content = content
