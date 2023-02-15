@@ -79,7 +79,8 @@ private fun CalculatorScreen(
                     text = uiState.input,
                     selection = TextRange(uiState.selection.first, uiState.selection.last)
                 ),
-                onCursorChange = onCursorChange
+                onCursorChange = onCursorChange,
+                pasteCallback = addSymbol
             )
             AnimatedVisibility(visible = uiState.output.isNotEmpty()) {
                 Text(

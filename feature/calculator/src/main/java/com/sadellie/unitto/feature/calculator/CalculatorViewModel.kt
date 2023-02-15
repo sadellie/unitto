@@ -121,6 +121,8 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun onCursorChange(selection: IntRange) {
+        // When we paste, selection is set to the length of the pasted text (start and end)
+        if (selection.first > _input.value.length) return
         _selection.update { selection }
     }
 

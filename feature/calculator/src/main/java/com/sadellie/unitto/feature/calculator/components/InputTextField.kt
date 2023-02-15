@@ -23,7 +23,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.LocalTextToolbar
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
@@ -32,16 +35,24 @@ import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
 internal fun InputTextField(
     modifier: Modifier,
     value: TextFieldValue,
-    onCursorChange: (IntRange) -> Unit
+    onCursorChange: (IntRange) -> Unit,
+    pasteCallback: (String) -> Unit
 ) {
+    val clipboardManager = LocalClipboardManager.current
     CompositionLocalProvider(
-        // FIXME Can't paste if this is null
-        LocalTextInputService provides null
+        LocalTextInputService provides null,
+        LocalTextToolbar provides UnittoTextToolbar(
+            view = LocalView.current,
+            pasteCallback = { pasteCallback(clipboardManager.getText()?.text ?: "") }
+        )
     ) {
         BasicTextField(
             modifier = modifier,
+            singleLine = true,
             value = value,
-            onValueChange = { onCursorChange(it.selection.start..it.selection.end) },
+            onValueChange = {
+                onCursorChange(it.selection.start..it.selection.end)
+            },
             textStyle = NumbersTextStyleDisplayLarge.copy(
                 textAlign = TextAlign.End,
                 color = MaterialTheme.colorScheme.onBackground
