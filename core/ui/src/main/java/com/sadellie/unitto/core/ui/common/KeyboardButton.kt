@@ -25,7 +25,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -35,10 +39,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleLarge
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleSmall
 
 @Composable
@@ -48,9 +51,8 @@ fun BasicKeyboardButton(
     onLongClick: (() -> Unit)?,
     containerColor: Color,
     contentColor: Color,
-    text: String,
-    textColor: Color,
-    fontSize: TextUnit,
+    icon: ImageVector,
+    iconColor: Color,
     allowVibration: Boolean
 ) {
     val view = LocalView.current
@@ -68,15 +70,11 @@ fun BasicKeyboardButton(
         shape = RoundedCornerShape(cornerRadius),
         containerColor = containerColor,
         contentColor = contentColor,
-        contentPadding = PaddingValues(0.dp),
+        contentPadding = PaddingValues(24.dp, 8.dp),
         interactionSource = interactionSource
     ) {
-        Text(
-            text = text,
-            style = NumbersTextStyleTitleLarge,
-            color = textColor,
-            fontSize = fontSize
-        )
+        Icons.Default.ExpandLess
+        Icon(icon, null, modifier = Modifier.fillMaxHeight(), tint = iconColor)
     }
 
     LaunchedEffect(key1 = isPressed) {
@@ -87,20 +85,19 @@ fun BasicKeyboardButton(
 @Composable
 fun KeyboardButtonLight(
     modifier: Modifier,
-    symbol: String,
-    onClick: (String) -> Unit,
+    icon: ImageVector,
+    onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
     allowVibration: Boolean = false
 ) {
     BasicKeyboardButton(
         modifier = modifier,
-        onClick = { onClick(symbol) },
+        onClick = onClick,
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        text = symbol,
-        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        fontSize = TextUnit.Unspecified,
+        icon = icon,
+        iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
     )
 }
@@ -108,20 +105,19 @@ fun KeyboardButtonLight(
 @Composable
 fun KeyboardButtonFilled(
     modifier: Modifier,
-    symbol: String,
-    onClick: (String) -> Unit,
+    icon: ImageVector,
+    onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
     allowVibration: Boolean = false
 ) {
     BasicKeyboardButton(
         modifier = modifier,
-        onClick = { onClick(symbol) },
+        onClick = onClick,
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        text = symbol,
-        textColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        fontSize = TextUnit.Unspecified,
+        icon = icon,
+        iconColor = MaterialTheme.colorScheme.onSecondaryContainer,
         allowVibration = allowVibration
     )
 }

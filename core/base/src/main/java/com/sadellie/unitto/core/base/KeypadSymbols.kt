@@ -38,7 +38,6 @@ const val KEY_BASE_F = "F"
 
 const val KEY_DOT = "."
 const val KEY_COMMA = ","
-const val KEY_CLEAR = "<"
 const val KEY_E = "E"
 const val KEY_PLUS = "+"
 
@@ -72,7 +71,6 @@ const val KEY_LN_DISPLAY = "ln"
 const val KEY_LOG = "log("
 const val KEY_LOG_DISPLAY = "log"
 const val KEY_PERCENT = "%"
-const val KEY_EVALUATE = "="
 
 val OPERATORS by lazy {
     listOf(

@@ -52,12 +52,10 @@ import com.sadellie.unitto.core.base.KEY_6
 import com.sadellie.unitto.core.base.KEY_7
 import com.sadellie.unitto.core.base.KEY_8
 import com.sadellie.unitto.core.base.KEY_9
-import com.sadellie.unitto.core.base.KEY_CLEAR
 import com.sadellie.unitto.core.base.KEY_COS
 import com.sadellie.unitto.core.base.KEY_COS_DISPLAY
 import com.sadellie.unitto.core.base.KEY_DIVIDE_DISPLAY
 import com.sadellie.unitto.core.base.KEY_DOT
-import com.sadellie.unitto.core.base.KEY_EVALUATE
 import com.sadellie.unitto.core.base.KEY_EXPONENT
 import com.sadellie.unitto.core.base.KEY_E_SMALL
 import com.sadellie.unitto.core.base.KEY_FACTORIAL
@@ -81,6 +79,27 @@ import com.sadellie.unitto.core.base.KEY_TAN_DISPLAY
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
+import com.sadellie.unitto.core.ui.common.key.UnittoIcons
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Delete
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Divide
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Dot
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Equal
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key0
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key1
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key2
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key3
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key4
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key5
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key6
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key7
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key8
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Key9
+import com.sadellie.unitto.core.ui.common.key.unittoicons.LeftBracket
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Minus
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Multiply
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Percent
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
+import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
 import com.sadellie.unitto.feature.calculator.AngleMode
 
 @Composable
@@ -137,42 +156,42 @@ internal fun CalculatorKeyboard(
             // Expand/Collapse
             IconButton(
                 onClick = { showAdditional = !showAdditional },
-                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface,)
+                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
             ) {
                 Icon(Icons.Default.ExpandLess, null, Modifier.rotate(expandRotation))
             }
         }
 
         Row(weightModifier) {
-            KeyboardButtonFilled(mainButtonModifier, KEY_LEFT_BRACKET, addSymbol)
-            KeyboardButtonFilled(mainButtonModifier, KEY_RIGHT_BRACKET, addSymbol)
-            KeyboardButtonFilled(mainButtonModifier, KEY_PERCENT, addSymbol)
-            KeyboardButtonFilled(mainButtonModifier, KEY_DIVIDE_DISPLAY, addSymbol)
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.LeftBracket, { addSymbol(KEY_LEFT_BRACKET) })
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.RightBracket, { addSymbol(KEY_RIGHT_BRACKET) })
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Percent, { addSymbol(KEY_PERCENT) })
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Divide, { addSymbol(KEY_DIVIDE_DISPLAY) })
         }
 
         Row(weightModifier) {
-            KeyboardButtonLight(mainButtonModifier, KEY_7, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_8, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_9, addSymbol)
-            KeyboardButtonFilled(mainButtonModifier, KEY_MULTIPLY_DISPLAY, addSymbol)
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key7, { addSymbol(KEY_7) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key8, { addSymbol(KEY_8) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key9, { addSymbol(KEY_9) })
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Multiply, { addSymbol(KEY_MULTIPLY_DISPLAY) })
         }
         Row(weightModifier) {
-            KeyboardButtonLight(mainButtonModifier, KEY_4, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_5, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_6, addSymbol)
-            KeyboardButtonFilled(mainButtonModifier, KEY_MINUS_DISPLAY, addSymbol)
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key4, { addSymbol(KEY_4) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key5, { addSymbol(KEY_5) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key6, { addSymbol(KEY_6) })
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Minus, { addSymbol(KEY_MINUS_DISPLAY) })
         }
         Row(weightModifier) {
-            KeyboardButtonLight(mainButtonModifier, KEY_1, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_2, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_3, addSymbol)
-            KeyboardButtonFilled(mainButtonModifier, KEY_PLUS, addSymbol)
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key1, { addSymbol(KEY_1) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key2, { addSymbol(KEY_2) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key3, { addSymbol(KEY_3) })
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Plus, { addSymbol(KEY_PLUS) })
         }
         Row(weightModifier) {
-            KeyboardButtonLight(mainButtonModifier, KEY_0, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_DOT, addSymbol)
-            KeyboardButtonLight(mainButtonModifier, KEY_CLEAR, { deleteSymbol() }, onLongClick = clearSymbols)
-            KeyboardButtonFilled(mainButtonModifier, KEY_EVALUATE, { evaluate() })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, { addSymbol(KEY_0) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Dot, { addSymbol(KEY_DOT) })
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Delete, { deleteSymbol() }, onLongClick = clearSymbols)
+            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, { evaluate() })
         }
     }
 }
