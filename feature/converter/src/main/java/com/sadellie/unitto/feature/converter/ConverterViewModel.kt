@@ -43,19 +43,20 @@ import com.sadellie.unitto.core.base.KEY_PLUS
 import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.core.base.KEY_SQRT
 import com.sadellie.unitto.core.base.OPERATORS
-import com.sadellie.unitto.data.combine
-import com.sadellie.unitto.data.setMinimumRequiredScale
-import com.sadellie.unitto.data.toStringWith
-import com.sadellie.unitto.data.trimZeros
-import com.sadellie.unitto.data.unitgroups.UnitGroup
-import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.common.setMinimumRequiredScale
+import com.sadellie.unitto.data.common.toStringWith
+import com.sadellie.unitto.data.common.trimZeros
+import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.database.UnitsRepository
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.NumberBaseUnit
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.MyUnitIDS
-import com.sadellie.unitto.data.units.NumberBaseUnit
-import com.sadellie.unitto.data.units.database.MyBasedUnit
-import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
+import com.sadellie.unitto.data.units.combine
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
+import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -77,8 +78,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConverterViewModel @Inject constructor(
-    private val userPrefsRepository: com.sadellie.unitto.data.userprefs.UserPreferencesRepository,
-    private val basedUnitRepository: MyBasedUnitsRepository,
+    private val userPrefsRepository: UserPreferencesRepository,
+    private val unitRepository: UnitsRepository,
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
@@ -501,8 +502,8 @@ class ConverterViewModel @Inject constructor(
 
     private fun incrementCounter(unit: AbstractUnit) {
         viewModelScope.launch(Dispatchers.IO) {
-            basedUnitRepository.insertUnits(
-                MyBasedUnit(
+            unitRepository.insertUnits(
+                UnitsEntity(
                     unitId = unit.unitId,
                     isFavorite = unit.isFavorite,
                     pairedUnitId = unit.pairedUnit,
@@ -515,8 +516,8 @@ class ConverterViewModel @Inject constructor(
 
     private fun updatePairedUnit(unit: AbstractUnit) {
         viewModelScope.launch(Dispatchers.IO) {
-            basedUnitRepository.insertUnits(
-                MyBasedUnit(
+            unitRepository.insertUnits(
+                UnitsEntity(
                     unitId = unit.unitId,
                     isFavorite = unit.isFavorite,
                     pairedUnitId = unit.pairedUnit,

@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.ui.Formatter
-import com.sadellie.unitto.data.unitgroups.UnitGroup
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

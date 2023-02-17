@@ -18,7 +18,10 @@
 
 package com.sadellie.unitto.data.units
 
-import com.sadellie.unitto.data.unitgroups.UnitGroup
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.MyUnit
+import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.sortByLev
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigDecimal

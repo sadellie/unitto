@@ -41,7 +41,9 @@ dependencies {
     implementation(libs.com.squareup.moshi)
     implementation(libs.com.squareup.retrofit2)
 
+    implementation(project(mapOf("path" to ":data:common")))
+    implementation(project(mapOf("path" to ":data:database")))
+    implementation(project(mapOf("path" to ":data:model")))
     implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:unitgroups")))
     implementation(project(mapOf("path" to ":data:units")))
 }

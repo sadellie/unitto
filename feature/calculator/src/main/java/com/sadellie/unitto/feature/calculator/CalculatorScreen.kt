@@ -18,14 +18,30 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -35,8 +51,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.common.UnittoTopAppBar
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
+import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
+import com.sadellie.unitto.feature.calculator.components.DragDownView
+import com.sadellie.unitto.feature.calculator.components.HistoryList
 import com.sadellie.unitto.feature.calculator.components.InputTextField
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 @Composable
 internal fun CalculatorRoute(
@@ -53,7 +76,8 @@ internal fun CalculatorRoute(
         deleteSymbol = viewModel::deleteSymbol,
         onCursorChange = viewModel::onCursorChange,
         toggleAngleMode = viewModel::toggleCalculatorMode,
-        evaluate = viewModel::evaluate
+        evaluate = viewModel::evaluate,
+        clearHistory = viewModel::clearHistory
     )
 }
 
@@ -66,57 +90,144 @@ private fun CalculatorScreen(
     deleteSymbol: () -> Unit,
     onCursorChange: (IntRange) -> Unit,
     toggleAngleMode: () -> Unit,
-    evaluate: () -> Unit
+    evaluate: () -> Unit,
+    clearHistory: () -> Unit
 ) {
+    var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
+    var draggedAmount by remember { mutableStateOf(0f) }
+    val dragAmountAnimated by animateFloatAsState(draggedAmount)
+    // val dragAmountAnimated = draggedAmount
+    var textThingyHeight by remember { mutableStateOf(0) }
+    var historyItemHeight by remember { mutableStateOf(0) }
+
     UnittoTopAppBar(
         title = stringResource(R.string.calculator),
         navigateUpAction = navigateUpAction,
-    ) {
-        Column(Modifier.padding(it)) {
-            InputTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = TextFieldValue(
-                    text = uiState.input,
-                    selection = TextRange(uiState.selection.first, uiState.selection.last)
-                ),
-                onCursorChange = onCursorChange,
-                pasteCallback = addSymbol
-            )
-            AnimatedVisibility(visible = uiState.output.isNotEmpty()) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    // Quick fix to prevent the UI from crashing
-                    text = uiState.output,
-                    textAlign = TextAlign.End,
-                    softWrap = false,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                    style = NumbersTextStyleDisplayMedium,
-                )
-            }
-            CalculatorKeyboard(
-                modifier = Modifier,
-                addSymbol = addSymbol,
-                clearSymbols = clearSymbols,
-                deleteSymbol = deleteSymbol,
-                toggleAngleMode = toggleAngleMode,
-                angleMode = uiState.angleMode,
-                evaluate = evaluate
+        actions = {
+            IconButton(
+                onClick = { showClearHistoryDialog = true },
+                content = { Icon(Icons.Default.Delete, stringResource(R.string.calculator_clear_history_title)) }
             )
         }
+    ) { paddingValues ->
+        DragDownView(
+            modifier = Modifier.padding(paddingValues),
+            drag = dragAmountAnimated.toInt(),
+            historyItemHeight = historyItemHeight,
+            historyList = {
+                HistoryList(
+                    modifier = Modifier.fillMaxSize(),
+                    historyItems = uiState.history,
+                    historyItemHeightCallback = { historyItemHeight = it }
+                )
+            },
+            textFields = { maxDragAmount ->
+                Column(
+                    Modifier
+                        .onPlaced { textThingyHeight = it.size.height }
+                        .draggable(
+                            orientation = Orientation.Vertical,
+                            state = rememberDraggableState { delta ->
+                                draggedAmount = (draggedAmount + delta).coerceAtLeast(0f)
+                            },
+                            onDragStopped = {
+                                // Snap to closest anchor (0, one history item, all history items)
+                                draggedAmount = listOf(0, historyItemHeight, maxDragAmount)
+                                    .minBy { abs(draggedAmount.roundToInt() - it) }
+                                    .toFloat()
+                            }
+                        )
+                ) {
+                    InputTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = TextFieldValue(
+                            text = uiState.input,
+                            selection = TextRange(uiState.selection.first, uiState.selection.last)
+                        ),
+                        onCursorChange = onCursorChange,
+                        pasteCallback = addSymbol
+                    )
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = uiState.output,
+                        textAlign = TextAlign.End,
+                        softWrap = false,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        style = NumbersTextStyleDisplayMedium,
+                    )
+                }
+            },
+            numPad = {
+                CalculatorKeyboard(
+                    modifier = Modifier,
+                    addSymbol = addSymbol,
+                    clearSymbols = clearSymbols,
+                    deleteSymbol = deleteSymbol,
+                    toggleAngleMode = toggleAngleMode,
+                    angleMode = uiState.angleMode,
+                    evaluate = evaluate
+                )
+            }
+        )
+    }
+
+    if (showClearHistoryDialog) {
+        AlertDialog(
+            icon = {
+                Icon(Icons.Default.Delete, stringResource(R.string.calculator_clear_history_title))
+            },
+            title = {
+                Text(stringResource(R.string.calculator_clear_history_title))
+            },
+            text = {
+                Text(stringResource(R.string.calculator_clear_history_support))
+            },
+            confirmButton = {
+                TextButton(onClick = clearHistory) { Text(stringResource(R.string.calculator_clear_history_label)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showClearHistoryDialog = false }) { Text(stringResource(R.string.cancel_label)) }
+            },
+            onDismissRequest = { showClearHistoryDialog = false }
+        )
     }
 }
 
 @Preview
 @Composable
 private fun PreviewCalculatorScreen() {
+    val dtf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault())
+
+    val historyItems = listOf(
+        "13.06.1989 23:59:15",
+        "13.06.1989 23:59:16",
+        "13.06.1989 23:59:17",
+        "14.06.1989 23:59:17",
+        "14.06.1989 23:59:18",
+        "14.07.1989 23:59:18",
+        "14.07.1989 23:59:19",
+        "14.07.2005 23:59:19",
+    ).map {
+        HistoryItem(
+            date = dtf.parse(it)!!,
+            expression = "12345123451234512345123451234512345123451234512345123451234512345",
+            result = "67890"
+        )
+    }
+
     CalculatorScreen(
-        uiState = CalculatorUIState(),
+        uiState = CalculatorUIState(
+            input = "12345",
+            output = "12345",
+            history = historyItems
+        ),
         navigateUpAction = {},
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},
         onCursorChange = {},
         toggleAngleMode = {},
-        evaluate = {}
+        evaluate = {},
+        clearHistory = {}
     )
 }

@@ -16,29 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units
+package com.sadellie.unitto.data.database
 
-import androidx.annotation.StringRes
-import com.sadellie.unitto.data.unitgroups.UnitGroup
-import java.math.BigDecimal
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class NumberBaseUnit(
-    unitId: String,
-    val base: Int,
-    group: UnitGroup,
-    @StringRes displayName: Int,
-    @StringRes shortName: Int,
-) : AbstractUnit(
-    unitId = unitId,
-    displayName = displayName,
-    shortName = shortName,
-    basicUnit = BigDecimal.ONE,
-    group = group,
-) {
-    override fun convert(unitTo: AbstractUnit, value: BigDecimal, scale: Int): BigDecimal = this.basicUnit
-
-    fun convertToBase(input: String, toBase: Int): String {
-        return input.toBigInteger(base).toString(toBase)
-    }
-
-}
+@Entity(tableName = "calculator_history")
+class CalculatorHistoryEntity(
+    @PrimaryKey(autoGenerate = true) val entityId: Int = 0,
+    @ColumnInfo(name = "timestamp") val timestamp: Long,
+    @ColumnInfo(name = "expression") val expression: String,
+    @ColumnInfo(name = "result") val result: String
+)

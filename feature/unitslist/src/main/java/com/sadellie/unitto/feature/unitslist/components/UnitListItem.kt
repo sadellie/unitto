@@ -53,7 +53,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.feature.unitslist.R
 
 /**

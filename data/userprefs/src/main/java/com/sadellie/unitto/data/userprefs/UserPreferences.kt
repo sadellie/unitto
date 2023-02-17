@@ -27,9 +27,9 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
-import com.sadellie.unitto.data.unitgroups.ALL_UNIT_GROUPS
-import com.sadellie.unitto.data.unitgroups.UnitGroup
-import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.units.MyUnitIDS
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.Flow

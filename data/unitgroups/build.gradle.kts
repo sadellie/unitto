@@ -30,4 +30,5 @@ dependencies {
     implementation(libs.org.burnoutcrew.composereorderable)
 
     implementation(project(mapOf("path" to ":core:base")))
+    implementation(project(mapOf("path" to ":data:model")))
 }

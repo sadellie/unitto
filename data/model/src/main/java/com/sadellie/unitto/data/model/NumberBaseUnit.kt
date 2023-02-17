@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,25 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units
+package com.sadellie.unitto.data.model
 
 import androidx.annotation.StringRes
-import com.sadellie.unitto.core.base.MAX_PRECISION
-import com.sadellie.unitto.data.setMinimumRequiredScale
-import com.sadellie.unitto.data.trimZeros
-import com.sadellie.unitto.data.unitgroups.UnitGroup
 import java.math.BigDecimal
 
-/**
- * This class represents a Measurement object
- * @param[displayName] The string resource, i.e. kilometer
- * @param[shortName] The string resource for a short name, i.e. km
- * @param[basicUnit] One unit of this measurement in basic unit
- * @param[group] THe group this measurement belongs to
- */
-class MyUnit(
+class NumberBaseUnit(
     unitId: String,
-    basicUnit: BigDecimal,
+    val base: Int,
     group: UnitGroup,
     @StringRes displayName: Int,
     @StringRes shortName: Int,
@@ -42,20 +31,13 @@ class MyUnit(
     unitId = unitId,
     displayName = displayName,
     shortName = shortName,
-    basicUnit = basicUnit,
+    basicUnit = BigDecimal.ONE,
     group = group,
 ) {
-    override fun convert(
-        unitTo: AbstractUnit,
-        value: BigDecimal,
-        scale: Int
-    ): BigDecimal {
-        return this
-            .basicUnit
-            .setScale(MAX_PRECISION)
-            .multiply(value)
-            .div(unitTo.basicUnit)
-            .setMinimumRequiredScale(scale)
-            .trimZeros()
+    override fun convert(unitTo: AbstractUnit, value: BigDecimal, scale: Int): BigDecimal = this.basicUnit
+
+    fun convertToBase(input: String, toBase: Int): String {
+        return input.toBigInteger(base).toString(toBase)
     }
+
 }

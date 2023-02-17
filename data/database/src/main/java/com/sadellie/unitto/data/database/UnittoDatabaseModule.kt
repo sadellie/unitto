@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2022-2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units.database
+package com.sadellie.unitto.data.database
 
 import android.content.Context
 import androidx.room.Room
@@ -33,30 +33,41 @@ import javax.inject.Singleton
  */
 @InstallIn(SingletonComponent::class)
 @Module
-class BasedUnitDatabaseModule {
+class UnittoDatabaseModule {
     /**
-     * Tells Hilt to use this method to get [MyBasedUnitDao]
+     * Tells Hilt to use this method to get [UnitsDao]
      *
-     * @param myBasedUnitDatabase Database for which we need DAO
-     * @return Singleton of [MyBasedUnitDao]
+     * @param unittoDatabase Database for which we need DAO
+     * @return Singleton of [UnitsDao]
      */
     @Provides
-    fun provideMyBasedUnitDao(myBasedUnitDatabase: MyBasedUnitDatabase): MyBasedUnitDao {
-        return myBasedUnitDatabase.myBasedUnitDao()
+    fun provideUnitsDao(unittoDatabase: UnittoDatabase): UnitsDao {
+        return unittoDatabase.unitsDao()
     }
 
     /**
-     * Tells Hilt to use this method to get [MyBasedUnitDatabase]
+     * Tells Hilt to use this method to get [CalculatorHistoryDao]
+     *
+     * @param unittoDatabase Database for which we need DAO
+     * @return Singleton of [CalculatorHistoryDao]
+     */
+    @Provides
+    fun provideCalculatorHistoryDao(unittoDatabase: UnittoDatabase): CalculatorHistoryDao {
+        return unittoDatabase.calculatorHistoryDao()
+    }
+
+    /**
+     * Tells Hilt to use this method to get [UnittoDatabase]
      *
      * @param appContext Context
-     * @return Singleton of [MyBasedUnitDatabase]
+     * @return Singleton of [UnittoDatabase]
      */
     @Provides
     @Singleton
-    fun provideMyBasedUnitDatabase(@ApplicationContext appContext: Context): MyBasedUnitDatabase {
+    fun provideUnittoDatabase(@ApplicationContext appContext: Context): UnittoDatabase {
         return Room.databaseBuilder(
             appContext.applicationContext,
-            MyBasedUnitDatabase::class.java,
+            UnittoDatabase::class.java,
             "unitto_database"
         ).build()
     }

@@ -21,11 +21,11 @@ package com.sadellie.unitto.feature.unitslist
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.data.unitgroups.UnitGroup
-import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.database.UnitsRepository
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.units.AllUnitsRepository
-import com.sadellie.unitto.data.units.database.MyBasedUnit
-import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SecondViewModel @Inject constructor(
-    private val basedUnitRepository: MyBasedUnitsRepository,
+    private val unitRepository: UnitsRepository,
     private val allUnitsRepository: AllUnitsRepository,
     private val mContext: Application,
     unitGroupsRepository: com.sadellie.unitto.data.unitgroups.UnitGroupsRepository,
@@ -136,8 +136,8 @@ class SecondViewModel @Inject constructor(
             // Changing unit in list to the opposite
             unit.isFavorite = !unit.isFavorite
             // Updating it in database
-            basedUnitRepository.insertUnits(
-                MyBasedUnit(
+            unitRepository.insertUnits(
+                UnitsEntity(
                     unitId = unit.unitId,
                     isFavorite = unit.isFavorite,
                     pairedUnitId = unit.pairedUnit,
@@ -147,15 +147,15 @@ class SecondViewModel @Inject constructor(
         }
     }
 
-    private fun loadBasedUnits() {
+    private fun loadUnits() {
         viewModelScope.launch(Dispatchers.IO) {
             // Now we load units data from database
-            val allBasedUnits = basedUnitRepository.getAll()
-            allUnitsRepository.loadFromDatabase(mContext, allBasedUnits)
+            val allUnits = unitRepository.getAll()
+            allUnitsRepository.loadFromDatabase(mContext, allUnits)
         }
     }
 
     init {
-        loadBasedUnits()
+        loadUnits()
     }
 }

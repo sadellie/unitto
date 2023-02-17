@@ -16,11 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units
+package com.sadellie.unitto.data.model
 
 import androidx.annotation.StringRes
-import com.sadellie.unitto.data.lev
-import com.sadellie.unitto.data.unitgroups.UnitGroup
+import com.sadellie.unitto.data.common.lev
 import java.math.BigDecimal
 
 /**

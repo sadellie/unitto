@@ -20,7 +20,9 @@ package com.sadellie.unitto.data.units
 
 import android.content.Context
 import com.sadellie.unitto.core.base.MAX_PRECISION
-import com.sadellie.unitto.data.unitgroups.UnitGroup
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.sortByLev
 import com.sadellie.unitto.data.units.collections.accelerationCollection
 import com.sadellie.unitto.data.units.collections.angleCollection
 import com.sadellie.unitto.data.units.collections.areaCollection
@@ -38,7 +40,7 @@ import com.sadellie.unitto.data.units.collections.speedCollection
 import com.sadellie.unitto.data.units.collections.temperatureCollection
 import com.sadellie.unitto.data.units.collections.timeCollection
 import com.sadellie.unitto.data.units.collections.volumeCollection
-import com.sadellie.unitto.data.units.database.MyBasedUnit
+import com.sadellie.unitto.data.database.UnitsEntity
 import java.math.BigDecimal
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -153,19 +155,19 @@ class AllUnitsRepository @Inject constructor() {
      *
      * @param context [Context] that is used to fill [AbstractUnit.renderedName]. Rendered names are used when
      * searching.
-     * @param allBasedUnits List from database. See: [MyBasedUnit].
+     * @param allUnits List from database. See: [UnitsEntity].
      */
-    fun loadFromDatabase(context: Context, allBasedUnits: List<MyBasedUnit>) {
-        allUnits.forEach {
+    fun loadFromDatabase(context: Context, allUnits: List<UnitsEntity>) {
+        this.allUnits.forEach {
             // Loading unit names so that we can search through them
             it.renderedName = context.getString(it.displayName)
             it.renderedShortName = context.getString(it.shortName)
-            val based = allBasedUnits.firstOrNull { based -> based.unitId == it.unitId }
+            val fromDb = allUnits.firstOrNull { fromDb -> fromDb.unitId == it.unitId }
             // Loading paired units
-            it.pairedUnit = based?.pairedUnitId
+            it.pairedUnit = fromDb?.pairedUnitId
             // Loading favorite state
-            it.isFavorite = based?.isFavorite ?: false
-            it.counter = based?.frequency ?: 0
+            it.isFavorite = fromDb?.isFavorite ?: false
+            it.counter = fromDb?.frequency ?: 0
         }
     }
 

@@ -18,9 +18,12 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import com.sadellie.unitto.data.model.HistoryItem
+
 internal data class CalculatorUIState(
     val input: String = "",
     val output: String = "",
     val selection: IntRange = 0..0,
-    val angleMode: AngleMode = AngleMode.RAD
+    val angleMode: AngleMode = AngleMode.RAD,
+    val history: List<HistoryItem> = emptyList()
 )

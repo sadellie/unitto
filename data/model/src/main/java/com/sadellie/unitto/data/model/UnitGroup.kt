@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.unitgroups
+package com.sadellie.unitto.data.model
 
 import androidx.annotation.StringRes
 

@@ -19,7 +19,7 @@
 package com.sadellie.unitto.feature.converter
 
 import com.sadellie.unitto.core.base.KEY_0
-import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.model.AbstractUnit
 
 /**
  * Represents current state of the ConverterScreen

@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units.database
+plugins {
+    id("unitto.library")
+    id("unitto.android.hilt")
+}
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
+android {
+    namespace = "com.sadellie.unitto.data.database"
 
-@Database(entities = [MyBasedUnit::class], version = 1, exportSchema = false)
-abstract class MyBasedUnitDatabase : RoomDatabase() {
-    abstract fun myBasedUnitDao(): MyBasedUnitDao
+    // Long thingy
+    val schemaLocation = "$projectDir/schemas"
+    defaultConfig
+        .javaCompileOptions
+        .annotationProcessorOptions
+        .arguments["room.schemaLocation"] = schemaLocation
+    println("Exported Database schema to $schemaLocation")
+}
+
+dependencies {
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 }

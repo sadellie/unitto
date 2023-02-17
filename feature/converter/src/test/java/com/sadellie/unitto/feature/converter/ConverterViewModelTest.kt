@@ -40,8 +40,8 @@ import com.sadellie.unitto.core.base.KEY_PLUS
 import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.core.base.KEY_SQRT
 import com.sadellie.unitto.data.units.AllUnitsRepository
-import com.sadellie.unitto.data.units.database.MyBasedUnitDatabase
-import com.sadellie.unitto.data.units.database.MyBasedUnitsRepository
+import com.sadellie.unitto.data.database.UnittoDatabase
+import com.sadellie.unitto.data.database.UnitsRepository
 import com.sadellie.unitto.data.userprefs.DataStoreModule
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import junit.framework.TestCase.assertEquals
@@ -72,7 +72,7 @@ class ConverterViewModelTest {
     private val allUnitsRepository = AllUnitsRepository()
     private val database = Room.inMemoryDatabaseBuilder(
         RuntimeEnvironment.getApplication(),
-        MyBasedUnitDatabase::class.java
+        UnittoDatabase::class.java
     ).build()
 
     @Before
@@ -84,8 +84,8 @@ class ConverterViewModelTest {
                         RuntimeEnvironment.getApplication()
                     )
             ),
-            basedUnitRepository = MyBasedUnitsRepository(
-                database.myBasedUnitDao()
+            unitRepository = UnitsRepository(
+                database.unitsDao()
             ),
             allUnitsRepository = allUnitsRepository
         )

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units.database
+package com.sadellie.unitto.data.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -30,7 +30,7 @@ import androidx.room.PrimaryKey
  * @param frequency Show the amount of time this unit was used
  */
 @Entity(tableName = "units")
-class MyBasedUnit(
+class UnitsEntity(
     @PrimaryKey val unitId: String,
     @ColumnInfo(name = "is_favorite") val isFavorite: Boolean?,
     @ColumnInfo(name = "paired_unit_id") val pairedUnitId: String?,

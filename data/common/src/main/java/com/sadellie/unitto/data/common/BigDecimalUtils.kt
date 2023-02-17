@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022 Elshan Agaev
+ * Copyright (c) 2022-2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data
+package com.sadellie.unitto.data.common
 
 import com.sadellie.unitto.core.base.OutputFormat
 import java.math.BigDecimal

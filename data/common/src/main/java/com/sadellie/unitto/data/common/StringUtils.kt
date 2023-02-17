@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data
+package com.sadellie.unitto.data.common
 
 /**
  * Compute Levenshtein Distance between this string and [secondString]. Doesn't matter which string is

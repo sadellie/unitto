@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2022-2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units.database
+package com.sadellie.unitto.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -24,10 +24,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface MyBasedUnitDao {
+interface UnitsDao {
     @Query("SELECT * FROM units")
-    suspend fun getAll(): List<MyBasedUnit>
+    suspend fun getAll(): List<UnitsEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUnits(vararg units: MyBasedUnit)
+    suspend fun insertUnits(vararg units: UnitsEntity)
 }

@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 fun UnittoTopAppBar(
     title: String,
     navigateUpAction: () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -47,7 +49,8 @@ fun UnittoTopAppBar(
                 },
                 navigationIcon = {
                     NavigateUpButton { navigateUpAction() }
-                }
+                },
+                actions = actions
             )
         },
         content = content

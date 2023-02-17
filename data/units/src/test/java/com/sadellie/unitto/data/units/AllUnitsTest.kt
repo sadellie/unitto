@@ -18,8 +18,8 @@
 
 package com.sadellie.unitto.data.units
 
-
-import com.sadellie.unitto.data.unitgroups.UnitGroup
+import com.sadellie.unitto.data.model.NumberBaseUnit
+import com.sadellie.unitto.data.model.UnitGroup
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test

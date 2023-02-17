@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.data.units
 
-import com.sadellie.unitto.data.setMinimumRequiredScale
+import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigDecimal

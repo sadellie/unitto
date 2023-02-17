@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.data.units
 
-import com.sadellie.unitto.data.lev
+import com.sadellie.unitto.data.common.lev
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

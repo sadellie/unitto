@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.unitslist.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.sadellie.unitto.data.units.AbstractUnit
+import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.feature.unitslist.LeftSideScreen
 import com.sadellie.unitto.feature.unitslist.RightSideScreen

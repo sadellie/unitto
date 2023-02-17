@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,26 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units.database
+package com.sadellie.unitto.data.database
 
-import javax.inject.Inject
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
-class MyBasedUnitsRepository @Inject constructor (private val myBasedUnitDao: MyBasedUnitDao) {
-    /**
-     * Method to insert units. Will rewrite row if unit's id is already in database
-     *
-     * @param unit Unit to add
-     */
-    suspend fun insertUnits(unit: MyBasedUnit) {
-        myBasedUnitDao.insertUnits(unit)
-    }
+@Dao
+interface CalculatorHistoryDao {
+    @Query("SELECT * FROM calculator_history ORDER BY timestamp DESC")
+    fun getAllDescending(): Flow<List<CalculatorHistoryEntity>>
 
-    /**
-     * Method to get all units from units table
-     *
-     * @return List of [MyBasedUnit] objects that represent one row in table
-     */
-    suspend fun getAll(): List<MyBasedUnit> {
-        return myBasedUnitDao.getAll()
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg historyEntity: CalculatorHistoryEntity)
+
+    @Query("DELETE FROM calculator_history")
+    suspend fun clear()
 }

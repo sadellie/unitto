@@ -1025,6 +1025,9 @@
     <!--Calculator-->
     <string name="calculator">Calculator</string>
     <string name="calculator_support">Calculate, but don\'t convert</string>
+    <string name="calculator_clear_history_label">Clear</string>
+    <string name="calculator_clear_history_title">Clear history</string>
+    <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>
 
     <!--Precision-->
     <string name="precision_setting_support">Number of decimal places</string>

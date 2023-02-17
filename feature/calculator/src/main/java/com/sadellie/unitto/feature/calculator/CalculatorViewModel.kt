@@ -24,9 +24,10 @@ import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
 import com.sadellie.unitto.core.base.KEY_MINUS
 import com.sadellie.unitto.core.base.KEY_MINUS_DISPLAY
 import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
-import com.sadellie.unitto.data.setMinimumRequiredScale
-import com.sadellie.unitto.data.toStringWith
-import com.sadellie.unitto.data.trimZeros
+import com.sadellie.unitto.data.calculator.CalculatorHistoryRepository
+import com.sadellie.unitto.data.common.setMinimumRequiredScale
+import com.sadellie.unitto.data.common.toStringWith
+import com.sadellie.unitto.data.common.trimZeros
 import com.sadellie.unitto.data.userprefs.UserPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,7 +48,8 @@ import org.mariuszgromada.math.mxparser.mXparser as MathParser
 
 @HiltViewModel
 internal class CalculatorViewModel @Inject constructor(
-    userPrefsRepository: UserPreferencesRepository
+    userPrefsRepository: UserPreferencesRepository,
+    private val calculatorHistoryRepository: CalculatorHistoryRepository
 ) : ViewModel() {
     private val _userPrefs: StateFlow<UserPreferences> =
         userPrefsRepository.userPreferencesFlow.stateIn(
@@ -60,15 +62,17 @@ internal class CalculatorViewModel @Inject constructor(
     private val _output: MutableStateFlow<String> = MutableStateFlow("")
     private val _selection: MutableStateFlow<IntRange> = MutableStateFlow(IntRange(0, 0))
     private val _angleMode: MutableStateFlow<AngleMode> = MutableStateFlow(AngleMode.RAD)
+    private val _history = calculatorHistoryRepository.historyFlow
 
     val uiState = combine(
-        _input, _output, _selection, _angleMode
-    ) { input, output, selection, angleMode ->
+        _input, _output, _selection, _angleMode, _history
+    ) { input, output, selection, angleMode, history ->
         return@combine CalculatorUIState(
             input = input,
             output = output,
             selection = selection,
-            angleMode = angleMode
+            angleMode = angleMode,
+            history = history
         )
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState()
@@ -115,9 +119,26 @@ internal class CalculatorViewModel @Inject constructor(
     fun evaluate() {
         if (!Expression(_input.value.clean).checkSyntax()) return
 
+        // Input and output can change while saving in history. This way we cache it here (i think)
+        val input = _input.value
+        val output = _output.value
+
+        viewModelScope.launch(Dispatchers.IO) {
+            calculatorHistoryRepository.add(
+                expression = input,
+                result = output
+            )
+        }
+
         _input.update { _output.value }
         _selection.update { _input.value.length.._input.value.length }
         _output.update { "" }
+    }
+
+    fun clearHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            calculatorHistoryRepository.clear()
+        }
     }
 
     fun onCursorChange(selection: IntRange) {

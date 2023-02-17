@@ -30,9 +30,6 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.datastore)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
 
     implementation(libs.com.squareup.moshi)
     implementation(libs.com.squareup.retrofit2)
@@ -40,6 +37,8 @@ dependencies {
     implementation(libs.org.burnoutcrew.composereorderable)
     implementation(libs.com.github.sadellie.themmo)
 
-    implementation(project(mapOf("path" to ":data:unitgroups")))
     implementation(project(mapOf("path" to ":core:base")))
+    implementation(project(mapOf("path" to ":data:database")))
+    implementation(project(mapOf("path" to ":data:common")))
+    implementation(project(mapOf("path" to ":data:model")))
 }

@@ -33,9 +33,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.Formatter
-import com.sadellie.unitto.data.unitgroups.UnitGroup
-import com.sadellie.unitto.data.units.AbstractUnit
-import com.sadellie.unitto.data.units.NumberBaseUnit
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.NumberBaseUnit
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.feature.unitslist.components.SearchBar
 import com.sadellie.unitto.feature.unitslist.components.SearchPlaceholder
 import com.sadellie.unitto.feature.unitslist.components.UnitGroupHeader
