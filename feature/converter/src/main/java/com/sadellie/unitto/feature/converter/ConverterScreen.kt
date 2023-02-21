@@ -27,10 +27,8 @@ import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -44,82 +42,121 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.AnimatedTopBarText
 import com.sadellie.unitto.feature.converter.components.Keyboard
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.feature.converter.components.TopScreenPart
 import kotlinx.coroutines.delay
 
 @Composable
-internal fun ConverterScreen(
+internal fun ConverterRoute(
+    viewModel: ConverterViewModel = hiltViewModel(),
+    navigateToLeftScreen: (String) -> Unit,
+    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
+    navigateToTools: () -> Unit,
+    navigateToSettings: () -> Unit
+) {
+    val uiState = viewModel.uiStateFlow.collectAsStateWithLifecycle()
+
+    ConverterScreen(
+        uiState = uiState.value,
+        navigateToLeftScreen = navigateToLeftScreen,
+        navigateToRightScreen = navigateToRightScreen,
+        navigateToSettings = navigateToSettings,
+        navigateToTools = navigateToTools,
+        swapMeasurements = viewModel::swapUnits,
+        processInput = viewModel::processInput,
+        deleteDigit = viewModel::deleteDigit,
+        clearInput = viewModel::clearInput,
+        onOutputTextFieldClick = viewModel::toggleFormatTime
+    )
+}
+
+@Composable
+private fun ConverterScreen(
+    uiState: ConverterUIState,
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     navigateToSettings: () -> Unit,
     navigateToTools: () -> Unit,
-    viewModel: ConverterViewModel = viewModel()
+    swapMeasurements: () -> Unit,
+    processInput: (String) -> Unit,
+    deleteDigit: () -> Unit,
+    clearInput: () -> Unit,
+    onOutputTextFieldClick: () -> Unit
 ) {
     var launched: Boolean by rememberSaveable { mutableStateOf(false) }
-    val uiState = viewModel.uiStateFlow.collectAsStateWithLifecycle()
-    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
 
-    Scaffold(
-        modifier = Modifier,
-        topBar = {
-            CenterAlignedTopAppBar(
-                modifier = Modifier,
-                title = { AnimatedTopBarText(launched) },
-                navigationIcon = {
-                    if (uiState.value.showTools) {
-                        BadgedBox(
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .clickable(
-                                    onClick = navigateToTools,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = rememberRipple(false),
-                                    role = Role.Button
-                                ),
-                            badge = {
-                                Badge { Text("1") }
-                            },
-                            content = {
-                                Icon(
-                                    Icons.Outlined.Science,
-                                    contentDescription = stringResource(R.string.tools_screen)
-                                )
-                            }
-                        )
-                    }
+    UnittoScreenWithTopBar(
+        title = { AnimatedTopBarText(launched) },
+        navigationIcon = {
+            BadgedBox(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .clickable(
+                        onClick = navigateToTools,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(false),
+                        role = Role.Button
+                    ),
+                badge = {
+                    Badge { Text("1") }
                 },
-                actions = {
-                    IconButton(onClick = navigateToSettings) {
-                        Icon(
-                            Icons.Outlined.MoreVert,
-                            contentDescription = stringResource(R.string.open_settings_description)
-                        )
-                    }
-                },
-                // Makes the background of the top bar transparent, by default uses secondary color
-                colors = TopAppBarDefaults
-                    .centerAlignedTopAppBarColors(containerColor = Color.Transparent)
+                content = {
+                    Icon(
+                        Icons.Outlined.Science,
+                        contentDescription = stringResource(R.string.tools_screen)
+                    )
+                }
             )
         },
+        actions = {
+            IconButton(onClick = navigateToSettings) {
+                Icon(
+                    Icons.Outlined.MoreVert,
+                    contentDescription = stringResource(R.string.open_settings_description)
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .centerAlignedTopAppBarColors(containerColor = Color.Transparent),
         content = { padding ->
-            ConverterScreenContent(
+            PortraitLandscape(
                 modifier = Modifier.padding(padding),
-                uiState = uiState.value,
-                navigateToLeftScreen = navigateToLeftScreen,
-                navigateToRightScreen = navigateToRightScreen,
-                swapMeasurements = { viewModel.swapUnits() },
-                processInput = { viewModel.processInput(it) },
-                deleteDigit = { viewModel.deleteDigit() },
-                clearInput = { viewModel.clearInput() },
-                onOutputTextFieldClick = { viewModel.toggleFormatTime() },
-                allowVibration = userPrefs.value.enableVibrations
+                content1 = {
+                    TopScreenPart(
+                        modifier = it,
+                        inputValue = uiState.inputValue,
+                        calculatedValue = uiState.calculatedValue,
+                        outputValue = uiState.resultValue,
+                        unitFrom = uiState.unitFrom,
+                        unitTo = uiState.unitTo,
+                        networkLoading = uiState.showLoading,
+                        networkError = uiState.showError,
+                        navigateToLeftScreen = navigateToLeftScreen,
+                        navigateToRightScreen = navigateToRightScreen,
+                        swapUnits = swapMeasurements,
+                        converterMode = uiState.mode,
+                        formatTime = uiState.formatTime,
+                        onOutputTextFieldClick = onOutputTextFieldClick
+                    )
+                },
+                content2 = {
+                    Keyboard(
+                        modifier = it,
+                        addDigit = processInput,
+                        deleteDigit = deleteDigit,
+                        clearInput = clearInput,
+                        converterMode = uiState.mode,
+                        allowVibration = uiState.allowVibration
+                    )
+                }
             )
         }
     )
@@ -135,48 +172,19 @@ internal fun ConverterScreen(
     }
 }
 
+@Preview
 @Composable
-private fun ConverterScreenContent(
-    modifier: Modifier,
-    uiState: ConverterUIState,
-    navigateToLeftScreen: (String) -> Unit,
-    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
-    swapMeasurements: () -> Unit = {},
-    processInput: (String) -> Unit = {},
-    deleteDigit: () -> Unit = {},
-    clearInput: () -> Unit = {},
-    onOutputTextFieldClick: () -> Unit,
-    allowVibration: Boolean
-) {
-    PortraitLandscape(
-        modifier = modifier,
-        content1 = {
-            TopScreenPart(
-                modifier = it,
-                inputValue = uiState.inputValue,
-                calculatedValue = uiState.calculatedValue,
-                outputValue = uiState.resultValue,
-                unitFrom = uiState.unitFrom,
-                unitTo = uiState.unitTo,
-                networkLoading = uiState.showLoading,
-                networkError = uiState.showError,
-                navigateToLeftScreen = navigateToLeftScreen,
-                navigateToRightScreen = navigateToRightScreen,
-                swapUnits = swapMeasurements,
-                converterMode = uiState.mode,
-                formatTime = uiState.formatTime,
-                onOutputTextFieldClick = onOutputTextFieldClick
-            )
-        },
-        content2 = {
-            Keyboard(
-                modifier = it,
-                addDigit = processInput,
-                deleteDigit = deleteDigit,
-                clearInput = clearInput,
-                converterMode = uiState.mode,
-                allowVibration = allowVibration
-            )
-        }
+private fun PreviewConverterScreen() {
+    ConverterScreen(
+        uiState = ConverterUIState(),
+        navigateToLeftScreen = {},
+        navigateToRightScreen = {_, _, _ -> },
+        navigateToSettings = {},
+        navigateToTools = {},
+        swapMeasurements = {},
+        processInput = {},
+        deleteDigit = {},
+        clearInput = {},
+        onOutputTextFieldClick = {}
     )
 }

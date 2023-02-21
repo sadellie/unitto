@@ -83,7 +83,7 @@ class ConverterViewModel @Inject constructor(
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
-    val userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
+    private val _userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         com.sadellie.unitto.data.userprefs.UserPreferences()
@@ -143,7 +143,7 @@ class ConverterViewModel @Inject constructor(
         _showLoading,
         _showError,
         _formatTime,
-        userPrefs
+        _userPrefs
     ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, formatTime, prefs ->
         return@combine ConverterUIState(
             inputValue = inputValue,
@@ -159,7 +159,8 @@ class ConverterViewModel @Inject constructor(
              */
             mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
             formatTime = formatTime,
-            showTools = prefs.enableToolsExperiment
+            showTools = prefs.enableToolsExperiment,
+            allowVibration = prefs.enableVibrations
         )
     }
         .stateIn(
@@ -445,7 +446,7 @@ class ConverterViewModel @Inject constructor(
         // Now we evaluate expression in input
         val evaluationResult: BigDecimal = try {
             Expressions().eval(cleanInput)
-                .setScale(userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
+                .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
                 .trimZeros()
         } catch (e: Exception) {
             when (e) {
@@ -471,9 +472,9 @@ class ConverterViewModel @Inject constructor(
         } else {
             _calculated.update {
                 evaluationResult
-                    .setMinimumRequiredScale(userPrefs.value.digitsPrecision)
+                    .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
                     .trimZeros()
-                    .toStringWith(userPrefs.value.outputFormat)
+                    .toStringWith(_userPrefs.value.outputFormat)
             }
         }
 
@@ -482,11 +483,11 @@ class ConverterViewModel @Inject constructor(
         val conversionResult: BigDecimal = unitFrom.convert(
             unitTo,
             evaluationResult,
-            userPrefs.value.digitsPrecision
+            _userPrefs.value.digitsPrecision
         )
 
         // Converted
-        _result.update { conversionResult.toStringWith(userPrefs.value.outputFormat) }
+        _result.update { conversionResult.toStringWith(_userPrefs.value.outputFormat) }
     }
 
     private fun setInputSymbols(symbol: String, add: Boolean = true) {
@@ -565,7 +566,7 @@ class ConverterViewModel @Inject constructor(
 
     private fun startObserving() {
         viewModelScope.launch(Dispatchers.Default) {
-            merge(_input, _unitFrom, _unitTo, _showLoading, userPrefs).collectLatest {
+            merge(_input, _unitFrom, _unitTo, _showLoading, _userPrefs).collectLatest {
                 convertInput()
             }
         }

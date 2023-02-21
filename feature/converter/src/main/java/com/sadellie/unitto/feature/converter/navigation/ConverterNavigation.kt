@@ -20,7 +20,7 @@ package com.sadellie.unitto.feature.converter.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.sadellie.unitto.feature.converter.ConverterScreen
+import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 
 const val converterRoute = "converter_route"
@@ -33,12 +33,12 @@ fun NavGraphBuilder.converterScreen(
     viewModel: ConverterViewModel
 ) {
     composable(converterRoute) {
-        ConverterScreen(
+        ConverterRoute(
+            viewModel = viewModel,
             navigateToLeftScreen = navigateToLeftScreen,
             navigateToRightScreen = navigateToRightScreen,
             navigateToSettings = navigateToSettings,
-            navigateToTools = navigateToTools,
-            viewModel = viewModel,
+            navigateToTools = navigateToTools
         )
     }
 }
