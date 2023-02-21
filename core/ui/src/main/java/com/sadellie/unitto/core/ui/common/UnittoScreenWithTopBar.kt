@@ -20,39 +20,38 @@ package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 /**
- * Commonly used TopAppBar with scroll behavior.
+ * Template screen. Uses [Scaffold] and [CenterAlignedTopAppBar]
  *
- * @param title Text that is displayed in top bar.
- * @param navigateUpAction Action when user click arrow button at the top.
- * @param content Content that can be scrolled. Don't forget to use padding values.
+ * @param modifier See [Scaffold]
+ * @param title See [CenterAlignedTopAppBar]
+ * @param navigationIcon See [CenterAlignedTopAppBar]
+ * @param actions See [CenterAlignedTopAppBar]
+ * @param colors See [CenterAlignedTopAppBar]
+ * @param content See [Scaffold]
  */
 @Composable
-fun UnittoTopAppBar(
-    title: String,
-    navigateUpAction: () -> Unit,
+fun UnittoScreenWithTopBar(
+    modifier: Modifier = Modifier,
+    title: @Composable () -> Unit,
+    navigationIcon: @Composable () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
-        modifier = Modifier,
+        modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = title)
-                },
-                navigationIcon = {
-                    NavigateUpButton { navigateUpAction() }
-                },
+            CenterAlignedTopAppBar(
+                title = title,
+                navigationIcon = navigationIcon,
                 actions = actions,
                 colors = colors
             )

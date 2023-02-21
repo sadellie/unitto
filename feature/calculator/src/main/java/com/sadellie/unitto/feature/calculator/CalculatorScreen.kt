@@ -60,7 +60,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.ui.common.UnittoTopAppBar
+import com.sadellie.unitto.core.ui.common.MenuButton
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
@@ -112,9 +113,9 @@ private fun CalculatorScreen(
     var textThingyHeight by remember { mutableStateOf(0) }
     var historyItemHeight by remember { mutableStateOf(0) }
 
-    UnittoTopAppBar(
-        title = stringResource(R.string.calculator),
-        navigateUpAction = navigateUpAction,
+    UnittoScreenWithTopBar(
+        title = { Text(stringResource(R.string.calculator)) },
+        navigationIcon = { MenuButton { navigateUpAction() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
             AnimatedVisibility(
@@ -179,7 +180,9 @@ private fun CalculatorScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     InputTextField(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
                         value = TextFieldValue(
                             text = uiState.input,
                             selection = TextRange(uiState.selection.first, uiState.selection.last)
@@ -188,7 +191,9 @@ private fun CalculatorScreen(
                         pasteCallback = addSymbol
                     )
                     Text(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
                         text = uiState.output,
                         textAlign = TextAlign.End,
                         softWrap = false,

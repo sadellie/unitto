@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.epoch
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,8 +27,9 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
-import com.sadellie.unitto.core.ui.common.UnittoTopAppBar
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.feature.epoch.component.EpochKeyboard
 import com.sadellie.unitto.feature.epoch.component.TopPart
 
@@ -58,9 +60,9 @@ private fun EpochScreen(
     swap: () -> Unit,
     onCursorChange: (IntRange) -> Unit
 ) {
-    UnittoTopAppBar(
-        title = stringResource(R.string.epoch_converter),
-        navigateUpAction = navigateUpAction
+    UnittoScreenWithTopBar(
+        title = { Text(stringResource(R.string.epoch_converter)) },
+        navigationIcon = { MenuButton { navigateUpAction() } }
     ) { padding ->
         PortraitLandscape(
             modifier = Modifier.padding(padding),
