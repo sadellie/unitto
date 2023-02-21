@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -38,6 +40,7 @@ fun UnittoTopAppBar(
     title: String,
     navigateUpAction: () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -50,7 +53,8 @@ fun UnittoTopAppBar(
                 navigationIcon = {
                     NavigateUpButton { navigateUpAction() }
                 },
-                actions = actions
+                actions = actions,
+                colors = colors
             )
         },
         content = content

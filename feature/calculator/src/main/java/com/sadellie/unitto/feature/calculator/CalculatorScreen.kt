@@ -19,13 +19,18 @@
 package com.sadellie.unitto.feature.calculator
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
@@ -34,12 +39,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.res.stringResource
@@ -47,6 +54,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.common.UnittoTopAppBar
@@ -103,20 +111,28 @@ private fun CalculatorScreen(
     UnittoTopAppBar(
         title = stringResource(R.string.calculator),
         navigateUpAction = navigateUpAction,
+        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
             IconButton(
                 onClick = { showClearHistoryDialog = true },
-                content = { Icon(Icons.Default.Delete, stringResource(R.string.calculator_clear_history_title)) }
+                content = {
+                    Icon(
+                        Icons.Default.Delete,
+                        stringResource(R.string.calculator_clear_history_title)
+                    )
+                }
             )
         }
     ) { paddingValues ->
         DragDownView(
             modifier = Modifier.padding(paddingValues),
-            drag = dragAmountAnimated.toInt(),
+            drag = dragAmountAnimated.roundToInt(),
             historyItemHeight = historyItemHeight,
             historyList = {
                 HistoryList(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                        .fillMaxSize(),
                     historyItems = uiState.history,
                     historyItemHeightCallback = { historyItemHeight = it }
                 )
@@ -125,6 +141,13 @@ private fun CalculatorScreen(
                 Column(
                     Modifier
                         .onPlaced { textThingyHeight = it.size.height }
+                        .background(
+                            MaterialTheme.colorScheme.surfaceVariant,
+                            RoundedCornerShape(
+                                topStart = 0.dp, topEnd = 0.dp,
+                                bottomStart = 32.dp, bottomEnd = 32.dp
+                            )
+                        )
                         .draggable(
                             orientation = Orientation.Vertical,
                             state = rememberDraggableState { delta ->
@@ -136,7 +159,9 @@ private fun CalculatorScreen(
                                     .minBy { abs(draggedAmount.roundToInt() - it) }
                                     .toFloat()
                             }
-                        )
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     InputTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -155,11 +180,21 @@ private fun CalculatorScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                         style = NumbersTextStyleDisplayMedium,
                     )
+                    // Handle
+                    Box(
+                        Modifier
+                            .padding(16.dp)
+                            .background(
+                                MaterialTheme.colorScheme.onSurfaceVariant,
+                                RoundedCornerShape(100)
+                            )
+                            .sizeIn(36.dp, 4.dp)
+                    )
                 }
             },
             numPad = {
                 CalculatorKeyboard(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     addSymbol = addSymbol,
                     clearSymbols = clearSymbols,
                     deleteSymbol = deleteSymbol,
@@ -186,7 +221,9 @@ private fun CalculatorScreen(
                 TextButton(onClick = clearHistory) { Text(stringResource(R.string.calculator_clear_history_label)) }
             },
             dismissButton = {
-                TextButton(onClick = { showClearHistoryDialog = false }) { Text(stringResource(R.string.cancel_label)) }
+                TextButton(onClick = {
+                    showClearHistoryDialog = false
+                }) { Text(stringResource(R.string.cancel_label)) }
             },
             onDismissRequest = { showClearHistoryDialog = false }
         )

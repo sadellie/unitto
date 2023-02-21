@@ -55,7 +55,7 @@ internal fun InputTextField(
             },
             textStyle = NumbersTextStyleDisplayLarge.copy(
                 textAlign = TextAlign.End,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             ),
             minLines = 1,
             maxLines = 1,

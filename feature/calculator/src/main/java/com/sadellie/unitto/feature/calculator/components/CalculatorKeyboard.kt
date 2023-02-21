@@ -127,7 +127,10 @@ internal fun CalculatorKeyboard(
             .weight(1f)
             .padding(4.dp)
 
-        Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        Row(
+            modifier = Modifier.padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
             // Additional buttons
             Column(modifier = weightModifier) {
                 Row(Modifier, horizontalArrangement = Arrangement.spacedBy(2.dp)) {

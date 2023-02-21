@@ -57,6 +57,7 @@ internal fun HistoryList(
                         .fillMaxWidth()
                         .horizontalScroll(rememberScrollState(), reverseScrolling = true),
                     style = NumbersTextStyleDisplayMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.End
                 )
                 Text(
@@ -66,7 +67,7 @@ internal fun HistoryList(
                         .fillMaxWidth()
                         .horizontalScroll(rememberScrollState(), reverseScrolling = true),
                     style = NumbersTextStyleDisplayMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     textAlign = TextAlign.End
                 )
             }
