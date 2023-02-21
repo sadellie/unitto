@@ -173,12 +173,13 @@ private fun CalculatorScreen(
                                     }
                                     .toFloat()
                             }
-                        ),
+                        )
+                        .padding(top = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     InputTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                         value = TextFieldValue(
                             text = uiState.input,
                             selection = TextRange(uiState.selection.first, uiState.selection.last)
@@ -187,7 +188,7 @@ private fun CalculatorScreen(
                         pasteCallback = addSymbol
                     )
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                         text = uiState.output,
                         textAlign = TextAlign.End,
                         softWrap = false,

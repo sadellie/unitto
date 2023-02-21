@@ -89,12 +89,14 @@ internal fun HistoryList(
             // We do this so that callback for items height is called only once
             item {
                 HistoryListItem(
-                    modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) },
+                    modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) }.padding(horizontal = 8.dp),
                     historyItem = historyItems.first()
                 )
             }
             items(historyItems.drop(1)) { historyItem ->
-                HistoryListItem(historyItem = historyItem)
+                HistoryListItem(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    historyItem = historyItem)
             }
         }
     }
