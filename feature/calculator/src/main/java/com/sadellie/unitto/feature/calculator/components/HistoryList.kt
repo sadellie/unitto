@@ -18,21 +18,35 @@
 
 package com.sadellie.unitto.feature.calculator.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
+import com.sadellie.unitto.feature.calculator.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,36 +56,76 @@ internal fun HistoryList(
     historyItems: List<HistoryItem>,
     historyItemHeightCallback: (Int) -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier,
-        reverseLayout = true
-    ) {
-        items(historyItems) { historyItem ->
-            Column(
-                Modifier.onPlaced { historyItemHeightCallback(it.size.height) }
-            ) {
-                Text(
-                    text = historyItem.expression,
-                    maxLines = 1,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                    style = NumbersTextStyleDisplayMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.End
-                )
-                Text(
-                    text = historyItem.result,
-                    maxLines = 1,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                    style = NumbersTextStyleDisplayMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                    textAlign = TextAlign.End
-                )
+    val verticalArrangement by remember(historyItems) {
+        derivedStateOf {
+            if (historyItems.isEmpty()) {
+                Arrangement.Center
+            } else {
+                Arrangement.spacedBy(16.dp, Alignment.Bottom)
             }
         }
+    }
+
+    LazyColumn(
+        modifier = modifier,
+        reverseLayout = true,
+        verticalArrangement = verticalArrangement
+    ) {
+        if (historyItems.isEmpty()) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .onPlaced { historyItemHeightCallback(it.size.height) }
+                        .fillParentMaxWidth()
+                        .padding(vertical = 32.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(Icons.Default.History, null)
+                    Text(stringResource(R.string.calculator_no_history))
+                }
+            }
+        } else {
+            // We do this so that callback for items height is called only once
+            item {
+                HistoryListItem(
+                    modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) },
+                    historyItem = historyItems.first()
+                )
+            }
+            items(historyItems.drop(1)) { historyItem ->
+                HistoryListItem(historyItem = historyItem)
+            }
+        }
+    }
+}
+
+@Composable
+private fun HistoryListItem(
+    modifier: Modifier = Modifier,
+    historyItem: HistoryItem
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = historyItem.expression,
+            maxLines = 1,
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState(), reverseScrolling = true),
+            style = NumbersTextStyleDisplayMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.End
+        )
+        Text(
+            text = historyItem.result,
+            maxLines = 1,
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState(), reverseScrolling = true),
+            style = NumbersTextStyleDisplayMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            textAlign = TextAlign.End
+        )
     }
 }
 
@@ -98,7 +152,9 @@ private fun PreviewHistoryList() {
     }
 
     HistoryList(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            .fillMaxSize(),
         historyItems = historyItems,
         historyItemHeightCallback = {}
     )

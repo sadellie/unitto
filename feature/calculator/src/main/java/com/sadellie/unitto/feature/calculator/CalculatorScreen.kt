@@ -18,7 +18,10 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -101,6 +104,7 @@ private fun CalculatorScreen(
     evaluate: () -> Unit,
     clearHistory: () -> Unit
 ) {
+    var showClearHistoryButton by rememberSaveable { mutableStateOf(false) }
     var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
     var draggedAmount by remember { mutableStateOf(0f) }
     val dragAmountAnimated by animateFloatAsState(draggedAmount)
@@ -113,15 +117,21 @@ private fun CalculatorScreen(
         navigateUpAction = navigateUpAction,
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
-            IconButton(
-                onClick = { showClearHistoryDialog = true },
-                content = {
-                    Icon(
-                        Icons.Default.Delete,
-                        stringResource(R.string.calculator_clear_history_title)
-                    )
-                }
-            )
+            AnimatedVisibility(
+                visible = showClearHistoryButton,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                IconButton(
+                    onClick = { showClearHistoryDialog = true },
+                    content = {
+                        Icon(
+                            Icons.Default.Delete,
+                            stringResource(R.string.calculator_clear_history_title)
+                        )
+                    }
+                )
+            }
         }
     ) { paddingValues ->
         DragDownView(
@@ -153,10 +163,14 @@ private fun CalculatorScreen(
                             state = rememberDraggableState { delta ->
                                 draggedAmount = (draggedAmount + delta).coerceAtLeast(0f)
                             },
-                            onDragStopped = {
+                            onDragStopped = { _ ->
                                 // Snap to closest anchor (0, one history item, all history items)
                                 draggedAmount = listOf(0, historyItemHeight, maxDragAmount)
                                     .minBy { abs(draggedAmount.roundToInt() - it) }
+                                    .also {
+                                        // Show button only when fully history view is fully expanded
+                                        showClearHistoryButton = it == maxDragAmount
+                                    }
                                     .toFloat()
                             }
                         ),
@@ -218,12 +232,21 @@ private fun CalculatorScreen(
                 Text(stringResource(R.string.calculator_clear_history_support))
             },
             confirmButton = {
-                TextButton(onClick = clearHistory) { Text(stringResource(R.string.calculator_clear_history_label)) }
+                TextButton(
+                    onClick = {
+                        clearHistory()
+                        showClearHistoryDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.calculator_clear_history_label))
+                }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    showClearHistoryDialog = false
-                }) { Text(stringResource(R.string.cancel_label)) }
+                TextButton(
+                    onClick = { showClearHistoryDialog = false }
+                ) {
+                    Text(stringResource(R.string.cancel_label))
+                }
             },
             onDismissRequest = { showClearHistoryDialog = false }
         )
@@ -247,7 +270,7 @@ private fun PreviewCalculatorScreen() {
     ).map {
         HistoryItem(
             date = dtf.parse(it)!!,
-            expression = "12345123451234512345123451234512345123451234512345123451234512345",
+            expression = "12345".repeat(10),
             result = "67890"
         )
     }
