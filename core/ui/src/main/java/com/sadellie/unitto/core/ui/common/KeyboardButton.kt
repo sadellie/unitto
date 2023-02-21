@@ -27,12 +27,9 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.theme.NumbersTextStyleTitleSmall
 
 @Composable
 fun BasicKeyboardButton(
@@ -73,7 +69,6 @@ fun BasicKeyboardButton(
         contentPadding = PaddingValues(24.dp, 8.dp),
         interactionSource = interactionSource
     ) {
-        Icons.Default.ExpandLess
         Icon(icon, null, modifier = Modifier.fillMaxHeight(), tint = iconColor)
     }
 
@@ -125,17 +120,18 @@ fun KeyboardButtonFilled(
 @Composable
 fun KeyboardButtonAdditional(
     modifier: Modifier,
-    symbol: String,
-    onClick: (String) -> Unit
+    icon: ImageVector,
+    onClick: () -> Unit
 ) {
-    TextButton(
-        onClick = { onClick(symbol) },
+    IconButton(
+        onClick = onClick,
         modifier = modifier
     ) {
-        Text(
-            text = symbol,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            style = NumbersTextStyleTitleSmall
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.fillMaxHeight(),
+            tint = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }

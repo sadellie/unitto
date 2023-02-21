@@ -21,19 +21,19 @@ val @receiver:Suppress("UNUSED") UnittoIcons.Plus: ImageVector
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(106.227f, 87.88f)
-                horizontalLineTo(81.395f)
-                verticalLineTo(114.248f)
-                horizontalLineTo(68.531f)
-                verticalLineTo(87.88f)
-                horizontalLineTo(43.827f)
-                verticalLineTo(76.168f)
-                horizontalLineTo(68.531f)
-                verticalLineTo(49.928f)
-                horizontalLineTo(81.395f)
-                verticalLineTo(76.168f)
-                horizontalLineTo(106.227f)
-                verticalLineTo(87.88f)
+                moveTo(105.715f, 86.344f)
+                horizontalLineTo(79.603f)
+                verticalLineTo(113.864f)
+                horizontalLineTo(70.323f)
+                verticalLineTo(86.344f)
+                horizontalLineTo(44.339f)
+                verticalLineTo(77.704f)
+                horizontalLineTo(70.323f)
+                verticalLineTo(50.376f)
+                horizontalLineTo(79.603f)
+                verticalLineTo(77.704f)
+                horizontalLineTo(105.715f)
+                verticalLineTo(86.344f)
                 close()
             }
         }

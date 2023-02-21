@@ -21,11 +21,11 @@ val @receiver:Suppress("UNUSED") UnittoIcons.Minus: ImageVector
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(31.553f, 81.032f)
-                horizontalLineTo(118.402f)
-                verticalLineTo(92.232f)
-                horizontalLineTo(31.553f)
-                verticalLineTo(81.032f)
+                moveTo(32.38f, 83.08f)
+                horizontalLineTo(117.5f)
+                verticalLineTo(91.4f)
+                horizontalLineTo(32.38f)
+                verticalLineTo(83.08f)
                 close()
             }
         }
