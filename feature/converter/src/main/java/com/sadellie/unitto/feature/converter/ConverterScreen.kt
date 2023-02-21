@@ -18,39 +18,30 @@
 
 package com.sadellie.unitto.feature.converter
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Science
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.AnimatedTopBarText
-import com.sadellie.unitto.feature.converter.components.Keyboard
+import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.feature.converter.components.Keyboard
 import com.sadellie.unitto.feature.converter.components.TopScreenPart
 import kotlinx.coroutines.delay
 
@@ -59,7 +50,7 @@ internal fun ConverterRoute(
     viewModel: ConverterViewModel = hiltViewModel(),
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
-    navigateToTools: () -> Unit,
+    navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
     val uiState = viewModel.uiStateFlow.collectAsStateWithLifecycle()
@@ -69,7 +60,7 @@ internal fun ConverterRoute(
         navigateToLeftScreen = navigateToLeftScreen,
         navigateToRightScreen = navigateToRightScreen,
         navigateToSettings = navigateToSettings,
-        navigateToTools = navigateToTools,
+        navigateToMenu = navigateToMenu,
         swapMeasurements = viewModel::swapUnits,
         processInput = viewModel::processInput,
         deleteDigit = viewModel::deleteDigit,
@@ -84,7 +75,7 @@ private fun ConverterScreen(
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     navigateToSettings: () -> Unit,
-    navigateToTools: () -> Unit,
+    navigateToMenu: () -> Unit,
     swapMeasurements: () -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
@@ -95,27 +86,7 @@ private fun ConverterScreen(
 
     UnittoScreenWithTopBar(
         title = { AnimatedTopBarText(launched) },
-        navigationIcon = {
-            BadgedBox(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .clickable(
-                        onClick = navigateToTools,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(false),
-                        role = Role.Button
-                    ),
-                badge = {
-                    Badge { Text("1") }
-                },
-                content = {
-                    Icon(
-                        Icons.Outlined.Science,
-                        contentDescription = stringResource(R.string.tools_screen)
-                    )
-                }
-            )
-        },
+        navigationIcon = { MenuButton { navigateToMenu() } },
         actions = {
             IconButton(onClick = navigateToSettings) {
                 Icon(
@@ -180,7 +151,7 @@ private fun PreviewConverterScreen() {
         navigateToLeftScreen = {},
         navigateToRightScreen = {_, _, _ -> },
         navigateToSettings = {},
-        navigateToTools = {},
+        navigateToMenu = {},
         swapMeasurements = {},
         processInput = {},
         deleteDigit = {},

@@ -1016,9 +1016,12 @@
     <string name="additional_settings_group">Additional</string>
 
     <!--Tools-->
+    <string name="unit_converter">Unit converter</string>
+    <string name="unit_converter_support">Convert from one unit to another</string>
     <string name="epoch_converter">Epoch converter</string>
     <string name="epoch_converter_support">Convert Unix timestamp</string>
     <string name="tools_notice_title">Experimental features!</string>
+    <string name="soon_label">Soon</string>
     <string name="tools_notice_description">This screen is part of an experiment. It may change in the future.</string>
     <string name="click_to_read_more">Click to read more!</string>
 

@@ -20,24 +20,25 @@ package com.sadellie.unitto.feature.calculator.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
 
 private const val calculatorRoute = "calculator_route"
 
-fun NavController.navigateToCalculator() {
-    navigate(calculatorRoute)
+fun NavController.navigateToCalculator(navOptions: NavOptions) {
+    navigate(calculatorRoute, navOptions)
 }
 
 fun NavGraphBuilder.calculatorScreen(
-    navigateUpAction: () -> Unit
+    navigateToMenu: () -> Unit
 ) {
     composable(
         route = calculatorRoute,
         deepLinks = listOf(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$calculatorRoute" }
         )) {
-        CalculatorRoute(navigateUpAction = navigateUpAction)
+        CalculatorRoute(navigateToMenu = navigateToMenu)
     }
 }

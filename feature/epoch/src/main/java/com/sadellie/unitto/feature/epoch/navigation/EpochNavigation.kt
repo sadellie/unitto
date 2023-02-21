@@ -18,42 +18,21 @@
 
 package com.sadellie.unitto.feature.epoch.navigation
 
-import android.content.Intent
-import android.net.Uri
-import androidx.core.content.pm.ShortcutInfoCompat
-import androidx.core.content.pm.ShortcutManagerCompat
-import androidx.core.graphics.drawable.IconCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.feature.epoch.EpochRoute
-import com.sadellie.unitto.feature.epoch.R
 
 private const val epochRoute = "epoch_route"
 
-fun NavController.navigateToEpoch() {
-    val shortcut = ShortcutInfoCompat
-        .Builder(context, epochRoute)
-        .setShortLabel(context.getString(R.string.epoch_converter))
-        .setLongLabel(context.getString(R.string.epoch_converter))
-        .setIcon(IconCompat.createWithResource(context, R.drawable.ic_shortcut_epoch))
-        .setIntent(
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("app://com.sadellie.unitto/$epochRoute"),
-                context,
-                context.javaClass
-            )
-        )
-        .build()
-    ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
-
-    navigate(epochRoute)
+fun NavController.navigateToEpoch(navOptions: NavOptions) {
+    navigate(epochRoute, navOptions)
 }
 
 fun NavGraphBuilder.epochScreen(
-    navigateUpAction: () -> Unit
+    navigateToMenu: () -> Unit
 ) {
     composable(
         route = epochRoute,
@@ -61,8 +40,6 @@ fun NavGraphBuilder.epochScreen(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$epochRoute" }
         )
     ) {
-        EpochRoute(
-            navigateUpAction = navigateUpAction
-        )
+        EpochRoute(navigateToMenu = navigateToMenu)
     }
 }

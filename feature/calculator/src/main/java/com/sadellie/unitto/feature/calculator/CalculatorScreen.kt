@@ -75,14 +75,14 @@ import kotlin.math.roundToInt
 
 @Composable
 internal fun CalculatorRoute(
-    navigateUpAction: () -> Unit,
+    navigateToMenu: () -> Unit,
     viewModel: CalculatorViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     CalculatorScreen(
         uiState = uiState.value,
-        navigateUpAction = navigateUpAction,
+        navigateToMenu = navigateToMenu,
         addSymbol = viewModel::addSymbol,
         clearSymbols = viewModel::clearSymbols,
         deleteSymbol = viewModel::deleteSymbol,
@@ -96,7 +96,7 @@ internal fun CalculatorRoute(
 @Composable
 private fun CalculatorScreen(
     uiState: CalculatorUIState,
-    navigateUpAction: () -> Unit,
+    navigateToMenu: () -> Unit,
     addSymbol: (String) -> Unit,
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
@@ -115,7 +115,7 @@ private fun CalculatorScreen(
 
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.calculator)) },
-        navigationIcon = { MenuButton { navigateUpAction() } },
+        navigationIcon = { MenuButton { navigateToMenu() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
             AnimatedVisibility(
@@ -287,7 +287,7 @@ private fun PreviewCalculatorScreen() {
             output = "12345",
             history = historyItems
         ),
-        navigateUpAction = {},
+        navigateToMenu = {},
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},

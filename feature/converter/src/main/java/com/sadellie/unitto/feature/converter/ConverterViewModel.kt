@@ -56,6 +56,7 @@ import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.combine
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
+import com.sadellie.unitto.data.userprefs.UserPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -86,7 +87,7 @@ class ConverterViewModel @Inject constructor(
     private val _userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
-        com.sadellie.unitto.data.userprefs.UserPreferences()
+        UserPreferences()
     )
 
     /**
@@ -159,7 +160,6 @@ class ConverterViewModel @Inject constructor(
              */
             mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
             formatTime = formatTime,
-            showTools = prefs.enableToolsExperiment,
             allowVibration = prefs.enableVibrations
         )
     }

@@ -19,13 +19,16 @@
 package com.sadellie.unitto
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
 import com.sadellie.unitto.feature.calculator.navigation.navigateToCalculator
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterRoute
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
+import com.sadellie.unitto.feature.converter.navigation.navigateToConverter
 import com.sadellie.unitto.feature.epoch.navigation.epochScreen
 import com.sadellie.unitto.feature.epoch.navigation.navigateToEpoch
 import com.sadellie.unitto.feature.settings.SettingsViewModel
@@ -57,7 +60,7 @@ fun UnittoNavigation(
             navigateToLeftScreen = navController::navigateToLeftSide,
             navigateToRightScreen = navController::navigateToRightSide,
             navigateToSettings = navController::navigateToSettings,
-            navigateToTools = navController::navigateToTools,
+            navigateToMenu = navController::navigateToTools,
             viewModel = converterViewModel
         )
 
@@ -83,14 +86,16 @@ fun UnittoNavigation(
 
         toolsScreen(
             navigateUpAction = navController::navigateUp,
-            navigateToCalculator = navController::navigateToCalculator,
-            navigateToEpoch = navController::navigateToEpoch
+            navigateToConverter = { navController.navigateToConverter(navController.clearStack) },
+            navigateToCalculator = { navController.navigateToCalculator(navController.clearStack) },
+            navigateToEpoch = { navController.navigateToEpoch(navController.clearStack) }
         )
 
-        calculatorScreen(navigateUpAction = navController::navigateUp)
+        calculatorScreen(navigateToMenu = navController::navigateToTools)
 
-        epochScreen(
-            navigateUpAction = navController::navigateUp
-        )
+        epochScreen(navigateToMenu = navController::navigateToTools)
     }
 }
+
+val NavController.clearStack: NavOptions
+    get() = NavOptions.Builder().setPopUpTo(this.graph.id, false).build()

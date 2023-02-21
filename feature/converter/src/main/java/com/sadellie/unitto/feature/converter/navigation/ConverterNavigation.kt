@@ -18,18 +18,24 @@
 
 package com.sadellie.unitto.feature.converter.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 
 const val converterRoute = "converter_route"
 
+fun NavController.navigateToConverter(navOptions: NavOptions) {
+    navigate(converterRoute, navOptions)
+}
+
 fun NavGraphBuilder.converterScreen(
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
     navigateToSettings: () -> Unit,
-    navigateToTools: () -> Unit,
+    navigateToMenu: () -> Unit,
     viewModel: ConverterViewModel
 ) {
     composable(converterRoute) {
@@ -38,7 +44,7 @@ fun NavGraphBuilder.converterScreen(
             navigateToLeftScreen = navigateToLeftScreen,
             navigateToRightScreen = navigateToRightScreen,
             navigateToSettings = navigateToSettings,
-            navigateToTools = navigateToTools
+            navigateToMenu = navigateToMenu
         )
     }
 }

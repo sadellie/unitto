@@ -34,7 +34,6 @@ import com.sadellie.unitto.data.model.AbstractUnit
  * @property unitTo Unit on the right.
  * @property mode
  * @property formatTime If true will format output when converting time.
- * @property showTools If true will show tools button in TopBar.
  * @property allowVibration When true will vibrate on button clicks.
  */
 data class ConverterUIState(
@@ -47,7 +46,6 @@ data class ConverterUIState(
     val unitTo: AbstractUnit? = null,
     val mode: ConverterMode = ConverterMode.DEFAULT,
     val formatTime: Boolean = true,
-    val showTools: Boolean = false,
     val allowVibration: Boolean = false
 )
 

@@ -31,12 +31,14 @@ fun NavController.navigateToTools() {
 
 fun NavGraphBuilder.toolsScreen(
     navigateUpAction: () -> Unit,
+    navigateToConverter: () -> Unit,
     navigateToCalculator: () -> Unit,
     navigateToEpoch: () -> Unit
 ) {
     composable(toolsRoute) {
         ToolsScreen(
             navigateUpAction = navigateUpAction,
+            navigateToConverter = navigateToConverter,
             navigateToCalculator = navigateToCalculator,
             navigateToEpoch = navigateToEpoch
         )

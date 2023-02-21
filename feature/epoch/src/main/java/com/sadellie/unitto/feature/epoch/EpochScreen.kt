@@ -35,12 +35,12 @@ import com.sadellie.unitto.feature.epoch.component.TopPart
 
 @Composable
 internal fun EpochRoute(
-    navigateUpAction: () -> Unit,
+    navigateToMenu: () -> Unit,
     viewModel: EpochViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     EpochScreen(
-        navigateUpAction = navigateUpAction,
+        navigateToMenu = navigateToMenu,
         uiState = uiState.value,
         addSymbol = viewModel::addSymbol,
         deleteSymbol = viewModel::deleteSymbol,
@@ -52,7 +52,7 @@ internal fun EpochRoute(
 
 @Composable
 private fun EpochScreen(
-    navigateUpAction: () -> Unit,
+    navigateToMenu: () -> Unit,
     uiState: EpochUIState,
     addSymbol: (String) -> Unit,
     deleteSymbol: () -> Unit,
@@ -62,7 +62,7 @@ private fun EpochScreen(
 ) {
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.epoch_converter)) },
-        navigationIcon = { MenuButton { navigateUpAction() } }
+        navigationIcon = { MenuButton { navigateToMenu() } }
     ) { padding ->
         PortraitLandscape(
             modifier = Modifier.padding(padding),
