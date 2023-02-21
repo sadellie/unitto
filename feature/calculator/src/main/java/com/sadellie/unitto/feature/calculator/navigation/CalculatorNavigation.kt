@@ -32,13 +32,17 @@ fun NavController.navigateToCalculator(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.calculatorScreen(
-    navigateToMenu: () -> Unit
+    navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit
 ) {
     composable(
         route = calculatorRoute,
         deepLinks = listOf(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$calculatorRoute" }
         )) {
-        CalculatorRoute(navigateToMenu = navigateToMenu)
+        CalculatorRoute(
+            navigateToMenu = navigateToMenu,
+            navigateToSettings = navigateToSettings
+        )
     }
 }

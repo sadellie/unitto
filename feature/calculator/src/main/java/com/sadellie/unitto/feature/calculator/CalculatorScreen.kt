@@ -18,10 +18,8 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -36,6 +34,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -76,6 +75,7 @@ import kotlin.math.roundToInt
 @Composable
 internal fun CalculatorRoute(
     navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit,
     viewModel: CalculatorViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -83,6 +83,7 @@ internal fun CalculatorRoute(
     CalculatorScreen(
         uiState = uiState.value,
         navigateToMenu = navigateToMenu,
+        navigateToSettings = navigateToSettings,
         addSymbol = viewModel::addSymbol,
         clearSymbols = viewModel::clearSymbols,
         deleteSymbol = viewModel::deleteSymbol,
@@ -97,6 +98,7 @@ internal fun CalculatorRoute(
 private fun CalculatorScreen(
     uiState: CalculatorUIState,
     navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit,
     addSymbol: (String) -> Unit,
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
@@ -118,20 +120,25 @@ private fun CalculatorScreen(
         navigationIcon = { MenuButton { navigateToMenu() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
-            AnimatedVisibility(
-                visible = showClearHistoryButton,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                IconButton(
-                    onClick = { showClearHistoryDialog = true },
-                    content = {
+            Crossfade(showClearHistoryButton) {
+                if (it) {
+                    IconButton(
+                        onClick = { showClearHistoryDialog = true },
+                        content = {
+                            Icon(
+                                Icons.Default.Delete,
+                                stringResource(R.string.calculator_clear_history_title)
+                            )
+                        }
+                    )
+                } else {
+                    IconButton(onClick = navigateToSettings) {
                         Icon(
-                            Icons.Default.Delete,
-                            stringResource(R.string.calculator_clear_history_title)
+                            Icons.Outlined.MoreVert,
+                            contentDescription = stringResource(R.string.open_settings_description)
                         )
                     }
-                )
+                }
             }
         }
     ) { paddingValues ->
@@ -288,6 +295,7 @@ private fun PreviewCalculatorScreen() {
             history = historyItems
         ),
         navigateToMenu = {},
+        navigateToSettings = {},
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},

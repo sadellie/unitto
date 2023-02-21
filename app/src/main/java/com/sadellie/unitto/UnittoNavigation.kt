@@ -91,7 +91,10 @@ fun UnittoNavigation(
             navigateToEpoch = { navController.navigateToEpoch(navController.clearStack) }
         )
 
-        calculatorScreen(navigateToMenu = navController::navigateToTools)
+        calculatorScreen(
+            navigateToMenu = navController::navigateToTools,
+            navigateToSettings = navController::navigateToSettings
+        )
 
         epochScreen(navigateToMenu = navController::navigateToTools)
     }
