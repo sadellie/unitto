@@ -36,7 +36,7 @@ import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 
 @Composable
-fun UnittoApp() {
+internal fun UnittoApp() {
     val converterViewModel: ConverterViewModel = hiltViewModel()
     val secondViewModel: SecondViewModel = hiltViewModel()
     val settingsViewModel: SettingsViewModel = hiltViewModel()

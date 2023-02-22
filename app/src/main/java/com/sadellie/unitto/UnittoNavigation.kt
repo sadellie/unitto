@@ -44,7 +44,7 @@ import com.sadellie.unitto.feature.unitslist.navigation.rightScreen
 import io.github.sadellie.themmo.ThemmoController
 
 @Composable
-fun UnittoNavigation(
+internal fun UnittoNavigation(
     navController: NavHostController,
     converterViewModel: ConverterViewModel,
     secondViewModel: SecondViewModel,
@@ -100,5 +100,5 @@ fun UnittoNavigation(
     }
 }
 
-val NavController.clearStack: NavOptions
+private val NavController.clearStack: NavOptions
     get() = NavOptions.Builder().setPopUpTo(this.graph.id, false).build()

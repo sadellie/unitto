@@ -22,4 +22,4 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class UnittoApplication: Application()
+internal class UnittoApplication: Application()

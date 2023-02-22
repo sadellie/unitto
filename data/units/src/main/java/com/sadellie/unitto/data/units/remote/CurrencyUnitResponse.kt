@@ -36,7 +36,7 @@ data class CurrencyUnitResponse(
 /**
  * Custom parser because API has a weird json structure (dynamic field names)
  */
-class CurrencyAdapter {
+internal class CurrencyAdapter {
     @Suppress("UNUSED", "UNUSED_PARAMETER", "SameReturnValue")
     @ToJson fun toJson(card: CurrencyUnitResponse): String? = null
 
