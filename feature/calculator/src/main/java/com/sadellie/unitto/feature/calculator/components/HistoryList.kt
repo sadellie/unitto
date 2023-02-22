@@ -19,8 +19,10 @@
 package com.sadellie.unitto.feature.calculator.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -55,7 +57,8 @@ import java.util.*
 internal fun HistoryList(
     modifier: Modifier,
     historyItems: List<HistoryItem>,
-    historyItemHeightCallback: (Int) -> Unit
+    historyItemHeightCallback: (Int) -> Unit,
+    onTextClick: (String) -> Unit
 ) {
     val verticalArrangement by remember(historyItems) {
         derivedStateOf {
@@ -90,14 +93,16 @@ internal fun HistoryList(
             // We do this so that callback for items height is called only once
             item {
                 HistoryListItem(
-                    modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) }.padding(horizontal = 8.dp),
-                    historyItem = historyItems.first()
+                    modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) },
+                    historyItem = historyItems.first(),
+                    onTextClick = onTextClick
                 )
             }
             items(historyItems.drop(1)) { historyItem ->
                 HistoryListItem(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    historyItem = historyItem
+                    modifier = Modifier,
+                    historyItem = historyItem,
+                    onTextClick = onTextClick
                 )
             }
         }
@@ -107,29 +112,40 @@ internal fun HistoryList(
 @Composable
 private fun HistoryListItem(
     modifier: Modifier = Modifier,
-    historyItem: HistoryItem
+    historyItem: HistoryItem,
+    onTextClick: (String) -> Unit
 ) {
     Column(modifier = modifier) {
-        Text(
-            text = historyItem.expression,
-            maxLines = 1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-            style = NumbersTextStyleDisplayMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.End
-        )
-        Text(
-            text = Formatter.format(historyItem.result),
-            maxLines = 1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-            style = NumbersTextStyleDisplayMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            textAlign = TextAlign.End
-        )
+        Box(
+            Modifier.clickable { onTextClick(historyItem.expression) }
+        ) {
+            Text(
+                text = historyItem.expression,
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .horizontalScroll(rememberScrollState(), reverseScrolling = true),
+                style = NumbersTextStyleDisplayMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.End
+            )
+        }
+        Box(
+            Modifier.clickable { onTextClick(historyItem.result) }
+        ) {
+            Text(
+                text = Formatter.format(historyItem.result),
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .horizontalScroll(rememberScrollState(), reverseScrolling = true),
+                style = NumbersTextStyleDisplayMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                textAlign = TextAlign.End
+            )
+        }
     }
 }
 
@@ -160,6 +176,7 @@ private fun PreviewHistoryList() {
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
             .fillMaxSize(),
         historyItems = historyItems,
-        historyItemHeightCallback = {}
+        historyItemHeightCallback = {},
+        onTextClick = {}
     )
 }

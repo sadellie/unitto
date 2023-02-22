@@ -158,7 +158,8 @@ private fun CalculatorScreen(
                         .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                         .fillMaxSize(),
                     historyItems = uiState.history,
-                    historyItemHeightCallback = { historyItemHeight = it }
+                    historyItemHeightCallback = { historyItemHeight = it },
+                    onTextClick = addSymbol
                 )
             },
             textFields = { maxDragAmount ->
