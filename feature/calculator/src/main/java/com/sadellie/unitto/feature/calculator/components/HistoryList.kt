@@ -44,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.R
@@ -96,7 +97,8 @@ internal fun HistoryList(
             items(historyItems.drop(1)) { historyItem ->
                 HistoryListItem(
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    historyItem = historyItem)
+                    historyItem = historyItem
+                )
             }
         }
     }
@@ -119,7 +121,7 @@ private fun HistoryListItem(
             textAlign = TextAlign.End
         )
         Text(
-            text = historyItem.result,
+            text = Formatter.format(historyItem.result),
             maxLines = 1,
             modifier = Modifier
                 .fillMaxWidth()
