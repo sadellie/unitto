@@ -36,14 +36,16 @@ internal fun InputTextField(
     modifier: Modifier,
     value: TextFieldValue,
     onCursorChange: (IntRange) -> Unit,
-    pasteCallback: (String) -> Unit
+    pasteCallback: (String) -> Unit,
+    cutCallback: () -> Unit
 ) {
     val clipboardManager = LocalClipboardManager.current
     CompositionLocalProvider(
         LocalTextInputService provides null,
         LocalTextToolbar provides UnittoTextToolbar(
             view = LocalView.current,
-            pasteCallback = { pasteCallback(clipboardManager.getText()?.text ?: "") }
+            pasteCallback = { pasteCallback(clipboardManager.getText()?.text ?: "") },
+            cutCallback = cutCallback
         )
     ) {
         BasicTextField(

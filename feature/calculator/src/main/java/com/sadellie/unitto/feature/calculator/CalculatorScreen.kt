@@ -195,7 +195,8 @@ private fun CalculatorScreen(
                             selection = TextRange(uiState.selection.first, uiState.selection.last)
                         ),
                         onCursorChange = onCursorChange,
-                        pasteCallback = addSymbol
+                        pasteCallback = addSymbol,
+                        cutCallback = deleteSymbol
                     )
                     Text(
                         modifier = Modifier
