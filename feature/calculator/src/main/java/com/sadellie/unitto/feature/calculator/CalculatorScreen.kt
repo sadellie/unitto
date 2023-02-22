@@ -19,7 +19,8 @@
 package com.sadellie.unitto.feature.calculator
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -46,6 +47,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,6 +69,7 @@ import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.DragDownView
 import com.sadellie.unitto.feature.calculator.components.HistoryList
 import com.sadellie.unitto.feature.calculator.components.InputTextField
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -109,9 +112,11 @@ private fun CalculatorScreen(
 ) {
     var showClearHistoryButton by rememberSaveable { mutableStateOf(false) }
     var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
-    var draggedAmount by remember { mutableStateOf(0f) }
-    val dragAmountAnimated by animateFloatAsState(draggedAmount)
-    // val dragAmountAnimated = draggedAmount
+
+    val dragAmount = remember { Animatable(0f) }
+    val dragCoroutineScope = rememberCoroutineScope()
+    val dragAnimDecay = rememberSplineBasedDecay<Float>()
+
     var textThingyHeight by remember { mutableStateOf(0) }
     var historyItemHeight by remember { mutableStateOf(0) }
 
@@ -144,7 +149,7 @@ private fun CalculatorScreen(
     ) { paddingValues ->
         DragDownView(
             modifier = Modifier.padding(paddingValues),
-            drag = dragAmountAnimated.roundToInt(),
+            drag = dragAmount.value.roundToInt().coerceAtLeast(0),
             historyItemHeight = historyItemHeight,
             historyList = {
                 HistoryList(
@@ -169,17 +174,25 @@ private fun CalculatorScreen(
                         .draggable(
                             orientation = Orientation.Vertical,
                             state = rememberDraggableState { delta ->
-                                draggedAmount = (draggedAmount + delta).coerceAtLeast(0f)
+                                dragCoroutineScope.launch {
+                                    val draggedAmount = (dragAmount.value + delta).coerceAtLeast(0f)
+                                    dragAmount.snapTo(draggedAmount)
+                                }
                             },
-                            onDragStopped = { _ ->
-                                // Snap to closest anchor (0, one history item, all history items)
-                                draggedAmount = listOf(0, historyItemHeight, maxDragAmount)
-                                    .minBy { abs(draggedAmount.roundToInt() - it) }
-                                    .also {
-                                        // Show button only when fully history view is fully expanded
-                                        showClearHistoryButton = it == maxDragAmount
-                                    }
-                                    .toFloat()
+                            onDragStopped = { velocity ->
+                                dragCoroutineScope.launch {
+                                    dragAmount.animateDecay(velocity, dragAnimDecay)
+
+                                    // Snap to closest anchor (0, one history item, all history items)
+                                    val draggedAmount = listOf(0, historyItemHeight, maxDragAmount)
+                                        .minBy { abs(dragAmount.value.roundToInt() - it) }
+                                        .also {
+                                            // Show button only when fully history view is fully expanded
+                                            showClearHistoryButton = it == maxDragAmount
+                                        }
+                                        .toFloat()
+                                    dragAmount.animateTo(draggedAmount)
+                                }
                             }
                         )
                         .padding(top = 8.dp),
