@@ -111,6 +111,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
+     * @see UserPreferencesRepository.updateStartingScreen
+     */
+    fun updateStartingScreen(startingScreen: String) {
+        viewModelScope.launch {
+            userPrefsRepository.updateStartingScreen(startingScreen)
+        }
+    }
+
+    /**
      * @see UnitGroupsRepository.markUnitGroupAsHidden
      * @see UserPreferencesRepository.updateShownUnitGroups
      */

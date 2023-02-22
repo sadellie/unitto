@@ -23,9 +23,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
 
-private const val calculatorRoute = "calculator_route"
+private const val calculatorRoute = TopLevelDestinations.CALCULATOR
 
 fun NavController.navigateToCalculator(navOptions: NavOptions) {
     navigate(calculatorRoute, navOptions)

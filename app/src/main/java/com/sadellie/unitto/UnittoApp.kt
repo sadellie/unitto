@@ -45,7 +45,7 @@ fun UnittoApp() {
     val themmoController = rememberThemmoController(
         lightColorScheme = LightThemeColors,
         darkColorScheme = DarkThemeColors,
-        // Anything below will not called if theming mode is still loading from DataStore
+        // Anything below will not be called if theming mode is still loading from DataStore
         themingMode = userPrefs.value.themingMode ?: return,
         dynamicThemeEnabled = userPrefs.value.enableDynamicTheme,
         amoledThemeEnabled = userPrefs.value.enableAmoledTheme
@@ -65,7 +65,8 @@ fun UnittoApp() {
             converterViewModel = converterViewModel,
             secondViewModel = secondViewModel,
             settingsViewModel = settingsViewModel,
-            themmoController = it
+            themmoController = it,
+            startDestination = userPrefs.value.startingScreen
         )
 
         SideEffect { sysUiController.setSystemBarsColor(backgroundColor) }

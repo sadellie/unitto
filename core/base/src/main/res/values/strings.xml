@@ -999,6 +999,8 @@
     <string name="precision_setting">Precision</string>
     <string name="separator_setting">Separator</string>
     <string name="output_format_setting">Output format</string>
+    <string name="starting_screen_setting">Starting screen</string>
+    <string name="starting_screen_setting_support">Choose which screen is shown when you launch the app</string>
     <string name="unit_groups_setting">Unit groups</string>
     <string name="enable_vibrations">Vibrations</string>
     <string name="enable_vibrations_support">Haptic feedback when clicking keyboard buttons</string>

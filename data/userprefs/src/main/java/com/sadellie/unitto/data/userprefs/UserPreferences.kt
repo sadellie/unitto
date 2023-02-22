@@ -27,6 +27,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
+import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
@@ -65,7 +66,8 @@ data class UserPreferences(
     val latestRightSideUnit: String = MyUnitIDS.mile,
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
     val enableVibrations: Boolean = true,
-    val enableToolsExperiment: Boolean = false
+    val enableToolsExperiment: Boolean = false,
+    val startingScreen: String = TopLevelDestinations.CONVERTER
 )
 
 /**
@@ -87,6 +89,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val SHOWN_UNIT_GROUPS = stringPreferencesKey("SHOWN_UNIT_GROUPS_PREF_KEY")
         val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
         val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
+        val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -130,6 +133,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 } ?: ALL_UNIT_GROUPS
             val enableVibrations: Boolean = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
+            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.CONVERTER
 
             UserPreferences(
                 themingMode = themingMode,
@@ -142,7 +146,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 latestRightSideUnit = latestRightSideUnit,
                 shownUnitGroups = shownUnitGroups,
                 enableVibrations = enableVibrations,
-                enableToolsExperiment = enableToolsExperiment
+                enableToolsExperiment = enableToolsExperiment,
+                startingScreen = startingScreen
             )
         }
 
@@ -223,6 +228,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateAmoledTheme(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_AMOLED_THEME] = enabled
+        }
+    }
+
+    /**
+     * Update preference on starting screen route.
+     *
+     * @param startingScreen Route from [TopLevelDestinations].
+     */
+    suspend fun updateStartingScreen(startingScreen: String) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.STARTING_SCREEN] = startingScreen
         }
     }
 

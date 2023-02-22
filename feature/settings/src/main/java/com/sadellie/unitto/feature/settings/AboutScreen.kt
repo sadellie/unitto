@@ -30,9 +30,11 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,7 +48,6 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable
 internal fun AboutScreen(
@@ -198,11 +199,19 @@ internal fun AboutScreen(
     }
 
     if (showDialog) {
-        AlertDialogWithList(
-            title = stringResource(R.string.currency_rates_note_title),
-            dismissAction = { showDialog = false },
-            supportText = stringResource(R.string.currency_rates_note_text),
-            dismissButtonLabel = stringResource(R.string.ok_label)
+        AlertDialog(
+            title = {
+                Text(stringResource(R.string.currency_rates_note_title))
+            },
+            text = {
+                Text(stringResource(R.string.currency_rates_note_text))
+            },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text(stringResource(R.string.ok_label))
+                }
+            },
+            onDismissRequest = { showDialog = false }
         )
     }
 }

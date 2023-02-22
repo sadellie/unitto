@@ -23,9 +23,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.epoch.EpochRoute
 
-private const val epochRoute = "epoch_route"
+private const val epochRoute = TopLevelDestinations.EPOCH
 
 fun NavController.navigateToEpoch(navOptions: NavOptions) {
     navigate(epochRoute, navOptions)

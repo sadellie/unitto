@@ -44,18 +44,18 @@ import com.sadellie.unitto.feature.settings.R
  * Alert dialog that has a list of options in it
  *
  * @param title Dialog title
- * @param listItems List of options
+ * @param listItems List of options. Map, where key is an option and value is a string (option name)
  * @param selectedItemIndex Currently selected item index
  * @param selectAction Action to perform when clicking an option
  * @param dismissAction Action to perform when clicking "cancel"
  * @param supportText Text above list of options
  */
 @Composable
-internal fun AlertDialogWithList(
+internal fun <T> AlertDialogWithList(
     title: String,
-    listItems: Map<Int, Int> = emptyMap(),
-    selectedItemIndex: Int = 0,
-    selectAction: (Int) -> Unit = {},
+    listItems: Map<T, Int>,
+    selectedItemIndex: T,
+    selectAction: (T) -> Unit,
     dismissAction: () -> Unit,
     supportText: String? = null,
     dismissButtonLabel: String = stringResource(R.string.cancel_label)

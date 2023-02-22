@@ -22,10 +22,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 
-const val converterRoute = "converter_route"
+const val converterRoute = TopLevelDestinations.CONVERTER
 
 fun NavController.navigateToConverter(navOptions: NavOptions) {
     navigate(converterRoute, navOptions)

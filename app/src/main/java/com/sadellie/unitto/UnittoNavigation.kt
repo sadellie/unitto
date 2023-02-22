@@ -26,7 +26,6 @@ import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
 import com.sadellie.unitto.feature.calculator.navigation.navigateToCalculator
 import com.sadellie.unitto.feature.converter.ConverterViewModel
-import com.sadellie.unitto.feature.converter.navigation.converterRoute
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
 import com.sadellie.unitto.feature.converter.navigation.navigateToConverter
 import com.sadellie.unitto.feature.epoch.navigation.epochScreen
@@ -50,11 +49,12 @@ fun UnittoNavigation(
     converterViewModel: ConverterViewModel,
     secondViewModel: SecondViewModel,
     settingsViewModel: SettingsViewModel,
-    themmoController: ThemmoController
+    themmoController: ThemmoController,
+    startDestination: String
 ) {
     NavHost(
         navController = navController,
-        startDestination = converterRoute
+        startDestination = startDestination
     ) {
         converterScreen(
             navigateToLeftScreen = navController::navigateToLeftSide,

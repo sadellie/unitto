@@ -22,6 +22,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
@@ -45,6 +46,7 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.OUTPUT_FORMAT
 import com.sadellie.unitto.core.base.PRECISIONS
 import com.sadellie.unitto.core.base.SEPARATORS
+import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
@@ -100,6 +102,21 @@ internal fun SettingsScreen(
                     headlineText = { Text(stringResource(R.string.theme_setting)) },
                     supportingText = { Text(stringResource(R.string.theme_setting_support)) },
                     modifier = Modifier.clickable { navControllerAction(themesRoute) }
+                )
+            }
+
+            // START SCREEN
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Home,
+                            stringResource(R.string.starting_screen_setting),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.starting_screen_setting)) },
+                    supportingText = { Text(stringResource(R.string.starting_screen_setting_support)) },
+                    modifier = Modifier.clickable { dialogState = DialogState.START_SCREEN }
                 )
             }
 
@@ -209,7 +226,7 @@ internal fun SettingsScreen(
                 title = stringResource(R.string.precision_setting),
                 listItems = PRECISIONS,
                 selectedItemIndex = userPrefs.value.digitsPrecision,
-                selectAction = { viewModel.updatePrecision(it) },
+                selectAction = viewModel::updatePrecision,
                 dismissAction = { resetDialog() },
                 supportText = stringResource(R.string.precision_setting_info)
             )
@@ -219,7 +236,7 @@ internal fun SettingsScreen(
                 title = stringResource(R.string.separator_setting),
                 listItems = SEPARATORS,
                 selectedItemIndex = userPrefs.value.separator,
-                selectAction = { viewModel.updateSeparator(it) },
+                selectAction = viewModel::updateSeparator,
                 dismissAction = { resetDialog() }
             )
         }
@@ -228,9 +245,18 @@ internal fun SettingsScreen(
                 title = stringResource(R.string.output_format_setting),
                 listItems = OUTPUT_FORMAT,
                 selectedItemIndex = userPrefs.value.outputFormat,
-                selectAction = { viewModel.updateOutputFormat(it) },
+                selectAction = viewModel::updateOutputFormat,
                 dismissAction = { resetDialog() },
                 supportText = stringResource(R.string.output_format_setting_info)
+            )
+        }
+        DialogState.START_SCREEN -> {
+            AlertDialogWithList(
+                title = stringResource(R.string.starting_screen_setting),
+                selectedItemIndex = userPrefs.value.startingScreen,
+                listItems = TOP_LEVEL_DESTINATIONS,
+                selectAction = viewModel::updateStartingScreen,
+                dismissAction = { resetDialog() }
             )
         }
         // Dismissing alert dialog
@@ -242,5 +268,5 @@ internal fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT,
+    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, START_SCREEN
 }
