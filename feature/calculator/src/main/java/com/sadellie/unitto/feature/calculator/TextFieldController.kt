@@ -44,6 +44,8 @@ class TextFieldController @Inject constructor() {
         }
     }
 
+    private val cursorFixer by lazy { CursorFixer() }
+
     var input: MutableStateFlow<TextFieldValue> = MutableStateFlow(TextFieldValue())
 
     fun addToInput(symbols: String) {
@@ -70,7 +72,6 @@ class TextFieldController @Inject constructor() {
     }
 
     fun moveCursor(newPosition: IntRange) {
-        val cursorFixer = CursorFixer(grouping = localFormatter.grouping)
         val currentInput = input.value.text
         val fixedLeftCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.first)
         val fixedRightCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.last)
@@ -87,13 +88,19 @@ class TextFieldController @Inject constructor() {
         val selection = input.value.selection
         val distanceFromEnd = input.value.text.length - selection.end
 
-        val newSelectionStart = when (selection.end) {
+        val deleteRangeStart = when (selection.end) {
             // Don't delete if at the start of the text field
             0 -> return
             // We don't have anything selected (cursor in one position)
             // like this 1234|56 => after deleting will be like this 123|56
             // Cursor moved one symbol left
-            selection.start -> selection.start - 1
+            selection.start -> {
+                // We default to 1 here. It means that cursor is not placed after illegal token
+                // Just a number or a binary operator or something else, can delete by one symbol
+                val amountOfSymbolsToDelete: Int =
+                    cursorFixer.tokenLengthInFront(input.value.text, selection.end) ?: 1
+                selection.start - amountOfSymbolsToDelete
+            }
             // We have multiple symbols selected
             // like this 123[45]6 => after deleting will be like this 123|6
             // Cursor will be placed where selection start was
@@ -102,11 +109,11 @@ class TextFieldController @Inject constructor() {
 
         input.update {
             val newText = it.text
-                .removeRange(newSelectionStart, it.selection.end)
+                .removeRange(deleteRangeStart, it.selection.end)
                 .fixFormat()
             it.copy(
                 text = newText,
-                selection = TextRange(newText.length - distanceFromEnd, newText.length - distanceFromEnd)
+                selection = TextRange(newText.length - distanceFromEnd)
             )
         }
     }
@@ -119,23 +126,32 @@ class TextFieldController @Inject constructor() {
 
     private fun String.fixFormat(): String = localFormatter.reFormat(this)
 
-    inner class CursorFixer(private val grouping: String) {
-        fun fixCursorIfNeeded(str: String, pos: Int): Int {
-            // First we check if try to place cursors at illegal position
-            // If yes,
-            // we go left until cursor is position legally. Remember the distance
-            val bestLeft = bestPositionLeft(str, pos)
-            // we go right until cursor is position legally. Remember the distance
-            val bestRight = bestPositionRight(str, pos)
-            // Now we compare left and right distance
-            val bestPosition = listOf(bestLeft, bestRight)
-                // We move to the that's smaller
-                .minBy { abs(it - pos) }
-
-            return bestPosition
+    inner class CursorFixer {
+        val illegalTokens by lazy {
+            listOf(
+                KEY_COS, KEY_SIN, KEY_LN, KEY_LOG, KEY_TAN
+            )
         }
 
-        fun bestPositionLeft(str: String, pos: Int): Int {
+        fun fixCursorIfNeeded(str: String, pos: Int): Int {
+            // Best position if we move cursor left
+            val bestLeft = bestPositionLeft(str, pos)
+            // Best position if we move cursor right
+            val bestRight = bestPositionRight(str, pos)
+
+            return listOf(bestLeft, bestRight)
+                .minBy { abs(it - pos) }
+        }
+
+        fun tokenLengthInFront(str: String, pos: Int): Int? {
+            illegalTokens.forEach {
+                if (pos.afterToken(str, it)) return it.length
+            }
+
+            return null
+        }
+
+        private fun bestPositionLeft(str: String, pos: Int): Int {
             var cursorPosition = pos
             while (placedIllegally(str, cursorPosition)) cursorPosition--
             return cursorPosition
@@ -149,13 +165,9 @@ class TextFieldController @Inject constructor() {
 
         private fun placedIllegally(str: String, pos: Int): Boolean {
             // For things like "123,|456" - this is illegal
-            if (pos.afterToken(str, grouping)) return true
+            if (pos.afterToken(str, localFormatter.grouping)) return true
 
             // For things like "123,456+c|os(8)" - this is illegal
-            val illegalTokens = listOf(
-                KEY_COS, KEY_SIN, KEY_LN, KEY_LOG, KEY_TAN
-            )
-
             illegalTokens.forEach {
                 if (pos.atToken(str, it)) return true
             }

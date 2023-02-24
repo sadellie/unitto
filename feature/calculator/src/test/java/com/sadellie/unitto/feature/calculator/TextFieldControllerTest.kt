@@ -42,7 +42,7 @@ internal class TextFieldControllerTest {
     }
 
     @Test
-    fun `add when empty`() {
+    fun `Add when empty`() {
         // Add one symbol
         textFieldController.addToInput("1")
         assertEquals("1", textFieldController.text)
@@ -165,6 +165,30 @@ internal class TextFieldControllerTest {
     }
 
     @Test
+    fun `Delete illegal token when cursor is placed after it`() {
+        textFieldController.addToInput("cos(sin(ln(log(tan(")
+        textFieldController.delete()
+        assertEquals("cos(sin(ln(log(", textFieldController.text)
+        assertEquals(15..15, textFieldController.selection)
+
+        textFieldController.delete()
+        assertEquals("cos(sin(ln(", textFieldController.text)
+        assertEquals(11..11, textFieldController.selection)
+
+        textFieldController.delete()
+        assertEquals("cos(sin(", textFieldController.text)
+        assertEquals(8..8, textFieldController.selection)
+
+        textFieldController.delete()
+        assertEquals("cos(", textFieldController.text)
+        assertEquals(4..4, textFieldController.selection)
+
+        textFieldController.delete()
+        assertEquals("", textFieldController.text)
+        assertEquals(0..0, textFieldController.selection)
+    }
+
+    @Test
     fun `placed cursor illegally`() {
         textFieldController.addToInput("123456.789")
         // Input is 123,456.789
@@ -185,7 +209,6 @@ internal class TextFieldControllerTest {
     fun `get clear input text without formatting`() {
         textFieldController.addToInput("123456.789+cos(..)")
         // Input is 123,456.789
-
         assertEquals("123456.789+cos(..)", textFieldController.inputTextWithoutFormatting())
     }
 }
