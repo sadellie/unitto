@@ -18,19 +18,13 @@
 
 package com.sadellie.unitto.feature.converter.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 
-const val converterRoute = TopLevelDestinations.CONVERTER
-
-fun NavController.navigateToConverter(navOptions: NavOptions) {
-    navigate(converterRoute, navOptions)
-}
+private val converterRoute: String by lazy { TopLevelDestinations.Converter.route }
 
 fun NavGraphBuilder.converterScreen(
     navigateToLeftScreen: (String) -> Unit,

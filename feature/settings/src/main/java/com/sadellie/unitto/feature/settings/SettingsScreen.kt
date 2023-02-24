@@ -254,7 +254,7 @@ internal fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(R.string.starting_screen_setting),
                 selectedItemIndex = userPrefs.value.startingScreen,
-                listItems = TOP_LEVEL_DESTINATIONS,
+                listItems = TOP_LEVEL_DESTINATIONS.mapKeys { it.key.route },
                 selectAction = viewModel::updateStartingScreen,
                 dismissAction = { resetDialog() }
             )

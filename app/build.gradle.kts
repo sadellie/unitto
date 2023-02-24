@@ -105,6 +105,7 @@ dependencies {
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
 
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.com.github.sadellie.themmo)
     implementation(libs.com.google.accompanist.systemuicontroller)
@@ -113,10 +114,10 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:calculator")))
     implementation(project(mapOf("path" to ":feature:settings")))
     implementation(project(mapOf("path" to ":feature:unitslist")))
-    implementation(project(mapOf("path" to ":feature:tools")))
     implementation(project(mapOf("path" to ":feature:epoch")))
     implementation(project(mapOf("path" to ":data:units")))
     implementation(project(mapOf("path" to ":data:model")))
     implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":core:ui")))
+    implementation(project(mapOf("path" to ":core:base")))
 }

@@ -67,7 +67,7 @@ data class UserPreferences(
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
     val enableVibrations: Boolean = true,
     val enableToolsExperiment: Boolean = false,
-    val startingScreen: String = TopLevelDestinations.CONVERTER
+    val startingScreen: String = TopLevelDestinations.Converter.route
 )
 
 /**
@@ -133,7 +133,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 } ?: ALL_UNIT_GROUPS
             val enableVibrations: Boolean = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
-            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.CONVERTER
+            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
 
             UserPreferences(
                 themingMode = themingMode,

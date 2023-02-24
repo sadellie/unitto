@@ -18,15 +18,31 @@
 
 package com.sadellie.unitto.core.base
 
-object TopLevelDestinations {
-    const val CONVERTER = "converter_route"
-    const val CALCULATOR = "calculator_route"
-    const val EPOCH = "epoch_route"
+import androidx.annotation.StringRes
+
+sealed class TopLevelDestinations(
+    val route: String,
+    @StringRes val name: Int
+) {
+    object Converter : TopLevelDestinations(
+        route = "converter_route",
+        name = R.string.unit_converter
+    )
+
+    object Calculator : TopLevelDestinations(
+        route = "calculator_route",
+        name = R.string.calculator
+    )
+
+    object Epoch : TopLevelDestinations(
+        route = "epoch_route",
+        name = R.string.epoch_converter
+    )
 }
 
-val TOP_LEVEL_DESTINATIONS: Map<String, Int> by lazy {
+val TOP_LEVEL_DESTINATIONS: Map<TopLevelDestinations, Int> by lazy {
     mapOf(
-        TopLevelDestinations.CONVERTER to R.string.unit_converter,
-        TopLevelDestinations.CALCULATOR to R.string.calculator,
+        TopLevelDestinations.Converter to R.string.unit_converter,
+        TopLevelDestinations.Calculator to R.string.calculator,
     )
 }

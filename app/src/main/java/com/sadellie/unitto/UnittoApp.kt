@@ -19,13 +19,28 @@
 package com.sadellie.unitto
 
 import androidx.compose.animation.core.tween
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.unitslist.SecondViewModel
 import com.sadellie.unitto.core.ui.theme.AppTypography
@@ -34,6 +49,7 @@ import com.sadellie.unitto.core.ui.theme.LightThemeColors
 import com.sadellie.unitto.feature.settings.SettingsViewModel
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun UnittoApp() {
@@ -53,6 +69,18 @@ internal fun UnittoApp() {
     val navController = rememberNavController()
     val sysUiController = rememberSystemUiController()
 
+    // Navigation drawer stuff
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val drawerScope = rememberCoroutineScope()
+    val mainTabs = listOf(
+        TopLevelDestinations.Calculator to Icons.Default.Calculate,
+        TopLevelDestinations.Converter to Icons.Default.SwapHoriz
+    )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute by remember(navBackStackEntry?.destination) {
+        derivedStateOf { navBackStackEntry?.destination?.route }
+    }
+
     Themmo(
         themmoController = themmoController,
         typography = AppTypography,
@@ -60,14 +88,36 @@ internal fun UnittoApp() {
     ) {
         val backgroundColor = MaterialTheme.colorScheme.background
 
-        UnittoNavigation(
-            navController = navController,
-            converterViewModel = converterViewModel,
-            secondViewModel = secondViewModel,
-            settingsViewModel = settingsViewModel,
-            themmoController = it,
-            startDestination = userPrefs.value.startingScreen
-        )
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            gesturesEnabled = true,
+            drawerContent = {
+                UnittoDrawerSheet(
+                    modifier = Modifier,
+                    mainTabs = mainTabs,
+                    currentDestination = currentRoute
+                ) {
+                    drawerScope.launch { drawerState.close() }
+                    navController.navigate(it) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            }
+        ) {
+            UnittoNavigation(
+                navController = navController,
+                converterViewModel = converterViewModel,
+                secondViewModel = secondViewModel,
+                settingsViewModel = settingsViewModel,
+                themmoController = it,
+                startDestination = userPrefs.value.startingScreen,
+                openDrawer = { drawerScope.launch { drawerState.open() } }
+            )
+        }
 
         SideEffect { sysUiController.setSystemBarsColor(backgroundColor) }
     }

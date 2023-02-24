@@ -19,23 +19,16 @@
 package com.sadellie.unitto
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
-import com.sadellie.unitto.feature.calculator.navigation.navigateToCalculator
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
-import com.sadellie.unitto.feature.converter.navigation.navigateToConverter
 import com.sadellie.unitto.feature.epoch.navigation.epochScreen
-import com.sadellie.unitto.feature.epoch.navigation.navigateToEpoch
 import com.sadellie.unitto.feature.settings.SettingsViewModel
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
-import com.sadellie.unitto.feature.tools.navigation.navigateToTools
-import com.sadellie.unitto.feature.tools.navigation.toolsScreen
 import com.sadellie.unitto.feature.unitslist.SecondViewModel
 import com.sadellie.unitto.feature.unitslist.navigation.leftScreen
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToLeftSide
@@ -50,7 +43,8 @@ internal fun UnittoNavigation(
     secondViewModel: SecondViewModel,
     settingsViewModel: SettingsViewModel,
     themmoController: ThemmoController,
-    startDestination: String
+    startDestination: String,
+    openDrawer: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -60,7 +54,7 @@ internal fun UnittoNavigation(
             navigateToLeftScreen = navController::navigateToLeftSide,
             navigateToRightScreen = navController::navigateToRightSide,
             navigateToSettings = navController::navigateToSettings,
-            navigateToMenu = navController::navigateToTools,
+            navigateToMenu = openDrawer,
             viewModel = converterViewModel
         )
 
@@ -84,21 +78,11 @@ internal fun UnittoNavigation(
             navController = navController
         )
 
-        toolsScreen(
-            navigateUpAction = navController::navigateUp,
-            navigateToConverter = { navController.navigateToConverter(navController.clearStack) },
-            navigateToCalculator = { navController.navigateToCalculator(navController.clearStack) },
-            navigateToEpoch = { navController.navigateToEpoch(navController.clearStack) }
-        )
-
         calculatorScreen(
-            navigateToMenu = navController::navigateToTools,
+            navigateToMenu = openDrawer,
             navigateToSettings = navController::navigateToSettings
         )
 
-        epochScreen(navigateToMenu = navController::navigateToTools)
+        epochScreen(navigateToMenu = openDrawer)
     }
 }
-
-private val NavController.clearStack: NavOptions
-    get() = NavOptions.Builder().setPopUpTo(this.graph.id, false).build()

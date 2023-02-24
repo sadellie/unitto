@@ -18,19 +18,13 @@
 
 package com.sadellie.unitto.feature.epoch.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.epoch.EpochRoute
 
-private const val epochRoute = TopLevelDestinations.EPOCH
-
-fun NavController.navigateToEpoch(navOptions: NavOptions) {
-    navigate(epochRoute, navOptions)
-}
+private val epochRoute: String by lazy { TopLevelDestinations.Epoch.route }
 
 fun NavGraphBuilder.epochScreen(
     navigateToMenu: () -> Unit

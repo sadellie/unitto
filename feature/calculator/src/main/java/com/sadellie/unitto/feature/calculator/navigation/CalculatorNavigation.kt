@@ -18,19 +18,13 @@
 
 package com.sadellie.unitto.feature.calculator.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
 
-private const val calculatorRoute = TopLevelDestinations.CALCULATOR
-
-fun NavController.navigateToCalculator(navOptions: NavOptions) {
-    navigate(calculatorRoute, navOptions)
-}
+private val calculatorRoute: String by lazy { TopLevelDestinations.Calculator.route }
 
 fun NavGraphBuilder.calculatorScreen(
     navigateToMenu: () -> Unit,
