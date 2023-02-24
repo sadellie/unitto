@@ -45,11 +45,13 @@ import org.mariuszgromada.math.mxparser.Expression
 import java.math.BigDecimal
 import javax.inject.Inject
 import org.mariuszgromada.math.mxparser.mXparser as MathParser
+import org.mariuszgromada.math.mxparser.License as MathParserLicense
 
 @HiltViewModel
 internal class CalculatorViewModel @Inject constructor(
     userPrefsRepository: UserPreferencesRepository,
-    private val calculatorHistoryRepository: CalculatorHistoryRepository
+    private val calculatorHistoryRepository: CalculatorHistoryRepository,
+    private val textFieldController: TextFieldController
 ) : ViewModel() {
     private val _userPrefs: StateFlow<UserPreferences> =
         userPrefsRepository.userPreferencesFlow.stateIn(
@@ -58,19 +60,16 @@ internal class CalculatorViewModel @Inject constructor(
             UserPreferences()
         )
 
-    private val _input: MutableStateFlow<String> = MutableStateFlow("")
     private val _output: MutableStateFlow<String> = MutableStateFlow("")
-    private val _selection: MutableStateFlow<IntRange> = MutableStateFlow(IntRange(0, 0))
     private val _angleMode: MutableStateFlow<AngleMode> = MutableStateFlow(AngleMode.RAD)
     private val _history = calculatorHistoryRepository.historyFlow
 
     val uiState = combine(
-        _input, _output, _selection, _angleMode, _history
-    ) { input, output, selection, angleMode, history ->
+        textFieldController.input, _output, _angleMode, _history, _userPrefs
+    ) { input, output, angleMode, history, _ ->
         return@combine CalculatorUIState(
             input = input,
             output = output,
-            selection = selection,
             angleMode = angleMode,
             history = history
         )
@@ -78,30 +77,11 @@ internal class CalculatorViewModel @Inject constructor(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState()
     )
 
-    fun addSymbol(symbol: String) {
-        val selection = _selection.value
-        _input.update {
-            if (it.isEmpty()) symbol else it.replaceRange(selection.first, selection.last, symbol)
-        }
-        _selection.update { it.first + symbol.length..it.first + symbol.length }
-    }
+    fun addSymbol(symbol: String) = textFieldController.addToInput(symbol)
 
-    fun deleteSymbol() {
-        val selection = _selection.value
-        val newSelectionStart = when (selection.last) {
-            0 -> return
-            selection.first -> _selection.value.first - 1
-            else -> _selection.value.first
-        }
+    fun deleteSymbol() = textFieldController.delete()
 
-        _selection.update { newSelectionStart..newSelectionStart }
-        _input.update { it.removeRange(newSelectionStart, selection.last) }
-    }
-
-    fun clearSymbols() {
-        _selection.update { 0..0 }
-        _input.update { "" }
-    }
+    fun clearSymbols() = textFieldController.clearInput()
 
     fun toggleCalculatorMode() {
         _angleMode.update {
@@ -117,44 +97,37 @@ internal class CalculatorViewModel @Inject constructor(
 
     // Called when user clicks "=" on a keyboard
     fun evaluate() {
-        if (!Expression(_input.value.clean).checkSyntax()) return
-
         // Input and output can change while saving in history. This way we cache it here (i think)
-        val input = _input.value
+        val currentInput = textFieldController.input.value.text
         val output = _output.value
+        if (!Expression(currentInput.clean).checkSyntax()) return
 
+        // Save to history
         viewModelScope.launch(Dispatchers.IO) {
             calculatorHistoryRepository.add(
-                expression = input,
+                expression = textFieldController.inputTextWithoutFormatting(),
                 result = output
             )
         }
 
-        _input.update { _output.value }
-        _selection.update { _input.value.length.._input.value.length }
         _output.update { "" }
     }
 
-    fun clearHistory() {
-        viewModelScope.launch(Dispatchers.IO) {
-            calculatorHistoryRepository.clear()
-        }
+    fun clearHistory() = viewModelScope.launch(Dispatchers.IO) {
+        calculatorHistoryRepository.clear()
     }
 
-    fun onCursorChange(selection: IntRange) {
-        // When we paste, selection is set to the length of the pasted text (start and end)
-        if (selection.first > _input.value.length) return
-        _selection.update { selection }
-    }
+    fun onCursorChange(selection: IntRange) = textFieldController.moveCursor(selection)
 
     private fun calculateInput() {
+        val currentInput = textFieldController.input.value.text
         // Input is empty, don't calculate
-        if (_input.value.isEmpty()) {
+        if (currentInput.isEmpty()) {
             _output.update { "" }
             return
         }
 
-        val calculated = Expression(_input.value.clean).calculate()
+        val calculated = Expression(currentInput.clean).calculate()
 
         // Calculation error, return NaN
         if (calculated.isNaN() or calculated.isInfinite()) {
@@ -168,7 +141,7 @@ internal class CalculatorViewModel @Inject constructor(
             .trimZeros()
 
         try {
-            val inputBigDecimal = BigDecimal(_input.value)
+            val inputBigDecimal = BigDecimal(currentInput)
 
             // Input and output are identical values
             if (inputBigDecimal.compareTo(calculatedBigDecimal) == 0) {
@@ -192,8 +165,7 @@ internal class CalculatorViewModel @Inject constructor(
             val leftBrackets = count { it.toString() == KEY_LEFT_BRACKET }
             val rightBrackets = count { it.toString() == KEY_RIGHT_BRACKET }
             val neededBrackets = leftBrackets - rightBrackets
-            return this
-                .replace(KEY_MINUS_DISPLAY, KEY_MINUS)
+            return replace(KEY_MINUS_DISPLAY, KEY_MINUS)
                 .plus(KEY_RIGHT_BRACKET.repeat(neededBrackets.coerceAtLeast(0)))
         }
 
@@ -203,10 +175,11 @@ internal class CalculatorViewModel @Inject constructor(
          * to load CPU very much. We use BigDecimal to achieve same result without CPU overload.
          */
         MathParser.setCanonicalRounding(false)
+        MathParserLicense.iConfirmNonCommercialUse("Sad Ellie")
 
         // Observe and invoke calculation without UI lag.
         viewModelScope.launch(Dispatchers.Default) {
-            merge(_userPrefs, _input, _angleMode).collectLatest {
+            merge(_userPrefs, textFieldController.input, _angleMode).collectLatest {
                 calculateInput()
             }
         }

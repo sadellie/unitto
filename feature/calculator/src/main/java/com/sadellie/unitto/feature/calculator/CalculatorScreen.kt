@@ -54,16 +54,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
@@ -205,10 +204,7 @@ private fun CalculatorScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
-                        value = TextFieldValue(
-                            text = uiState.input,
-                            selection = TextRange(uiState.selection.first, uiState.selection.last)
-                        ),
+                        value = uiState.input,
                         onCursorChange = onCursorChange,
                         pasteCallback = addSymbol,
                         cutCallback = deleteSymbol
@@ -306,7 +302,7 @@ private fun PreviewCalculatorScreen() {
 
     CalculatorScreen(
         uiState = CalculatorUIState(
-            input = "12345",
+            input = TextFieldValue("12345"),
             output = "12345",
             history = historyItems
         ),

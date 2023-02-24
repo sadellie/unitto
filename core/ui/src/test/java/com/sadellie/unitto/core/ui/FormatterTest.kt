@@ -36,6 +36,7 @@ private const val INCOMPLETE_VALUE = "123456."
 private const val NO_FRACTIONAL_VALUE = "123456"
 private const val INCOMPLETE_EXPR = "50+123456÷8×0.8–12+"
 private const val COMPLETE_EXPR = "50+123456÷8×0.8–12+0-√9*4^9+2×(9+8×7)"
+private const val LONG_HALF_COMPLETE_EXPR = "50+123456÷89078..9×0.8–12+0-√9*4^9+2×(9+8×7)×sin(13sin123cos"
 private const val SOME_BRACKETS = "(((((((("
 
 @RunWith(RobolectricTestRunner::class)
@@ -55,6 +56,7 @@ class FormatterTest {
         assertEquals("123 456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123 456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
         assertEquals("50+123 456÷8×0.8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123 456÷89 078..9×0.8–12+0–√9×4^9+2×(9+8×7)×sin(13sin123cos", formatter.format(LONG_HALF_COMPLETE_EXPR))
         assertEquals("((((((((", formatter.format(SOME_BRACKETS))
     }
 
@@ -69,6 +71,7 @@ class FormatterTest {
         assertEquals("123,456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123,456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
         assertEquals("50+123,456÷8×0.8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123,456÷89,078..9×0.8–12+0–√9×4^9+2×(9+8×7)×sin(13sin123cos", formatter.format(LONG_HALF_COMPLETE_EXPR))
         assertEquals("((((((((", formatter.format(SOME_BRACKETS))
     }
 
@@ -83,6 +86,7 @@ class FormatterTest {
         assertEquals("123.456", formatter.format(NO_FRACTIONAL_VALUE))
         assertEquals("50+123.456÷8×0,8–12+", formatter.format(INCOMPLETE_EXPR))
         assertEquals("50+123.456÷8×0,8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
+        assertEquals("50+123.456÷89.078,,9×0,8–12+0–√9×4^9+2×(9+8×7)×sin(13sin123cos", formatter.format(LONG_HALF_COMPLETE_EXPR))
         assertEquals("((((((((", formatter.format(SOME_BRACKETS))
     }
 
@@ -91,96 +95,96 @@ class FormatterTest {
         formatter.setSeparator(Separator.SPACES)
         composeTestRule.setContent {
             var basicValue = BigDecimal.valueOf(1)
-            assertEquals("-28", Formatter.formatTime("-28", basicValue))
-            assertEquals("-0.05", Formatter.formatTime("-0.05", basicValue))
-            assertEquals("0", Formatter.formatTime("0", basicValue))
-            assertEquals("0", Formatter.formatTime("-0", basicValue))
+            assertEquals("-28", formatter.formatTime("-28", basicValue))
+            assertEquals("-0.05", formatter.formatTime("-0.05", basicValue))
+            assertEquals("0", formatter.formatTime("0", basicValue))
+            assertEquals("0", formatter.formatTime("-0", basicValue))
 
             basicValue = BigDecimal.valueOf(86_400_000_000_000_000_000_000.0)
-            assertEquals("-28d", Formatter.formatTime("-28", basicValue))
-            assertEquals("-1h 12m", Formatter.formatTime("-0.05", basicValue))
-            assertEquals("0", Formatter.formatTime("0", basicValue))
-            assertEquals("0", Formatter.formatTime("-0", basicValue))
+            assertEquals("-28d", formatter.formatTime("-28", basicValue))
+            assertEquals("-1h 12m", formatter.formatTime("-0.05", basicValue))
+            assertEquals("0", formatter.formatTime("0", basicValue))
+            assertEquals("0", formatter.formatTime("-0", basicValue))
 
             // DAYS
             basicValue = BigDecimal.valueOf(86_400_000_000_000_000_000_000.0)
-            assertEquals("12h", Formatter.formatTime("0.5", basicValue))
-            assertEquals("1h 12m", Formatter.formatTime("0.05", basicValue))
-            assertEquals("7m 12s", Formatter.formatTime("0.005", basicValue))
-            assertEquals("28d", Formatter.formatTime("28", basicValue))
-            assertEquals("90d", Formatter.formatTime("90", basicValue))
-            assertEquals("90d 12h", Formatter.formatTime("90.5", basicValue))
-            assertEquals("90d 7m 12s", Formatter.formatTime("90.005", basicValue))
+            assertEquals("12h", formatter.formatTime("0.5", basicValue))
+            assertEquals("1h 12m", formatter.formatTime("0.05", basicValue))
+            assertEquals("7m 12s", formatter.formatTime("0.005", basicValue))
+            assertEquals("28d", formatter.formatTime("28", basicValue))
+            assertEquals("90d", formatter.formatTime("90", basicValue))
+            assertEquals("90d 12h", formatter.formatTime("90.5", basicValue))
+            assertEquals("90d 7m 12s", formatter.formatTime("90.005", basicValue))
 
             // HOURS
             basicValue = BigDecimal.valueOf(3_600_000_000_000_000_000_000.0)
-            assertEquals("30m", Formatter.formatTime("0.5", basicValue))
-            assertEquals("3m", Formatter.formatTime("0.05", basicValue))
-            assertEquals("18s", Formatter.formatTime("0.005", basicValue))
-            assertEquals("1d 4h", Formatter.formatTime("28", basicValue))
-            assertEquals("3d 18h", Formatter.formatTime("90", basicValue))
-            assertEquals("3d 18h 30m", Formatter.formatTime("90.5", basicValue))
-            assertEquals("3d 18h 18s", Formatter.formatTime("90.005", basicValue))
+            assertEquals("30m", formatter.formatTime("0.5", basicValue))
+            assertEquals("3m", formatter.formatTime("0.05", basicValue))
+            assertEquals("18s", formatter.formatTime("0.005", basicValue))
+            assertEquals("1d 4h", formatter.formatTime("28", basicValue))
+            assertEquals("3d 18h", formatter.formatTime("90", basicValue))
+            assertEquals("3d 18h 30m", formatter.formatTime("90.5", basicValue))
+            assertEquals("3d 18h 18s", formatter.formatTime("90.005", basicValue))
 
             // MINUTES
             basicValue = BigDecimal.valueOf(60_000_000_000_000_000_000.0)
-            assertEquals("30s", Formatter.formatTime("0.5", basicValue))
-            assertEquals("3s", Formatter.formatTime("0.05", basicValue))
-            assertEquals("300ms", Formatter.formatTime("0.005", basicValue))
-            assertEquals("28m", Formatter.formatTime("28", basicValue))
-            assertEquals("1h 30m", Formatter.formatTime("90", basicValue))
-            assertEquals("1h 30m 30s", Formatter.formatTime("90.5", basicValue))
-            assertEquals("1h 30m 300ms", Formatter.formatTime("90.005", basicValue))
+            assertEquals("30s", formatter.formatTime("0.5", basicValue))
+            assertEquals("3s", formatter.formatTime("0.05", basicValue))
+            assertEquals("300ms", formatter.formatTime("0.005", basicValue))
+            assertEquals("28m", formatter.formatTime("28", basicValue))
+            assertEquals("1h 30m", formatter.formatTime("90", basicValue))
+            assertEquals("1h 30m 30s", formatter.formatTime("90.5", basicValue))
+            assertEquals("1h 30m 300ms", formatter.formatTime("90.005", basicValue))
 
             // SECONDS
             basicValue = BigDecimal.valueOf(1_000_000_000_000_000_000)
-            assertEquals("500ms", Formatter.formatTime("0.5", basicValue))
-            assertEquals("50ms", Formatter.formatTime("0.05", basicValue))
-            assertEquals("5ms", Formatter.formatTime("0.005", basicValue))
-            assertEquals("28s", Formatter.formatTime("28", basicValue))
-            assertEquals("1m 30s", Formatter.formatTime("90", basicValue))
-            assertEquals("1m 30s 500ms", Formatter.formatTime("90.5", basicValue))
-            assertEquals("1m 30s 5ms", Formatter.formatTime("90.005", basicValue))
+            assertEquals("500ms", formatter.formatTime("0.5", basicValue))
+            assertEquals("50ms", formatter.formatTime("0.05", basicValue))
+            assertEquals("5ms", formatter.formatTime("0.005", basicValue))
+            assertEquals("28s", formatter.formatTime("28", basicValue))
+            assertEquals("1m 30s", formatter.formatTime("90", basicValue))
+            assertEquals("1m 30s 500ms", formatter.formatTime("90.5", basicValue))
+            assertEquals("1m 30s 5ms", formatter.formatTime("90.005", basicValue))
 
             // MILLISECONDS
             basicValue = BigDecimal.valueOf(1_000_000_000_000_000)
-            assertEquals("500µs", Formatter.formatTime("0.5", basicValue))
-            assertEquals("50µs", Formatter.formatTime("0.05", basicValue))
-            assertEquals("5µs", Formatter.formatTime("0.005", basicValue))
-            assertEquals("28ms", Formatter.formatTime("28", basicValue))
-            assertEquals("90ms", Formatter.formatTime("90", basicValue))
-            assertEquals("90ms 500µs", Formatter.formatTime("90.5", basicValue))
-            assertEquals("90ms 5µs", Formatter.formatTime("90.005", basicValue))
+            assertEquals("500µs", formatter.formatTime("0.5", basicValue))
+            assertEquals("50µs", formatter.formatTime("0.05", basicValue))
+            assertEquals("5µs", formatter.formatTime("0.005", basicValue))
+            assertEquals("28ms", formatter.formatTime("28", basicValue))
+            assertEquals("90ms", formatter.formatTime("90", basicValue))
+            assertEquals("90ms 500µs", formatter.formatTime("90.5", basicValue))
+            assertEquals("90ms 5µs", formatter.formatTime("90.005", basicValue))
 
             // MICROSECONDS
             basicValue = BigDecimal.valueOf(1_000_000_000_000)
-            assertEquals("500ns", Formatter.formatTime("0.5", basicValue))
-            assertEquals("50ns", Formatter.formatTime("0.05", basicValue))
-            assertEquals("5ns", Formatter.formatTime("0.005", basicValue))
-            assertEquals("28µs", Formatter.formatTime("28", basicValue))
-            assertEquals("90µs", Formatter.formatTime("90", basicValue))
-            assertEquals("90µs 500ns", Formatter.formatTime("90.5", basicValue))
-            assertEquals("90µs 5ns", Formatter.formatTime("90.005", basicValue))
+            assertEquals("500ns", formatter.formatTime("0.5", basicValue))
+            assertEquals("50ns", formatter.formatTime("0.05", basicValue))
+            assertEquals("5ns", formatter.formatTime("0.005", basicValue))
+            assertEquals("28µs", formatter.formatTime("28", basicValue))
+            assertEquals("90µs", formatter.formatTime("90", basicValue))
+            assertEquals("90µs 500ns", formatter.formatTime("90.5", basicValue))
+            assertEquals("90µs 5ns", formatter.formatTime("90.005", basicValue))
 
             // NANOSECONDS
             basicValue = BigDecimal.valueOf(1_000_000_000)
-            assertEquals("500 000 000as", Formatter.formatTime("0.5", basicValue))
-            assertEquals("50 000 000as", Formatter.formatTime("0.05", basicValue))
-            assertEquals("5 000 000as", Formatter.formatTime("0.005", basicValue))
-            assertEquals("28ns", Formatter.formatTime("28", basicValue))
-            assertEquals("90ns", Formatter.formatTime("90", basicValue))
-            assertEquals("90ns 500 000 000as", Formatter.formatTime("90.5", basicValue))
-            assertEquals("90ns 5 000 000as", Formatter.formatTime("90.005", basicValue))
+            assertEquals("500 000 000as", formatter.formatTime("0.5", basicValue))
+            assertEquals("50 000 000as", formatter.formatTime("0.05", basicValue))
+            assertEquals("5 000 000as", formatter.formatTime("0.005", basicValue))
+            assertEquals("28ns", formatter.formatTime("28", basicValue))
+            assertEquals("90ns", formatter.formatTime("90", basicValue))
+            assertEquals("90ns 500 000 000as", formatter.formatTime("90.5", basicValue))
+            assertEquals("90ns 5 000 000as", formatter.formatTime("90.005", basicValue))
 
             // ATTOSECONDS
             basicValue = BigDecimal.valueOf(1)
-            assertEquals("0.5", Formatter.formatTime("0.5", basicValue))
-            assertEquals("0.05", Formatter.formatTime("0.05", basicValue))
-            assertEquals("0.005", Formatter.formatTime("0.005", basicValue))
-            assertEquals("28", Formatter.formatTime("28", basicValue))
-            assertEquals("90", Formatter.formatTime("90", basicValue))
-            assertEquals("90.5", Formatter.formatTime("90.5", basicValue))
-            assertEquals("90.005", Formatter.formatTime("90.005", basicValue))
+            assertEquals("0.5", formatter.formatTime("0.5", basicValue))
+            assertEquals("0.05", formatter.formatTime("0.05", basicValue))
+            assertEquals("0.005", formatter.formatTime("0.005", basicValue))
+            assertEquals("28", formatter.formatTime("28", basicValue))
+            assertEquals("90", formatter.formatTime("90", basicValue))
+            assertEquals("90.5", formatter.formatTime("90.5", basicValue))
+            assertEquals("90.005", formatter.formatTime("90.005", basicValue))
         }
     }
 }

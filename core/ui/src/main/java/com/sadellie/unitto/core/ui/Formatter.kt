@@ -25,23 +25,28 @@ import com.sadellie.unitto.core.base.KEY_0
 import com.sadellie.unitto.core.base.KEY_COMMA
 import com.sadellie.unitto.core.base.KEY_DOT
 import com.sadellie.unitto.core.base.KEY_E
-import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
 import com.sadellie.unitto.core.base.KEY_MINUS
-import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
-import com.sadellie.unitto.core.base.OPERATORS
 import com.sadellie.unitto.core.base.Separator
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-object Formatter {
-    private const val SPACE = " "
-    private const val PERIOD = "."
-    private const val COMMA = ","
+// Legacy, LOL. Will change later
+object Formatter : UnittoFormatter()
+
+open class UnittoFormatter {
+    /**
+     * This regex will catch things like "123.456", "123", ".456"
+     */
+    private val numbersRegex = Regex("[\\d.]+")
+
+    private val SPACE = " "
+    private val PERIOD = "."
+    private val COMMA = ","
 
     /**
      * Grouping separator.
      */
-    private var grouping: String = SPACE
+    var grouping: String = SPACE
 
     /**
      * Fractional part separator.
@@ -91,11 +96,8 @@ object Formatter {
 
         var output = input
 
-        // We may receive expressions
-        // Find all numbers in that expression
-        val allNumbers: List<String> = input.split(
-            *OPERATORS.toTypedArray(), KEY_LEFT_BRACKET, KEY_RIGHT_BRACKET
-        )
+        // We may receive expressions. Find all numbers in this expression
+        val allNumbers: List<String> = input.getOnlyNumbers()
 
         allNumbers.forEach {
             output = output.replace(it, formatNumber(it))
@@ -109,33 +111,49 @@ object Formatter {
     }
 
     /**
+     * Remove formatting. Reverses [format]
+     */
+    fun reFormat(input: String): String {
+        // We get  123.45,6789
+        // We need 12.345,6789
+
+        // 123.45,6789
+        // Remove grouping
+        // 12345,6789
+        // Replace fractional with "." because formatter accepts only numbers where fractional is a dot
+
+        val cleanString = input
+            .replace(grouping, "")
+            .replace(fractional, KEY_DOT)
+        return format(cleanString)
+    }
+
+    /**
      * Format given [input].
      *
-     * Input must be a number. Will replace grouping separators and fractional part separators.
+     * Input must be a number with dot!!!. Will replace grouping separators and fractional part (dot)
+     * separators.
      *
      * @see grouping
      * @see fractional
      */
     private fun formatNumber(input: String): String {
-        val splitInput = input.split(".")
-        var firstPart = splitInput[0]
+        if (input.any { it.isLetter() }) return input
 
-        // Number of empty symbols (spaces) we need to add to correctly  split into chunks.
+        var firstPart = input.takeWhile { it != '.' }
+        val remainingPart = input.removePrefix(firstPart)
+
+        // Number of empty symbols (spaces) we need to add to correctly split into chunks.
         val offset = 3 - firstPart.length.mod(3)
-        var output = if (offset != 3) {
-            // We add some spaces at the begging so that last chunk has 3 symbols
+        val output = if (offset != 3) {
+            // We add some spaces at the beginning so that last chunk has 3 symbols
             firstPart = " ".repeat(offset) + firstPart
             firstPart.chunked(3).joinToString(grouping).drop(offset)
         } else {
             firstPart.chunked(3).joinToString(grouping)
         }
 
-        // Handling fractional part
-        if (input.contains(".")) {
-            output = output + fractional + splitInput.getOrElse(1) { "" }
-        }
-
-        return output
+        return (output + remainingPart.replace(".", fractional))
     }
 
     /**
@@ -175,4 +193,10 @@ object Formatter {
         }
         return result.trimEnd()
     }
+
+    /**
+     * @receiver Must be a string with a dot (".") used as a fractional.
+     */
+    private fun String.getOnlyNumbers(): List<String> =
+        numbersRegex.findAll(this).map(MatchResult::value).toList()
 }

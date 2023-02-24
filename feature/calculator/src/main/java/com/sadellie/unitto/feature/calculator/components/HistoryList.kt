@@ -120,7 +120,7 @@ private fun HistoryListItem(
             Modifier.clickable { onTextClick(historyItem.expression) }
         ) {
             Text(
-                text = historyItem.expression,
+                text = Formatter.format(historyItem.expression),
                 maxLines = 1,
                 modifier = Modifier
                     .fillMaxWidth()

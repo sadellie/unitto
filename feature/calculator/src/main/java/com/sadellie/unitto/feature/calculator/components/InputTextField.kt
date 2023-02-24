@@ -22,6 +22,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalTextInputService
@@ -29,6 +32,7 @@ import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
 
 @Composable
@@ -40,6 +44,18 @@ internal fun InputTextField(
     cutCallback: () -> Unit
 ) {
     val clipboardManager = LocalClipboardManager.current
+    val formattedInput: TextFieldValue by remember(value) {
+        derivedStateOf {
+            value.copy(
+                // We replace this because internally input value is already formatted, but uses
+                // "|" as grouping and "-" as fractional.
+                value.text
+                    .replace("`", Formatter.grouping)
+                    .replace("|", Formatter.fractional)
+            )
+        }
+    }
+
     CompositionLocalProvider(
         LocalTextInputService provides null,
         LocalTextToolbar provides UnittoTextToolbar(
@@ -51,7 +67,7 @@ internal fun InputTextField(
         BasicTextField(
             modifier = modifier,
             singleLine = true,
-            value = value,
+            value = formattedInput,
             onValueChange = {
                 onCursorChange(it.selection.start..it.selection.end)
             },

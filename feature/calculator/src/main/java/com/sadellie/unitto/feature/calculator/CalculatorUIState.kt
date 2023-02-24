@@ -18,12 +18,12 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.data.model.HistoryItem
 
 internal data class CalculatorUIState(
-    val input: String = "",
+    val input: TextFieldValue = TextFieldValue(),
     val output: String = "",
-    val selection: IntRange = 0..0,
     val angleMode: AngleMode = AngleMode.RAD,
     val history: List<HistoryItem> = emptyList()
 )
