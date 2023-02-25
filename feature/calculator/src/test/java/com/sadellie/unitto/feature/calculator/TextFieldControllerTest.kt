@@ -189,7 +189,7 @@ internal class TextFieldControllerTest {
     }
 
     @Test
-    fun `placed cursor illegally`() {
+    fun `Place cursor illegally`() {
         textFieldController.addToInput("123456.789")
         // Input is 123,456.789
         textFieldController.moveCursor(4..4)
@@ -210,5 +210,35 @@ internal class TextFieldControllerTest {
         textFieldController.addToInput("123456.789+cos(..)")
         // Input is 123,456.789
         assertEquals("123456.789+cos(..)", textFieldController.inputTextWithoutFormatting())
+    }
+
+    @Test
+    fun `Paste completely weird stuff`() {
+        textFieldController.pasteSymbols("crazy stuff from clipboard")
+        assertEquals("", textFieldController.text)
+    }
+
+    @Test
+    fun `Paste partially weird stuff`() {
+        textFieldController.pasteSymbols("some crazy stuff cos(8+9)*7= that user may have in clipboard")
+        assertEquals("ecos(8+9)×7ee", textFieldController.text)
+    }
+
+    @Test
+    fun `Paste acceptable stuff that needs symbol replacement`() {
+        textFieldController.pasteSymbols("cos(8+9)*7")
+        assertEquals("cos(8+9)×7", textFieldController.text)
+    }
+
+    @Test
+    fun `Paste acceptable stuff that does not need replacement`() {
+        textFieldController.pasteSymbols("cos(8+9)×7")
+        assertEquals("cos(8+9)×7", textFieldController.text)
+    }
+
+    @Test
+    fun `Paste nothing`() {
+        textFieldController.pasteSymbols("")
+        assertEquals("", textFieldController.text)
     }
 }
