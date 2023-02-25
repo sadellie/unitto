@@ -98,9 +98,8 @@ internal class CalculatorViewModel @Inject constructor(
     // Called when user clicks "=" on a keyboard
     fun evaluate() {
         // Input and output can change while saving in history. This way we cache it here (i think)
-        val currentInput = textFieldController.input.value.text
         val output = _output.value
-        if (!Expression(currentInput.clean).checkSyntax()) return
+        if (!Expression(textFieldController.inputTextWithoutFormatting()).checkSyntax()) return
 
         // Save to history
         viewModelScope.launch(Dispatchers.IO) {
@@ -120,7 +119,7 @@ internal class CalculatorViewModel @Inject constructor(
     fun onCursorChange(selection: IntRange) = textFieldController.moveCursor(selection)
 
     private fun calculateInput() {
-        val currentInput = textFieldController.input.value.text
+        val currentInput = textFieldController.inputTextWithoutFormatting()
         // Input is empty, don't calculate
         if (currentInput.isEmpty()) {
             _output.update { "" }
