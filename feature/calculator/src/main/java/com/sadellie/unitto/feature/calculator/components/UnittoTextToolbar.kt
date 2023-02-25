@@ -28,7 +28,8 @@ import androidx.compose.ui.platform.TextToolbarStatus
 internal class UnittoTextToolbar(
     private val view: View,
     private val pasteCallback: () -> Unit,
-    private val cutCallback: () -> Unit
+    private val cutCallback: () -> Unit,
+    private val copyCallback: () -> Unit
 ) : TextToolbar {
 
     private var actionMode: ActionMode? = null
@@ -44,9 +45,9 @@ internal class UnittoTextToolbar(
         onSelectAllRequested: (() -> Unit)?
     ) {
         textActionModeCallback.rect = rect
-        textActionModeCallback.onCopyRequested = onCopyRequested
-        textActionModeCallback.onCutRequested = { cutCallback(); onCutRequested?.invoke() }
-        textActionModeCallback.onPasteRequested = { pasteCallback(); onPasteRequested?.invoke() }
+        textActionModeCallback.onCopyRequested = copyCallback
+        textActionModeCallback.onCutRequested = cutCallback
+        textActionModeCallback.onPasteRequested = pasteCallback
         textActionModeCallback.onSelectAllRequested = onSelectAllRequested
         if (actionMode == null) {
             status = TextToolbarStatus.Shown
