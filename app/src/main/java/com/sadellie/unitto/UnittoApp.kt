@@ -41,12 +41,12 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
-import com.sadellie.unitto.feature.converter.ConverterViewModel
-import com.sadellie.unitto.feature.unitslist.SecondViewModel
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
+import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.settings.SettingsViewModel
+import com.sadellie.unitto.feature.unitslist.SecondViewModel
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
@@ -86,7 +86,12 @@ internal fun UnittoApp() {
         typography = AppTypography,
         animationSpec = tween(150)
     ) {
-        val backgroundColor = MaterialTheme.colorScheme.background
+        val statusBarColor = when (currentRoute) {
+            // Match text field container color
+            TopLevelDestinations.Calculator.route -> MaterialTheme.colorScheme.surfaceVariant
+            else -> MaterialTheme.colorScheme.background
+        }
+        val navigationBarColor = MaterialTheme.colorScheme.background
 
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -119,6 +124,9 @@ internal fun UnittoApp() {
             )
         }
 
-        SideEffect { sysUiController.setSystemBarsColor(backgroundColor) }
+        SideEffect {
+            sysUiController.setNavigationBarColor(navigationBarColor)
+            sysUiController.setStatusBarColor(statusBarColor)
+        }
     }
 }
