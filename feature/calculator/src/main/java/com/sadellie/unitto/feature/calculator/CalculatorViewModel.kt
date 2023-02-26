@@ -99,7 +99,11 @@ internal class CalculatorViewModel @Inject constructor(
     fun evaluate() {
         // Input and output can change while saving in history. This way we cache it here (i think)
         val output = _output.value
-        if (!Expression(textFieldController.inputTextWithoutFormatting()).checkSyntax()) return
+
+        // Output can be empty when input and output are identical (for exampel when user entered
+        // just a number, not expression
+        if (output.isEmpty()) return
+        if (!Expression(textFieldController.inputTextWithoutFormatting().clean).checkSyntax()) return
 
         // Save to history
         viewModelScope.launch(Dispatchers.IO) {
@@ -139,6 +143,7 @@ internal class CalculatorViewModel @Inject constructor(
             .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
             .trimZeros()
 
+        // Output will be empty if it's same as input
         try {
             val inputBigDecimal = BigDecimal(currentInput)
 
