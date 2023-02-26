@@ -58,6 +58,7 @@ import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
 import com.sadellie.unitto.core.base.KEY_SIN
 import com.sadellie.unitto.core.base.KEY_SQRT
 import com.sadellie.unitto.core.base.KEY_TAN
+import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.UnittoFormatter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -73,8 +74,7 @@ class TextFieldController @Inject constructor() {
     // react to formatting preferences at this level.
     private val localFormatter: UnittoFormatter by lazy {
         UnittoFormatter().also {
-            it.grouping = "`"
-            it.fractional = "|"
+            it.setSeparator(Separator.COMMA)
         }
     }
 

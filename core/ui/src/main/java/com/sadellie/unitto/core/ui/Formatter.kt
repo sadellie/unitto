@@ -111,7 +111,7 @@ open class UnittoFormatter {
     }
 
     /**
-     * Remove formatting. Reverses [format]
+     * Reapply formatting. Reverses [format] and applies [format] again.
      */
     fun reFormat(input: String): String {
         // We get  123.45,6789
@@ -121,11 +121,30 @@ open class UnittoFormatter {
         // Remove grouping
         // 12345,6789
         // Replace fractional with "." because formatter accepts only numbers where fractional is a dot
+        return format(removeFormat(input))
+    }
 
-        val cleanString = input
+    /**
+     * Helper method to change formatting from [input] with a specified [separator] to the one that
+     * is set for this [UnittoFormatter].
+     */
+    fun fromSeparator(input: String, separator: Int): String {
+        val sGrouping = when (separator) {
+            Separator.PERIOD -> PERIOD
+            Separator.COMMA -> COMMA
+            else -> SPACE
+        }
+        val sFractional = if (separator == Separator.PERIOD) KEY_COMMA else KEY_DOT
+
+        return input
+            .replace(sGrouping, grouping)
+            .replace(sFractional, fractional)
+    }
+
+    fun removeFormat(input: String): String {
+        return input
             .replace(grouping, "")
             .replace(fractional, KEY_DOT)
-        return format(cleanString)
     }
 
     /**

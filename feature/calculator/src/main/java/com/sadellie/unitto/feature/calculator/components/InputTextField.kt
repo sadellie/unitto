@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
 
@@ -49,19 +50,15 @@ internal fun InputTextField(
         derivedStateOf {
             value.copy(
                 // We replace this because internally input value is already formatted, but uses
-                // "|" as grouping and "-" as fractional.
-                value.text
-                    .replace("`", Formatter.grouping)
-                    .replace("|", Formatter.fractional)
+                // COMMA as separator.
+                Formatter.fromSeparator(value.text, Separator.COMMA)
             )
         }
     }
 
     fun copyToClipboard() = clipboardManager.setText(
         AnnotatedString(
-            formattedInput.text
-                .replace(Formatter.grouping, "")
-                .replace(Formatter.fractional, ".")
+            Formatter.removeFormat(formattedInput.text)
         )
     )
 

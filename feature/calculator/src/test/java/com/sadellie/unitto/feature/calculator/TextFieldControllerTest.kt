@@ -29,8 +29,6 @@ internal class TextFieldControllerTest {
 
     private val TextFieldController.text: String
         get() = this.input.value.text
-            .replace("`", ",")
-            .replace("|", ".")
 
     private val TextFieldController.selection: IntRange
         get() = this.input.value.selection.start..this.input.value.selection.end
