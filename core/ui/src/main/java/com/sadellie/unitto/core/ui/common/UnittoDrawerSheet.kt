@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.model.DrawerItems
@@ -48,7 +49,7 @@ fun UnittoDrawerSheet(
         Text(
             text = stringResource(R.string.app_name).uppercase(),
             modifier = Modifier.padding(horizontal = 28.dp, vertical = 24.dp),
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Medium),
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Medium, letterSpacing = 2.sp),
             color = MaterialTheme.colorScheme.primary
         )
 
