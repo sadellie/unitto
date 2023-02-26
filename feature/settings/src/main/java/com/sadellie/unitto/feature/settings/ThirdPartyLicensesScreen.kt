@@ -67,7 +67,7 @@ internal fun ThirdPartyLicensesScreen(
                 bottom = 24.dp
             )
         ) {
-            items(ALL_LIBRARIES.value) {
+            items(ALL_LIBRARIES) {
                 OutlinedCard(
                     Modifier.clickable { it.website?.let { url -> openLink(mContext, url) } }
                 ) {
