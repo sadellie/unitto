@@ -66,12 +66,14 @@ internal class UnittoActionModeCallback(
     }
 
     fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            MENU_ITEM_COPY -> onCopyRequested?.invoke()
-            MENU_ITEM_PASTE -> onPasteRequested?.invoke()
-            MENU_ITEM_CUT -> onCutRequested?.invoke()
-            MENU_ITEM_SELECT_ALL -> onSelectAllRequested?.invoke()
-            else -> return false
+        runCatching {
+            when (item!!.itemId) {
+                MENU_ITEM_COPY -> onCopyRequested?.invoke()
+                MENU_ITEM_PASTE -> onPasteRequested?.invoke()
+                MENU_ITEM_CUT -> onCutRequested?.invoke()
+                MENU_ITEM_SELECT_ALL -> onSelectAllRequested?.invoke()
+                else -> return false
+            }
         }
         mode?.finish()
         return true
