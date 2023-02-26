@@ -66,12 +66,13 @@ internal class CalculatorViewModel @Inject constructor(
 
     val uiState = combine(
         textFieldController.input, _output, _angleMode, _history, _userPrefs
-    ) { input, output, angleMode, history, _ ->
+    ) { input, output, angleMode, history, userPrefs ->
         return@combine CalculatorUIState(
             input = input,
             output = output,
             angleMode = angleMode,
-            history = history
+            history = history,
+            allowVibration = userPrefs.enableVibrations
         )
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState()

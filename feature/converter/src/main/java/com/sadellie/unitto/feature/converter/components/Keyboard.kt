@@ -129,34 +129,34 @@ private fun DefaultKeyboard(
         // Column modifier
         val cModifier = Modifier.weight(1f)
         Row(cModifier) {
-            KeyboardButtonFilled(bModifier, UnittoIcons.LeftBracket, { addDigit(KEY_LEFT_BRACKET) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.RightBracket, { addDigit(KEY_RIGHT_BRACKET) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.Exponent, { addDigit(KEY_EXPONENT) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.SquareRoot, { addDigit(KEY_SQRT) }, allowVibration = allowVibration)
+            KeyboardButtonFilled(bModifier, UnittoIcons.LeftBracket, allowVibration) { addDigit(KEY_LEFT_BRACKET) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.RightBracket, allowVibration) { addDigit(KEY_RIGHT_BRACKET) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Exponent, allowVibration) { addDigit(KEY_EXPONENT) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.SquareRoot, allowVibration) { addDigit(KEY_SQRT) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key7, { addDigit(KEY_7) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key8, { addDigit(KEY_8) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key9, { addDigit(KEY_9) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.Divide, { addDigit(KEY_DIVIDE) }, allowVibration = allowVibration)
+            KeyboardButtonLight(bModifier, UnittoIcons.Key7, allowVibration) { addDigit(KEY_7) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key8, allowVibration) { addDigit(KEY_8) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key9, allowVibration) { addDigit(KEY_9) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Divide, allowVibration) { addDigit(KEY_DIVIDE) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key4, { addDigit(KEY_4) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key5, { addDigit(KEY_5) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key6, { addDigit(KEY_6) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.Multiply, { addDigit(KEY_MULTIPLY) }, allowVibration = allowVibration)
+            KeyboardButtonLight(bModifier, UnittoIcons.Key4, allowVibration) { addDigit(KEY_4) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key5, allowVibration) { addDigit(KEY_5) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key6, allowVibration) { addDigit(KEY_6) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Multiply, allowVibration) { addDigit(KEY_MULTIPLY) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key1, { addDigit(KEY_1) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key2, { addDigit(KEY_2) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key3, { addDigit(KEY_3) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.Minus, { addDigit(KEY_MINUS) }, allowVibration = allowVibration)
+            KeyboardButtonLight(bModifier, UnittoIcons.Key1, allowVibration) { addDigit(KEY_1) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key2, allowVibration) { addDigit(KEY_2) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key3, allowVibration) { addDigit(KEY_3) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Minus, allowVibration) { addDigit(KEY_MINUS) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key0, { addDigit(KEY_0) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, fractionalIcon, { addDigit(KEY_DOT) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Delete, { deleteDigit() }, clearInput, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.Plus, { addDigit(KEY_PLUS) }, allowVibration = allowVibration)
+            KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(KEY_0) }
+            KeyboardButtonLight(bModifier, fractionalIcon, allowVibration) { addDigit(KEY_DOT) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Delete, allowVibration, clearInput) { deleteDigit() }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Plus, allowVibration) { addDigit(KEY_PLUS) }
         }
     }
 }
@@ -178,42 +178,33 @@ private fun BaseKeyboard(
         val cModifier = Modifier.weight(1f)
 
         Row(cModifier) {
-            KeyboardButtonFilled(bModifier, UnittoIcons.KeyA, { addDigit(KEY_BASE_A) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.KeyB, { addDigit(KEY_BASE_B) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.KeyC, { addDigit(KEY_BASE_C) }, allowVibration = allowVibration)
+            KeyboardButtonFilled(bModifier, UnittoIcons.KeyA, allowVibration) { addDigit(KEY_BASE_A) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.KeyB, allowVibration) { addDigit(KEY_BASE_B) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.KeyC, allowVibration) { addDigit(KEY_BASE_C) }
         }
         Row(cModifier) {
-            KeyboardButtonFilled(bModifier, UnittoIcons.KeyD, { addDigit(KEY_BASE_D) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.KeyE, { addDigit(KEY_BASE_E) }, allowVibration = allowVibration)
-            KeyboardButtonFilled(bModifier, UnittoIcons.KeyF, { addDigit(KEY_BASE_F) }, allowVibration = allowVibration)
+            KeyboardButtonFilled(bModifier, UnittoIcons.KeyD, allowVibration) { addDigit(KEY_BASE_D) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.KeyE, allowVibration) { addDigit(KEY_BASE_E) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.KeyF, allowVibration) { addDigit(KEY_BASE_F) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key7, { addDigit(KEY_7) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key8, { addDigit(KEY_8) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key9, { addDigit(KEY_9) }, allowVibration = allowVibration)
+            KeyboardButtonLight(bModifier, UnittoIcons.Key7, allowVibration) { addDigit(KEY_7) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key8, allowVibration) { addDigit(KEY_8) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key9, allowVibration) { addDigit(KEY_9) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key4, { addDigit(KEY_4) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key5, { addDigit(KEY_5) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key6, { addDigit(KEY_6) }, allowVibration = allowVibration)
+            KeyboardButtonLight(bModifier, UnittoIcons.Key4, allowVibration) { addDigit(KEY_4) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key5, allowVibration) { addDigit(KEY_5) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key6, allowVibration) { addDigit(KEY_6) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key1, { addDigit(KEY_1) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key2, { addDigit(KEY_2) }, allowVibration = allowVibration)
-            KeyboardButtonLight(bModifier, UnittoIcons.Key3, { addDigit(KEY_3) }, allowVibration = allowVibration)
+            KeyboardButtonLight(bModifier, UnittoIcons.Key1, allowVibration) { addDigit(KEY_1) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key2, allowVibration) { addDigit(KEY_2) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key3, allowVibration) { addDigit(KEY_3) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key0, { addDigit(KEY_0) }, allowVibration = allowVibration)
-            KeyboardButtonLight(
-                Modifier
-                    .fillMaxSize()
-                    .weight(2f)
-                    .padding(4.dp),
-                UnittoIcons.Delete,
-                allowVibration = allowVibration,
-                onClick = { deleteDigit() },
-                onLongClick = clearInput
-            )
+            KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(KEY_0) }
+            KeyboardButtonLight(Modifier.fillMaxSize().weight(2f).padding(4.dp), UnittoIcons.Delete, allowVibration, clearInput) { deleteDigit() }
         }
     }
 }

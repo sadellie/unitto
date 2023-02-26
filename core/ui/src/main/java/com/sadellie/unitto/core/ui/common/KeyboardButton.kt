@@ -49,7 +49,8 @@ fun BasicKeyboardButton(
     containerColor: Color,
     icon: ImageVector,
     iconColor: Color,
-    allowVibration: Boolean
+    allowVibration: Boolean,
+    contentPadding: PaddingValues = PaddingValues(24.dp, 8.dp)
 ) {
     val view = LocalView.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -65,7 +66,7 @@ fun BasicKeyboardButton(
         onLongClick = onLongClick,
         shape = RoundedCornerShape(cornerRadius),
         containerColor = containerColor,
-        contentPadding = PaddingValues(24.dp, 8.dp),
+        contentPadding = contentPadding,
         interactionSource = interactionSource
     ) {
         Icon(icon, null, modifier = Modifier.fillMaxHeight(), tint = iconColor)
@@ -80,9 +81,9 @@ fun BasicKeyboardButton(
 fun KeyboardButtonLight(
     modifier: Modifier,
     icon: ImageVector,
-    onClick: () -> Unit,
+    allowVibration: Boolean,
     onLongClick: (() -> Unit)? = null,
-    allowVibration: Boolean = false
+    onClick: () -> Unit,
 ) {
     BasicKeyboardButton(
         modifier = modifier,
@@ -99,9 +100,9 @@ fun KeyboardButtonLight(
 fun KeyboardButtonFilled(
     modifier: Modifier,
     icon: ImageVector,
-    onClick: () -> Unit,
+    allowVibration: Boolean,
     onLongClick: (() -> Unit)? = null,
-    allowVibration: Boolean = false
+    onClick: () -> Unit,
 ) {
     BasicKeyboardButton(
         modifier = modifier,
@@ -118,21 +119,21 @@ fun KeyboardButtonFilled(
 fun KeyboardButtonAdditional(
     modifier: Modifier,
     icon: ImageVector,
+    allowVibration: Boolean,
+    onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
-    UnittoButton(
+
+    BasicKeyboardButton(
         modifier = modifier
             .minimumInteractiveComponentSize()
             .heightIn(max = 48.dp),
         onClick = onClick,
         containerColor = Color.Transparent,
-        contentPadding = PaddingValues(12.dp, 2.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier.fillMaxHeight(),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
+        icon = icon,
+        iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        allowVibration = allowVibration,
+        contentPadding = PaddingValues(12.dp, 2.dp),
+        onLongClick = onLongClick
+    )
 }

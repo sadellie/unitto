@@ -71,29 +71,23 @@ internal fun EpochKeyboard(
             .weight(2f)
             .padding(4.dp)
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key7, allowVibration = false, onClick = { addSymbol(KEY_7) })
-            KeyboardButtonLight(bModifier, UnittoIcons.Key8, allowVibration = false, onClick = { addSymbol(KEY_8) })
-            KeyboardButtonLight(bModifier, UnittoIcons.Key9, allowVibration = false, onClick = { addSymbol(KEY_9) })
+            KeyboardButtonLight(bModifier, UnittoIcons.Key7, false) { addSymbol(KEY_7) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key8, false) { addSymbol(KEY_8) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key9, false) { addSymbol(KEY_9) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key4, allowVibration = false, onClick = { addSymbol(KEY_4) })
-            KeyboardButtonLight(bModifier, UnittoIcons.Key5, allowVibration = false, onClick = { addSymbol(KEY_5) })
-            KeyboardButtonLight(bModifier, UnittoIcons.Key6, allowVibration = false, onClick = { addSymbol(KEY_6) })
+            KeyboardButtonLight(bModifier, UnittoIcons.Key4, false) { addSymbol(KEY_4) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key5, false) { addSymbol(KEY_5) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key6, false) { addSymbol(KEY_6) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key1, allowVibration = false, onClick = { addSymbol(KEY_1) })
-            KeyboardButtonLight(bModifier, UnittoIcons.Key2, allowVibration = false, onClick = { addSymbol(KEY_2) })
-            KeyboardButtonLight(bModifier, UnittoIcons.Key3, allowVibration = false, onClick = { addSymbol(KEY_3) })
+            KeyboardButtonLight(bModifier, UnittoIcons.Key1, false) { addSymbol(KEY_1) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key2, false) { addSymbol(KEY_2) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key3, false) { addSymbol(KEY_3) }
         }
         Row(cModifier) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration = false, onClick = { addSymbol(KEY_0) })
-            KeyboardButtonLight(
-                dModifier,
-                UnittoIcons.Delete,
-                allowVibration = false,
-                onClick = { deleteSymbol() },
-                onLongClick = clearSymbols
-            )
+            KeyboardButtonLight(bModifier, UnittoIcons.Key0, false) { addSymbol(KEY_0) }
+            KeyboardButtonLight(dModifier, UnittoIcons.Delete, false, clearSymbols) { deleteSymbol() }
         }
     }
 }
