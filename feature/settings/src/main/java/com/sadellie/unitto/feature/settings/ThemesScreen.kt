@@ -72,7 +72,7 @@ internal fun ThemesScreen(
                 )
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 item {
                     UnittoListItem(
                         leadingContent = {
