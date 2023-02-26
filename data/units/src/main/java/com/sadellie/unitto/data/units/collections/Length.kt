@@ -35,6 +35,7 @@ internal val lengthCollection: List<AbstractUnit> by lazy {
         MyUnit(MyUnitIDS.decimeter,                 BigDecimal.valueOf(1.0E+17),                         UnitGroup.LENGTH, R.string.decimeter,                 R.string.decimeter_short),
         MyUnit(MyUnitIDS.meter,                     BigDecimal.valueOf(1.0E+18),                         UnitGroup.LENGTH, R.string.meter,                     R.string.meter_short),
         MyUnit(MyUnitIDS.kilometer,                 BigDecimal.valueOf(1.0E+21),                         UnitGroup.LENGTH, R.string.kilometer,                 R.string.kilometer_short),
+        MyUnit(MyUnitIDS.nautical_mile,             BigDecimal.valueOf(1.852E+21),                         UnitGroup.LENGTH, R.string.nautical_mile,             R.string.nautical_mile_short),
         MyUnit(MyUnitIDS.inch,                      BigDecimal.valueOf(25_400_000_000_000_000),          UnitGroup.LENGTH, R.string.inch,                      R.string.inch_short),
         MyUnit(MyUnitIDS.foot,                      BigDecimal.valueOf(304_800_000_000_002_200),         UnitGroup.LENGTH, R.string.foot,                      R.string.foot_short),
         MyUnit(MyUnitIDS.yard,                      BigDecimal.valueOf(914_400_000_000_006_400),         UnitGroup.LENGTH, R.string.yard,                      R.string.yard_short),

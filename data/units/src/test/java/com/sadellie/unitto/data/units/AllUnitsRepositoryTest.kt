@@ -18,8 +18,9 @@
 
 package com.sadellie.unitto.data.units
 
-import com.sadellie.unitto.data.unitgroups.ALL_UNIT_GROUPS
-import com.sadellie.unitto.data.unitgroups.UnitGroup
+import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.UnitGroup
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

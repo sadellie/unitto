@@ -38,6 +38,8 @@
     <string name="kilometer_short">km</string>
     <string name="mile">Mile</string>
     <string name="mile_short">Mi</string>
+    <string name="nautical_mile">Nautical mile</string>
+    <string name="nautical_mile_short">M</string>
     <string name="yard">Yard</string>
     <string name="yard_short">yd</string>
     <string name="foot">Foot</string>

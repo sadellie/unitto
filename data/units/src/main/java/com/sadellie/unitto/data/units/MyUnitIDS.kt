@@ -34,6 +34,7 @@ object MyUnitIDS {
     const val meter = "meter"
     const val kilometer = "kilometer"
     const val mile = "mile"
+    const val nautical_mile = "nautical_mile"
     const val yard = "yard"
     const val foot = "foot"
     const val inch = "inch"

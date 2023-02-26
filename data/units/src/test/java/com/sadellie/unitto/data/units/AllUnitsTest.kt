@@ -159,6 +159,7 @@ class AllUnitsTest {
         MyUnitIDS.decimeter.checkWith(MyUnitIDS.foot, "158000.7", "51837.5")
         MyUnitIDS.meter.checkWith(MyUnitIDS.yard, "158000.7", "172791.66667")
         MyUnitIDS.kilometer.checkWith(MyUnitIDS.mile, "100", "62.13712")
+        MyUnitIDS.nautical_mile.checkWith(MyUnitIDS.kilometer, "100", "185.2")
         MyUnitIDS.inch.checkWith(MyUnitIDS.foot, "100", "8.33333")
         MyUnitIDS.foot.checkWith(MyUnitIDS.inch, "100", "1200")
         MyUnitIDS.yard.checkWith(MyUnitIDS.foot, "100", "300")
