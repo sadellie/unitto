@@ -18,21 +18,23 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.R
 
 @Composable
 fun UnittoDrawerSheet(
@@ -45,9 +47,12 @@ fun UnittoDrawerSheet(
     ModalDrawerSheet(
         modifier = modifier
     ) {
-        Spacer(Modifier.height(24.dp))
-        Text("Unitto", Modifier.padding(NavigationDrawerItemDefaults.ItemPadding))
-        Spacer(Modifier.height(12.dp))
+        Text(
+            text = stringResource(R.string.app_name).uppercase(),
+            modifier = Modifier.padding(horizontal = 28.dp, vertical = 24.dp),
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Medium),
+            color = MaterialTheme.colorScheme.primary
+        )
 
         mainTabs.forEach { (destination, icon) ->
             UnittoDrawerItem(
