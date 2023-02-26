@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.settings
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -31,10 +32,10 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
-import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoListItem
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.ThemmoController
 
@@ -71,22 +72,24 @@ internal fun ThemesScreen(
                 )
             }
 
-            item {
-                UnittoListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Colorize,
-                            stringResource(R.string.enable_dynamic_colors),
-                        )
-                    },
-                    label = stringResource(R.string.enable_dynamic_colors),
-                    supportText = stringResource(R.string.enable_dynamic_colors_support),
-                    switchState = themmoController.isDynamicThemeEnabled,
-                    onSwitchChange = {
-                        themmoController.enableDynamicTheme(it)
-                        viewModel.updateDynamicTheme(it)
-                    }
-                )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                item {
+                    UnittoListItem(
+                        leadingContent = {
+                            Icon(
+                                Icons.Default.Colorize,
+                                stringResource(R.string.enable_dynamic_colors),
+                            )
+                        },
+                        label = stringResource(R.string.enable_dynamic_colors),
+                        supportText = stringResource(R.string.enable_dynamic_colors_support),
+                        switchState = themmoController.isDynamicThemeEnabled,
+                        onSwitchChange = {
+                            themmoController.enableDynamicTheme(it)
+                            viewModel.updateDynamicTheme(it)
+                        }
+                    )
+                }
             }
 
             item {
