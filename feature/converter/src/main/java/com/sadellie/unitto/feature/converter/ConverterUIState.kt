@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.feature.converter
 
-import com.sadellie.unitto.core.base.KEY_0
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.data.model.AbstractUnit
 
 /**
@@ -37,9 +37,9 @@ import com.sadellie.unitto.data.model.AbstractUnit
  * @property allowVibration When true will vibrate on button clicks.
  */
 data class ConverterUIState(
-    val inputValue: String = KEY_0,
+    val inputValue: String = Token._0,
     val calculatedValue: String? = null,
-    val resultValue: String = KEY_0,
+    val resultValue: String = Token._0,
     val showLoading: Boolean = true,
     val showError: Boolean = false,
     val unitFrom: AbstractUnit? = null,

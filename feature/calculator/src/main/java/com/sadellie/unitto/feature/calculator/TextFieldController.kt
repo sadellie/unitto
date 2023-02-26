@@ -20,44 +20,7 @@ package com.sadellie.unitto.feature.calculator
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.core.base.KEY_0
-import com.sadellie.unitto.core.base.KEY_1
-import com.sadellie.unitto.core.base.KEY_2
-import com.sadellie.unitto.core.base.KEY_3
-import com.sadellie.unitto.core.base.KEY_4
-import com.sadellie.unitto.core.base.KEY_5
-import com.sadellie.unitto.core.base.KEY_6
-import com.sadellie.unitto.core.base.KEY_7
-import com.sadellie.unitto.core.base.KEY_8
-import com.sadellie.unitto.core.base.KEY_9
-import com.sadellie.unitto.core.base.KEY_BASE_A
-import com.sadellie.unitto.core.base.KEY_BASE_B
-import com.sadellie.unitto.core.base.KEY_BASE_C
-import com.sadellie.unitto.core.base.KEY_BASE_D
-import com.sadellie.unitto.core.base.KEY_BASE_E
-import com.sadellie.unitto.core.base.KEY_BASE_F
-import com.sadellie.unitto.core.base.KEY_COS
-import com.sadellie.unitto.core.base.KEY_DIVIDE
-import com.sadellie.unitto.core.base.KEY_DIVIDE_DISPLAY
-import com.sadellie.unitto.core.base.KEY_DOT
-import com.sadellie.unitto.core.base.KEY_EXPONENT
-import com.sadellie.unitto.core.base.KEY_E_SMALL
-import com.sadellie.unitto.core.base.KEY_FACTORIAL
-import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
-import com.sadellie.unitto.core.base.KEY_LN
-import com.sadellie.unitto.core.base.KEY_LOG
-import com.sadellie.unitto.core.base.KEY_MINUS
-import com.sadellie.unitto.core.base.KEY_MINUS_DISPLAY
-import com.sadellie.unitto.core.base.KEY_MODULO
-import com.sadellie.unitto.core.base.KEY_MULTIPLY
-import com.sadellie.unitto.core.base.KEY_MULTIPLY_DISPLAY
-import com.sadellie.unitto.core.base.KEY_PERCENT
-import com.sadellie.unitto.core.base.KEY_PI
-import com.sadellie.unitto.core.base.KEY_PLUS
-import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
-import com.sadellie.unitto.core.base.KEY_SIN
-import com.sadellie.unitto.core.base.KEY_SQRT
-import com.sadellie.unitto.core.base.KEY_TAN
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.UnittoFormatter
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,20 +42,6 @@ class TextFieldController @Inject constructor() {
     }
 
     private val cursorFixer by lazy { CursorFixer() }
-
-    private val knownSymbols: List<String> by lazy {
-        listOf(
-            KEY_SIN, KEY_COS, KEY_TAN, KEY_LN, KEY_LOG,
-            KEY_LEFT_BRACKET, KEY_RIGHT_BRACKET,
-            KEY_EXPONENT, KEY_SQRT, KEY_FACTORIAL,
-            KEY_MODULO, KEY_E_SMALL, KEY_PERCENT, KEY_PI,
-            KEY_MULTIPLY, KEY_MULTIPLY_DISPLAY,
-            KEY_PLUS, KEY_MINUS, KEY_MINUS_DISPLAY, KEY_DIVIDE, KEY_DIVIDE_DISPLAY,
-            KEY_BASE_A, KEY_BASE_B, KEY_BASE_C, KEY_BASE_D, KEY_BASE_E, KEY_BASE_F,
-            KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0,
-            KEY_DOT,
-        )
-    }
 
     fun addToInput(symbols: String) {
 
@@ -175,7 +124,7 @@ class TextFieldController @Inject constructor() {
 
     fun inputTextWithoutFormatting() = input.value.text
         .replace(localFormatter.grouping, "")
-        .replace(localFormatter.fractional, KEY_DOT)
+        .replace(localFormatter.fractional, Token.dot)
 
     private fun String.fixFormat(): String = localFormatter.reFormat(this)
 
@@ -184,7 +133,7 @@ class TextFieldController @Inject constructor() {
         var garbage = clearStr
 
         // String with unknown symbols
-        knownSymbols.forEach {
+        Token.knownSymbols.forEach {
             garbage = garbage.replace(it, " ")
         }
 
@@ -194,17 +143,21 @@ class TextFieldController @Inject constructor() {
         }
 
         clearStr = clearStr
-            .replace(KEY_DIVIDE, KEY_DIVIDE_DISPLAY)
-            .replace(KEY_MULTIPLY, KEY_MULTIPLY_DISPLAY)
-            .replace(KEY_MINUS, KEY_MINUS_DISPLAY)
+            .replace(Token.divide, Token.divideDisplay)
+            .replace(Token.multiply, Token.multiplyDisplay)
+            .replace(Token.minus, Token.minusDisplay)
 
         return clearStr
     }
 
     inner class CursorFixer {
-        val illegalTokens by lazy {
+        private val illegalTokens by lazy {
             listOf(
-                KEY_COS, KEY_SIN, KEY_LN, KEY_LOG, KEY_TAN
+                Token.cos,
+                Token.sin,
+                Token.ln,
+                Token.log,
+                Token.tan
             )
         }
 

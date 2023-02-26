@@ -20,12 +20,7 @@ package com.sadellie.unitto.core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.sadellie.unitto.core.base.INTERNAL_DISPLAY
-import com.sadellie.unitto.core.base.KEY_0
-import com.sadellie.unitto.core.base.KEY_COMMA
-import com.sadellie.unitto.core.base.KEY_DOT
-import com.sadellie.unitto.core.base.KEY_E
-import com.sadellie.unitto.core.base.KEY_MINUS
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.base.Separator
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -51,7 +46,7 @@ open class UnittoFormatter {
     /**
      * Fractional part separator.
      */
-    var fractional = KEY_COMMA
+    var fractional = Token.comma
 
     private val timeDivisions by lazy {
         mapOf(
@@ -77,7 +72,7 @@ open class UnittoFormatter {
             Separator.COMMA -> COMMA
             else -> SPACE
         }
-        fractional = if (separator == Separator.PERIOD) KEY_COMMA else KEY_DOT
+        fractional = if (separator == Separator.PERIOD) Token.comma else Token.dot
     }
 
     /**
@@ -92,7 +87,7 @@ open class UnittoFormatter {
      */
     fun format(input: String): String {
         // Don't do anything to engineering string.
-        if (input.contains(KEY_E)) return input.replace(KEY_DOT, fractional)
+        if (input.contains(Token.E)) return input.replace(Token.dot, fractional)
 
         var output = input
 
@@ -103,7 +98,7 @@ open class UnittoFormatter {
             output = output.replace(it, formatNumber(it))
         }
 
-        INTERNAL_DISPLAY.forEach {
+        Token.internalToDisplay.forEach {
             output = output.replace(it.key, it.value)
         }
 
@@ -134,7 +129,7 @@ open class UnittoFormatter {
             Separator.COMMA -> COMMA
             else -> SPACE
         }
-        val sFractional = if (separator == Separator.PERIOD) KEY_COMMA else KEY_DOT
+        val sFractional = if (separator == Separator.PERIOD) Token.comma else Token.dot
 
         return input
             .replace(sGrouping, grouping)
@@ -144,7 +139,7 @@ open class UnittoFormatter {
     fun removeFormat(input: String): String {
         return input
             .replace(grouping, "")
-            .replace(fractional, KEY_DOT)
+            .replace(fractional, Token.dot)
     }
 
     /**
@@ -182,25 +177,25 @@ open class UnittoFormatter {
      */
     @Composable
     fun formatTime(input: String, basicUnit: BigDecimal?): String {
-        if (basicUnit == null) return KEY_0
+        if (basicUnit == null) return Token._0
 
         try {
             // Don't need magic if the input is zero
-            if (BigDecimal(input).compareTo(BigDecimal.ZERO) == 0) return KEY_0
+            if (BigDecimal(input).compareTo(BigDecimal.ZERO) == 0) return Token._0
         } catch (e: NumberFormatException) {
             // For case such as "10-" and "("
-            return KEY_0
+            return Token._0
         }
         // Attoseconds don't need "magic"
         if (basicUnit.compareTo(BigDecimal.ONE) == 0) return formatNumber(input)
 
-        var result = if (input.startsWith(KEY_MINUS)) KEY_MINUS else ""
+        var result = if (input.startsWith(Token.minus)) Token.minus else ""
         var remainingSeconds = BigDecimal(input)
             .abs()
             .multiply(basicUnit)
             .setScale(0, RoundingMode.HALF_EVEN)
 
-        if (remainingSeconds.compareTo(BigDecimal.ZERO) == 0) return KEY_0
+        if (remainingSeconds.compareTo(BigDecimal.ZERO) == 0) return Token._0
 
         timeDivisions.forEach { (timeStr, divider) ->
             val division = remainingSeconds.divideAndRemainder(divider)

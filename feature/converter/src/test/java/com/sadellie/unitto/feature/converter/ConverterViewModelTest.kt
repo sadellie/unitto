@@ -19,29 +19,10 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.room.Room
-import com.sadellie.unitto.core.base.KEY_0
-import com.sadellie.unitto.core.base.KEY_1
-import com.sadellie.unitto.core.base.KEY_2
-import com.sadellie.unitto.core.base.KEY_3
-import com.sadellie.unitto.core.base.KEY_4
-import com.sadellie.unitto.core.base.KEY_5
-import com.sadellie.unitto.core.base.KEY_6
-import com.sadellie.unitto.core.base.KEY_7
-import com.sadellie.unitto.core.base.KEY_8
-import com.sadellie.unitto.core.base.KEY_9
-import com.sadellie.unitto.core.base.KEY_COMMA
-import com.sadellie.unitto.core.base.KEY_DIVIDE
-import com.sadellie.unitto.core.base.KEY_DOT
-import com.sadellie.unitto.core.base.KEY_EXPONENT
-import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
-import com.sadellie.unitto.core.base.KEY_MINUS
-import com.sadellie.unitto.core.base.KEY_MULTIPLY
-import com.sadellie.unitto.core.base.KEY_PLUS
-import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
-import com.sadellie.unitto.core.base.KEY_SQRT
-import com.sadellie.unitto.data.units.AllUnitsRepository
-import com.sadellie.unitto.data.database.UnittoDatabase
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.data.database.UnitsRepository
+import com.sadellie.unitto.data.database.UnittoDatabase
+import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.userprefs.DataStoreModule
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import junit.framework.TestCase.assertEquals
@@ -201,9 +182,11 @@ class ConverterViewModelTest {
         }
 
         listOf(
-            KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0,
-            KEY_DOT, KEY_COMMA, KEY_LEFT_BRACKET, KEY_RIGHT_BRACKET,
-            KEY_PLUS, KEY_MINUS, KEY_DIVIDE, KEY_MULTIPLY, KEY_EXPONENT, KEY_SQRT
+            Token._1, Token._2, Token._3, Token._4, Token._5,
+            Token._6, Token._7, Token._8, Token._9, Token._0,
+            Token.dot, Token.comma, Token.leftBracket, Token.rightBracket,
+            Token.plus, Token.minus, Token.divide, Token.multiply,
+            Token.exponent, Token.sqrt
         ).forEach {
             // We enter one symbol and delete it, should be default as a result
             viewModel.processInput(it)
@@ -216,9 +199,9 @@ class ConverterViewModelTest {
         viewModel.deleteDigit()
 
         // Now we check that we can delete multiple values
-        viewModel.processInput(KEY_3)
-        viewModel.processInput(KEY_SQRT)
-        viewModel.processInput(KEY_9)
+        viewModel.processInput(Token._3)
+        viewModel.processInput(Token.sqrt)
+        viewModel.processInput(Token._9)
         viewModel.deleteDigit()
         assertEquals("3*√", viewModel.uiStateFlow.value.inputValue)
 
@@ -231,12 +214,12 @@ class ConverterViewModelTest {
             viewModel.uiStateFlow.collect()
         }
 
-        viewModel.processInput(KEY_3)
+        viewModel.processInput(Token._3)
         viewModel.clearInput()
         assertEquals(null, viewModel.uiStateFlow.value.calculatedValue)
 
-        viewModel.processInput(KEY_3)
-        viewModel.processInput(KEY_MULTIPLY)
+        viewModel.processInput(Token._3)
+        viewModel.processInput(Token.multiply)
         viewModel.clearInput()
         assertEquals(null, viewModel.uiStateFlow.value.calculatedValue)
 

@@ -50,7 +50,7 @@ internal fun InputTextField(
         derivedStateOf {
             value.copy(
                 // We replace this because internally input value is already formatted, but uses
-                // COMMA as separator.
+                // comma as separator.
                 Formatter.fromSeparator(value.text, Separator.COMMA)
             )
         }

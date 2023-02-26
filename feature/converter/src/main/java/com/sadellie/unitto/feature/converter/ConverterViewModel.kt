@@ -22,27 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.keelar.exprk.ExpressionException
 import com.github.keelar.exprk.Expressions
-import com.sadellie.unitto.core.base.DIGITS
-import com.sadellie.unitto.core.base.KEY_0
-import com.sadellie.unitto.core.base.KEY_1
-import com.sadellie.unitto.core.base.KEY_2
-import com.sadellie.unitto.core.base.KEY_3
-import com.sadellie.unitto.core.base.KEY_4
-import com.sadellie.unitto.core.base.KEY_5
-import com.sadellie.unitto.core.base.KEY_6
-import com.sadellie.unitto.core.base.KEY_7
-import com.sadellie.unitto.core.base.KEY_8
-import com.sadellie.unitto.core.base.KEY_9
-import com.sadellie.unitto.core.base.KEY_DIVIDE
-import com.sadellie.unitto.core.base.KEY_DOT
-import com.sadellie.unitto.core.base.KEY_EXPONENT
-import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
-import com.sadellie.unitto.core.base.KEY_MINUS
-import com.sadellie.unitto.core.base.KEY_MULTIPLY
-import com.sadellie.unitto.core.base.KEY_PLUS
-import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
-import com.sadellie.unitto.core.base.KEY_SQRT
-import com.sadellie.unitto.core.base.OPERATORS
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
@@ -103,7 +83,7 @@ class ConverterViewModel @Inject constructor(
     /**
      * Current input. Used when converting units.
      */
-    private val _input: MutableStateFlow<String> = MutableStateFlow(KEY_0)
+    private val _input: MutableStateFlow<String> = MutableStateFlow(Token._0)
 
     /**
      * Calculation result. Null when [_input] is not an expression.
@@ -118,7 +98,7 @@ class ConverterViewModel @Inject constructor(
     /**
      * Conversion result.
      */
-    private val _result: MutableStateFlow<String> = MutableStateFlow(KEY_0)
+    private val _result: MutableStateFlow<String> = MutableStateFlow(Token._0)
 
     /**
      * True when loading something from network.
@@ -180,23 +160,23 @@ class ConverterViewModel @Inject constructor(
         val lastSecondSymbol: String? = lastTwoSymbols.getOrNull(0)
 
         when (symbolToAdd) {
-            KEY_PLUS, KEY_DIVIDE, KEY_MULTIPLY, KEY_EXPONENT -> {
+            Token.plus, Token.divide, Token.multiply, Token.exponent -> {
                 when {
                     // Don't need expressions that start with zero
-                    (_input.value == KEY_0) -> {}
-                    (_input.value == KEY_MINUS) -> {}
-                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
-                    (lastSymbol == KEY_SQRT) -> {}
+                    (_input.value == Token._0) -> {}
+                    (_input.value == Token.minus) -> {}
+                    (lastSymbol == Token.leftBracket) -> {}
+                    (lastSymbol == Token.sqrt) -> {}
                     /**
                      * For situations like "50+-", when user clicks "/" we delete "-" so it becomes
                      * "50+". We don't add "/' here. User will click "/" second time and the input
                      * will be "50/".
                      */
-                    (lastSecondSymbol in OPERATORS) and (lastSymbol == KEY_MINUS) -> {
+                    (lastSecondSymbol in Token.operators) and (lastSymbol == Token.minus) -> {
                         deleteDigit()
                     }
                     // Don't allow multiple operators near each other
-                    (lastSymbol in OPERATORS) -> {
+                    (lastSymbol in Token.operators) -> {
                         deleteDigit()
                         setInputSymbols(symbolToAdd)
                     }
@@ -205,29 +185,30 @@ class ConverterViewModel @Inject constructor(
                     }
                 }
             }
-            KEY_0 -> {
+            Token._0 -> {
                 when {
                     // Don't add zero if the input is already a zero
-                    (_input.value == KEY_0) -> {}
-                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
-                        processInput(KEY_MULTIPLY)
+                    (_input.value == Token._0) -> {}
+                    (lastSymbol == Token.rightBracket) -> {
+                        processInput(Token.multiply)
                         setInputSymbols(symbolToAdd)
                     }
                     // Prevents things like "-00" and "4+000"
-                    ((lastSecondSymbol in OPERATORS + KEY_LEFT_BRACKET) and (lastSymbol == KEY_0)) -> {}
+                    ((lastSecondSymbol in Token.operators + Token.leftBracket) and (lastSymbol == Token._0)) -> {}
                     else -> {
                         setInputSymbols(symbolToAdd)
                     }
                 }
             }
-            KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 -> {
+            Token._1, Token._2, Token._3, Token._4, Token._5,
+            Token._6, Token._7, Token._8, Token._9 -> {
                 // Replace single zero (default input) if it's here
                 when {
-                    (_input.value == KEY_0) -> {
+                    (_input.value == Token._0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
-                    (lastSymbol == KEY_RIGHT_BRACKET) -> {
-                        processInput(KEY_MULTIPLY)
+                    (lastSymbol == Token.rightBracket) -> {
+                        processInput(Token.multiply)
                         setInputSymbols(symbolToAdd)
                     }
                     else -> {
@@ -235,16 +216,16 @@ class ConverterViewModel @Inject constructor(
                     }
                 }
             }
-            KEY_MINUS -> {
+            Token.minus -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (_input.value == KEY_0) -> {
+                    (_input.value == Token._0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
                     // Don't allow multiple minuses near each other
-                    (lastSymbol.compareTo(KEY_MINUS) == 0) -> {}
+                    (lastSymbol.compareTo(Token.minus) == 0) -> {}
                     // Don't allow plus and minus be near each other
-                    (lastSymbol == KEY_PLUS) -> {
+                    (lastSymbol == Token.plus) -> {
                         deleteDigit()
                         setInputSymbols(symbolToAdd)
                     }
@@ -253,22 +234,22 @@ class ConverterViewModel @Inject constructor(
                     }
                 }
             }
-            KEY_DOT -> {
+            Token.dot -> {
                 if (!_input.value
-                    .takeLastWhile { it.toString() !in OPERATORS.minus(KEY_DOT) }
-                    .contains(KEY_DOT)
+                    .takeLastWhile { it.toString() !in Token.operators.minus(Token.dot) }
+                    .contains(Token.dot)
                 ) {
                     setInputSymbols(symbolToAdd)
                 }
             }
-            KEY_LEFT_BRACKET -> {
+            Token.leftBracket -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (_input.value == KEY_0) -> {
+                    (_input.value == Token._0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
-                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
-                        processInput(KEY_MULTIPLY)
+                    (lastSymbol == Token.rightBracket) || (lastSymbol in Token.digits) || (lastSymbol == Token.dot) -> {
+                        processInput(Token.multiply)
                         setInputSymbols(symbolToAdd)
                     }
                     else -> {
@@ -276,14 +257,14 @@ class ConverterViewModel @Inject constructor(
                     }
                 }
             }
-            KEY_RIGHT_BRACKET -> {
+            Token.rightBracket -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (_input.value == KEY_0) -> {}
-                    (lastSymbol == KEY_LEFT_BRACKET) -> {}
+                    (_input.value == Token._0) -> {}
+                    (lastSymbol == Token.leftBracket) -> {}
                     (
-                        _latestInputStack.filter { it == KEY_LEFT_BRACKET }.size ==
-                            _latestInputStack.filter { it == KEY_RIGHT_BRACKET }.size
+                        _latestInputStack.filter { it == Token.leftBracket }.size ==
+                            _latestInputStack.filter { it == Token.rightBracket }.size
                         ) -> {
                     }
                     else -> {
@@ -291,14 +272,14 @@ class ConverterViewModel @Inject constructor(
                     }
                 }
             }
-            KEY_SQRT -> {
+            Token.sqrt -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (_input.value == KEY_0) -> {
+                    (_input.value == Token._0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
-                    (lastSymbol == KEY_RIGHT_BRACKET) || (lastSymbol in DIGITS) || (lastSymbol == KEY_DOT) -> {
-                        processInput(KEY_MULTIPLY)
+                    (lastSymbol == Token.rightBracket) || (lastSymbol in Token.digits) || (lastSymbol == Token.dot) -> {
+                        processInput(Token.multiply)
                         setInputSymbols(symbolToAdd)
                     }
                     else -> {
@@ -309,7 +290,7 @@ class ConverterViewModel @Inject constructor(
             else -> {
                 when {
                     // Replace single zero with minus (to support negative numbers)
-                    (_input.value == KEY_0) -> {
+                    (_input.value == Token._0) -> {
                         setInputSymbols(symbolToAdd, false)
                     }
                     else -> {
@@ -373,13 +354,13 @@ class ConverterViewModel @Inject constructor(
      */
     fun deleteDigit() {
         // Default input, don't delete
-        if (_input.value == KEY_0) return
+        if (_input.value == Token._0) return
 
         val lastSymbol = _latestInputStack.removeLast()
 
         // If this value are same, it means that after deleting there will be no symbols left, set to default
         if (lastSymbol == _input.value) {
-            setInputSymbols(KEY_0, false)
+            setInputSymbols(Token._0, false)
         } else {
             _input.update { it.removeSuffix(lastSymbol) }
         }
@@ -389,7 +370,7 @@ class ConverterViewModel @Inject constructor(
      * Clear [_input].
      */
     fun clearInput() {
-        setInputSymbols(KEY_0, false)
+        setInputSymbols(Token._0, false)
     }
 
     fun toggleFormatTime() {
@@ -438,10 +419,10 @@ class ConverterViewModel @Inject constructor(
 
         // Now we close open brackets that user didn't close
         // AUTOCLOSE ALL BRACKETS
-        val leftBrackets = _input.value.count { it.toString() == KEY_LEFT_BRACKET }
-        val rightBrackets = _input.value.count { it.toString() == KEY_RIGHT_BRACKET }
+        val leftBrackets = _input.value.count { it.toString() == Token.leftBracket }
+        val rightBrackets = _input.value.count { it.toString() == Token.rightBracket }
         val neededBrackets = leftBrackets - rightBrackets
-        if (neededBrackets > 0) cleanInput += KEY_RIGHT_BRACKET.repeat(neededBrackets)
+        if (neededBrackets > 0) cleanInput += Token.rightBracket.repeat(neededBrackets)
 
         // Now we evaluate expression in input
         val evaluationResult: BigDecimal = try {
@@ -466,7 +447,7 @@ class ConverterViewModel @Inject constructor(
         // 123.456 will be true
         // -123.456 will be true
         // -123.456-123 will be false (first minus gets removed, ending with 123.456)
-        if (_input.value.removePrefix(KEY_MINUS).all { it.toString() !in OPERATORS }) {
+        if (_input.value.removePrefix(Token.minus).all { it.toString() !in Token.operators }) {
             // No operators
             _calculated.update { null }
         } else {

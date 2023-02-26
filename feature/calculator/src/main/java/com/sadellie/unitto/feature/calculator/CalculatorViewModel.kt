@@ -20,10 +20,7 @@ package com.sadellie.unitto.feature.calculator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.base.KEY_LEFT_BRACKET
-import com.sadellie.unitto.core.base.KEY_MINUS
-import com.sadellie.unitto.core.base.KEY_MINUS_DISPLAY
-import com.sadellie.unitto.core.base.KEY_RIGHT_BRACKET
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.data.calculator.CalculatorHistoryRepository
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.toStringWith
@@ -44,8 +41,8 @@ import kotlinx.coroutines.launch
 import org.mariuszgromada.math.mxparser.Expression
 import java.math.BigDecimal
 import javax.inject.Inject
-import org.mariuszgromada.math.mxparser.mXparser as MathParser
 import org.mariuszgromada.math.mxparser.License as MathParserLicense
+import org.mariuszgromada.math.mxparser.mXparser as MathParser
 
 @HiltViewModel
 internal class CalculatorViewModel @Inject constructor(
@@ -169,11 +166,11 @@ internal class CalculatorViewModel @Inject constructor(
      */
     private val String.clean: String
         get() {
-            val leftBrackets = count { it.toString() == KEY_LEFT_BRACKET }
-            val rightBrackets = count { it.toString() == KEY_RIGHT_BRACKET }
+            val leftBrackets = count { it.toString() == Token.leftBracket }
+            val rightBrackets = count { it.toString() == Token.rightBracket }
             val neededBrackets = leftBrackets - rightBrackets
-            return replace(KEY_MINUS_DISPLAY, KEY_MINUS)
-                .plus(KEY_RIGHT_BRACKET.repeat(neededBrackets.coerceAtLeast(0)))
+            return replace(Token.minusDisplay, Token.minus)
+                .plus(Token.rightBracket.repeat(neededBrackets.coerceAtLeast(0)))
         }
 
     init {
