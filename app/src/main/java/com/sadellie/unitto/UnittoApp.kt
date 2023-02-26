@@ -19,10 +19,6 @@
 package com.sadellie.unitto
 
 import androidx.compose.animation.core.tween
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Calculate
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
@@ -42,6 +38,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
@@ -74,13 +71,9 @@ internal fun UnittoApp() {
     // Navigation drawer stuff
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val drawerScope = rememberCoroutineScope()
-    val mainTabs = listOf(
-        TopLevelDestinations.Calculator to Icons.Default.Calculate,
-        TopLevelDestinations.Converter to Icons.Default.SwapHoriz
-    )
-    val additionalTabs = listOf(
-        TopLevelDestinations.Settings to Icons.Default.Settings
-    )
+    val mainTabs = listOf(DrawerItems.Calculator, DrawerItems.Converter)
+    val additionalTabs = listOf(DrawerItems.Settings)
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute: TopLevelDestinations? by remember(navBackStackEntry?.destination) {
         derivedStateOf {
@@ -88,7 +81,7 @@ internal fun UnittoApp() {
                 ?: emptySequence()
 
             (mainTabs + additionalTabs)
-                .map { it.first }
+                .map { it.destination }
                 .firstOrNull {
                     hierarchyRoutes.contains(it.route)
                 }
