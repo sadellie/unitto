@@ -111,6 +111,8 @@ internal class CalculatorViewModel @Inject constructor(
                 expression = textFieldController.inputTextWithoutFormatting(),
                 result = output
             )
+            textFieldController.clearInput()
+            textFieldController.addToInput(output)
         }
 
         _output.update { "" }
