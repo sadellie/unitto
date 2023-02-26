@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.Icon
@@ -115,36 +116,38 @@ private fun HistoryListItem(
     historyItem: HistoryItem,
     onTextClick: (String) -> Unit
 ) {
-    Column(modifier = modifier) {
-        Box(
-            Modifier.clickable { onTextClick(historyItem.expression) }
-        ) {
-            Text(
-                text = Formatter.format(historyItem.expression),
-                maxLines = 1,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-                    .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                style = NumbersTextStyleDisplayMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.End
-            )
-        }
-        Box(
-            Modifier.clickable { onTextClick(historyItem.result) }
-        ) {
-            Text(
-                text = Formatter.format(historyItem.result),
-                maxLines = 1,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-                    .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                style = NumbersTextStyleDisplayMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                textAlign = TextAlign.End
-            )
+    SelectionContainer {
+        Column(modifier = modifier) {
+            Box(
+                Modifier.clickable { onTextClick(historyItem.expression) }
+            ) {
+                Text(
+                    text = Formatter.format(historyItem.expression),
+                    maxLines = 1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                        .horizontalScroll(rememberScrollState(), reverseScrolling = true),
+                    style = NumbersTextStyleDisplayMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.End
+                )
+            }
+            Box(
+                Modifier.clickable { onTextClick(historyItem.result) }
+            ) {
+                Text(
+                    text = Formatter.format(historyItem.result),
+                    maxLines = 1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                        .horizontalScroll(rememberScrollState(), reverseScrolling = true),
+                    style = NumbersTextStyleDisplayMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    textAlign = TextAlign.End
+                )
+            }
         }
     }
 }

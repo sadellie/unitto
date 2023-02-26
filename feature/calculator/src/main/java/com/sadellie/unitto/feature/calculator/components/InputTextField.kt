@@ -30,7 +30,6 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import com.sadellie.unitto.core.base.Separator
@@ -57,21 +56,16 @@ internal fun InputTextField(
     }
 
     fun copyToClipboard() = clipboardManager.setText(
-        AnnotatedString(
-            Formatter.removeFormat(formattedInput.text)
-        )
+        formattedInput.annotatedString.subSequence(formattedInput.selection)
     )
 
     CompositionLocalProvider(
         LocalTextInputService provides null,
         LocalTextToolbar provides UnittoTextToolbar(
             view = LocalView.current,
+            copyCallback = ::copyToClipboard,
             pasteCallback = { pasteCallback(clipboardManager.getText()?.text ?: "") },
-            cutCallback = {
-                copyToClipboard()
-                cutCallback()
-            },
-            copyCallback = ::copyToClipboard
+            cutCallback = { copyToClipboard(); cutCallback() }
         )
     ) {
         BasicTextField(

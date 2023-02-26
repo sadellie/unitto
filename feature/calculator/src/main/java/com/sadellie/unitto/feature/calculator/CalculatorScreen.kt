@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.MoreVert
@@ -44,6 +45,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +55,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalTextToolbar
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,6 +75,7 @@ import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.DragDownView
 import com.sadellie.unitto.feature.calculator.components.HistoryList
 import com.sadellie.unitto.feature.calculator.components.InputTextField
+import com.sadellie.unitto.feature.calculator.components.UnittoTextToolbar
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -81,20 +88,37 @@ internal fun CalculatorRoute(
     navigateToSettings: () -> Unit,
     viewModel: CalculatorViewModel = hiltViewModel()
 ) {
+    val clipboardManager = LocalClipboardManager.current
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    CalculatorScreen(
-        uiState = uiState.value,
-        navigateToMenu = navigateToMenu,
-        navigateToSettings = navigateToSettings,
-        addSymbol = viewModel::addSymbol,
-        clearSymbols = viewModel::clearSymbols,
-        deleteSymbol = viewModel::deleteSymbol,
-        onCursorChange = viewModel::onCursorChange,
-        toggleAngleMode = viewModel::toggleCalculatorMode,
-        evaluate = viewModel::evaluate,
-        clearHistory = viewModel::clearHistory
-    )
+    fun copyToClipboard() {
+        val clipboardText = clipboardManager.getText() ?: return
+        // This method is called immediately after copying formatted text, we replace it with the
+        // the unformatted version.
+        clipboardManager.setText(
+            AnnotatedString(Formatter.removeFormat(clipboardText.text))
+        )
+    }
+
+    CompositionLocalProvider(
+        LocalTextToolbar provides UnittoTextToolbar(
+            view = LocalView.current,
+            copyCallback = ::copyToClipboard
+        )
+    ) {
+        CalculatorScreen(
+            uiState = uiState.value,
+            navigateToMenu = navigateToMenu,
+            navigateToSettings = navigateToSettings,
+            addSymbol = viewModel::addSymbol,
+            clearSymbols = viewModel::clearSymbols,
+            deleteSymbol = viewModel::deleteSymbol,
+            onCursorChange = viewModel::onCursorChange,
+            toggleAngleMode = viewModel::toggleCalculatorMode,
+            evaluate = viewModel::evaluate,
+            clearHistory = viewModel::clearHistory
+        )
+    }
 }
 
 @Composable
@@ -209,16 +233,18 @@ private fun CalculatorScreen(
                         pasteCallback = addSymbol,
                         cutCallback = deleteSymbol
                     )
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
-                        text = Formatter.format(uiState.output),
-                        textAlign = TextAlign.End,
-                        softWrap = false,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                        style = NumbersTextStyleDisplayMedium,
-                    )
+                    SelectionContainer {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp),
+                            text = Formatter.format(uiState.output),
+                            textAlign = TextAlign.End,
+                            softWrap = false,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            style = NumbersTextStyleDisplayMedium,
+                        )
+                    }
                     // Handle
                     Box(
                         Modifier
