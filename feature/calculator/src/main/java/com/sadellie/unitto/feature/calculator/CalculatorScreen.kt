@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.rememberSplineBasedDecay
@@ -56,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -233,27 +235,29 @@ private fun CalculatorScreen(
                         pasteCallback = addSymbol,
                         cutCallback = deleteSymbol
                     )
-                    SelectionContainer {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp),
-                            text = Formatter.format(uiState.output),
-                            textAlign = TextAlign.End,
-                            softWrap = false,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                            style = NumbersTextStyleDisplayMedium,
-                        )
+                    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        SelectionContainer {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 8.dp),
+                                text = Formatter.format(uiState.output),
+                                textAlign = TextAlign.End,
+                                softWrap = false,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                style = NumbersTextStyleDisplayMedium,
+                            )
+                        }
                     }
                     // Handle
                     Box(
                         Modifier
-                            .padding(16.dp)
+                            .padding(8.dp)
                             .background(
                                 MaterialTheme.colorScheme.onSurfaceVariant,
                                 RoundedCornerShape(100)
                             )
-                            .sizeIn(36.dp, 4.dp)
+                            .sizeIn(24.dp, 4.dp)
                     )
                 }
             },

@@ -26,10 +26,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,7 +47,6 @@ fun BasicKeyboardButton(
     onClick: () -> Unit,
     onLongClick: (() -> Unit)?,
     containerColor: Color,
-    contentColor: Color,
     icon: ImageVector,
     iconColor: Color,
     allowVibration: Boolean
@@ -65,7 +65,6 @@ fun BasicKeyboardButton(
         onLongClick = onLongClick,
         shape = RoundedCornerShape(cornerRadius),
         containerColor = containerColor,
-        contentColor = contentColor,
         contentPadding = PaddingValues(24.dp, 8.dp),
         interactionSource = interactionSource
     ) {
@@ -90,7 +89,6 @@ fun KeyboardButtonLight(
         onClick = onClick,
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
@@ -110,7 +108,6 @@ fun KeyboardButtonFilled(
         onClick = onClick,
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSecondaryContainer,
         allowVibration = allowVibration
@@ -123,15 +120,19 @@ fun KeyboardButtonAdditional(
     icon: ImageVector,
     onClick: () -> Unit
 ) {
-    IconButton(
-        onClick = onClick,
+    UnittoButton(
         modifier = modifier
+            .minimumInteractiveComponentSize()
+            .heightIn(max = 48.dp),
+        onClick = onClick,
+        containerColor = Color.Transparent,
+        contentPadding = PaddingValues(12.dp, 2.dp)
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.fillMaxHeight(),
-            tint = MaterialTheme.colorScheme.onSecondaryContainer
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

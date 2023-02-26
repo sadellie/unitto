@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.calculator.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -26,6 +27,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -33,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.KEY_0
@@ -120,6 +124,39 @@ internal fun CalculatorKeyboard(
     angleMode: AngleMode,
     evaluate: () -> Unit
 ) {
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        PortraitKeyboard(
+            modifier = modifier,
+            addSymbol = addSymbol,
+            angleMode = angleMode,
+            toggleAngleMode = toggleAngleMode,
+            deleteSymbol = deleteSymbol,
+            clearSymbols = clearSymbols,
+            evaluate = evaluate
+        )
+    } else {
+        LandscapeKeyboard(
+            modifier = modifier,
+            addSymbol = addSymbol,
+            angleMode = angleMode,
+            toggleAngleMode = toggleAngleMode,
+            deleteSymbol = deleteSymbol,
+            clearSymbols = clearSymbols,
+            evaluate = evaluate
+        )
+    }
+}
+
+@Composable
+private fun PortraitKeyboard(
+    modifier: Modifier,
+    addSymbol: (String) -> Unit,
+    angleMode: AngleMode,
+    toggleAngleMode: () -> Unit,
+    deleteSymbol: () -> Unit,
+    clearSymbols: () -> Unit,
+    evaluate: () -> Unit
+) {
     var showAdditional: Boolean by remember { mutableStateOf(false) }
     val expandRotation: Float by animateFloatAsState(
         targetValue = if (showAdditional) 0f else 180f,
@@ -134,6 +171,10 @@ internal fun CalculatorKeyboard(
             .fillMaxSize()
             .weight(1f)
             .padding(4.dp)
+        val additionalButtonModifier = Modifier
+            .minimumInteractiveComponentSize()
+            .weight(1f)
+            .heightIn(max = 48.dp)
 
         Row(
             modifier = Modifier.padding(vertical = 8.dp),
@@ -142,24 +183,24 @@ internal fun CalculatorKeyboard(
             // Additional buttons
             Column(modifier = weightModifier) {
                 Row(Modifier, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                    KeyboardButtonAdditional(weightModifier, UnittoIcons.SquareRoot) { addSymbol(KEY_SQRT) }
-                    KeyboardButtonAdditional(weightModifier, UnittoIcons.Pi) { addSymbol(KEY_PI) }
-                    KeyboardButtonAdditional(weightModifier, UnittoIcons.Exponent) { addSymbol(KEY_EXPONENT) }
-                    KeyboardButtonAdditional(weightModifier, UnittoIcons.Factorial) { addSymbol(KEY_FACTORIAL) }
+                    KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.SquareRoot) { addSymbol(KEY_SQRT) }
+                    KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Pi) { addSymbol(KEY_PI) }
+                    KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Exponent) { addSymbol(KEY_EXPONENT) }
+                    KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Factorial) { addSymbol(KEY_FACTORIAL) }
                 }
                 AnimatedVisibility(visible = showAdditional) {
                     Column {
                         Row(Modifier, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                            KeyboardButtonAdditional(weightModifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad) { toggleAngleMode() }
-                            KeyboardButtonAdditional(weightModifier, UnittoIcons.Sin) { addSymbol(KEY_SIN) }
-                            KeyboardButtonAdditional(weightModifier, UnittoIcons.Cos) { addSymbol(KEY_COS) }
-                            KeyboardButtonAdditional(weightModifier, UnittoIcons.Tan) { addSymbol(KEY_TAN) }
+                            KeyboardButtonAdditional(additionalButtonModifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad) { toggleAngleMode() }
+                            KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Sin) { addSymbol(KEY_SIN) }
+                            KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Cos) { addSymbol(KEY_COS) }
+                            KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Tan) { addSymbol(KEY_TAN) }
                         }
                         Row(Modifier, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                            KeyboardButtonAdditional(weightModifier, UnittoIcons.Modulo) { addSymbol(KEY_MODULO) }
-                            KeyboardButtonAdditional(weightModifier, UnittoIcons.E) { addSymbol(KEY_E_SMALL) }
-                            KeyboardButtonAdditional(weightModifier, UnittoIcons.Ln) { addSymbol(KEY_LN) }
-                            KeyboardButtonAdditional(weightModifier, UnittoIcons.Log) { addSymbol(KEY_LOG) }
+                            KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Modulo) { addSymbol(KEY_MODULO) }
+                            KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.E) { addSymbol(KEY_E_SMALL) }
+                            KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Ln) { addSymbol(KEY_LN) }
+                            KeyboardButtonAdditional(additionalButtonModifier, UnittoIcons.Log) { addSymbol(KEY_LOG) }
                         }
                     }
                 }
@@ -203,6 +244,65 @@ internal fun CalculatorKeyboard(
             KeyboardButtonLight(mainButtonModifier, UnittoIcons.Dot, { addSymbol(KEY_DOT) })
             KeyboardButtonLight(mainButtonModifier, UnittoIcons.Delete, { deleteSymbol() }, onLongClick = clearSymbols)
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, { evaluate() })
+        }
+    }
+}
+
+@Composable
+private fun LandscapeKeyboard(
+    modifier: Modifier,
+    addSymbol: (String) -> Unit,
+    angleMode: AngleMode,
+    toggleAngleMode: () -> Unit,
+    deleteSymbol: () -> Unit,
+    clearSymbols: () -> Unit,
+    evaluate: () -> Unit
+) {
+    Column(modifier = modifier) {
+        val buttonModifier = Modifier.weight(1f).padding(2.dp)
+
+        Row(Modifier.weight(1f)) {
+            KeyboardButtonAdditional(buttonModifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad) { toggleAngleMode() }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.SquareRoot) { addSymbol(KEY_SQRT) }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi) { addSymbol(KEY_PI) }
+
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key7, { addSymbol(KEY_7) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key8, { addSymbol(KEY_8) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, { addSymbol(KEY_9) })
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.LeftBracket, { addSymbol(KEY_LEFT_BRACKET) })
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.RightBracket, { addSymbol(KEY_RIGHT_BRACKET) })
+        }
+        Row(Modifier.weight(1f)) {
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Modulo) { addSymbol(KEY_MODULO) }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Exponent) { addSymbol(KEY_EXPONENT) }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Factorial) { addSymbol(KEY_FACTORIAL) }
+
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key4, { addSymbol(KEY_4) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key5, { addSymbol(KEY_5) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key6, { addSymbol(KEY_6) })
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.Multiply, { addSymbol(KEY_MULTIPLY_DISPLAY) })
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.Divide, { addSymbol(KEY_DIVIDE_DISPLAY) })
+        }
+        Row(Modifier.weight(1f)) {
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Sin) { addSymbol(KEY_SIN) }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Cos) { addSymbol(KEY_COS) }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Tan) { addSymbol(KEY_TAN) }
+
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key1, { addSymbol(KEY_1) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key2, { addSymbol(KEY_2) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, { addSymbol(KEY_3) })
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.Minus, { addSymbol(KEY_MINUS_DISPLAY) })
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.Percent, { addSymbol(KEY_PERCENT) })
+        }
+        Row(Modifier.weight(1f)) {
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.E) { addSymbol(KEY_E_SMALL) }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ln) { addSymbol(KEY_LN) }
+            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Log) { addSymbol(KEY_LOG) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, { addSymbol(KEY_0) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Dot, { addSymbol(KEY_DOT) })
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Delete, { deleteSymbol() }, onLongClick = clearSymbols)
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.Plus, { addSymbol(KEY_PLUS) })
+            KeyboardButtonFilled(buttonModifier, UnittoIcons.Equal, { evaluate() })
         }
     }
 }
