@@ -29,16 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 
 /**
- * Commonly used LargeTopAppBar with scroll behavior.
+ * Template screen. Uses [Scaffold] and [LargeTopAppBar]
  *
- * @param title Text that is displayed in top bar.
- * @param navigateUpAction Action when user click arrow button at the top.
- * @param content Content that can be scrolled. Don't forget to use padding values.
+ * @param title See [LargeTopAppBar]
+ * @param navigationIcon See [LargeTopAppBar]
+ * @param content See [Scaffold]
  */
 @Composable
-fun UnittoLargeTopAppBar(
+fun UnittoScreenWithLargeTopBar(
     title: String,
-    navigateUpAction: () -> Unit,
+    navigationIcon: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
@@ -52,9 +52,7 @@ fun UnittoLargeTopAppBar(
                 title = {
                     Text(text = title)
                 },
-                navigationIcon = {
-                    NavigateUpButton { navigateUpAction() }
-                },
+                navigationIcon = navigationIcon,
                 scrollBehavior = scrollBehavior
             )
         },

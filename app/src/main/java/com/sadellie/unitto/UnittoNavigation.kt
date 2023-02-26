@@ -19,6 +19,7 @@
 package com.sadellie.unitto
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
@@ -50,10 +51,20 @@ internal fun UnittoNavigation(
         navController = navController,
         startDestination = startDestination
     ) {
+        fun navigateToSettings() {
+            navController.navigateToSettings {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+
         converterScreen(
             navigateToLeftScreen = navController::navigateToLeftSide,
             navigateToRightScreen = navController::navigateToRightSide,
-            navigateToSettings = navController::navigateToSettings,
+            navigateToSettings = ::navigateToSettings,
             navigateToMenu = openDrawer,
             viewModel = converterViewModel
         )
@@ -75,12 +86,13 @@ internal fun UnittoNavigation(
         settingGraph(
             settingsViewModel = settingsViewModel,
             themmoController = themmoController,
-            navController = navController
+            navController = navController,
+            menuButtonClick = openDrawer
         )
 
         calculatorScreen(
             navigateToMenu = openDrawer,
-            navigateToSettings = navController::navigateToSettings
+            navigateToSettings = ::navigateToSettings
         )
 
         epochScreen(navigateToMenu = openDrawer)

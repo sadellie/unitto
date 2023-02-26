@@ -38,6 +38,11 @@ sealed class TopLevelDestinations(
         route = "epoch_route",
         name = R.string.epoch_converter
     )
+
+    object Settings : TopLevelDestinations(
+        route = "settings_graph",
+        name = R.string.settings_screen
+    )
 }
 
 val TOP_LEVEL_DESTINATIONS: Map<TopLevelDestinations, Int> by lazy {

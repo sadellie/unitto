@@ -49,7 +49,8 @@ import com.sadellie.unitto.core.base.SEPARATORS
 import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.Header
-import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.core.ui.common.MenuButton
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
@@ -60,7 +61,7 @@ import com.sadellie.unitto.feature.settings.navigation.unitsGroupRoute
 @Composable
 internal fun SettingsScreen(
     viewModel: SettingsViewModel,
-    navigateUpAction: () -> Unit,
+    menuButtonClick: () -> Unit,
     navControllerAction: (String) -> Unit
 ) {
     val mContext = LocalContext.current
@@ -69,9 +70,9 @@ internal fun SettingsScreen(
         mutableStateOf(DialogState.NONE)
     }
 
-    UnittoLargeTopAppBar(
+    UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_screen),
-        navigateUpAction = navigateUpAction
+        navigationIcon = { MenuButton(menuButtonClick) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
 

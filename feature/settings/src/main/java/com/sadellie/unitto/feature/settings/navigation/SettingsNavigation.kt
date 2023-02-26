@@ -21,8 +21,10 @@ package com.sadellie.unitto.feature.settings.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.settings.AboutScreen
 import com.sadellie.unitto.feature.settings.SettingsScreen
 import com.sadellie.unitto.feature.settings.SettingsViewModel
@@ -31,15 +33,15 @@ import com.sadellie.unitto.feature.settings.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
-const val settingsGraph = "settings_graph"
+private val settingsGraph: String by lazy { TopLevelDestinations.Settings.route }
 private const val settingsRoute = "settings_route"
 internal const val themesRoute = "themes_route"
 internal const val unitsGroupRoute = "units_group_route"
 internal const val thirdPartyRoute = "third_party_route"
 internal const val aboutRoute = "about_route"
 
-fun NavController.navigateToSettings() {
-    navigate(settingsRoute)
+fun NavController.navigateToSettings(builder: NavOptionsBuilder.() -> Unit) {
+    navigate(settingsRoute, builder)
 }
 
 fun NavController.navigateToUnitGroups() {
@@ -49,13 +51,14 @@ fun NavController.navigateToUnitGroups() {
 fun NavGraphBuilder.settingGraph(
     settingsViewModel: SettingsViewModel,
     themmoController: ThemmoController,
-    navController: NavHostController
+    navController: NavHostController,
+    menuButtonClick: () -> Unit
 ) {
     navigation(settingsRoute, settingsGraph) {
         composable(settingsRoute) {
             SettingsScreen(
                 viewModel = settingsViewModel,
-                navigateUpAction = { navController.navigateUp() }
+                menuButtonClick = menuButtonClick
             ) { route -> navController.navigate(route) }
         }
 

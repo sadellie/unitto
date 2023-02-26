@@ -48,8 +48,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.Header
-import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
@@ -61,9 +62,9 @@ internal fun UnitGroupsScreen(
     viewModel: SettingsViewModel,
     navigateUpAction: () -> Unit
 ) {
-    UnittoLargeTopAppBar(
+    UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.unit_groups_setting),
-        navigateUpAction = navigateUpAction
+        navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { paddingValues ->
 
         val shownUnits = viewModel.shownUnitGroups.collectAsState()

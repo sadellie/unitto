@@ -37,7 +37,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.R
-import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.licenses.ALL_LIBRARIES
 
@@ -53,9 +54,9 @@ internal fun ThirdPartyLicensesScreen(
 ) {
     val mContext = LocalContext.current
 
-    UnittoLargeTopAppBar(
+    UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.third_party_licenses),
-        navigateUpAction = navigateUpAction
+        navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),

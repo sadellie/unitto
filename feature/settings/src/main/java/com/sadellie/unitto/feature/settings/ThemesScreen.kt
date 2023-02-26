@@ -31,9 +31,10 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.ThemmoController
 
@@ -43,9 +44,9 @@ internal fun ThemesScreen(
     themmoController: ThemmoController,
     viewModel: SettingsViewModel
 ) {
-    UnittoLargeTopAppBar(
+    UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.theme_setting),
-        navigateUpAction = navigateUpAction
+        navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
             item {

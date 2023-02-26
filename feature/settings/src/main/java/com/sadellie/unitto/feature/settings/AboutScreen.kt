@@ -46,7 +46,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.ui.R
-import com.sadellie.unitto.core.ui.common.UnittoLargeTopAppBar
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 
 @Composable
@@ -60,9 +61,9 @@ internal fun AboutScreen(
     var aboutItemClick: Int by rememberSaveable { mutableStateOf(0) }
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
-    UnittoLargeTopAppBar(
+    UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.about_unitto),
-        navigateUpAction = navigateUpAction
+        navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             // CURRENCY RATE NOTE

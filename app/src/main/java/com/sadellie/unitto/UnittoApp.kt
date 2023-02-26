@@ -21,6 +21,7 @@ package com.sadellie.unitto
 import androidx.compose.animation.core.tween
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -76,9 +78,29 @@ internal fun UnittoApp() {
         TopLevelDestinations.Calculator to Icons.Default.Calculate,
         TopLevelDestinations.Converter to Icons.Default.SwapHoriz
     )
+    val additionalTabs = listOf(
+        TopLevelDestinations.Settings to Icons.Default.Settings
+    )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute by remember(navBackStackEntry?.destination) {
-        derivedStateOf { navBackStackEntry?.destination?.route }
+    val currentRoute: TopLevelDestinations? by remember(navBackStackEntry?.destination) {
+        derivedStateOf {
+            val hierarchyRoutes = navBackStackEntry?.destination?.hierarchy?.map { it.route }
+                ?: emptySequence()
+
+            (mainTabs + additionalTabs)
+                .map { it.first }
+                .firstOrNull {
+                    hierarchyRoutes.contains(it.route)
+                }
+        }
+    }
+    val gesturesEnabled: Boolean by remember(navBackStackEntry?.destination) {
+        derivedStateOf {
+            // Will be true for routes like
+            // [null, calculator_route, settings_graph, settings_route, themes_route]
+            // We disable drawer drag gesture when we are too deep
+            navController.backQueue.size <= 4
+        }
     }
 
     Themmo(
@@ -88,18 +110,19 @@ internal fun UnittoApp() {
     ) {
         val statusBarColor = when (currentRoute) {
             // Match text field container color
-            TopLevelDestinations.Calculator.route -> MaterialTheme.colorScheme.surfaceVariant
+            TopLevelDestinations.Calculator -> MaterialTheme.colorScheme.surfaceVariant
             else -> MaterialTheme.colorScheme.background
         }
         val navigationBarColor = MaterialTheme.colorScheme.background
 
         ModalNavigationDrawer(
             drawerState = drawerState,
-            gesturesEnabled = true,
+            gesturesEnabled = gesturesEnabled,
             drawerContent = {
                 UnittoDrawerSheet(
                     modifier = Modifier,
                     mainTabs = mainTabs,
+                    additionalTabs = additionalTabs,
                     currentDestination = currentRoute
                 ) {
                     drawerScope.launch { drawerState.close() }
