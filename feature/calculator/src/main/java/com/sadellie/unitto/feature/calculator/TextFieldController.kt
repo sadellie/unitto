@@ -124,6 +124,8 @@ class TextFieldController @Inject constructor() {
 
     fun moveCursor(newPosition: IntRange) {
         val currentInput = input.value.text
+        if (newPosition.last > currentInput.length) return
+
         val fixedLeftCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.first)
         val fixedRightCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.last)
 
