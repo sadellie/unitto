@@ -794,7 +794,25 @@
     <string name="micron_of_mercury">Микрон ртутного столба</string>
     <string name="micron_of_mercury_short">мк рт.ст.</string>
 
+    <!-- Tools -->
+    <string name="epoch_converter">Перевод эпох</string>
+
+    <!-- Calculator -->
+    <string name="calculator">Калькулятор</string>
+
     <!-- Epoch -->
     <string name="year_short">г</string>
     <string name="month_short">м</string>
+    <string name="nautical_mile">Морская миля</string>
+    <string name="nautical_mile_short">М</string>
+    <string name="starting_screen_setting">Начальный экран</string>
+    <string name="starting_screen_setting_support">Выберите экран, который будет открыт при запуске приложения</string>
+
+    <!-- Tools -->
+    <string name="unit_converter">Перевод величин</string>
+    <string name="calculator_clear_history_label">Очистить</string>
+    <string name="calculator_clear_history_title">Очистить историю</string>
+    <string name="calculator_clear_history_support">Все выражения из истории будут удалены навсегда. Это действие нельзя отменить!</string>
+    <string name="calculator_no_history">Нет истории</string>
+    <string name="open_menu_description">Открыть меню</string>
 </resources>
