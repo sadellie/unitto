@@ -994,7 +994,6 @@
     <string name="units_screen_from">Convert from</string>
     <string name="units_screen_to">Convert to</string>
     <string name="settings_screen">Settings</string>
-    <string name="tools_screen">Tools</string>
 
     <!--Settings items-->
     <string name="theme_setting">Themes</string>
@@ -1021,17 +1020,10 @@
 
     <!--Tools-->
     <string name="unit_converter">Unit converter</string>
-    <string name="unit_converter_support">Convert from one unit to another</string>
     <string name="epoch_converter">Epoch converter</string>
-    <string name="epoch_converter_support">Convert Unix timestamp</string>
-    <string name="tools_notice_title">Experimental features!</string>
-    <string name="soon_label">Soon</string>
-    <string name="tools_notice_description">This screen is part of an experiment. It may change in the future.</string>
-    <string name="click_to_read_more">Click to read more!</string>
 
     <!--Calculator-->
     <string name="calculator">Calculator</string>
-    <string name="calculator_support">Calculate, but don\'t convert</string>
     <string name="calculator_clear_history_label">Clear</string>
     <string name="calculator_clear_history_title">Clear history</string>
     <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>

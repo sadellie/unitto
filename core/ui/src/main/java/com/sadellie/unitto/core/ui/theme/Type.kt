@@ -55,15 +55,6 @@ val NumbersTextStyleDisplayMedium = TextStyle(
     letterSpacing = (-0.25).sp,
 )
 
-// This text style is used for secondary keyboard button
-val NumbersTextStyleTitleSmall = TextStyle(
-    fontFamily = Lato,
-    fontWeight = FontWeight.W500,
-    fontSize = 20.sp,
-    lineHeight = 24.sp,
-    letterSpacing = 0.sp,
-)
-
 val AppTypography = Typography(
     displayLarge = TextStyle(
         fontFamily = Montserrat,
