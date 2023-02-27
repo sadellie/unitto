@@ -153,8 +153,12 @@ class TextFieldController @Inject constructor() {
     inner class CursorFixer {
         private val illegalTokens by lazy {
             listOf(
+                Token.arSin,
+                Token.arCos,
+                Token.acTan,
                 Token.cos,
                 Token.sin,
+                Token.exp,
                 Token.ln,
                 Token.log,
                 Token.tan

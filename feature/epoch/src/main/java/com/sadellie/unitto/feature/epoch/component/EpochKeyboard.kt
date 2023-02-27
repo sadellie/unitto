@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Delete
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key0
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key1
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key2
@@ -78,7 +78,7 @@ internal fun EpochKeyboard(
         }
         Row(cModifier) {
             KeyboardButtonLight(bModifier, UnittoIcons.Key0, false) { addSymbol(Token._0) }
-            KeyboardButtonLight(dModifier, UnittoIcons.Delete, false, clearSymbols) { deleteSymbol() }
+            KeyboardButtonLight(dModifier, UnittoIcons.Backspace, false, clearSymbols) { deleteSymbol() }
         }
     }
 }

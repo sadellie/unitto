@@ -32,8 +32,8 @@ import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Comma
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Delete
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Divide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Dot
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Exponent
@@ -131,7 +131,7 @@ private fun DefaultKeyboard(
         Row(cModifier) {
             KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(Token._0) }
             KeyboardButtonLight(bModifier, fractionalIcon, allowVibration) { addDigit(Token.dot) }
-            KeyboardButtonLight(bModifier, UnittoIcons.Delete, allowVibration, clearInput) { deleteDigit() }
+            KeyboardButtonLight(bModifier, UnittoIcons.Backspace, allowVibration, clearInput) { deleteDigit() }
             KeyboardButtonFilled(bModifier, UnittoIcons.Plus, allowVibration) { addDigit(Token.plus) }
         }
     }
@@ -180,7 +180,7 @@ private fun BaseKeyboard(
         }
         Row(cModifier) {
             KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(Token._0) }
-            KeyboardButtonLight(Modifier.fillMaxSize().weight(2f).padding(4.dp), UnittoIcons.Delete, allowVibration, clearInput) { deleteDigit() }
+            KeyboardButtonLight(Modifier.fillMaxSize().weight(2f).padding(4.dp), UnittoIcons.Backspace, allowVibration, clearInput) { deleteDigit() }
         }
     }
 }

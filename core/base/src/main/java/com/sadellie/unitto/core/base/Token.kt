@@ -58,9 +58,13 @@ object Token {
     const val pi = "π"
     const val factorial = "!"
     const val sin = "sin("
+    const val arSin = "arsin("
     const val cos = "cos("
+    const val arCos = "arcos("
     const val tan = "tan("
+    const val acTan = "actan("
     const val e = "e"
+    const val exp = "exp("
     const val modulo = "#"
     const val ln = "ln("
     const val log = "log("
@@ -103,6 +107,7 @@ object Token {
 
     val knownSymbols: List<String> by lazy {
         listOf(
+            arSin, arCos, acTan, exp,
             sin, cos, tan, ln, log,
             leftBracket, rightBracket,
             exponent, sqrt, factorial,
@@ -112,6 +117,6 @@ object Token {
             baseA, baseB, baseC, baseD, baseE, baseF,
             _1, _2, _3, _4, _5, _6, _7, _8, _9, _0,
             dot
-        )
+        ).sortedByDescending { it.length }
     }
 }

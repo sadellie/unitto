@@ -12,12 +12,12 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 
-val @receiver:Suppress("UNUSED") UnittoIcons.Delete: ImageVector
+val @receiver:Suppress("UNUSED") UnittoIcons.Backspace: ImageVector
     get() {
-        if (_delete != null) {
-            return _delete!!
+        if (_backspace != null) {
+            return _backspace!!
         }
-        _delete = Builder(name = "Delete", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
+        _backspace = Builder(name = "Backspace", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
             viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
             group {
                 path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
@@ -63,7 +63,7 @@ val @receiver:Suppress("UNUSED") UnittoIcons.Delete: ImageVector
             }
         }
             .build()
-        return _delete!!
+        return _backspace!!
     }
 
-private var _delete: ImageVector? = null
+private var _backspace: ImageVector? = null
