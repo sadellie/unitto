@@ -66,7 +66,7 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Dot
 import com.sadellie.unitto.core.ui.common.key.unittoicons.E
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Equal
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Exp
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Exponent
+import com.sadellie.unitto.core.ui.common.key.unittoicons.ExponentWide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Factorial
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Inv
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key0
@@ -91,7 +91,7 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Rad
 import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Sin
-import com.sadellie.unitto.core.ui.common.key.unittoicons.SquareRoot
+import com.sadellie.unitto.core.ui.common.key.unittoicons.SquareRootWide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Tan
 import com.sadellie.unitto.feature.calculator.AngleMode
 
@@ -247,9 +247,9 @@ private fun AdditionalButtonsPortrait(
 ) {
     Column {
         Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-            KeyboardButtonAdditional(modifier, UnittoIcons.SquareRoot, allowVibration) { addSymbol(Token.sqrt) }
+            KeyboardButtonAdditional(modifier, UnittoIcons.SquareRootWide, allowVibration) { addSymbol(Token.sqrt) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.pi) }
-            KeyboardButtonAdditional(modifier, UnittoIcons.Exponent, allowVibration) { addSymbol(Token.exponent) }
+            KeyboardButtonAdditional(modifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.exponent) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Factorial, allowVibration) { addSymbol(Token.factorial) }
         }
         AnimatedVisibility(showAdditional) {
@@ -285,7 +285,7 @@ private fun AdditionalButtonsPortraitInverse(
         Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
             KeyboardButtonAdditional(modifier, UnittoIcons.Modulo, allowVibration) { addSymbol(Token.modulo) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.pi) }
-            KeyboardButtonAdditional(modifier, UnittoIcons.Exponent, allowVibration) { addSymbol(Token.exponent) }
+            KeyboardButtonAdditional(modifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.exponent) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Factorial, allowVibration) { addSymbol(Token.factorial) }
         }
         AnimatedVisibility(showAdditional) {
@@ -405,8 +405,8 @@ private fun AdditionalButtonsLandscape(
     }
 
     Column(modifier) {
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.SquareRoot, allowVibration) { addSymbol(Token.sqrt) }
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Exponent, allowVibration) { addSymbol(Token.exponent) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.SquareRootWide, allowVibration) { addSymbol(Token.sqrt) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.exponent) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Cos, allowVibration) { addSymbol(Token.cos) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ln, allowVibration) { addSymbol(Token.ln) }
     }
@@ -438,7 +438,7 @@ private fun AdditionalButtonsLandscapeInverse(
 
     Column(modifier) {
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Modulo, allowVibration) { addSymbol(Token.modulo) }
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Exponent, allowVibration) { addSymbol(Token.exponent) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.exponent) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArCos, allowVibration) { addSymbol(Token.arCos) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Exp, allowVibration) { addSymbol(Token.exp) }
     }
