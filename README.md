@@ -1,9 +1,5 @@
-# Unitto
-Calculator, unit converter and many other tools in one app.
-
-![Feature](./fastlane/metadata/android/en-US/images/featureGraphic.png)
-
 <p align="middle">
+    <img src="./fastlane/metadata/android/en-US/images/featureGraphic.png" width="99%" />
     <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png" width="19%" />
     <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide2.png" width="19%" />
     <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide3.png" width="19%" />
@@ -33,6 +29,9 @@ Calculator, unit converter and many other tools in one app.
 
 ## 👅 Translate
 <a href="https://poeditor.com/join/project/T4zjmoq8dx" target="_blank"><img src="./content/poeditor.png" alt="Unitto - Calculate&#0032;and&#0032;convert&#0044;&#0032;but&#0032;better&#0046; | POEditor" style="width: 180px; height: 60px;" width="180" height="60" /></a>
+
+## 🤑 Donate
+Visit [FUNDING.md](./FUNDING.md)
 
 ## 🔎 Additional
 <a href="https://www.producthunt.com/posts/unitto?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-unitto" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=372851&theme=light" alt="Unitto - Calculate&#0032;and&#0032;convert&#0044;&#0032;but&#0032;better&#0046; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
