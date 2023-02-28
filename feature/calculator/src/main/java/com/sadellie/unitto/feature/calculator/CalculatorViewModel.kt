@@ -178,8 +178,10 @@ internal class CalculatorViewModel @Inject constructor(
          * mxParser uses some unnecessary rounding for doubles. It causes expressions like 9999^9999
          * to load CPU very much. We use BigDecimal to achieve same result without CPU overload.
          */
-        MathParser.setCanonicalRounding(false)
         MathParserLicense.iConfirmNonCommercialUse("Sad Ellie")
+        MathParser.setCanonicalRounding(false)
+        MathParser.removeBuiltinTokens("log")
+        MathParser.modifyBuiltinToken("lg", Token.log.dropLast(1))
 
         // Observe and invoke calculation without UI lag.
         viewModelScope.launch(Dispatchers.Default) {
