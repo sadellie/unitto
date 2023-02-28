@@ -18,10 +18,9 @@
 
 package com.sadellie.unitto.core.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.sadellie.unitto.core.base.Token
+import android.content.Context
 import com.sadellie.unitto.core.base.Separator
+import com.sadellie.unitto.core.base.Token
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -90,8 +89,6 @@ open class UnittoFormatter {
         if (input.contains(Token.E)) return input.replace(Token.dot, fractional)
 
         var output = input
-
-        // We may receive expressions. Find all numbers in this expression
         val allNumbers: List<String> = input.getOnlyNumbers()
 
         allNumbers.forEach {
@@ -116,7 +113,11 @@ open class UnittoFormatter {
         // Remove grouping
         // 12345,6789
         // Replace fractional with "." because formatter accepts only numbers where fractional is a dot
-        return format(removeFormat(input))
+        return format(
+            input
+                .replace(grouping, "")
+                .replace(fractional, Token.dot)
+        )
     }
 
     /**
@@ -129,17 +130,67 @@ open class UnittoFormatter {
             Separator.COMMA -> COMMA
             else -> SPACE
         }
+            .also { if (it == grouping) return input }
         val sFractional = if (separator == Separator.PERIOD) Token.comma else Token.dot
 
         return input
-            .replace(sGrouping, grouping)
+            .replace(sGrouping, "\t")
             .replace(sFractional, fractional)
+            .replace("\t", grouping)
     }
 
-    fun removeFormat(input: String): String {
-        return input
-            .replace(grouping, "")
-            .replace(fractional, Token.dot)
+    fun toSeparator(input: String, separator: Int): String {
+        val output = filterUnknownSymbols(input).replace(fractional, Token.dot)
+        val sGrouping = when (separator) {
+            Separator.PERIOD -> PERIOD
+            Separator.COMMA -> COMMA
+            else -> SPACE
+        }
+        val sFractional = if (separator == Separator.PERIOD) Token.comma else Token.dot
+
+        return format(output)
+            .replace(grouping, "\t")
+            .replace(fractional, sFractional)
+            .replace("\t", sGrouping)
+    }
+
+    fun removeGrouping(input: String): String = input.replace(grouping, "")
+
+    /**
+     * Takes [input] and [basicUnit] of the  unit to format it to be more human readable.
+     *
+     * @return String like "1d 12h 12s".
+     */
+    fun formatTime(context: Context, input: String, basicUnit: BigDecimal?): String {
+        if (basicUnit == null) return Token._0
+
+        try {
+            // Don't need magic if the input is zero
+            if (BigDecimal(input).compareTo(BigDecimal.ZERO) == 0) return Token._0
+        } catch (e: NumberFormatException) {
+            // For case such as "10-" and "("
+            return Token._0
+        }
+        // Attoseconds don't need "magic"
+        if (basicUnit.compareTo(BigDecimal.ONE) == 0) return formatNumber(input)
+
+        var result = if (input.startsWith(Token.minus)) Token.minus else ""
+        var remainingSeconds = BigDecimal(input)
+            .abs()
+            .multiply(basicUnit)
+            .setScale(0, RoundingMode.HALF_EVEN)
+
+        if (remainingSeconds.compareTo(BigDecimal.ZERO) == 0) return Token._0
+
+        timeDivisions.forEach { (timeStr, divider) ->
+            val division = remainingSeconds.divideAndRemainder(divider)
+            val time = division.component1()
+            remainingSeconds = division.component2()
+            if (time.compareTo(BigDecimal.ZERO) == 1) {
+                result += "${formatNumber(time.toPlainString())}${context.getString(timeStr)} "
+            }
+        }
+        return result.trimEnd()
     }
 
     /**
@@ -171,46 +222,30 @@ open class UnittoFormatter {
     }
 
     /**
-     * Takes [input] and [basicUnit] of the  unit to format it to be more human readable.
-     *
-     * @return String like "1d 12h 12s".
-     */
-    @Composable
-    fun formatTime(input: String, basicUnit: BigDecimal?): String {
-        if (basicUnit == null) return Token._0
-
-        try {
-            // Don't need magic if the input is zero
-            if (BigDecimal(input).compareTo(BigDecimal.ZERO) == 0) return Token._0
-        } catch (e: NumberFormatException) {
-            // For case such as "10-" and "("
-            return Token._0
-        }
-        // Attoseconds don't need "magic"
-        if (basicUnit.compareTo(BigDecimal.ONE) == 0) return formatNumber(input)
-
-        var result = if (input.startsWith(Token.minus)) Token.minus else ""
-        var remainingSeconds = BigDecimal(input)
-            .abs()
-            .multiply(basicUnit)
-            .setScale(0, RoundingMode.HALF_EVEN)
-
-        if (remainingSeconds.compareTo(BigDecimal.ZERO) == 0) return Token._0
-
-        timeDivisions.forEach { (timeStr, divider) ->
-            val division = remainingSeconds.divideAndRemainder(divider)
-            val time = division.component1()
-            remainingSeconds = division.component2()
-            if (time.compareTo(BigDecimal.ZERO) == 1) {
-                result += "${formatNumber(time.toPlainString())}${stringResource(timeStr)} "
-            }
-        }
-        return result.trimEnd()
-    }
-
-    /**
      * @receiver Must be a string with a dot (".") used as a fractional.
      */
     private fun String.getOnlyNumbers(): List<String> =
         numbersRegex.findAll(this).map(MatchResult::value).toList()
+
+    fun filterUnknownSymbols(input: String): String {
+        var clearStr = input.replace(" ", "")
+        var garbage = clearStr
+
+        // String with unknown symbols
+        Token.knownSymbols.plus(fractional).forEach {
+            garbage = garbage.replace(it, " ")
+        }
+
+        // Remove unknown symbols from input
+        garbage.split(" ").forEach {
+            clearStr = clearStr.replace(it, "")
+        }
+
+        clearStr = clearStr
+            .replace(Token.divide, Token.divideDisplay)
+            .replace(Token.multiply, Token.multiplyDisplay)
+            .replace(Token.minus, Token.minusDisplay)
+
+        return clearStr
+    }
 }

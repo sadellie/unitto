@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.Formatter
@@ -88,6 +89,7 @@ internal fun TopScreenPart(
         targetValue = if (swapped) 0f else 180f,
         animationSpec = tween(easing = FastOutSlowInEasing)
     )
+    val mContext = LocalContext.current
 
     Column(
         modifier = modifier,
@@ -115,6 +117,7 @@ internal fun TopScreenPart(
                     converterMode == ConverterMode.BASE -> outputValue.uppercase()
                     formatTime and (unitTo?.group == UnitGroup.TIME) -> {
                         Formatter.formatTime(
+                            context = mContext,
                             input = calculatedValue ?: inputValue,
                             basicUnit = unitFrom?.basicUnit
                         )

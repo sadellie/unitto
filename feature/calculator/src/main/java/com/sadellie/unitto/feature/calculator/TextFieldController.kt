@@ -128,27 +128,7 @@ class TextFieldController @Inject constructor() {
 
     private fun String.fixFormat(): String = localFormatter.reFormat(this)
 
-    private fun String.filterUnknownSymbols(): String {
-        var clearStr = this.replace(" ", "")
-        var garbage = clearStr
-
-        // String with unknown symbols
-        Token.knownSymbols.forEach {
-            garbage = garbage.replace(it, " ")
-        }
-
-        // Remove unknown symbols from input
-        garbage.split(" ").forEach {
-            clearStr = clearStr.replace(it, "")
-        }
-
-        clearStr = clearStr
-            .replace(Token.divide, Token.divideDisplay)
-            .replace(Token.multiply, Token.multiplyDisplay)
-            .replace(Token.minus, Token.minusDisplay)
-
-        return clearStr
-    }
+    private fun String.filterUnknownSymbols() = localFormatter.filterUnknownSymbols(this)
 
     inner class CursorFixer {
         private val illegalTokens by lazy {

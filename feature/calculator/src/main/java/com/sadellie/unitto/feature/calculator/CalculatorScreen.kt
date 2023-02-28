@@ -100,7 +100,9 @@ internal fun CalculatorRoute(
         // This method is called immediately after copying formatted text, we replace it with the
         // the unformatted version.
         clipboardManager.setText(
-            AnnotatedString(Formatter.removeFormat(clipboardText.text))
+            AnnotatedString(
+                clipboardText.text.replace(Formatter.grouping, "")
+            )
         )
     }
 

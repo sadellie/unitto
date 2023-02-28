@@ -115,8 +115,7 @@ object Token {
             multiply, multiplyDisplay,
             plus, minus, minusDisplay, divide, divideDisplay,
             baseA, baseB, baseC, baseD, baseE, baseF,
-            _1, _2, _3, _4, _5, _6, _7, _8, _9, _0,
-            dot
+            _1, _2, _3, _4, _5, _6, _7, _8, _9, _0
         ).sortedByDescending { it.length }
     }
 }
