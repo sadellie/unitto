@@ -23,13 +23,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -37,13 +33,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.R
-import com.sadellie.unitto.core.ui.common.AnimatedTopBarText
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.feature.converter.components.Keyboard
 import com.sadellie.unitto.feature.converter.components.TopScreenPart
-import kotlinx.coroutines.delay
 
 @Composable
 internal fun ConverterRoute(
@@ -82,10 +76,8 @@ private fun ConverterScreen(
     clearInput: () -> Unit,
     onOutputTextFieldClick: () -> Unit
 ) {
-    var launched: Boolean by rememberSaveable { mutableStateOf(false) }
-
     UnittoScreenWithTopBar(
-        title = { AnimatedTopBarText(launched) },
+        title = { Text(stringResource(R.string.unit_converter)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         actions = {
             IconButton(onClick = navigateToSettings) {
@@ -131,16 +123,6 @@ private fun ConverterScreen(
             )
         }
     )
-
-    LaunchedEffect(Unit) {
-        /**
-         * 1.5 seconds is enough for user to see "Hello" in app bar title. Also, since we are using
-         * Unit as key, "Hello" will be switched to app name only when composable is not getting
-         * recomposed for 1.5 seconds.
-         */
-        delay(1500)
-        launched = true
-    }
 }
 
 @Preview
