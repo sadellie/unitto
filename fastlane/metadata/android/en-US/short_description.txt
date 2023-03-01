@@ -1,1 +1,1 @@
-Unit converter and calculator for Android
+Calculator, unit converter and more

@@ -32,8 +32,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 33
-        versionCode = 16
-        versionName = "Hot magenta"
+        versionCode = 17
+        versionName = "Illuminating emerald"
     }
 
     buildTypes {
