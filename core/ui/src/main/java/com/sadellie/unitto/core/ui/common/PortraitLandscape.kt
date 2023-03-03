@@ -19,7 +19,6 @@
 package com.sadellie.unitto.core.ui.common
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.dp
 
 /**
  * When Portrait mode will place [content1] and [content2] in a [Column].
@@ -42,33 +40,14 @@ fun PortraitLandscape(
     content2: @Composable (Modifier) -> Unit,
 ) {
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-        Column(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            content1(Modifier)
-            content2(
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-            )
+        ColumnWithConstraints(modifier) {
+            content1(Modifier.fillMaxHeight(0.34f).padding(horizontal = it.maxWidth * 0.03f))
+            content2(Modifier.fillMaxSize().padding(horizontal = it.maxWidth * 0.03f, vertical = it.maxHeight * 0.015f))
         }
     } else {
-        Row(
-            modifier = modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            content1(
-                Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-            )
-            content2(
-                Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-            )
+        RowWithConstraints(modifier) {
+            content1(Modifier.weight(1f).fillMaxHeight().padding(bottom = it.maxWidth * 0.015f, start = it.maxWidth * 0.015f, end = it.maxWidth * 0.015f))
+            content2(Modifier.weight(1f).fillMaxSize().padding(bottom = it.maxWidth * 0.015f, start = it.maxWidth * 0.015f, end = it.maxWidth * 0.015f))
         }
     }
 }

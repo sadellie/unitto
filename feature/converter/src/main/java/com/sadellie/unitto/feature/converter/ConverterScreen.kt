@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.converter
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
@@ -30,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.R
@@ -91,7 +94,7 @@ private fun ConverterScreen(
             .centerAlignedTopAppBarColors(containerColor = Color.Transparent),
         content = { padding ->
             PortraitLandscape(
-                modifier = Modifier.padding(padding),
+                modifier = Modifier.padding(padding).fillMaxSize(),
                 content1 = {
                     TopScreenPart(
                         modifier = it,
@@ -125,11 +128,26 @@ private fun ConverterScreen(
     )
 }
 
-@Preview
+class PreviewUIState: PreviewParameterProvider<ConverterUIState> {
+    override val values: Sequence<ConverterUIState>
+        get() = listOf(
+            ConverterUIState(inputValue = "1234", calculatedValue = null, resultValue = "5678", showLoading = false),
+            ConverterUIState(inputValue = "1234", calculatedValue = "234", resultValue = "5678", showLoading = false),
+        ).asSequence()
+}
+
+@Preview(widthDp = 432, heightDp = 1008, device = "spec:parent=pixel_5,orientation=portrait")
+@Preview(widthDp = 432, heightDp = 864, device = "spec:parent=pixel_5,orientation=portrait")
+@Preview(widthDp = 597, heightDp = 1393, device = "spec:parent=pixel_5,orientation=portrait")
+@Preview(heightDp = 432, widthDp = 1008, device = "spec:parent=pixel_5,orientation=landscape")
+@Preview(heightDp = 432, widthDp = 864, device = "spec:parent=pixel_5,orientation=landscape")
+@Preview(heightDp = 597, widthDp = 1393, device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
-private fun PreviewConverterScreen() {
+private fun PreviewConverterScreen(
+    @PreviewParameter(PreviewUIState::class) uiState: ConverterUIState
+) {
     ConverterScreen(
-        uiState = ConverterUIState(),
+        uiState = ConverterUIState(inputValue = "1234", calculatedValue = null, resultValue = "5678", showLoading = false),
         navigateToLeftScreen = {},
         navigateToRightScreen = {_, _, _ -> },
         navigateToSettings = {},

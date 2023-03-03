@@ -48,11 +48,12 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
-import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.textfield.InputTextField
+import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
 
 /**
  * Component for input and output
@@ -94,7 +95,8 @@ internal fun MyTextField(
     ) {
         LazyRow(
             modifier = modifier
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .weight(2f),
             reverseLayout = true,
             horizontalArrangement = Arrangement.End,
             contentPadding = PaddingValues(horizontal = 8.dp)
@@ -110,19 +112,17 @@ internal fun MyTextField(
                             .using(SizeTransform(clip = false))
                     }
                 ) {
-                    Text(
+                    InputTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        // Quick fix to prevent the UI from crashing
-                        text = it.take(1000),
-                        textAlign = TextAlign.End,
-                        softWrap = false,
-                        style = NumbersTextStyleDisplayLarge
+                        value = TextFieldValue(it.take(1000)),
+                        textStyle = NumbersTextStyleDisplayLarge.copy(textAlign = TextAlign.End)
                     )
                 }
             }
         }
 
         AnimatedVisibility(
+            modifier = Modifier.weight(1f),
             visible = !secondaryText.isNullOrEmpty(),
             enter = expandVertically(),
             exit = shrinkVertically()
@@ -145,14 +145,14 @@ internal fun MyTextField(
                                 .using(SizeTransform(clip = false))
                         }
                     ) {
-                        Text(
-                            modifier = Modifier,
-                            // Quick fix to prevent the UI from crashing
-                            text = it?.take(1000) ?: "",
-                            textAlign = TextAlign.End,
-                            softWrap = false,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                            style = NumbersTextStyleDisplayMedium
+                        InputTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = TextFieldValue(it?.take(1000) ?: ""),
+                            textStyle = NumbersTextStyleDisplayLarge.copy(
+                                textAlign = TextAlign.End,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                            ),
+                            minRatio = 0.7f
                         )
                     }
                 }
@@ -162,7 +162,8 @@ internal fun MyTextField(
         AnimatedContent(
             modifier = Modifier
                 .align(Alignment.End)
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 8.dp)
+                .weight(1f),
             targetState = helperText
         ) {
             Text(

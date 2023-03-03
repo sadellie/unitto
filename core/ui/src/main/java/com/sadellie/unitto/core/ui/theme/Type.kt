@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.ui.R
 
@@ -42,7 +43,7 @@ val NumbersTextStyleDisplayLarge = TextStyle(
     fontFamily = Lato,
     fontWeight = FontWeight.W400,
     fontSize = 57.sp,
-    lineHeight = 64.sp,
+    lineHeight = (1.4).em,
     letterSpacing = (-0.25).sp,
 )
 

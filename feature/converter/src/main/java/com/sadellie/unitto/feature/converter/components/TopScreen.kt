@@ -18,18 +18,29 @@
 
 package com.sadellie.unitto.feature.converter.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.with
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,9 +51,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.textfield.InputTextField
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.feature.converter.ConverterMode
@@ -95,22 +109,49 @@ internal fun TopScreenPart(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        MyTextField(
-            modifier = Modifier.fillMaxWidth(),
-            primaryText = {
+        InputTextField(
+            modifier = Modifier.weight(2f),
+            value = TextFieldValue(
                 when (converterMode) {
                     ConverterMode.BASE -> inputValue.uppercase()
                     else -> Formatter.format(inputValue)
                 }
-            },
-            secondaryText = calculatedValue?.let { Formatter.format(it) },
-            helperText = stringResource(unitFrom?.shortName ?: R.string.loading_label),
-            textToCopy = calculatedValue ?: inputValue,
+            ),
+            minRatio = 0.7f
         )
-        MyTextField(
+        AnimatedVisibility(
+            visible = !calculatedValue.isNullOrEmpty(),
+            modifier = Modifier.weight(1f),
+            enter = expandVertically(clip = false),
+            exit = shrinkVertically(clip = false)
+        ) {
+            InputTextField(
+                value = TextFieldValue(calculatedValue?.let { Formatter.format(it) } ?: ""),
+                minRatio = 0.7f
+            )
+        }
+        AnimatedContent(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onOutputTextFieldClick,
-            primaryText = {
+            targetState = stringResource(unitFrom?.shortName ?: R.string.loading_label),
+            transitionSpec = {
+                // Enter animation
+                (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                        // Exit animation
+                        with fadeOut())
+                    .using(SizeTransform(clip = false))
+            }
+        ) {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
+            )
+        }
+
+        InputTextField(
+            modifier = Modifier
+                .weight(2f)
+                .clickable { onOutputTextFieldClick() },
+            value = TextFieldValue(
                 when {
                     networkLoading -> stringResource(R.string.loading_label)
                     networkError -> stringResource(R.string.error_label)
@@ -124,16 +165,27 @@ internal fun TopScreenPart(
                     }
                     else -> Formatter.format(outputValue)
                 }
-            },
-            secondaryText = null,
-            helperText = stringResource(unitTo?.shortName ?: R.string.loading_label),
-            textToCopy = outputValue,
+            ),
+            minRatio = 0.7f
         )
-        // Unit selection buttons
-        Row(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.Bottom,
+        AnimatedContent(
+            modifier = Modifier.fillMaxWidth(),
+            targetState = stringResource(unitTo?.shortName ?: R.string.loading_label),
+            transitionSpec = {
+                // Enter animation
+                (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                        // Exit animation
+                        with fadeOut())
+                    .using(SizeTransform(clip = false))
+            }
         ) {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
+            )
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
             UnitSelectionButton(
                 modifier = Modifier
                     .fillMaxWidth()

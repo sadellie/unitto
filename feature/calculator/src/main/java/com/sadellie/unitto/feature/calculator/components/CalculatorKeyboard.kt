@@ -25,11 +25,13 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -43,16 +45,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.Formatter
+import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
+import com.sadellie.unitto.core.ui.common.RowWithConstraints
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 import com.sadellie.unitto.core.ui.common.key.unittoicons.AcTan
 import com.sadellie.unitto.core.ui.common.key.unittoicons.ArCos
@@ -150,22 +155,27 @@ private fun PortraitKeyboard(
         animationSpec = tween(easing = FastOutSlowInEasing)
     )
 
-    Column(
+    ColumnWithConstraints(
         modifier = modifier
-    ) {
+    ) { constraints ->
+        fun verticalFraction(fraction: Float): Dp = constraints.maxHeight * fraction
+        fun horizontalFraction(fraction: Float): Dp = constraints.maxWidth * fraction
+
         val weightModifier = Modifier.weight(1f)
         val mainButtonModifier = Modifier
             .fillMaxSize()
             .weight(1f)
-            .padding(4.dp)
+            .padding(horizontalFraction(0.015f), verticalFraction(0.008f))
         val additionalButtonModifier = Modifier
             .minimumInteractiveComponentSize()
             .weight(1f)
-            .heightIn(max = 48.dp)
+            .height(verticalFraction(0.075f))
+
+        Spacer(modifier = Modifier.height(verticalFraction(0.015f)))
 
         Row(
-            modifier = Modifier.padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(horizontalFraction(0.03f))
         ) {
             // Additional buttons
             Crossfade(invMode, weightModifier) {
@@ -192,14 +202,18 @@ private fun PortraitKeyboard(
                 }
             }
 
-            // Expand/Collapse
-            IconButton(
-                onClick = { showAdditional = !showAdditional },
-                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
-            ) {
-                Icon(Icons.Default.ExpandLess, null, Modifier.rotate(expandRotation))
+            Box(modifier = Modifier.height(verticalFraction(0.075f)), contentAlignment = Alignment.Center) {
+                // Expand/Collapse
+                IconButton(
+                    onClick = { showAdditional = !showAdditional },
+                    colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
+                ) {
+                    Icon(Icons.Default.ExpandLess, null, Modifier.rotate(expandRotation))
+                }
             }
         }
+        
+        Spacer(modifier = Modifier.height(verticalFraction(0.015f)))
 
         Row(weightModifier) {
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.LeftBracket, allowVibration) { addSymbol(Token.leftBracket) }
@@ -232,6 +246,8 @@ private fun PortraitKeyboard(
             KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, clearSymbols) { deleteSymbol() }
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, allowVibration) { evaluate() }
         }
+
+        Spacer(modifier = Modifier.height(verticalFraction(0.015f)))
     }
 }
 
@@ -246,7 +262,7 @@ private fun AdditionalButtonsPortrait(
     toggleInvMode: () -> Unit
 ) {
     Column {
-        Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        Row {
             KeyboardButtonAdditional(modifier, UnittoIcons.SquareRootWide, allowVibration) { addSymbol(Token.sqrt) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.pi) }
             KeyboardButtonAdditional(modifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.exponent) }
@@ -254,13 +270,13 @@ private fun AdditionalButtonsPortrait(
         }
         AnimatedVisibility(showAdditional) {
             Column {
-                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                Row {
                     KeyboardButtonAdditional(modifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad, allowVibration) { toggleAngleMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Sin, allowVibration) { addSymbol(Token.sin) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Cos, allowVibration) { addSymbol(Token.cos) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Tan, allowVibration) { addSymbol(Token.tan) }
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                Row {
                     KeyboardButtonAdditional(modifier, UnittoIcons.Inv, allowVibration) { toggleInvMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.E, allowVibration) { addSymbol(Token.e) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Ln, allowVibration) { addSymbol(Token.ln) }
@@ -282,7 +298,7 @@ private fun AdditionalButtonsPortraitInverse(
     toggleInvMode: () -> Unit
 ) {
     Column {
-        Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        Row {
             KeyboardButtonAdditional(modifier, UnittoIcons.Modulo, allowVibration) { addSymbol(Token.modulo) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.pi) }
             KeyboardButtonAdditional(modifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.exponent) }
@@ -290,13 +306,13 @@ private fun AdditionalButtonsPortraitInverse(
         }
         AnimatedVisibility(showAdditional) {
             Column {
-                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                Row {
                     KeyboardButtonAdditional(modifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad, allowVibration) { toggleAngleMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.ArSin, allowVibration) { addSymbol(Token.arSin) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.ArCos, allowVibration) { addSymbol(Token.arCos) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.AcTan, allowVibration) { addSymbol(Token.acTan) }
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                Row {
                     KeyboardButtonAdditional(modifier, UnittoIcons.Inv, allowVibration) { toggleInvMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.E, allowVibration) { addSymbol(Token.e) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Exp, allowVibration) { addSymbol(Token.exp) }
@@ -321,11 +337,11 @@ private fun LandscapeKeyboard(
     val fractionalIcon = remember { if (Formatter.fractional == Token.dot) UnittoIcons.Dot else UnittoIcons.Comma }
     var invMode: Boolean by remember { mutableStateOf(false) }
 
-    Row(modifier) {
+    RowWithConstraints(modifier) { constraints ->
         val buttonModifier = Modifier
             .fillMaxWidth()
             .weight(1f)
-            .padding(4.dp)
+            .padding(constraints.maxWidth * 0.005f, constraints.maxHeight * 0.02f)
 
         Crossfade(invMode, Modifier.weight(3f)) {
             Row {
