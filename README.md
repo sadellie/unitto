@@ -1,3 +1,11 @@
+<a href="https://github.com/sadellie/unitto/discussions/26">
+    <p align="middle">
+        <img src="./where-logo.png" width="99%" />
+    </p>
+</a>
+
+# Unitto – calculator and unit converter
+
 <p align="middle">
     <img src="./fastlane/metadata/android/en-US/images/featureGraphic.png" width="99%" />
     <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png" width="19%" />
