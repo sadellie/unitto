@@ -184,6 +184,13 @@ internal class TextFieldControllerTest {
         textFieldController.delete()
         assertEquals("", textFieldController.text)
         assertEquals(0..0, textFieldController.selection)
+
+        textFieldController.addToInput("1234")
+        // Place cursor like 1|,234
+        textFieldController.moveCursor(1..1)
+        textFieldController.delete()
+        assertEquals("234", textFieldController.text)
+        assertEquals(0..0, textFieldController.selection)
     }
 
     @Test
