@@ -41,6 +41,7 @@ import com.sadellie.unitto.data.units.collections.temperatureCollection
 import com.sadellie.unitto.data.units.collections.timeCollection
 import com.sadellie.unitto.data.units.collections.volumeCollection
 import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.units.collections.electrostaticCapacitance
 import java.math.BigDecimal
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -79,6 +80,7 @@ class AllUnitsRepository @Inject constructor() {
             UnitGroup.DATA_TRANSFER to dataTransferCollection,
             UnitGroup.FLUX to fluxCollection,
             UnitGroup.NUMBER_BASE to numberBaseCollection,
+            UnitGroup.ELECTROSTATIC_CAPACITANCE to electrostaticCapacitance
         )
     }
 

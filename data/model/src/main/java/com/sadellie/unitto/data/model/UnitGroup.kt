@@ -48,4 +48,5 @@ enum class UnitGroup(
     DATA_TRANSFER(res = R.string.data_transfer),
     FLUX(res = R.string.flux),
     NUMBER_BASE(res = R.string.number_base),
+    ELECTROSTATIC_CAPACITANCE(res = R.string.electrostatic_capacitance)
 }

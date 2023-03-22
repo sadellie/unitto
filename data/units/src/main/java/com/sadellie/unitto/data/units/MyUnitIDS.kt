@@ -516,4 +516,18 @@ object MyUnitIDS {
     const val tetradecimal = "tetradecimal"
     const val pentadecimal = "pentadecimal"
     const val hexadecimal = "hexadecimal"
+
+    // ELECTROSTATIC CAPACITANCE
+    const val attofarad = "attofarad"
+    const val statfarad = "statfarad"
+    const val farad = "farad"
+    const val exafarad = "exafarad"
+    const val picofarad = "picofarad"
+    const val nanofarad = "nanofarad"
+    const val microfarad = "microfarad"
+    const val millifarad = "millifarad"
+    const val kilofarad = "kilofarad"
+    const val megafarad = "megafarad"
+    const val gigafarad = "gigafarad"
+    const val petafarad = "petafarad"
 }

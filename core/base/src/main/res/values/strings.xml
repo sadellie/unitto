@@ -971,6 +971,32 @@
     <string name="hexadecimal">Hexadecimal</string>
     <string name="hexadecimal_short">base16</string>
 
+    <!--ELECTROSTATIC CAPACITANCE-->
+    <string name="attofarad">Attofarad</string>
+    <string name="attofarad_short">aF</string>
+    <string name="statfarad">Statfarad</string>
+    <string name="statfarad_short">stF</string>
+    <string name="farad">Farad</string>
+    <string name="farad_short">F</string>
+    <string name="exafarad">Exafarad</string>
+    <string name="exafarad_short">EF</string>
+    <string name="picofarad">Picofarad</string>
+    <string name="picofarad_short">pF</string>
+    <string name="nanofarad">Nanofarad</string>
+    <string name="nanofarad_short">nF</string>
+    <string name="microfarad">Microfarad</string>
+    <string name="microfarad_short">µF</string>
+    <string name="millifarad">Millifarad</string>
+    <string name="millifarad_short">mF</string>
+    <string name="kilofarad">Kilofarad</string>
+    <string name="kilofarad_short">kF</string>
+    <string name="megafarad">Megafarad</string>
+    <string name="megafarad_short">MF</string>
+    <string name="gigafarad">Gigafarad</string>
+    <string name="gigafarad_short">GF</string>
+    <string name="petafarad">Petafarad</string>
+    <string name="petafarad_short">PF</string>
+
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -989,6 +1015,7 @@
     <string name="currency">Currency</string>
     <string name="flux">Flux</string>
     <string name="number_base">Base</string>
+    <string name="electrostatic_capacitance">Capacitance</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>

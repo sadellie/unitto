@@ -375,6 +375,22 @@ class AllUnitsTest {
         MyUnitIDS.hexadecimal.checkWith(MyUnitIDS.quinary, "FADE", "4023342")
     }
 
+    @Test
+    fun testElectrostaticCapacitance() {
+        MyUnitIDS.attofarad.checkWith(MyUnitIDS.nanofarad, "364354322342", "364.35432")
+        MyUnitIDS.statfarad.checkWith(MyUnitIDS.microfarad, "123312", "0.1372")
+        MyUnitIDS.farad.checkWith(MyUnitIDS.kilofarad, "123312", "123.312")
+        MyUnitIDS.exafarad.checkWith(MyUnitIDS.petafarad, "123312", "123312000")
+        MyUnitIDS.picofarad.checkWith(MyUnitIDS.nanofarad, "11233", "11.233")
+        MyUnitIDS.nanofarad.checkWith(MyUnitIDS.millifarad, "11233", "0.01123")
+        MyUnitIDS.microfarad.checkWith(MyUnitIDS.nanofarad, "1123433", "1123433000")
+        MyUnitIDS.millifarad.checkWith(MyUnitIDS.nanofarad, "112", "112000000")
+        MyUnitIDS.kilofarad.checkWith(MyUnitIDS.microfarad, "11132", "11132000000000")
+        MyUnitIDS.megafarad.checkWith(MyUnitIDS.kilofarad, "11132", "11132000")
+        MyUnitIDS.gigafarad.checkWith(MyUnitIDS.petafarad, "11132", "0.01113")
+        MyUnitIDS.petafarad.checkWith(MyUnitIDS.kilofarad, "11132", "11132000000000000")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)
