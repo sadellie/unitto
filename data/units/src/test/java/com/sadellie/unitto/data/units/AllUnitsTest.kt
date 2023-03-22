@@ -391,6 +391,35 @@ class AllUnitsTest {
         petafarad.checkWith(kilofarad, "11132", "11132000000000000")
     }
 
+    @Test
+    fun testPrefix() = testWithUnits {
+        prefix_quetta.checkWith(prefix_base, "1", "1000000000000000000000000000000")
+        prefix_ronna.checkWith(prefix_base, "1", "1000000000000000000000000000")
+        prefix_yotta.checkWith(prefix_base, "1", "1000000000000000000000000")
+        prefix_zetta.checkWith(prefix_base, "1", "1000000000000000000000")
+        prefix_exa.checkWith(prefix_base, "1", "1000000000000000000")
+        prefix_peta.checkWith(prefix_base, "1", "1000000000000000")
+        prefix_tera.checkWith(prefix_base, "1", "1000000000000")
+        prefix_giga.checkWith(prefix_base, "1", "1000000000")
+        prefix_mega.checkWith(prefix_base, "1", "1000000")
+        prefix_kilo.checkWith(prefix_base, "1", "1000")
+        prefix_hecto.checkWith(prefix_base, "1", "100")
+        prefix_deca.checkWith(prefix_base, "1", "10")
+        prefix_base.checkWith(prefix_base, "77777", "77777")
+        prefix_deci.checkWith(prefix_base, "1", "0.1")
+        prefix_centi.checkWith(prefix_base, "1", "0.01")
+        prefix_milli.checkWith(prefix_base, "1", "0.001")
+        prefix_micro.checkWith(prefix_base, "1", "0.000001")
+        prefix_nano.checkWith(prefix_base, "1", "0.000000001")
+        prefix_pico.checkWith(prefix_base, "1", "0.000000000001")
+        prefix_femto.checkWith(prefix_base, "1", "0.000000000000001")
+        prefix_atto.checkWith(prefix_base, "1", "0.000000000000000001")
+        prefix_zepto.checkWith(prefix_base, "1", "0.000000000000000000001")
+        prefix_yocto.checkWith(prefix_base, "1", "0.000000000000000000000001")
+        prefix_ronto.checkWith(prefix_base, "1", "0.000000000000000000000000001")
+        prefix_quecto.checkWith(prefix_base, "1", "0.000000000000000000000000000001")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)

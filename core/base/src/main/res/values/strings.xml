@@ -997,6 +997,58 @@
     <string name="petafarad">Petafarad</string>
     <string name="petafarad_short">PF</string>
 
+    <!--Prefixes-->
+    <string name="prefix_quetta">Quetta</string>
+    <string name="prefix_quetta_short">Q</string>
+    <string name="prefix_ronna">Ronna</string>
+    <string name="prefix_ronna_short">R</string>
+    <string name="prefix_yotta">Yotta</string>
+    <string name="prefix_yotta_short">Y</string>
+    <string name="prefix_zetta">Zetta</string>
+    <string name="prefix_zetta_short">Z</string>
+    <string name="prefix_exa">Exa</string>
+    <string name="prefix_exa_short">E</string>
+    <string name="prefix_peta">Peta</string>
+    <string name="prefix_peta_short">P</string>
+    <string name="prefix_tera">Tera</string>
+    <string name="prefix_tera_short">T</string>
+    <string name="prefix_giga">Giga</string>
+    <string name="prefix_giga_short">G</string>
+    <string name="prefix_mega">Mega</string>
+    <string name="prefix_mega_short">M</string>
+    <string name="prefix_kilo">Kilo</string>
+    <string name="prefix_kilo_short">k</string>
+    <string name="prefix_hecto">Hecto</string>
+    <string name="prefix_hecto_short">h</string>
+    <string name="prefix_deca">Deca</string>
+    <string name="prefix_deca_short">da</string>
+    <string name="prefix_base">Base</string>
+    <string name="prefix_base_short">Base</string>
+    <string name="prefix_deci">Deci</string>
+    <string name="prefix_deci_short">d</string>
+    <string name="prefix_centi">Centi</string>
+    <string name="prefix_centi_short">c</string>
+    <string name="prefix_milli">Milli</string>
+    <string name="prefix_milli_short">m</string>
+    <string name="prefix_micro">Micro</string>
+    <string name="prefix_micro_short">μ</string>
+    <string name="prefix_nano">Nano</string>
+    <string name="prefix_nano_short">n</string>
+    <string name="prefix_pico">Pico</string>
+    <string name="prefix_pico_short">p</string>
+    <string name="prefix_femto">Femto</string>
+    <string name="prefix_femto_short">f</string>
+    <string name="prefix_atto">Atto</string>
+    <string name="prefix_atto_short">a</string>
+    <string name="prefix_zepto">Zepto</string>
+    <string name="prefix_zepto_short">z</string>
+    <string name="prefix_yocto">Yocto</string>
+    <string name="prefix_yocto_short">y</string>
+    <string name="prefix_ronto">Ronto</string>
+    <string name="prefix_ronto_short">r</string>
+    <string name="prefix_quecto">Quecto</string>
+    <string name="prefix_quecto_short">q</string>
+
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -1016,6 +1068,7 @@
     <string name="flux">Flux</string>
     <string name="number_base">Base</string>
     <string name="electrostatic_capacitance">Capacitance</string>
+    <string name="prefix">Prefix</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>
