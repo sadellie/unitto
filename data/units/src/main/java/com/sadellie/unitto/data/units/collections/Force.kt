@@ -27,19 +27,19 @@ import java.math.BigDecimal
 
 val forceCollection: List<AbstractUnit> by lazy {
     listOf(
+        MyUnit(MyUnitIDS.attonewton,            BigDecimal.valueOf(1),                      UnitGroup.FORCE,    R.string.attonewton,            R.string.attonewton_short),
+        MyUnit(MyUnitIDS.dyne,                  BigDecimal.valueOf(1E+13),                  UnitGroup.FORCE,    R.string.dyne,                  R.string.dyne_short),
+        MyUnit(MyUnitIDS.millinewton,           BigDecimal.valueOf(1E+15),                  UnitGroup.FORCE,    R.string.millinewton,           R.string.millinewton_short),
+        MyUnit(MyUnitIDS.joule_per_centimeter,  BigDecimal.valueOf(1E+16),                  UnitGroup.FORCE,    R.string.joule_per_centimeter,  R.string.joule_per_centimeter_short),
         MyUnit(MyUnitIDS.newton,                BigDecimal.valueOf(1E+18),                  UnitGroup.FORCE,    R.string.newton,                R.string.newton_short),
+        MyUnit(MyUnitIDS.joule_per_meter,       BigDecimal.valueOf(1E+18),                  UnitGroup.FORCE,    R.string.joule_per_meter,       R.string.joule_per_meter_short),
         MyUnit(MyUnitIDS.kilonewton,            BigDecimal.valueOf(1E+21),                  UnitGroup.FORCE,    R.string.kilonewton,            R.string.kilonewton_short),
         MyUnit(MyUnitIDS.gram_force,            BigDecimal.valueOf(9.80665E+15),            UnitGroup.FORCE,    R.string.gram_force,            R.string.gram_force_short),
         MyUnit(MyUnitIDS.kilogram_force,        BigDecimal.valueOf(9.80665E+18),            UnitGroup.FORCE,    R.string.kilogram_force,        R.string.kilogram_force_short),
         MyUnit(MyUnitIDS.ton_force,             BigDecimal.valueOf(9.80665E+21),            UnitGroup.FORCE,    R.string.ton_force,             R.string.ton_force_short),
-        MyUnit(MyUnitIDS.millinewton,           BigDecimal.valueOf(1E+15),                  UnitGroup.FORCE,    R.string.millinewton,           R.string.millinewton_short),
-        MyUnit(MyUnitIDS.attonewton,            BigDecimal.valueOf(1),                      UnitGroup.FORCE,    R.string.attonewton,            R.string.attonewton_short),
-        MyUnit(MyUnitIDS.dyne,                  BigDecimal.valueOf(1E+13),                  UnitGroup.FORCE,    R.string.dyne,                  R.string.dyne_short),
-        MyUnit(MyUnitIDS.joule_per_meter,       BigDecimal.valueOf(1E+18),                  UnitGroup.FORCE,    R.string.joule_per_meter,       R.string.joule_per_meter_short),
-        MyUnit(MyUnitIDS.joule_per_centimeter,  BigDecimal.valueOf(1E+16),                  UnitGroup.FORCE,    R.string.joule_per_centimeter,  R.string.joule_per_centimeter_short),
-        MyUnit(MyUnitIDS.kilopound_force,       BigDecimal.valueOf(4.448221615255E+21),     UnitGroup.FORCE,    R.string.kilopound_force,       R.string.kilopound_force_short),
-        MyUnit(MyUnitIDS.pound_force,           BigDecimal.valueOf(4.4482216152550001E18),  UnitGroup.FORCE,    R.string.pound_force,           R.string.pound_force_short),
         MyUnit(MyUnitIDS.ounce_force,           BigDecimal.valueOf(2.78013850953423008E17), UnitGroup.FORCE,    R.string.ounce_force,           R.string.ounce_force_short),
+        MyUnit(MyUnitIDS.pound_force,           BigDecimal.valueOf(4.4482216152550001E18),  UnitGroup.FORCE,    R.string.pound_force,           R.string.pound_force_short),
+        MyUnit(MyUnitIDS.kilopound_force,       BigDecimal.valueOf(4.448221615255E+21),     UnitGroup.FORCE,    R.string.kilopound_force,       R.string.kilopound_force_short),
         MyUnit(MyUnitIDS.pond,                  BigDecimal.valueOf(9.80665E+15),            UnitGroup.FORCE,    R.string.pond,                  R.string.pond_short),
         MyUnit(MyUnitIDS.kilopond,              BigDecimal.valueOf(9.80665E+18),            UnitGroup.FORCE,    R.string.kilopond,              R.string.kilopond_short),
     )
