@@ -574,4 +574,23 @@ object MyUnitIDS {
     const val ounce_force = "ounce_force"
     const val pond = "pond"
     const val kilopond = "kilopond"
+
+    // TORQUE
+    const val newton_meter = "newton_meter"
+    const val newton_centimeter = "newton_centimeter"
+    const val newton_millimeter = "newton_millimeter"
+    const val kilonewton_meter = "kilonewton_meter"
+    const val dyne_meter = "dyne_meter"
+    const val dyne_centimeter = "dyne_centimeter"
+    const val dyne_millimeter = "dyne_millimeter"
+    const val kilogram_force_meter = "kilogram_force_meter"
+    const val kilogram_force_centimeter = "kilogram_force_centimeter"
+    const val kilogram_force_millimeter = "kilogram_force_millimeter"
+    const val gram_force_meter = "gram_force_meter"
+    const val gram_force_centimeter = "gram_force_centimeter"
+    const val gram_force_millimeter = "gram_force_millimeter"
+    const val ounce_force_foot = "ounce_force_foot"
+    const val ounce_force_inch = "ounce_force_inch"
+    const val pound_force_foot = "pound_force_foot"
+    const val pound_force_inch = "pound_force_inch"
 }

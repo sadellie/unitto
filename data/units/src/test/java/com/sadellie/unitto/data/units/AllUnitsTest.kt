@@ -439,6 +439,27 @@ class AllUnitsTest {
         kilopond.checkWith(kilonewton, "6553", "64.26298")
     }
 
+    @Test
+    fun testTorque() = testWithUnits {
+        newton_meter.checkWith(dyne_meter, "2134", "213400000")
+        newton_centimeter.checkWith(kilogram_force_millimeter, "2345", "2391.23452")
+        newton_millimeter.checkWith(pound_force_inch, "2345", "20.755")
+        kilonewton_meter.checkWith(kilogram_force_meter, "2134", "217607.43985")
+        dyne_meter.checkWith(newton_centimeter, "2134", "2.134")
+        dyne_centimeter.checkWith(gram_force_centimeter, "2134", "2.17607")
+        dyne_millimeter.checkWith(gram_force_millimeter, "2134", "2.17607")
+        kilogram_force_meter.checkWith(dyne_millimeter, "2134", "2092739110000")
+        kilogram_force_centimeter.checkWith(gram_force_meter, "2134", "21340")
+        kilogram_force_millimeter.checkWith(ounce_force_inch, "2134", "2963.56822")
+        gram_force_meter.checkWith(newton_millimeter, "2134", "20927.3911")
+        gram_force_centimeter.checkWith(kilogram_force_centimeter, "2134", "2.134")
+        gram_force_millimeter.checkWith(kilonewton_meter, "2134", "0.00002")
+        ounce_force_foot.checkWith(kilogram_force_millimeter, "2134", "18439.75503")
+        ounce_force_inch.checkWith(dyne_meter, "2134", "1506935.1968")
+        pound_force_foot.checkWith(newton_millimeter, "2134", "2893315.612")
+        pound_force_inch.checkWith(ounce_force_foot, "2134", "2845.33337")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)

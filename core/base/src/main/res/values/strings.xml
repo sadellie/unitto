@@ -1081,6 +1081,42 @@
     <string name="kilopond">Kilopond</string>
     <string name="kilopond_short">kp</string>
 
+    <!--Torque-->
+    <string name="newton_meter">Newton meter</string>
+    <string name="newton_meter_short">N*m</string>
+    <string name="newton_centimeter">Newton centimeter</string>
+    <string name="newton_centimeter_short">N*cm</string>
+    <string name="newton_millimeter">Newton millimeter</string>
+    <string name="newton_millimeter_short">N*mm</string>
+    <string name="kilonewton_meter">Kilonewton meter</string>
+    <string name="kilonewton_meter_short">kN*m</string>
+    <string name="dyne_meter">Dyne meter</string>
+    <string name="dyne_meter_short">dyn*m</string>
+    <string name="dyne_centimeter">Dyne centimeter</string>
+    <string name="dyne_centimeter_short">dyn*cm</string>
+    <string name="dyne_millimeter">Dyne millimeter</string>
+    <string name="dyne_millimeter_short">dyn*mm</string>
+    <string name="kilogram_force_meter">Kilogram-force meter</string>
+    <string name="kilogram_force_meter_short">kgf*m</string>
+    <string name="kilogram_force_centimeter">Kilogram-force centimeter</string>
+    <string name="kilogram_force_centimeter_short">kgf*cm</string>
+    <string name="kilogram_force_millimeter">Kilogram-force millimeter</string>
+    <string name="kilogram_force_millimeter_short">kgf*mm</string>
+    <string name="gram_force_meter">Gram-force meter</string>
+    <string name="gram_force_meter_short">gf*m</string>
+    <string name="gram_force_centimeter">Gram-force centimeter</string>
+    <string name="gram_force_centimeter_short">gf*cm</string>
+    <string name="gram_force_millimeter">Gram-force millimeter</string>
+    <string name="gram_force_millimeter_short">gf*mm</string>
+    <string name="ounce_force_foot">Ounce-force foot</string>
+    <string name="ounce_force_foot_short">ozf*ft</string>
+    <string name="ounce_force_inch">Ounce-force inch</string>
+    <string name="ounce_force_inch_short">ozf*in</string>
+    <string name="pound_force_foot">Pound-force foot</string>
+    <string name="pound_force_foot_short">lbf*ft</string>
+    <string name="pound_force_inch">Pound-force inch</string>
+    <string name="pound_force_inch_short">lbf*in</string>
+
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -1102,6 +1138,7 @@
     <string name="electrostatic_capacitance">Capacitance</string>
     <string name="prefix">Prefix</string>
     <string name="force">Force</string>
+    <string name="torque">Torque</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>

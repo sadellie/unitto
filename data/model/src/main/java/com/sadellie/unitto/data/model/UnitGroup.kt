@@ -51,4 +51,5 @@ enum class UnitGroup(
     ELECTROSTATIC_CAPACITANCE(res = R.string.electrostatic_capacitance),
     PREFIX(res = R.string.prefix),
     FORCE(res = R.string.force),
+    TORQUE(res = R.string.torque),
 }

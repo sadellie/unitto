@@ -43,6 +43,7 @@ import com.sadellie.unitto.data.units.collections.pressureCollection
 import com.sadellie.unitto.data.units.collections.speedCollection
 import com.sadellie.unitto.data.units.collections.temperatureCollection
 import com.sadellie.unitto.data.units.collections.timeCollection
+import com.sadellie.unitto.data.units.collections.torqueCollection
 import com.sadellie.unitto.data.units.collections.volumeCollection
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -85,6 +86,7 @@ class AllUnitsRepository @Inject constructor() {
             UnitGroup.ELECTROSTATIC_CAPACITANCE to electrostaticCapacitance,
             UnitGroup.PREFIX to prefixCollection,
             UnitGroup.FORCE to forceCollection,
+            UnitGroup.TORQUE to torqueCollection
         )
     }
 
