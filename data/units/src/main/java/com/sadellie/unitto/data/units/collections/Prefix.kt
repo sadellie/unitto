@@ -25,7 +25,7 @@ import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.R
 import java.math.BigDecimal
 
-val prefix: List<AbstractUnit> by lazy {
+val prefixCollection: List<AbstractUnit> by lazy {
     listOf(
         MyUnit(MyUnitIDS.prefix_quetta, BigDecimal.valueOf(1E+30),  UnitGroup.PREFIX, R.string.prefix_quetta,   R.string.prefix_quetta_short),
         MyUnit(MyUnitIDS.prefix_ronna,  BigDecimal.valueOf(1E+27),  UnitGroup.PREFIX, R.string.prefix_ronna,    R.string.prefix_ronna_short),
