@@ -557,4 +557,21 @@ object MyUnitIDS {
     const val prefix_yocto = "yocto"
     const val prefix_ronto = "ronto"
     const val prefix_quecto = "quecto"
+
+    // FORCE
+    const val newton = "newton"
+    const val kilonewton = "kilonewton"
+    const val gram_force = "gram_force"
+    const val kilogram_force = "kilogram_force"
+    const val ton_force = "ton_force"
+    const val millinewton = "millinewton"
+    const val attonewton = "attonewton"
+    const val dyne = "dyne"
+    const val joule_per_meter = "joule_per_meter"
+    const val joule_per_centimeter = "joule_per_centimeter"
+    const val kilopound_force = "kilopound_force"
+    const val pound_force = "pound_force"
+    const val ounce_force = "ounce_force"
+    const val pond = "pond"
+    const val kilopond = "kilopond"
 }

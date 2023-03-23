@@ -50,4 +50,5 @@ enum class UnitGroup(
     NUMBER_BASE(res = R.string.number_base),
     ELECTROSTATIC_CAPACITANCE(res = R.string.electrostatic_capacitance),
     PREFIX(res = R.string.prefix),
+    FORCE(res = R.string.force),
 }

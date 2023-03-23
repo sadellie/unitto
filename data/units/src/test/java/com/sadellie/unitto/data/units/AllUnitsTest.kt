@@ -420,6 +420,25 @@ class AllUnitsTest {
         prefix_quecto.checkWith(prefix_base, "1", "0.000000000000000000000000000001")
     }
 
+    @Test
+    fun testForce() = testWithUnits {
+        newton.checkWith(pond, "6553", "668220.03436")
+        kilonewton.checkWith(kilopound_force, "6553", "1473.173")
+        gram_force.checkWith(kilonewton, "6553", "0.06426")
+        kilogram_force.checkWith(ton_force, "6553", "6.553")
+        ton_force.checkWith(millinewton, "6553", "64262977450")
+        millinewton.checkWith(kilonewton, "6553", "0.00655")
+        attonewton.checkWith(dyne, "6553123123", "0.00066")
+        dyne.checkWith(joule_per_meter, "6553", "0.06553")
+        joule_per_meter.checkWith(pond, "6553", "668220.03436")
+        joule_per_centimeter.checkWith(kilopond, "6553", "6.6822")
+        kilopound_force.checkWith(kilopond, "6553", "2972390.80061")
+        pound_force.checkWith(ounce_force, "6553", "104848")
+        ounce_force.checkWith(pound_force, "6553", "409.5625")
+        pond.checkWith(kilonewton, "6553", "0.06426")
+        kilopond.checkWith(kilonewton, "6553", "64.26298")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)

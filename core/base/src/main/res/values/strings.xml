@@ -1049,6 +1049,38 @@
     <string name="prefix_quecto">Quecto</string>
     <string name="prefix_quecto_short">q</string>
 
+    <!--Force-->
+    <string name="newton">Newton</string>
+    <string name="newton_short">N</string>
+    <string name="kilonewton">Kilonewton</string>
+    <string name="kilonewton_short">kN</string>
+    <string name="gram_force">Gram-force</string>
+    <string name="gram_force_short">gf</string>
+    <string name="kilogram_force">Kilogram-force</string>
+    <string name="kilogram_force_short">kgf</string>
+    <string name="ton_force">Ton-force</string>
+    <string name="ton_force_short">tf</string>
+    <string name="millinewton">Millinewton</string>
+    <string name="millinewton_short">mN</string>
+    <string name="attonewton">attonewton</string>
+    <string name="attonewton_short">aN</string>
+    <string name="dyne">dyne</string>
+    <string name="dyne_short">dyn</string>
+    <string name="joule_per_meter">Joule/meter</string>
+    <string name="joule_per_meter_short">J/m</string>
+    <string name="joule_per_centimeter">Joule/centimeter</string>
+    <string name="joule_per_centimeter_short">J/cm</string>
+    <string name="kilopound_force">Kilopound-force</string>
+    <string name="kilopound_force_short">kipf</string>
+    <string name="pound_force">Pound-force</string>
+    <string name="pound_force_short">lbf</string>
+    <string name="ounce_force">Ounce-force</string>
+    <string name="ounce_force_short">ozf</string>
+    <string name="pond">Pond</string>
+    <string name="pond_short">p</string>
+    <string name="kilopond">Kilopond</string>
+    <string name="kilopond_short">kp</string>
+
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -1069,6 +1101,7 @@
     <string name="number_base">Base</string>
     <string name="electrostatic_capacitance">Capacitance</string>
     <string name="prefix">Prefix</string>
+    <string name="force">Force</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>

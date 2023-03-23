@@ -42,6 +42,7 @@ import com.sadellie.unitto.data.units.collections.timeCollection
 import com.sadellie.unitto.data.units.collections.volumeCollection
 import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.units.collections.electrostaticCapacitance
+import com.sadellie.unitto.data.units.collections.forceCollection
 import com.sadellie.unitto.data.units.collections.prefix
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -83,6 +84,7 @@ class AllUnitsRepository @Inject constructor() {
             UnitGroup.NUMBER_BASE to numberBaseCollection,
             UnitGroup.ELECTROSTATIC_CAPACITANCE to electrostaticCapacitance,
             UnitGroup.PREFIX to prefix,
+            UnitGroup.FORCE to forceCollection,
         )
     }
 
