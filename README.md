@@ -1,3 +1,11 @@
+<a href="https://github.com/sadellie/unitto/discussions/26">
+    <p align="middle">
+        <img src="./where-logo.png" width="99%" />
+    </p>
+</a>
+
+# Unitto – calculator and unit converter
+
 <p align="middle">
     <img src="./fastlane/metadata/android/en-US/images/featureGraphic.png" width="99%" />
     <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/slide1.png" width="19%" />
@@ -10,7 +18,7 @@
 ## 📲 Download
 <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/googlePlay.png" width="32%"/></a>
 <a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fDroid.png" width="32%"/></a>
-<a href="https://appgallery.huawei.com/app/C105740875"><img alt="AppGallery" src="./content/appGallery.png" width="32%"/></a>
+<a href="https://apps.rustore.ru/app/com.sadellie.unitto"><img alt="RuMarket" src="./content/ruStore.png" width="32%"/></a>
 
 ## 😎 Features
 - Instant expression evaluation

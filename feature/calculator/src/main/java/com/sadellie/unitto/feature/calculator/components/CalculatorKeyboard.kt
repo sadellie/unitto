@@ -98,12 +98,11 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Sin
 import com.sadellie.unitto.core.ui.common.key.unittoicons.SquareRootWide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Tan
-import com.sadellie.unitto.feature.calculator.AngleMode
 
 @Composable
 internal fun CalculatorKeyboard(
     modifier: Modifier,
-    angleMode: AngleMode,
+    radianMode: Boolean,
     allowVibration: Boolean,
     addSymbol: (String) -> Unit,
     clearSymbols: () -> Unit,
@@ -114,7 +113,7 @@ internal fun CalculatorKeyboard(
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
         PortraitKeyboard(
             modifier = modifier,
-            angleMode = angleMode,
+            radianMode = radianMode,
             allowVibration = allowVibration,
             addSymbol = addSymbol,
             toggleAngleMode = toggleAngleMode,
@@ -125,7 +124,7 @@ internal fun CalculatorKeyboard(
     } else {
         LandscapeKeyboard(
             modifier = modifier,
-            angleMode = angleMode,
+            radianMode = radianMode,
             allowVibration = allowVibration,
             addSymbol = addSymbol,
             toggleAngleMode = toggleAngleMode,
@@ -139,7 +138,7 @@ internal fun CalculatorKeyboard(
 @Composable
 private fun PortraitKeyboard(
     modifier: Modifier,
-    angleMode: AngleMode,
+    radianMode: Boolean,
     allowVibration: Boolean,
     addSymbol: (String) -> Unit,
     toggleAngleMode: () -> Unit,
@@ -185,7 +184,7 @@ private fun PortraitKeyboard(
                         allowVibration = allowVibration,
                         addSymbol = addSymbol,
                         showAdditional = showAdditional,
-                        angleMode = angleMode,
+                        radianMode = radianMode,
                         toggleAngleMode = toggleAngleMode,
                         toggleInvMode = { invMode = !invMode }
                     )
@@ -195,7 +194,7 @@ private fun PortraitKeyboard(
                         allowVibration = allowVibration,
                         addSymbol = addSymbol,
                         showAdditional = showAdditional,
-                        angleMode = angleMode,
+                        radianMode = radianMode,
                         toggleAngleMode = toggleAngleMode,
                         toggleInvMode = { invMode = !invMode }
                     )
@@ -212,7 +211,7 @@ private fun PortraitKeyboard(
                 }
             }
         }
-        
+
         Spacer(modifier = Modifier.height(verticalFraction(0.015f)))
 
         Row(weightModifier) {
@@ -257,7 +256,7 @@ private fun AdditionalButtonsPortrait(
     allowVibration: Boolean,
     addSymbol: (String) -> Unit,
     showAdditional: Boolean,
-    angleMode: AngleMode,
+    radianMode: Boolean,
     toggleAngleMode: () -> Unit,
     toggleInvMode: () -> Unit
 ) {
@@ -271,7 +270,7 @@ private fun AdditionalButtonsPortrait(
         AnimatedVisibility(showAdditional) {
             Column {
                 Row {
-                    KeyboardButtonAdditional(modifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad, allowVibration) { toggleAngleMode() }
+                    KeyboardButtonAdditional(modifier, if (radianMode) UnittoIcons.Rad else UnittoIcons.Deg, allowVibration) { toggleAngleMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Sin, allowVibration) { addSymbol(Token.sin) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Cos, allowVibration) { addSymbol(Token.cos) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Tan, allowVibration) { addSymbol(Token.tan) }
@@ -293,7 +292,7 @@ private fun AdditionalButtonsPortraitInverse(
     allowVibration: Boolean,
     addSymbol: (String) -> Unit,
     showAdditional: Boolean,
-    angleMode: AngleMode,
+    radianMode: Boolean,
     toggleAngleMode: () -> Unit,
     toggleInvMode: () -> Unit
 ) {
@@ -307,7 +306,7 @@ private fun AdditionalButtonsPortraitInverse(
         AnimatedVisibility(showAdditional) {
             Column {
                 Row {
-                    KeyboardButtonAdditional(modifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad, allowVibration) { toggleAngleMode() }
+                    KeyboardButtonAdditional(modifier, if (radianMode) UnittoIcons.Rad else UnittoIcons.Deg, allowVibration) { toggleAngleMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.ArSin, allowVibration) { addSymbol(Token.arSin) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.ArCos, allowVibration) { addSymbol(Token.arCos) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.AcTan, allowVibration) { addSymbol(Token.acTan) }
@@ -326,7 +325,7 @@ private fun AdditionalButtonsPortraitInverse(
 @Composable
 private fun LandscapeKeyboard(
     modifier: Modifier,
-    angleMode: AngleMode,
+    radianMode: Boolean,
     allowVibration: Boolean,
     addSymbol: (String) -> Unit,
     toggleAngleMode: () -> Unit,
@@ -350,7 +349,7 @@ private fun LandscapeKeyboard(
                         modifier = Modifier.weight(1f),
                         buttonModifier = buttonModifier,
                         allowVibration = allowVibration,
-                        angleMode = angleMode,
+                        radianMode = radianMode,
                         addSymbol = addSymbol,
                         toggleAngleMode = toggleAngleMode,
                         toggleInvMode = { invMode = !invMode }
@@ -360,7 +359,7 @@ private fun LandscapeKeyboard(
                         modifier = Modifier.weight(1f),
                         buttonModifier = buttonModifier,
                         allowVibration = allowVibration,
-                        angleMode = angleMode,
+                        radianMode = radianMode,
                         addSymbol = addSymbol,
                         toggleAngleMode = toggleAngleMode,
                         toggleInvMode = { invMode = !invMode }
@@ -408,13 +407,13 @@ private fun AdditionalButtonsLandscape(
     modifier: Modifier,
     buttonModifier: Modifier,
     allowVibration: Boolean,
-    angleMode: AngleMode,
+    radianMode: Boolean,
     addSymbol: (String) -> Unit,
     toggleAngleMode: () -> Unit,
     toggleInvMode: () -> Unit
 ) {
     Column(modifier) {
-        KeyboardButtonAdditional(buttonModifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad, allowVibration) { toggleAngleMode() }
+        KeyboardButtonAdditional(buttonModifier, if (radianMode) UnittoIcons.Rad else UnittoIcons.Deg, allowVibration) { toggleAngleMode() }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Inv, allowVibration) { toggleInvMode() }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Sin, allowVibration) { addSymbol(Token.sin) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration) { addSymbol(Token.e) }
@@ -440,13 +439,13 @@ private fun AdditionalButtonsLandscapeInverse(
     modifier: Modifier,
     buttonModifier: Modifier,
     allowVibration: Boolean,
-    angleMode: AngleMode,
+    radianMode: Boolean,
     addSymbol: (String) -> Unit,
     toggleAngleMode: () -> Unit,
     toggleInvMode: () -> Unit
 ) {
     Column(modifier) {
-        KeyboardButtonAdditional(buttonModifier, if (angleMode == AngleMode.DEG) UnittoIcons.Deg else UnittoIcons.Rad, allowVibration) { toggleAngleMode() }
+        KeyboardButtonAdditional(buttonModifier, if (radianMode) UnittoIcons.Rad else UnittoIcons.Deg, allowVibration) { toggleAngleMode() }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Inv, allowVibration) { toggleInvMode() }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArSin, allowVibration) { addSymbol(Token.arSin) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration) { addSymbol(Token.e) }
@@ -472,7 +471,7 @@ private fun AdditionalButtonsLandscapeInverse(
 private fun PreviewCalculatorKeyboard() {
     CalculatorKeyboard(
         modifier = Modifier,
-        angleMode = AngleMode.DEG,
+        radianMode = true,
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},

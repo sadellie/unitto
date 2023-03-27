@@ -57,11 +57,15 @@ class TextFieldController @Inject constructor() {
 
         val inputFormatted = newInput.fixFormat()
         val newSelectionStartEnd = inputFormatted.length - lastToEndDistance
+        val fixedCursor = fixCursor(
+            newPosition = newSelectionStartEnd..newSelectionStartEnd,
+            currentInput = inputFormatted
+        ) ?: newSelectionStartEnd..newSelectionStartEnd
 
         input.update {
             it.copy(
                 text = inputFormatted,
-                selection = TextRange(newSelectionStartEnd, newSelectionStartEnd)
+                selection = TextRange(fixedCursor)
             )
         }
     }
@@ -72,16 +76,9 @@ class TextFieldController @Inject constructor() {
     fun pasteSymbols(symbols: String) = addToInput(symbols.filterUnknownSymbols())
 
     fun moveCursor(newPosition: IntRange) {
-        val currentInput = input.value.text
-        if (newPosition.last > currentInput.length) return
-
-        val fixedLeftCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.first)
-        val fixedRightCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.last)
-
-        // Will modify
         input.update {
             it.copy(
-                selection = TextRange(fixedLeftCursor, fixedRightCursor)
+                selection = TextRange(fixCursor(newPosition) ?: return)
             )
         }
     }
@@ -115,7 +112,7 @@ class TextFieldController @Inject constructor() {
                 .fixFormat()
             it.copy(
                 text = newText,
-                selection = TextRange(newText.length - distanceFromEnd)
+                selection = TextRange((newText.length - distanceFromEnd).coerceAtLeast(0))
             )
         }
     }
@@ -126,9 +123,23 @@ class TextFieldController @Inject constructor() {
         .replace(localFormatter.grouping, "")
         .replace(localFormatter.fractional, Token.dot)
 
+    private fun fixCursor(
+        newPosition: IntRange,
+        currentInput: String = input.value.text
+    ): IntRange? {
+        if (newPosition.last > currentInput.length) return null
+
+        val fixedLeftCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.first)
+        val fixedRightCursor = cursorFixer.fixCursorIfNeeded(currentInput, newPosition.last)
+
+        return fixedLeftCursor..fixedRightCursor
+    }
+
     private fun String.fixFormat(): String = localFormatter.reFormat(this)
 
     private fun String.filterUnknownSymbols() = localFormatter.filterUnknownSymbols(this)
+
+    private fun TextRange(range: IntRange): TextRange = TextRange(range.first, range.last)
 
     inner class CursorFixer {
         private val illegalTokens by lazy {

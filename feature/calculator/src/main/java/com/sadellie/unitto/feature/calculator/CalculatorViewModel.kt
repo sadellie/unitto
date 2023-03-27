@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -46,7 +45,7 @@ import org.mariuszgromada.math.mxparser.mXparser as MathParser
 
 @HiltViewModel
 internal class CalculatorViewModel @Inject constructor(
-    userPrefsRepository: UserPreferencesRepository,
+    private val userPrefsRepository: UserPreferencesRepository,
     private val calculatorHistoryRepository: CalculatorHistoryRepository,
     private val textFieldController: TextFieldController
 ) : ViewModel() {
@@ -58,16 +57,15 @@ internal class CalculatorViewModel @Inject constructor(
         )
 
     private val _output: MutableStateFlow<String> = MutableStateFlow("")
-    private val _angleMode: MutableStateFlow<AngleMode> = MutableStateFlow(AngleMode.RAD)
     private val _history = calculatorHistoryRepository.historyFlow
 
     val uiState = combine(
-        textFieldController.input, _output, _angleMode, _history, _userPrefs
-    ) { input, output, angleMode, history, userPrefs ->
+        textFieldController.input, _output, _history, _userPrefs
+    ) { input, output, history, userPrefs ->
         return@combine CalculatorUIState(
             input = input,
             output = output,
-            angleMode = angleMode,
+            radianMode = userPrefs.radianMode,
             history = history,
             allowVibration = userPrefs.enableVibrations
         )
@@ -82,14 +80,8 @@ internal class CalculatorViewModel @Inject constructor(
     fun clearSymbols() = textFieldController.clearInput()
 
     fun toggleCalculatorMode() {
-        _angleMode.update {
-            if (it == AngleMode.DEG) {
-                MathParser.setRadiansMode()
-                AngleMode.RAD
-            } else {
-                MathParser.setDegreesMode()
-                AngleMode.DEG
-            }
+        viewModelScope.launch {
+            userPrefsRepository.updateRadianMode(!_userPrefs.value.radianMode)
         }
     }
 
@@ -185,7 +177,9 @@ internal class CalculatorViewModel @Inject constructor(
 
         // Observe and invoke calculation without UI lag.
         viewModelScope.launch(Dispatchers.Default) {
-            merge(_userPrefs, textFieldController.input, _angleMode).collectLatest {
+            combine(_userPrefs, textFieldController.input) { userPrefs, _ ->
+                if (userPrefs.radianMode) MathParser.setRadiansMode() else MathParser.setDegreesMode()
+            }.collectLatest {
                 calculateInput()
             }
         }

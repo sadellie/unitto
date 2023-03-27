@@ -20,6 +20,7 @@ package com.sadellie.unitto.data.units
 
 import android.content.Context
 import com.sadellie.unitto.core.base.MAX_PRECISION
+import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.sortByLev
@@ -29,18 +30,21 @@ import com.sadellie.unitto.data.units.collections.areaCollection
 import com.sadellie.unitto.data.units.collections.currencyCollection
 import com.sadellie.unitto.data.units.collections.dataCollection
 import com.sadellie.unitto.data.units.collections.dataTransferCollection
+import com.sadellie.unitto.data.units.collections.electrostaticCapacitance
 import com.sadellie.unitto.data.units.collections.energyCollection
 import com.sadellie.unitto.data.units.collections.fluxCollection
+import com.sadellie.unitto.data.units.collections.forceCollection
 import com.sadellie.unitto.data.units.collections.lengthCollection
 import com.sadellie.unitto.data.units.collections.massCollection
 import com.sadellie.unitto.data.units.collections.numberBaseCollection
 import com.sadellie.unitto.data.units.collections.powerCollection
+import com.sadellie.unitto.data.units.collections.prefixCollection
 import com.sadellie.unitto.data.units.collections.pressureCollection
 import com.sadellie.unitto.data.units.collections.speedCollection
 import com.sadellie.unitto.data.units.collections.temperatureCollection
 import com.sadellie.unitto.data.units.collections.timeCollection
+import com.sadellie.unitto.data.units.collections.torqueCollection
 import com.sadellie.unitto.data.units.collections.volumeCollection
-import com.sadellie.unitto.data.database.UnitsEntity
 import java.math.BigDecimal
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -79,6 +83,10 @@ class AllUnitsRepository @Inject constructor() {
             UnitGroup.DATA_TRANSFER to dataTransferCollection,
             UnitGroup.FLUX to fluxCollection,
             UnitGroup.NUMBER_BASE to numberBaseCollection,
+            UnitGroup.ELECTROSTATIC_CAPACITANCE to electrostaticCapacitance,
+            UnitGroup.PREFIX to prefixCollection,
+            UnitGroup.FORCE to forceCollection,
+            UnitGroup.TORQUE to torqueCollection
         )
     }
 

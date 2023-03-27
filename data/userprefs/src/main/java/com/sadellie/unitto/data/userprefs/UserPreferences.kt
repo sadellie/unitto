@@ -54,6 +54,7 @@ import javax.inject.Inject
  * @property shownUnitGroups [UnitGroup]s that user wants to see. Excludes other [UnitGroup]s,
  * @property enableVibrations When true will use haptic feedback in app.
  * @property enableToolsExperiment When true will enable experimental Tools screen.
+ * @property radianMode AngleMode in mxParser. When true - Radian, when False - Degree.
  */
 data class UserPreferences(
     val themingMode: ThemingMode? = null,
@@ -67,7 +68,8 @@ data class UserPreferences(
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
     val enableVibrations: Boolean = true,
     val enableToolsExperiment: Boolean = false,
-    val startingScreen: String = TopLevelDestinations.Converter.route
+    val startingScreen: String = TopLevelDestinations.Converter.route,
+    val radianMode: Boolean = true
 )
 
 /**
@@ -90,6 +92,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
         val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
         val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
+        val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -134,6 +137,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val enableVibrations: Boolean = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
             val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
+            val radianMode: Boolean = preferences[PrefsKeys.RADIAN_MODE] ?: true
 
             UserPreferences(
                 themingMode = themingMode,
@@ -147,7 +151,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 shownUnitGroups = shownUnitGroups,
                 enableVibrations = enableVibrations,
                 enableToolsExperiment = enableToolsExperiment,
-                startingScreen = startingScreen
+                startingScreen = startingScreen,
+                radianMode = radianMode
             )
         }
 
@@ -267,6 +272,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateToolsExperiment(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] = enabled
+        }
+    }
+
+    /**
+     * Update angle mode for calculator.
+     *
+     * @param radianMode When true - Radian, when False - Degree.
+     */
+    suspend fun updateRadianMode(radianMode: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.RADIAN_MODE] = radianMode
         }
     }
 }
