@@ -24,7 +24,7 @@ import com.sadellie.unitto.data.model.HistoryItem
 internal data class CalculatorUIState(
     val input: TextFieldValue = TextFieldValue(),
     val output: String = "",
-    val angleMode: AngleMode = AngleMode.RAD,
+    val radianMode: Boolean = true,
     val history: List<HistoryItem> = emptyList(),
     val allowVibration: Boolean = false
 )

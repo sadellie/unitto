@@ -269,7 +269,7 @@ private fun CalculatorScreen(
             numPad = {
                 CalculatorKeyboard(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    angleMode = uiState.angleMode,
+                    radianMode = uiState.radianMode,
                     allowVibration = uiState.allowVibration,
                     addSymbol = addSymbol,
                     clearSymbols = clearSymbols,
