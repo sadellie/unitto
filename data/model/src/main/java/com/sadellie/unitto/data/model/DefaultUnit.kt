@@ -25,13 +25,14 @@ import com.sadellie.unitto.data.common.trimZeros
 import java.math.BigDecimal
 
 /**
- * This class represents a Measurement object
- * @param[displayName] The string resource, i.e. kilometer
- * @param[shortName] The string resource for a short name, i.e. km
- * @param[basicUnit] One unit of this measurement in basic unit
- * @param[group] THe group this measurement belongs to
+ * Default representation of a unit. Uses default conversion formula.
+ *
+ * @param displayName The string resource, i.e. kilometer
+ * @param shortName The string resource for a short name, i.e. km
+ * @param basicUnit One unit of this measurement in basic unit
+ * @param group THe group this measurement belongs to
  */
-class MyUnit(
+class DefaultUnit(
     unitId: String,
     basicUnit: BigDecimal,
     group: UnitGroup,

@@ -25,9 +25,9 @@ import com.sadellie.unitto.data.common.trimZeros
 import java.math.BigDecimal
 
 /**
- * Same as [MyUnit], but conversion formula is different.
+ * Same as [DefaultUnit], but conversion formula is different.
  *
- * @see MyUnit
+ * @see DefaultUnit
  */
 class FlowRateUnit(
     unitId: String,

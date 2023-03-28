@@ -19,7 +19,7 @@
 package com.sadellie.unitto.data.units
 
 import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.MyUnit
+import com.sadellie.unitto.data.model.DefaultUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.sortByLev
 import org.junit.Assert.assertEquals
@@ -36,7 +36,7 @@ val baseList: List<AbstractUnit> = listOf(
     "Pound",
     "Kilometer per square"
 ).map { name ->
-    MyUnit("", BigDecimal.ONE, UnitGroup.ANGLE, 0, 0)
+    DefaultUnit("", BigDecimal.ONE, UnitGroup.ANGLE, 0, 0)
         .also { it.renderedName = name }
 }
 

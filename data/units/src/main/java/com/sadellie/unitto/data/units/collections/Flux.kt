@@ -19,7 +19,7 @@
 package com.sadellie.unitto.data.units.collections
 
 import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.MyUnit
+import com.sadellie.unitto.data.model.DefaultUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.R
@@ -27,12 +27,12 @@ import java.math.BigDecimal
 
 internal val fluxCollection: List<AbstractUnit> by lazy {
     listOf(
-        MyUnit(MyUnitIDS.maxwell,    BigDecimal.valueOf(1),                     UnitGroup.FLUX, R.string.maxwell,       R.string.maxwell_short),
-        MyUnit(MyUnitIDS.microweber, BigDecimal.valueOf(100),                   UnitGroup.FLUX, R.string.microweber,    R.string.microweber_short),
-        MyUnit(MyUnitIDS.milliweber, BigDecimal.valueOf(100000),                UnitGroup.FLUX, R.string.milliweber,    R.string.milliweber_short),
-        MyUnit(MyUnitIDS.weber,      BigDecimal.valueOf(100000000),             UnitGroup.FLUX, R.string.weber,         R.string.weber_short),
-        MyUnit(MyUnitIDS.kiloweber,  BigDecimal.valueOf(100000000000),          UnitGroup.FLUX, R.string.kiloweber,     R.string.kiloweber_short),
-        MyUnit(MyUnitIDS.megaweber,  BigDecimal.valueOf(100000000000000),       UnitGroup.FLUX, R.string.megaweber,     R.string.megaweber_short),
-        MyUnit(MyUnitIDS.gigaweber,  BigDecimal.valueOf(100000000000000000),    UnitGroup.FLUX, R.string.gigaweber,     R.string.gigaweber_short),
+        DefaultUnit(MyUnitIDS.maxwell,    BigDecimal.valueOf(1),                     UnitGroup.FLUX, R.string.maxwell,       R.string.maxwell_short),
+        DefaultUnit(MyUnitIDS.microweber, BigDecimal.valueOf(100),                   UnitGroup.FLUX, R.string.microweber,    R.string.microweber_short),
+        DefaultUnit(MyUnitIDS.milliweber, BigDecimal.valueOf(100000),                UnitGroup.FLUX, R.string.milliweber,    R.string.milliweber_short),
+        DefaultUnit(MyUnitIDS.weber,      BigDecimal.valueOf(100000000),             UnitGroup.FLUX, R.string.weber,         R.string.weber_short),
+        DefaultUnit(MyUnitIDS.kiloweber,  BigDecimal.valueOf(100000000000),          UnitGroup.FLUX, R.string.kiloweber,     R.string.kiloweber_short),
+        DefaultUnit(MyUnitIDS.megaweber,  BigDecimal.valueOf(100000000000000),       UnitGroup.FLUX, R.string.megaweber,     R.string.megaweber_short),
+        DefaultUnit(MyUnitIDS.gigaweber,  BigDecimal.valueOf(100000000000000000),    UnitGroup.FLUX, R.string.gigaweber,     R.string.gigaweber_short),
     )
 }
