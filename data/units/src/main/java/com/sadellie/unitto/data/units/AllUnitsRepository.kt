@@ -32,6 +32,7 @@ import com.sadellie.unitto.data.units.collections.dataCollection
 import com.sadellie.unitto.data.units.collections.dataTransferCollection
 import com.sadellie.unitto.data.units.collections.electrostaticCapacitance
 import com.sadellie.unitto.data.units.collections.energyCollection
+import com.sadellie.unitto.data.units.collections.flowRateCollection
 import com.sadellie.unitto.data.units.collections.fluxCollection
 import com.sadellie.unitto.data.units.collections.forceCollection
 import com.sadellie.unitto.data.units.collections.lengthCollection
@@ -86,7 +87,8 @@ class AllUnitsRepository @Inject constructor() {
             UnitGroup.ELECTROSTATIC_CAPACITANCE to electrostaticCapacitance,
             UnitGroup.PREFIX to prefixCollection,
             UnitGroup.FORCE to forceCollection,
-            UnitGroup.TORQUE to torqueCollection
+            UnitGroup.TORQUE to torqueCollection,
+            UnitGroup.FLOW_RATE to flowRateCollection,
         )
     }
 

@@ -52,4 +52,5 @@ enum class UnitGroup(
     PREFIX(res = R.string.prefix),
     FORCE(res = R.string.force),
     TORQUE(res = R.string.torque),
+    FLOW_RATE(res = R.string.flow_rate),
 }

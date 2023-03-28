@@ -1117,6 +1117,51 @@
     <string name="pound_force_inch">Pound-force inch</string>
     <string name="pound_force_inch_short">lbf*in</string>
 
+    <!--Flow rate-->
+    <string name="liter_per_hour">Liter/hour</string>
+    <string name="liter_per_hour_short">L/h</string>
+    <string name="liter_per_minute">Liter/minute</string>
+    <string name="liter_per_minute_short">L/m</string>
+    <string name="liter_per_second">Liter/second</string>
+    <string name="liter_per_second_short">L/s</string>
+    <string name="milliliter_per_hour">Milliliter/hour</string>
+    <string name="milliliter_per_hour_short">mL/h</string>
+    <string name="milliliter_per_minute">Milliliter/minute</string>
+    <string name="milliliter_per_minute_short">mL/m</string>
+    <string name="milliliter_per_second">Milliliter/second</string>
+    <string name="milliliter_per_second_short">mL/s</string>
+    <string name="cubic_meter_per_hour">Cubic Meter/hour</string>
+    <string name="cubic_meter_per_hour_short">m3/h</string>
+    <string name="cubic_meter_per_minute">Cubic Meter/minute</string>
+    <string name="cubic_meter_per_minute_short">m3/m</string>
+    <string name="cubic_meter_per_second">Cubic Meter/second</string>
+    <string name="cubic_meter_per_second_short">m3/s</string>
+    <string name="cubic_millimeter_per_hour">Cubic Millimeter/hour</string>
+    <string name="cubic_millimeter_per_hour_short">mm3/h</string>
+    <string name="cubic_millimeter_per_minute">Cubic Millimeter/minute</string>
+    <string name="cubic_millimeter_per_minute_short">mm3/m</string>
+    <string name="cubic_millimeter_per_second">Cubic Millimeter/second</string>
+    <string name="cubic_millimeter_per_second_short">mm3/s</string>
+    <string name="cubic_foot_per_hour">Cubic Foot/hour</string>
+    <string name="cubic_foot_per_hour_short">ft3/h</string>
+    <string name="cubic_foot_per_minute">Cubic Foot/minute</string>
+    <string name="cubic_foot_per_minute_short">ft3/m</string>
+    <string name="cubic_foot_per_second">Cubic Foot/second</string>
+    <string name="cubic_foot_per_second_short">ft3/s</string>
+    <string name="gallon_per_hour_us">Gallon/hour (U.S.)</string>
+    <string name="gallon_per_hour_us_short">gal/h</string>
+    <string name="gallon_per_minute_us">Gallon/minute (U.S.)</string>
+    <string name="gallon_per_minute_us_short">gal/m</string>
+    <string name="gallon_per_second_us">Gallon/second (U.S.)</string>
+    <string name="gallon_per_second_us_short">gal/s</string>
+    <string name="gallon_per_hour_imperial">Gallon/hour (Imperial)</string>
+    <string name="gallon_per_hour_imperial_short">gal/h</string>
+    <string name="gallon_per_minute_imperial">Gallon/minute (Imperial)</string>
+    <string name="gallon_per_minute_imperial_short">gal/m</string>
+    <string name="gallon_per_second_imperial">Gallon/second (Imperial)</string>
+    <string name="gallon_per_second_imperial_short">gal/s</string>
+
+
     <!--Groups-->
     <string name="length">Length</string>
     <string name="time">Time</string>
@@ -1139,6 +1184,7 @@
     <string name="prefix">Prefix</string>
     <string name="force">Force</string>
     <string name="torque">Torque</string>
+    <string name="flow_rate">Flow</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>

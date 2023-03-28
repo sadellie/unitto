@@ -460,6 +460,31 @@ class AllUnitsTest {
         pound_force_inch.checkWith(ounce_force_foot, "2134", "2845.33337")
     }
 
+    @Test
+    fun testFlowRate() = testWithUnits {
+        liter_per_hour.checkWith(milliliter_per_minute, "312", "5200")
+        liter_per_minute.checkWith(cubic_foot_per_minute, "312", "11.01818")
+        liter_per_second.checkWith(cubic_meter_per_minute, "312", "18.72")
+        milliliter_per_hour.checkWith(liter_per_hour, "312", "0.312")
+        milliliter_per_minute.checkWith(liter_per_second, "312", "0.0052")
+        milliliter_per_second.checkWith(cubic_foot_per_minute, "312", "0.66109")
+        cubic_meter_per_hour.checkWith(cubic_foot_per_hour, "312", "11018.17602")
+        cubic_meter_per_minute.checkWith(liter_per_minute, "312", "312000")
+        cubic_meter_per_second.checkWith(milliliter_per_minute, "312", "18720000000")
+        cubic_millimeter_per_hour.checkWith(milliliter_per_minute, "312", "0.0052")
+        cubic_millimeter_per_minute.checkWith(liter_per_minute, "312", "0.00031")
+        cubic_millimeter_per_second.checkWith(cubic_millimeter_per_minute, "312", "18720")
+        cubic_foot_per_hour.checkWith(milliliter_per_hour, "312", "8834856.1367")
+        cubic_foot_per_minute.checkWith(cubic_meter_per_hour, "312", "530.09137")
+        cubic_foot_per_second.checkWith(cubic_meter_per_second, "312", "8.83486")
+        gallons_per_hour_us.checkWith(liter_per_hour, "312", "1181.04848")
+        gallons_per_minute_us.checkWith(gallons_per_hour_imperial, "312", "15587.66074")
+        gallons_per_second_us.checkWith(cubic_meter_per_minute, "312", "70.86291")
+        gallons_per_hour_imperial.checkWith(liter_per_second, "312", "0.39399")
+        gallons_per_minute_imperial.checkWith(cubic_foot_per_minute, "312", "50.08962")
+        gallons_per_second_imperial.checkWith(cubic_meter_per_minute, "312", "85.1028")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)
