@@ -32,9 +32,6 @@ android {
         getByName("playStore") {
             storeLink("http://play.google.com/store/apps/details?id=com.sadellie.unitto")
         }
-        getByName("appGallery") {
-            storeLink("https://appgallery.huawei.com/app/C105740875")
-        }
         getByName("nashStore") {
             storeLink("https://store.nashstore.ru/store/627de8394891a527a6efe56a")
         }
