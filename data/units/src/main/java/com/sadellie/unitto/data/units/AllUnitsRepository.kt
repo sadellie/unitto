@@ -90,6 +90,7 @@ class AllUnitsRepository @Inject constructor() {
             UnitGroup.FORCE to forceCollection,
             UnitGroup.TORQUE to torqueCollection,
             UnitGroup.FLOW_RATE to flowRateCollection,
+            UnitGroup.LUMINANCE to luminanceCollection,
         )
     }
 
