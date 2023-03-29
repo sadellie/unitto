@@ -485,6 +485,29 @@ class AllUnitsTest {
         gallons_per_second_imperial.checkWith(cubic_meter_per_minute, "312", "85.1028")
     }
 
+    @Test
+    fun testLuminance() = testWithUnits {
+        candela_per_square_meter.checkWith(lumen_per_square_foot_per_steradian, "6723", "624.58714")
+        candela_per_square_centimeter.checkWith(candela_per_square_inch, "6723", "43374.1068")
+        candela_per_square_foot.checkWith(apostilb, "6723", "227343.77056")
+        candela_per_square_inch.checkWith(lumen_per_square_centimeter_per_steradian, "6723", "1042.06708")
+        kilocandela_per_square_meter.checkWith(lambert, "6723", "2112.09274")
+        stilb.checkWith(blondel, "6723", "211209274.10086")
+        lumen_per_square_meter_per_steradian.checkWith(lumen_per_square_centimeter_per_steradian, "6723", "0.6723")
+        lumen_per_square_centimeter_per_steradian.checkWith(millilambert, "6723", "21120927.41009")
+        lumen_per_square_foot_per_steradian.checkWith(skot, "6723", "227343770.55975")
+        watt_per_square_centimeter_per_steradian.checkWith(stilb, "6723", "4591809")
+        nit.checkWith(candela_per_square_foot, "6723", "624.58714")
+        millinit.checkWith(lumen_per_square_foot_per_steradian, "6723", "0.62459")
+        lambert.checkWith(foot_lambert, "6723", "6245871.37921")
+        millilambert.checkWith(apostilb, "6723", "67230")
+        foot_lambert.checkWith(watt_per_square_centimeter_per_steradian, "6723", "0.00337")
+        apostilb.checkWith(kilocandela_per_square_meter, "6723", "2.14")
+        blondel.checkWith(candela_per_square_centimeter, "6723", "0.214")
+        bril.checkWith(skot, "6723", "0.6723")
+        skot.checkWith(lumen_per_square_meter_per_steradian, "6723", "2.14")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)

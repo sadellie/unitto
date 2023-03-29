@@ -36,6 +36,7 @@ import com.sadellie.unitto.data.units.collections.flowRateCollection
 import com.sadellie.unitto.data.units.collections.fluxCollection
 import com.sadellie.unitto.data.units.collections.forceCollection
 import com.sadellie.unitto.data.units.collections.lengthCollection
+import com.sadellie.unitto.data.units.collections.luminanceCollection
 import com.sadellie.unitto.data.units.collections.massCollection
 import com.sadellie.unitto.data.units.collections.numberBaseCollection
 import com.sadellie.unitto.data.units.collections.powerCollection

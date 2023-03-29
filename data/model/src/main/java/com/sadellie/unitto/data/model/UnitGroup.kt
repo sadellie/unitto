@@ -53,4 +53,5 @@ enum class UnitGroup(
     FORCE(res = R.string.force),
     TORQUE(res = R.string.torque),
     FLOW_RATE(res = R.string.flow_rate),
+    LUMINANCE(res = R.string.luminance),
 }

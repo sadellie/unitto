@@ -1161,6 +1161,45 @@
     <string name="gallon_per_second_imperial">Gallon/second (Imperial)</string>
     <string name="gallon_per_second_imperial_short">gal/s</string>
 
+    <!--Luminance-->
+    <string name="candela_per_square_meter">Candela/square meter</string>
+    <string name="candela_per_square_meter_short">cd/m^2</string>
+    <string name="candela_per_square_centimeter">Candela/square centimeter</string>
+    <string name="candela_per_square_centimeter_short">cd/cm^2</string>
+    <string name="candela_per_square_foot">Candela/square foot</string>
+    <string name="candela_per_square_foot_short">cd/ft^2</string>
+    <string name="candela_per_square_inch">Candela/square inch</string>
+    <string name="candela_per_square_inch_short">cd/in^2</string>
+    <string name="kilocandela_per_square_meter">Kilocandela/square meter</string>
+    <string name="kilocandela_per_square_meter_short">kcd</string>
+    <string name="stilb">Stilb</string>
+    <string name="stilb_short">sb</string>
+    <string name="lumen_per_square_meter_per_steradian">Lumen/square meter/steradian</string>
+    <string name="lumen_per_square_meter_per_steradian_short">lm/m^2/sr</string>
+    <string name="lumen_per_square_centimeter_per_steradian">Lumen/square centimeter/steradian</string>
+    <string name="lumen_per_square_centimeter_per_steradian_short">lm/cm^2/sr</string>
+    <string name="lumen_per_square_foot_per_steradian">Lumen/square foot/steradian</string>
+    <string name="lumen_per_square_foot_per_steradian_short">lm/ft^2/sr</string>
+    <string name="watt_per_square_centimeter_per_steradian">Watt/square centimeter/steradian</string>
+    <string name="watt_per_square_centimeter_per_steradian_short">W/cm^2/sr</string>
+    <string name="nit">Nit</string>
+    <string name="nit_short">nt</string>
+    <string name="millinit">Millinit</string>
+    <string name="millinit_short">mnt</string>
+    <string name="lambert">Lambert</string>
+    <string name="lambert_short">L</string>
+    <string name="millilambert">Millilambert</string>
+    <string name="millilambert_short">mL</string>
+    <string name="foot_lambert">Foot-lambert</string>
+    <string name="foot_lambert_short">fL</string>
+    <string name="apostilb">Apostilb</string>
+    <string name="apostilb_short">asb</string>
+    <string name="blondel">Blondel</string>
+    <string name="blondel_short">blondel</string>
+    <string name="bril">Bril</string>
+    <string name="bril_short">bril</string>
+    <string name="skot">Skot</string>
+    <string name="skot_short">sk</string>
 
     <!--Groups-->
     <string name="length">Length</string>
@@ -1185,6 +1224,7 @@
     <string name="force">Force</string>
     <string name="torque">Torque</string>
     <string name="flow_rate">Flow</string>
+    <string name="luminance">Luminance</string>
 
     <!--Screen names-->
     <string name="units_screen_from">Convert from</string>
