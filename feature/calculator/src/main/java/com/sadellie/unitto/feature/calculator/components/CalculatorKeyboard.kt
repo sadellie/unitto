@@ -33,13 +33,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -164,13 +164,12 @@ private fun PortraitKeyboard(
         val mainButtonModifier = Modifier
             .fillMaxSize()
             .weight(1f)
-            .padding(horizontalFraction(0.015f), verticalFraction(0.008f))
+            .padding(horizontalFraction(0.015f), verticalFraction(0.009f))
         val additionalButtonModifier = Modifier
-            .minimumInteractiveComponentSize()
             .weight(1f)
-            .height(verticalFraction(0.075f))
+            .height(verticalFraction(0.09f))
 
-        Spacer(modifier = Modifier.height(verticalFraction(0.015f)))
+        Spacer(modifier = Modifier.height(verticalFraction(0.025f)))
 
         Row(
             modifier = Modifier,
@@ -201,7 +200,10 @@ private fun PortraitKeyboard(
                 }
             }
 
-            Box(modifier = Modifier.height(verticalFraction(0.075f)), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.size(verticalFraction(0.09f)),
+                contentAlignment = Alignment.Center
+            ) {
                 // Expand/Collapse
                 IconButton(
                     onClick = { showAdditional = !showAdditional },
@@ -212,7 +214,7 @@ private fun PortraitKeyboard(
             }
         }
 
-        Spacer(modifier = Modifier.height(verticalFraction(0.015f)))
+        Spacer(modifier = Modifier.height(verticalFraction(0.025f)))
 
         Row(weightModifier) {
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.LeftBracket, allowVibration) { addSymbol(Token.leftBracket) }
@@ -220,7 +222,6 @@ private fun PortraitKeyboard(
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Percent, allowVibration) { addSymbol(Token.percent) }
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Divide, allowVibration) { addSymbol(Token.divideDisplay) }
         }
-
         Row(weightModifier) {
             KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key7, allowVibration) { addSymbol(Token._7) }
             KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key8, allowVibration) { addSymbol(Token._8) }

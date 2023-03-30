@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 
 /**
  * When Portrait mode will place [content1] and [content2] in a [Column].
@@ -41,13 +42,19 @@ fun PortraitLandscape(
 ) {
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
         ColumnWithConstraints(modifier) {
-            content1(Modifier.fillMaxHeight(0.34f).padding(horizontal = it.maxWidth * 0.03f))
-            content2(Modifier.fillMaxSize().padding(horizontal = it.maxWidth * 0.03f, vertical = it.maxHeight * 0.015f))
+            content1(Modifier.fillMaxHeight(0.38f).padding(horizontal = it.maxWidth * 0.03f))
+            content2(Modifier.fillMaxSize().padding(it.maxWidth * 0.03f, it.maxHeight * 0.015f))
         }
     } else {
         RowWithConstraints(modifier) {
-            content1(Modifier.weight(1f).fillMaxHeight().padding(bottom = it.maxWidth * 0.015f, start = it.maxWidth * 0.015f, end = it.maxWidth * 0.015f))
-            content2(Modifier.weight(1f).fillMaxSize().padding(bottom = it.maxWidth * 0.015f, start = it.maxWidth * 0.015f, end = it.maxWidth * 0.015f))
+            val contentModifier = Modifier
+                .weight(1f)
+                .fillMaxSize()
+                .padding(
+                    it.maxWidth * 0.015f, 0.dp,
+                    it.maxHeight * 0.03f, it.maxHeight * 0.03f)
+            content1(contentModifier)
+            content2(contentModifier)
         }
     }
 }

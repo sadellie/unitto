@@ -35,7 +35,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.MoreVert
@@ -47,7 +46,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,12 +55,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalTextToolbar
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,7 +67,6 @@ import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.InputTextField
-import com.sadellie.unitto.core.ui.common.textfield.UnittoTextToolbar
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.DragDownView
@@ -90,39 +83,20 @@ internal fun CalculatorRoute(
     navigateToSettings: () -> Unit,
     viewModel: CalculatorViewModel = hiltViewModel()
 ) {
-    val clipboardManager = LocalClipboardManager.current
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    fun copyToClipboard() {
-        val clipboardText = clipboardManager.getText() ?: return
-        // This method is called immediately after copying formatted text, we replace it with the
-        // the unformatted version.
-        clipboardManager.setText(
-            AnnotatedString(
-                clipboardText.text.replace(Formatter.grouping, "")
-            )
-        )
-    }
-
-    CompositionLocalProvider(
-        LocalTextToolbar provides UnittoTextToolbar(
-            view = LocalView.current,
-            copyCallback = ::copyToClipboard
-        )
-    ) {
-        CalculatorScreen(
-            uiState = uiState.value,
-            navigateToMenu = navigateToMenu,
-            navigateToSettings = navigateToSettings,
-            addSymbol = viewModel::addSymbol,
-            clearSymbols = viewModel::clearSymbols,
-            deleteSymbol = viewModel::deleteSymbol,
-            onCursorChange = viewModel::onCursorChange,
-            toggleAngleMode = viewModel::toggleCalculatorMode,
-            evaluate = viewModel::evaluate,
-            clearHistory = viewModel::clearHistory
-        )
-    }
+    CalculatorScreen(
+        uiState = uiState.value,
+        navigateToMenu = navigateToMenu,
+        navigateToSettings = navigateToSettings,
+        addSymbol = viewModel::addSymbol,
+        clearSymbols = viewModel::clearSymbols,
+        deleteSymbol = viewModel::deleteSymbol,
+        onCursorChange = viewModel::onCursorChange,
+        toggleAngleMode = viewModel::toggleCalculatorMode,
+        evaluate = viewModel::evaluate,
+        clearHistory = viewModel::clearHistory
+    )
 }
 
 @Composable
@@ -186,7 +160,6 @@ private fun CalculatorScreen(
                         .fillMaxSize(),
                     historyItems = uiState.history,
                     historyItemHeightCallback = { historyItemHeight = it },
-                    onTextClick = addSymbol
                 )
             },
             textFields = { maxDragAmount ->
@@ -243,17 +216,14 @@ private fun CalculatorScreen(
                         onCursorChange = onCursorChange
                     )
                     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        SelectionContainer(Modifier.weight(1f)) {
-                            InputTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 8.dp),
-                                value = TextFieldValue(
-                                    Formatter.fromSeparator(uiState.output, Separator.COMMA)
-                                ),
-                                textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
-                            )
-                        }
+                        InputTextField(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp),
+                            value = Formatter.format(uiState.output),
+                            textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
+                        )
                     }
                     // Handle
                     Box(

@@ -30,11 +30,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.with
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.Icon
@@ -51,11 +50,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.textfield.InputTextField
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
@@ -105,18 +103,15 @@ internal fun TopScreenPart(
     )
     val mContext = LocalContext.current
 
-    Column(
+    ColumnWithConstraints(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         InputTextField(
             modifier = Modifier.weight(2f),
-            value = TextFieldValue(
-                when (converterMode) {
-                    ConverterMode.BASE -> inputValue.uppercase()
-                    else -> Formatter.format(inputValue)
-                }
-            ),
+            value = when (converterMode) {
+                ConverterMode.BASE -> inputValue.uppercase()
+                else -> Formatter.format(inputValue)
+            },
             minRatio = 0.7f
         )
         AnimatedVisibility(
@@ -126,8 +121,9 @@ internal fun TopScreenPart(
             exit = shrinkVertically(clip = false)
         ) {
             InputTextField(
-                value = TextFieldValue(calculatedValue?.let { Formatter.format(it) } ?: ""),
-                minRatio = 0.7f
+                value = calculatedValue?.let { value -> Formatter.format(value) } ?: "",
+                minRatio = 0.7f,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
             )
         }
         AnimatedContent(
@@ -140,33 +136,30 @@ internal fun TopScreenPart(
                         with fadeOut())
                     .using(SizeTransform(clip = false))
             }
-        ) {
+        ) { value ->
             Text(
-                text = it,
+                text = value,
                 style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
             )
         }
 
         InputTextField(
             modifier = Modifier
-                .weight(2f)
-                .clickable { onOutputTextFieldClick() },
-            value = TextFieldValue(
-                when {
-                    networkLoading -> stringResource(R.string.loading_label)
-                    networkError -> stringResource(R.string.error_label)
-                    converterMode == ConverterMode.BASE -> outputValue.uppercase()
-                    formatTime and (unitTo?.group == UnitGroup.TIME) -> {
-                        Formatter.formatTime(
-                            context = mContext,
-                            input = calculatedValue ?: inputValue,
-                            basicUnit = unitFrom?.basicUnit
-                        )
-                    }
-                    else -> Formatter.format(outputValue)
+                .weight(2f),
+            value = when {
+                networkLoading -> stringResource(R.string.loading_label)
+                networkError -> stringResource(R.string.error_label)
+                converterMode == ConverterMode.BASE -> outputValue.uppercase()
+                formatTime and (unitTo?.group == UnitGroup.TIME) -> {
+                    Formatter.formatTime(
+                        context = mContext,
+                        input = calculatedValue ?: inputValue,
+                        basicUnit = unitFrom?.basicUnit
+                    )
                 }
-            ),
-            minRatio = 0.7f
+                else -> Formatter.format(outputValue)
+            },
+            minRatio = 0.7f,
         )
         AnimatedContent(
             modifier = Modifier.fillMaxWidth(),
@@ -178,19 +171,21 @@ internal fun TopScreenPart(
                         with fadeOut())
                     .using(SizeTransform(clip = false))
             }
-        ) {
+        ) { value ->
             Text(
-                text = it,
+                text = value,
                 style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
             )
         }
+
+        Spacer(modifier = Modifier.height(it.maxHeight * 0.03f))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             UnitSelectionButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onClick = { unitFrom?.let { navigateToLeftScreen(it.unitId) } },
+                onClick = { unitFrom?.let { unit -> navigateToLeftScreen(unit.unitId) } },
                 label = unitFrom?.displayName ?: R.string.loading_label,
             )
             IconButton(

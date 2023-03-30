@@ -18,6 +18,8 @@
 
 package com.sadellie.unitto.core.ui.common.textfield
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicTextField
@@ -30,10 +32,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -42,6 +50,7 @@ import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Paragraph
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.text.input.TextFieldValue
@@ -66,40 +75,39 @@ fun InputTextField(
     textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     val clipboardManager = LocalClipboardManager.current
-    fun copyCallback() {
-        clipboardManager.setText(
-            AnnotatedString(
-                Formatter.removeGrouping(
-                    value.annotatedString.subSequence(value.selection).text
+    fun copyCallback() = clipboardManager.copyWithoutGrouping(value)
+
+    val textToolbar = UnittoTextToolbar(
+        view = LocalView.current,
+        copyCallback = ::copyCallback,
+        pasteCallback = {
+            pasteCallback(
+                Formatter.toSeparator(
+                    clipboardManager.getText()?.text ?: "", Separator.COMMA
                 )
             )
-        )
-    }
+        },
+        cutCallback = {
+            copyCallback()
+            cutCallback()
+            onCursorChange(value.selection.end..value.selection.end)
+        }
+    )
 
     CompositionLocalProvider(
         LocalTextInputService provides null,
-        LocalTextToolbar provides UnittoTextToolbar(
-            view = LocalView.current,
-            copyCallback = ::copyCallback,
-            pasteCallback = {
-                pasteCallback(
-                    Formatter.toSeparator(
-                        clipboardManager.getText()?.text ?: "", Separator.COMMA
-                    )
-                )
-            },
-            cutCallback = { copyCallback(); cutCallback() }
-        )
+        LocalTextToolbar provides textToolbar
     ) {
         AutoSizableTextField(
             modifier = modifier,
             value = value,
+            textStyle = textStyle.copy(color = textColor),
+            minRatio = minRatio,
             onValueChange = {
                 onCursorChange(it.selection.start..it.selection.end)
             },
-            textStyle = textStyle,
-            minRatio = minRatio,
-            readOnly = false
+            showToolbar = textToolbar::showMenu,
+            hideToolbar = textToolbar::hide
         )
     }
 }
@@ -107,34 +115,54 @@ fun InputTextField(
 @Composable
 fun InputTextField(
     modifier: Modifier = Modifier,
-    value: TextFieldValue,
+    value: String,
     textStyle: TextStyle = NumbersTextStyleDisplayLarge,
     minRatio: Float = 1f,
     textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
-    AutoSizableTextField(
-        modifier = modifier,
-        value = value,
-        textStyle = textStyle,
-        minRatio = minRatio,
-        readOnly = true
-    )
+    var textFieldValue by remember(value) {
+        mutableStateOf(TextFieldValue(value, selection = TextRange(value.length)))
+    }
+    val clipboardManager = LocalClipboardManager.current
+    fun copyCallback() {
+        clipboardManager.copyWithoutGrouping(textFieldValue)
+        textFieldValue = textFieldValue.copy(selection = TextRange(textFieldValue.selection.end))
+    }
+
+    CompositionLocalProvider(
+        LocalTextInputService provides null,
+        LocalTextToolbar provides UnittoTextToolbar(
+            view = LocalView.current,
+            copyCallback = ::copyCallback,
+        )
+    ) {
+        AutoSizableTextField(
+            modifier = modifier,
+            value = textFieldValue,
+            onValueChange = { textFieldValue = it },
+            textStyle = textStyle.copy(color = textColor),
+            minRatio = minRatio,
+            readOnly = true,
+            interactionSource = interactionSource
+        )
+    }
 }
 
 @Composable
 private fun AutoSizableTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit = {},
     textStyle: TextStyle = TextStyle(),
     scaleFactor: Float = 0.95f,
     minRatio: Float = 1f,
+    onValueChange: (TextFieldValue) -> Unit,
     readOnly: Boolean = false,
-    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    cursorBrush: Brush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant)
+    showToolbar: (rect: Rect) -> Unit = {},
+    hideToolbar: () -> Unit = {},
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
-    // FIXME Acts strange when minRatio is set to 0 (still scales down).
-
+    val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
 
     var nFontSize: TextUnit by remember { mutableStateOf(0.sp) }
@@ -178,18 +206,30 @@ private fun AutoSizableTextField(
         val nTextStyle = textStyle.copy(
             // https://issuetracker.google.com/issues/266470454
             // textAlign = TextAlign.End,
-            color = textColor,
             fontSize = nFontSize
         )
+        var offset = Offset.Zero
 
         BasicTextField(
             value = value,
-            singleLine = true,
-            onValueChange = onValueChange,
+            onValueChange = {
+                showToolbar(Rect(offset, 0f))
+                hideToolbar()
+                onValueChange(it)
+            },
             modifier = Modifier
-                .widthIn(
-                    max = with(density) { intrinsics.width.toDp() }
+                .focusRequester(focusRequester)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = {
+                        hideToolbar()
+                        focusRequester.requestFocus()
+                        onValueChange(value.copy(selection = TextRange.Zero))
+                        showToolbar(Rect(offset, 0f))
+                    }
                 )
+                .widthIn(max = with(density) { intrinsics.width.toDp() })
                 .layout { measurable, constraints ->
                     val placeable = measurable.measure(constraints)
                     // TextField size is changed with a delay (text jumps). Here we correct it.
@@ -201,10 +241,27 @@ private fun AutoSizableTextField(
                             y = (placeable.height - intrinsics.height).roundToInt()
                         )
                     }
-                },
+                }
+                .onGloballyPositioned { layoutCoords -> offset = layoutCoords.positionInWindow() },
             textStyle = nTextStyle,
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+            singleLine = true,
             readOnly = readOnly,
-            cursorBrush = cursorBrush
+            interactionSource = interactionSource
         )
     }
 }
+
+/**
+ * Copy value to clipboard without grouping symbols.
+ *
+ * Example:
+ * "123.456,789" will be copied as "123456,789"
+ *
+ * @param value Formatted value that has grouping symbols.
+ */
+fun ClipboardManager.copyWithoutGrouping(value: TextFieldValue) = this.setText(
+    AnnotatedString(
+        Formatter.removeGrouping(value.annotatedString.subSequence(value.selection).text)
+    )
+)

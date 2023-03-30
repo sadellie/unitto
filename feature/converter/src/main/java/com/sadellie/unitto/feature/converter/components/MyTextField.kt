@@ -48,7 +48,6 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.R
@@ -114,7 +113,7 @@ internal fun MyTextField(
                 ) {
                     InputTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = TextFieldValue(it.take(1000)),
+                        value = it.take(1000),
                         textStyle = NumbersTextStyleDisplayLarge.copy(textAlign = TextAlign.End)
                     )
                 }
@@ -147,7 +146,7 @@ internal fun MyTextField(
                     ) {
                         InputTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            value = TextFieldValue(it?.take(1000) ?: ""),
+                            value = it?.take(1000) ?: "",
                             textStyle = NumbersTextStyleDisplayLarge.copy(
                                 textAlign = TextAlign.End,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)

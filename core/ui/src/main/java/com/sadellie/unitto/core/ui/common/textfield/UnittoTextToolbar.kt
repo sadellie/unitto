@@ -45,10 +45,8 @@ class UnittoTextToolbar(
         onSelectAllRequested: (() -> Unit)?
     ) {
         textActionModeCallback.rect = rect
-        textActionModeCallback.onCopyRequested = { onCopyRequested?.invoke(); copyCallback.invoke() }
-        textActionModeCallback.onCutRequested = cutCallback?.let {
-            { it.invoke(); onCutRequested?.invoke() }
-        }
+        textActionModeCallback.onCopyRequested = copyCallback
+        textActionModeCallback.onCutRequested = cutCallback
         textActionModeCallback.onPasteRequested = pasteCallback
         textActionModeCallback.onSelectAllRequested = onSelectAllRequested
         if (actionMode == null) {

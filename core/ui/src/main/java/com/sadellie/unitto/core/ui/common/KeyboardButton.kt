@@ -27,11 +27,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun BasicKeyboardButton(
@@ -133,16 +130,14 @@ fun KeyboardButtonAdditional(
     onClick: () -> Unit
 ) {
     BasicKeyboardButton(
-        modifier = modifier
-            .minimumInteractiveComponentSize()
-            .heightIn(max = 48.dp),
+        modifier = modifier,
         onClick = onClick,
         onLongClick = onLongClick,
         containerColor = Color.Transparent,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
-        contentHeight = if (isPortrait()) 0.9f else 0.85f
+        contentHeight = if (isPortrait()) 0.8f else 0.85f
     )
 }
 
