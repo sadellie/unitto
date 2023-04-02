@@ -45,7 +45,7 @@ import java.math.BigDecimal
 /**
  * Right side screen. Unit to convert to.
  *
- * @param viewModel [SecondViewModel].
+ * @param viewModel [UnitsListViewModel].
  * @param currentUnit Currently selected [AbstractUnit].
  * @param navigateUp Action to navigate up. Called when user click back button.
  * @param navigateToSettingsAction Action to perform when clicking settings chip at the end.
@@ -55,7 +55,7 @@ import java.math.BigDecimal
  */
 @Composable
 internal fun RightSideScreen(
-    viewModel: SecondViewModel,
+    viewModel: UnitsListViewModel,
     currentUnit: String,
     navigateUp: () -> Unit,
     navigateToSettingsAction: () -> Unit,

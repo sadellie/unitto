@@ -30,7 +30,7 @@ import com.sadellie.unitto.feature.settings.SettingsViewModel
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
-import com.sadellie.unitto.feature.unitslist.SecondViewModel
+import com.sadellie.unitto.feature.unitslist.UnitsListViewModel
 import com.sadellie.unitto.feature.unitslist.navigation.leftScreen
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToLeftSide
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToRightSide
@@ -41,7 +41,7 @@ import io.github.sadellie.themmo.ThemmoController
 internal fun UnittoNavigation(
     navController: NavHostController,
     converterViewModel: ConverterViewModel,
-    secondViewModel: SecondViewModel,
+    unitsListViewModel: UnitsListViewModel,
     settingsViewModel: SettingsViewModel,
     themmoController: ThemmoController,
     startDestination: String,
@@ -70,14 +70,14 @@ internal fun UnittoNavigation(
         )
 
         leftScreen(
-            viewModel = secondViewModel,
+            viewModel = unitsListViewModel,
             navigateUp = navController::navigateUp,
             navigateToUnitGroups = navController::navigateToUnitGroups,
             onSelect = converterViewModel::updateUnitFrom
         )
 
         rightScreen(
-            viewModel = secondViewModel,
+            viewModel = unitsListViewModel,
             navigateUp = navController::navigateUp,
             navigateToUnitGroups = navController::navigateToUnitGroups,
             onSelect = converterViewModel::updateUnitTo

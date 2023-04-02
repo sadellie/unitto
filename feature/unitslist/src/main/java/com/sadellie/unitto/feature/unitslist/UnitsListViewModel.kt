@@ -38,7 +38,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SecondViewModel @Inject constructor(
+class UnitsListViewModel @Inject constructor(
     private val unitRepository: UnitsRepository,
     private val allUnitsRepository: AllUnitsRepository,
     private val mContext: Application,

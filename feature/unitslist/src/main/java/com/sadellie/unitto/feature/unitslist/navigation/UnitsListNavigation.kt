@@ -25,7 +25,7 @@ import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.feature.unitslist.LeftSideScreen
 import com.sadellie.unitto.feature.unitslist.RightSideScreen
-import com.sadellie.unitto.feature.unitslist.SecondViewModel
+import com.sadellie.unitto.feature.unitslist.UnitsListViewModel
 
 const val leftSideRoute = "left_side_route"
 const val rightSideRoute = "right_side_route"
@@ -42,7 +42,7 @@ fun NavController.navigateToRightSide(unitFromId: String, unitToId: String, inpu
 }
 
 fun NavGraphBuilder.leftScreen(
-    viewModel: SecondViewModel,
+    viewModel: UnitsListViewModel,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
     onSelect: (AbstractUnit) -> Unit
@@ -63,7 +63,7 @@ fun NavGraphBuilder.leftScreen(
 }
 
 fun NavGraphBuilder.rightScreen(
-    viewModel: SecondViewModel,
+    viewModel: UnitsListViewModel,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
     onSelect: (AbstractUnit) -> Unit

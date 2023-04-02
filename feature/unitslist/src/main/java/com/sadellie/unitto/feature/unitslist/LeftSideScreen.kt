@@ -55,7 +55,7 @@ import com.sadellie.unitto.feature.unitslist.components.UnitListItem
 /**
  * Left side screen. Unit to convert from.
  *
- * @param viewModel [SecondViewModel].
+ * @param viewModel [UnitsListViewModel].
  * @param currentUnitId Currently selected [AbstractUnit] (by ID).
  * @param navigateUp Action to navigate up. Called when user click back button.
  * @param navigateToSettingsAction Action to perform when clicking settings chip at the end.
@@ -63,7 +63,7 @@ import com.sadellie.unitto.feature.unitslist.components.UnitListItem
  */
 @Composable
 internal fun LeftSideScreen(
-    viewModel: SecondViewModel,
+    viewModel: UnitsListViewModel,
     currentUnitId: String,
     navigateUp: () -> Unit,
     navigateToSettingsAction: () -> Unit,

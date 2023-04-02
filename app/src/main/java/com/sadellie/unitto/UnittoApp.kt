@@ -45,7 +45,7 @@ import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.settings.SettingsViewModel
-import com.sadellie.unitto.feature.unitslist.SecondViewModel
+import com.sadellie.unitto.feature.unitslist.UnitsListViewModel
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun UnittoApp() {
     val converterViewModel: ConverterViewModel = hiltViewModel()
-    val secondViewModel: SecondViewModel = hiltViewModel()
+    val unitsListViewModel: UnitsListViewModel = hiltViewModel()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val userPrefs = settingsViewModel.userPrefs.collectAsStateWithLifecycle()
 
@@ -132,7 +132,7 @@ internal fun UnittoApp() {
             UnittoNavigation(
                 navController = navController,
                 converterViewModel = converterViewModel,
-                secondViewModel = secondViewModel,
+                unitsListViewModel = unitsListViewModel,
                 settingsViewModel = settingsViewModel,
                 themmoController = it,
                 startDestination = userPrefs.value.startingScreen,
