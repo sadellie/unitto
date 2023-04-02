@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.common
 
+import android.content.res.Configuration
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateIntAsState
@@ -26,11 +27,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,8 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun BasicKeyboardButton(
@@ -50,7 +49,7 @@ fun BasicKeyboardButton(
     icon: ImageVector,
     iconColor: Color,
     allowVibration: Boolean,
-    contentPadding: PaddingValues = PaddingValues(24.dp, 8.dp)
+    contentHeight: Float
 ) {
     val view = LocalView.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -66,10 +65,15 @@ fun BasicKeyboardButton(
         onLongClick = onLongClick,
         shape = RoundedCornerShape(cornerRadius),
         containerColor = containerColor,
-        contentPadding = contentPadding,
+        contentPadding = PaddingValues(),
         interactionSource = interactionSource
     ) {
-        Icon(icon, null, modifier = Modifier.fillMaxHeight(), tint = iconColor)
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.fillMaxHeight(contentHeight),
+            tint = iconColor
+        )
     }
 
     LaunchedEffect(key1 = isPressed) {
@@ -93,6 +97,7 @@ fun KeyboardButtonLight(
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
+        contentHeight = if (isPortrait()) 0.5f else 0.85f
     )
 }
 
@@ -111,7 +116,8 @@ fun KeyboardButtonFilled(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        allowVibration = allowVibration
+        allowVibration = allowVibration,
+        contentHeight = if (isPortrait()) 0.5f else 0.85f
     )
 }
 
@@ -123,17 +129,17 @@ fun KeyboardButtonAdditional(
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
-
     BasicKeyboardButton(
-        modifier = modifier
-            .minimumInteractiveComponentSize()
-            .heightIn(max = 48.dp),
+        modifier = modifier,
         onClick = onClick,
+        onLongClick = onLongClick,
         containerColor = Color.Transparent,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
-        contentPadding = PaddingValues(12.dp, 2.dp),
-        onLongClick = onLongClick
+        contentHeight = if (isPortrait()) 0.8f else 0.85f
     )
 }
+
+@Composable
+private fun isPortrait() = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT

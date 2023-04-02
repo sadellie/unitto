@@ -18,18 +18,28 @@
 
 package com.sadellie.unitto.feature.converter.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,9 +50,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
+import com.sadellie.unitto.core.ui.common.textfield.InputTextField
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.feature.converter.ConverterMode
@@ -91,54 +103,89 @@ internal fun TopScreenPart(
     )
     val mContext = LocalContext.current
 
-    Column(
+    ColumnWithConstraints(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        MyTextField(
-            modifier = Modifier.fillMaxWidth(),
-            primaryText = {
-                when (converterMode) {
-                    ConverterMode.BASE -> inputValue.uppercase()
-                    else -> Formatter.format(inputValue)
-                }
+        InputTextField(
+            modifier = Modifier.weight(2f),
+            value = when (converterMode) {
+                ConverterMode.BASE -> inputValue.uppercase()
+                else -> Formatter.format(inputValue)
             },
-            secondaryText = calculatedValue?.let { Formatter.format(it) },
-            helperText = stringResource(unitFrom?.shortName ?: R.string.loading_label),
-            textToCopy = calculatedValue ?: inputValue,
+            minRatio = 0.7f
         )
-        MyTextField(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onOutputTextFieldClick,
-            primaryText = {
-                when {
-                    networkLoading -> stringResource(R.string.loading_label)
-                    networkError -> stringResource(R.string.error_label)
-                    converterMode == ConverterMode.BASE -> outputValue.uppercase()
-                    formatTime and (unitTo?.group == UnitGroup.TIME) -> {
-                        Formatter.formatTime(
-                            context = mContext,
-                            input = calculatedValue ?: inputValue,
-                            basicUnit = unitFrom?.basicUnit
-                        )
-                    }
-                    else -> Formatter.format(outputValue)
-                }
-            },
-            secondaryText = null,
-            helperText = stringResource(unitTo?.shortName ?: R.string.loading_label),
-            textToCopy = outputValue,
-        )
-        // Unit selection buttons
-        Row(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.Bottom,
+        AnimatedVisibility(
+            visible = !calculatedValue.isNullOrEmpty(),
+            modifier = Modifier.weight(1f),
+            enter = expandVertically(clip = false),
+            exit = shrinkVertically(clip = false)
         ) {
+            InputTextField(
+                value = calculatedValue?.let { value -> Formatter.format(value) } ?: "",
+                minRatio = 0.7f,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            )
+        }
+        AnimatedContent(
+            modifier = Modifier.fillMaxWidth(),
+            targetState = stringResource(unitFrom?.shortName ?: R.string.loading_label),
+            transitionSpec = {
+                // Enter animation
+                (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                        // Exit animation
+                        with fadeOut())
+                    .using(SizeTransform(clip = false))
+            }
+        ) { value ->
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
+            )
+        }
+
+        InputTextField(
+            modifier = Modifier
+                .weight(2f),
+            value = when {
+                networkLoading -> stringResource(R.string.loading_label)
+                networkError -> stringResource(R.string.error_label)
+                converterMode == ConverterMode.BASE -> outputValue.uppercase()
+                formatTime and (unitTo?.group == UnitGroup.TIME) -> {
+                    Formatter.formatTime(
+                        context = mContext,
+                        input = calculatedValue ?: inputValue,
+                        basicUnit = unitFrom?.basicUnit
+                    )
+                }
+                else -> Formatter.format(outputValue)
+            },
+            minRatio = 0.7f,
+        )
+        AnimatedContent(
+            modifier = Modifier.fillMaxWidth(),
+            targetState = stringResource(unitTo?.shortName ?: R.string.loading_label),
+            transitionSpec = {
+                // Enter animation
+                (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                        // Exit animation
+                        with fadeOut())
+                    .using(SizeTransform(clip = false))
+            }
+        ) { value ->
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(it.maxHeight * 0.03f))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
             UnitSelectionButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onClick = { unitFrom?.let { navigateToLeftScreen(it.unitId) } },
+                onClick = { unitFrom?.let { unit -> navigateToLeftScreen(unit.unitId) } },
                 label = unitFrom?.displayName ?: R.string.loading_label,
             )
             IconButton(

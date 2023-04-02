@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.calculator.components
+package com.sadellie.unitto.core.ui.common.textfield
 
 import android.view.ActionMode
 import android.view.Menu

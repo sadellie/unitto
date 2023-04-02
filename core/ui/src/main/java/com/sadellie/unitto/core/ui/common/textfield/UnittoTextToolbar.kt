@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.calculator.components
+package com.sadellie.unitto.core.ui.common.textfield
 
 import android.os.Build
 import android.view.ActionMode
@@ -25,7 +25,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.TextToolbar
 import androidx.compose.ui.platform.TextToolbarStatus
 
-internal class UnittoTextToolbar(
+class UnittoTextToolbar(
     private val view: View,
     private val copyCallback: () -> Unit,
     private val pasteCallback: (() -> Unit)? = null,
@@ -45,10 +45,8 @@ internal class UnittoTextToolbar(
         onSelectAllRequested: (() -> Unit)?
     ) {
         textActionModeCallback.rect = rect
-        textActionModeCallback.onCopyRequested = { onCopyRequested?.invoke(); copyCallback.invoke() }
-        textActionModeCallback.onCutRequested = cutCallback?.let {
-            { it.invoke(); onCutRequested?.invoke() }
-        }
+        textActionModeCallback.onCopyRequested = copyCallback
+        textActionModeCallback.onCutRequested = cutCallback
         textActionModeCallback.onPasteRequested = pasteCallback
         textActionModeCallback.onSelectAllRequested = onSelectAllRequested
         if (actionMode == null) {

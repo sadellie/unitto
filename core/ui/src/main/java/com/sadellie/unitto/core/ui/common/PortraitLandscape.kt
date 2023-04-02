@@ -19,7 +19,6 @@
 package com.sadellie.unitto.core.ui.common
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -42,33 +41,20 @@ fun PortraitLandscape(
     content2: @Composable (Modifier) -> Unit,
 ) {
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-        Column(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            content1(Modifier)
-            content2(
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-            )
+        ColumnWithConstraints(modifier) {
+            content1(Modifier.fillMaxHeight(0.38f).padding(horizontal = it.maxWidth * 0.03f))
+            content2(Modifier.fillMaxSize().padding(it.maxWidth * 0.03f, it.maxHeight * 0.015f))
         }
     } else {
-        Row(
-            modifier = modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            content1(
-                Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-            )
-            content2(
-                Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-            )
+        RowWithConstraints(modifier) {
+            val contentModifier = Modifier
+                .weight(1f)
+                .fillMaxSize()
+                .padding(
+                    it.maxWidth * 0.015f, 0.dp,
+                    it.maxHeight * 0.03f, it.maxHeight * 0.03f)
+            content1(contentModifier)
+            content2(contentModifier)
         }
     }
 }
