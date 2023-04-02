@@ -122,13 +122,13 @@ private fun HistoryListItem(
     historyItem: HistoryItem,
 ) {
     val clipboardManager = LocalClipboardManager.current
-    val expr = Formatter.format(historyItem.expression)
-    var textFieldexpr by remember(expr) {
-        mutableStateOf(TextFieldValue(expr, selection = TextRange(expr.length)))
+    val expression = Formatter.format(historyItem.expression)
+    var expressionValue by remember(expression) {
+        mutableStateOf(TextFieldValue(expression, TextRange(expression.length)))
     }
-    val res = Formatter.format(historyItem.expression)
-    var textFieldRes by remember(res) {
-        mutableStateOf(TextFieldValue(res, selection = TextRange(res.length)))
+    val result = Formatter.format(historyItem.result)
+    var resultValue by remember(result) {
+        mutableStateOf(TextFieldValue(result, TextRange(result.length)))
     }
 
     Column(modifier = modifier) {
@@ -136,12 +136,12 @@ private fun HistoryListItem(
             LocalTextInputService provides null,
             LocalTextToolbar provides UnittoTextToolbar(
                 view = LocalView.current,
-                copyCallback = { clipboardManager.copyWithoutGrouping(textFieldexpr) }
+                copyCallback = { clipboardManager.copyWithoutGrouping(expressionValue) }
             )
         ) {
             BasicTextField(
-                value = textFieldexpr,
-                onValueChange = { textFieldexpr = it },
+                value = expressionValue,
+                onValueChange = { expressionValue = it },
                 maxLines = 1,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -156,12 +156,12 @@ private fun HistoryListItem(
             LocalTextInputService provides null,
             LocalTextToolbar provides UnittoTextToolbar(
                 view = LocalView.current,
-                copyCallback = { clipboardManager.copyWithoutGrouping(textFieldRes) }
+                copyCallback = { clipboardManager.copyWithoutGrouping(resultValue) }
             )
         ) {
             BasicTextField(
-                value = textFieldRes,
-                onValueChange = { textFieldRes = it },
+                value = resultValue,
+                onValueChange = { resultValue = it },
                 maxLines = 1,
                 modifier = Modifier
                     .fillMaxWidth()
