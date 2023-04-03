@@ -55,6 +55,7 @@ object MyUnitIDS {
     // MASS
     const val electron_mass_rest = "electron_mass_rest"
     const val atomic_mass_unit = "atomic_mass_unit"
+    const val microgram = "microgram"
     const val milligram = "milligram"
     const val gram = "gram"
     const val kilogram = "kilogram"

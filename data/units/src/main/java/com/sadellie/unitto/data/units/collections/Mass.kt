@@ -29,6 +29,7 @@ internal val massCollection: List<AbstractUnit> by lazy {
     listOf(
         DefaultUnit(MyUnitIDS.electron_mass_rest, BigDecimal.valueOf(9.1093897E-28), UnitGroup.MASS, R.string.electron_mass_rest, R.string.electron_mass_rest_short),
         DefaultUnit(MyUnitIDS.atomic_mass_unit,   BigDecimal.valueOf(1.6605402E-24), UnitGroup.MASS, R.string.atomic_mass_unit,   R.string.atomic_mass_unit_short),
+        DefaultUnit(MyUnitIDS.microgram,          BigDecimal(1E-6),                  UnitGroup.MASS, R.string.microgram,          R.string.microgram_short),
         DefaultUnit(MyUnitIDS.milligram,          BigDecimal.valueOf(1E-3),          UnitGroup.MASS, R.string.milligram,          R.string.milligram_short),
         DefaultUnit(MyUnitIDS.gram,               BigDecimal.valueOf(1),             UnitGroup.MASS, R.string.gram,               R.string.gram_short),
         DefaultUnit(MyUnitIDS.kilogram,           BigDecimal.valueOf(1E+3),          UnitGroup.MASS, R.string.kilogram,           R.string.kilogram_short),

@@ -78,6 +78,8 @@
     <string name="electron_mass_rest_short">me</string>
     <string name="atomic_mass_unit">Dalton</string>
     <string name="atomic_mass_unit_short">u</string>
+    <string name="microgram">Microgram</string>
+    <string name="microgram_short">µg</string>
     <string name="milligram">Milligram</string>
     <string name="milligram_short">mg</string>
     <string name="gram">Gram</string>

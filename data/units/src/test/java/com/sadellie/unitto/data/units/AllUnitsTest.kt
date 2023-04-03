@@ -183,6 +183,7 @@ class AllUnitsTest {
     fun testMass() = testWithUnits {
         electron_mass_rest.checkWith(milligram, "1500000000000000000", "0.000001")
         atomic_mass_unit.checkWith(electron_mass_rest, "150", "273433.27951")
+        microgram.checkWith(gram, "1500", "0.0015")
         milligram.checkWith(ounce, "1500", "0.05291")
         gram.checkWith(ounce, "1500", "52.91094")
         kilogram.checkWith(carat, "1500", "7500000")
