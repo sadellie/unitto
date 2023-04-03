@@ -25,11 +25,15 @@ import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.database.UnitsRepository
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
 import com.sadellie.unitto.data.units.AllUnitsRepository
+import com.sadellie.unitto.data.userprefs.UserPreferences
+import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -42,35 +46,45 @@ class UnitsListViewModel @Inject constructor(
     private val unitRepository: UnitsRepository,
     private val allUnitsRepository: AllUnitsRepository,
     private val mContext: Application,
-    unitGroupsRepository: com.sadellie.unitto.data.unitgroups.UnitGroupsRepository,
+    private val userPrefsRepository: UserPreferencesRepository,
+    unitGroupsRepository: UnitGroupsRepository,
 ) : ViewModel() {
 
-    private val _favoritesOnly = MutableStateFlow(false)
+    private val _userPrefs: StateFlow<UserPreferences> =
+        userPrefsRepository.userPreferencesFlow.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            UserPreferences()
+        )
     private val _unitsToShow = MutableStateFlow(emptyMap<UnitGroup, List<AbstractUnit>>())
     private val _searchQuery = MutableStateFlow("")
     private val _chosenUnitGroup: MutableStateFlow<UnitGroup?> = MutableStateFlow(null)
     private val _shownUnitGroups = unitGroupsRepository.shownUnitGroups
 
     val mainFlow = combine(
-        _favoritesOnly,
+        _userPrefs,
         _unitsToShow,
         _searchQuery,
         _chosenUnitGroup,
-        _shownUnitGroups
-    ) { favoritesOnly, unitsToShow, searchQuery, chosenUnitGroup, shownUnitGroups ->
+        _shownUnitGroups,
+    ) { userPrefs, unitsToShow, searchQuery, chosenUnitGroup, shownUnitGroups ->
         return@combine SecondScreenUIState(
-            favoritesOnly = favoritesOnly,
+            favoritesOnly = userPrefs.unitConverterFavoritesOnly,
             unitsToShow = unitsToShow,
             searchQuery = searchQuery,
             chosenUnitGroup = chosenUnitGroup,
-            shownUnitGroups = shownUnitGroups
+            shownUnitGroups = shownUnitGroups,
         )
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SecondScreenUIState())
 
     fun toggleFavoritesOnly(hideBrokenCurrencies: Boolean = true) {
-        _favoritesOnly.update { !_favoritesOnly.value }
-        loadUnitsToShow(hideBrokenCurrencies)
+        viewModelScope.launch {
+            userPrefsRepository.updateUnitConverterFavoritesOnly(
+                !_userPrefs.value.unitConverterFavoritesOnly
+            )
+            loadUnitsToShow(hideBrokenCurrencies)
+        }
     }
 
     fun onSearchQueryChange(newValue: String, hideBrokenCurrencies: Boolean = true) {
@@ -118,7 +132,7 @@ class UnitsListViewModel @Inject constructor(
                 val unitsToShow = allUnitsRepository.filterUnits(
                     hideBrokenCurrencies = hideBrokenCurrencies,
                     chosenUnitGroup = _chosenUnitGroup.value,
-                    favoritesOnly = _favoritesOnly.value,
+                    favoritesOnly = _userPrefs.value.unitConverterFavoritesOnly,
                     searchQuery = _searchQuery.value,
                     allUnitsGroups = _shownUnitGroups.value
                 )
@@ -147,7 +161,7 @@ class UnitsListViewModel @Inject constructor(
         }
     }
 
-    private fun loadUnits() {
+    private fun loadUnitsFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             // Now we load units data from database
             val allUnits = unitRepository.getAll()
@@ -156,6 +170,6 @@ class UnitsListViewModel @Inject constructor(
     }
 
     init {
-        loadUnits()
+        loadUnitsFromDatabase()
     }
 }

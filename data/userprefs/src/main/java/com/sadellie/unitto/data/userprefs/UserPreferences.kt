@@ -55,6 +55,7 @@ import javax.inject.Inject
  * @property enableVibrations When true will use haptic feedback in app.
  * @property enableToolsExperiment When true will enable experimental Tools screen.
  * @property radianMode AngleMode in mxParser. When true - Radian, when False - Degree.
+ * @property unitConverterFavoritesOnly If true will show only units that are marked as favorite.
  */
 data class UserPreferences(
     val themingMode: ThemingMode? = null,
@@ -69,7 +70,8 @@ data class UserPreferences(
     val enableVibrations: Boolean = true,
     val enableToolsExperiment: Boolean = false,
     val startingScreen: String = TopLevelDestinations.Converter.route,
-    val radianMode: Boolean = true
+    val radianMode: Boolean = true,
+    val unitConverterFavoritesOnly: Boolean = false
 )
 
 /**
@@ -93,6 +95,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
         val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
         val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
+        val UNIT_CONVERTER_FAVORITES_ONLY = booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -138,6 +141,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
             val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
             val radianMode: Boolean = preferences[PrefsKeys.RADIAN_MODE] ?: true
+            val unitConverterFavoritesOnly: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: false
 
             UserPreferences(
                 themingMode = themingMode,
@@ -152,7 +156,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 enableVibrations = enableVibrations,
                 enableToolsExperiment = enableToolsExperiment,
                 startingScreen = startingScreen,
-                radianMode = radianMode
+                radianMode = radianMode,
+                unitConverterFavoritesOnly = unitConverterFavoritesOnly
             )
         }
 
@@ -283,6 +288,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateRadianMode(radianMode: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.RADIAN_MODE] = radianMode
+        }
+    }
+
+    /**
+     * Update units list favorite filter state.
+     *
+     * @param enabled When true will show only favorite units.
+     */
+    suspend fun updateUnitConverterFavoritesOnly(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] = enabled
         }
     }
 }
