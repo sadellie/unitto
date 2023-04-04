@@ -23,6 +23,7 @@ import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.sortByLev
 import com.sadellie.unitto.data.units.collections.accelerationCollection
 import com.sadellie.unitto.data.units.collections.angleCollection
@@ -129,6 +130,8 @@ class AllUnitsRepository @Inject constructor() {
      * set to True.
      * @param searchQuery When not empty, will search by [AbstractUnit.renderedName] using [sortByLev].
      * @param allUnitsGroups All [UnitGroup]s. Determines which units will be used for filtering.
+     * @param sorting Sorting mode from [UnitsListSorting]
+     *
      * @return Grouped by [UnitGroup] list of [AbstractUnit]s.
      */
     fun filterUnits(
@@ -136,9 +139,11 @@ class AllUnitsRepository @Inject constructor() {
         chosenUnitGroup: UnitGroup?,
         favoritesOnly: Boolean,
         searchQuery: String,
-        allUnitsGroups: List<UnitGroup>
+        allUnitsGroups: List<UnitGroup>,
+        sorting: UnitsListSorting = UnitsListSorting.USAGE
     ): Map<UnitGroup, List<AbstractUnit>> {
-        var basicFilteredUnits: Sequence<AbstractUnit> = if (chosenUnitGroup == null) {
+        // Leave only shown unit groups
+        var units: Sequence<AbstractUnit> = if (chosenUnitGroup == null) {
             allUnits.filter { it.group in allUnitsGroups }
         } else {
             val collection = getCollectionByGroup(chosenUnitGroup)
@@ -146,20 +151,27 @@ class AllUnitsRepository @Inject constructor() {
         }.asSequence()
 
         if (favoritesOnly) {
-            basicFilteredUnits = basicFilteredUnits.filter { it.isFavorite }
+            units = units.filter { it.isFavorite }
         }
         if (hideBrokenCurrencies) {
-            basicFilteredUnits = basicFilteredUnits.filter { it.isEnabled }
-        }
-        val unitsToShow = if (searchQuery.isEmpty()) {
-            // Query is empty, i.e. we want to see all units and they need to be sorted by usage
-            basicFilteredUnits.sortedByDescending { it.counter }
-        } else {
-            // We sort by popularity and Levenshtein distance (short and long name).
-            basicFilteredUnits.sortedByDescending { it.counter }.sortByLev(searchQuery)
+            units = units.filter { it.isEnabled }
         }
 
-        return unitsToShow.groupBy { it.group }
+        units = when (sorting) {
+            UnitsListSorting.USAGE -> units.sortedByDescending { it.counter }
+            UnitsListSorting.ALPHABETICAL -> units.sortedBy { it.renderedName }
+            UnitsListSorting.SCALE_ASC -> units.sortedBy { it.basicUnit }
+            UnitsListSorting.SCALE_DESC -> units.sortedByDescending { it.basicUnit }
+        }
+
+        units = if (searchQuery.isEmpty()) {
+            units.sortedByDescending { it.isFavorite }
+        } else {
+            // For search we sort by popularity and Levenshtein distance (short and long name).
+            units.sortByLev(searchQuery)
+        }
+
+        return units.groupBy { it.group }
     }
 
     /**

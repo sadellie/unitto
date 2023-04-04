@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Rule
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
@@ -51,9 +52,10 @@ import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
 import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.MenuButton
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoListItem
+import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
+import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.themesRoute
@@ -162,6 +164,21 @@ internal fun SettingsScreen(
                     headlineText = { Text(stringResource(R.string.unit_groups_setting)) },
                     supportingText = { Text(stringResource(R.string.unit_groups_support)) },
                     modifier = Modifier.clickable { navControllerAction(unitsGroupRoute) }
+                )
+            }
+
+            // UNITS LIST SORTING
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Sort,
+                            stringResource(R.string.units_sorting)
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.units_sorting)) },
+                    supportingText = { Text(stringResource(R.string.units_sorting_support)) },
+                    modifier = Modifier.clickable { dialogState = DialogState.UNIT_LIST_SORTING }
                 )
             }
 
@@ -280,6 +297,20 @@ internal fun SettingsScreen(
                 dismissAction = { resetDialog() }
             )
         }
+        DialogState.UNIT_LIST_SORTING -> {
+            AlertDialogWithList(
+                title = stringResource(R.string.units_sorting),
+                listItems = mapOf(
+                    UnitsListSorting.USAGE to R.string.sort_by_usage,
+                    UnitsListSorting.ALPHABETICAL to R.string.sort_by_alphabetical,
+                    UnitsListSorting.SCALE_DESC to R.string.sort_by_scale_desc,
+                    UnitsListSorting.SCALE_ASC to R.string.sort_by_scale_asc,
+                ),
+                selectedItemIndex = userPrefs.value.unitConverterSorting,
+                selectAction = viewModel::updateUnitConverterSorting,
+                dismissAction = { resetDialog() }
+            )
+        }
         // Dismissing alert dialog
         else -> {}
     }
@@ -289,5 +320,5 @@ internal fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, START_SCREEN
+    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, START_SCREEN, UNIT_LIST_SORTING
 }

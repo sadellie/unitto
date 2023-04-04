@@ -134,7 +134,8 @@ class UnitsListViewModel @Inject constructor(
                     chosenUnitGroup = _chosenUnitGroup.value,
                     favoritesOnly = _userPrefs.value.unitConverterFavoritesOnly,
                     searchQuery = _searchQuery.value,
-                    allUnitsGroups = _shownUnitGroups.value
+                    allUnitsGroups = _shownUnitGroups.value,
+                    sorting = _userPrefs.value.unitConverterSorting
                 )
 
                 _unitsToShow.update { unitsToShow }
