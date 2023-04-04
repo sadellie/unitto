@@ -62,7 +62,6 @@ internal fun ConverterRoute(
         processInput = viewModel::processInput,
         deleteDigit = viewModel::deleteDigit,
         clearInput = viewModel::clearInput,
-        onOutputTextFieldClick = viewModel::toggleFormatTime
     )
 }
 
@@ -77,7 +76,6 @@ private fun ConverterScreen(
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
     clearInput: () -> Unit,
-    onOutputTextFieldClick: () -> Unit
 ) {
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.unit_converter)) },
@@ -109,8 +107,7 @@ private fun ConverterScreen(
                         navigateToRightScreen = navigateToRightScreen,
                         swapUnits = swapMeasurements,
                         converterMode = uiState.mode,
-                        formatTime = uiState.formatTime,
-                        onOutputTextFieldClick = onOutputTextFieldClick
+                        formatTime = uiState.formatTime
                     )
                 },
                 content2 = {
@@ -156,6 +153,5 @@ private fun PreviewConverterScreen(
         processInput = {},
         deleteDigit = {},
         clearInput = {},
-        onOutputTextFieldClick = {}
     )
 }

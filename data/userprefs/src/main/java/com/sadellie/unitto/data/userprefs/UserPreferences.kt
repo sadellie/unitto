@@ -56,6 +56,7 @@ import javax.inject.Inject
  * @property enableToolsExperiment When true will enable experimental Tools screen.
  * @property radianMode AngleMode in mxParser. When true - Radian, when False - Degree.
  * @property unitConverterFavoritesOnly If true will show only units that are marked as favorite.
+ * @property unitConverterFormatTime If true will format time to be more human readable
  */
 data class UserPreferences(
     val themingMode: ThemingMode? = null,
@@ -71,7 +72,8 @@ data class UserPreferences(
     val enableToolsExperiment: Boolean = false,
     val startingScreen: String = TopLevelDestinations.Converter.route,
     val radianMode: Boolean = true,
-    val unitConverterFavoritesOnly: Boolean = false
+    val unitConverterFavoritesOnly: Boolean = false,
+    val unitConverterFormatTime: Boolean = false,
 )
 
 /**
@@ -96,6 +98,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
         val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
         val UNIT_CONVERTER_FAVORITES_ONLY = booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
+        val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -142,6 +145,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
             val radianMode: Boolean = preferences[PrefsKeys.RADIAN_MODE] ?: true
             val unitConverterFavoritesOnly: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: false
+            val unitConverterFormatTime: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
 
             UserPreferences(
                 themingMode = themingMode,
@@ -157,7 +161,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 enableToolsExperiment = enableToolsExperiment,
                 startingScreen = startingScreen,
                 radianMode = radianMode,
-                unitConverterFavoritesOnly = unitConverterFavoritesOnly
+                unitConverterFavoritesOnly = unitConverterFavoritesOnly,
+                unitConverterFormatTime = unitConverterFormatTime,
             )
         }
 
@@ -299,6 +304,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateUnitConverterFavoritesOnly(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] = enabled
+        }
+    }
+
+    /**
+     * Update [UserPreferences.unitConverterFormatTime].
+     *
+     * @see UserPreferences.unitConverterFormatTime
+     */
+    suspend fun updateUnitConverterFormatTime(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] = enabled
         }
     }
 }

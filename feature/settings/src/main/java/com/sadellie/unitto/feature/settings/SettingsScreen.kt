@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Rule
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
 import androidx.compose.material3.Icon
@@ -75,21 +76,6 @@ internal fun SettingsScreen(
         navigationIcon = { MenuButton(menuButtonClick) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
-
-            // UNIT GROUPS
-            item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Rule,
-                            stringResource(R.string.disable_unit_group_description),
-                        )
-                    },
-                    headlineText = { Text(stringResource(R.string.unit_groups_setting)) },
-                    supportingText = { Text(stringResource(R.string.unit_groups_support)) },
-                    modifier = Modifier.clickable { navControllerAction(unitsGroupRoute) }
-                )
-            }
 
             // THEME
             item {
@@ -158,6 +144,40 @@ internal fun SettingsScreen(
                     modifier = Modifier
                         .clickable { dialogState = DialogState.OUTPUT_FORMAT }
                         .padding(start = 40.dp)
+                )
+            }
+
+            // UNIT CONVERTER GROUP
+            item { Header(stringResource(R.string.unit_converter)) }
+
+            // UNIT GROUPS
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Rule,
+                            stringResource(R.string.disable_unit_group_description),
+                        )
+                    },
+                    headlineText = { Text(stringResource(R.string.unit_groups_setting)) },
+                    supportingText = { Text(stringResource(R.string.unit_groups_support)) },
+                    modifier = Modifier.clickable { navControllerAction(unitsGroupRoute) }
+                )
+            }
+
+            // FORMAT TIME
+            item {
+                UnittoListItem(
+                    label = stringResource(R.string.format_time),
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Timer,
+                            stringResource(R.string.format_time)
+                        )
+                    },
+                    supportText = stringResource(R.string.format_time_support),
+                    switchState = userPrefs.value.unitConverterFormatTime,
+                    onSwitchChange = viewModel::updateUnitConverterFormatTime
                 )
             }
 

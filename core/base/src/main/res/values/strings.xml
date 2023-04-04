@@ -1243,6 +1243,8 @@
     <string name="unit_groups_setting">Unit groups</string>
     <string name="enable_vibrations">Vibrations</string>
     <string name="enable_vibrations_support">Haptic feedback when clicking keyboard buttons</string>
+    <string name="format_time">Format time</string>
+    <string name="format_time_support">Example: Show 130 minutes as 2h 10m</string>
     <string name="currency_rates_note_setting">Wrong currency rates?</string>
     <string name="currency_rates_note_title">Note</string>
     <string name="currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>

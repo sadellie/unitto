@@ -169,6 +169,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
+     * @see UserPreferencesRepository.updateUnitConverterFormatTime
+     */
+    fun updateUnitConverterFormatTime(enabled: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updateUnitConverterFormatTime(enabled)
+        }
+    }
+
+    /**
      * Prevent from dragging over non-draggable items (headers and hidden)
      *
      * @param pos Position we are dragging over.

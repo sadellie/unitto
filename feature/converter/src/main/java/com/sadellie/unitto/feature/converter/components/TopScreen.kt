@@ -77,7 +77,6 @@ import com.sadellie.unitto.feature.converter.ConverterMode
  * @param swapUnits Method to swap units.
  * @param converterMode [ConverterMode.BASE] doesn't use formatting for input/output.
  * @param formatTime If True will use [Formatter.formatTime].
- * @param onOutputTextFieldClick Action to be called when user clicks on output text field.
  */
 @Composable
 internal fun TopScreenPart(
@@ -94,7 +93,6 @@ internal fun TopScreenPart(
     swapUnits: () -> Unit,
     converterMode: ConverterMode,
     formatTime: Boolean,
-    onOutputTextFieldClick: () -> Unit
 ) {
     var swapped by remember { mutableStateOf(false) }
     val swapButtonRotation: Float by animateFloatAsState(

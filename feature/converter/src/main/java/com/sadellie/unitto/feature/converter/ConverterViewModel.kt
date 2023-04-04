@@ -110,8 +110,6 @@ class ConverterViewModel @Inject constructor(
      */
     private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    private val _formatTime: MutableStateFlow<Boolean> = MutableStateFlow(true)
-
     /**
      * Current state of UI.
      */
@@ -123,9 +121,8 @@ class ConverterViewModel @Inject constructor(
         _result,
         _showLoading,
         _showError,
-        _formatTime,
         _userPrefs
-    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, formatTime, prefs ->
+    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, prefs ->
         return@combine ConverterUIState(
             inputValue = inputValue,
             calculatedValue = calculatedValue,
@@ -139,7 +136,7 @@ class ConverterViewModel @Inject constructor(
              * changing units.
              */
             mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
-            formatTime = formatTime,
+            formatTime = prefs.unitConverterFormatTime,
             allowVibration = prefs.enableVibrations
         )
     }
@@ -371,10 +368,6 @@ class ConverterViewModel @Inject constructor(
      */
     fun clearInput() {
         setInputSymbols(Token._0, false)
-    }
-
-    fun toggleFormatTime() {
-        _formatTime.update { !it }
     }
 
     private suspend fun convertInput() {
