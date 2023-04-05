@@ -50,11 +50,9 @@ fun NavGraphBuilder.leftScreen(
     composable(
         route = "$leftSideRoute/{$unitFromIdArg}"
     ) {
-        val unitFromId = it.arguments?.getString(unitFromIdArg) ?: return@composable
-        viewModel.setSelectedChip(unitFromId)
         LeftSideScreen(
             viewModel = viewModel,
-            currentUnitId = unitFromId,
+            currentUnitId = it.arguments?.getString(unitFromIdArg),
             navigateUp = navigateUp,
             navigateToSettingsAction = navigateToUnitGroups,
             selectAction = onSelect

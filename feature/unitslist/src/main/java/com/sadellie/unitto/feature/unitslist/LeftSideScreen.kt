@@ -64,7 +64,7 @@ import com.sadellie.unitto.feature.unitslist.components.UnitListItem
 @Composable
 internal fun LeftSideScreen(
     viewModel: UnitsListViewModel,
-    currentUnitId: String,
+    currentUnitId: String?,
     navigateUp: () -> Unit,
     navigateToSettingsAction: () -> Unit,
     selectAction: (AbstractUnit) -> Unit
@@ -142,8 +142,11 @@ internal fun LeftSideScreen(
         }
     }
 
-    // This block is called only once on initial composition
-    LaunchedEffect(uiState.value.shownUnitGroups) {
+    LaunchedEffect(uiState.value.shownUnitGroups, currentUnitId) {
+        if (currentUnitId == null) return@LaunchedEffect
+        // This is still wrong, but works good enough.
+        // Ideally we shouldn't use uiState.value.shownUnitGroups
+        viewModel.setSelectedChip(currentUnitId)
         val groupToSelect = uiState.value.shownUnitGroups.indexOf(uiState.value.chosenUnitGroup)
         if (groupToSelect > -1) {
             chipsRowLazyListState.animateScrollToItem(groupToSelect)
