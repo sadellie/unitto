@@ -82,7 +82,7 @@ internal fun ThemesScreen(
                             )
                         },
                         label = stringResource(R.string.enable_dynamic_colors),
-                        supportText = stringResource(R.string.enable_dynamic_colors_support),
+                        supportContent = stringResource(R.string.enable_dynamic_colors_support),
                         switchState = themmoController.isDynamicThemeEnabled,
                         onSwitchChange = {
                             themmoController.enableDynamicTheme(it)
@@ -106,7 +106,7 @@ internal fun ThemesScreen(
                             )
                         },
                         label = stringResource(R.string.force_amoled_mode),
-                        supportText = stringResource(R.string.force_amoled_mode_support),
+                        supportContent = stringResource(R.string.force_amoled_mode_support),
                         switchState = themmoController.isAmoledThemeEnabled,
                         onSwitchChange = {
                             themmoController.enableAmoledTheme(it)

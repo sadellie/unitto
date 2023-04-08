@@ -100,7 +100,7 @@ internal fun UnitGroupsScreen(
                     }
 
                     ListItem(
-                        headlineText = { Text(stringResource(item.res)) },
+                        headlineContent = { Text(stringResource(item.res)) },
                         modifier = Modifier
                             .padding(horizontal = itemPadding)
                             .clip(CircleShape)
@@ -153,7 +153,7 @@ internal fun UnitGroupsScreen(
                         .background(MaterialTheme.colorScheme.surface)
                         .clickable { viewModel.returnUnitGroup(it) }
                         .animateItemPlacement(),
-                    headlineText = { Text(stringResource(it.res)) },
+                    headlineContent = { Text(stringResource(it.res)) },
                     trailingContent = {
                         Icon(
                             Icons.Default.AddCircleOutline,

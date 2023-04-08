@@ -75,7 +75,7 @@ internal fun AboutScreen(
                             stringResource(R.string.currency_rates_note_setting)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.currency_rates_note_setting)) },
+                    headlineContent = { Text(stringResource(R.string.currency_rates_note_setting)) },
                     modifier = Modifier.clickable { showDialog = true }
                 )
             }
@@ -89,7 +89,7 @@ internal fun AboutScreen(
                             stringResource(R.string.terms_and_conditions)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.terms_and_conditions)) },
+                    headlineContent = { Text(stringResource(R.string.terms_and_conditions)) },
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -108,7 +108,7 @@ internal fun AboutScreen(
                             stringResource(R.string.privacy_policy)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.privacy_policy)) },
+                    headlineContent = { Text(stringResource(R.string.privacy_policy)) },
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -127,7 +127,7 @@ internal fun AboutScreen(
                             stringResource(R.string.open_source)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.open_source)) },
+                    headlineContent = { Text(stringResource(R.string.open_source)) },
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -146,8 +146,8 @@ internal fun AboutScreen(
                             stringResource(R.string.translate_app)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.translate_app)) },
-                    supportingText = { Text(stringResource(R.string.translate_app_support)) },
+                    headlineContent = { Text(stringResource(R.string.translate_app)) },
+                    supportingContent = { Text(stringResource(R.string.translate_app_support)) },
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -166,7 +166,7 @@ internal fun AboutScreen(
                             stringResource(R.string.third_party_licenses)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.third_party_licenses)) },
+                    headlineContent = { Text(stringResource(R.string.third_party_licenses)) },
                     modifier = Modifier.clickable { navigateToThirdParty() }
                 )
             }
@@ -180,8 +180,8 @@ internal fun AboutScreen(
                             stringResource(R.string.app_version_name_setting)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.app_version_name_setting)) },
-                    supportingText = { Text("${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})") },
+                    headlineContent = { Text(stringResource(R.string.app_version_name_setting)) },
+                    supportingContent = { Text("${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})") },
                     modifier = Modifier.combinedClickable {
                         if (userPrefs.value.enableToolsExperiment) {
                             Toast.makeText(mContext, "Tools already enabled!", Toast.LENGTH_LONG).show()
