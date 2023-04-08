@@ -28,7 +28,7 @@ import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.settings.AboutScreen
 import com.sadellie.unitto.feature.settings.SettingsScreen
 import com.sadellie.unitto.feature.settings.SettingsViewModel
-import com.sadellie.unitto.feature.settings.ThemesScreen
+import com.sadellie.unitto.feature.settings.ThemesRoute
 import com.sadellie.unitto.feature.settings.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
@@ -63,7 +63,7 @@ fun NavGraphBuilder.settingGraph(
         }
 
         composable(themesRoute) {
-            ThemesScreen(
+            ThemesRoute(
                 navigateUpAction = { navController.navigateUp() },
                 themmoController = themmoController,
                 viewModel = settingsViewModel

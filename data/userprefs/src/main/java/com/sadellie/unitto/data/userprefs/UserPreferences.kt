@@ -18,12 +18,14 @@
 
 package com.sadellie.unitto.data.userprefs
 
+import androidx.compose.ui.graphics.Color
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
@@ -47,6 +49,7 @@ import javax.inject.Inject
  * still loading.
  * @property enableDynamicTheme Use dynamic color scheme
  * @property enableAmoledTheme Use amoled color scheme
+ * @property customColor Generate custom color scheme from this color.
  * @property digitsPrecision Current [PRECISIONS]. Number of digits in fractional part
  * @property separator Current [Separator] that used to separate thousands
  * @property outputFormat Current [OutputFormat] that is applied to converted value (not input)
@@ -64,6 +67,7 @@ data class UserPreferences(
     val themingMode: ThemingMode? = null,
     val enableDynamicTheme: Boolean = false,
     val enableAmoledTheme: Boolean = false,
+    val customColor: Color = Color.Unspecified,
     val digitsPrecision: Int = 3,
     val separator: Int = Separator.SPACES,
     val outputFormat: Int = OutputFormat.PLAIN,
@@ -90,6 +94,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val THEMING_MODE = stringPreferencesKey("THEMING_MODE_PREF_KEY")
         val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")
         val ENABLE_AMOLED_THEME = booleanPreferencesKey("ENABLE_AMOLED_THEME_PREF_KEY")
+        val CUSTOM_COLOR = longPreferencesKey("CUSTOM_COLOR_PREF_KEY")
         val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
         val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
         val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
@@ -117,20 +122,14 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val themingMode: ThemingMode =
                 preferences[PrefsKeys.THEMING_MODE]?.let { ThemingMode.valueOf(it) }
                     ?: ThemingMode.AUTO
-            val enableDynamicTheme: Boolean =
-                preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: false
-            val enableAmoledTheme: Boolean =
-                preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
-            val digitsPrecision: Int =
-                preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
-            val separator: Int =
-                preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACES
-            val outputFormat: Int =
-                preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
-            val latestLeftSideUnit: String =
-                preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
-            val latestRightSideUnit: String =
-                preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
+            val enableDynamicTheme: Boolean = preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: false
+            val enableAmoledTheme: Boolean = preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
+            val customColor: Color = preferences[PrefsKeys.CUSTOM_COLOR]?.let { Color(it.toULong()) } ?: Color.Unspecified
+            val digitsPrecision: Int = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
+            val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACES
+            val outputFormat: Int = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
+            val latestLeftSideUnit: String = preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
+            val latestRightSideUnit: String = preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
             val shownUnitGroups: List<UnitGroup> =
                 preferences[PrefsKeys.SHOWN_UNIT_GROUPS]?.let { list ->
                     // Everything is in hidden (nothing in shown)
@@ -157,6 +156,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 themingMode = themingMode,
                 enableDynamicTheme = enableDynamicTheme,
                 enableAmoledTheme = enableAmoledTheme,
+                customColor = customColor,
                 digitsPrecision = digitsPrecision,
                 separator = separator,
                 outputFormat = outputFormat,
@@ -250,6 +250,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateAmoledTheme(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_AMOLED_THEME] = enabled
+        }
+    }
+
+    /**
+     * Update preference on custom color scheme.
+     *
+     * @param color New custom color value.
+     */
+    suspend fun updateCustomColor(color: Color) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.CUSTOM_COLOR] = color.value.toLong()
         }
     }
 

@@ -24,77 +24,123 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.feature.settings.components.ColorSelector
+import com.sadellie.unitto.core.ui.common.SegmentedButton
+import com.sadellie.unitto.core.ui.common.SegmentedButtonRow
 import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.ThemmoController
 
 @Composable
-internal fun ThemesScreen(
+internal fun ThemesRoute(
     navigateUpAction: () -> Unit = {},
     themmoController: ThemmoController,
     viewModel: SettingsViewModel
 ) {
+    ThemesScreen(
+        navigateUpAction = navigateUpAction,
+        currentThemingMode = themmoController.currentThemingMode,
+        onThemeChange = {
+            themmoController.setThemingMode(it)
+            viewModel.updateThemingMode(it)
+        },
+        isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
+        onDynamicThemeChange = {
+            themmoController.enableDynamicTheme(it)
+            viewModel.updateDynamicTheme(it)
+        },
+        isAmoledThemeEnabled = themmoController.isAmoledThemeEnabled,
+        onAmoledThemeChange = {
+            themmoController.enableAmoledTheme(it)
+            viewModel.updateAmoledTheme(it)
+        },
+        selectedColor = themmoController.currentCustomColor,
+        onColorChange = {
+            themmoController.setCustomColor(it)
+            viewModel.updateCustomColor(it)
+        }
+    )
+}
+
+@Composable
+private fun ThemesScreen(
+    navigateUpAction: () -> Unit,
+    currentThemingMode: ThemingMode,
+    onThemeChange: (ThemingMode) -> Unit,
+    isDynamicThemeEnabled: Boolean,
+    onDynamicThemeChange: (Boolean) -> Unit,
+    isAmoledThemeEnabled: Boolean,
+    onAmoledThemeChange: (Boolean) -> Unit,
+    selectedColor: Color,
+    onColorChange: (Color) -> Unit,
+) {
+    val themingModes by remember {
+        mutableStateOf(
+            mapOf(
+                ThemingMode.AUTO to R.string.force_auto_mode,
+                ThemingMode.FORCE_LIGHT to R.string.force_light_mode,
+                ThemingMode.FORCE_DARK to R.string.force_dark_mode
+            )
+        )
+    }
+
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.theme_setting),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
             item {
-                UnittoListItem(
+                ListItem(
                     leadingContent = {
                         Icon(
                             Icons.Default.Palette,
                             stringResource(R.string.color_theme),
                         )
                     },
-                    label = stringResource(R.string.color_theme),
-                    allOptions = mapOf(
-                        ThemingMode.AUTO to stringResource(R.string.force_auto_mode),
-                        ThemingMode.FORCE_LIGHT to stringResource(R.string.force_light_mode),
-                        ThemingMode.FORCE_DARK to stringResource(R.string.force_dark_mode)
-                    ),
-                    selected = themmoController.currentThemingMode,
-                    onSelectedChange = {
-                        themmoController.setThemingMode(it)
-                        viewModel.updateThemingMode(it)
-                    }
+                    headlineContent = { Text(stringResource(R.string.color_theme)) },
+                    supportingContent = { Text(stringResource(R.string.color_theme_support)) },
                 )
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-                item {
-                    UnittoListItem(
-                        leadingContent = {
-                            Icon(
-                                Icons.Default.Colorize,
-                                stringResource(R.string.enable_dynamic_colors),
-                            )
-                        },
-                        label = stringResource(R.string.enable_dynamic_colors),
-                        supportContent = stringResource(R.string.enable_dynamic_colors_support),
-                        switchState = themmoController.isDynamicThemeEnabled,
-                        onSwitchChange = {
-                            themmoController.enableDynamicTheme(it)
-                            viewModel.updateDynamicTheme(it)
-                        }
-                    )
+            item {
+                SegmentedButtonRow(
+                    modifier = Modifier.padding(56.dp, 8.dp, 24.dp, 2.dp)
+                ) {
+                    themingModes.forEach { (mode, stringRes) ->
+                        SegmentedButton(
+                            onClick = { onThemeChange(mode) },
+                            selected = currentThemingMode == mode,
+                            content = { Text(stringResource(stringRes)) }
+                        )
+                    }
                 }
             }
 
             item {
                 AnimatedVisibility(
-                    visible = (themmoController.currentThemingMode != ThemingMode.FORCE_LIGHT),
+                    visible = currentThemingMode != ThemingMode.FORCE_LIGHT,
                     enter = expandVertically() + fadeIn(),
                     exit = shrinkVertically() + fadeOut(),
                 ) {
@@ -107,14 +153,66 @@ internal fun ThemesScreen(
                         },
                         label = stringResource(R.string.force_amoled_mode),
                         supportContent = stringResource(R.string.force_amoled_mode_support),
-                        switchState = themmoController.isAmoledThemeEnabled,
-                        onSwitchChange = {
-                            themmoController.enableAmoledTheme(it)
-                            viewModel.updateAmoledTheme(it)
-                        }
+                        switchState = isAmoledThemeEnabled,
+                        onSwitchChange = onAmoledThemeChange
+                    )
+                }
+            }
+
+            item { Header(stringResource(R.string.color_scheme)) }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                item {
+                    UnittoListItem(
+                        leadingContent = {
+                            Icon(
+                                Icons.Default.Colorize,
+                                stringResource(R.string.enable_dynamic_colors),
+                            )
+                        },
+                        label = stringResource(R.string.enable_dynamic_colors),
+                        supportContent = stringResource(R.string.enable_dynamic_colors_support),
+                        switchState = isDynamicThemeEnabled,
+                        onSwitchChange = onDynamicThemeChange
+                    )
+                }
+            }
+
+            item {
+                AnimatedVisibility(
+                    visible = !isDynamicThemeEnabled,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.selected_color)) },
+                        supportingContent = {
+                            ColorSelector(
+                                modifier = Modifier.padding(top = 12.dp),
+                                selected = selectedColor,
+                                onItemClick = onColorChange
+                            )
+                        },
+                        modifier = Modifier.padding(start = 40.dp)
                     )
                 }
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    ThemesScreen(
+        navigateUpAction = {},
+        currentThemingMode = ThemingMode.AUTO,
+        onThemeChange = {},
+        isDynamicThemeEnabled = false,
+        onDynamicThemeChange = {},
+        isAmoledThemeEnabled = false,
+        onAmoledThemeChange = {},
+        selectedColor = Color.Unspecified,
+        onColorChange = {}
+    )
 }

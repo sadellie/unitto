@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.settings
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.ui.Formatter
@@ -72,6 +73,15 @@ class SettingsViewModel @Inject constructor(
     fun updateAmoledTheme(enabled: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateAmoledTheme(enabled)
+        }
+    }
+
+    /**
+     * @see UserPreferencesRepository.updateCustomColor
+     */
+    fun updateCustomColor(color: Color) {
+        viewModelScope.launch {
+            userPrefsRepository.updateCustomColor(color)
         }
     }
 
