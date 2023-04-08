@@ -1,6 +1,6 @@
 [versions]
-appCode = "18"
-appName = "Illuminating emerald"
+appCode = "19"
+appName = "Jazzberry jam"
 kotlin = "1.8.10"
 androidxCore = "1.9.0"
 androidGradlePlugin = "7.4.1"

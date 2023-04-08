@@ -1,0 +1,7 @@
+"Jazzberry jam" update:
+
+- Units list sorting option
+- New units: Electrostatic capacitance, Force, Torque, Flow rate, Luminance, Prefix
+- Improved adaptive design
+- Special formatter for time conversion
+- Microscopic bug fixes
