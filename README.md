@@ -1,4 +1,4 @@
-<a href="https://github.com/sadellie/unitto/discussions/26">
+<a href="https://github.com/sadellie/unitto/discussions/37">
     <p align="middle">
         <img src="./where-logo.png" width="99%" />
     </p>
