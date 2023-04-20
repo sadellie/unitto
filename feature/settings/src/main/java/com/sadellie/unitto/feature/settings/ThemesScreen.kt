@@ -29,18 +29,22 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Badge
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -166,52 +170,6 @@ private fun ThemesScreen(
 
             item {
                 ListItem(
-                    headlineContent = { Text(stringResource(R.string.selected_color)) },
-                    supportingContent = {
-                        ColorSelector(
-                            modifier = Modifier.padding(top = 12.dp),
-                            selected = selectedLauncherIconColor,
-                            onItemClick = {
-                                selectedLauncherIconColor = it
-                            },
-                            colorSchemes = remember {
-                                LauncherIcon.values().map { Color(it.backgroundColor) }
-                                    .distinct()
-                            },
-                        )
-                    },
-                    modifier = Modifier.padding(start = 40.dp)
-                )
-            }
-
-            item {
-                ListItem(
-                    headlineContent = { Text(stringResource(R.string.selected_launcher_icon)) },
-                    supportingContent = {
-                        IconsSelector(
-                            modifier = Modifier.padding(top = 12.dp),
-                            selectedColor = selectedLauncherIconColorAnim.value,
-                            icons = launcherIcons,
-                            selectedIcon = selectedLauncherIcon,
-                            onIconChange = { selectedLauncherIcon = it }
-                        )
-                    },
-                    modifier = Modifier.padding(start = 40.dp)
-                )
-            }
-
-            item {
-                FilledTonalButton(
-                    modifier = Modifier.padding(start = 56.dp),
-                    enabled = currentIcon != selectedLauncherIcon,
-                    onClick = { showIconChangeWarning = true },
-                ) {
-                    Text(stringResource(R.string.apply_label))
-                }
-            }
-
-            item {
-                ListItem(
                     leadingContent = {
                         Icon(
                             Icons.Default.Palette,
@@ -298,6 +256,68 @@ private fun ThemesScreen(
                     )
                 }
             }
+
+            item {
+                Row(
+                    modifier = Modifier.padding(start = 56.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                        text = stringResource(R.string.launcher_icon),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Badge { Text(stringResource(R.string.unstable_label)) }
+                }
+            }
+
+            item {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.selected_color)) },
+                    supportingContent = {
+                        ColorSelector(
+                            modifier = Modifier.padding(top = 12.dp),
+                            selected = selectedLauncherIconColor,
+                            onItemClick = {
+                                selectedLauncherIconColor = it
+                            },
+                            colorSchemes = remember {
+                                LauncherIcon.values().map { Color(it.backgroundColor) }
+                                    .distinct()
+                            },
+                        )
+                    },
+                    modifier = Modifier.padding(start = 40.dp)
+                )
+            }
+
+            item {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.selected_launcher_icon)) },
+                    supportingContent = {
+                        IconsSelector(
+                            modifier = Modifier.padding(top = 12.dp),
+                            selectedColor = selectedLauncherIconColorAnim.value,
+                            icons = launcherIcons,
+                            selectedIcon = selectedLauncherIcon,
+                            onIconChange = { selectedLauncherIcon = it }
+                        )
+                    },
+                    modifier = Modifier.padding(start = 40.dp)
+                )
+            }
+
+            item {
+                FilledTonalButton(
+                    modifier = Modifier.padding(start = 56.dp),
+                    enabled = currentIcon != selectedLauncherIcon,
+                    onClick = { showIconChangeWarning = true },
+                ) {
+                    Text(stringResource(R.string.apply_label))
+                }
+            }
+
         }
     }
 
@@ -373,6 +393,6 @@ private fun Preview() {
         selectedColor = Color.Unspecified,
         onColorChange = {},
         currentIcon = LauncherIcon.MAIN_DEFAULT,
-        onIconChange = {_,_->}
+        onIconChange = { _, _ -> }
     )
 }
