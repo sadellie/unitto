@@ -22,9 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.ui.Formatter
+import com.sadellie.unitto.data.model.LauncherIcon
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
+import com.sadellie.unitto.data.userprefs.UserPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.ThemingMode
@@ -41,10 +43,10 @@ class SettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val unitGroupsRepository: UnitGroupsRepository,
 ) : ViewModel() {
-    var userPrefs = userPrefsRepository.userPreferencesFlow
+    val userPrefs = userPrefsRepository.userPreferencesFlow
         .onEach { Formatter.setSeparator(it.separator) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),
-            com.sadellie.unitto.data.userprefs.UserPreferences()
+            UserPreferences()
         )
     val shownUnitGroups = unitGroupsRepository.shownUnitGroups
     val hiddenUnitGroups = unitGroupsRepository.hiddenUnitGroups
@@ -194,6 +196,16 @@ class SettingsViewModel @Inject constructor(
     fun updateUnitConverterSorting(sorting: UnitsListSorting) {
         viewModelScope.launch {
             userPrefsRepository.updateUnitConverterSorting(sorting)
+        }
+    }
+
+    /**
+     * @see UserPreferencesRepository.updateLauncherIcon
+     */
+    fun updateLauncherIcon(icon: LauncherIcon, finished: () -> Unit?) {
+        viewModelScope.launch {
+            userPrefsRepository.updateLauncherIcon(icon)
+            finished()
         }
     }
 

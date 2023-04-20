@@ -1324,6 +1324,7 @@
     <string name="enable_dynamic_colors_support">Use colors from your wallpaper</string>
     <string name="color_scheme">Color scheme</string>
     <string name="selected_color">Selected color</string>
+    <string name="selected_launcher_icon">Selected icon</string>
 
     <!--MISC.-->
     <string name="loading_label">Loading…</string>
@@ -1331,6 +1332,9 @@
     <string name="copied">Copied %1$s!</string>
     <string name="cancel_label">Cancel</string>
     <string name="ok_label" translatable="false">OK</string>
+    <string name="apply_label">Apply</string>
+    <string name="warning_label">Warning!</string>
+    <string name="icon_change_warning">This feature is unstable. App will be closed to apply changes. Restart your launcher if nothing changes. Reinstall app from phone settings if things go horribly. You have been warned!</string>
     <string name="search_bar_placeholder">Search units</string>
     <string name="search_placeholder">No results found</string>
     <string name="search_placeholder_button_label">Open settings</string>
