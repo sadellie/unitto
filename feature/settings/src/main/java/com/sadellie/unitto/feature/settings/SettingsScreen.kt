@@ -88,8 +88,8 @@ internal fun SettingsScreen(
                             stringResource(R.string.theme_setting),
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.theme_setting)) },
-                    supportingText = { Text(stringResource(R.string.theme_setting_support)) },
+                    headlineContent = { Text(stringResource(R.string.theme_setting)) },
+                    supportingContent = { Text(stringResource(R.string.theme_setting_support)) },
                     modifier = Modifier.clickable { navControllerAction(themesRoute) }
                 )
             }
@@ -103,8 +103,8 @@ internal fun SettingsScreen(
                             stringResource(R.string.starting_screen_setting),
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.starting_screen_setting)) },
-                    supportingText = { Text(stringResource(R.string.starting_screen_setting_support)) },
+                    headlineContent = { Text(stringResource(R.string.starting_screen_setting)) },
+                    supportingContent = { Text(stringResource(R.string.starting_screen_setting_support)) },
                     modifier = Modifier.clickable { dialogState = DialogState.START_SCREEN }
                 )
             }
@@ -121,8 +121,8 @@ internal fun SettingsScreen(
                             stringResource(R.string.precision_setting),
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.precision_setting)) },
-                    supportingText = { Text(stringResource(R.string.precision_setting_support)) },
+                    headlineContent = { Text(stringResource(R.string.precision_setting)) },
+                    supportingContent = { Text(stringResource(R.string.precision_setting_support)) },
                     modifier = Modifier.clickable { dialogState = DialogState.PRECISION }
                 )
             }
@@ -130,8 +130,8 @@ internal fun SettingsScreen(
             // SEPARATOR
             item {
                 ListItem(
-                    headlineText = { Text(stringResource(R.string.separator_setting)) },
-                    supportingText = { Text(stringResource(R.string.separator_setting_support)) },
+                    headlineContent = { Text(stringResource(R.string.separator_setting)) },
+                    supportingContent = { Text(stringResource(R.string.separator_setting_support)) },
                     modifier = Modifier
                         .clickable { dialogState = DialogState.SEPARATOR }
                         .padding(start = 40.dp)
@@ -141,8 +141,8 @@ internal fun SettingsScreen(
             // OUTPUT FORMAT
             item {
                 ListItem(
-                    headlineText = { Text(stringResource(R.string.output_format_setting)) },
-                    supportingText = { Text(stringResource(R.string.output_format_setting_support)) },
+                    headlineContent = { Text(stringResource(R.string.output_format_setting)) },
+                    supportingContent = { Text(stringResource(R.string.output_format_setting_support)) },
                     modifier = Modifier
                         .clickable { dialogState = DialogState.OUTPUT_FORMAT }
                         .padding(start = 40.dp)
@@ -161,8 +161,8 @@ internal fun SettingsScreen(
                             stringResource(R.string.disable_unit_group_description),
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.unit_groups_setting)) },
-                    supportingText = { Text(stringResource(R.string.unit_groups_support)) },
+                    headlineContent = { Text(stringResource(R.string.unit_groups_setting)) },
+                    supportingContent = { Text(stringResource(R.string.unit_groups_support)) },
                     modifier = Modifier.clickable { navControllerAction(unitsGroupRoute) }
                 )
             }
@@ -176,8 +176,8 @@ internal fun SettingsScreen(
                             stringResource(R.string.units_sorting)
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.units_sorting)) },
-                    supportingText = { Text(stringResource(R.string.units_sorting_support)) },
+                    headlineContent = { Text(stringResource(R.string.units_sorting)) },
+                    supportingContent = { Text(stringResource(R.string.units_sorting_support)) },
                     modifier = Modifier.clickable { dialogState = DialogState.UNIT_LIST_SORTING }
                 )
             }
@@ -192,7 +192,7 @@ internal fun SettingsScreen(
                             stringResource(R.string.format_time)
                         )
                     },
-                    supportText = stringResource(R.string.format_time_support),
+                    supportContent = stringResource(R.string.format_time_support),
                     switchState = userPrefs.value.unitConverterFormatTime,
                     onSwitchChange = viewModel::updateUnitConverterFormatTime
                 )
@@ -211,7 +211,7 @@ internal fun SettingsScreen(
                             stringResource(R.string.enable_vibrations)
                         )
                     },
-                    supportText = stringResource(R.string.enable_vibrations_support),
+                    supportContent = stringResource(R.string.enable_vibrations_support),
                     switchState = userPrefs.value.enableVibrations,
                     onSwitchChange = viewModel::updateVibrations
                 )
@@ -227,7 +227,7 @@ internal fun SettingsScreen(
                                 stringResource(R.string.rate_this_app),
                             )
                         },
-                        headlineText = { Text(stringResource(R.string.rate_this_app)) },
+                        headlineContent = { Text(stringResource(R.string.rate_this_app)) },
                         modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                     )
                 }
@@ -242,8 +242,8 @@ internal fun SettingsScreen(
                             stringResource(R.string.about_unitto),
                         )
                     },
-                    headlineText = { Text(stringResource(R.string.about_unitto)) },
-                    supportingText = { Text(stringResource(R.string.about_unitto_support)) },
+                    headlineContent = { Text(stringResource(R.string.about_unitto)) },
+                    supportingContent = { Text(stringResource(R.string.about_unitto_support)) },
                     modifier = Modifier.clickable { navControllerAction(aboutRoute) }
                 )
             }

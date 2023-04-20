@@ -33,9 +33,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,7 +52,7 @@ import com.sadellie.unitto.core.ui.R
  * Represents one item in list on Settings screen.
  *
  * @param label Main text.
- * @param supportText Text that is located below label.
+ * @param supportContent Text that is located below label.
  * @param switchState Current switch state.
  * @param onSwitchChange Action to perform when user clicks on this component or just switch. Gives
  * you new value.
@@ -61,7 +61,7 @@ import com.sadellie.unitto.core.ui.R
 fun UnittoListItem(
     label: String,
     leadingContent: @Composable (() -> Unit)?,
-    supportText: String? = null,
+    supportContent: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
 ) {
@@ -72,8 +72,8 @@ fun UnittoListItem(
                 indication = rememberRipple(),
                 onClick = { onSwitchChange(!switchState) }
             ),
-        headlineText = { Text(label) },
-        supportingText = { supportText?.let { Text(text = it) } },
+        headlineContent = { Text(label) },
+        supportingContent = { supportContent?.let { Text(text = it) } },
         leadingContent = leadingContent,
         trailingContent = {
             Switch(
@@ -111,8 +111,8 @@ fun <T> UnittoListItem(
     )
 
     ListItem(
-        headlineText = { Text(label) },
-        supportingText = { supportText?.let { Text(text = it) } },
+        headlineContent = { Text(label) },
+        supportingContent = { supportText?.let { Text(text = it) } },
         leadingContent = leadingContent,
         trailingContent = {
             ExposedDropdownMenuBox(
@@ -130,10 +130,10 @@ fun <T> UnittoListItem(
                     singleLine = true,
                     enabled = false,
                     textStyle = MaterialTheme.typography.bodyLarge,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        disabledBorderColor = MaterialTheme.colorScheme.outline,
+                    colors = OutlinedTextFieldDefaults.colors(
                         disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        disabledBorderColor = MaterialTheme.colorScheme.outline,
+                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                     trailingIcon = {
                         Icon(

@@ -18,18 +18,21 @@
 
 package com.sadellie.unitto.data.userprefs
 
+import androidx.compose.ui.graphics.Color
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.LauncherIcon
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.units.MyUnitIDS
@@ -47,6 +50,7 @@ import javax.inject.Inject
  * still loading.
  * @property enableDynamicTheme Use dynamic color scheme
  * @property enableAmoledTheme Use amoled color scheme
+ * @property customColor Generate custom color scheme from this color.
  * @property digitsPrecision Current [PRECISIONS]. Number of digits in fractional part
  * @property separator Current [Separator] that used to separate thousands
  * @property outputFormat Current [OutputFormat] that is applied to converted value (not input)
@@ -59,11 +63,13 @@ import javax.inject.Inject
  * @property unitConverterFavoritesOnly If true will show only units that are marked as favorite.
  * @property unitConverterFormatTime If true will format time to be more human readable.
  * @property unitConverterSorting Units list sorting mode.
+ * @property launcherIcon Current [LauncherIcon]/
  */
 data class UserPreferences(
     val themingMode: ThemingMode? = null,
     val enableDynamicTheme: Boolean = false,
     val enableAmoledTheme: Boolean = false,
+    val customColor: Color = Color.Unspecified,
     val digitsPrecision: Int = 3,
     val separator: Int = Separator.SPACES,
     val outputFormat: Int = OutputFormat.PLAIN,
@@ -77,6 +83,7 @@ data class UserPreferences(
     val unitConverterFavoritesOnly: Boolean = false,
     val unitConverterFormatTime: Boolean = false,
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
+    val launcherIcon: LauncherIcon = LauncherIcon.MAIN_DEFAULT
 )
 
 /**
@@ -90,6 +97,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val THEMING_MODE = stringPreferencesKey("THEMING_MODE_PREF_KEY")
         val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")
         val ENABLE_AMOLED_THEME = booleanPreferencesKey("ENABLE_AMOLED_THEME_PREF_KEY")
+        val CUSTOM_COLOR = longPreferencesKey("CUSTOM_COLOR_PREF_KEY")
         val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
         val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
         val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
@@ -103,6 +111,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val UNIT_CONVERTER_FAVORITES_ONLY = booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
         val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
         val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
+        val LAUNCHER_ICON = stringPreferencesKey("LAUNCHER_ICON_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -117,20 +126,14 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val themingMode: ThemingMode =
                 preferences[PrefsKeys.THEMING_MODE]?.let { ThemingMode.valueOf(it) }
                     ?: ThemingMode.AUTO
-            val enableDynamicTheme: Boolean =
-                preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: false
-            val enableAmoledTheme: Boolean =
-                preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
-            val digitsPrecision: Int =
-                preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
-            val separator: Int =
-                preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACES
-            val outputFormat: Int =
-                preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
-            val latestLeftSideUnit: String =
-                preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
-            val latestRightSideUnit: String =
-                preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
+            val enableDynamicTheme: Boolean = preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: false
+            val enableAmoledTheme: Boolean = preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
+            val customColor: Color = preferences[PrefsKeys.CUSTOM_COLOR]?.let { Color(it.toULong()) } ?: Color.Unspecified
+            val digitsPrecision: Int = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
+            val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACES
+            val outputFormat: Int = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
+            val latestLeftSideUnit: String = preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
+            val latestRightSideUnit: String = preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
             val shownUnitGroups: List<UnitGroup> =
                 preferences[PrefsKeys.SHOWN_UNIT_GROUPS]?.let { list ->
                     // Everything is in hidden (nothing in shown)
@@ -150,13 +153,14 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val radianMode: Boolean = preferences[PrefsKeys.RADIAN_MODE] ?: true
             val unitConverterFavoritesOnly: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: false
             val unitConverterFormatTime: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
-            val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) }
-                ?: UnitsListSorting.USAGE
+            val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
+            val launcherIcon: LauncherIcon = preferences[PrefsKeys.LAUNCHER_ICON]?.let { LauncherIcon.valueOf(it) } ?: LauncherIcon.MAIN_DEFAULT
 
             UserPreferences(
                 themingMode = themingMode,
                 enableDynamicTheme = enableDynamicTheme,
                 enableAmoledTheme = enableAmoledTheme,
+                customColor = customColor,
                 digitsPrecision = digitsPrecision,
                 separator = separator,
                 outputFormat = outputFormat,
@@ -169,7 +173,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 radianMode = radianMode,
                 unitConverterFavoritesOnly = unitConverterFavoritesOnly,
                 unitConverterFormatTime = unitConverterFormatTime,
-                unitConverterSorting = unitConverterSorting
+                unitConverterSorting = unitConverterSorting,
+                launcherIcon = launcherIcon
             )
         }
 
@@ -254,6 +259,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     }
 
     /**
+     * Update preference on custom color scheme.
+     *
+     * @param color New custom color value.
+     */
+    suspend fun updateCustomColor(color: Color) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.CUSTOM_COLOR] = color.value.toLong()
+        }
+    }
+
+    /**
      * Update preference on starting screen route.
      *
      * @param startingScreen Route from [TopLevelDestinations].
@@ -333,6 +349,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateUnitConverterSorting(sorting: UnitsListSorting) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_SORTING] = sorting.name
+        }
+    }
+
+    /**
+     * Update [UserPreferences.launcherIcon].
+     *
+     * @see UserPreferences.launcherIcon
+     */
+    suspend fun updateLauncherIcon(icon: LauncherIcon) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.LAUNCHER_ICON] = icon.name
         }
     }
 }

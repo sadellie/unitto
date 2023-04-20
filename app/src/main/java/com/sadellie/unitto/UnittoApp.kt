@@ -63,7 +63,8 @@ internal fun UnittoApp() {
         // Anything below will not be called if theming mode is still loading from DataStore
         themingMode = userPrefs.value.themingMode ?: return,
         dynamicThemeEnabled = userPrefs.value.enableDynamicTheme,
-        amoledThemeEnabled = userPrefs.value.enableAmoledTheme
+        amoledThemeEnabled = userPrefs.value.enableAmoledTheme,
+        customColor = userPrefs.value.customColor
     )
     val navController = rememberNavController()
     val sysUiController = rememberSystemUiController()
