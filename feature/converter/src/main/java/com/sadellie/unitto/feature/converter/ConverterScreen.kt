@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.converter
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -83,7 +83,7 @@ private fun ConverterScreen(
         actions = {
             IconButton(onClick = navigateToSettings) {
                 Icon(
-                    Icons.Outlined.MoreVert,
+                    Icons.Outlined.Settings,
                     contentDescription = stringResource(R.string.open_settings_description)
                 )
             }
