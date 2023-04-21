@@ -90,7 +90,7 @@ internal class CalculatorViewModel @Inject constructor(
         // Input and output can change while saving in history. This way we cache it here (i think)
         val output = _output.value
 
-        // Output can be empty when input and output are identical (for exampel when user entered
+        // Output can be empty when input and output are identical (for example when user entered
         // just a number, not expression
         if (output.isEmpty()) return
         if (!Expression(textFieldController.inputTextWithoutFormatting().clean).checkSyntax()) return
@@ -124,9 +124,9 @@ internal class CalculatorViewModel @Inject constructor(
 
         val calculated = Expression(currentInput.clean).calculate()
 
-        // Calculation error, return NaN
+        // Calculation error, return empty string
         if (calculated.isNaN() or calculated.isInfinite()) {
-            _output.update { calculated.toString() }
+            _output.update { "" }
             return
         }
 
