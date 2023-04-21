@@ -17,7 +17,5 @@
   -->
 
 <resources>
-    <color name="ic_launcher_green_background">#186C31</color>
-    <color name="ic_launcher_orange_background">#FF9800</color>
-    <color name="ic_launcher_red_background">#E91E63</color>
+    <color name="ic_launcher_icon_background">#FFFFFF</color>
 </resources>

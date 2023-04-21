@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.ui.Formatter
-import com.sadellie.unitto.data.model.LauncherIcon
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
@@ -196,16 +195,6 @@ class SettingsViewModel @Inject constructor(
     fun updateUnitConverterSorting(sorting: UnitsListSorting) {
         viewModelScope.launch {
             userPrefsRepository.updateUnitConverterSorting(sorting)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateLauncherIcon
-     */
-    fun updateLauncherIcon(icon: LauncherIcon, finished: () -> Unit?) {
-        viewModelScope.launch {
-            userPrefsRepository.updateLauncherIcon(icon)
-            finished()
         }
     }
 

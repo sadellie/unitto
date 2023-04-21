@@ -32,7 +32,6 @@ import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.LauncherIcon
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.units.MyUnitIDS
@@ -63,7 +62,6 @@ import javax.inject.Inject
  * @property unitConverterFavoritesOnly If true will show only units that are marked as favorite.
  * @property unitConverterFormatTime If true will format time to be more human readable.
  * @property unitConverterSorting Units list sorting mode.
- * @property launcherIcon Current [LauncherIcon]/
  */
 data class UserPreferences(
     val themingMode: ThemingMode? = null,
@@ -83,7 +81,6 @@ data class UserPreferences(
     val unitConverterFavoritesOnly: Boolean = false,
     val unitConverterFormatTime: Boolean = false,
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
-    val launcherIcon: LauncherIcon = LauncherIcon.MAIN_DEFAULT
 )
 
 /**
@@ -111,7 +108,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val UNIT_CONVERTER_FAVORITES_ONLY = booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
         val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
         val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
-        val LAUNCHER_ICON = stringPreferencesKey("LAUNCHER_ICON_PREF_KEY")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
@@ -154,7 +150,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val unitConverterFavoritesOnly: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: false
             val unitConverterFormatTime: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
             val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
-            val launcherIcon: LauncherIcon = preferences[PrefsKeys.LAUNCHER_ICON]?.let { LauncherIcon.valueOf(it) } ?: LauncherIcon.MAIN_DEFAULT
 
             UserPreferences(
                 themingMode = themingMode,
@@ -174,7 +169,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 unitConverterFavoritesOnly = unitConverterFavoritesOnly,
                 unitConverterFormatTime = unitConverterFormatTime,
                 unitConverterSorting = unitConverterSorting,
-                launcherIcon = launcherIcon
             )
         }
 
@@ -349,17 +343,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateUnitConverterSorting(sorting: UnitsListSorting) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_SORTING] = sorting.name
-        }
-    }
-
-    /**
-     * Update [UserPreferences.launcherIcon].
-     *
-     * @see UserPreferences.launcherIcon
-     */
-    suspend fun updateLauncherIcon(icon: LauncherIcon) {
-        dataStore.edit { preferences ->
-            preferences[PrefsKeys.LAUNCHER_ICON] = icon.name
         }
     }
 }
