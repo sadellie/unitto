@@ -55,14 +55,13 @@ import io.github.sadellie.themmo.ThemmoController
 
 private val colorSchemes: List<Color> by lazy {
     listOf(
-        Color(0xFFE91E63),
-        Color(0xFFFF9800),
-        Color(0xFF4CAF50),
-        Color(0xFF2196F3),
-        Color(0xFF9C27B0),
-        Color(0xFF5C76AA),
-        Color(0xFF756FAA),
-        Color(0xFF9E6C2A),
+        Color(0xFF8A3B31),
+        Color(0xFFA5744A),
+        Color(0xFF6C8B48),
+        Color(0xFF27B089),
+        Color(0xFF5C7BAA),
+        Color(0xFF544F80),
+        Color(0xFF9A2A9E),
     )
 }
 
@@ -213,7 +212,6 @@ private fun ThemesScreen(
                     )
                 }
             }
-
         }
     }
 }
