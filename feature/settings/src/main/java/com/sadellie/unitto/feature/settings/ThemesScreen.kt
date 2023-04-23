@@ -85,6 +85,11 @@ internal fun ThemesRoute(
         },
         isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
         onDynamicThemeChange = {
+            // Prevent old devices from using other monet modes when dynamic theming is on
+            if (it) {
+                themmoController.setMonetMode(MonetMode.TONAL_SPOT)
+                viewModel.updateMonetMode(MonetMode.TONAL_SPOT)
+            }
             themmoController.enableDynamicTheme(it)
             viewModel.updateDynamicTheme(it)
         },
