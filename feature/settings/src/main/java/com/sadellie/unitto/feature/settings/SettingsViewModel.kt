@@ -28,6 +28,7 @@ import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
 import com.sadellie.unitto.data.userprefs.UserPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
@@ -83,6 +84,15 @@ class SettingsViewModel @Inject constructor(
     fun updateCustomColor(color: Color) {
         viewModelScope.launch {
             userPrefsRepository.updateCustomColor(color)
+        }
+    }
+
+    /**
+     * @see UserPreferencesRepository.updateMonetMode
+     */
+    fun updateMonetMode(monetMode: MonetMode) {
+        viewModelScope.launch {
+            userPrefsRepository.updateMonetMode(monetMode)
         }
     }
 

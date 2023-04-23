@@ -64,7 +64,8 @@ internal fun UnittoApp() {
         themingMode = userPrefs.value.themingMode ?: return,
         dynamicThemeEnabled = userPrefs.value.enableDynamicTheme,
         amoledThemeEnabled = userPrefs.value.enableAmoledTheme,
-        customColor = userPrefs.value.customColor
+        customColor = userPrefs.value.customColor,
+        monetMode = userPrefs.value.monetMode
     )
     val navController = rememberNavController()
     val sysUiController = rememberSystemUiController()
@@ -100,7 +101,7 @@ internal fun UnittoApp() {
     Themmo(
         themmoController = themmoController,
         typography = AppTypography,
-        animationSpec = tween(150)
+        animationSpec = tween(450)
     ) {
         val statusBarColor = when (currentRoute) {
             // Match text field container color

@@ -1324,6 +1324,7 @@
     <string name="enable_dynamic_colors_support">Use colors from your wallpaper</string>
     <string name="color_scheme">Color scheme</string>
     <string name="selected_color">Selected color</string>
+    <string name="monet_mode">Selected style</string>
 
     <!--MISC.-->
     <string name="loading_label">Loading…</string>

@@ -35,6 +35,7 @@ import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.units.MyUnitIDS
+import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -68,6 +69,7 @@ data class UserPreferences(
     val enableDynamicTheme: Boolean = false,
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,
+    val monetMode: MonetMode = MonetMode.TONAL_SPOT,
     val digitsPrecision: Int = 3,
     val separator: Int = Separator.SPACES,
     val outputFormat: Int = OutputFormat.PLAIN,
@@ -95,6 +97,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")
         val ENABLE_AMOLED_THEME = booleanPreferencesKey("ENABLE_AMOLED_THEME_PREF_KEY")
         val CUSTOM_COLOR = longPreferencesKey("CUSTOM_COLOR_PREF_KEY")
+        val MONET_MODE = stringPreferencesKey("MONET_MODE_PREF_KEY")
         val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
         val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
         val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
@@ -119,12 +122,13 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             }
         }
         .map { preferences ->
-            val themingMode: ThemingMode =
-                preferences[PrefsKeys.THEMING_MODE]?.let { ThemingMode.valueOf(it) }
-                    ?: ThemingMode.AUTO
+            val themingMode: ThemingMode = preferences[PrefsKeys.THEMING_MODE]?.let { ThemingMode.valueOf(it) }
+                ?: ThemingMode.AUTO
             val enableDynamicTheme: Boolean = preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: false
             val enableAmoledTheme: Boolean = preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
             val customColor: Color = preferences[PrefsKeys.CUSTOM_COLOR]?.let { Color(it.toULong()) } ?: Color.Unspecified
+            val monetMode: MonetMode = preferences[PrefsKeys.MONET_MODE]?.let { MonetMode.valueOf(it) }
+                ?: MonetMode.TONAL_SPOT
             val digitsPrecision: Int = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
             val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACES
             val outputFormat: Int = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
@@ -156,6 +160,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 enableDynamicTheme = enableDynamicTheme,
                 enableAmoledTheme = enableAmoledTheme,
                 customColor = customColor,
+                monetMode = monetMode,
                 digitsPrecision = digitsPrecision,
                 separator = separator,
                 outputFormat = outputFormat,
@@ -260,6 +265,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateCustomColor(color: Color) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.CUSTOM_COLOR] = color.value.toLong()
+        }
+    }
+
+    /**
+     * Update [MonetMode]. Saves value as a string.
+     *
+     * @param monetMode [MonetMode] to save.
+     */
+    suspend fun updateMonetMode(monetMode: MonetMode) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.MONET_MODE] = monetMode.name
         }
     }
 

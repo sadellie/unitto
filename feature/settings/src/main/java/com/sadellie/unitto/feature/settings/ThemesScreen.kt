@@ -50,18 +50,23 @@ import com.sadellie.unitto.core.ui.common.SegmentedButtonRow
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.feature.settings.components.ColorSelector
+import com.sadellie.unitto.feature.settings.components.MonetModeSelector
+import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.ThemmoController
 
 private val colorSchemes: List<Color> by lazy {
     listOf(
-        Color(0xFF8A3B31),
-        Color(0xFFA5744A),
-        Color(0xFF6C8B48),
-        Color(0xFF27B089),
-        Color(0xFF5C7BAA),
-        Color(0xFF544F80),
-        Color(0xFF9A2A9E),
+        Color(0xFFF6A1BC),
+        Color(0xFFFDA387),
+        Color(0xFFEAAF60),
+        Color(0xFFC2BD64),
+        Color(0xFF94C78A),
+        Color(0xFF73C9B5),
+        Color(0xFF72C6DA),
+        Color(0xFF8FBEF2),
+        Color(0xFFB6B3F6),
+        Color(0xFFDCA8E4),
     )
 }
 
@@ -93,6 +98,11 @@ internal fun ThemesRoute(
             themmoController.setCustomColor(it)
             viewModel.updateCustomColor(it)
         },
+        monetMode = themmoController.currentMonetMode,
+        onMonetModeChange = {
+            themmoController.setMonetMode(it)
+            viewModel.updateMonetMode(it)
+        }
     )
 }
 
@@ -107,6 +117,8 @@ private fun ThemesScreen(
     onAmoledThemeChange: (Boolean) -> Unit,
     selectedColor: Color,
     onColorChange: (Color) -> Unit,
+    monetMode: MonetMode,
+    onMonetModeChange: (MonetMode) -> Unit
 ) {
     val themingModes by remember {
         mutableStateOf(
@@ -212,6 +224,30 @@ private fun ThemesScreen(
                     )
                 }
             }
+
+            item {
+                AnimatedVisibility(
+                    visible = (!isDynamicThemeEnabled) and (selectedColor != Color.Unspecified),
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.monet_mode)) },
+                        supportingContent = {
+                            MonetModeSelector(
+                                modifier = Modifier.padding(top = 12.dp),
+                                selected = monetMode,
+                                onItemClick = onMonetModeChange,
+                                monetModes = remember { MonetMode.values().toList() },
+                                customColor = selectedColor,
+                                themingMode = currentThemingMode,
+                                amoledThemeEnabled = isAmoledThemeEnabled,
+                            )
+                        },
+                        modifier = Modifier.padding(start = 40.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -229,5 +265,7 @@ private fun Preview() {
         onAmoledThemeChange = {},
         selectedColor = Color.Unspecified,
         onColorChange = {},
+        monetMode = MonetMode.TONAL_SPOT,
+        onMonetModeChange = {}
     )
 }
