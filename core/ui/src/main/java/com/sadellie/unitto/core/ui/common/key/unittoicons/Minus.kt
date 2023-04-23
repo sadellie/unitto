@@ -16,16 +16,16 @@ val @receiver:Suppress("UNUSED") UnittoIcons.Minus: ImageVector
         if (_minus != null) {
             return _minus!!
         }
-        _minus = Builder(name = "Minus", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
-                viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
+        _minus = Builder(name = "Minus", defaultWidth = 124.0.dp, defaultHeight = 124.0.dp,
+                viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(32.38f, 83.08f)
-                horizontalLineTo(117.5f)
-                verticalLineTo(91.4f)
-                horizontalLineTo(32.38f)
-                verticalLineTo(83.08f)
+                moveTo(22.0f, 57.0f)
+                horizontalLineTo(102.0f)
+                verticalLineTo(67.5f)
+                horizontalLineTo(22.0f)
+                verticalLineTo(57.0f)
                 close()
             }
         }

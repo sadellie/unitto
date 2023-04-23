@@ -97,7 +97,7 @@ fun KeyboardButtonLight(
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
-        contentHeight = if (isPortrait()) 0.5f else 0.85f
+        contentHeight = if (isPortrait()) 0.55f else 0.7f
     )
 }
 
@@ -117,7 +117,7 @@ fun KeyboardButtonFilled(
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSecondaryContainer,
         allowVibration = allowVibration,
-        contentHeight = if (isPortrait()) 0.5f else 0.85f
+        contentHeight = if (isPortrait()) 0.55f else 0.7f
     )
 }
 
@@ -137,7 +137,7 @@ fun KeyboardButtonAdditional(
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
-        contentHeight = if (isPortrait()) 0.8f else 0.85f
+        contentHeight = if (isPortrait()) 0.8f else 0.8f
     )
 }
 

@@ -16,27 +16,27 @@ val @receiver:Suppress("UNUSED") UnittoIcons.Key7: ImageVector
         if (_key7 != null) {
             return _key7!!
         }
-        _key7 = Builder(name = "Key7", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
-                viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
+        _key7 = Builder(name = "Key7", defaultWidth = 124.0.dp, defaultHeight = 124.0.dp,
+                viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(107.059f, 33.288f)
-                verticalLineTo(38.408f)
-                curveTo(107.059f, 39.859f, 106.888f, 41.053f, 106.547f, 41.992f)
-                curveTo(106.248f, 42.931f, 105.95f, 43.72f, 105.651f, 44.36f)
-                lineTo(67.635f, 120.968f)
-                curveTo(67.08f, 122.077f, 66.312f, 123.037f, 65.331f, 123.848f)
-                curveTo(64.35f, 124.616f, 63.048f, 125.0f, 61.427f, 125.0f)
-                horizontalLineTo(53.235f)
-                lineTo(91.763f, 49.352f)
-                curveTo(92.318f, 48.285f, 92.894f, 47.304f, 93.491f, 46.408f)
-                curveTo(94.088f, 45.512f, 94.728f, 44.659f, 95.411f, 43.848f)
-                horizontalLineTo(47.539f)
-                curveTo(46.814f, 43.848f, 46.174f, 43.571f, 45.619f, 43.016f)
-                curveTo(45.064f, 42.419f, 44.787f, 41.757f, 44.787f, 41.032f)
-                verticalLineTo(33.288f)
-                horizontalLineTo(107.059f)
+                moveTo(88.676f, 22.0f)
+                verticalLineTo(26.466f)
+                curveTo(88.676f, 27.732f, 88.527f, 28.774f, 88.229f, 29.593f)
+                curveTo(87.968f, 30.411f, 87.708f, 31.1f, 87.447f, 31.658f)
+                lineTo(54.286f, 98.483f)
+                curveTo(53.802f, 99.451f, 53.132f, 100.288f, 52.276f, 100.995f)
+                curveTo(51.42f, 101.665f, 50.285f, 102.0f, 48.871f, 102.0f)
+                horizontalLineTo(41.725f)
+                lineTo(75.333f, 36.013f)
+                curveTo(75.817f, 35.082f, 76.319f, 34.226f, 76.84f, 33.444f)
+                curveTo(77.361f, 32.663f, 77.92f, 31.919f, 78.515f, 31.211f)
+                horizontalLineTo(36.757f)
+                curveTo(36.124f, 31.211f, 35.565f, 30.969f, 35.082f, 30.486f)
+                curveTo(34.598f, 29.965f, 34.356f, 29.388f, 34.356f, 28.755f)
+                verticalLineTo(22.0f)
+                horizontalLineTo(88.676f)
                 close()
             }
         }

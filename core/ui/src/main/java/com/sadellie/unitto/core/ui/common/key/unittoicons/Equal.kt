@@ -16,22 +16,22 @@ val @receiver:Suppress("UNUSED") UnittoIcons.Equal: ImageVector
         if (_equal != null) {
             return _equal!!
         }
-        _equal = Builder(name = "Equal", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
-                viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
+        _equal = Builder(name = "Equal", defaultWidth = 124.0.dp, defaultHeight = 124.0.dp,
+                viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(47.475f, 88.264f)
-                horizontalLineTo(102.515f)
-                verticalLineTo(96.904f)
-                horizontalLineTo(47.475f)
-                verticalLineTo(88.264f)
+                moveTo(22.0f, 77.776f)
+                horizontalLineTo(102.0f)
+                verticalLineTo(88.0f)
+                horizontalLineTo(22.0f)
+                verticalLineTo(77.776f)
                 close()
-                moveTo(47.475f, 66.824f)
-                horizontalLineTo(102.515f)
-                verticalLineTo(75.464f)
-                horizontalLineTo(47.475f)
-                verticalLineTo(66.824f)
+                moveTo(22.0f, 37.0f)
+                horizontalLineTo(102.0f)
+                verticalLineTo(47.161f)
+                horizontalLineTo(22.0f)
+                verticalLineTo(37.0f)
                 close()
             }
         }

@@ -16,34 +16,34 @@ val @receiver:Suppress("UNUSED") UnittoIcons.RightBracket: ImageVector
         if (_rightbracket != null) {
             return _rightbracket!!
         }
-        _rightbracket = Builder(name = "RightBracket", defaultWidth = 150.0.dp, defaultHeight =
-                150.0.dp, viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
+        _rightbracket = Builder(name = "Rightbracket", defaultWidth = 124.0.dp, defaultHeight =
+                124.0.dp, viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(76.434f, 84.744f)
-                curveTo(76.434f, 75.613f, 75.26f, 66.739f, 72.913f, 58.12f)
-                curveTo(70.609f, 49.501f, 67.217f, 41.309f, 62.737f, 33.544f)
-                curveTo(62.396f, 32.904f, 62.183f, 32.349f, 62.097f, 31.88f)
-                curveTo(62.012f, 31.368f, 62.034f, 30.941f, 62.161f, 30.6f)
-                curveTo(62.29f, 30.216f, 62.481f, 29.896f, 62.737f, 29.64f)
-                curveTo(63.036f, 29.341f, 63.356f, 29.085f, 63.697f, 28.872f)
-                lineTo(68.754f, 25.736f)
-                curveTo(71.953f, 30.685f, 74.663f, 35.571f, 76.882f, 40.392f)
-                curveTo(79.143f, 45.213f, 80.956f, 50.056f, 82.322f, 54.92f)
-                curveTo(83.729f, 59.741f, 84.754f, 64.627f, 85.394f, 69.576f)
-                curveTo(86.034f, 74.525f, 86.354f, 79.581f, 86.354f, 84.744f)
-                curveTo(86.354f, 89.949f, 86.034f, 95.027f, 85.394f, 99.976f)
-                curveTo(84.754f, 104.883f, 83.729f, 109.768f, 82.322f, 114.632f)
-                curveTo(80.956f, 119.496f, 79.143f, 124.339f, 76.882f, 129.16f)
-                curveTo(74.663f, 133.981f, 71.953f, 138.845f, 68.754f, 143.752f)
-                lineTo(63.697f, 140.68f)
-                curveTo(63.356f, 140.467f, 63.036f, 140.211f, 62.737f, 139.912f)
-                curveTo(62.481f, 139.656f, 62.29f, 139.336f, 62.161f, 138.952f)
-                curveTo(62.034f, 138.611f, 62.012f, 138.184f, 62.097f, 137.672f)
-                curveTo(62.183f, 137.16f, 62.396f, 136.584f, 62.737f, 135.944f)
-                curveTo(67.217f, 128.179f, 70.609f, 119.987f, 72.913f, 111.368f)
-                curveTo(75.26f, 102.749f, 76.434f, 93.875f, 76.434f, 84.744f)
+                moveTo(62.193f, 62.0f)
+                curveTo(62.193f, 56.004f, 61.451f, 50.137f, 59.966f, 44.398f)
+                curveTo(58.482f, 38.688f, 56.326f, 33.306f, 53.5f, 28.253f)
+                curveTo(53.243f, 27.739f, 53.086f, 27.282f, 53.029f, 26.882f)
+                curveTo(52.971f, 26.483f, 53.0f, 26.14f, 53.114f, 25.854f)
+                curveTo(53.228f, 25.54f, 53.4f, 25.283f, 53.628f, 25.083f)
+                curveTo(53.828f, 24.884f, 54.056f, 24.698f, 54.313f, 24.527f)
+                lineTo(58.382f, 22.0f)
+                curveTo(60.523f, 25.283f, 62.336f, 28.552f, 63.821f, 31.807f)
+                curveTo(65.305f, 35.034f, 66.519f, 38.288f, 67.461f, 41.572f)
+                curveTo(68.403f, 44.884f, 69.089f, 48.224f, 69.517f, 51.593f)
+                curveTo(69.945f, 54.991f, 70.159f, 58.46f, 70.159f, 62.0f)
+                curveTo(70.159f, 65.512f, 69.945f, 68.952f, 69.517f, 72.321f)
+                curveTo(69.089f, 75.719f, 68.403f, 79.059f, 67.461f, 82.343f)
+                curveTo(66.519f, 85.655f, 65.305f, 88.938f, 63.821f, 92.193f)
+                curveTo(62.336f, 95.448f, 60.523f, 98.717f, 58.382f, 102.0f)
+                lineTo(54.313f, 99.473f)
+                curveTo(54.056f, 99.302f, 53.828f, 99.116f, 53.628f, 98.916f)
+                curveTo(53.4f, 98.717f, 53.228f, 98.46f, 53.114f, 98.146f)
+                curveTo(53.0f, 97.86f, 52.971f, 97.518f, 53.029f, 97.118f)
+                curveTo(53.086f, 96.718f, 53.243f, 96.261f, 53.5f, 95.747f)
+                curveTo(56.326f, 90.665f, 58.482f, 85.269f, 59.966f, 79.559f)
+                curveTo(61.451f, 73.849f, 62.193f, 67.996f, 62.193f, 62.0f)
                 close()
             }
         }
