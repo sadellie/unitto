@@ -101,7 +101,7 @@ internal fun UnittoApp() {
     Themmo(
         themmoController = themmoController,
         typography = AppTypography,
-        animationSpec = tween(450)
+        animationSpec = tween(250)
     ) {
         val statusBarColor = when (currentRoute) {
             // Match text field container color
