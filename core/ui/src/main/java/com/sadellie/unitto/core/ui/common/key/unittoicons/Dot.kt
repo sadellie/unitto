@@ -16,28 +16,28 @@ val @receiver:Suppress("UNUSED") UnittoIcons.Dot: ImageVector
         if (_dot != null) {
             return _dot!!
         }
-        _dot = Builder(name = "Dot", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
-                viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
+_dot = Builder(name = "Dot", defaultWidth = 124.0.dp, defaultHeight = 124.0.dp,
+                viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(66.979f, 117.96f)
-                curveTo(66.979f, 116.851f, 67.171f, 115.805f, 67.555f, 114.824f)
-                curveTo(67.982f, 113.843f, 68.536f, 112.989f, 69.219f, 112.264f)
-                curveTo(69.944f, 111.539f, 70.798f, 110.963f, 71.779f, 110.536f)
-                curveTo(72.76f, 110.109f, 73.806f, 109.896f, 74.915f, 109.896f)
-                curveTo(76.024f, 109.896f, 77.07f, 110.109f, 78.051f, 110.536f)
-                curveTo(79.032f, 110.963f, 79.886f, 111.539f, 80.611f, 112.264f)
-                curveTo(81.336f, 112.989f, 81.912f, 113.843f, 82.339f, 114.824f)
-                curveTo(82.766f, 115.805f, 82.979f, 116.851f, 82.979f, 117.96f)
-                curveTo(82.979f, 119.112f, 82.766f, 120.179f, 82.339f, 121.16f)
-                curveTo(81.912f, 122.099f, 81.336f, 122.931f, 80.611f, 123.656f)
-                curveTo(79.886f, 124.381f, 79.032f, 124.936f, 78.051f, 125.32f)
-                curveTo(77.07f, 125.747f, 76.024f, 125.96f, 74.915f, 125.96f)
-                curveTo(73.806f, 125.96f, 72.76f, 125.747f, 71.779f, 125.32f)
-                curveTo(70.798f, 124.936f, 69.944f, 124.381f, 69.219f, 123.656f)
-                curveTo(68.536f, 122.931f, 67.982f, 122.099f, 67.555f, 121.16f)
-                curveTo(67.171f, 120.179f, 66.979f, 119.112f, 66.979f, 117.96f)
+                moveTo(54.0f, 62.914f)
+                curveTo(54.0f, 61.822f, 54.189f, 60.794f, 54.567f, 59.828f)
+                curveTo(54.986f, 58.863f, 55.532f, 58.023f, 56.204f, 57.31f)
+                curveTo(56.917f, 56.596f, 57.757f, 56.029f, 58.723f, 55.61f)
+                curveTo(59.688f, 55.19f, 60.717f, 54.98f, 61.808f, 54.98f)
+                curveTo(62.9f, 54.98f, 63.928f, 55.19f, 64.894f, 55.61f)
+                curveTo(65.859f, 56.029f, 66.699f, 56.596f, 67.412f, 57.31f)
+                curveTo(68.126f, 58.023f, 68.693f, 58.863f, 69.112f, 59.828f)
+                curveTo(69.532f, 60.794f, 69.742f, 61.822f, 69.742f, 62.914f)
+                curveTo(69.742f, 64.047f, 69.532f, 65.097f, 69.112f, 66.062f)
+                curveTo(68.693f, 66.986f, 68.126f, 67.804f, 67.412f, 68.518f)
+                curveTo(66.699f, 69.232f, 65.859f, 69.777f, 64.894f, 70.155f)
+                curveTo(63.928f, 70.575f, 62.9f, 70.785f, 61.808f, 70.785f)
+                curveTo(60.717f, 70.785f, 59.688f, 70.575f, 58.723f, 70.155f)
+                curveTo(57.757f, 69.777f, 56.917f, 69.232f, 56.204f, 68.518f)
+                curveTo(55.532f, 67.804f, 54.986f, 66.986f, 54.567f, 66.062f)
+                curveTo(54.189f, 65.097f, 54.0f, 64.047f, 54.0f, 62.914f)
                 close()
             }
         }
