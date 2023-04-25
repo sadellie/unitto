@@ -1,0 +1,57 @@
+<!--
+  ~ Unitto is a unit converter for Android
+  ~ Copyright (c) 2023 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="378"
+    android:viewportWidth="378" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <clip-path android:pathData="M290,202L290,202A88,88 0,0 1,378 290L378,290A88,88 0,0 1,290 378L290,378A88,88 0,0 1,202 290L202,290A88,88 0,0 1,290 202z"/>
+        <path android:fillColor="#00000000"
+            android:pathData="M201,195H195V201V379V385H201H379H385V379V201V195H379H201ZM284,254C284,250.69 286.69,248 290,248C293.31,248 296,250.69 296,254C296,257.31 293.31,260 290,260C286.69,260 284,257.31 284,254ZM246,290C246,286.69 248.69,284 252,284H328C331.31,284 334,286.69 334,290C334,293.31 331.31,296 328,296H252C248.69,296 246,293.31 246,290ZM284,326C284,322.69 286.69,320 290,320C293.31,320 296,322.69 296,326C296,329.31 293.31,332 290,332C286.69,332 284,329.31 284,326Z"
+            android:strokeColor="#ffffff" android:strokeWidth="12"/>
+    </group>
+    <path android:fillColor="#00000000"
+        android:pathData="M290,214L290,214A76,76 0,0 1,366 290L366,290A76,76 0,0 1,290 366L290,366A76,76 0,0 1,214 290L214,290A76,76 0,0 1,290 214z"
+        android:strokeColor="#ffffff" android:strokeWidth="24"/>
+    <group>
+        <clip-path android:pathData="M88,202L88,202A88,88 0,0 1,176 290L176,290A88,88 0,0 1,88 378L88,378A88,88 0,0 1,0 290L0,290A88,88 0,0 1,88 202z"/>
+        <path android:fillColor="#00000000"
+            android:pathData="M4,200H-2V206V374V380H4H172H178V374V206V200H172H4ZM78.24,294.61L82.49,290.36L78.24,286.12L54.63,262.51C53.01,260.89 53.01,258.26 54.63,256.63C56.26,255.01 58.89,255.01 60.51,256.63L84.12,280.24L88.36,284.49L92.61,280.24L116.22,256.63C117.84,255.01 120.47,255.01 122.09,256.63C123.72,258.26 123.72,260.89 122.09,262.51L98.48,286.12L94.24,290.36L98.48,294.61L122.09,318.22C123.72,319.84 123.72,322.47 122.09,324.09C120.47,325.72 117.84,325.72 116.22,324.09L92.61,300.48L88.36,296.24L84.12,300.48L60.51,324.09C58.89,325.72 56.26,325.72 54.63,324.09C53.01,322.47 53.01,319.84 54.63,318.22L78.24,294.61Z"
+            android:strokeColor="#ffffff" android:strokeWidth="12"/>
+    </group>
+    <path android:fillColor="#00000000"
+        android:pathData="M88,214L88,214A76,76 0,0 1,164 290L164,290A76,76 0,0 1,88 366L88,366A76,76 0,0 1,12 290L12,290A76,76 0,0 1,88 214z"
+        android:strokeColor="#ffffff" android:strokeWidth="24"/>
+    <group>
+        <clip-path android:pathData="M290,0L290,0A88,88 0,0 1,378 88L378,88A88,88 0,0 1,290 176L290,176A88,88 0,0 1,202 88L202,88A88,88 0,0 1,290 0z"/>
+        <path android:fillColor="#00000000"
+            android:pathData="M201,-7H195V-1V177V183H201H379H385V177V-1V-7H379H201ZM246,88C246,84.69 248.69,82 252,82H328C331.31,82 334,84.69 334,88C334,91.31 331.31,94 328,94H252C248.69,94 246,91.31 246,88Z"
+            android:strokeColor="#ffffff" android:strokeWidth="12"/>
+    </group>
+    <path android:fillColor="#00000000"
+        android:pathData="M290,12L290,12A76,76 0,0 1,366 88L366,88A76,76 0,0 1,290 164L290,164A76,76 0,0 1,214 88L214,88A76,76 0,0 1,290 12z"
+        android:strokeColor="#ffffff" android:strokeWidth="24"/>
+    <group>
+        <clip-path android:pathData="M88,0L88,0A88,88 0,0 1,176 88L176,88A88,88 0,0 1,88 176L88,176A88,88 0,0 1,0 88L0,88A88,88 0,0 1,88 0z"/>
+        <path android:fillColor="#00000000"
+            android:pathData="M-1,-7H-7V-1V177V183H-1H177H183V177V-1V-7H177H-1ZM76,82H82V76V50C82,46.69 84.69,44 88,44C91.31,44 94,46.69 94,50V76V82H100H126C129.31,82 132,84.69 132,88C132,91.31 129.31,94 126,94H100H94V100V126C94,129.31 91.31,132 88,132C84.69,132 82,129.31 82,126V100V94H76H50C46.69,94 44,91.31 44,88C44,84.69 46.69,82 50,82H76Z"
+            android:strokeColor="#ffffff" android:strokeWidth="12"/>
+    </group>
+    <path android:fillColor="#00000000"
+        android:pathData="M88,12L88,12A76,76 0,0 1,164 88L164,88A76,76 0,0 1,88 164L88,164A76,76 0,0 1,12 88L12,88A76,76 0,0 1,88 12z"
+        android:strokeColor="#ffffff" android:strokeWidth="24"/>
+</vector>
