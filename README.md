@@ -12,7 +12,7 @@
 ## 📲 Download
 <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/googlePlay.png" width="32%"/></a>
 <a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fDroid.png" width="32%"/></a>
-<a href="https://apps.rustore.ru/app/com.sadellie.unitto"><img alt="RuMarket" src="./content/ruStore.png" width="32%"/></a>
+<a href="https://apps.rustore.ru/app/com.sadellie.unitto"><img alt="Rustore" src="./content/ruStore.png" width="32%"/></a>
 
 ## 😎 Features
 - Instant expression evaluation

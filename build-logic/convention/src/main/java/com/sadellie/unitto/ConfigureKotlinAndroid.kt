@@ -41,8 +41,6 @@ internal fun Project.configureKotlinAndroid(
         productFlavors {
             create("playStore") {}
             create("ruStore") {}
-            create("nashStore") {}
-            create("ruMarket") {}
             create("fdroid") {}
         }
 
