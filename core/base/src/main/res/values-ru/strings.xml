@@ -1063,4 +1063,8 @@
     <string name="sort_by_alphabetical">Алфавит</string>
     <string name="sort_by_scale_desc">Величина (Убыв.)</string>
     <string name="sort_by_scale_asc">Величина (Возр.)</string>
+    <string name="color_theme_support">Выберите режим темы</string>
+    <string name="color_scheme">Цветовая схема</string>
+    <string name="selected_color">Выбранный цвет</string>
+    <string name="monet_mode">Выбранный стиль</string>
 </resources>
