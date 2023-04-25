@@ -1,0 +1,6 @@
+"Kobicha" update:
+
+- Unitto is now called Calculator and has a *new icon
+- Quick Settings Tile
+- Better app themes
+- Better button icons

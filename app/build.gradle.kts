@@ -32,8 +32,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 33
-        versionCode = 19
-        versionName = "Jazzberry jam"
+        versionCode = 20
+        versionName = "Kobicha"
     }
 
     buildTypes {

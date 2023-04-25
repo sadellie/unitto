@@ -1,6 +1,6 @@
 [versions]
-appCode = "19"
-appName = "Jazzberry jam"
+appCode = "20"
+appName = "Kobicha"
 kotlin = "1.8.10"
 androidxCore = "1.10.0"
 androidGradlePlugin = "7.4.2"
