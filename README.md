@@ -15,19 +15,19 @@
 <a href="https://apps.rustore.ru/app/com.sadellie.unitto"><img alt="Rustore" src="./content/ruStore.png" width="32%"/></a>
 
 ## 😎 Features
-- Instant expression evaluation
-- Expressions history
-- Copy, paste and cut expression
-- Material You Theme even for old devices
-- More than 500 units and currencies
-- Smart units search
-- Adaptive units sorting algorithm
-- Small app size
-- Bulk convert units
-- Favorite units
-- Ability to disable unit groups
-- Customizable number formatter
-- SI Standard
+- **Instant** expression evaluation
+- Expressions **history**
+- **Copy**, **paste** and **cut** expression
+- **Material You** Theme even for **old devices**
+- **569** units and currencies
+- **Smart** units search
+- **Adaptive** units sorting algorithm
+- **Small** app size
+- **Bulk convert** units
+- **Favorite** units
+- Ability to **disable unit groups**
+- Customizable number **formatter**
+- **SI Standard**
 
 ## 👅 Translate
 <a href="https://poeditor.com/join/project/T4zjmoq8dx" target="_blank"><img src="./content/poeditor.png" alt="Unitto - Calculate&#0032;and&#0032;convert&#0044;&#0032;but&#0032;better&#0046; | POEditor" style="width: 180px; height: 60px;" width="180" height="60" /></a>
@@ -36,9 +36,13 @@
 Visit [FUNDING.md](./FUNDING.md)
 
 ## 🔎 Additional
-<a href="https://www.producthunt.com/posts/unitto?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-unitto" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=372851&theme=light" alt="Unitto - Calculate&#0032;and&#0032;convert&#0044;&#0032;but&#0032;better&#0046; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<p align="middle">
+    <a href="https://trello.com/b/cxAbRlvu/unitto" target="_blank">
+        <img src="./content/progress.png" width="99%"/>
+    </a>
+</p>
 
-Trello board: https://trello.com/b/cxAbRlvu/unitto
+<a href="https://www.producthunt.com/posts/unitto?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-unitto" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=372851&theme=light" alt="Unitto - Calculate&#0032;and&#0032;convert&#0044;&#0032;but&#0032;better&#0046; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
 Terms and Conditions, Privacy Policy, Press Kit and contact links:
 https://sadellie.github.io/unitto/
