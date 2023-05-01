@@ -18,18 +18,24 @@
 
 package com.sadellie.unitto
 
+import android.app.Activity
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -103,12 +109,11 @@ internal fun UnittoApp() {
         typography = AppTypography,
         animationSpec = tween(250)
     ) {
-        val statusBarColor = when (currentRoute) {
-            // Match text field container color
-            TopLevelDestinations.Calculator -> MaterialTheme.colorScheme.surfaceVariant
-            else -> MaterialTheme.colorScheme.background
+        val localView = LocalView.current
+        val backgroundColor = MaterialTheme.colorScheme.background
+        val useDarkIcons by remember(backgroundColor) {
+            mutableStateOf(backgroundColor.luminance() > 0.5f)
         }
-        val navigationBarColor = MaterialTheme.colorScheme.background
 
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -142,9 +147,10 @@ internal fun UnittoApp() {
             )
         }
 
-        SideEffect {
-            sysUiController.setNavigationBarColor(navigationBarColor)
-            sysUiController.setStatusBarColor(statusBarColor)
+        LaunchedEffect(useDarkIcons) {
+            WindowCompat.setDecorFitsSystemWindows((localView.context as Activity).window, false)
+            sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
+            sysUiController.setStatusBarColor(Color.Transparent, useDarkIcons)
         }
     }
 }

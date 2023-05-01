@@ -1,3 +1,7 @@
 <resources>
-    <style name="Theme.Unitto" parent="@android:style/Theme.Material.NoActionBar"/>
+    <style name="Theme.Unitto" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@color/window_background</item>
+        <item name="android:navigationBarColor">@color/window_background</item>
+    </style>
 </resources>

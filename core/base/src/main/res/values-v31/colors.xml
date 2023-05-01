@@ -17,6 +17,5 @@
   -->
 
 <resources>
-    <color name="ic_launcher_icon_background">#FCFCF7</color>
-    <color name="window_background">#FFFFFF</color>
+    <color name="window_background">@android:color/system_neutral1_50</color>
 </resources>
