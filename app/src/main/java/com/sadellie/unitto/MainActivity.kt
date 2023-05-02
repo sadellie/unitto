@@ -18,9 +18,14 @@
 
 package com.sadellie.unitto
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,5 +37,17 @@ internal class MainActivity : ComponentActivity() {
         setContent {
             UnittoApp()
         }
+    }
+
+    override fun onCreateView(
+        parent: View?,
+        name: String,
+        context: Context,
+        attrs: AttributeSet
+    ): View? {
+        if (parent != null) {
+            WindowCompat.setDecorFitsSystemWindows((parent.context as Activity).window, false)
+        }
+        return super.onCreateView(parent, name, context, attrs)
     }
 }

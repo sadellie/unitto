@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto
 
-import android.app.Activity
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
@@ -34,8 +33,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -44,8 +41,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
+import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
@@ -109,7 +106,6 @@ internal fun UnittoApp() {
         typography = AppTypography,
         animationSpec = tween(250)
     ) {
-        val localView = LocalView.current
         val backgroundColor = MaterialTheme.colorScheme.background
         val useDarkIcons by remember(backgroundColor) {
             mutableStateOf(backgroundColor.luminance() > 0.5f)
@@ -148,7 +144,6 @@ internal fun UnittoApp() {
         }
 
         LaunchedEffect(useDarkIcons) {
-            WindowCompat.setDecorFitsSystemWindows((localView.context as Activity).window, false)
             sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
             sysUiController.setStatusBarColor(Color.Transparent, useDarkIcons)
         }

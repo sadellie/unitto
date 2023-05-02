@@ -18,7 +18,10 @@
 
 package com.sadellie.unitto
 
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -49,7 +52,8 @@ internal fun UnittoNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
         fun navigateToSettings() {
             navController.navigateToSettings {
