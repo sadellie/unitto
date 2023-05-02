@@ -38,8 +38,8 @@ private const val USER_PREFERENCES = "settings"
 /**
  * This module is for DataStore dependency injection
  */
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 class DataStoreModule {
     /**
      * Tells Hilt to use this method to get [DataStore]
@@ -47,8 +47,8 @@ class DataStoreModule {
      * @param appContext
      * @return Singleton of [DataStore]
      */
-    @Singleton
     @Provides
+    @Singleton
     fun provideUserPreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },

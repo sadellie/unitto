@@ -106,6 +106,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.com.github.sadellie.themmo)
     implementation(libs.com.google.accompanist.systemuicontroller)
+    implementation(libs.androidx.datastore)
 
     implementation(project(mapOf("path" to ":feature:converter")))
     implementation(project(mapOf("path" to ":feature:calculator")))

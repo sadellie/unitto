@@ -46,8 +46,7 @@ import javax.inject.Inject
 /**
  * Represents user preferences that are user across the app
  *
- * @property themingMode [ThemingMode] from Themmo. Nullable just to indicate that preferences are
- * still loading.
+ * @property themingMode [ThemingMode] from Themmo.
  * @property enableDynamicTheme Use dynamic color scheme
  * @property enableAmoledTheme Use amoled color scheme
  * @property customColor Generate custom color scheme from this color.
@@ -65,7 +64,7 @@ import javax.inject.Inject
  * @property unitConverterSorting Units list sorting mode.
  */
 data class UserPreferences(
-    val themingMode: ThemingMode? = null,
+    val themingMode: ThemingMode = ThemingMode.AUTO,
     val enableDynamicTheme: Boolean = false,
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,

@@ -26,16 +26,25 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 internal class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var userPrefsRepository: UserPreferencesRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            UnittoApp()
+            val userPrefs = userPrefsRepository.userPreferencesFlow
+                .collectAsStateWithLifecycle(null).value
+
+            if (userPrefs != null) UnittoApp(userPrefs)
         }
     }
 
@@ -45,8 +54,9 @@ internal class MainActivity : ComponentActivity() {
         context: Context,
         attrs: AttributeSet
     ): View? {
-        if (parent != null) {
-            WindowCompat.setDecorFitsSystemWindows((parent.context as Activity).window, false)
+        val window = (parent?.context as? Activity)?.window
+        if (window != null) {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
         }
         return super.onCreateView(parent, name, context, attrs)
     }

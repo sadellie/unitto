@@ -246,7 +246,6 @@ private fun ThemesScreen(
                                 monetModes = remember { MonetMode.values().toList() },
                                 customColor = selectedColor,
                                 themingMode = currentThemingMode,
-                                amoledThemeEnabled = isAmoledThemeEnabled,
                             )
                         },
                         modifier = Modifier.padding(start = 40.dp)

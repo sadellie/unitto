@@ -66,7 +66,6 @@ internal fun MonetModeSelector(
     monetModes: List<MonetMode>,
     customColor: Color,
     themingMode: ThemingMode,
-    amoledThemeEnabled: Boolean,
 ) {
     LazyRow(
         modifier = modifier,
@@ -74,7 +73,7 @@ internal fun MonetModeSelector(
     ) {
         items(monetModes) { monetMode ->
             Themmo(
-                themmoController = remember(customColor) {
+                themmoController = remember(customColor, themingMode) {
                     ThemmoController(
                         lightColorScheme = lightColorScheme(),
                         darkColorScheme = darkColorScheme(),

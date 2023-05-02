@@ -33,8 +33,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -46,29 +44,23 @@ import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
-import com.sadellie.unitto.feature.converter.ConverterViewModel
-import com.sadellie.unitto.feature.settings.SettingsViewModel
-import com.sadellie.unitto.feature.unitslist.UnitsListViewModel
+import com.sadellie.unitto.data.userprefs.UserPreferences
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun UnittoApp() {
-    val converterViewModel: ConverterViewModel = hiltViewModel()
-    val unitsListViewModel: UnitsListViewModel = hiltViewModel()
-    val settingsViewModel: SettingsViewModel = hiltViewModel()
-    val userPrefs = settingsViewModel.userPrefs.collectAsStateWithLifecycle()
+internal fun UnittoApp(userPrefs: UserPreferences) {
 
     val themmoController = rememberThemmoController(
         lightColorScheme = LightThemeColors,
         darkColorScheme = DarkThemeColors,
         // Anything below will not be called if theming mode is still loading from DataStore
-        themingMode = userPrefs.value.themingMode ?: return,
-        dynamicThemeEnabled = userPrefs.value.enableDynamicTheme,
-        amoledThemeEnabled = userPrefs.value.enableAmoledTheme,
-        customColor = userPrefs.value.customColor,
-        monetMode = userPrefs.value.monetMode
+        themingMode = userPrefs.themingMode,
+        dynamicThemeEnabled = userPrefs.enableDynamicTheme,
+        amoledThemeEnabled = userPrefs.enableAmoledTheme,
+        customColor = userPrefs.customColor,
+        monetMode = userPrefs.monetMode
     )
     val navController = rememberNavController()
     val sysUiController = rememberSystemUiController()
@@ -134,11 +126,8 @@ internal fun UnittoApp() {
         ) {
             UnittoNavigation(
                 navController = navController,
-                converterViewModel = converterViewModel,
-                unitsListViewModel = unitsListViewModel,
-                settingsViewModel = settingsViewModel,
                 themmoController = it,
-                startDestination = userPrefs.value.startingScreen,
+                startDestination = userPrefs.startingScreen,
                 openDrawer = { drawerScope.launch { drawerState.open() } }
             )
         }

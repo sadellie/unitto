@@ -22,6 +22,7 @@ import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -43,13 +44,14 @@ import io.github.sadellie.themmo.ThemmoController
 @Composable
 internal fun UnittoNavigation(
     navController: NavHostController,
-    converterViewModel: ConverterViewModel,
-    unitsListViewModel: UnitsListViewModel,
-    settingsViewModel: SettingsViewModel,
     themmoController: ThemmoController,
     startDestination: String,
     openDrawer: () -> Unit
 ) {
+    val converterViewModel: ConverterViewModel = hiltViewModel()
+    val unitsListViewModel: UnitsListViewModel = hiltViewModel()
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
