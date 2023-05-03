@@ -24,12 +24,19 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.HdrAuto
+import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -46,13 +53,14 @@ import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.SegmentedButton
-import com.sadellie.unitto.core.ui.common.SegmentedButtonRow
+import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.feature.settings.components.ColorSelector
 import com.sadellie.unitto.feature.settings.components.MonetModeSelector
 import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
+import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 
 private val colorSchemes: List<Color> by lazy {
@@ -128,9 +136,9 @@ private fun ThemesScreen(
     val themingModes by remember {
         mutableStateOf(
             mapOf(
-                ThemingMode.AUTO to R.string.force_auto_mode,
-                ThemingMode.FORCE_LIGHT to R.string.force_light_mode,
-                ThemingMode.FORCE_DARK to R.string.force_dark_mode
+                ThemingMode.AUTO to (R.string.force_auto_mode to Icons.Outlined.HdrAuto),
+                ThemingMode.FORCE_LIGHT to (R.string.force_light_mode to Icons.Outlined.LightMode),
+                ThemingMode.FORCE_DARK to (R.string.force_dark_mode to Icons.Outlined.DarkMode)
             )
         )
     }
@@ -155,15 +163,21 @@ private fun ThemesScreen(
             }
 
             item {
-                SegmentedButtonRow(
-                    modifier = Modifier.padding(56.dp, 8.dp, 24.dp, 2.dp)
+                Row(
+                    Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .wrapContentWidth()
                 ) {
-                    themingModes.forEach { (mode, stringRes) ->
-                        SegmentedButton(
-                            onClick = { onThemeChange(mode) },
-                            selected = currentThemingMode == mode,
-                            content = { Text(stringResource(stringRes)) }
-                        )
+                    SegmentedButtonsRow(modifier = Modifier.padding(56.dp, 8.dp, 24.dp, 2.dp)) {
+                        themingModes.forEach { (mode, visuals) ->
+                            val (label, icon) = visuals
+                            SegmentedButton(
+                                label = stringResource(label),
+                                onClick = { onThemeChange(mode) },
+                                selected = mode == currentThemingMode,
+                                icon = icon
+                            )
+                        }
                     }
                 }
             }
@@ -259,17 +273,19 @@ private fun ThemesScreen(
 @Preview
 @Composable
 private fun Preview() {
-    ThemesScreen(
-        navigateUpAction = {},
-        currentThemingMode = ThemingMode.AUTO,
-        onThemeChange = {},
-        isDynamicThemeEnabled = false,
-        onDynamicThemeChange = {},
-        isAmoledThemeEnabled = false,
-        onAmoledThemeChange = {},
-        selectedColor = Color.Unspecified,
-        onColorChange = {},
-        monetMode = MonetMode.TONAL_SPOT,
-        onMonetModeChange = {}
-    )
+    Themmo { themmoController ->
+        ThemesScreen(
+            navigateUpAction = {},
+            currentThemingMode = themmoController.currentThemingMode,
+            onThemeChange = themmoController::setThemingMode,
+            isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
+            onDynamicThemeChange = themmoController::enableDynamicTheme,
+            isAmoledThemeEnabled = themmoController.isAmoledThemeEnabled,
+            onAmoledThemeChange = themmoController::enableAmoledTheme,
+            selectedColor = themmoController.currentCustomColor,
+            onColorChange = themmoController::setCustomColor,
+            monetMode = themmoController.currentMonetMode,
+            onMonetModeChange = themmoController::setMonetMode
+        )
+    }
 }

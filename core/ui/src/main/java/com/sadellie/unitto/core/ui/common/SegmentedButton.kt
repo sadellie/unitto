@@ -18,8 +18,9 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -27,7 +28,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -35,51 +35,42 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
-private val GroupRowContainerHeight = 40.dp
-private val GroupRowItemMinWidth = 58.dp
-
 @Composable
-fun SegmentedButtonRow(
+fun SegmentedButtonsRow(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit
 ) {
-    OutlinedCard(
-        modifier = modifier,
-        shape = CircleShape
+    Row(
+        modifier
+            .width(IntrinsicSize.Max)
+            .height(40.dp)
+            .clip(CircleShape)
+            .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
     ) {
-        Row(
-            modifier = Modifier
-                .height(GroupRowContainerHeight)
-                .widthIn(min = GroupRowItemMinWidth),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            content()
-        }
+        content()
     }
 }
 
 @Composable
 fun RowScope.SegmentedButton(
+    modifier: Modifier = Modifier,
+    label: String,
     onClick: () -> Unit,
     selected: Boolean,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    content: @Composable () -> Unit,
+    icon: ImageVector
 ) {
     val containerColor =
-        if (selected)
-            MaterialTheme.colorScheme.secondaryContainer
-        else
-            MaterialTheme.colorScheme.surface
+        if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
+
     OutlinedButton(
         modifier = modifier.weight(1f),
         onClick = onClick,
@@ -88,19 +79,16 @@ fun RowScope.SegmentedButton(
             containerColor = containerColor,
             contentColor = contentColorFor(containerColor)
         ),
-        enabled = enabled,
         contentPadding = PaddingValues(horizontal = 12.dp)
     ) {
-        AnimatedVisibility(visible = selected) {
-            Row {
-                Icon(
-                    modifier = Modifier.size(18.dp),
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null
-                )
-                Spacer(Modifier.width(8.dp))
+        Crossfade(targetState = selected) {
+            if (it) {
+                Icon(Icons.Default.Check, null, Modifier.size(18.dp))
+            } else {
+                Icon(icon, null, Modifier.size(18.dp))
             }
         }
-        content()
+        Spacer(Modifier.width(8.dp))
+        Text(label)
     }
 }
