@@ -39,6 +39,11 @@ sealed class TopLevelDestinations(
         name = R.string.epoch_converter
     )
 
+    object TimeZone : TopLevelDestinations(
+        route = "time_zone_route",
+        name = R.string.time_zone
+    )
+
     object Settings : TopLevelDestinations(
         route = "settings_graph",
         name = R.string.settings_screen

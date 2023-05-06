@@ -39,6 +39,7 @@ import com.sadellie.unitto.feature.unitslist.navigation.leftScreen
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToLeftSide
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToRightSide
 import com.sadellie.unitto.feature.unitslist.navigation.rightScreen
+import com.sadellie.unitto.timezone.navigation.timeZoneScreen
 import io.github.sadellie.themmo.ThemmoController
 
 @Composable
@@ -102,5 +103,10 @@ internal fun UnittoNavigation(
         )
 
         epochScreen(navigateToMenu = openDrawer)
+
+        timeZoneScreen(
+            navigateToMenu = openDrawer,
+            navigateToSettings = ::navigateToSettings
+        )
     }
 }

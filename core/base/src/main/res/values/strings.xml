@@ -1271,6 +1271,9 @@
     <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>
     <string name="calculator_no_history">No history</string>
 
+    <!--Time zone-->
+    <string name="time_zone">Time zone</string>
+
     <!--Precision-->
     <string name="precision_setting_support">Number of decimal places</string>
     <string name="precision_setting_info">Converted values may have a precision higher than the preferred one.</string>

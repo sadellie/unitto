@@ -113,6 +113,7 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:settings")))
     implementation(project(mapOf("path" to ":feature:unitslist")))
     implementation(project(mapOf("path" to ":feature:epoch")))
+    implementation(project(mapOf("path" to ":feature:timezone")))
     implementation(project(mapOf("path" to ":data:units")))
     implementation(project(mapOf("path" to ":data:model")))
     implementation(project(mapOf("path" to ":data:userprefs")))
