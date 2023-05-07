@@ -27,8 +27,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,8 +42,11 @@ internal class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val userPrefsFlow = userPrefsRepository.userPreferencesFlow
+            .onEach { Formatter.setSeparator(it.separator) }
+
         setContent {
-            val userPrefs = userPrefsRepository.userPreferencesFlow
+            val userPrefs = userPrefsFlow
                 .collectAsStateWithLifecycle(null).value
 
             if (userPrefs != null) UnittoApp(userPrefs)
