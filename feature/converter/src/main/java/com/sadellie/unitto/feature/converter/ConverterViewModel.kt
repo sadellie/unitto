@@ -18,11 +18,14 @@
 
 package com.sadellie.unitto.feature.converter
 
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.keelar.exprk.ExpressionException
-import com.github.keelar.exprk.Expressions
-import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.addTokens
+import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
+import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
@@ -39,8 +42,9 @@ import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import com.sadellie.unitto.data.userprefs.UserPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.sadellie.evaluatto.Expression
+import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -50,11 +54,8 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
-import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -80,10 +81,7 @@ class ConverterViewModel @Inject constructor(
      */
     private val _unitTo: MutableStateFlow<AbstractUnit?> = MutableStateFlow(null)
 
-    /**
-     * Current input. Used when converting units.
-     */
-    private val _input: MutableStateFlow<String> = MutableStateFlow(Token._0)
+    private val _input: MutableStateFlow<TextFieldValue> = MutableStateFlow(TextFieldValue())
 
     /**
      * Calculation result. Null when [_input] is not an expression.
@@ -91,14 +89,9 @@ class ConverterViewModel @Inject constructor(
     private val _calculated: MutableStateFlow<String?> = MutableStateFlow(null)
 
     /**
-     * List of latest symbols that were entered.
-     */
-    private val _latestInputStack: MutableList<String> = mutableListOf(_input.value)
-
-    /**
      * Conversion result.
      */
-    private val _result: MutableStateFlow<String> = MutableStateFlow(Token._0)
+    private val _result: MutableStateFlow<ConversionResult> = MutableStateFlow(ConversionResult.Loading)
 
     /**
      * True when loading something from network.
@@ -113,190 +106,38 @@ class ConverterViewModel @Inject constructor(
     /**
      * Current state of UI.
      */
-    val uiStateFlow: StateFlow<ConverterUIState> = combine(
+    val uiState: StateFlow<ConverterUIState> = combine(
         _input,
         _unitFrom,
         _unitTo,
         _calculated,
         _result,
-        _showLoading,
+        _userPrefs,
         _showError,
-        _userPrefs
-    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, showLoadingValue, showErrorValue, prefs ->
+        _showLoading
+    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, prefs, showError, showLoading ->
         return@combine ConverterUIState(
             inputValue = inputValue,
             calculatedValue = calculatedValue,
-            resultValue = resultValue,
-            showLoading = showLoadingValue,
-            showError = showErrorValue,
+            resultValue = when {
+                showError -> ConversionResult.Error
+                showLoading -> ConversionResult.Loading
+                else -> resultValue
+            },
             unitFrom = unitFromValue,
             unitTo = unitToValue,
-            /**
-             * If there will be more modes, this should be a separate value which we update when
-             * changing units.
-             */
             mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
-            formatTime = prefs.unitConverterFormatTime,
-            allowVibration = prefs.enableVibrations
+            allowVibration = prefs.enableVibrations,
+            formatterSymbols = AllFormatterSymbols.getById(prefs.separator)
         )
-    }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            ConverterUIState()
-        )
+    }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), ConverterUIState()
+    )
 
-    /**
-     * Process input with rules. Makes sure that user input is corrected when needed.
-     *
-     * @param symbolToAdd Use 'ugly' version of symbols.
-     */
-    fun processInput(symbolToAdd: String) {
-        val lastTwoSymbols = _latestInputStack.takeLast(2)
-        val lastSymbol: String = lastTwoSymbols.getOrNull(1) ?: lastTwoSymbols[0]
-        val lastSecondSymbol: String? = lastTwoSymbols.getOrNull(0)
-
-        when (symbolToAdd) {
-            Token.plus, Token.divide, Token.multiply, Token.exponent -> {
-                when {
-                    // Don't need expressions that start with zero
-                    (_input.value == Token._0) -> {}
-                    (_input.value == Token.minus) -> {}
-                    (lastSymbol == Token.leftBracket) -> {}
-                    (lastSymbol == Token.sqrt) -> {}
-                    /**
-                     * For situations like "50+-", when user clicks "/" we delete "-" so it becomes
-                     * "50+". We don't add "/' here. User will click "/" second time and the input
-                     * will be "50/".
-                     */
-                    (lastSecondSymbol in Token.operators) and (lastSymbol == Token.minus) -> {
-                        deleteDigit()
-                    }
-                    // Don't allow multiple operators near each other
-                    (lastSymbol in Token.operators) -> {
-                        deleteDigit()
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            Token._0 -> {
-                when {
-                    // Don't add zero if the input is already a zero
-                    (_input.value == Token._0) -> {}
-                    (lastSymbol == Token.rightBracket) -> {
-                        processInput(Token.multiply)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    // Prevents things like "-00" and "4+000"
-                    ((lastSecondSymbol in Token.operators + Token.leftBracket) and (lastSymbol == Token._0)) -> {}
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            Token._1, Token._2, Token._3, Token._4, Token._5,
-            Token._6, Token._7, Token._8, Token._9 -> {
-                // Replace single zero (default input) if it's here
-                when {
-                    (_input.value == Token._0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    (lastSymbol == Token.rightBracket) -> {
-                        processInput(Token.multiply)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            Token.minus -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (_input.value == Token._0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    // Don't allow multiple minuses near each other
-                    (lastSymbol.compareTo(Token.minus) == 0) -> {}
-                    // Don't allow plus and minus be near each other
-                    (lastSymbol == Token.plus) -> {
-                        deleteDigit()
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            Token.dot -> {
-                if (!_input.value
-                    .takeLastWhile { it.toString() !in Token.operators.minus(Token.dot) }
-                    .contains(Token.dot)
-                ) {
-                    setInputSymbols(symbolToAdd)
-                }
-            }
-            Token.leftBracket -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (_input.value == Token._0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    (lastSymbol == Token.rightBracket) || (lastSymbol in Token.digits) || (lastSymbol == Token.dot) -> {
-                        processInput(Token.multiply)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            Token.rightBracket -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (_input.value == Token._0) -> {}
-                    (lastSymbol == Token.leftBracket) -> {}
-                    (
-                        _latestInputStack.filter { it == Token.leftBracket }.size ==
-                            _latestInputStack.filter { it == Token.rightBracket }.size
-                        ) -> {
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            Token.sqrt -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (_input.value == Token._0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    (lastSymbol == Token.rightBracket) || (lastSymbol in Token.digits) || (lastSymbol == Token.dot) -> {
-                        processInput(Token.multiply)
-                        setInputSymbols(symbolToAdd)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-            else -> {
-                when {
-                    // Replace single zero with minus (to support negative numbers)
-                    (_input.value == Token._0) -> {
-                        setInputSymbols(symbolToAdd, false)
-                    }
-                    else -> {
-                        setInputSymbols(symbolToAdd)
-                    }
-                }
-            }
-        }
-    }
+    fun addTokens(tokens: String) = _input.update { it.addTokens(tokens) }
+    fun deleteTokens() = _input.update { it.deleteTokens() }
+    fun clearInput() = _input.update { TextFieldValue() }
+    fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
 
     /**
      * Update [_unitFrom] and set [_unitTo] from pair. Also updates stats for this [unit].
@@ -346,133 +187,76 @@ class ConverterViewModel @Inject constructor(
         updateCurrenciesRatesIfNeeded()
     }
 
-    /**
-     * Delete last symbol from [_input].
-     */
-    fun deleteDigit() {
-        // Default input, don't delete
-        if (_input.value == Token._0) return
-
-        val lastSymbol = _latestInputStack.removeLast()
-
-        // If this value are same, it means that after deleting there will be no symbols left, set to default
-        if (lastSymbol == _input.value) {
-            setInputSymbols(Token._0, false)
-        } else {
-            _input.update { it.removeSuffix(lastSymbol) }
+    private fun convertInput() {
+        when (_unitFrom.value?.group) {
+            UnitGroup.NUMBER_BASE -> convertAsNumberBase()
+            else -> convertAsExpression()
         }
     }
 
-    /**
-     * Clear [_input].
-     */
-    fun clearInput() {
-        setInputSymbols(Token._0, false)
-    }
-
-    private suspend fun convertInput() {
-        withContext(Dispatchers.Default) {
-            while (isActive) {
-                when (_unitFrom.value?.group) {
-                    UnitGroup.NUMBER_BASE -> convertAsNumberBase()
-                    else -> convertAsExpression()
-                }
-                cancel()
-            }
-        }
-    }
-
-    private fun convertAsNumberBase() {
+    private fun convertAsNumberBase() = viewModelScope.launch(Dispatchers.Default) {
         // Units are still loading, don't convert anything yet
-        val unitFrom = _unitFrom.value ?: return
-        val unitTo = _unitTo.value ?: return
+        val unitFrom = _unitFrom.value ?: return@launch
+        val unitTo = _unitTo.value ?: return@launch
 
         val conversionResult = try {
             (unitFrom as NumberBaseUnit).convertToBase(
-                input = _input.value,
+                input = _input.value.text.ifEmpty { "0" },
                 toBase = (unitTo as NumberBaseUnit).base
             )
         } catch (e: Exception) {
             when (e) {
-                is ClassCastException -> return
+                is ClassCastException -> return@launch
                 is NumberFormatException, is IllegalArgumentException -> ""
                 else -> throw e
             }
         }
-        _result.update { conversionResult }
+        _result.update { ConversionResult.NumberBase(conversionResult) }
     }
 
-    private fun convertAsExpression() {
-        // Units are still loading, don't convert anything yet
-        val unitFrom = _unitFrom.value ?: return
-        val unitTo = _unitTo.value ?: return
+    private fun convertAsExpression() = viewModelScope.launch(Dispatchers.Default) {
+        val unitFrom = _unitFrom.value ?: return@launch
+        val unitTo = _unitTo.value ?: return@launch
+        val input = _input.value.text.ifEmpty { "0" }
 
-        // First we clean the input from garbage at the end
-        var cleanInput = _input.value.dropLastWhile { !it.isDigit() }
-
-        // Now we close open brackets that user didn't close
-        // AUTOCLOSE ALL BRACKETS
-        val leftBrackets = _input.value.count { it.toString() == Token.leftBracket }
-        val rightBrackets = _input.value.count { it.toString() == Token.rightBracket }
-        val neededBrackets = leftBrackets - rightBrackets
-        if (neededBrackets > 0) cleanInput += Token.rightBracket.repeat(neededBrackets)
-
-        // Now we evaluate expression in input
-        val evaluationResult: BigDecimal = try {
-            Expressions().eval(cleanInput)
-                .setScale(_userPrefs.value.digitsPrecision, RoundingMode.HALF_EVEN)
-                .trimZeros()
-        } catch (e: Exception) {
-            when (e) {
-                is ExpressionException,
-                is ArrayIndexOutOfBoundsException,
-                is IndexOutOfBoundsException,
-                is NumberFormatException,
-                is ArithmeticException -> {
-                    // Invalid expression, can't do anything further
-                    return
-                }
-                else -> throw e
-            }
-        }
-
-        // Evaluated. Hide calculated result if no expression entered.
-        // 123.456 will be true
-        // -123.456 will be true
-        // -123.456-123 will be false (first minus gets removed, ending with 123.456)
-        if (_input.value.removePrefix(Token.minus).all { it.toString() !in Token.operators }) {
-            // No operators
+        if (input.isEmpty()) {
             _calculated.update { null }
-        } else {
-            _calculated.update {
-                evaluationResult
-                    .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
-                    .trimZeros()
-                    .toStringWith(_userPrefs.value.outputFormat)
-            }
+            _result.update { ConversionResult.Default("") }
+            return@launch
         }
 
-        // Now we just convert.
-        // We can use evaluation result here, input is valid.
-        val conversionResult: BigDecimal = unitFrom.convert(
-            unitTo,
-            evaluationResult,
-            _userPrefs.value.digitsPrecision
-        )
-
-        // Converted
-        _result.update { conversionResult.toStringWith(_userPrefs.value.outputFormat) }
-    }
-
-    private fun setInputSymbols(symbol: String, add: Boolean = true) {
-        if (add) {
-            _input.update { it + symbol }
-        } else {
-            // We don't need previous input, clear entirely
-            _latestInputStack.clear()
-            _input.update { symbol }
+        val evaluationResult = try {
+            Expression(input)
+                .calculate()
+                .also {
+                    if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
+                }
+                .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
+                .trimZeros()
+        } catch (e: ExpressionException.DivideByZero) {
+            _calculated.update { null }
+            return@launch
+        } catch (e: Exception) {
+            return@launch
         }
-        _latestInputStack.add(symbol)
+
+        _calculated.update {
+            if (input.isExpression()) evaluationResult.toStringWith(_userPrefs.value.outputFormat)
+            else null
+        }
+
+        val conversionResult = unitFrom.convert(
+            unitTo = unitTo,
+            value = evaluationResult,
+            scale = _userPrefs.value.digitsPrecision
+        ).toStringWith(_userPrefs.value.outputFormat)
+
+        _result.update {
+            if ((unitFrom.group == UnitGroup.TIME) and (_userPrefs.value.unitConverterFormatTime))
+                ConversionResult.Time(conversionResult)
+            else
+                ConversionResult.Default(conversionResult)
+        }
     }
 
     private fun incrementCounter(unit: AbstractUnit) {
@@ -506,9 +290,10 @@ class ConverterViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _showError.update { false }
             _showLoading.update { false }
+
             // Units are still loading, don't convert anything yet
-            val unitFrom = _unitFrom.value ?: return@launch
             if (_unitFrom.value?.group != UnitGroup.CURRENCY) return@launch
+            val unitFrom = _unitFrom.value ?: return@launch
             // Starting to load stuff
             _showLoading.update { true }
 
@@ -516,6 +301,7 @@ class ConverterViewModel @Inject constructor(
                 val pairs: CurrencyUnitResponse =
                     CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId)
                 allUnitsRepository.updateBasicUnitsForCurrencies(pairs.currency)
+                convertAsExpression()
             } catch (e: Exception) {
                 // Dangerous and stupid, but who cares
                 _showError.update { true }
@@ -539,7 +325,7 @@ class ConverterViewModel @Inject constructor(
     }
 
     private fun startObserving() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             merge(_input, _unitFrom, _unitTo, _showLoading, _userPrefs).collectLatest {
                 convertInput()
             }

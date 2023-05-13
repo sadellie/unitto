@@ -20,7 +20,9 @@ package com.sadellie.unitto.core.ui
 
 import android.content.Context
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.sadellie.unitto.core.base.Separator
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.formatExpression
+import com.sadellie.unitto.core.ui.common.textfield.formatTime
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -29,16 +31,14 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import java.math.BigDecimal
 
-private val formatter = Formatter
-
 private const val ENG_VALUE = "123E+21"
 private const val ENG_VALUE_FRACTIONAL = "123.3E+21"
 private const val COMPLETE_VALUE = "123456.789"
 private const val INCOMPLETE_VALUE = "123456."
 private const val NO_FRACTIONAL_VALUE = "123456"
-private const val INCOMPLETE_EXPR = "50+123456÷8×0.8–12+"
-private const val COMPLETE_EXPR = "50+123456÷8×0.8–12+0-√9*4^9+2×(9+8×7)"
-private const val LONG_HALF_COMPLETE_EXPR = "50+123456÷89078..9×0.8–12+0-√9*4^9+2×(9+8×7)×sin(13sin123cos"
+private const val INCOMPLETE_EXPR = "50+123456÷8×0.8-12+"
+private const val COMPLETE_EXPR = "50+123456÷8×0.8-12+0-√9×4^9+2×(9+8×7)"
+private const val LONG_HALF_COMPLETE_EXPR = "50+123456÷89078..9×0.8-12+0-√9×4^9+2×(9+8×7)×sin(13sin123cos"
 private const val SOME_BRACKETS = "(((((((("
 
 @RunWith(RobolectricTestRunner::class)
@@ -49,167 +49,143 @@ class FormatterTest {
 
     @Test
     fun setSeparatorSpaces() {
-        formatter.setSeparator(Separator.SPACES)
-        assertEquals(".", formatter.fractional)
-        assertEquals("123E+21", formatter.format(ENG_VALUE))
-        assertEquals("123.3E+21", formatter.format(ENG_VALUE_FRACTIONAL))
-        assertEquals("123 456.789", formatter.format(COMPLETE_VALUE))
-        assertEquals("123 456.", formatter.format(INCOMPLETE_VALUE))
-        assertEquals("123 456", formatter.format(NO_FRACTIONAL_VALUE))
-        assertEquals("50+123 456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123 456÷8×0.8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
-        assertEquals("50+123 456÷89 078..9×0.8–12+0–√9×4^9+2×(9+8×7)×sin(13sin123cos", formatter.format(LONG_HALF_COMPLETE_EXPR))
-        assertEquals("((((((((", formatter.format(SOME_BRACKETS))
+        fun String.format(): String = formatExpression(FormatterSymbols.Spaces)
+        assertEquals("123E+21", ENG_VALUE.format())
+        assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
+        assertEquals("123 456.789", COMPLETE_VALUE.format())
+        assertEquals("123 456.", INCOMPLETE_VALUE.format())
+        assertEquals("123 456", NO_FRACTIONAL_VALUE.format())
+        assertEquals("50+123 456÷8×0.8−12+", INCOMPLETE_EXPR.format())
+        assertEquals("50+123 456÷8×0.8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
+        assertEquals("50+123 456÷89 078..9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos", LONG_HALF_COMPLETE_EXPR.format())
+        assertEquals("((((((((", SOME_BRACKETS.format())
     }
 
     @Test
     fun setSeparatorComma() {
-        formatter.setSeparator(Separator.COMMA)
-        assertEquals(".", formatter.fractional)
-        assertEquals("123E+21", formatter.format(ENG_VALUE))
-        assertEquals("123.3E+21", formatter.format(ENG_VALUE_FRACTIONAL))
-        assertEquals("123,456.789", formatter.format(COMPLETE_VALUE))
-        assertEquals("123,456.", formatter.format(INCOMPLETE_VALUE))
-        assertEquals("123,456", formatter.format(NO_FRACTIONAL_VALUE))
-        assertEquals("50+123,456÷8×0.8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123,456÷8×0.8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
-        assertEquals("50+123,456÷89,078..9×0.8–12+0–√9×4^9+2×(9+8×7)×sin(13sin123cos", formatter.format(LONG_HALF_COMPLETE_EXPR))
-        assertEquals("((((((((", formatter.format(SOME_BRACKETS))
+        fun String.format(): String = formatExpression(FormatterSymbols.Comma)
+        assertEquals("123E+21", ENG_VALUE.format())
+        assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
+        assertEquals("123,456.789", COMPLETE_VALUE.format())
+        assertEquals("123,456.", INCOMPLETE_VALUE.format())
+        assertEquals("123,456", NO_FRACTIONAL_VALUE.format())
+        assertEquals("50+123,456÷8×0.8−12+", INCOMPLETE_EXPR.format())
+        assertEquals("50+123,456÷8×0.8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
+        assertEquals("50+123,456÷89,078..9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos", LONG_HALF_COMPLETE_EXPR.format())
+        assertEquals("((((((((", SOME_BRACKETS.format())
     }
 
     @Test
     fun setSeparatorPeriod() {
-        formatter.setSeparator(Separator.PERIOD)
-        assertEquals(",", formatter.fractional)
-        assertEquals("123E+21", formatter.format(ENG_VALUE))
-        assertEquals("123,3E+21", formatter.format(ENG_VALUE_FRACTIONAL))
-        assertEquals("123.456,789", formatter.format(COMPLETE_VALUE))
-        assertEquals("123.456,", formatter.format(INCOMPLETE_VALUE))
-        assertEquals("123.456", formatter.format(NO_FRACTIONAL_VALUE))
-        assertEquals("50+123.456÷8×0,8–12+", formatter.format(INCOMPLETE_EXPR))
-        assertEquals("50+123.456÷8×0,8–12+0–√9×4^9+2×(9+8×7)", formatter.format(COMPLETE_EXPR))
-        assertEquals("50+123.456÷89.078,,9×0,8–12+0–√9×4^9+2×(9+8×7)×sin(13sin123cos", formatter.format(LONG_HALF_COMPLETE_EXPR))
-        assertEquals("((((((((", formatter.format(SOME_BRACKETS))
+        fun String.format(): String = formatExpression(FormatterSymbols.Period)
+        assertEquals("123E+21", ENG_VALUE.format())
+        assertEquals("123,3E+21", ENG_VALUE_FRACTIONAL.format())
+        assertEquals("123.456,789", COMPLETE_VALUE.format())
+        assertEquals("123.456,", INCOMPLETE_VALUE.format())
+        assertEquals("123.456", NO_FRACTIONAL_VALUE.format())
+        assertEquals("50+123.456÷8×0,8−12+", INCOMPLETE_EXPR.format())
+        assertEquals("50+123.456÷8×0,8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
+        assertEquals("50+123.456÷89.078,,9×0,8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos", LONG_HALF_COMPLETE_EXPR.format())
+        assertEquals("((((((((", SOME_BRACKETS.format())
     }
 
     @Test
     fun formatTimeTest() {
-        formatter.setSeparator(Separator.SPACES)
+        val formatterSymbols = FormatterSymbols.Spaces
         var basicValue = BigDecimal.valueOf(1)
         val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
-        assertEquals("-28", formatter.formatTime(mContext, "-28", basicValue))
-        assertEquals("-0.05", formatter.formatTime(mContext, "-0.05", basicValue))
-        assertEquals("0", formatter.formatTime(mContext, "0", basicValue))
-        assertEquals("0", formatter.formatTime(mContext, "-0", basicValue))
+
+        fun String.formatTime() = this.formatTime(mContext, basicValue, formatterSymbols)
+
+        assertEquals("−28", "-28".formatTime())
+        assertEquals("−0.05", "-0.05".formatTime())
+        assertEquals("0", "0".formatTime())
+        assertEquals("0", "−0".formatTime())
 
         basicValue = BigDecimal.valueOf(86_400_000_000_000_000_000_000.0)
-        assertEquals("-28d", formatter.formatTime(mContext, "-28", basicValue))
-        assertEquals("-1h 12m", formatter.formatTime(mContext, "-0.05", basicValue))
-        assertEquals("0", formatter.formatTime(mContext, "0", basicValue))
-        assertEquals("0", formatter.formatTime(mContext, "-0", basicValue))
+        assertEquals("−28d", "-28".formatTime())
+        assertEquals("−1h 12m", "-0.05".formatTime())
+        assertEquals("0", "0".formatTime())
+        assertEquals("0", "-0".formatTime())
 
         // DAYS
         basicValue = BigDecimal.valueOf(86_400_000_000_000_000_000_000.0)
-        assertEquals("12h", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("1h 12m", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("7m 12s", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("28d", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("90d", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("90d 12h", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("90d 7m 12s", formatter.formatTime(mContext, "90.005", basicValue))
+        assertEquals("12h","0.5".formatTime())
+        assertEquals("1h 12m","0.05".formatTime())
+        assertEquals("7m 12s","0.005".formatTime())
+        assertEquals("28d","28".formatTime())
+        assertEquals("90d","90".formatTime())
+        assertEquals("90d 12h","90.5".formatTime())
+        assertEquals("90d 7m 12s","90.005".formatTime())
 
         // HOURS
         basicValue = BigDecimal.valueOf(3_600_000_000_000_000_000_000.0)
-        assertEquals("30m", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("3m", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("18s", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("1d 4h", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("3d 18h", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("3d 18h 30m", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("3d 18h 18s", formatter.formatTime(mContext, "90.005", basicValue))
+        assertEquals("30m", "0.5".formatTime())
+        assertEquals("3m", "0.05".formatTime())
+        assertEquals("18s", "0.005".formatTime())
+        assertEquals("1d 4h", "28".formatTime())
+        assertEquals("3d 18h", "90".formatTime())
+        assertEquals("3d 18h 30m", "90.5".formatTime())
+        assertEquals("3d 18h 18s", "90.005".formatTime())
 
         // MINUTES
         basicValue = BigDecimal.valueOf(60_000_000_000_000_000_000.0)
-        assertEquals("30s", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("3s", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("300ms", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("28m", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("1h 30m", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("1h 30m 30s", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("1h 30m 300ms", formatter.formatTime(mContext, "90.005", basicValue))
+        assertEquals("30s", "0.5".formatTime())
+        assertEquals("3s", "0.05".formatTime())
+        assertEquals("300ms", "0.005".formatTime())
+        assertEquals("28m", "28".formatTime())
+        assertEquals("1h 30m", "90".formatTime())
+        assertEquals("1h 30m 30s", "90.5".formatTime())
+        assertEquals("1h 30m 300ms", "90.005".formatTime())
 
         // SECONDS
         basicValue = BigDecimal.valueOf(1_000_000_000_000_000_000)
-        assertEquals("500ms", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("50ms", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("5ms", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("28s", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("1m 30s", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("1m 30s 500ms", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("1m 30s 5ms", formatter.formatTime(mContext, "90.005", basicValue))
+        assertEquals("500ms", "0.5".formatTime())
+        assertEquals("50ms", "0.05".formatTime())
+        assertEquals("5ms", "0.005".formatTime())
+        assertEquals("28s", "28".formatTime())
+        assertEquals("1m 30s", "90".formatTime())
+        assertEquals("1m 30s 500ms", "90.5".formatTime())
+        assertEquals("1m 30s 5ms", "90.005".formatTime())
 
         // MILLISECONDS
         basicValue = BigDecimal.valueOf(1_000_000_000_000_000)
-        assertEquals("500µs", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("50µs", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("5µs", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("28ms", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("90ms", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("90ms 500µs", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("90ms 5µs", formatter.formatTime(mContext, "90.005", basicValue))
+        assertEquals("500µs", "0.5".formatTime())
+        assertEquals("50µs", "0.05".formatTime())
+        assertEquals("5µs", "0.005".formatTime())
+        assertEquals("28ms", "28".formatTime())
+        assertEquals("90ms", "90".formatTime())
+        assertEquals("90ms 500µs", "90.5".formatTime())
+        assertEquals("90ms 5µs", "90.005".formatTime())
 
         // MICROSECONDS
         basicValue = BigDecimal.valueOf(1_000_000_000_000)
-        assertEquals("500ns", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("50ns", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("5ns", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("28µs", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("90µs", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("90µs 500ns", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("90µs 5ns", formatter.formatTime(mContext, "90.005", basicValue))
+        assertEquals("500ns", "0.5".formatTime())
+        assertEquals("50ns", "0.05".formatTime())
+        assertEquals("5ns", "0.005".formatTime())
+        assertEquals("28µs", "28".formatTime())
+        assertEquals("90µs", "90".formatTime())
+        assertEquals("90µs 500ns", "90.5".formatTime())
+        assertEquals("90µs 5ns", "90.005".formatTime())
 
         // NANOSECONDS
         basicValue = BigDecimal.valueOf(1_000_000_000)
-        assertEquals("500 000 000as", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("50 000 000as", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("5 000 000as", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("28ns", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("90ns", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("90ns 500 000 000as", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("90ns 5 000 000as", formatter.formatTime(mContext, "90.005", basicValue))
+        assertEquals("500 000 000as", "0.5".formatTime())
+        assertEquals("50 000 000as", "0.05".formatTime())
+        assertEquals("5 000 000as", "0.005".formatTime())
+        assertEquals("28ns", "28".formatTime())
+        assertEquals("90ns", "90".formatTime())
+        assertEquals("90ns 500 000 000as", "90.5".formatTime())
+        assertEquals("90ns 5 000 000as", "90.005".formatTime())
 
         // ATTOSECONDS
         basicValue = BigDecimal.valueOf(1)
-        assertEquals("0.5", formatter.formatTime(mContext, "0.5", basicValue))
-        assertEquals("0.05", formatter.formatTime(mContext, "0.05", basicValue))
-        assertEquals("0.005", formatter.formatTime(mContext, "0.005", basicValue))
-        assertEquals("28", formatter.formatTime(mContext, "28", basicValue))
-        assertEquals("90", formatter.formatTime(mContext, "90", basicValue))
-        assertEquals("90.5", formatter.formatTime(mContext, "90.5", basicValue))
-        assertEquals("90.005", formatter.formatTime(mContext, "90.005", basicValue))
-    }
-
-    @Test
-    fun fromSeparatorToSpacesTest() {
-        formatter.setSeparator(Separator.SPACES)
-        assertEquals("123 456.789", formatter.fromSeparator("123,456.789", Separator.COMMA))
-        assertEquals("123 456.789", formatter.fromSeparator("123 456.789", Separator.SPACES))
-        assertEquals("123 456.789", formatter.fromSeparator("123.456,789", Separator.PERIOD))
-    }
-
-    @Test
-    fun fromSeparatorToPeriodTest() {
-        formatter.setSeparator(Separator.PERIOD)
-        assertEquals("123.456,789", formatter.fromSeparator("123,456.789", Separator.COMMA))
-        assertEquals("123.456,789", formatter.fromSeparator("123 456.789", Separator.SPACES))
-        assertEquals("123.456,789", formatter.fromSeparator("123.456,789", Separator.PERIOD))
-    }
-
-    @Test
-    fun fromSeparatorToCommaTest() {
-        formatter.setSeparator(Separator.COMMA)
-        assertEquals("123,456.789", formatter.fromSeparator("123,456.789", Separator.COMMA))
-        assertEquals("123,456.789", formatter.fromSeparator("123 456.789", Separator.SPACES))
-        assertEquals("123,456.789", formatter.fromSeparator("123.456,789", Separator.PERIOD))
+        assertEquals("0.5", "0.5".formatTime())
+        assertEquals("0.05", "0.05".formatTime())
+        assertEquals("0.005", "0.005".formatTime())
+        assertEquals("28", "28".formatTime())
+        assertEquals("90", "90".formatTime())
+        assertEquals("90.5", "90.5".formatTime())
+        assertEquals("90.005", "90.005".formatTime())
     }
 }

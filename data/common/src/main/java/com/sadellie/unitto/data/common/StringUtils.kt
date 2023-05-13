@@ -18,6 +18,8 @@
 
 package com.sadellie.unitto.data.common
 
+import com.sadellie.unitto.core.base.Token
+
 /**
  * Compute Levenshtein Distance between this string and [secondString]. Doesn't matter which string is
  * first.
@@ -57,4 +59,19 @@ fun String.lev(secondString: String): Int {
     }
 
     return cost[this.length]
+}
+
+fun String.isExpression(): Boolean {
+
+    if (isEmpty()) return false
+
+    // Positive numbers and zero
+    if (all { it.toString() in Token.Digit.allWithDot }) return false
+
+    // Negative numbers
+    // Needs to start with an negative
+    if (this.first().toString() != Token.Operator.minus) return true
+
+    // Rest of the string must be just like positive
+    return this.drop(1).isExpression()
 }

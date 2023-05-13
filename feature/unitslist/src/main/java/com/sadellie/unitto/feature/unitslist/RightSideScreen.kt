@@ -32,7 +32,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.ui.Formatter
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.NumberBaseUnit
 import com.sadellie.unitto.data.model.UnitGroup
@@ -60,7 +61,7 @@ internal fun RightSideScreen(
     navigateUp: () -> Unit,
     navigateToSettingsAction: () -> Unit,
     selectAction: (AbstractUnit) -> Unit,
-    inputValue: String,
+    inputValue: String?,
     unitFrom: AbstractUnit
 ) {
     val uiState = viewModel.mainFlow.collectAsStateWithLifecycle()
@@ -69,12 +70,21 @@ internal fun RightSideScreen(
 
     val convertMethod: (AbstractUnit) -> String = try {
         val inputAsBigDecimal = BigDecimal(inputValue)
-        if (unitFrom.group == UnitGroup.NUMBER_BASE) {
-            { (convertForSecondaryNumberBase(inputValue, unitFrom, it)) }
-        } else {
-            { convertForSecondary(inputAsBigDecimal, unitFrom, it) }
+
+        when {
+            inputValue.isNullOrEmpty() -> { { "" } }
+
+            unitFrom.group == UnitGroup.NUMBER_BASE -> {
+                { (convertForSecondaryNumberBase(inputValue, unitFrom, it)) }
+            }
+
+            else -> {
+                {
+                    convertForSecondary(inputAsBigDecimal, unitFrom, it, uiState.value.formatterSymbols)
+                }
+            }
         }
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         { "" }
     }
 
@@ -131,15 +141,26 @@ internal fun RightSideScreen(
     }
 }
 
-private fun convertForSecondary(inputValue: BigDecimal, unitFrom: AbstractUnit, unitTo: AbstractUnit): String {
-    return Formatter.format(
-        unitFrom.convert(unitTo, inputValue, 3).toPlainString()
-    )  + " "
+private fun convertForSecondary(
+    inputValue: BigDecimal,
+    unitFrom: AbstractUnit,
+    unitTo: AbstractUnit,
+    formatterSymbols: FormatterSymbols
+): String {
+    return unitFrom.convert(unitTo, inputValue, 3).toPlainString()
+        .formatExpression(formatterSymbols) + " "
 }
 
-private fun convertForSecondaryNumberBase(inputValue: String, unitFrom: AbstractUnit, unitTo: AbstractUnit): String {
+private fun convertForSecondaryNumberBase(
+    inputValue: String,
+    unitFrom: AbstractUnit,
+    unitTo: AbstractUnit
+): String {
     return try {
-        (unitFrom as NumberBaseUnit).convertToBase(inputValue, (unitTo as NumberBaseUnit).base) + " "
+        (unitFrom as NumberBaseUnit).convertToBase(
+            inputValue,
+            (unitTo as NumberBaseUnit).base
+        ) + " "
     } catch (e: NumberFormatException) {
         ""
     } catch (e: ClassCastException) {

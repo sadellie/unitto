@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.settings
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
@@ -32,7 +31,6 @@ import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.burnoutcrew.reorderable.ItemPosition
@@ -44,7 +42,6 @@ class SettingsViewModel @Inject constructor(
     private val unitGroupsRepository: UnitGroupsRepository,
 ) : ViewModel() {
     val userPrefs = userPrefsRepository.userPreferencesFlow
-        .onEach { Formatter.setSeparator(it.separator) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),
             UserPreferences()
         )

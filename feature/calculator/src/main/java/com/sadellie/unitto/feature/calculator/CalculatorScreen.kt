@@ -57,23 +57,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.base.Separator
-import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.core.ui.common.textfield.InputTextField
+import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
+import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.DragDownView
 import com.sadellie.unitto.feature.calculator.components.HistoryList
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -89,9 +89,9 @@ internal fun CalculatorRoute(
         uiState = uiState.value,
         navigateToMenu = navigateToMenu,
         navigateToSettings = navigateToSettings,
-        addSymbol = viewModel::addSymbol,
-        clearSymbols = viewModel::clearSymbols,
-        deleteSymbol = viewModel::deleteSymbol,
+        addSymbol = viewModel::addTokens,
+        clearSymbols = viewModel::clearInput,
+        deleteSymbol = viewModel::deleteTokens,
         onCursorChange = viewModel::onCursorChange,
         toggleAngleMode = viewModel::toggleCalculatorMode,
         evaluate = viewModel::evaluate,
@@ -107,7 +107,7 @@ private fun CalculatorScreen(
     addSymbol: (String) -> Unit,
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
-    onCursorChange: (IntRange) -> Unit,
+    onCursorChange: (TextRange) -> Unit,
     toggleAngleMode: () -> Unit,
     evaluate: () -> Unit,
     clearHistory: () -> Unit
@@ -160,6 +160,8 @@ private fun CalculatorScreen(
                         .fillMaxSize(),
                     historyItems = uiState.history,
                     historyItemHeightCallback = { historyItemHeight = it },
+                    formatterSymbols = uiState.formatterSymbols,
+                    addTokens = addSymbol,
                 )
             },
             textFields = { maxDragAmount ->
@@ -202,28 +204,56 @@ private fun CalculatorScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    InputTextField(
+                    ExpressionTextField(
                         modifier = Modifier
                             .weight(2f)
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
-                        value = uiState.input.copy(
-                            Formatter.fromSeparator(uiState.input.text, Separator.COMMA)
-                        ),
+                        value = uiState.input,
                         minRatio = 0.5f,
                         cutCallback = deleteSymbol,
                         pasteCallback = addSymbol,
-                        onCursorChange = onCursorChange
+                        onCursorChange = onCursorChange,
+                        formatterSymbols = uiState.formatterSymbols
                     )
                     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        InputTextField(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp),
-                            value = Formatter.format(uiState.output),
-                            textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
-                        )
+                        when (uiState.output) {
+                            is CalculationResult.Default -> {
+                                var output by remember(uiState.output) {
+                                    mutableStateOf(TextFieldValue(uiState.output.text))
+                                }
+
+                                ExpressionTextField(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 8.dp),
+                                    value = output,
+                                    minRatio = 1f,
+                                    onCursorChange = { output = output.copy(selection = it) },
+                                    formatterSymbols = uiState.formatterSymbols,
+                                    textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
+                                    readOnly = true,
+                                )
+                            }
+
+                            else -> {
+                                val label = uiState.output.label?.let { stringResource(it) } ?: ""
+
+                                UnformattedTextField(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 8.dp),
+                                    value = TextFieldValue(label),
+                                    minRatio = 1f,
+                                    onCursorChange = {},
+                                    textColor = MaterialTheme.colorScheme.error,
+                                    readOnly = true,
+                                )
+                            }
+                        }
+
                     }
                     // Handle
                     Box(
@@ -239,8 +269,11 @@ private fun CalculatorScreen(
             },
             numPad = {
                 CalculatorKeyboard(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp, vertical = 4.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
                     radianMode = uiState.radianMode,
+                    fractional = uiState.formatterSymbols.fractional,
                     allowVibration = uiState.allowVibration,
                     addSymbol = addSymbol,
                     clearSymbols = clearSymbols,
@@ -315,7 +348,7 @@ private fun PreviewCalculatorScreen() {
     CalculatorScreen(
         uiState = CalculatorUIState(
             input = TextFieldValue("1.2345"),
-            output = "1234",
+            output = CalculationResult.Default("1234"),
             history = historyItems
         ),
         navigateToMenu = {},
