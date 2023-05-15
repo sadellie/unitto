@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.unitslist
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.database.UnitsRepository
 import com.sadellie.unitto.data.model.AbstractUnit
@@ -74,6 +75,7 @@ class UnitsListViewModel @Inject constructor(
             searchQuery = searchQuery,
             chosenUnitGroup = chosenUnitGroup,
             shownUnitGroups = shownUnitGroups,
+            formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
         )
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SecondScreenUIState())

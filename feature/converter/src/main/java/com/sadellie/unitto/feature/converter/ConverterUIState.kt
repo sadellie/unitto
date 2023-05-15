@@ -18,7 +18,9 @@
 
 package com.sadellie.unitto.feature.converter
 
+import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.AbstractUnit
 
 /**
@@ -33,23 +35,30 @@ import com.sadellie.unitto.data.model.AbstractUnit
  * @property unitFrom Unit on the left.
  * @property unitTo Unit on the right.
  * @property mode
- * @property formatTime If true will format output when converting time.
  * @property allowVibration When true will vibrate on button clicks.
  */
 data class ConverterUIState(
-    val inputValue: String = Token._0,
+    val inputValue: TextFieldValue = TextFieldValue(),
     val calculatedValue: String? = null,
-    val resultValue: String = Token._0,
+    val resultValue: ConversionResult = ConversionResult.Default(Token.Digit._0),
     val showLoading: Boolean = true,
     val showError: Boolean = false,
     val unitFrom: AbstractUnit? = null,
     val unitTo: AbstractUnit? = null,
     val mode: ConverterMode = ConverterMode.DEFAULT,
-    val formatTime: Boolean = true,
-    val allowVibration: Boolean = false
+    val allowVibration: Boolean = false,
+    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
 )
 
 enum class ConverterMode {
     DEFAULT,
     BASE,
+}
+
+sealed class ConversionResult {
+    data class Default(val result: String) : ConversionResult()
+    data class Time(val result: String) : ConversionResult()
+    data class NumberBase(val result: String) : ConversionResult()
+    object Loading : ConversionResult()
+    object Error : ConversionResult()
 }

@@ -29,7 +29,6 @@ android {
 
 dependencies {
     testImplementation(libs.junit)
-    implementation(libs.org.mariuszgromada.math.mxparser)
     implementation(libs.com.github.sadellie.themmo)
 
     implementation(project(mapOf("path" to ":data:common")))
@@ -37,4 +36,5 @@ dependencies {
     implementation(project(mapOf("path" to ":data:database")))
     implementation(project(mapOf("path" to ":data:calculator")))
     implementation(project(mapOf("path" to ":data:model")))
+    implementation(project(mapOf("path" to ":data:evaluatto")))
 }

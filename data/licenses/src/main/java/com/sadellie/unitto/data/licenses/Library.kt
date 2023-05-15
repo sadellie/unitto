@@ -29,23 +29,6 @@ data class AppLibrary(
 val ALL_LIBRARIES by lazy {
     listOf(
         AppLibrary(
-            name = "MathParser.org-mXparser",
-            dev = "Mariusz Gromada",
-            website = "https://github.com/mariuszgromada/MathParser.org-mXparser/",
-            license = "Non-Commercial license",
-            description = "Math Parser Java Android C# .NET/MONO (.NET Framework, .NET Core, .NET " +
-                    "Standard, .NET PCL, Xamarin.Android, Xamarin.iOS) CLS Library - a super easy, rich" +
-                    " and flexible mathematical expression parser (expression evaluator, expression " +
-                    "provided as plain text / strings) for JAVA and C#."
-        ),
-        AppLibrary(
-            name = "ExprK",
-            dev = "Keelar",
-            website = "https://github.com/Keelar/ExprK",
-            license = "MIT license",
-            description = "A simple mathematical expression evaluator for Kotlin and Java, written in Kotlin."
-        ),
-        AppLibrary(
             name = "currency-api",
             dev = "Fawaz Ahmed (fawazahmed0)",
             website = "https://github.com/fawazahmed0/currency-api",

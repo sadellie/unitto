@@ -37,7 +37,7 @@ fun NavController.navigateToLeftSide(unitFromId: String) {
     navigate("$leftSideRoute/$unitFromId")
 }
 
-fun NavController.navigateToRightSide(unitFromId: String, unitToId: String, input: String) {
+fun NavController.navigateToRightSide(unitFromId: String, unitToId: String, input: String?) {
     navigate("$rightSideRoute/$unitFromId/$unitToId/$input")
 }
 
@@ -72,7 +72,7 @@ fun NavGraphBuilder.rightScreen(
     ) {
         val unitFromId = it.arguments?.getString(unitFromIdArg) ?: return@composable
         val unitToId = it.arguments?.getString(unitToIdArg) ?: return@composable
-        val input = it.arguments?.getString(inputArg) ?: return@composable
+        val input = it.arguments?.getString(inputArg)
         viewModel.setSelectedChip(unitFromId, false)
 
         RightSideScreen(

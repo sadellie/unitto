@@ -21,8 +21,6 @@ comSquareupMoshi = "1.14.0"
 comSquareupRetrofit2 = "2.9.0"
 comGithubSadellieThemmo = "ed4063f70f"
 orgBurnoutcrewComposereorderable = "0.9.6"
-comGithubSadellieExprk = "e55cba8f41"
-mxParser = "5.2.1"
 junit = "4.13.2"
 androidxTest = "1.5.0"
 androidxTestExt = "1.1.4"
@@ -62,9 +60,7 @@ com-squareup-moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", vers
 com-squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "comSquareupRetrofit2" }
 com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
 org-burnoutcrew-composereorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "orgBurnoutcrewComposereorderable" }
-com-github-sadellie-exprk = { group = "com.github.sadellie", name = "ExprK", version.ref = "comGithubSadellieExprk" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
-org-mariuszgromada-math-mxparser = { group = "org.mariuszgromada.math", name = "MathParser.org-mXparser", version.ref = "mxParser" }
 
 # classpath
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

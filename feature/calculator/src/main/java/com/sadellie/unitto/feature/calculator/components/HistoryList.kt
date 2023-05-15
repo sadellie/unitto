@@ -20,6 +20,8 @@ package com.sadellie.unitto.feature.calculator.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +38,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,7 +58,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.Formatter
+import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnittoTextToolbar
 import com.sadellie.unitto.core.ui.common.textfield.copyWithoutGrouping
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
@@ -68,6 +72,8 @@ internal fun HistoryList(
     modifier: Modifier,
     historyItems: List<HistoryItem>,
     historyItemHeightCallback: (Int) -> Unit,
+    formatterSymbols: FormatterSymbols,
+    addTokens: (String) -> Unit,
 ) {
     val verticalArrangement by remember(historyItems) {
         derivedStateOf {
@@ -103,13 +109,17 @@ internal fun HistoryList(
             item {
                 HistoryListItem(
                     modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) },
-                    historyItem = historyItems.first()
+                    historyItem = historyItems.first(),
+                    formatterSymbols = formatterSymbols,
+                    addTokens = addTokens,
                 )
             }
             items(historyItems.drop(1)) { historyItem ->
                 HistoryListItem(
                     modifier = Modifier,
-                    historyItem = historyItem
+                    historyItem = historyItem,
+                    formatterSymbols = formatterSymbols,
+                    addTokens = addTokens,
                 )
             }
         }
@@ -120,15 +130,31 @@ internal fun HistoryList(
 private fun HistoryListItem(
     modifier: Modifier = Modifier,
     historyItem: HistoryItem,
+    formatterSymbols: FormatterSymbols,
+    addTokens: (String) -> Unit,
 ) {
     val clipboardManager = LocalClipboardManager.current
-    val expression = Formatter.format(historyItem.expression)
+    val expression = historyItem.expression
     var expressionValue by remember(expression) {
         mutableStateOf(TextFieldValue(expression, TextRange(expression.length)))
     }
-    val result = Formatter.format(historyItem.result)
+    val result = historyItem.result
     var resultValue by remember(result) {
         mutableStateOf(TextFieldValue(result, TextRange(result.length)))
+    }
+
+    val expressionInteractionSource = remember(expression) { MutableInteractionSource() }
+    LaunchedEffect(expressionInteractionSource) {
+        expressionInteractionSource.interactions.collect {
+            if (it is PressInteraction.Release) addTokens(expression)
+        }
+    }
+
+    val resultInteractionSource = remember(result) { MutableInteractionSource() }
+    LaunchedEffect(resultInteractionSource) {
+        resultInteractionSource.interactions.collect {
+            if (it is PressInteraction.Release) addTokens(result)
+        }
     }
 
     Column(modifier = modifier) {
@@ -136,7 +162,10 @@ private fun HistoryListItem(
             LocalTextInputService provides null,
             LocalTextToolbar provides UnittoTextToolbar(
                 view = LocalView.current,
-                copyCallback = { clipboardManager.copyWithoutGrouping(expressionValue) }
+                copyCallback = {
+                    clipboardManager.copyWithoutGrouping(expressionValue, formatterSymbols)
+                    expressionValue = expressionValue.copy(selection = TextRange(expressionValue.selection.end))
+                }
             )
         ) {
             BasicTextField(
@@ -148,7 +177,9 @@ private fun HistoryListItem(
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
                 textStyle = NumbersTextStyleDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.End),
-                readOnly = true
+                readOnly = true,
+                visualTransformation = ExpressionTransformer(formatterSymbols),
+                interactionSource = expressionInteractionSource
             )
         }
 
@@ -156,7 +187,10 @@ private fun HistoryListItem(
             LocalTextInputService provides null,
             LocalTextToolbar provides UnittoTextToolbar(
                 view = LocalView.current,
-                copyCallback = { clipboardManager.copyWithoutGrouping(resultValue) }
+                copyCallback = {
+                    clipboardManager.copyWithoutGrouping(resultValue, formatterSymbols)
+                    resultValue = resultValue.copy(selection = TextRange(resultValue.selection.end))
+                }
             )
         ) {
             BasicTextField(
@@ -168,7 +202,9 @@ private fun HistoryListItem(
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
                 textStyle = NumbersTextStyleDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), textAlign = TextAlign.End),
-                readOnly = true
+                readOnly = true,
+                visualTransformation = ExpressionTransformer(formatterSymbols),
+                interactionSource = resultInteractionSource
             )
         }
     }
@@ -200,6 +236,9 @@ private fun PreviewHistoryList() {
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
             .fillMaxSize(),
-        historyItems = historyItems
-    ) {}
+        historyItems = historyItems,
+        formatterSymbols = FormatterSymbols.Spaces,
+        historyItemHeightCallback = {},
+        addTokens = {}
+    )
 }

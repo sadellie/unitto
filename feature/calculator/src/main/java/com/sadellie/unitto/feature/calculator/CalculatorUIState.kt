@@ -18,13 +18,23 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 
-internal data class CalculatorUIState(
+data class CalculatorUIState(
     val input: TextFieldValue = TextFieldValue(),
-    val output: String = "",
+    val output: CalculationResult = CalculationResult.Default(),
     val radianMode: Boolean = true,
     val history: List<HistoryItem> = emptyList(),
-    val allowVibration: Boolean = false
+    val allowVibration: Boolean = false,
+    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces
 )
+
+sealed class CalculationResult(@StringRes val label: Int? = null) {
+    data class Default(val text: String = "") : CalculationResult()
+    object DivideByZeroError : CalculationResult(R.string.divide_by_zero_error)
+    object Error : CalculationResult(R.string.error_label)
+}

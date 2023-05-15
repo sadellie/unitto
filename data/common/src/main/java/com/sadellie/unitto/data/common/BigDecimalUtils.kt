@@ -64,11 +64,7 @@ fun BigDecimal.setMinimumRequiredScale(prefScale: Int): BigDecimal {
 
 /**
  * Removes all trailing zeroes.
- *
- * @throws NumberFormatException if value is bigger than [Double.MAX_VALUE] to avoid memory overflow.
  */
 fun BigDecimal.trimZeros(): BigDecimal {
-    if (this.abs() > BigDecimal.valueOf(Double.MAX_VALUE)) throw NumberFormatException()
-
     return if (this.compareTo(BigDecimal.ZERO) == 0) BigDecimal.ZERO else this.stripTrailingZeros()
 }

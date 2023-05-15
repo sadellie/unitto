@@ -29,7 +29,6 @@ import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
-import com.sadellie.unitto.feature.epoch.navigation.epochScreen
 import com.sadellie.unitto.feature.settings.SettingsViewModel
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
@@ -101,6 +100,6 @@ internal fun UnittoNavigation(
             navigateToSettings = ::navigateToSettings
         )
 
-        epochScreen(navigateToMenu = openDrawer)
+        // epochScreen(navigateToMenu = openDrawer)
     }
 }

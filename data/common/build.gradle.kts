@@ -26,4 +26,5 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":core:base")))
+    testImplementation(libs.junit)
 }
