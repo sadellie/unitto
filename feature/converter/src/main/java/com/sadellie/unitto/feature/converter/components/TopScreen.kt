@@ -30,7 +30,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -147,7 +147,9 @@ internal fun TopScreenPart(
             ExpressionTextField(
                 modifier = Modifier,
                 value = calculatedTextFieldValue,
-                onCursorChange = { calculatedTextFieldValue = calculatedTextFieldValue.copy(selection = it) },
+                onCursorChange = { newSelection ->
+                    calculatedTextFieldValue = calculatedTextFieldValue.copy(selection = newSelection)
+                },
                 formatterSymbols = formatterSymbols,
                 textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 minRatio = 0.7f
@@ -159,8 +161,7 @@ internal fun TopScreenPart(
             transitionSpec = {
                 // Enter animation
                 (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
-                        // Exit animation
-                        with fadeOut())
+                        togetherWith fadeOut())
                     .using(SizeTransform(clip = false))
             }
         ) { value ->
@@ -178,7 +179,9 @@ internal fun TopScreenPart(
                 ExpressionTextField(
                     modifier = Modifier.weight(2f),
                     value = outputTextFieldValue,
-                    onCursorChange = { outputTextFieldValue = outputTextFieldValue.copy(selection = it) },
+                    onCursorChange = { newSelection ->
+                        outputTextFieldValue = outputTextFieldValue.copy(selection = newSelection)
+                    },
                     formatterSymbols = formatterSymbols,
                     readOnly = true,
                     minRatio = 0.7f
@@ -197,7 +200,9 @@ internal fun TopScreenPart(
                 UnformattedTextField(
                     modifier = Modifier.weight(2f),
                     value = outputTextFieldValue,
-                    onCursorChange = { outputTextFieldValue = outputTextFieldValue.copy(selection = it) },
+                    onCursorChange = { newSelection ->
+                        outputTextFieldValue = outputTextFieldValue.copy(selection = newSelection)
+                    },
                     minRatio = 0.7f,
                     readOnly = true
                 )
@@ -210,7 +215,9 @@ internal fun TopScreenPart(
                 UnformattedTextField(
                     modifier = Modifier.weight(2f),
                     value = outputTextFieldValue,
-                    onCursorChange = { outputTextFieldValue = outputTextFieldValue.copy(selection = it) },
+                    onCursorChange = { newSelection ->
+                        outputTextFieldValue = outputTextFieldValue.copy(selection = newSelection)
+                    },
                     minRatio = 0.7f,
                     readOnly = true
                 )
@@ -245,7 +252,7 @@ internal fun TopScreenPart(
                 // Enter animation
                 (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
                         // Exit animation
-                        with fadeOut())
+                        togetherWith fadeOut())
                     .using(SizeTransform(clip = false))
             }
         ) { value ->

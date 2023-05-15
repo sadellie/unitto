@@ -34,10 +34,10 @@ sealed class TopLevelDestinations(
         name = R.string.calculator
     )
 
-    object Epoch : TopLevelDestinations(
-        route = "epoch_route",
-        name = R.string.epoch_converter
-    )
+//    object Epoch : TopLevelDestinations(
+//        route = "epoch_route",
+//        name = R.string.epoch_converter
+//    )
 
     object Settings : TopLevelDestinations(
         route = "settings_graph",

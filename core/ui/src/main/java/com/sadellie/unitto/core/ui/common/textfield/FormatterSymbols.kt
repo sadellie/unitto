@@ -27,7 +27,7 @@ sealed class FormatterSymbols(val grouping: String, val fractional: String) {
 }
 
 object AllFormatterSymbols {
-    private val allFormatterSymbs by lazy {
+    private val allFormatterSymbols by lazy {
         hashMapOf(
             Separator.SPACES to FormatterSymbols.Spaces,
             Separator.PERIOD to FormatterSymbols.Period,
@@ -41,6 +41,6 @@ object AllFormatterSymbols {
      * @see Separator
      */
     fun getById(separator: Int): FormatterSymbols {
-        return allFormatterSymbs.getOrElse(separator) { FormatterSymbols.Spaces }
+        return allFormatterSymbols.getOrElse(separator) { FormatterSymbols.Spaces }
     }
 }

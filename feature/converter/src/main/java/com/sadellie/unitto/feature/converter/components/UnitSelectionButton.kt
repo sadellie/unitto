@@ -82,11 +82,11 @@ internal fun UnitSelectionButton(
             targetState = label ?: 0,
             transitionSpec = {
                 if (targetState > initialState) {
-                    (slideInVertically { height -> height } + fadeIn()).togetherWith(
-                        slideOutVertically { height -> -height } + fadeOut())
+                    (slideInVertically { height -> height } + fadeIn()) togetherWith
+                        slideOutVertically { height -> -height } + fadeOut()
                 } else {
-                    (slideInVertically { height -> -height } + fadeIn()).togetherWith(
-                        slideOutVertically { height -> height } + fadeOut())
+                    (slideInVertically { height -> -height } + fadeIn()) togetherWith
+                        slideOutVertically { height -> height } + fadeOut()
                 }.using(
                     SizeTransform(clip = false)
                 )
