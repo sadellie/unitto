@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.ui
 
 import android.content.Context
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.Token
 import java.math.BigDecimal

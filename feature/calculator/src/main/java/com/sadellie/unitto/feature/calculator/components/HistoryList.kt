@@ -54,14 +54,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.common.textfield.UnittoTextToolbar
 import com.sadellie.unitto.core.ui.common.textfield.copyWithoutGrouping
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
-import com.sadellie.unitto.feature.calculator.R
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @Composable
 internal fun HistoryList(

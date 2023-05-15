@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.unitslist.components
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -27,7 +28,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
@@ -61,8 +62,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.feature.unitslist.R
 
 /**
  * Search bar on the Second screen. Controls what will be shown in the list above this component
@@ -214,6 +215,7 @@ private fun SearchButton(
     }
 }
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @Composable
 private fun FavoritesButton(
     favoritesOnly: Boolean,
@@ -223,7 +225,7 @@ private fun FavoritesButton(
         AnimatedContent(
             targetState = favoritesOnly,
             transitionSpec = {
-                (scaleIn() with scaleOut()).using(SizeTransform(clip = false))
+                (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false))
             }
         ) {
             Icon(

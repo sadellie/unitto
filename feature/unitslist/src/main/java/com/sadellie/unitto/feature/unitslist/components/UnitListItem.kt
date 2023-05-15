@@ -18,11 +18,12 @@
 
 package com.sadellie.unitto.feature.unitslist.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -53,8 +54,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.feature.unitslist.R
 
 /**
  * Represents one list item. Once clicked will navigate up.
@@ -65,6 +66,7 @@ import com.sadellie.unitto.feature.unitslist.R
  * @param favoriteAction Function to mark unit as favorite. It's a toggle.
  * @param shortNameLabel String on the second line.
  */
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @Composable
 private fun BasicUnitListItem(
     modifier: Modifier,
@@ -124,7 +126,7 @@ private fun BasicUnitListItem(
                     ),
                 targetState = isFavorite,
                 transitionSpec = {
-                    (scaleIn() with scaleOut()).using(SizeTransform(clip = false))
+                    (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false))
                 }
             ) {
                 Icon(

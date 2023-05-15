@@ -62,6 +62,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.common.MenuButton
@@ -73,7 +74,7 @@ import com.sadellie.unitto.feature.calculator.components.DragDownView
 import com.sadellie.unitto.feature.calculator.components.HistoryList
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.roundToInt
 

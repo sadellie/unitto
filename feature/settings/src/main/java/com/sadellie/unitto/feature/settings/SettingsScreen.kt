@@ -47,9 +47,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.OUTPUT_FORMAT
 import com.sadellie.unitto.core.base.PRECISIONS
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.SEPARATORS
 import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
-import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem

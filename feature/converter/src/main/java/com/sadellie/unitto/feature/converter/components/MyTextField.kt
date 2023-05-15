@@ -27,7 +27,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.textfield.InputTextField
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
 
@@ -105,9 +105,9 @@ internal fun MyTextField(
                     targetState = textToShow,
                     transitionSpec = {
                         // Enter animation
-                        (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                        ((expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
                                 // Exit animation
-                                with fadeOut())
+                                ).togetherWith(fadeOut()))
                             .using(SizeTransform(clip = false))
                     }
                 ) {
@@ -138,9 +138,9 @@ internal fun MyTextField(
                         targetState = secondaryText,
                         transitionSpec = {
                             // Enter animation
-                            (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                            ((expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
                                     // Exit animation
-                                    with fadeOut())
+                                    ).togetherWith(fadeOut()))
                                 .using(SizeTransform(clip = false))
                         }
                     ) {

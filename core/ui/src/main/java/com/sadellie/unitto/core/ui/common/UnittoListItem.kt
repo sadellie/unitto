@@ -46,7 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.base.R
 
 /**
  * Represents one item in list on Settings screen.

@@ -31,8 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.model.DrawerItems
 
 @Composable

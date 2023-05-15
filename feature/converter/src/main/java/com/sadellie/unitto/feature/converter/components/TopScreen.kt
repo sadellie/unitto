@@ -29,7 +29,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,8 +51,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.Formatter
-import com.sadellie.unitto.core.ui.R
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.textfield.InputTextField
 import com.sadellie.unitto.data.model.AbstractUnit
@@ -129,9 +129,9 @@ internal fun TopScreenPart(
             targetState = stringResource(unitFrom?.shortName ?: R.string.loading_label),
             transitionSpec = {
                 // Enter animation
-                (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                ((expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
                         // Exit animation
-                        with fadeOut())
+                        ).togetherWith(fadeOut()))
                     .using(SizeTransform(clip = false))
             }
         ) { value ->
@@ -164,9 +164,9 @@ internal fun TopScreenPart(
             targetState = stringResource(unitTo?.shortName ?: R.string.loading_label),
             transitionSpec = {
                 // Enter animation
-                (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                ((expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
                         // Exit animation
-                        with fadeOut())
+                        ).togetherWith(fadeOut()))
                     .using(SizeTransform(clip = false))
             }
         ) { value ->

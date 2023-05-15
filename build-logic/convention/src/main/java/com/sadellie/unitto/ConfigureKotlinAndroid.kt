@@ -25,8 +25,11 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+@Suppress("UnstableApiUsage")
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *>,
 ) {
@@ -45,8 +48,8 @@ internal fun Project.configureKotlinAndroid(
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
             isCoreLibraryDesugaringEnabled = true
         }
 
@@ -59,7 +62,7 @@ internal fun Project.configureKotlinAndroid(
             resValues = false
         }
 
-        packagingOptions {
+        packaging {
             resources {
                 excludes.add("/META-INF/{AL2.0,LGPL2.1}")
             }
@@ -73,7 +76,14 @@ internal fun Project.configureKotlinAndroid(
                 "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
                 "-opt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
             )
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            jvmTarget = JavaVersion.VERSION_11.toString()
+        }
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            // Set JVM target to 11
+            jvmTarget = JavaVersion.VERSION_11.toString()
         }
     }
 

@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.base.R
 
 private val Montserrat = FontFamily(
     Font(R.font.montserrat_light, weight = FontWeight.Light),

@@ -32,6 +32,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.NumberBaseUnit

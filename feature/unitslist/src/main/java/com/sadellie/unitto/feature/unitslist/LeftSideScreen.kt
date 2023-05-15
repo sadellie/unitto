@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.feature.unitslist.components.ChipsRow
 import com.sadellie.unitto.feature.unitslist.components.SearchBar
