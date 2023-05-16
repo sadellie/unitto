@@ -301,7 +301,7 @@ internal fun TopScreenPart(
                     navigateToRightScreen(
                         unitFrom.unitId,
                         unitTo.unitId,
-                        input
+                        input?.ifEmpty { "0" }
                     )
                 },
                 label = unitTo?.displayName ?: R.string.loading_label,
