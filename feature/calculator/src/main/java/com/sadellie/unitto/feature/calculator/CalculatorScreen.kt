@@ -46,6 +46,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -113,15 +114,17 @@ private fun CalculatorScreen(
     evaluate: () -> Unit,
     clearHistory: () -> Unit
 ) {
-    var showClearHistoryButton by rememberSaveable { mutableStateOf(false) }
-    var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
-
     val dragAmount = remember { Animatable(0f) }
     val dragCoroutineScope = rememberCoroutineScope()
-    val dragAnimDecay = rememberSplineBasedDecay<Float>()
+    val dragAnimSpec = rememberSplineBasedDecay<Float>()
 
     var textThingyHeight by remember { mutableStateOf(0) }
     var historyItemHeight by remember { mutableStateOf(0) }
+
+    var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
+    val showClearHistoryButton by remember(dragAmount.value, historyItemHeight) {
+        derivedStateOf { dragAmount.value > historyItemHeight }
+    }
 
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.calculator)) },
@@ -187,15 +190,11 @@ private fun CalculatorScreen(
                             },
                             onDragStopped = { velocity ->
                                 dragCoroutineScope.launch {
-                                    dragAmount.animateDecay(velocity, dragAnimDecay)
+                                    dragAmount.animateDecay(velocity, dragAnimSpec)
 
                                     // Snap to closest anchor (0, one history item, all history items)
                                     val draggedAmount = listOf(0, historyItemHeight, maxDragAmount)
                                         .minBy { abs(dragAmount.value.roundToInt() - it) }
-                                        .also {
-                                            // Show button only when fully history view is fully expanded
-                                            showClearHistoryButton = it == maxDragAmount
-                                        }
                                         .toFloat()
                                     dragAmount.animateTo(draggedAmount)
                                 }
