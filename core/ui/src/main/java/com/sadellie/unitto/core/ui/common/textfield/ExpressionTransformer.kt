@@ -37,15 +37,37 @@ class ExpressionTransformer(private val formatterSymbols: FormatterSymbols) : Vi
         private val unformatted: String,
         private val formatted: String
     ) : OffsetMapping {
-
         // Called when entering text (on each text change)
         // Basically moves cursor to the right position
         //
         // original input is "1000" and cursor is placed at the end "1000|"
         // the formatted is "1,000" where cursor should be? - "1,000|"
         override fun originalToTransformed(offset: Int): Int {
+            val grouping = formatterSymbols.grouping.first()
             val fixedCursor = unformatted.fixCursor(offset, formatterSymbols.grouping)
-            return fixedCursor + countAddedSymbolsBeforeCursor(fixedCursor)
+
+            // Unformatted always has "." (dot) as a fractional, we can't ues for checking with buffer,
+            // because it will fail when fractional is "," (comma)
+            val subString = formatted
+                .replace(formatterSymbols.grouping, "")
+                .replace(formatterSymbols.fractional, ".")
+                .take(offset)
+            var buffer = ""
+            var groupingCount = 0
+            var cursor = 0
+
+            // we walk over formatted and stop when it matches unformatted (also counting grouping)
+            while (buffer != subString) {
+                val currentChar = formatted[cursor]
+                if (currentChar == grouping) {
+                    groupingCount += 1
+                } else {
+                    buffer += currentChar
+                }
+                cursor++
+            }
+
+            return fixedCursor + groupingCount
         }
 
         // Called when clicking formatted text
@@ -54,12 +76,10 @@ class ExpressionTransformer(private val formatterSymbols: FormatterSymbols) : Vi
         // the formatted is "1,000" and cursor is placed at the end "1,000|"
         // original input is "1000" where cursor should be? - "1000|"
         override fun transformedToOriginal(offset: Int): Int {
+            val grouping = formatterSymbols.grouping.first()
             val fixedCursor = formatted.fixCursor(offset, formatterSymbols.grouping)
-            return fixedCursor - countAddedSymbolsBeforeCursor(fixedCursor)
-        }
-
-        private fun countAddedSymbolsBeforeCursor(cursor: Int): Int {
-            return formatted.take(cursor).count { it.toString() == formatterSymbols.grouping }
+            val addedSymbols = formatted.take(fixedCursor).count { it == grouping }
+            return fixedCursor - addedSymbols
         }
     }
 }
