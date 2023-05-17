@@ -34,8 +34,7 @@ fun <T : Throwable?> assertExprFail(
     radianMode: Boolean = true
 ) {
     Assert.assertThrows(expectedThrowable) {
-        val calculated = Expression(expr, radianMode = radianMode).calculate()
-        println(calculated)
+        Expression(expr, radianMode = radianMode).calculate()
     }
 }
 

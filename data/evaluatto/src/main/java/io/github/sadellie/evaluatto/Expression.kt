@@ -301,8 +301,6 @@ private fun BigDecimal.factorial(): BigDecimal {
     if (this.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) != 0) throw ExpressionException.FactorialCalculation()
     if (this < BigDecimal.ZERO) throw ExpressionException.FactorialCalculation()
 
-    println("got $this")
-
     var expr = this
     for (i in 1 until this.toInt()) {
         expr *= BigDecimal(i)
