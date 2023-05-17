@@ -59,6 +59,7 @@ class CalculatorHistoryRepository @Inject constructor(
     private fun List<CalculatorHistoryEntity>.toHistoryItemList(): List<HistoryItem> {
         return this.map {
             HistoryItem(
+                id = it.entityId,
                 date = Date(it.timestamp),
                 expression = it.expression,
                 result = it.result

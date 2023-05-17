@@ -18,9 +18,10 @@
 
 package com.sadellie.unitto.data.model
 
-import java.util.*
+import java.util.Date
 
 data class HistoryItem(
+    val id: Int,
     val date: Date,
     val expression: String,
     val result: String

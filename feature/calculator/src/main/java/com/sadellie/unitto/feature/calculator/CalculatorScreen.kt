@@ -339,6 +339,7 @@ private fun PreviewCalculatorScreen() {
         "14.07.2005 23:59:19",
     ).map {
         HistoryItem(
+            id = it.hashCode(),
             date = dtf.parse(it)!!,
             expression = "12345".repeat(10),
             result = "1234"
