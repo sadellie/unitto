@@ -39,7 +39,7 @@ private val timeDivisions by lazy {
     )
 }
 
-internal fun String.clearAndFilterExpression(formatterSymbols: FormatterSymbols): String {
+fun String.clearAndFilterExpression(formatterSymbols: FormatterSymbols): String {
     var clean = this
         .replace(formatterSymbols.grouping, "")
         .replace(formatterSymbols.fractional, Token.Digit.dot)

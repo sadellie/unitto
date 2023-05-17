@@ -61,6 +61,7 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnittoTextToolbar
+import com.sadellie.unitto.core.ui.common.textfield.clearAndFilterExpression
 import com.sadellie.unitto.core.ui.common.textfield.copyWithoutGrouping
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
@@ -171,14 +172,14 @@ private fun HistoryListItem(
     val expressionInteractionSource = remember(expression) { MutableInteractionSource() }
     LaunchedEffect(expressionInteractionSource) {
         expressionInteractionSource.interactions.collect {
-            if (it is PressInteraction.Release) addTokens(expression)
+            if (it is PressInteraction.Release) addTokens(expression.clearAndFilterExpression(formatterSymbols))
         }
     }
 
     val resultInteractionSource = remember(result) { MutableInteractionSource() }
     LaunchedEffect(resultInteractionSource) {
         resultInteractionSource.interactions.collect {
-            if (it is PressInteraction.Release) addTokens(result)
+            if (it is PressInteraction.Release) addTokens(result.clearAndFilterExpression(formatterSymbols))
         }
     }
 

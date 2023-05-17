@@ -22,6 +22,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
@@ -91,12 +92,15 @@ internal class CalculatorViewModel @Inject constructor(
             is CalculationResult.Default -> {
                 if (calculationResult.text.isEmpty()) return@launch
 
+                // We can get negative number and they use ugly minus symbol
+                val calculationText = calculationResult.text.replace("-", Token.Operator.minus)
+
                 calculatorHistoryRepository.add(
                     expression = _input.value.text,
-                    result = calculationResult.text
+                    result = calculationText
                 )
                 _input.update {
-                    TextFieldValue(calculationResult.text, TextRange(calculationResult.text.length))
+                    TextFieldValue(calculationText, TextRange(calculationText.length))
                 }
                 _output.update { CalculationResult.Default() }
             }
