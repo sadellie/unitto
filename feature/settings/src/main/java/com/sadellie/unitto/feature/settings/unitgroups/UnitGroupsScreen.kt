@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.feature.settings.unitgroups
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateDp
@@ -40,13 +40,14 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
@@ -59,21 +60,20 @@ import org.burnoutcrew.reorderable.reorderable
 
 @Composable
 internal fun UnitGroupsScreen(
-    viewModel: SettingsViewModel,
+    viewModel: UnitGroupsViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit
 ) {
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.unit_groups_setting),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { paddingValues ->
 
-        val shownUnits = viewModel.shownUnitGroups.collectAsState()
-        val hiddenUnits = viewModel.hiddenUnitGroups.collectAsState()
-
         val state = rememberReorderableLazyListState(
-            onMove = viewModel::onMove,
+            onMove = viewModel::moveShownUnitGroups,
             canDragOver = { from, _ -> viewModel.canDragOver(from) },
-            onDragEnd = { _, _ -> viewModel.onDragEnd() }
+            onDragEnd = { _, _ -> viewModel.saveShownUnitGroups() }
         )
 
         LazyColumn(
@@ -89,7 +89,7 @@ internal fun UnitGroupsScreen(
                 )
             }
 
-            items(shownUnits.value, { it }) { item ->
+            items(uiState.value.shownGroups, { it }) { item ->
                 ReorderableItem(state, key = item) { isDragging ->
                     val transition = updateTransition(isDragging, label = "draggedTransition")
                     val background by transition.animateColor(label = "background") {
@@ -104,7 +104,7 @@ internal fun UnitGroupsScreen(
                         modifier = Modifier
                             .padding(horizontal = itemPadding)
                             .clip(CircleShape)
-                            .clickable { viewModel.hideUnitGroup(item) }
+                            .clickable { viewModel.markUnitGroupAsHidden(item) }
                             .detectReorderAfterLongPress(state),
                         colors = ListItemDefaults.colors(
                             containerColor = background
@@ -117,7 +117,7 @@ internal fun UnitGroupsScreen(
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = rememberRipple(false),
-                                    onClick = { viewModel.hideUnitGroup(item) }
+                                    onClick = { viewModel.markUnitGroupAsHidden(item) }
                                 )
                             )
                         },
@@ -147,11 +147,11 @@ internal fun UnitGroupsScreen(
                 )
             }
 
-            items(hiddenUnits.value, { it }) {
+            items(uiState.value.hiddenGroups, { it }) {
                 ListItem(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
-                        .clickable { viewModel.returnUnitGroup(it) }
+                        .clickable { viewModel.markUnitGroupAsShown(it) }
                         .animateItemPlacement(),
                     headlineContent = { Text(stringResource(it.res)) },
                     trailingContent = {
@@ -162,7 +162,7 @@ internal fun UnitGroupsScreen(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(false),
-                                onClick = { viewModel.returnUnitGroup(it) }
+                                onClick = { viewModel.markUnitGroupAsShown(it) }
                             )
                         )
                     }

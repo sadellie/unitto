@@ -36,7 +36,6 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     testImplementation(libs.androidx.datastore)
 
-    implementation(libs.com.github.sadellie.themmo)
     implementation(libs.com.squareup.moshi)
     implementation(libs.com.squareup.retrofit2)
 

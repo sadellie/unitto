@@ -43,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
@@ -54,7 +55,7 @@ import com.sadellie.unitto.core.ui.openLink
 internal fun AboutScreen(
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val mContext = LocalContext.current
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()

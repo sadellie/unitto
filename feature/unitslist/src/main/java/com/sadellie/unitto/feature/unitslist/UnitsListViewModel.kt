@@ -26,9 +26,8 @@ import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.database.UnitsRepository
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.unitgroups.UnitGroupsRepository
 import com.sadellie.unitto.data.units.AllUnitsRepository
-import com.sadellie.unitto.data.userprefs.UserPreferences
+import com.sadellie.unitto.data.userprefs.MainPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -48,33 +47,30 @@ class UnitsListViewModel @Inject constructor(
     private val allUnitsRepository: AllUnitsRepository,
     private val mContext: Application,
     private val userPrefsRepository: UserPreferencesRepository,
-    unitGroupsRepository: UnitGroupsRepository,
 ) : ViewModel() {
 
-    private val _userPrefs: StateFlow<UserPreferences> =
-        userPrefsRepository.userPreferencesFlow.stateIn(
+    private val _userPrefs: StateFlow<MainPreferences> =
+        userPrefsRepository.mainPreferencesFlow.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            UserPreferences()
+            MainPreferences()
         )
     private val _unitsToShow = MutableStateFlow(emptyMap<UnitGroup, List<AbstractUnit>>())
     private val _searchQuery = MutableStateFlow("")
     private val _chosenUnitGroup: MutableStateFlow<UnitGroup?> = MutableStateFlow(null)
-    private val _shownUnitGroups = unitGroupsRepository.shownUnitGroups
 
     val mainFlow = combine(
         _userPrefs,
         _unitsToShow,
         _searchQuery,
         _chosenUnitGroup,
-        _shownUnitGroups,
-    ) { userPrefs, unitsToShow, searchQuery, chosenUnitGroup, shownUnitGroups ->
+    ) { userPrefs, unitsToShow, searchQuery, chosenUnitGroup ->
         return@combine SecondScreenUIState(
             favoritesOnly = userPrefs.unitConverterFavoritesOnly,
             unitsToShow = unitsToShow,
             searchQuery = searchQuery,
             chosenUnitGroup = chosenUnitGroup,
-            shownUnitGroups = shownUnitGroups,
+            shownUnitGroups = userPrefs.shownUnitGroups,
             formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
         )
     }
@@ -136,7 +132,7 @@ class UnitsListViewModel @Inject constructor(
                     chosenUnitGroup = _chosenUnitGroup.value,
                     favoritesOnly = _userPrefs.value.unitConverterFavoritesOnly,
                     searchQuery = _searchQuery.value,
-                    allUnitsGroups = _shownUnitGroups.value,
+                    allUnitsGroups = _userPrefs.value.shownUnitGroups,
                     sorting = _userPrefs.value.unitConverterSorting
                 )
 

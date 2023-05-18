@@ -31,7 +31,7 @@ import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
-import com.sadellie.unitto.data.userprefs.UserPreferences
+import com.sadellie.unitto.data.userprefs.MainPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
@@ -54,11 +54,11 @@ internal class CalculatorViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val calculatorHistoryRepository: CalculatorHistoryRepository,
 ) : ViewModel() {
-    private val _userPrefs: StateFlow<UserPreferences> =
-        userPrefsRepository.userPreferencesFlow.stateIn(
+    private val _userPrefs: StateFlow<MainPreferences> =
+        userPrefsRepository.mainPreferencesFlow.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            UserPreferences()
+            MainPreferences()
         )
 
     private val _input: MutableStateFlow<TextFieldValue> = MutableStateFlow(TextFieldValue())

@@ -40,13 +40,11 @@ internal class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val userPrefsFlow = userPrefsRepository.userPreferencesFlow
-
         setContent {
-            val userPrefs = userPrefsFlow
+            val uiPrefs = userPrefsRepository.uiPreferencesFlow
                 .collectAsStateWithLifecycle(null).value
 
-            if (userPrefs != null) UnittoApp(userPrefs)
+            if (uiPrefs != null) UnittoApp(uiPrefs)
         }
     }
 

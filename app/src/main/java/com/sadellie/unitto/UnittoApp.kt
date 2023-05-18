@@ -44,23 +44,23 @@ import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
-import com.sadellie.unitto.data.userprefs.UserPreferences
+import com.sadellie.unitto.data.userprefs.UIPreferences
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun UnittoApp(userPrefs: UserPreferences) {
+internal fun UnittoApp(uiPrefs: UIPreferences) {
 
     val themmoController = rememberThemmoController(
         lightColorScheme = LightThemeColors,
         darkColorScheme = DarkThemeColors,
         // Anything below will not be called if theming mode is still loading from DataStore
-        themingMode = userPrefs.themingMode,
-        dynamicThemeEnabled = userPrefs.enableDynamicTheme,
-        amoledThemeEnabled = userPrefs.enableAmoledTheme,
-        customColor = userPrefs.customColor,
-        monetMode = userPrefs.monetMode
+        themingMode = uiPrefs.themingMode,
+        dynamicThemeEnabled = uiPrefs.enableDynamicTheme,
+        amoledThemeEnabled = uiPrefs.enableAmoledTheme,
+        customColor = uiPrefs.customColor,
+        monetMode = uiPrefs.monetMode
     )
     val navController = rememberNavController()
     val sysUiController = rememberSystemUiController()
@@ -131,7 +131,7 @@ internal fun UnittoApp(userPrefs: UserPreferences) {
             UnittoNavigation(
                 navController = navController,
                 themmoController = it,
-                startDestination = userPrefs.startingScreen,
+                startDestination = uiPrefs.startingScreen,
                 openDrawer = { drawerScope.launch { drawerState.open() } }
             )
         }

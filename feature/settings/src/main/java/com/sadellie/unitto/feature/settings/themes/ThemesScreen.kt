@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.feature.settings.themes
 
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
@@ -82,7 +83,7 @@ private val colorSchemes: List<Color> by lazy {
 internal fun ThemesRoute(
     navigateUpAction: () -> Unit = {},
     themmoController: ThemmoController,
-    viewModel: SettingsViewModel
+    viewModel: ThemesViewModel = hiltViewModel()
 ) {
     ThemesScreen(
         navigateUpAction = navigateUpAction,

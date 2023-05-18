@@ -30,7 +30,6 @@ import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterScreen
 import com.sadellie.unitto.feature.datedifference.navigation.dateDifferenceScreen
-import com.sadellie.unitto.feature.settings.SettingsViewModel
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
@@ -50,7 +49,6 @@ internal fun UnittoNavigation(
 ) {
     val converterViewModel: ConverterViewModel = hiltViewModel()
     val unitsListViewModel: UnitsListViewModel = hiltViewModel()
-    val settingsViewModel: SettingsViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -90,7 +88,6 @@ internal fun UnittoNavigation(
         )
 
         settingGraph(
-            settingsViewModel = settingsViewModel,
             themmoController = themmoController,
             navController = navController,
             menuButtonClick = openDrawer

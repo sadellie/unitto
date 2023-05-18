@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.OUTPUT_FORMAT
@@ -63,7 +64,7 @@ import com.sadellie.unitto.feature.settings.navigation.unitsGroupRoute
 
 @Composable
 internal fun SettingsScreen(
-    viewModel: SettingsViewModel,
+    viewModel: SettingsViewModel = hiltViewModel(),
     menuButtonClick: () -> Unit,
     navControllerAction: (String) -> Unit
 ) {

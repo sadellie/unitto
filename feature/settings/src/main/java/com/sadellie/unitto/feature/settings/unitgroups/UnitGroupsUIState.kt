@@ -16,24 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-}
+package com.sadellie.unitto.feature.settings.unitgroups
 
-android {
-    namespace = "com.sadellie.unitto.feature.calculator"
-}
+import com.sadellie.unitto.data.model.UnitGroup
 
-dependencies {
-    testImplementation(libs.junit)
-
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:calculator")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:evaluatto")))
-}
+data class UnitGroupsUIState(
+    val shownGroups: List<UnitGroup>,
+    val hiddenGroups: List<UnitGroup>
+)

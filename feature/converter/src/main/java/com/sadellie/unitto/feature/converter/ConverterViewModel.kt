@@ -39,7 +39,7 @@ import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.combine
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
-import com.sadellie.unitto.data.userprefs.UserPreferences
+import com.sadellie.unitto.data.userprefs.MainPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
@@ -65,10 +65,10 @@ class ConverterViewModel @Inject constructor(
     private val allUnitsRepository: AllUnitsRepository
 ) : ViewModel() {
 
-    private val _userPrefs = userPrefsRepository.userPreferencesFlow.stateIn(
+    private val _userPrefs = userPrefsRepository.mainPreferencesFlow.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
-        UserPreferences()
+        MainPreferences()
     )
 
     /**
@@ -334,7 +334,7 @@ class ConverterViewModel @Inject constructor(
 
     private fun loadInitialUnitPair() {
         viewModelScope.launch(Dispatchers.IO) {
-            val initialUserPrefs = userPrefsRepository.userPreferencesFlow.first()
+            val initialUserPrefs = userPrefsRepository.mainPreferencesFlow.first()
 
             // First we load latest pair of units
             _unitFrom.update {
