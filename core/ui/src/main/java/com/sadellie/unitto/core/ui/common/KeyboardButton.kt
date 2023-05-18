@@ -20,25 +20,18 @@ package com.sadellie.unitto.core.ui.common
 
 import android.content.res.Configuration
 import android.view.HapticFeedbackConstants
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
+import kotlinx.coroutines.launch
 
 @Composable
 fun BasicKeyboardButton(
@@ -52,21 +45,21 @@ fun BasicKeyboardButton(
     contentHeight: Float
 ) {
     val view = LocalView.current
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val cornerRadius: Int by animateIntAsState(
-        targetValue = if (isPressed) 30 else 50,
-        animationSpec = tween(easing = FastOutSlowInEasing),
-    )
+    val coroutineScope = rememberCoroutineScope()
 
     UnittoButton(
         modifier = modifier,
-        onClick = onClick,
+        onClick = {
+            onClick()
+            if (allowVibration) {
+                coroutineScope.launch {
+                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                }
+            }
+                  },
         onLongClick = onLongClick,
-        shape = RoundedCornerShape(cornerRadius),
         containerColor = containerColor,
-        contentPadding = PaddingValues(),
-        interactionSource = interactionSource
+        contentPadding = PaddingValues()
     ) {
         Icon(
             imageVector = icon,
@@ -74,10 +67,6 @@ fun BasicKeyboardButton(
             modifier = Modifier.fillMaxHeight(contentHeight),
             tint = iconColor
         )
-    }
-
-    LaunchedEffect(key1 = isPressed) {
-        if (isPressed and allowVibration) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
     }
 }
 
