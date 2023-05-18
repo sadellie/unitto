@@ -1272,6 +1272,17 @@
     <string name="calculator_no_history">No history</string>
     <string name="divide_by_zero_error">Can\'t divide by 0</string>
 
+    <string name="date_difference">Date difference</string>
+    <string name="select_time">Select time</string>
+    <string name="date_difference_start">Start</string>
+    <string name="date_difference_end">End</string>
+    <string name="date_difference_result">Difference</string>
+    <string name="date_difference_months">Months</string>
+    <string name="date_difference_days">Days</string>
+    <string name="date_difference_hours">Hours</string>
+    <string name="date_difference_minutes">Minute</string>
+    <string name="next_label">Next</string>
+
     <!--Precision-->
     <string name="precision_setting_support">Number of decimal places</string>
     <string name="precision_setting_info">Converted values may have a precision higher than the preferred one.</string>

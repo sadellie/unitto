@@ -68,7 +68,11 @@ internal fun UnittoApp(userPrefs: UserPreferences) {
     // Navigation drawer stuff
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val drawerScope = rememberCoroutineScope()
-    val mainTabs = listOf(DrawerItems.Calculator, DrawerItems.Converter)
+    val mainTabs = listOf(
+        DrawerItems.Calculator,
+        DrawerItems.Converter,
+        DrawerItems.DateDifference
+    )
     val additionalTabs = listOf(DrawerItems.Settings)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
