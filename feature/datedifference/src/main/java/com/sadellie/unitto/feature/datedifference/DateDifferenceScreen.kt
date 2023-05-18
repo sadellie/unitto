@@ -26,10 +26,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.DatePickerDialog
 import com.sadellie.unitto.core.ui.common.MenuButton
+import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.TimePickerDialog
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.feature.datedifference.components.DateTimeResultBlock
@@ -83,12 +80,7 @@ internal fun DateDifferenceScreen(
         title = { Text(stringResource(R.string.date_difference)) },
         navigationIcon = { MenuButton(navigateToMenu) },
         actions = {
-            IconButton(onClick = navigateToSettings) {
-                Icon(
-                    Icons.Outlined.Settings,
-                    contentDescription = stringResource(R.string.open_settings_description)
-                )
-            }
+            SettingsButton(navigateToSettings)
         }
     ) { paddingValues ->
         FlowRow(

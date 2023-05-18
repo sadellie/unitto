@@ -20,10 +20,6 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -38,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
+import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.feature.converter.components.Keyboard
 import com.sadellie.unitto.feature.converter.components.TopScreenPart
@@ -85,12 +82,7 @@ private fun ConverterScreen(
         title = { Text(stringResource(R.string.unit_converter)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         actions = {
-            IconButton(onClick = navigateToSettings) {
-                Icon(
-                    Icons.Outlined.Settings,
-                    contentDescription = stringResource(R.string.open_settings_description)
-                )
-            }
+            SettingsButton(navigateToSettings)
         },
         colors = TopAppBarDefaults
             .centerAlignedTopAppBarColors(containerColor = Color.Transparent),
