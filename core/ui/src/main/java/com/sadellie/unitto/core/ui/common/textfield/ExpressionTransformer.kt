@@ -43,31 +43,22 @@ class ExpressionTransformer(private val formatterSymbols: FormatterSymbols) : Vi
         // original input is "1000" and cursor is placed at the end "1000|"
         // the formatted is "1,000" where cursor should be? - "1,000|"
         override fun originalToTransformed(offset: Int): Int {
-            val grouping = formatterSymbols.grouping.first()
-            val fixedCursor = unformatted.fixCursor(offset, formatterSymbols.grouping)
-
-            // Unformatted always has "." (dot) as a fractional, we can't ues for checking with buffer,
-            // because it will fail when fractional is "," (comma)
-            val subString = formatted
-                .replace(formatterSymbols.grouping, "")
-                .replace(formatterSymbols.fractional, ".")
-                .take(offset)
+            val unformattedSubstr = unformatted.take(offset)
             var buffer = ""
-            var groupingCount = 0
-            var cursor = 0
+            var groupings = 0
 
-            // we walk over formatted and stop when it matches unformatted (also counting grouping)
-            while (buffer != subString) {
-                val currentChar = formatted[cursor]
-                if (currentChar == grouping) {
-                    groupingCount += 1
-                } else {
-                    buffer += currentChar
+            run {
+                formatted.forEach {
+                    when (it) {
+                        formatterSymbols.grouping.first() -> groupings++
+                        formatterSymbols.fractional.first() -> buffer += "."
+                        else -> buffer += it
+                    }
+                    if (buffer == unformattedSubstr) return@run
                 }
-                cursor++
             }
 
-            return fixedCursor + groupingCount
+            return formatted.fixCursor(buffer.length + groupings, formatterSymbols.grouping)
         }
 
         // Called when clicking formatted text
