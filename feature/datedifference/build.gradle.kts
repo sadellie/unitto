@@ -29,9 +29,4 @@ android {
 
 dependencies {
     testImplementation(libs.junit)
-    implementation(libs.com.github.sadellie.themmo)
-
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:model")))
 }
