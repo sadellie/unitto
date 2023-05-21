@@ -66,7 +66,7 @@ fun RowScope.SegmentedButton(
     label: String,
     onClick: () -> Unit,
     selected: Boolean,
-    icon: ImageVector
+    icon: ImageVector? = null
 ) {
     val containerColor =
         if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
@@ -81,14 +81,16 @@ fun RowScope.SegmentedButton(
         ),
         contentPadding = PaddingValues(horizontal = 12.dp)
     ) {
-        Crossfade(targetState = selected) {
-            if (it) {
-                Icon(Icons.Default.Check, null, Modifier.size(18.dp))
-            } else {
-                Icon(icon, null, Modifier.size(18.dp))
+        if (icon != null) {
+            Crossfade(targetState = selected) {
+                if (it) {
+                    Icon(Icons.Default.Check, null, Modifier.size(18.dp))
+                } else {
+                    Icon(icon, null, Modifier.size(18.dp))
+                }
             }
+            Spacer(Modifier.width(8.dp))
         }
-        Spacer(Modifier.width(8.dp))
         Text(label)
     }
 }

@@ -41,33 +41,6 @@ class SettingsViewModel @Inject constructor(
         )
 
     /**
-     * @see UserPreferencesRepository.updateDigitsPrecision
-     */
-    fun updatePrecision(precision: Int) {
-        viewModelScope.launch {
-            userPrefsRepository.updateDigitsPrecision(precision)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateSeparator
-     */
-    fun updateSeparator(separator: Int) {
-        viewModelScope.launch {
-            userPrefsRepository.updateSeparator(separator)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateOutputFormat
-     */
-    fun updateOutputFormat(outputFormat: Int) {
-        viewModelScope.launch {
-            userPrefsRepository.updateOutputFormat(outputFormat)
-        }
-    }
-
-    /**
      * @see UserPreferencesRepository.updateVibrations
      */
     fun updateVibrations(enabled: Boolean) {

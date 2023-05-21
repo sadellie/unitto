@@ -27,8 +27,9 @@ import androidx.navigation.compose.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.settings.AboutScreen
 import com.sadellie.unitto.feature.settings.SettingsScreen
-import com.sadellie.unitto.feature.settings.themes.ThemesRoute
 import com.sadellie.unitto.feature.settings.ThirdPartyLicensesScreen
+import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
+import com.sadellie.unitto.feature.settings.themes.ThemesRoute
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
@@ -38,6 +39,7 @@ internal const val themesRoute = "themes_route"
 internal const val unitsGroupRoute = "units_group_route"
 internal const val thirdPartyRoute = "third_party_route"
 internal const val aboutRoute = "about_route"
+internal const val formattingRoute = "formatting_route"
 
 fun NavController.navigateToSettings(builder: NavOptionsBuilder.() -> Unit) {
     navigate(settingsRoute, builder)
@@ -83,6 +85,12 @@ fun NavGraphBuilder.settingGraph(
         composable(unitsGroupRoute) {
             UnitGroupsScreen(
                 navigateUpAction = navController::navigateUp,
+            )
+        }
+
+        composable(formattingRoute) {
+            FormattingRoute(
+                navigateUpAction = navController::navigateUp
             )
         }
     }

@@ -16,24 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-}
+package com.sadellie.unitto.feature.settings.formatting
 
-android {
-    namespace = "com.sadellie.unitto.feature.settings"
-}
-
-dependencies {
-    implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.org.burnoutcrew.composereorderable)
-
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:unitgroups")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:licenses")))
-}
+data class FormattingUIState(
+    val preview: String = "",
+    val precision: Int = 0,
+    val separator: Int? = null,
+    val outputFormat: Int? = null
+)

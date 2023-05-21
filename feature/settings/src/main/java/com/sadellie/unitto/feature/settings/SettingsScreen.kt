@@ -19,7 +19,6 @@
 package com.sadellie.unitto.feature.settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -42,14 +41,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
-import com.sadellie.unitto.core.base.OUTPUT_FORMAT
-import com.sadellie.unitto.core.base.PRECISIONS
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.SEPARATORS
 import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.MenuButton
@@ -59,6 +54,7 @@ import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
+import com.sadellie.unitto.feature.settings.navigation.formattingRoute
 import com.sadellie.unitto.feature.settings.navigation.themesRoute
 import com.sadellie.unitto.feature.settings.navigation.unitsGroupRoute
 
@@ -110,43 +106,18 @@ internal fun SettingsScreen(
                 )
             }
 
-            // GENERAL GROUP
-            item { Header(stringResource(R.string.formatting_settings_group)) }
-
-            // PRECISION
+            // FORMATTING
             item {
                 ListItem(
                     leadingContent = {
                         Icon(
                             Icons.Default._123,
-                            stringResource(R.string.precision_setting),
+                            stringResource(R.string.formatting_settings_group),
                         )
                     },
-                    headlineContent = { Text(stringResource(R.string.precision_setting)) },
-                    supportingContent = { Text(stringResource(R.string.precision_setting_support)) },
-                    modifier = Modifier.clickable { dialogState = DialogState.PRECISION }
-                )
-            }
-
-            // SEPARATOR
-            item {
-                ListItem(
-                    headlineContent = { Text(stringResource(R.string.separator_setting)) },
-                    supportingContent = { Text(stringResource(R.string.separator_setting_support)) },
-                    modifier = Modifier
-                        .clickable { dialogState = DialogState.SEPARATOR }
-                        .padding(start = 40.dp)
-                )
-            }
-
-            // OUTPUT FORMAT
-            item {
-                ListItem(
-                    headlineContent = { Text(stringResource(R.string.output_format_setting)) },
-                    supportingContent = { Text(stringResource(R.string.output_format_setting_support)) },
-                    modifier = Modifier
-                        .clickable { dialogState = DialogState.OUTPUT_FORMAT }
-                        .padding(start = 40.dp)
+                    headlineContent = { Text(stringResource(R.string.formatting_settings_group)) },
+                    supportingContent = { Text(stringResource(R.string.formatting_settings_support)) },
+                    modifier = Modifier.clickable { navControllerAction(formattingRoute) }
                 )
             }
 
@@ -260,35 +231,6 @@ internal fun SettingsScreen(
 
     // Showing dialog
     when (dialogState) {
-        DialogState.PRECISION -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.precision_setting),
-                listItems = PRECISIONS,
-                selectedItemIndex = userPrefs.value.digitsPrecision,
-                selectAction = viewModel::updatePrecision,
-                dismissAction = { resetDialog() },
-                supportText = stringResource(R.string.precision_setting_info)
-            )
-        }
-        DialogState.SEPARATOR -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.separator_setting),
-                listItems = SEPARATORS,
-                selectedItemIndex = userPrefs.value.separator,
-                selectAction = viewModel::updateSeparator,
-                dismissAction = { resetDialog() }
-            )
-        }
-        DialogState.OUTPUT_FORMAT -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.output_format_setting),
-                listItems = OUTPUT_FORMAT,
-                selectedItemIndex = userPrefs.value.outputFormat,
-                selectAction = viewModel::updateOutputFormat,
-                dismissAction = { resetDialog() },
-                supportText = stringResource(R.string.output_format_setting_info)
-            )
-        }
         DialogState.START_SCREEN -> {
             AlertDialogWithList(
                 title = stringResource(R.string.starting_screen_setting),
@@ -321,5 +263,5 @@ internal fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, PRECISION, SEPARATOR, OUTPUT_FORMAT, START_SCREEN, UNIT_LIST_SORTING
+    NONE, START_SCREEN, UNIT_LIST_SORTING
 }
