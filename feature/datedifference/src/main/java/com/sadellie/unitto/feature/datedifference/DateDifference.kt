@@ -18,21 +18,24 @@
 
 package com.sadellie.unitto.feature.datedifference
 
-import java.time.Duration
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 internal sealed class DateDifference(
+    open val years: Long = 0,
     open val months: Long = 0,
     open val days: Long = 0,
     open val hours: Long = 0,
     open val minutes: Long = 0,
 ) {
     data class Default(
+        override val years: Long = 0,
         override val months: Long = 0,
         override val days: Long = 0,
         override val hours: Long = 0,
         override val minutes: Long = 0,
     ) : DateDifference(
+        years = years,
         months = months,
         days = days,
         hours = hours,
@@ -42,23 +45,38 @@ internal sealed class DateDifference(
     object Zero : DateDifference()
 }
 
+// https://stackoverflow.com/a/25760725
 internal infix operator fun LocalDateTime.minus(localDateTime: LocalDateTime): DateDifference {
-    val duration = Duration.between(this, localDateTime).abs()
+    if (this == localDateTime) return DateDifference.Zero
 
-    if (duration.isZero) return DateDifference.Zero
+    var fromDateTime: LocalDateTime = this
+    var toDateTime: LocalDateTime = localDateTime
 
-    val durationDays = duration.toDays()
-    val months = durationDays / 30
-    val days = durationDays % 30
-    val hours = duration.toHoursPart().toLong()
-    val minutes = duration.toMinutesPart().toLong()
+    // Swap to avoid negative
+    if (this > localDateTime) {
+        fromDateTime = localDateTime
+        toDateTime = this
+    }
 
-    if (listOf(months, days, hours, minutes).all { it == 0L }) return DateDifference.Zero
+    var tempDateTime = LocalDateTime.from(fromDateTime)
+
+    val years = tempDateTime.until(toDateTime, ChronoUnit.YEARS)
+
+    tempDateTime = tempDateTime.plusYears(years)
+    val months = tempDateTime.until(toDateTime, ChronoUnit.MONTHS)
+
+    tempDateTime = tempDateTime.plusMonths(months)
+    val days = tempDateTime.until(toDateTime, ChronoUnit.DAYS)
+
+    tempDateTime = tempDateTime.plusDays(days)
+    val hours = tempDateTime.until(toDateTime, ChronoUnit.HOURS)
+
+    tempDateTime = tempDateTime.plusHours(hours)
+    val minutes = tempDateTime.until(toDateTime, ChronoUnit.MINUTES)
+
+    if (listOf(years, months, days, hours, minutes).sum() == 0L) return DateDifference.Zero
 
     return DateDifference.Default(
-        months = months,
-        days = days,
-        hours = hours,
-        minutes = minutes
+        years = years, months = months, days = days, hours = hours, minutes = minutes
     )
 }

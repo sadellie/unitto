@@ -218,7 +218,7 @@ private fun DateDifferenceScreenPreview() {
         updateStart = {},
         updateEnd = {},
         uiState = UIState(
-            result = DateDifference.Default(1, 2, 3, 4)
+            result = DateDifference.Default(4, 1, 2, 3, 4)
         )
     )
 }

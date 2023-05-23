@@ -1278,6 +1278,7 @@
     <string name="date_difference_start">Start</string>
     <string name="date_difference_end">End</string>
     <string name="date_difference_result">Difference</string>
+    <string name="date_difference_years">Years</string>
     <string name="date_difference_months">Months</string>
     <string name="date_difference_days">Days</string>
     <string name="date_difference_hours">Hours</string>

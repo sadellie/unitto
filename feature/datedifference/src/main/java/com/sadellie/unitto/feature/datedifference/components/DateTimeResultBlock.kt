@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.datedifference.components
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -35,6 +36,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,23 +56,13 @@ internal fun DateTimeResultBlock(
 ) {
     val clipboardManager = LocalClipboardManager.current
 
-    val months = if (dateDifference.months > 0) {
-        "${stringResource(R.string.date_difference_months)}: ${dateDifference.months}"
-    } else ""
+    val years = dateDifference.years.formatDateTimeValue(R.string.date_difference_years)
+    val months = dateDifference.months.formatDateTimeValue(R.string.date_difference_months)
+    val days = dateDifference.days.formatDateTimeValue(R.string.date_difference_days)
+    val hours = dateDifference.hours.formatDateTimeValue(R.string.date_difference_hours)
+    val minutes = dateDifference.minutes.formatDateTimeValue(R.string.date_difference_minutes)
 
-    val days = if (dateDifference.days > 0) {
-        "${stringResource(R.string.date_difference_days)}: ${dateDifference.days}"
-    } else ""
-
-    val hours = if (dateDifference.hours > 0) {
-        "${stringResource(R.string.date_difference_hours)}: ${dateDifference.hours}"
-    } else ""
-
-    val minutes = if (dateDifference.minutes > 0) {
-        "${stringResource(R.string.date_difference_minutes)}: ${dateDifference.minutes}"
-    } else ""
-
-    val texts = listOf(months, days, hours, minutes)
+    val texts = listOf(years, months, days, hours, minutes)
 
     Column(
         modifier = modifier
@@ -113,6 +105,14 @@ internal fun DateTimeResultBlock(
             }
         }
     }
+}
+
+@Composable
+@ReadOnlyComposable
+private fun Long.formatDateTimeValue(@StringRes id: Int): String {
+    if (this <= 0) return ""
+
+    return "${stringResource(id)}: $this"
 }
 
 @Preview
