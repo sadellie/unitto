@@ -41,8 +41,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -134,16 +132,6 @@ private fun ThemesScreen(
     monetMode: MonetMode,
     onMonetModeChange: (MonetMode) -> Unit
 ) {
-    val themingModes by remember {
-        mutableStateOf(
-            mapOf(
-                ThemingMode.AUTO to (R.string.auto_label to Icons.Outlined.HdrAuto),
-                ThemingMode.FORCE_LIGHT to (R.string.force_light_mode to Icons.Outlined.LightMode),
-                ThemingMode.FORCE_DARK to (R.string.force_dark_mode to Icons.Outlined.DarkMode)
-            )
-        )
-    }
-
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.theme_setting),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
@@ -170,15 +158,24 @@ private fun ThemesScreen(
                         .wrapContentWidth()
                 ) {
                     SegmentedButtonsRow(modifier = Modifier.padding(56.dp, 8.dp, 24.dp, 2.dp)) {
-                        themingModes.forEach { (mode, visuals) ->
-                            val (label, icon) = visuals
-                            SegmentedButton(
-                                label = stringResource(label),
-                                onClick = { onThemeChange(mode) },
-                                selected = mode == currentThemingMode,
-                                icon = icon
-                            )
-                        }
+                        SegmentedButton(
+                            label = stringResource(R.string.auto_label),
+                            onClick = { onThemeChange(ThemingMode.AUTO) },
+                            selected = ThemingMode.AUTO == currentThemingMode,
+                            icon = Icons.Outlined.HdrAuto
+                        )
+                        SegmentedButton(
+                            label = stringResource(R.string.force_light_mode),
+                            onClick = { onThemeChange(ThemingMode.FORCE_LIGHT) },
+                            selected = ThemingMode.FORCE_LIGHT == currentThemingMode,
+                            icon = Icons.Outlined.LightMode
+                        )
+                        SegmentedButton(
+                            label = stringResource(R.string.force_dark_mode),
+                            onClick = { onThemeChange(ThemingMode.FORCE_DARK) },
+                            selected = ThemingMode.FORCE_DARK == currentThemingMode,
+                            icon = Icons.Outlined.DarkMode
+                        )
                     }
                 }
             }
