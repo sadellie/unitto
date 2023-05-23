@@ -78,14 +78,14 @@ private fun SquigglyTrack(
     unfilledColor: Color = MaterialTheme.colorScheme.surfaceVariant
 ) {
     val coroutineScope = rememberCoroutineScope()
-    var direct by remember { mutableStateOf(1f) }
+    var direct by remember { mutableStateOf(0.72f) }
     val animatedDirect = animateFloatAsState(direct, spring())
     val slider = sliderPosition.activeRange.endInclusive
 
     LaunchedEffect(sliderPosition.activeRange.endInclusive) {
         coroutineScope.launch {
-            delay(300L)
-            direct = if (direct == 1f) -1f else 1f
+            delay(200L)
+            direct *= -1
         }
     }
 
@@ -110,7 +110,7 @@ private fun SquigglyTrack(
                 relativeQuadraticBezierTo(
                     dx1 = eachWaveWidth * 0.5f,
                     // 0.75, because 1.0 was clipping out of bound for some reason
-                    dy1 = height.times(0.75f) * peek,
+                    dy1 = height.times(peek),
                     dx2 = eachWaveWidth,
                     dy2 = 0f
                 )
