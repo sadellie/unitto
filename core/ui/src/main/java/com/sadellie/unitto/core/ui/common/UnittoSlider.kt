@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.common
 
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
@@ -79,7 +80,7 @@ private fun SquigglyTrack(
 ) {
     val coroutineScope = rememberCoroutineScope()
     var direct by remember { mutableStateOf(0.72f) }
-    val animatedDirect = animateFloatAsState(direct, spring())
+    val animatedDirect = animateFloatAsState(direct, spring(stiffness = Spring.StiffnessLow))
     val slider = sliderPosition.activeRange.endInclusive
 
     LaunchedEffect(sliderPosition.activeRange.endInclusive) {
