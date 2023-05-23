@@ -109,7 +109,7 @@ internal fun DateTimeResultBlock(
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
-                Text(it, style = MaterialTheme.typography.displayMedium)
+                Text(it, style = MaterialTheme.typography.displaySmall)
             }
         }
     }

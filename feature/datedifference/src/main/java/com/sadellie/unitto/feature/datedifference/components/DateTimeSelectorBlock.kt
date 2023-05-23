@@ -67,7 +67,7 @@ internal fun DateTimeSelectorBlock(
                     onClick = onTimeClick
                 ),
                 text = dateTime.format(time24Formatter),
-                style = MaterialTheme.typography.displayMedium,
+                style = MaterialTheme.typography.displaySmall,
                 maxLines = 1
             )
         } else {
@@ -80,7 +80,7 @@ internal fun DateTimeSelectorBlock(
             ) {
                 Text(
                     text = dateTime.format(time12Formatter),
-                    style = MaterialTheme.typography.displayMedium,
+                    style = MaterialTheme.typography.displaySmall,
                     maxLines = 1
                 )
                 Text(
