@@ -89,7 +89,7 @@ fun FormattingScreen(
     precisions: ClosedFloatingPointRange<Float> = 0f..16f, // 16th is a MAX_PRECISION (1000)
 ) {
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.formatting_settings_group),
+        title = stringResource(R.string.formatting_setting),
         navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { paddingValues ->
         LazyColumn(
@@ -198,8 +198,8 @@ fun FormattingScreen(
                     leadingContent = {
                         Icon(Icons.Default.EMobiledata, stringResource(R.string.precision_setting))
                     },
-                    headlineContent = { Text(stringResource(R.string.output_format_setting)) },
-                    supportingContent = { Text(stringResource(R.string.output_format_setting_support)) }
+                    headlineContent = { Text(stringResource(R.string.exponential_notation_setting)) },
+                    supportingContent = { Text(stringResource(R.string.exponential_notation_setting_support)) }
                 )
             }
 
@@ -212,19 +212,19 @@ fun FormattingScreen(
                 ) {
                     SegmentedButtonsRow {
                         SegmentedButton(
-                            label = stringResource(R.string.plain),
-                            onClick = { onOutputFormatChange(OutputFormat.PLAIN) },
-                            selected = OutputFormat.PLAIN == uiState.outputFormat
-                        )
-                        SegmentedButton(
-                            label = stringResource(R.string.allow_engineering),
+                            label = stringResource(R.string.auto_label),
                             onClick = { onOutputFormatChange(OutputFormat.ALLOW_ENGINEERING) },
                             selected = OutputFormat.ALLOW_ENGINEERING == uiState.outputFormat
                         )
                         SegmentedButton(
-                            label = stringResource(R.string.force_engineering),
+                            label = stringResource(R.string.enabled_label),
                             onClick = { onOutputFormatChange(OutputFormat.FORCE_ENGINEERING) },
                             selected = OutputFormat.FORCE_ENGINEERING == uiState.outputFormat
+                        )
+                        SegmentedButton(
+                            label = stringResource(R.string.disabled_label),
+                            onClick = { onOutputFormatChange(OutputFormat.PLAIN) },
+                            selected = OutputFormat.PLAIN == uiState.outputFormat
                         )
                     }
                 }

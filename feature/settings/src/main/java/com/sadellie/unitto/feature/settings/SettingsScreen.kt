@@ -112,11 +112,11 @@ internal fun SettingsScreen(
                     leadingContent = {
                         Icon(
                             Icons.Default._123,
-                            stringResource(R.string.formatting_settings_group),
+                            stringResource(R.string.formatting_setting),
                         )
                     },
-                    headlineContent = { Text(stringResource(R.string.formatting_settings_group)) },
-                    supportingContent = { Text(stringResource(R.string.formatting_settings_support)) },
+                    headlineContent = { Text(stringResource(R.string.formatting_setting)) },
+                    supportingContent = { Text(stringResource(R.string.formatting_setting_support)) },
                     modifier = Modifier.clickable { navControllerAction(formattingRoute) }
                 )
             }

@@ -137,7 +137,7 @@ private fun ThemesScreen(
     val themingModes by remember {
         mutableStateOf(
             mapOf(
-                ThemingMode.AUTO to (R.string.force_auto_mode to Icons.Outlined.HdrAuto),
+                ThemingMode.AUTO to (R.string.auto_label to Icons.Outlined.HdrAuto),
                 ThemingMode.FORCE_LIGHT to (R.string.force_light_mode to Icons.Outlined.LightMode),
                 ThemingMode.FORCE_DARK to (R.string.force_dark_mode to Icons.Outlined.DarkMode)
             )

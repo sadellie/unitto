@@ -659,7 +659,9 @@
     <string name="theme_setting">Thèmes</string>
     <string name="precision_setting">Précision</string>
     <string name="separator_setting">Séparateur</string>
-    <string name="output_format_setting">Format de sortie</string>
+
+    <!-- Fuzzy -->
+    <string name="exponential_notation_setting">Notation exponentielle</string>
     <string name="unit_groups_setting">Groupes d\'unités</string>
     <string name="currency_rates_note_title">Note</string>
     <string name="currency_rates_note_text">Les taux de change sont mis à jour quotidiennement. L\'application ne permet pas de suivre le marché en temps réel.</string>
@@ -667,7 +669,7 @@
     <string name="privacy_policy">Politique de confidentialité</string>
     <string name="third_party_licenses">Licences tierces</string>
     <string name="rate_this_app">Évaluer l\'application</string>
-    <string name="formatting_settings_group">Formattage</string>
+    <string name="formatting_setting">Formattage</string>
     <string name="additional_settings_group">Additional</string>
 
     <!-- Precision -->
@@ -680,8 +682,7 @@
     <string name="period">Période (42.069,12)</string>
     <string name="comma">Virgule (42,069.12)</string>
     <string name="spaces">Espaces (42 069.12)</string>
-    <string name="plain">Défaut</string>
-    <string name="force_auto_mode">Auto</string>
+    <string name="auto_label">Auto</string>
     <string name="force_light_mode">Clair</string>
     <string name="force_dark_mode">Sombre</string>
     <string name="force_amoled_mode">AMOLED Noir</string>
