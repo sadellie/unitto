@@ -33,7 +33,6 @@ dependencies {
 
     implementation(project(mapOf("path" to ":data:common")))
     implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:unitgroups")))
     implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":data:licenses")))
 }

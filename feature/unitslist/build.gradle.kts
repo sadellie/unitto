@@ -32,5 +32,4 @@ dependencies {
     implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":data:units")))
     implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:unitgroups")))
 }
