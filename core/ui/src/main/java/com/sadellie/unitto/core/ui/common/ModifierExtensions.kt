@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.Dp
 fun Modifier.squashable(
     onClick: () -> Unit = {},
     onLongClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
     interactionSource: MutableInteractionSource,
     cornerRadiusRange: IntRange,
     role: Role = Role.Button,
@@ -55,12 +56,14 @@ fun Modifier.squashable(
             interactionSource = interactionSource,
             indication = rememberRipple(),
             role = role,
+            enabled = enabled
         )
 }
 
 fun Modifier.squashable(
     onClick: () -> Unit = {},
     onLongClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
     interactionSource: MutableInteractionSource,
     cornerRadiusRange: ClosedRange<Dp>,
     role: Role = Role.Button,
@@ -79,5 +82,6 @@ fun Modifier.squashable(
             interactionSource = interactionSource,
             indication = rememberRipple(),
             role = role,
+            enabled = enabled
         )
 }

@@ -44,6 +44,7 @@ fun UnittoButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
     containerColor: Color,
     contentColor: Color = contentColorFor(containerColor),
     border: BorderStroke? = null,
@@ -56,11 +57,12 @@ fun UnittoButton(
             onClick = onClick,
             onLongClick = onLongClick,
             interactionSource = interactionSource,
-            cornerRadiusRange = 30..50
+            cornerRadiusRange = 30..50,
+            enabled = enabled
         ),
         color = containerColor,
         contentColor = contentColor,
-        border = border
+        border = border,
     ) {
         CompositionLocalProvider(LocalContentColor provides contentColor) {
             ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {
