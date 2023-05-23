@@ -49,10 +49,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.base.OUTPUT_FORMAT
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.SEPARATORS
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoSlider
@@ -176,13 +174,21 @@ fun FormattingScreen(
                         .padding(start = 56.dp)
                 ) {
                     SegmentedButtonsRow {
-                        SEPARATORS.forEach { (separator, stringRes) ->
-                            SegmentedButton(
-                                label = stringResource(stringRes),
-                                onClick = { onSeparatorChange(separator) },
-                                selected = separator == uiState.separator
-                            )
-                        }
+                        SegmentedButton(
+                            label = stringResource(R.string.spaces),
+                            onClick = { onSeparatorChange(Separator.SPACES) },
+                            selected = Separator.SPACES == uiState.separator
+                        )
+                        SegmentedButton(
+                            label = stringResource(R.string.period),
+                            onClick = { onSeparatorChange(Separator.PERIOD) },
+                            selected = Separator.PERIOD == uiState.separator
+                        )
+                        SegmentedButton(
+                            label = stringResource(R.string.comma),
+                            onClick = { onSeparatorChange(Separator.COMMA) },
+                            selected = Separator.COMMA == uiState.separator
+                        )
                     }
                 }
             }
@@ -205,13 +211,21 @@ fun FormattingScreen(
                         .padding(start = 56.dp)
                 ) {
                     SegmentedButtonsRow {
-                        OUTPUT_FORMAT.forEach { (outputFormat, stringRes) ->
-                            SegmentedButton(
-                                label = stringResource(stringRes),
-                                onClick = { onOutputFormatChange(outputFormat) },
-                                selected = outputFormat == uiState.outputFormat
-                            )
-                        }
+                        SegmentedButton(
+                            label = stringResource(R.string.plain),
+                            onClick = { onOutputFormatChange(OutputFormat.PLAIN) },
+                            selected = OutputFormat.PLAIN == uiState.outputFormat
+                        )
+                        SegmentedButton(
+                            label = stringResource(R.string.allow_engineering),
+                            onClick = { onOutputFormatChange(OutputFormat.ALLOW_ENGINEERING) },
+                            selected = OutputFormat.ALLOW_ENGINEERING == uiState.outputFormat
+                        )
+                        SegmentedButton(
+                            label = stringResource(R.string.force_engineering),
+                            onClick = { onOutputFormatChange(OutputFormat.FORCE_ENGINEERING) },
+                            selected = OutputFormat.FORCE_ENGINEERING == uiState.outputFormat
+                        )
                     }
                 }
             }
