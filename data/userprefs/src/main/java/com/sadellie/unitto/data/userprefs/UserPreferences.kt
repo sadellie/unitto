@@ -66,7 +66,7 @@ import javax.inject.Inject
  */
 data class UserPreferences(
     val themingMode: ThemingMode = ThemingMode.AUTO,
-    val enableDynamicTheme: Boolean = false,
+    val enableDynamicTheme: Boolean = true,
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,
     val monetMode: MonetMode = MonetMode.TONAL_SPOT,
