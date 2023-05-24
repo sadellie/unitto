@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.toStringWith
@@ -46,17 +47,19 @@ class FormattingViewModel @Inject constructor(
     private val _fractional = MutableStateFlow(false)
 
     val uiState = combine(_mainPreferences, _fractional) { mainPrefs, fractional ->
+        val formatterSymbols = AllFormatterSymbols.getById(mainPrefs.separator)
 
         return@combine FormattingUIState(
             preview = updatePreview(
                 fractional = fractional,
                 precision = mainPrefs.digitsPrecision,
                 outputFormat = mainPrefs.outputFormat,
-                separator = mainPrefs.separator
+                formatterSymbols = formatterSymbols
             ),
             precision = mainPrefs.digitsPrecision,
             separator = mainPrefs.separator,
-            outputFormat = mainPrefs.outputFormat
+            outputFormat = mainPrefs.outputFormat,
+            formatterSymbols = formatterSymbols
         )
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), FormattingUIState())
@@ -67,7 +70,7 @@ class FormattingViewModel @Inject constructor(
         fractional: Boolean,
         precision: Int,
         outputFormat: Int,
-        separator: Int,
+        formatterSymbols: FormatterSymbols
     ): String {
         val bigD = when {
             fractional -> "0.${"0000001".padStart(precision, '0')}"
@@ -79,7 +82,7 @@ class FormattingViewModel @Inject constructor(
             .setMinimumRequiredScale(precision)
             .trimZeros()
             .toStringWith(outputFormat)
-            .formatExpression(AllFormatterSymbols.getById(separator))
+            .formatExpression(formatterSymbols)
     }
 
     /**

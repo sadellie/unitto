@@ -674,13 +674,13 @@
     <!-- Precision -->
     <string name="precision_setting_support">Количество десятичных знаков</string>
     <string name="precision_setting_info">Переводимые значения могут иметь точность выше предпочтительной.</string>
-    <string name="max_precision">1 000 (Максимум)</string>
+    <string name="max_precision">%1$s (Максимум)</string>
 
     <!-- Separator -->
     <string name="separator_setting_support">Символ разделителя</string>
-    <string name="period">Точка (42.069,12)</string>
-    <string name="comma">Запятая (42,069.12)</string>
-    <string name="spaces">Пробел (42 069.12)</string>
+    <string name="period">Точка</string>
+    <string name="comma">Запятая</string>
+    <string name="space">Пробел</string>
 
     <!-- Output format -->
     <string name="exponential_notation_setting_support">Замените часть числа на E</string>

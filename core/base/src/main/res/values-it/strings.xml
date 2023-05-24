@@ -659,8 +659,6 @@
     <string name="theme_setting">"Temi"</string>
     <string name="precision_setting">"Precisione"</string>
     <string name="separator_setting">"Separatore"</string>
-
-    <!-- Fuzzy -->
     <string name="exponential_notation_setting">"Notazione esponenziale"</string>
     <string name="unit_groups_setting">"Gruppi di unità"</string>
     <string name="currency_rates_note_setting">"Tassi di cambio sbagliati?"</string>
@@ -670,22 +668,25 @@
     <string name="privacy_policy">"Politica sulla riservatezza"</string>
     <string name="third_party_licenses">"Licenze terze parti"</string>
     <string name="rate_this_app">"Valuta questa app"</string>
-    <string name="formatting_setting">"Formattazione"</string>
+    <string name="formatting_setting">"Formato"</string>
     <string name="additional_settings_group">"Aggiuntive"</string>
 
     <!-- Precision -->
     <string name="precision_setting_support">"Numero di posti decimali"</string>
     <string name="precision_setting_info">"Valori convertiti potrebbero avere una precisione maggiore di quella preferita."</string>
-    <string name="max_precision">"1 000 (Max)"</string>
+    <string name="max_precision">"%1$s (Max)"</string>
 
     <!-- Separator -->
     <string name="separator_setting_support">"Simbolo separatore gruppo"</string>
-    <string name="period">"Punto (42.069,12)"</string>
-    <string name="comma">"Virgola (42,069.12)"</string>
-    <string name="spaces">"Spazio (42 069.12)"</string>
+    <string name="period">"Punto"</string>
+    <string name="comma">"Virgola"</string>
+
+    <!-- maybe this should be singular -->
+    <!-- Fuzzy -->
+    <string name="space">"Spazi"</string>
 
     <!-- Output format -->
-    <string name="exponential_notation_setting_support">"Replace part of the number with E"</string>
+    <string name="exponential_notation_setting_support">"Sostituisce parte del numero con E"</string>
 
     <!-- Theme -->
     <string name="theme_setting_support">"Aspetto dell'app"</string>
@@ -1070,33 +1071,33 @@
 https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
 
 Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
-    <string name="formatting_setting_support">"Precision and numbers appearance"</string>
-    <string name="divide_by_zero_error">"Can't divide by 0"</string>
-    <string name="date_difference">"Date difference"</string>
+    <string name="formatting_setting_support">"Precisione e aspetto dei numeri"</string>
+    <string name="divide_by_zero_error">"Non divisibile per 0"</string>
+    <string name="date_difference">"Differenza di data"</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
-    <string name="select_time">"Select time"</string>
-    <string name="date_difference_start">"Start"</string>
-    <string name="date_difference_end">"End"</string>
-    <string name="date_difference_result">"Difference"</string>
+    <string name="select_time">"Seleziona orario"</string>
+    <string name="date_difference_start">"Inizio"</string>
+    <string name="date_difference_end">"Fine"</string>
+    <string name="date_difference_result">"Differenza"</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_years">"Years"</string>
+    <string name="date_difference_years">"Anni"</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_months">"Months"</string>
+    <string name="date_difference_months">"Mesi"</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_days">"Days"</string>
+    <string name="date_difference_days">"Giorni"</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_hours">"Hours"</string>
+    <string name="date_difference_hours">"Ore"</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_minutes">"Minute"</string>
+    <string name="date_difference_minutes">"Minuti"</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
 
 Used in this dialog window. Should be short -->
-    <string name="next_label">"Next"</string>
+    <string name="next_label">"Prossimo"</string>
 </resources>

@@ -38,17 +38,20 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
@@ -58,6 +61,7 @@ import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.squashable
+import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import kotlin.math.roundToInt
 
@@ -88,6 +92,21 @@ fun FormattingScreen(
     togglePreview: () -> Unit,
     precisions: ClosedFloatingPointRange<Float> = 0f..16f, // 16th is a MAX_PRECISION (1000)
 ) {
+    val resources = LocalContext.current.resources
+
+    val precisionText: String by remember(uiState.precision, uiState.formatterSymbols) {
+        derivedStateOf {
+            return@derivedStateOf if (uiState.precision >= precisions.endInclusive) {
+                resources.getString(
+                    R.string.max_precision,
+                    MAX_PRECISION.toString().formatExpression(uiState.formatterSymbols)
+                )
+            } else {
+                uiState.precision.toString()
+            }
+        }
+    }
+
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.formatting_setting),
         navigationIcon = { NavigateUpButton(navigateUpAction) },
@@ -138,7 +157,7 @@ fun FormattingScreen(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(stringResource(R.string.precision_setting))
-                            Text(if (uiState.precision >= precisions.endInclusive) stringResource(R.string.max_precision) else uiState.precision.toString())
+                            Text(precisionText)
                         }
                     },
                     supportingContent = {
@@ -175,9 +194,9 @@ fun FormattingScreen(
                 ) {
                     SegmentedButtonsRow {
                         SegmentedButton(
-                            label = stringResource(R.string.spaces),
-                            onClick = { onSeparatorChange(Separator.SPACES) },
-                            selected = Separator.SPACES == uiState.separator
+                            label = stringResource(R.string.space),
+                            onClick = { onSeparatorChange(Separator.SPACE) },
+                            selected = Separator.SPACE == uiState.separator
                         )
                         SegmentedButton(
                             label = stringResource(R.string.period),
@@ -242,9 +261,9 @@ private fun PreviewFormattingScreen() {
 
     FormattingScreen(
         uiState = FormattingUIState(
-            preview = "",
-            precision = 3,
-            separator = Separator.SPACES,
+            preview = "123456.789",
+            precision = 16,
+            separator = Separator.SPACE,
             outputFormat = OutputFormat.PLAIN
         ),
         onPrecisionChange = { currentPrecision = it },

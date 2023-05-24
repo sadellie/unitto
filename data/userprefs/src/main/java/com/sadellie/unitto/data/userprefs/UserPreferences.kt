@@ -71,7 +71,7 @@ data class UserPreferences(
     val customColor: Color = Color.Unspecified,
     val monetMode: MonetMode = MonetMode.TONAL_SPOT,
     val digitsPrecision: Int = 3,
-    val separator: Int = Separator.SPACES,
+    val separator: Int = Separator.SPACE,
     val outputFormat: Int = OutputFormat.PLAIN,
     val latestLeftSideUnit: String = MyUnitIDS.kilometer,
     val latestRightSideUnit: String = MyUnitIDS.mile,
@@ -96,7 +96,7 @@ data class UIPreferences(
 
 data class MainPreferences(
     val digitsPrecision: Int = 3,
-    val separator: Int = Separator.SPACES,
+    val separator: Int = Separator.SPACE,
     val outputFormat: Int = OutputFormat.PLAIN,
     val latestLeftSideUnit: String = MyUnitIDS.kilometer,
     val latestRightSideUnit: String = MyUnitIDS.mile,
@@ -174,7 +174,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         }
         .map { preferences ->
             val digitsPrecision: Int = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
-            val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACES
+            val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE
             val outputFormat: Int = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
             val latestLeftSideUnit: String = preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
             val latestRightSideUnit: String = preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile

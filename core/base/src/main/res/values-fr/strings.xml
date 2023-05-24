@@ -675,13 +675,15 @@
     <!-- Precision -->
     <string name="precision_setting_support">Nombre de décimales</string>
     <string name="precision_setting_info">Les valeurs converties peuvent avoir une précision supérieure à la précision préférée.</string>
-    <string name="max_precision">1 000 (Max)</string>
+    <string name="max_precision">%1$s (Max)</string>
 
     <!-- Separator -->
     <string name="separator_setting_support">Symbole de séparation de groupe</string>
-    <string name="period">Période (42.069,12)</string>
-    <string name="comma">Virgule (42,069.12)</string>
-    <string name="spaces">Espaces (42 069.12)</string>
+    <string name="period">Période</string>
+    <string name="comma">Virgule</string>
+
+    <!-- Fuzzy -->
+    <string name="space">Espaces</string>
     <string name="auto_label">Auto</string>
     <string name="force_light_mode">Clair</string>
     <string name="force_dark_mode">Sombre</string>

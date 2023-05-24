@@ -29,7 +29,7 @@ sealed class FormatterSymbols(val grouping: String, val fractional: String) {
 object AllFormatterSymbols {
     private val allFormatterSymbols by lazy {
         hashMapOf(
-            Separator.SPACES to FormatterSymbols.Spaces,
+            Separator.SPACE to FormatterSymbols.Spaces,
             Separator.PERIOD to FormatterSymbols.Period,
             Separator.COMMA to FormatterSymbols.Comma
         )

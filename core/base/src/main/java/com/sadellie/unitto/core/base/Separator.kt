@@ -22,7 +22,7 @@ package com.sadellie.unitto.core.base
  * Separators mean symbols that separate fractional part
  */
 object Separator {
-    const val SPACES = 0
+    const val SPACE = 0
     const val PERIOD = 1
     const val COMMA = 2
 }
