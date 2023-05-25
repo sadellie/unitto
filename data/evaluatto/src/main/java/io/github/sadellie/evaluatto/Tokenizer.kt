@@ -25,7 +25,7 @@ sealed class TokenizerException(override val message: String) : Exception(messag
 }
 
 class Tokenizer(private val streamOfTokens: String) {
-    // Do this in init?
+    // Don't create object at all?
     fun tokenize(): List<String> {
         var cursor = 0
         val tokens: MutableList<String> = mutableListOf()
@@ -76,6 +76,13 @@ class Tokenizer(private val streamOfTokens: String) {
             .missingClosingBrackets()
             .missingMultiply()
             .unpackAlPercents()
+            // input like 80%80% should be treated as 80%-80%.
+            // After unpacking we get (80/100)(80/100), the multiply is missing
+            // No, we can't unpack before fixing missing multiply.
+            // Ideally we we need to add missing multiply for 80%80%
+            // In that case unpackAlPercents gets input with all operators 80%*80% in this case
+            // Can't be done right now since missingMultiply checks for tokens in front only
+            .missingMultiply()
     }
 
     private fun List<String>.missingClosingBrackets(): List<String> {
@@ -174,7 +181,7 @@ class Tokenizer(private val streamOfTokens: String) {
 
         // Add "/ 100" and other stuff
         mutList.addAll(
-            percentIndex+1,
+            percentIndex + 1,
             listOf(
                 Token.Operator.divide,
                 "100",
@@ -192,7 +199,7 @@ class Tokenizer(private val streamOfTokens: String) {
     private fun List<String>.getNumberOrExpressionBefore(pos: Int): List<String> {
         val digits = Token.Digit.all.map { it[0] }
 
-        val tokenInFront = this[pos-1]
+        val tokenInFront = this[pos - 1]
 
         // Just number
         if (tokenInFront.all { it in digits }) return listOf(tokenInFront)
@@ -234,5 +241,4 @@ class Tokenizer(private val streamOfTokens: String) {
 
         return this.subList(cursor, pos)
     }
-
 }
