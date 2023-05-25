@@ -73,8 +73,8 @@ class FormattingViewModel @Inject constructor(
         formatterSymbols: FormatterSymbols
     ): String {
         val bigD = when {
-            fractional -> "0.${"0000001".padStart(precision, '0')}"
-            precision > 0 -> "123456.${"7890123456".repeat(ceil(precision.toDouble() / 10.0).toInt())}"
+            fractional -> "0.${"1".padStart(precision, '0')}"
+            precision > 0 -> "123456.${"789123456".repeat(ceil(precision.toDouble() / 9.0).toInt())}"
             else -> "123456"
         }
 
