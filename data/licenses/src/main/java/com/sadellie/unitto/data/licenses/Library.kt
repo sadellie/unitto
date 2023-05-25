@@ -106,20 +106,6 @@ val ALL_LIBRARIES by lazy {
             description = "Utilities for Jetpack Compose"
         ),
         AppLibrary(
-            name = "firebase-analytics-ktx",
-            dev = "Google",
-            website = "https://developer.android.com/studio/terms.html",
-            license = "ASDKL",
-            description = "Library to collect and send usage statistics"
-        ),
-        AppLibrary(
-            name = "firebase-crashlytics-ktx",
-            dev = "Google",
-            website = "https://developer.android.com/studio/terms.html",
-            license = "Apache-2.0",
-            description = "Library to collect and send crash logs"
-        ),
-        AppLibrary(
             name = "Compose Tooling API",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/compose-ui",
