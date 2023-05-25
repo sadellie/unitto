@@ -123,8 +123,8 @@ private fun HistoryListContent(
     formatterSymbols: FormatterSymbols,
     historyItemHeightCallback: (Int) -> Unit
 ) {
-    val firstItem by remember { mutableStateOf(historyItems.first()) }
-    val restOfTheItems by remember { mutableStateOf(historyItems.drop(1)) }
+    val firstItem by remember(historyItems) { mutableStateOf(historyItems.first()) }
+    val restOfTheItems by remember(firstItem) { mutableStateOf(historyItems.drop(1)) }
 
     LazyColumn(
         modifier = modifier,
