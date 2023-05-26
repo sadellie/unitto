@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -123,11 +124,15 @@ private fun HistoryListContent(
     formatterSymbols: FormatterSymbols,
     historyItemHeightCallback: (Int) -> Unit
 ) {
+    val state = rememberLazyListState()
     val firstItem by remember(historyItems) { mutableStateOf(historyItems.first()) }
     val restOfTheItems by remember(firstItem) { mutableStateOf(historyItems.drop(1)) }
 
+    LaunchedEffect(historyItems) { state.scrollToItem(0) }
+
     LazyColumn(
         modifier = modifier,
+        state = state,
         reverseLayout = true,
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom)
     ) {
