@@ -129,7 +129,7 @@ fun FormattingScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Preview (click to switch)",
+                        text = stringResource(R.string.formatting_setting_preview_box_label),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )

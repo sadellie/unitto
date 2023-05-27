@@ -1097,4 +1097,5 @@ Maybe this can be labeled better? Let me know. It should be something that can d
 
 Used in this dialog window. Should be short -->
     <string name="next_label">Далее</string>
+    <string name="formatting_setting_preview_box_label">Предпросмотр (нажмите для переключения)</string>
 </resources>

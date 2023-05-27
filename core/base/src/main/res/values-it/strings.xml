@@ -680,10 +680,7 @@
     <string name="separator_setting_support">"Simbolo separatore gruppo"</string>
     <string name="period">"Punto"</string>
     <string name="comma">"Virgola"</string>
-
-    <!-- maybe this should be singular -->
-    <!-- Fuzzy -->
-    <string name="space">"Spazi"</string>
+    <string name="space">"Spazio"</string>
 
     <!-- Output format -->
     <string name="exponential_notation_setting_support">"Sostituisce parte del numero con E"</string>
@@ -1099,5 +1096,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
 
 Used in this dialog window. Should be short -->
-    <string name="next_label">"Prossimo"</string>
+    <string name="next_label">"Avanti"</string>
+    <string name="formatting_setting_preview_box_label">"Anteprima (tocca per cambiare)"</string>
 </resources>
