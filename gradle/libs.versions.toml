@@ -1,6 +1,6 @@
 [versions]
-appCode = "20"
-appName = "Kobicha"
+appCode = "21"
+appName = "Lilac Luster"
 kotlin = "1.8.21"
 androidxCore = "1.10.0"
 androidGradlePlugin = "8.0.1"

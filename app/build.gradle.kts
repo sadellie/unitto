@@ -34,8 +34,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 33
-        versionCode = 20
-        versionName = "Kobicha"
+        versionCode = 21
+        versionName = "Lilac Luster"
     }
 
     buildTypes {

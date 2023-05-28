@@ -1,0 +1,7 @@
+"Lilac Luster" update:
+
+- Non-mathematical percentage support
+- New interactive Formatting settings
+- Date difference tool
+- Improved performance and UI/UX
+- Added Italian localization
