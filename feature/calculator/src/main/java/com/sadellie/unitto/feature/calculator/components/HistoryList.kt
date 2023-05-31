@@ -165,11 +165,11 @@ private fun HistoryListItem(
     addTokens: (String) -> Unit,
 ) {
     val clipboardManager = LocalClipboardManager.current
-    val expression = historyItem.expression
+    val expression = historyItem.expression.take(1000)
     var expressionValue by remember(expression) {
         mutableStateOf(TextFieldValue(expression, TextRange(expression.length)))
     }
-    val result = historyItem.result
+    val result = historyItem.result.take(1000)
     var resultValue by remember(result) {
         mutableStateOf(TextFieldValue(result, TextRange(result.length)))
     }
