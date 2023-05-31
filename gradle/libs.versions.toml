@@ -1,5 +1,5 @@
 [versions]
-appCode = "21"
+appCode = "22"
 appName = "Lilac Luster"
 kotlin = "1.8.21"
 androidxCore = "1.10.0"

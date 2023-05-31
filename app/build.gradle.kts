@@ -34,7 +34,7 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 33
-        versionCode = 21
+        versionCode = 22
         versionName = "Lilac Luster"
     }
 
