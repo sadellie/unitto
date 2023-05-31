@@ -34,21 +34,24 @@ class ExpressionTransformer(private val formatterSymbols: FormatterSymbols) : Vi
     }
 
     inner class ExpressionMapping(
-        private val unformatted: String,
-        private val formatted: String
+        private val original: String,
+        private val transformed: String
     ) : OffsetMapping {
         // Called when entering text (on each text change)
         // Basically moves cursor to the right position
         //
         // original input is "1000" and cursor is placed at the end "1000|"
-        // the formatted is "1,000" where cursor should be? - "1,000|"
+        // the transformed is "1,000" where cursor should be? - "1,000|"
         override fun originalToTransformed(offset: Int): Int {
-            val unformattedSubstr = unformatted.take(offset)
+            if (offset <= 0) return 0
+            if (offset >= original.length) return transformed.length
+
+            val unformattedSubstr = original.take(offset)
             var buffer = ""
             var groupings = 0
 
             run {
-                formatted.forEach {
+                transformed.forEach {
                     when (it) {
                         formatterSymbols.grouping.first() -> groupings++
                         formatterSymbols.fractional.first() -> buffer += "."
@@ -58,18 +61,21 @@ class ExpressionTransformer(private val formatterSymbols: FormatterSymbols) : Vi
                 }
             }
 
-            return formatted.fixCursor(buffer.length + groupings, formatterSymbols.grouping)
+            return transformed.fixCursor(buffer.length + groupings, formatterSymbols.grouping)
         }
 
-        // Called when clicking formatted text
+        // Called when clicking transformed text
         // Snaps cursor to the right position
         //
-        // the formatted is "1,000" and cursor is placed at the end "1,000|"
+        // the transformed is "1,000" and cursor is placed at the end "1,000|"
         // original input is "1000" where cursor should be? - "1000|"
         override fun transformedToOriginal(offset: Int): Int {
+            if (offset <= 0) return 0
+            if (offset >= transformed.length) return original.length
+
             val grouping = formatterSymbols.grouping.first()
-            val fixedCursor = formatted.fixCursor(offset, formatterSymbols.grouping)
-            val addedSymbols = formatted.take(fixedCursor).count { it == grouping }
+            val fixedCursor = transformed.fixCursor(offset, formatterSymbols.grouping)
+            val addedSymbols = transformed.take(fixedCursor).count { it == grouping }
             return fixedCursor - addedSymbols
         }
     }
