@@ -94,9 +94,9 @@ internal fun LeftSideScreen(
                 SearchBar(
                     title = stringResource(R.string.units_screen_from),
                     value = uiState.value.searchQuery,
-                    onValueChange = { viewModel.onSearchQueryChange(it) },
+                    onValueChange = { viewModel.onSearchQueryChange(it, false) },
                     favoritesOnly = uiState.value.favoritesOnly,
-                    favoriteAction = { viewModel.toggleFavoritesOnly() },
+                    favoriteAction = { viewModel.toggleFavoritesOnly(false) },
                     navigateUpAction = navigateUp,
                     focusManager = focusManager,
                     scrollBehavior = scrollBehavior
@@ -104,7 +104,7 @@ internal fun LeftSideScreen(
                 ChipsRow(
                     chosenUnitGroup = uiState.value.chosenUnitGroup,
                     items = uiState.value.shownUnitGroups,
-                    selectAction = { viewModel.toggleSelectedChip(it) },
+                    selectAction = { viewModel.toggleSelectedChip(it, false) },
                     lazyListState = chipsRowLazyListState,
                     navigateToSettingsAction = navigateToSettingsAction
                 )
@@ -130,7 +130,7 @@ internal fun LeftSideScreen(
                                 isSelected = currentUnitId == unit.unitId,
                                 selectAction = {
                                     selectAction(it)
-                                    viewModel.onSearchQueryChange("")
+                                    viewModel.onSearchQueryChange("", false)
                                     focusManager.clearFocus(true)
                                     navigateUp()
                                 },
@@ -147,7 +147,7 @@ internal fun LeftSideScreen(
         if (currentUnitId == null) return@LaunchedEffect
         // This is still wrong, but works good enough.
         // Ideally we shouldn't use uiState.value.shownUnitGroups
-        viewModel.setSelectedChip(currentUnitId)
+        viewModel.setSelectedChip(currentUnitId, false)
         val groupToSelect = uiState.value.shownUnitGroups.indexOf(uiState.value.chosenUnitGroup)
         if (groupToSelect > -1) {
             chipsRowLazyListState.animateScrollToItem(groupToSelect)

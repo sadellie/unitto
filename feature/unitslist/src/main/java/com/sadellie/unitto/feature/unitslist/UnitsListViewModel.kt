@@ -76,18 +76,18 @@ class UnitsListViewModel @Inject constructor(
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SecondScreenUIState())
 
-    fun toggleFavoritesOnly(hideBrokenCurrencies: Boolean = true) {
+    fun toggleFavoritesOnly(hideBrokenUnits: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateUnitConverterFavoritesOnly(
                 !_userPrefs.value.unitConverterFavoritesOnly
             )
-            loadUnitsToShow(hideBrokenCurrencies)
+            loadUnitsToShow(hideBrokenUnits)
         }
     }
 
-    fun onSearchQueryChange(newValue: String, hideBrokenCurrencies: Boolean = true) {
+    fun onSearchQueryChange(newValue: String, hideBrokenUnits: Boolean) {
         _searchQuery.update { newValue }
-        loadUnitsToShow(hideBrokenCurrencies)
+        loadUnitsToShow(hideBrokenUnits)
     }
 
     /**
@@ -95,9 +95,9 @@ class UnitsListViewModel @Inject constructor(
      *
      * @param unit Will find group for unit with this id.
      */
-    fun setSelectedChip(unit: String, hideBrokenCurrencies: Boolean = true) {
+    fun setSelectedChip(unit: String, hideBrokenUnits: Boolean) {
         _chosenUnitGroup.update { allUnitsRepository.getById(unit).group }
-        loadUnitsToShow(hideBrokenCurrencies)
+        loadUnitsToShow(hideBrokenUnits)
     }
 
     /**
@@ -108,27 +108,26 @@ class UnitsListViewModel @Inject constructor(
      *
      * @param unitGroup [UnitGroup], currently selected chip.
      */
-    fun toggleSelectedChip(unitGroup: UnitGroup, hideBrokenCurrencies: Boolean = true) {
+    fun toggleSelectedChip(unitGroup: UnitGroup, hideBrokenUnits: Boolean) {
         val newUnitGroup = if (_chosenUnitGroup.value == unitGroup) null else unitGroup
         _chosenUnitGroup.update { newUnitGroup }
-        loadUnitsToShow(hideBrokenCurrencies)
+        loadUnitsToShow(hideBrokenUnits)
     }
 
     /**
      * Filters and groups [AllUnitsRepository.allUnits] in coroutine
      *
-     * @param hideBrokenCurrencies Decide whether or not we are on left side. Need it because right side requires
-     * us to mark disabled currency units
+     * @param hideBrokenUnits Broken units come from currencies API (basic unit is zero)
      */
     private fun loadUnitsToShow(
-        hideBrokenCurrencies: Boolean
+        hideBrokenUnits: Boolean
     ) {
         viewModelScope.launch {
             // This is mostly not UI related stuff and viewModelScope.launch uses Dispatchers.Main
             // So we switch to Default
             withContext(Dispatchers.Default) {
                 val unitsToShow = allUnitsRepository.filterUnits(
-                    hideBrokenCurrencies = hideBrokenCurrencies,
+                    hideBrokenUnits = hideBrokenUnits,
                     chosenUnitGroup = _chosenUnitGroup.value,
                     favoritesOnly = _userPrefs.value.unitConverterFavoritesOnly,
                     searchQuery = _searchQuery.value,

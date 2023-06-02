@@ -73,7 +73,7 @@ fun NavGraphBuilder.rightScreen(
         val unitFromId = it.arguments?.getString(unitFromIdArg) ?: return@composable
         val unitToId = it.arguments?.getString(unitToIdArg) ?: return@composable
         val input = it.arguments?.getString(inputArg)
-        viewModel.setSelectedChip(unitFromId, false)
+        viewModel.setSelectedChip(unitFromId, true)
 
         RightSideScreen(
             viewModel = viewModel,

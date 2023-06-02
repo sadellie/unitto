@@ -37,8 +37,6 @@ import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.units.AllUnitsRepository
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.data.units.combine
-import com.sadellie.unitto.data.units.remote.CurrencyApi
-import com.sadellie.unitto.data.units.remote.CurrencyUnitResponse
 import com.sadellie.unitto.data.userprefs.MainPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -298,9 +296,7 @@ class ConverterViewModel @Inject constructor(
             _showLoading.update { true }
 
             try {
-                val pairs: CurrencyUnitResponse =
-                    CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId)
-                allUnitsRepository.updateBasicUnitsForCurrencies(pairs.currency)
+                allUnitsRepository.updateBasicUnitsForCurrencies(unitFrom)
                 convertAsExpression()
             } catch (e: Exception) {
                 // Dangerous and stupid, but who cares

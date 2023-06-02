@@ -96,11 +96,11 @@ internal fun RightSideScreen(
                 title = stringResource(R.string.units_screen_to),
                 value = uiState.value.searchQuery,
                 onValueChange = {
-                    viewModel.onSearchQueryChange(it, false)
+                    viewModel.onSearchQueryChange(it, true)
                 },
                 favoritesOnly = uiState.value.favoritesOnly,
                 favoriteAction = {
-                    viewModel.toggleFavoritesOnly(false)
+                    viewModel.toggleFavoritesOnly(true)
                 },
                 navigateUpAction = navigateUp,
                 focusManager = focusManager,
@@ -127,7 +127,7 @@ internal fun RightSideScreen(
                                 isSelected = currentUnit == unit.unitId,
                                 selectAction = {
                                     selectAction(it)
-                                    viewModel.onSearchQueryChange("")
+                                    viewModel.onSearchQueryChange("", true)
                                     focusManager.clearFocus(true)
                                     navigateUp()
                                 },

@@ -37,7 +37,6 @@ import java.math.BigDecimal
  * @property renderedShortName Used as cache. Stores short name string for this specific device. Need for
  * search functionality.
  * @property isFavorite Whether this unit is favorite.
- * @property isEnabled Whether we need to show this unit or not
  * @property pairedUnit Latest paired unit on the right
  * @property counter The amount of time this unit was chosen
  */
@@ -50,7 +49,6 @@ abstract class AbstractUnit(
     var renderedName: String = String(),
     var renderedShortName: String = String(),
     var isFavorite: Boolean = false,
-    var isEnabled: Boolean = true,
     var pairedUnit: String? = null,
     var counter: Int = 0
 ) {
