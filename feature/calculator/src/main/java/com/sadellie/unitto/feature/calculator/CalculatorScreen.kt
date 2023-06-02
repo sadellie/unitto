@@ -56,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -114,6 +115,7 @@ private fun CalculatorScreen(
     evaluate: () -> Unit,
     clearHistory: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     val dragAmount = remember { Animatable(0f) }
     val dragCoroutineScope = rememberCoroutineScope()
     val dragAnimSpec = rememberSplineBasedDecay<Float>()
@@ -182,6 +184,10 @@ private fun CalculatorScreen(
                                     val draggedAmount = (dragAmount.value + delta).coerceAtLeast(0f)
                                     dragAmount.snapTo(draggedAmount)
                                 }
+                            },
+                            onDragStarted = {
+                                // Moving composables with focus causes performance drop
+                                focusManager.clearFocus(true)
                             },
                             onDragStopped = { velocity ->
                                 dragCoroutineScope.launch {
