@@ -160,8 +160,8 @@ class ConverterViewModel @Inject constructor(
             _unitTo.update { allUnitsRepository.getCollectionByGroup(unit.group).first() }
         }
         incrementCounter(unit)
-        updateCurrenciesRatesIfNeeded()
         saveLatestPairOfUnits()
+        updateCurrenciesRatesIfNeeded()
     }
 
     /**
@@ -182,6 +182,7 @@ class ConverterViewModel @Inject constructor(
         _unitFrom
             .getAndUpdate { _unitTo.value }
             .also { oldUnitFrom -> _unitTo.update { oldUnitFrom } }
+        saveLatestPairOfUnits()
         updateCurrenciesRatesIfNeeded()
     }
 
