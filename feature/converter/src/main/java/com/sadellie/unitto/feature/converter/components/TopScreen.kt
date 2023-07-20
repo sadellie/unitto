@@ -98,6 +98,7 @@ internal fun TopScreenPart(
     cutCallback: () -> Unit,
     pasteCallback: (String) -> Unit,
     formatterSymbols: FormatterSymbols,
+    onErrorClick: () -> Unit,
 ) {
     var swapped by remember { mutableStateOf(false) }
     val swapButtonRotation: Float by animateFloatAsState(
@@ -148,7 +149,8 @@ internal fun TopScreenPart(
                 modifier = Modifier,
                 value = calculatedTextFieldValue,
                 onCursorChange = { newSelection ->
-                    calculatedTextFieldValue = calculatedTextFieldValue.copy(selection = newSelection)
+                    calculatedTextFieldValue =
+                        calculatedTextFieldValue.copy(selection = newSelection)
                 },
                 formatterSymbols = formatterSymbols,
                 textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
@@ -237,7 +239,7 @@ internal fun TopScreenPart(
                 UnformattedTextField(
                     modifier = Modifier.weight(2f),
                     value = TextFieldValue(stringResource(R.string.error_label)),
-                    onCursorChange = {},
+                    onCursorChange = { onErrorClick() },
                     minRatio = 0.7f,
                     readOnly = true,
                     textColor = MaterialTheme.colorScheme.error
@@ -245,9 +247,15 @@ internal fun TopScreenPart(
             }
         }
 
+        val supportLabelTo = when {
+            outputValue is ConversionResult.Error -> R.string.try_again_label
+            (unitTo?.shortName != null) -> unitTo.shortName
+            else -> R.string.loading_label
+        }
+
         AnimatedContent(
             modifier = Modifier.fillMaxWidth(),
-            targetState = stringResource(unitTo?.shortName ?: R.string.loading_label),
+            targetState = stringResource(supportLabelTo),
             transitionSpec = {
                 // Enter animation
                 (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()

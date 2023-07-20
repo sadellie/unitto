@@ -285,7 +285,7 @@ class ConverterViewModel @Inject constructor(
         }
     }
 
-    private fun updateCurrenciesRatesIfNeeded() {
+    fun updateCurrenciesRatesIfNeeded() {
         viewModelScope.launch(Dispatchers.IO) {
             _showError.update { false }
             _showLoading.update { false }

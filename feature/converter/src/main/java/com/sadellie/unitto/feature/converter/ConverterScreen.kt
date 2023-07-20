@@ -61,6 +61,7 @@ internal fun ConverterRoute(
         clearInput = viewModel::clearInput,
         onCursorChange = viewModel::onCursorChange,
         cutCallback = viewModel::deleteTokens,
+        onErrorClick = viewModel::updateCurrenciesRatesIfNeeded,
     )
 }
 
@@ -77,6 +78,7 @@ private fun ConverterScreen(
     clearInput: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
     cutCallback: () -> Unit,
+    onErrorClick: () -> Unit,
 ) {
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.unit_converter)) },
@@ -107,6 +109,7 @@ private fun ConverterScreen(
                         cutCallback = cutCallback,
                         pasteCallback = processInput,
                         formatterSymbols = uiState.formatterSymbols,
+                        onErrorClick = onErrorClick
                     )
                 },
                 content2 = {
@@ -144,6 +147,7 @@ private fun PreviewConverterScreen() {
         deleteDigit = {},
         clearInput = {},
         onCursorChange = {},
-        cutCallback = {}
+        cutCallback = {},
+        onErrorClick = {},
     )
 }

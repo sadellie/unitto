@@ -962,6 +962,7 @@
     <!-- MISC. -->
     <string name="loading_label">"Loading…"</string>
     <string name="error_label">"Error"</string>
+    <string name="try_again_label">"Click to try again"</string>
     <string name="copied">"Copied %1$s!"</string>
     <string name="cancel_label">"Cancel"</string>
     <string name="ok_label" translatable="false">"OK"</string>
