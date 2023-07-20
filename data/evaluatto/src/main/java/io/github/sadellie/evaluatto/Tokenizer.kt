@@ -197,7 +197,7 @@ class Tokenizer(private val streamOfTokens: String) {
     }
 
     private fun List<String>.getNumberOrExpressionBefore(pos: Int): List<String> {
-        val digits = Token.Digit.all.map { it[0] }
+        val digits = Token.Digit.allWithDot.map { it[0] }
 
         val tokenInFront = this[pos - 1]
 
@@ -205,7 +205,7 @@ class Tokenizer(private val streamOfTokens: String) {
         if (tokenInFront.all { it in digits }) return listOf(tokenInFront)
 
         // Not just a number. Probably expression in brackets.
-        if (tokenInFront != Token.Operator.rightBracket) throw Exception("Unexpected token before the percentage")
+        if (tokenInFront != Token.Operator.rightBracket) throw Exception("Unexpected token before percentage")
 
         // Start walking left until we get balanced brackets
         var cursor = pos - 1
