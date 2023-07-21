@@ -47,6 +47,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -120,8 +121,8 @@ private fun CalculatorScreen(
     val dragCoroutineScope = rememberCoroutineScope()
     val dragAnimSpec = rememberSplineBasedDecay<Float>()
 
-    var textThingyHeight by remember { mutableStateOf(0) }
-    var historyItemHeight by remember { mutableStateOf(0) }
+    var textThingyHeight by remember { mutableIntStateOf(0) }
+    var historyItemHeight by remember { mutableIntStateOf(0) }
 
     var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
     val showClearHistoryButton by remember(dragAmount.value, historyItemHeight) {

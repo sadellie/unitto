@@ -40,7 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -56,10 +56,10 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoSlider
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.UnittoSlider
 import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
@@ -255,9 +255,9 @@ fun FormattingScreen(
 @Preview
 @Composable
 private fun PreviewFormattingScreen() {
-    var currentPrecision by remember { mutableStateOf(6) }
-    var currentSeparator by remember { mutableStateOf(Separator.COMMA) }
-    var currentOutputFormat by remember { mutableStateOf(OutputFormat.PLAIN) }
+    var currentPrecision by remember { mutableIntStateOf(6) }
+    var currentSeparator by remember { mutableIntStateOf(Separator.COMMA) }
+    var currentOutputFormat by remember { mutableIntStateOf(OutputFormat.PLAIN) }
 
     FormattingScreen(
         uiState = FormattingUIState(

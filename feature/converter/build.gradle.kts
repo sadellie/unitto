@@ -30,7 +30,6 @@ android {
 dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
-    testImplementation(libs.org.robolectric)
     testImplementation(libs.androidx.room.runtime)
     testImplementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)

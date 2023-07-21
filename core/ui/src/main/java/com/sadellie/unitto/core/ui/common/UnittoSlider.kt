@@ -26,11 +26,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderPositions
+import androidx.compose.material3.SliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -72,18 +72,18 @@ fun UnittoSlider(
 
 @Composable
 private fun SquigglyTrack(
-    sliderPosition: SliderPositions,
+    sliderState: SliderState,
     eachWaveWidth: Float = 80f,
     strokeWidth: Float = 15f,
     filledColor: Color = MaterialTheme.colorScheme.primary,
     unfilledColor: Color = MaterialTheme.colorScheme.surfaceVariant
 ) {
     val coroutineScope = rememberCoroutineScope()
-    var direct by remember { mutableStateOf(0.72f) }
+    var direct by remember { mutableFloatStateOf(0.72f) }
     val animatedDirect = animateFloatAsState(direct, spring(stiffness = Spring.StiffnessLow))
-    val slider = sliderPosition.activeRange.endInclusive
+    val slider = sliderState.valueRange.endInclusive
 
-    LaunchedEffect(sliderPosition.activeRange.endInclusive) {
+    LaunchedEffect(sliderState.valueRange.endInclusive) {
         coroutineScope.launch {
             delay(200L)
             direct *= -1
@@ -148,7 +148,7 @@ private fun SquigglyTrack(
 @Preview(device = "spec:width=1920dp,height=1080dp,dpi=480")
 @Composable
 private fun PreviewNewSlider() {
-    var currentValue by remember { mutableStateOf(0.9f) }
+    var currentValue by remember { mutableFloatStateOf(0.9f) }
 
     UnittoSlider(
         value = currentValue,

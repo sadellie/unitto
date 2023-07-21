@@ -23,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
@@ -55,20 +54,10 @@ internal fun UnittoNavigation(
         startDestination = startDestination,
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
-        fun navigateToSettings() {
-            navController.navigateToSettings {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
-        }
-
         converterScreen(
             navigateToLeftScreen = navController::navigateToLeftSide,
             navigateToRightScreen = navController::navigateToRightSide,
-            navigateToSettings = ::navigateToSettings,
+            navigateToSettings = navController::navigateToSettings,
             navigateToMenu = openDrawer,
             viewModel = converterViewModel
         )
@@ -95,12 +84,12 @@ internal fun UnittoNavigation(
 
         calculatorScreen(
             navigateToMenu = openDrawer,
-            navigateToSettings = ::navigateToSettings
+            navigateToSettings = navController::navigateToSettings
         )
 
         dateDifferenceScreen(
             navigateToMenu = openDrawer,
-            navigateToSettings = ::navigateToSettings
+            navigateToSettings = navController::navigateToSettings
         )
     }
 }

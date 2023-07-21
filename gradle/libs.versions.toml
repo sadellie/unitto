@@ -1,39 +1,39 @@
 [versions]
 appCode = "22"
 appName = "Lilac Luster"
-kotlin = "1.8.21"
-androidxCore = "1.10.0"
-androidGradlePlugin = "8.0.1"
-orgJetbrainsKotlinxCoroutinesTest = "1.6.4"
+kotlin = "1.9.0"
+androidxCore = "1.10.1"
+androidGradlePlugin = "8.0.2"
+orgJetbrainsKotlinxCoroutinesTest = "1.7.2"
 androidxCompose = "1.5.0-alpha02"
-androidxComposeCompiler = "1.4.7"
-androidxComposeUi = "1.5.0-alpha04"
-androidxComposeMaterial3 = "1.2.0-alpha01"
-androidxNavigation = "2.5.3"
+androidxComposeCompiler = "1.5.0"
+androidxComposeUi = "1.6.0-alpha01"
+androidxComposeMaterial3 = "1.2.0-alpha03"
+androidxNavigation = "2.6.0"
 androidxLifecycleRuntimeCompose = "2.6.1"
 androidxHilt = "1.0.0"
-comGoogleDagger = "2.45"
-androidxComposeMaterialIconsExtended = "1.5.0-alpha04"
+comGoogleDagger = "2.47"
+androidxComposeMaterialIconsExtended = "1.6.0-alpha01"
 androidxDatastore = "1.0.0"
 comGoogleAccompanist = "0.30.1"
-androidxRoom = "2.5.1"
-comSquareupMoshi = "1.14.0"
+androidxRoom = "2.6.0-alpha02"
+comSquareupMoshi = "1.15.0"
 comSquareupRetrofit2 = "2.9.0"
-comGithubSadellieThemmo = "ed4063f70f"
+comGithubSadellieThemmo = "1.0.0"
 orgBurnoutcrewComposereorderable = "0.9.6"
-junit = "4.13.2"
+junit = "5.9.3"
 androidxTest = "1.5.0"
-androidxTestExt = "1.1.4"
+androidxTestExt = "1.1.5"
 androidDesugarJdkLibs = "2.0.3"
-androidxTestRunner = "1.5.1"
+androidxTestRunner = "1.5.2"
 androidxTestRules = "1.5.0"
-orgRobolectric = "4.9"
+orgRobolectric = "4.10.3"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-test = { group = "androidx.test", name = "core", version.ref = "androidxTest" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
+junit = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
 org-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "orgRobolectric" }

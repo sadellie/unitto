@@ -19,8 +19,8 @@
 package com.sadellie.unitto.data.units
 
 import com.sadellie.unitto.data.common.lev
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class LevenshteinTest {
 

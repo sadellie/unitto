@@ -18,7 +18,7 @@
 
 package io.github.sadellie.evaluatto
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class ExpressionExceptionsTest {
 

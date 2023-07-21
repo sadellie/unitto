@@ -22,8 +22,8 @@ import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.DefaultUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.sortByLev
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 val baseList: List<AbstractUnit> = listOf(

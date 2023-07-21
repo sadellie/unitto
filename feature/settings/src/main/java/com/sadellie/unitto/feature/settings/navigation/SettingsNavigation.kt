@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.settings.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
@@ -41,8 +40,8 @@ internal const val thirdPartyRoute = "third_party_route"
 internal const val aboutRoute = "about_route"
 internal const val formattingRoute = "formatting_route"
 
-fun NavController.navigateToSettings(builder: NavOptionsBuilder.() -> Unit) {
-    navigate(settingsRoute, builder)
+fun NavController.navigateToSettings() {
+    navigate(settingsRoute)
 }
 
 fun NavController.navigateToUnitGroups() {

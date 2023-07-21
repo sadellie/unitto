@@ -19,10 +19,8 @@
 package com.sadellie.unitto
 
 import androidx.compose.animation.core.tween
-import androidx.compose.material3.DrawerValue
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -40,6 +38,10 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
+import com.sadellie.unitto.core.ui.common.UnittoModalNavigationDrawer
+import com.sadellie.unitto.core.ui.common.close
+import com.sadellie.unitto.core.ui.common.open
+import com.sadellie.unitto.core.ui.common.rememberUnittoDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
@@ -49,13 +51,13 @@ import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun UnittoApp(uiPrefs: UIPreferences) {
 
     val themmoController = rememberThemmoController(
         lightColorScheme = LightThemeColors,
         darkColorScheme = DarkThemeColors,
-        // Anything below will not be called if theming mode is still loading from DataStore
         themingMode = uiPrefs.themingMode,
         dynamicThemeEnabled = uiPrefs.enableDynamicTheme,
         amoledThemeEnabled = uiPrefs.enableAmoledTheme,
@@ -66,7 +68,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
     val sysUiController = rememberSystemUiController()
 
     // Navigation drawer stuff
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val drawerState = rememberUnittoDrawerState()
     val drawerScope = rememberCoroutineScope()
     val mainTabs = listOf(
         DrawerItems.Calculator,
@@ -88,14 +90,6 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                 }
         }
     }
-    val gesturesEnabled: Boolean by remember(navBackStackEntry?.destination) {
-        derivedStateOf {
-            // Will be true for routes like
-            // [null, calculator_route, settings_graph, settings_route, themes_route]
-            // We disable drawer drag gesture when we are too deep
-            navController.backQueue.size <= 4
-        }
-    }
 
     Themmo(
         themmoController = themmoController,
@@ -107,10 +101,8 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
             mutableStateOf(backgroundColor.luminance() > 0.5f)
         }
 
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            gesturesEnabled = gesturesEnabled,
-            drawerContent = {
+        UnittoModalNavigationDrawer(
+            drawer = {
                 UnittoDrawerSheet(
                     modifier = Modifier,
                     mainTabs = mainTabs,
@@ -126,15 +118,20 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                         restoreState = true
                     }
                 }
+            },
+            modifier = Modifier,
+            state = drawerState,
+            gesturesEnabled = true,
+            scope = drawerScope,
+            content = {
+                UnittoNavigation(
+                    navController = navController,
+                    themmoController = it,
+                    startDestination = uiPrefs.startingScreen,
+                    openDrawer = { drawerScope.launch { drawerState.open() } }
+                )
             }
-        ) {
-            UnittoNavigation(
-                navController = navController,
-                themmoController = it,
-                startDestination = uiPrefs.startingScreen,
-                openDrawer = { drawerScope.launch { drawerState.open() } }
-            )
-        }
+        )
 
         LaunchedEffect(useDarkIcons) {
             sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)

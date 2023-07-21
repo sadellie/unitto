@@ -28,12 +28,12 @@ plugins {
 
 android {
     namespace = "com.sadellie.unitto"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 22
         versionName = "Lilac Luster"
     }

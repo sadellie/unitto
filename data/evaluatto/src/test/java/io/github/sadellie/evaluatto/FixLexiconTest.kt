@@ -18,9 +18,10 @@
 
 package io.github.sadellie.evaluatto
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class FixLexiconTest {
+
     @Test
     fun `missing multiply`() {
         assertLex(
