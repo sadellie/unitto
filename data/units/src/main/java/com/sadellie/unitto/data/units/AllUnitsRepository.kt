@@ -48,6 +48,9 @@ import com.sadellie.unitto.data.units.collections.temperatureCollection
 import com.sadellie.unitto.data.units.collections.timeCollection
 import com.sadellie.unitto.data.units.collections.torqueCollection
 import com.sadellie.unitto.data.units.collections.volumeCollection
+import com.sadellie.unitto.data.units.remote.CurrencyApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -123,8 +126,8 @@ class AllUnitsRepository @Inject constructor() {
     /**
      * Filter [AllUnitsRepository.allUnits] and group them.
      *
-     * @param hideBrokenCurrencies When set to True will remove [AbstractUnit]s that have
-     * [AbstractUnit.isEnabled] set to False, which means that [AbstractUnit] can not be used.
+     * @param hideBrokenUnits When set to True will remove [AbstractUnit]s that have
+     * [AbstractUnit.basicUnit] set to [BigDecimal.ZERO] (comes from currencies API).
      * @param chosenUnitGroup If provided will scope list to a specific [UnitGroup].
      * @param favoritesOnly When True will filter only [AbstractUnit]s with [AbstractUnit.isFavorite]
      * set to True.
@@ -135,7 +138,7 @@ class AllUnitsRepository @Inject constructor() {
      * @return Grouped by [UnitGroup] list of [AbstractUnit]s.
      */
     fun filterUnits(
-        hideBrokenCurrencies: Boolean,
+        hideBrokenUnits: Boolean,
         chosenUnitGroup: UnitGroup?,
         favoritesOnly: Boolean,
         searchQuery: String,
@@ -153,8 +156,8 @@ class AllUnitsRepository @Inject constructor() {
         if (favoritesOnly) {
             units = units.filter { it.isFavorite }
         }
-        if (hideBrokenCurrencies) {
-            units = units.filter { it.isEnabled }
+        if (hideBrokenUnits) {
+            units = units.filter { it.basicUnit > BigDecimal.ZERO }
         }
 
         units = when (sorting) {
@@ -198,22 +201,20 @@ class AllUnitsRepository @Inject constructor() {
     /**
      * Update [AbstractUnit.basicUnit] properties for currencies from [currencyCollection].
      *
-     * @param conversions Map: [AbstractUnit.unitId] and [BigDecimal] that will replace current
-     * [AbstractUnit.basicUnit].
+     * @param unitFrom Base unit
      */
-    fun updateBasicUnitsForCurrencies(
-        conversions: Map<String, BigDecimal>
-    ) {
+    suspend fun updateBasicUnitsForCurrencies(
+        unitFrom: AbstractUnit
+    ) = withContext(Dispatchers.IO) {
+        val conversions: Map<String, BigDecimal> = CurrencyApi.retrofitService.getCurrencyPairs(unitFrom.unitId).currency
         getCollectionByGroup(UnitGroup.CURRENCY).forEach {
             // Getting rates from map. We set ZERO as default so that it can be skipped
             val rate = conversions.getOrElse(it.unitId) { BigDecimal.ZERO }
             // We make sure that we don't divide by zero
             if (rate > BigDecimal.ZERO) {
-                it.isEnabled = true
                 it.basicUnit = BigDecimal.ONE.setScale(MAX_PRECISION).div(rate)
             } else {
-                // Hiding broken currencies
-                it.isEnabled = false
+                it.basicUnit = BigDecimal.ZERO
             }
         }
     }

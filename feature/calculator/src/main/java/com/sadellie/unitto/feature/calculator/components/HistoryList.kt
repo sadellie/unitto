@@ -20,13 +20,17 @@ package com.sadellie.unitto.feature.calculator.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -36,7 +40,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,64 +58,101 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.Formatter
+import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnittoTextToolbar
+import com.sadellie.unitto.core.ui.common.textfield.clearAndFilterExpression
 import com.sadellie.unitto.core.ui.common.textfield.copyWithoutGrouping
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
-import com.sadellie.unitto.feature.calculator.R
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @Composable
 internal fun HistoryList(
     modifier: Modifier,
     historyItems: List<HistoryItem>,
     historyItemHeightCallback: (Int) -> Unit,
+    formatterSymbols: FormatterSymbols,
+    addTokens: (String) -> Unit,
 ) {
-    val verticalArrangement by remember(historyItems) {
-        derivedStateOf {
-            if (historyItems.isEmpty()) {
-                Arrangement.Center
-            } else {
-                Arrangement.spacedBy(16.dp, Alignment.Bottom)
-            }
+    if (historyItems.isEmpty()) {
+        HistoryListPlaceholder(
+            modifier = modifier,
+            historyItemHeightCallback = historyItemHeightCallback
+        )
+    } else {
+        HistoryListContent(
+            modifier = modifier,
+            historyItems = historyItems,
+            addTokens = addTokens,
+            formatterSymbols = formatterSymbols,
+            historyItemHeightCallback = historyItemHeightCallback
+        )
+    }
+}
+
+@Composable
+private fun HistoryListPlaceholder(
+    modifier: Modifier,
+    historyItemHeightCallback: (Int) -> Unit
+) {
+    Column(
+        modifier = modifier.wrapContentHeight(unbounded = true),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .onPlaced { historyItemHeightCallback(it.size.height) }
+                .fillMaxWidth()
+                .padding(vertical = 32.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(Icons.Default.History, null)
+            Text(stringResource(R.string.calculator_no_history))
         }
     }
+}
+
+@Composable
+private fun HistoryListContent(
+    modifier: Modifier,
+    historyItems: List<HistoryItem>,
+    addTokens: (String) -> Unit,
+    formatterSymbols: FormatterSymbols,
+    historyItemHeightCallback: (Int) -> Unit
+) {
+    val state = rememberLazyListState()
+    val firstItem by remember(historyItems) { mutableStateOf(historyItems.first()) }
+    val restOfTheItems by remember(firstItem) { mutableStateOf(historyItems.drop(1)) }
+
+    LaunchedEffect(historyItems) { state.scrollToItem(0) }
 
     LazyColumn(
         modifier = modifier,
+        state = state,
         reverseLayout = true,
-        verticalArrangement = verticalArrangement
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom)
     ) {
-        if (historyItems.isEmpty()) {
-            item {
-                Column(
-                    modifier = Modifier
-                        .onPlaced { historyItemHeightCallback(it.size.height) }
-                        .fillParentMaxWidth()
-                        .padding(vertical = 32.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(Icons.Default.History, null)
-                    Text(stringResource(R.string.calculator_no_history))
-                }
-            }
-        } else {
-            // We do this so that callback for items height is called only once
-            item {
-                HistoryListItem(
-                    modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) },
-                    historyItem = historyItems.first()
-                )
-            }
-            items(historyItems.drop(1)) { historyItem ->
-                HistoryListItem(
-                    modifier = Modifier,
-                    historyItem = historyItem
-                )
-            }
+        // We do this so that callback for items height is called only once
+        item(firstItem.id) {
+            HistoryListItem(
+                modifier = Modifier.onPlaced { historyItemHeightCallback(it.size.height) },
+                historyItem = historyItems.first(),
+                formatterSymbols = formatterSymbols,
+                addTokens = addTokens,
+            )
+        }
+
+        items(restOfTheItems, { it.id }) { historyItem ->
+            HistoryListItem(
+                modifier = Modifier,
+                historyItem = historyItem,
+                formatterSymbols = formatterSymbols,
+                addTokens = addTokens,
+            )
         }
     }
 }
@@ -120,15 +161,31 @@ internal fun HistoryList(
 private fun HistoryListItem(
     modifier: Modifier = Modifier,
     historyItem: HistoryItem,
+    formatterSymbols: FormatterSymbols,
+    addTokens: (String) -> Unit,
 ) {
     val clipboardManager = LocalClipboardManager.current
-    val expression = Formatter.format(historyItem.expression)
+    val expression = historyItem.expression.take(1000)
     var expressionValue by remember(expression) {
         mutableStateOf(TextFieldValue(expression, TextRange(expression.length)))
     }
-    val result = Formatter.format(historyItem.result)
+    val result = historyItem.result.take(1000)
     var resultValue by remember(result) {
         mutableStateOf(TextFieldValue(result, TextRange(result.length)))
+    }
+
+    val expressionInteractionSource = remember(expression) { MutableInteractionSource() }
+    LaunchedEffect(expressionInteractionSource) {
+        expressionInteractionSource.interactions.collect {
+            if (it is PressInteraction.Release) addTokens(expression.clearAndFilterExpression(formatterSymbols))
+        }
+    }
+
+    val resultInteractionSource = remember(result) { MutableInteractionSource() }
+    LaunchedEffect(resultInteractionSource) {
+        resultInteractionSource.interactions.collect {
+            if (it is PressInteraction.Release) addTokens(result.clearAndFilterExpression(formatterSymbols))
+        }
     }
 
     Column(modifier = modifier) {
@@ -136,7 +193,10 @@ private fun HistoryListItem(
             LocalTextInputService provides null,
             LocalTextToolbar provides UnittoTextToolbar(
                 view = LocalView.current,
-                copyCallback = { clipboardManager.copyWithoutGrouping(expressionValue) }
+                copyCallback = {
+                    clipboardManager.copyWithoutGrouping(expressionValue, formatterSymbols)
+                    expressionValue = expressionValue.copy(selection = TextRange(expressionValue.selection.end))
+                }
             )
         ) {
             BasicTextField(
@@ -148,7 +208,9 @@ private fun HistoryListItem(
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
                 textStyle = NumbersTextStyleDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.End),
-                readOnly = true
+                readOnly = true,
+                visualTransformation = ExpressionTransformer(formatterSymbols),
+                interactionSource = expressionInteractionSource
             )
         }
 
@@ -156,7 +218,10 @@ private fun HistoryListItem(
             LocalTextInputService provides null,
             LocalTextToolbar provides UnittoTextToolbar(
                 view = LocalView.current,
-                copyCallback = { clipboardManager.copyWithoutGrouping(resultValue) }
+                copyCallback = {
+                    clipboardManager.copyWithoutGrouping(resultValue, formatterSymbols)
+                    resultValue = resultValue.copy(selection = TextRange(resultValue.selection.end))
+                }
             )
         ) {
             BasicTextField(
@@ -168,7 +233,9 @@ private fun HistoryListItem(
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
                 textStyle = NumbersTextStyleDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), textAlign = TextAlign.End),
-                readOnly = true
+                readOnly = true,
+                visualTransformation = ExpressionTransformer(formatterSymbols),
+                interactionSource = resultInteractionSource
             )
         }
     }
@@ -190,6 +257,7 @@ private fun PreviewHistoryList() {
         "14.07.2005 23:59:19",
     ).map {
         HistoryItem(
+            id = it.hashCode(),
             date = dtf.parse(it)!!,
             expression = "12345".repeat(10),
             result = "67890"
@@ -200,6 +268,9 @@ private fun PreviewHistoryList() {
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
             .fillMaxSize(),
-        historyItems = historyItems
-    ) {}
+        historyItems = historyItems,
+        formatterSymbols = FormatterSymbols.Spaces,
+        historyItemHeightCallback = {},
+        addTokens = {}
+    )
 }

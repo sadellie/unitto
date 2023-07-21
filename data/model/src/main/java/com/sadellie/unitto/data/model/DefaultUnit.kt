@@ -50,6 +50,9 @@ class DefaultUnit(
         value: BigDecimal,
         scale: Int
     ): BigDecimal {
+        // Avoid division by zero
+        if (unitTo.basicUnit.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ZERO
+
         return this
             .basicUnit
             .setScale(MAX_PRECISION)

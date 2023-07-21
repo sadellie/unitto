@@ -11,8 +11,7 @@
 
 ## 📲 Download
 <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/googlePlay.png" width="32%"/></a>
-<a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fDroid.png" width="32%"/></a>
-<a href="https://apps.rustore.ru/app/com.sadellie.unitto"><img alt="Rustore" src="./content/ruStore.png" width="32%"/></a>
+<a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fDroid.png" width="27%"/></a>
 
 ## 😎 Features
 - **Instant** expression evaluation
@@ -29,25 +28,21 @@
 - Customizable number **formatter**
 - **SI Standard**
 
-## 👅 Translate
-<a href="https://poeditor.com/join/project/T4zjmoq8dx" target="_blank"><img src="./content/poeditor.png" alt="Unitto - Calculate&#0032;and&#0032;convert&#0044;&#0032;but&#0032;better&#0046; | POEditor" style="width: 180px; height: 60px;" width="180" height="60" /></a>
+## 👅 [Translate](https://poeditor.com/join/project/T4zjmoq8dx)
+Join on **POEditor** to help.
 
-## 🤑 Donate
-Visit [FUNDING.md](./FUNDING.md)
+## 💡 [Open issues](https://github.com/sadellie/unitto/issues/new)
+Report bugs or request improvements. I may close your issue as not planned and reopen it later (things change).
+
+## 🎤 [Start discussions](https://github.com/sadellie/unitto/discussions/new/choose)
+If you think that your question will not fit in "Issues", start a discussion.
+
+## 👩‍💻 ~~Contribute code~~
+Code contributions are **not** welcomed. If you really want to, **ask me** first.
+
+Hard forks and alterations of Unitto are **not** welcomed. Use a "Fork" button so that commits' author is not lost.
 
 ## 🔎 Additional
-<p align="middle">
-    <a href="https://trello.com/b/cxAbRlvu/unitto" target="_blank">
-        <img src="./content/progress.png" width="99%"/>
-    </a>
-</p>
+Terms and Conditions: https://sadellie.github.io/unitto/terms
 
-<a href="https://www.producthunt.com/posts/unitto?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-unitto" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=372851&theme=light" alt="Unitto - Calculate&#0032;and&#0032;convert&#0044;&#0032;but&#0032;better&#0046; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
-
-Terms and Conditions, Privacy Policy, Press Kit and contact links:
-https://sadellie.github.io/unitto/
-
-## 🤓 Technical details
-- App is written in Compose
-- Multi-module architecture
-- Convention plugins for modules
+Privacy Policy: https://sadellie.github.io/unitto/privacy

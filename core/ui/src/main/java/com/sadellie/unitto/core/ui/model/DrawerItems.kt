@@ -20,9 +20,11 @@ package com.sadellie.unitto.core.ui.model
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.outlined.Calculate
+import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -43,6 +45,12 @@ sealed class DrawerItems(
         destination = TopLevelDestinations.Converter,
         selectedIcon = Icons.Filled.SwapHoriz,
         defaultIcon = Icons.Outlined.SwapHoriz
+    )
+
+    object DateDifference : DrawerItems(
+        destination = TopLevelDestinations.DateDifference,
+        selectedIcon = Icons.Filled.Event,
+        defaultIcon = Icons.Outlined.Event
     )
 
     object Settings : DrawerItems(

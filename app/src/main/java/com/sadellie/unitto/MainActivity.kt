@@ -41,10 +41,10 @@ internal class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val userPrefs = userPrefsRepository.userPreferencesFlow
+            val uiPrefs = userPrefsRepository.uiPreferencesFlow
                 .collectAsStateWithLifecycle(null).value
 
-            if (userPrefs != null) UnittoApp(userPrefs)
+            if (uiPrefs != null) UnittoApp(uiPrefs)
         }
     }
 

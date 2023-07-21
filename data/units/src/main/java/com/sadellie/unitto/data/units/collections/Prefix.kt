@@ -18,11 +18,11 @@
 
 package com.sadellie.unitto.data.units.collections
 
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.DefaultUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.units.MyUnitIDS
-import com.sadellie.unitto.data.units.R
 import java.math.BigDecimal
 
 val prefixCollection: List<AbstractUnit> by lazy {

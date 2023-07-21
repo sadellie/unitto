@@ -34,9 +34,9 @@ sealed class TopLevelDestinations(
         name = R.string.calculator
     )
 
-    object Epoch : TopLevelDestinations(
-        route = "epoch_route",
-        name = R.string.epoch_converter
+    object DateDifference : TopLevelDestinations(
+        route = "date_difference_route",
+        name = R.string.date_difference
     )
 
     object TimeZone : TopLevelDestinations(

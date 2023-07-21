@@ -19,12 +19,12 @@
 package com.sadellie.unitto.data.units.collections
 
 import com.sadellie.unitto.core.base.MAX_PRECISION
-import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.trimZeros
+import com.sadellie.unitto.data.model.AbstractUnit
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.units.MyUnitIDS
-import com.sadellie.unitto.data.units.R
 import java.math.BigDecimal
 import java.math.RoundingMode
 

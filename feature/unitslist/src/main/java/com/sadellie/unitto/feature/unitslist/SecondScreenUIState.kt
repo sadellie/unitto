@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.unitslist
 
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
 
@@ -35,5 +36,6 @@ data class SecondScreenUIState(
     val unitsToShow: Map<UnitGroup, List<AbstractUnit>> = emptyMap(),
     val searchQuery: String = "",
     val shownUnitGroups: List<UnitGroup> = listOf(),
-    val chosenUnitGroup: UnitGroup? = null
+    val chosenUnitGroup: UnitGroup? = null,
+    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
 )

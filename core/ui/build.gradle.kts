@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id("unitto.library")
     id("unitto.library.compose")
@@ -35,7 +37,6 @@ android {
 
 dependencies {
     testImplementation(libs.junit)
-    testImplementation(libs.org.robolectric)
     testImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 

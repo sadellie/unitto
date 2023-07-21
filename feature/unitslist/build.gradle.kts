@@ -28,11 +28,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.com.github.sadellie.themmo)
-
     implementation(project(mapOf("path" to ":data:model")))
     implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":data:units")))
     implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:unitgroups")))
 }

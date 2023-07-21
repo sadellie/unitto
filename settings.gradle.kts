@@ -7,6 +7,7 @@ pluginManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -23,14 +24,14 @@ include(":core:ui")
 include(":feature:converter")
 include(":feature:unitslist")
 include(":feature:calculator")
-include(":feature:settings")
-include(":feature:epoch")
+include(":feature:datedifference")
 include(":feature:timezone")
+include(":feature:settings")
 include(":data:userprefs")
-include(":data:unitgroups")
 include(":data:licenses")
-include(":data:epoch")
+// include(":data:epoch")
 include(":data:calculator")
 include(":data:database")
 include(":data:model")
 include(":data:common")
+include(":data:evaluatto")

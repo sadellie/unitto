@@ -46,9 +46,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.feature.unitslist.R
 
 /**
  * Row of chips with [UnitGroup]s. Temporary solution

@@ -28,7 +28,7 @@ private val converterRoute: String by lazy { TopLevelDestinations.Converter.rout
 
 fun NavGraphBuilder.converterScreen(
     navigateToLeftScreen: (String) -> Unit,
-    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String) -> Unit,
+    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String?) -> Unit,
     navigateToSettings: () -> Unit,
     navigateToMenu: () -> Unit,
     viewModel: ConverterViewModel

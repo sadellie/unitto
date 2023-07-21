@@ -30,14 +30,11 @@ android {
 dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
-    testImplementation(libs.org.robolectric)
     testImplementation(libs.androidx.room.runtime)
     testImplementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
     testImplementation(libs.androidx.datastore)
 
-    implementation(libs.com.github.sadellie.exprk)
-    implementation(libs.com.github.sadellie.themmo)
     implementation(libs.com.squareup.moshi)
     implementation(libs.com.squareup.retrofit2)
 
@@ -46,4 +43,5 @@ dependencies {
     implementation(project(mapOf("path" to ":data:model")))
     implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":data:units")))
+    implementation(project(mapOf("path" to ":data:evaluatto")))
 }

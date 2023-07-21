@@ -19,7 +19,6 @@
 package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,8 +26,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -40,17 +37,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.semantics.Role
 
 @Composable
 fun UnittoButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
-    shape: Shape = RoundedCornerShape(100),
+    enabled: Boolean = true,
     containerColor: Color,
     contentColor: Color = contentColorFor(containerColor),
     border: BorderStroke? = null,
@@ -59,16 +53,16 @@ fun UnittoButton(
     content: @Composable RowScope.() -> Unit
 ) {
     Surface(
-        modifier = modifier.clip(shape).combinedClickable(
+        modifier = modifier.squashable(
             onClick = onClick,
             onLongClick = onLongClick,
             interactionSource = interactionSource,
-            indication = rememberRipple(),
-            role = Role.Button,
+            cornerRadiusRange = 30..50,
+            enabled = enabled
         ),
         color = containerColor,
         contentColor = contentColor,
-        border = border
+        border = border,
     ) {
         CompositionLocalProvider(LocalContentColor provides contentColor) {
             ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {

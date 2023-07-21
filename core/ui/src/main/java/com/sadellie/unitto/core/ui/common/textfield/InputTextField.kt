@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -54,105 +55,124 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.sadellie.unitto.core.base.Separator
-import com.sadellie.unitto.core.ui.Formatter
 import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayLarge
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 @Composable
-fun InputTextField(
+fun ExpressionTextField(
     modifier: Modifier,
     value: TextFieldValue,
-    textStyle: TextStyle = NumbersTextStyleDisplayLarge,
     minRatio: Float = 1f,
-    cutCallback: () -> Unit,
-    pasteCallback: (String) -> Unit,
-    onCursorChange: (IntRange) -> Unit,
+    cutCallback: () -> Unit = {},
+    pasteCallback: (String) -> Unit = {},
+    onCursorChange: (TextRange) -> Unit,
     textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    formatterSymbols: FormatterSymbols,
+    readOnly: Boolean = false,
+    placeholder: String? = null,
 ) {
-    val clipboardManager = LocalClipboardManager.current
-    fun copyCallback() = clipboardManager.copyWithoutGrouping(value)
-
-    val textToolbar = UnittoTextToolbar(
-        view = LocalView.current,
-        copyCallback = ::copyCallback,
-        pasteCallback = {
-            pasteCallback(
-                Formatter.toSeparator(
-                    clipboardManager.getText()?.text ?: "", Separator.COMMA
-                )
-            )
-        },
-        cutCallback = {
-            copyCallback()
-            cutCallback()
-            onCursorChange(value.selection.end..value.selection.end)
-        }
-    )
-
-    CompositionLocalProvider(
-        LocalTextInputService provides null,
-        LocalTextToolbar provides textToolbar
-    ) {
-        AutoSizableTextField(
-            modifier = modifier,
-            value = value,
-            textStyle = textStyle.copy(color = textColor),
-            minRatio = minRatio,
-            onValueChange = {
-                onCursorChange(it.selection.start..it.selection.end)
-            },
-            showToolbar = textToolbar::showMenu,
-            hideToolbar = textToolbar::hide
-        )
-    }
-}
-
-@Composable
-fun InputTextField(
-    modifier: Modifier = Modifier,
-    value: String,
-    textStyle: TextStyle = NumbersTextStyleDisplayLarge,
-    minRatio: Float = 1f,
-    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-) {
-    var textFieldValue by remember(value) {
-        mutableStateOf(TextFieldValue(value, selection = TextRange(value.length)))
-    }
     val clipboardManager = LocalClipboardManager.current
     fun copyCallback() {
-        clipboardManager.copyWithoutGrouping(textFieldValue)
-        textFieldValue = textFieldValue.copy(selection = TextRange(textFieldValue.selection.end))
+        clipboardManager.copyWithoutGrouping(value, formatterSymbols)
+        onCursorChange(TextRange(value.selection.end))
     }
 
-    CompositionLocalProvider(
-        LocalTextInputService provides null,
-        LocalTextToolbar provides UnittoTextToolbar(
+    val textToolbar: UnittoTextToolbar = if (readOnly) {
+        UnittoTextToolbar(
             view = LocalView.current,
             copyCallback = ::copyCallback,
         )
-    ) {
-        AutoSizableTextField(
-            modifier = modifier,
-            value = textFieldValue,
-            onValueChange = { textFieldValue = it },
-            textStyle = textStyle.copy(color = textColor),
-            minRatio = minRatio,
-            readOnly = true,
-            interactionSource = interactionSource
+    } else {
+        UnittoTextToolbar(
+            view = LocalView.current,
+            copyCallback = ::copyCallback,
+            pasteCallback = {
+                pasteCallback(clipboardManager.getText()?.text?.clearAndFilterExpression(formatterSymbols) ?: "")
+            },
+            cutCallback = {
+                clipboardManager.copyWithoutGrouping(value, formatterSymbols)
+                cutCallback()
+            }
         )
     }
+
+    AutoSizableTextField(
+        modifier = modifier,
+        value = value,
+        formattedValue = value.text.formatExpression(formatterSymbols),
+        textStyle = NumbersTextStyleDisplayLarge.copy(color = textColor),
+        minRatio = minRatio,
+        onValueChange = { onCursorChange(it.selection) },
+        readOnly = readOnly,
+        showToolbar = textToolbar::showMenu,
+        hideToolbar = textToolbar::hide,
+        visualTransformation = ExpressionTransformer(formatterSymbols),
+        placeholder = placeholder,
+        textToolbar = textToolbar
+    )
+}
+
+@Composable
+fun UnformattedTextField(
+    modifier: Modifier,
+    value: TextFieldValue,
+    minRatio: Float = 1f,
+    cutCallback: () -> Unit = {},
+    pasteCallback: (String) -> Unit = {},
+    onCursorChange: (TextRange) -> Unit,
+    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    readOnly: Boolean = false,
+    placeholder: String? = null,
+) {
+    val clipboardManager = LocalClipboardManager.current
+    fun copyCallback() {
+        clipboardManager.copy(value)
+        onCursorChange(TextRange(value.selection.end))
+    }
+
+    val textToolbar: UnittoTextToolbar = if (readOnly) {
+        UnittoTextToolbar(
+            view = LocalView.current,
+            copyCallback = ::copyCallback,
+        )
+    } else {
+        UnittoTextToolbar(
+            view = LocalView.current,
+            copyCallback = ::copyCallback,
+            pasteCallback = {
+                pasteCallback(clipboardManager.getText()?.text?.clearAndFilterNumberBase() ?: "")
+            },
+            cutCallback = {
+                clipboardManager.copy(value)
+                cutCallback()
+            }
+        )
+    }
+
+    AutoSizableTextField(
+        modifier = modifier,
+        value = value,
+        textStyle = NumbersTextStyleDisplayLarge.copy(color = textColor),
+        minRatio = minRatio,
+        onValueChange = { onCursorChange(it.selection) },
+        readOnly = readOnly,
+        showToolbar = textToolbar::showMenu,
+        hideToolbar = textToolbar::hide,
+        placeholder = placeholder,
+        textToolbar = textToolbar
+    )
 }
 
 @Composable
 private fun AutoSizableTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
+    formattedValue: String = value.text,
     textStyle: TextStyle = TextStyle(),
     scaleFactor: Float = 0.95f,
     minRatio: Float = 1f,
@@ -160,11 +180,14 @@ private fun AutoSizableTextField(
     readOnly: Boolean = false,
     showToolbar: (rect: Rect) -> Unit = {},
     hideToolbar: () -> Unit = {},
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    placeholder: String? = null,
+    textToolbar: UnittoTextToolbar
 ) {
     val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
 
+    val textValue = value.copy(value.text.take(2000))
     var nFontSize: TextUnit by remember { mutableStateOf(0.sp) }
     var minFontSize: TextUnit
 
@@ -174,14 +197,14 @@ private fun AutoSizableTextField(
     ) {
         with(density) {
             // Cursor handle is not visible without this, 0.836f is the minimum required factor here
-            nFontSize = maxHeight.toSp() * 0.836f
+            nFontSize = maxHeight.toSp() * 0.835f
             minFontSize = nFontSize * minRatio
         }
 
         // Modified: https://blog.canopas.com/autosizing-textfield-in-jetpack-compose-7a80f0270853
         val calculateParagraph = @Composable {
             Paragraph(
-                text = value.text,
+                text = formattedValue,
                 style = textStyle.copy(fontSize = nFontSize),
                 constraints = Constraints(
                     maxWidth = ceil(with(density) { maxWidth.toPx() }).toInt()
@@ -210,45 +233,70 @@ private fun AutoSizableTextField(
         )
         var offset = Offset.Zero
 
-        BasicTextField(
-            value = value,
-            onValueChange = {
-                showToolbar(Rect(offset, 0f))
-                hideToolbar()
-                onValueChange(it)
-            },
-            modifier = Modifier
-                .focusRequester(focusRequester)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {
-                        hideToolbar()
-                        focusRequester.requestFocus()
-                        onValueChange(value.copy(selection = TextRange.Zero))
-                        showToolbar(Rect(offset, 0f))
+        CompositionLocalProvider(
+            LocalTextInputService provides null,
+            LocalTextToolbar provides textToolbar
+        ) {
+            BasicTextField(
+                value = textValue,
+                onValueChange = {
+                    showToolbar(Rect(offset, 0f))
+                    hideToolbar()
+                    onValueChange(it)
+                },
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {
+                            hideToolbar()
+                            focusRequester.requestFocus()
+                            onValueChange(value.copy(selection = TextRange.Zero))
+                            showToolbar(Rect(offset, 0f))
+                        }
+                    )
+                    .widthIn(max = with(density) { intrinsics.width.toDp() })
+                    .layout { measurable, constraints ->
+                        val placeable = measurable.measure(constraints)
+                        // TextField size is changed with a delay (text jumps). Here we correct it.
+                        layout(placeable.width, placeable.height) {
+                            placeable.place(
+                                x = (intrinsics.width - intrinsics.maxIntrinsicWidth)
+                                    .coerceAtLeast(0f)
+                                    .roundToInt(),
+                                y = (placeable.height - intrinsics.height).roundToInt()
+                            )
+                        }
                     }
-                )
-                .widthIn(max = with(density) { intrinsics.width.toDp() })
-                .layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints)
-                    // TextField size is changed with a delay (text jumps). Here we correct it.
-                    layout(placeable.width, placeable.height) {
-                        placeable.place(
-                            x = (intrinsics.width - intrinsics.maxIntrinsicWidth)
-                                .coerceAtLeast(0f)
-                                .roundToInt(),
-                            y = (placeable.height - intrinsics.height).roundToInt()
+                    .onGloballyPositioned { layoutCoords ->
+                        offset = layoutCoords.positionInWindow()
+                    },
+                textStyle = nTextStyle,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+                singleLine = true,
+                readOnly = readOnly,
+                visualTransformation = visualTransformation,
+                decorationBox = { innerTextField ->
+                    if (textValue.text.isEmpty() and !placeholder.isNullOrEmpty()) {
+                        Text(
+                            text = placeholder!!, // It's not null, i swear
+                            style = nTextStyle,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                            modifier = Modifier.layout { measurable, constraints ->
+                                val placeable = measurable.measure(constraints)
+
+                                layout(placeable.width, placeable.height) {
+                                    placeable.place(x = -placeable.width, y = 0)
+                                }
+                            }
                         )
                     }
+
+                    innerTextField()
                 }
-                .onGloballyPositioned { layoutCoords -> offset = layoutCoords.positionInWindow() },
-            textStyle = nTextStyle,
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
-            singleLine = true,
-            readOnly = readOnly,
-            interactionSource = interactionSource
-        )
+            )
+        }
     }
 }
 
@@ -260,8 +308,22 @@ private fun AutoSizableTextField(
  *
  * @param value Formatted value that has grouping symbols.
  */
-fun ClipboardManager.copyWithoutGrouping(value: TextFieldValue) = this.setText(
+fun ClipboardManager.copyWithoutGrouping(
+    value: TextFieldValue,
+    formatterSymbols: FormatterSymbols
+) = this.setText(
     AnnotatedString(
-        Formatter.removeGrouping(value.annotatedString.subSequence(value.selection).text)
+        value.annotatedString
+            .subSequence(value.selection)
+            .text
+            .replace(formatterSymbols.grouping, "")
+    )
+)
+
+fun ClipboardManager.copy(value: TextFieldValue) = this.setText(
+    AnnotatedString(
+        value.annotatedString
+            .subSequence(value.selection)
+            .text
     )
 )

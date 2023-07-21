@@ -37,15 +37,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
-import com.sadellie.unitto.core.ui.R
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
@@ -54,11 +56,11 @@ import com.sadellie.unitto.core.ui.openLink
 internal fun AboutScreen(
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val mContext = LocalContext.current
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
-    var aboutItemClick: Int by rememberSaveable { mutableStateOf(0) }
+    var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     UnittoScreenWithLargeTopBar(

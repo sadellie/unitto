@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     // Basic stuff
     id("com.android.application")
@@ -26,14 +28,14 @@ plugins {
 
 android {
     namespace = "com.sadellie.unitto"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
-        targetSdk = 33
-        versionCode = 20
-        versionName = "Kobicha"
+        targetSdk = 34
+        versionCode = 22
+        versionName = "Lilac Luster"
     }
 
     buildTypes {
@@ -74,19 +76,19 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-opt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
         )
@@ -94,6 +96,12 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
@@ -112,9 +120,8 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:calculator")))
     implementation(project(mapOf("path" to ":feature:settings")))
     implementation(project(mapOf("path" to ":feature:unitslist")))
-    implementation(project(mapOf("path" to ":feature:epoch")))
+    implementation(project(mapOf("path" to ":feature:datedifference")))
     implementation(project(mapOf("path" to ":feature:timezone")))
-    implementation(project(mapOf("path" to ":data:units")))
     implementation(project(mapOf("path" to ":data:model")))
     implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":core:ui")))

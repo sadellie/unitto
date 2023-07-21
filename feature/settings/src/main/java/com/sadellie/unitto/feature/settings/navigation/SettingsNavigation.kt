@@ -21,16 +21,15 @@ package com.sadellie.unitto.feature.settings.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.settings.AboutScreen
 import com.sadellie.unitto.feature.settings.SettingsScreen
-import com.sadellie.unitto.feature.settings.SettingsViewModel
-import com.sadellie.unitto.feature.settings.ThemesRoute
 import com.sadellie.unitto.feature.settings.ThirdPartyLicensesScreen
-import com.sadellie.unitto.feature.settings.UnitGroupsScreen
+import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
+import com.sadellie.unitto.feature.settings.themes.ThemesRoute
+import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
 private val settingsGraph: String by lazy { TopLevelDestinations.Settings.route }
@@ -39,9 +38,10 @@ internal const val themesRoute = "themes_route"
 internal const val unitsGroupRoute = "units_group_route"
 internal const val thirdPartyRoute = "third_party_route"
 internal const val aboutRoute = "about_route"
+internal const val formattingRoute = "formatting_route"
 
-fun NavController.navigateToSettings(builder: NavOptionsBuilder.() -> Unit) {
-    navigate(settingsRoute, builder)
+fun NavController.navigateToSettings() {
+    navigate(settingsRoute)
 }
 
 fun NavController.navigateToUnitGroups() {
@@ -49,7 +49,6 @@ fun NavController.navigateToUnitGroups() {
 }
 
 fun NavGraphBuilder.settingGraph(
-    settingsViewModel: SettingsViewModel,
     themmoController: ThemmoController,
     navController: NavHostController,
     menuButtonClick: () -> Unit
@@ -57,37 +56,40 @@ fun NavGraphBuilder.settingGraph(
     navigation(settingsRoute, settingsGraph) {
         composable(settingsRoute) {
             SettingsScreen(
-                viewModel = settingsViewModel,
-                menuButtonClick = menuButtonClick
-            ) { route -> navController.navigate(route) }
+                menuButtonClick = menuButtonClick,
+                navControllerAction = navController::navigate
+            )
         }
 
         composable(themesRoute) {
             ThemesRoute(
-                navigateUpAction = { navController.navigateUp() },
+                navigateUpAction = navController::navigateUp,
                 themmoController = themmoController,
-                viewModel = settingsViewModel
             )
         }
 
         composable(thirdPartyRoute) {
             ThirdPartyLicensesScreen(
-                navigateUpAction = { navController.navigateUp() }
+                navigateUpAction = navController::navigateUp,
             )
         }
 
         composable(aboutRoute) {
             AboutScreen(
-                navigateUpAction = { navController.navigateUp() },
+                navigateUpAction = navController::navigateUp,
                 navigateToThirdParty = { navController.navigate(thirdPartyRoute) },
-                viewModel = settingsViewModel
             )
         }
 
         composable(unitsGroupRoute) {
             UnitGroupsScreen(
-                viewModel = settingsViewModel,
-                navigateUpAction = { navController.navigateUp() }
+                navigateUpAction = navController::navigateUp,
+            )
+        }
+
+        composable(formattingRoute) {
+            FormattingRoute(
+                navigateUpAction = navController::navigateUp
             )
         }
     }

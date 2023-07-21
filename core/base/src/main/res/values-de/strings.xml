@@ -377,7 +377,7 @@
     <string name="attopascal_short">aPa</string>
     <string name="femtopascal">Femtopascal</string>
     <string name="femtopascal_short">fPa</string>
-    <string name="picopascal">Picopascal</string>
+    <string name="picopascal">Pikopascal</string>
     <string name="picopascal_short">pPa</string>
     <string name="nanopascal">Nanopascal</string>
     <string name="nanopascal_short">nPa</string>
@@ -421,7 +421,7 @@
     <string name="attometer_per_square_second_short">am/s^2</string>
     <string name="femtometer_per_square_second">Femtometer pro Quadratsekunde</string>
     <string name="femtometer_per_square_second_short">fm/s^2</string>
-    <string name="picometer_per_square_second">Picometer pro Quadratsekunde</string>
+    <string name="picometer_per_square_second">Pikometer pro Quadratsekunde</string>
     <string name="picometer_per_square_second_short">pm/s^2</string>
     <string name="nanometer_per_square_second">Nanometer pro Quadratsekunde</string>
     <string name="nanometer_per_square_second_short">mm/s^2</string>
@@ -659,7 +659,9 @@
     <string name="theme_setting">Farbthemen</string>
     <string name="precision_setting">Präzision</string>
     <string name="separator_setting">Trennzeichen</string>
-    <string name="output_format_setting">Ausgabeformate</string>
+
+    <!-- Fuzzy -->
+    <string name="exponential_notation_setting">Exponentielle Notation</string>
     <string name="unit_groups_setting">Einheitengruppen</string>
     <string name="currency_rates_note_setting">Falsche Wechselkurse</string>
     <string name="currency_rates_note_title">Hinweis </string>
@@ -668,29 +670,29 @@
     <string name="privacy_policy">Datenschutz-Bestimmungen </string>
     <string name="third_party_licenses">Richtlinien von Drittanbietern </string>
     <string name="rate_this_app">Diese App bewerten</string>
+    <string name="formatting_setting">Formatierung</string>
     <string name="additional_settings_group">Zusätzliches</string>
 
     <!-- Precision -->
     <string name="precision_setting_support">Anzahl der Dezimalstellen</string>
     <string name="precision_setting_info">Umgerechnete Werte können eine höhere Präzision als eingestellt haben.</string>
-    <string name="max_precision">1 000 (Maximum)</string>
+    <string name="max_precision">%1$s (Maximum)</string>
 
     <!-- Separator -->
     <string name="separator_setting_support">Gruppentrennzeichen</string>
-    <string name="period">Punkt (42.069,12)</string>
-    <string name="comma">Komma (42,069.12)</string>
-    <string name="spaces">Leerzeichen (42 069.12)</string>
+    <string name="period">Punkt</string>
+    <string name="comma">Komma</string>
+
+    <!-- Fuzzy -->
+    <string name="space">Leerzeichen</string>
 
     <!-- Output format -->
-    <string name="output_format_setting_support">Ergebnisformatierung</string>
-    <string name="output_format_setting_info">Wissenschaftliche Notation sieht wie 1E-21 aus</string>
-    <string name="plain">Standard</string>
-    <string name="allow_engineering">Wissenschaftliche Notation erlauben</string>
-    <string name="force_engineering">Wissenschaftliche Notation erzwingen</string>
+    <!-- Fuzzy -->
+    <string name="exponential_notation_setting_support">Einen Teil der Nummer durch E ersetzen</string>
 
     <!-- Theme -->
     <string name="theme_setting_support">App Aussehen</string>
-    <string name="force_auto_mode">Automatisch</string>
+    <string name="auto_label">Automatisch</string>
     <string name="force_light_mode">Hell</string>
     <string name="force_dark_mode">Dunkel</string>
     <string name="color_theme">Farbthema</string>
@@ -726,4 +728,415 @@
     <string name="reorder_unit_group_description">Einheitengruppe umordnen</string>
     <string name="disable_unit_group_description">Einheitengruppe deaktivieren</string>
     <string name="app_version_name_setting">Versionsname</string>
+    <string name="about_unitto">Über Unitto</string>
+    <string name="about_unitto_support">Mehr über die App erfahren</string>
+    <string name="unit_groups_support">Einheiten deaktivieren und anordnen</string>
+    <string name="cent">Cent</string>
+    <string name="cent_short">cent</string>
+
+    <!-- Flux -->
+    <string name="maxwell">Maxwell</string>
+    <string name="maxwell_short">Mx</string>
+    <string name="weber">Weber</string>
+    <string name="weber_short">Wb</string>
+    <string name="milliweber">Milliweber</string>
+    <string name="milliweber_short">mWb</string>
+    <string name="microweber">Microweber</string>
+    <string name="microweber_short">μWb</string>
+    <string name="kiloweber">Kiloweber</string>
+    <string name="kiloweber_short">kWb</string>
+    <string name="megaweber">Megaweber</string>
+    <string name="megaweber_short">MWb</string>
+    <string name="gigaweber">Gigaweber</string>
+    <string name="gigaweber_short">GWb</string>
+    <string name="flux">Flux</string>
+    <string name="open_source">Quellcode anzeigen</string>
+    <string name="translate_app">Diese App übersetzen</string>
+    <string name="translate_app_support">Dem POEditor-Projekt beitreten und helfen</string>
+
+    <!-- Number base -->
+    <string name="binary">Binär</string>
+    <string name="binary_short">base2</string>
+    <string name="ternary">Ternär</string>
+    <string name="ternary_short">base3</string>
+    <string name="quaternary">Quartär</string>
+    <string name="quaternary_short">base4</string>
+    <string name="quinary">Quinär</string>
+    <string name="quinary_short">base5</string>
+    <string name="senary">Senär</string>
+    <string name="senary_short">base6</string>
+    <string name="septenary">Septenär</string>
+    <string name="septenary_short">base7</string>
+    <string name="octal">Oktal</string>
+    <string name="octal_short">base8</string>
+    <string name="nonary">Nonär</string>
+    <string name="nonary_short">base9</string>
+    <string name="decimal">Dezimal</string>
+    <string name="decimal_short">base10</string>
+    <string name="undecimal">Undezimal</string>
+    <string name="undecimal_short">base11</string>
+    <string name="duodecimal">Duodezimal</string>
+    <string name="duodecimal_short">base12</string>
+    <string name="tridecimal">Tridezimal</string>
+    <string name="tridecimal_short">base13</string>
+    <string name="tetradecimal">Tetradezimal</string>
+    <string name="tetradecimal_short">base14</string>
+    <string name="pentadecimal">Pentadezimal</string>
+    <string name="pentadecimal_short">base15</string>
+    <string name="hexadecimal">Hexadezimal</string>
+    <string name="hexadecimal_short">base16</string>
+    <string name="number_base">Basis</string>
+    <string name="enable_vibrations">Vibrationen</string>
+    <string name="enable_vibrations_support">Haptisches Feedback für Tastaturtasten</string>
+    <string name="millibar">Millibar</string>
+    <string name="millibar_short">mbar</string>
+    <string name="kilopascal">Kilopascal</string>
+    <string name="kilopascal_short">kPa</string>
+    <string name="micron_of_mercury">Mikrometer Quecksilber</string>
+    <string name="micron_of_mercury_short">μmHg</string>
+
+    <!-- Tools -->
+    <!-- Fuzzy -->
+    <string name="epoch_converter">Epochkonverter</string>
+
+    <!-- Calculator -->
+    <string name="calculator">Taschenrechner</string>
+
+    <!-- Epoch -->
+    <string name="year_short">y</string>
+    <string name="month_short">m</string>
+    <string name="nautical_mile">Nautische Meile</string>
+    <string name="nautical_mile_short">M</string>
+    <string name="starting_screen_setting">Startbildschirm</string>
+    <string name="starting_screen_setting_support">Wählen Sie, welcher Bildschirm beim Starten der App angezeigt wird</string>
+
+    <!-- Tools -->
+    <string name="unit_converter">Einheitenumrechner</string>
+    <string name="calculator_clear_history_label">Leeren</string>
+    <string name="calculator_clear_history_title">Verlauf leeren</string>
+    <string name="calculator_clear_history_support">Alle Ausdrücke aus dem Verlauf werden für immer gelöscht. Diese Aktion kann nicht rückgängig gemacht werden!</string>
+    <string name="calculator_no_history">Kein Verlauf</string>
+    <string name="open_menu_description">Menü öffnen</string>
+    <string name="microgram">Mikrogramm</string>
+    <string name="microgram_short">µg</string>
+
+    <!-- ELECTROSTATIC CAPACITANCE -->
+    <string name="attofarad">Attofarad</string>
+    <string name="attofarad_short">aF</string>
+    <string name="statfarad">Statfarad</string>
+    <string name="statfarad_short">stF</string>
+    <string name="farad">Farad</string>
+    <string name="farad_short">F</string>
+    <string name="exafarad">Exafarad</string>
+    <string name="exafarad_short">EF</string>
+    <string name="picofarad">Pikofarad</string>
+    <string name="picofarad_short">pF</string>
+    <string name="nanofarad">Nanofarad</string>
+    <string name="nanofarad_short">nF</string>
+    <string name="microfarad">Microfarad</string>
+    <string name="microfarad_short">µF</string>
+    <string name="millifarad">Millifarad</string>
+    <string name="millifarad_short">mF</string>
+    <string name="kilofarad">Kilofarad</string>
+    <string name="kilofarad_short">kF</string>
+    <string name="megafarad">Megafarad</string>
+    <string name="megafarad_short">MF</string>
+    <string name="gigafarad">Gigafarad</string>
+    <string name="gigafarad_short">GF</string>
+    <string name="petafarad">Petafarad</string>
+    <string name="petafarad_short">PF</string>
+
+    <!-- Prefixes -->
+    <string name="prefix_quetta">Quetta</string>
+    <string name="prefix_quetta_short">Q</string>
+    <string name="prefix_ronna">Ronna</string>
+    <string name="prefix_ronna_short">R</string>
+    <string name="prefix_yotta">Yotta</string>
+    <string name="prefix_yotta_short">Y</string>
+    <string name="prefix_zetta">Zetta</string>
+    <string name="prefix_zetta_short">Z</string>
+    <string name="prefix_exa">Exa</string>
+    <string name="prefix_exa_short">E</string>
+    <string name="prefix_peta">Peta</string>
+    <string name="prefix_peta_short">P</string>
+    <string name="prefix_tera">Tera</string>
+    <string name="prefix_tera_short">T</string>
+    <string name="prefix_giga">Giga</string>
+    <string name="prefix_giga_short">G</string>
+    <string name="prefix_mega">Mega</string>
+    <string name="prefix_mega_short">M</string>
+    <string name="prefix_kilo">Kilo</string>
+    <string name="prefix_kilo_short">k</string>
+    <string name="prefix_hecto">Hekto</string>
+    <string name="prefix_hecto_short">h</string>
+    <string name="prefix_deca">Deka</string>
+    <string name="prefix_deca_short">da</string>
+    <string name="prefix_base">Basis</string>
+    <string name="prefix_base_short">Basis</string>
+    <string name="prefix_deci">Dezi</string>
+    <string name="prefix_deci_short">d</string>
+    <string name="prefix_centi">Zenti</string>
+    <string name="prefix_centi_short">c</string>
+    <string name="prefix_milli">Milli</string>
+    <string name="prefix_milli_short">m</string>
+    <string name="prefix_micro">Micro</string>
+    <string name="prefix_micro_short">μ</string>
+    <string name="prefix_nano">Nano</string>
+    <string name="prefix_nano_short">n</string>
+    <string name="prefix_pico">Piko</string>
+    <string name="prefix_pico_short">P</string>
+    <string name="prefix_femto">Femto</string>
+    <string name="prefix_femto_short">f</string>
+    <string name="prefix_atto">Atto</string>
+    <string name="prefix_atto_short">a</string>
+    <string name="prefix_zepto">Zepto</string>
+    <string name="prefix_zepto_short">z</string>
+    <string name="prefix_yocto">Yokto</string>
+    <string name="prefix_yocto_short">y</string>
+    <string name="prefix_ronto">Ronto</string>
+    <string name="prefix_ronto_short">r</string>
+    <string name="prefix_quecto">Quekto</string>
+    <string name="prefix_quecto_short">q</string>
+
+    <!-- Force -->
+    <string name="newton">Newton</string>
+    <string name="newton_short">N</string>
+    <string name="kilonewton">Kilonewton</string>
+    <string name="kilonewton_short">kN</string>
+
+    <!-- Fuzzy -->
+    <string name="gram_force">Gramm-Kraft</string>
+    <string name="gram_force_short">gf</string>
+
+    <!-- Fuzzy -->
+    <string name="kilogram_force">Kilogramm-Kraft</string>
+    <string name="kilogram_force_short">kgf</string>
+    <string name="ton_force">Tonnen-Kraft</string>
+    <string name="ton_force_short">tf</string>
+    <string name="millinewton">Millinewton</string>
+    <string name="millinewton_short">mN</string>
+    <string name="attonewton">Attonewton</string>
+    <string name="attonewton_short">aN</string>
+    <string name="dyne">Dyn</string>
+    <string name="dyne_short">dyn</string>
+    <string name="joule_per_meter">Joule/Meter</string>
+    <string name="joule_per_meter_short">J/m</string>
+    <string name="joule_per_centimeter">Joule/Zentimeter</string>
+    <string name="joule_per_centimeter_short">J/cm</string>
+    <string name="kilopound_force">Kilopfund-Kraft</string>
+    <string name="kilopound_force_short">kipf</string>
+    <string name="pound_force">Pfund-Kraft</string>
+    <string name="pound_force_short">lbf</string>
+    <string name="ounce_force">Unzen-Kraft</string>
+    <string name="ounce_force_short">ozf</string>
+    <string name="pond">Pond</string>
+    <string name="pond_short">p</string>
+
+    <!-- Fuzzy -->
+    <string name="kilopond">Kilopond</string>
+    <string name="kilopond_short">kp</string>
+
+    <!-- Torque -->
+    <string name="newton_meter">Newtonmeter</string>
+    <string name="newton_meter_short">N*m</string>
+    <string name="newton_centimeter">Newtonzentimeter</string>
+    <string name="newton_centimeter_short">N*cm</string>
+    <string name="newton_millimeter">Newtonmillimeter</string>
+    <string name="newton_millimeter_short">N*mm</string>
+    <string name="kilonewton_meter">Kilonewtonmeter</string>
+    <string name="kilonewton_meter_short">kN*m</string>
+    <string name="dyne_meter">Dynmeter</string>
+    <string name="dyne_meter_short">dyn*m</string>
+
+    <!-- Fuzzy -->
+    <string name="dyne_centimeter">Dynzentimeter</string>
+    <string name="dyne_centimeter_short">dyn*cm</string>
+
+    <!-- Fuzzy -->
+    <string name="dyne_millimeter">Dynmillimeter</string>
+    <string name="dyne_millimeter_short">dyn*mm</string>
+
+    <!-- Fuzzy -->
+    <string name="kilogram_force_meter">Kilogramm-Kraft-Meter</string>
+    <string name="kilogram_force_meter_short">kgf*m</string>
+
+    <!-- Fuzzy -->
+    <string name="kilogram_force_centimeter">Kilogramm-Kraft-Zentimeter</string>
+    <string name="kilogram_force_centimeter_short">kgf*cm</string>
+
+    <!-- Fuzzy -->
+    <string name="kilogram_force_millimeter">Kilogramm-Kraft-Millimeter</string>
+    <string name="kilogram_force_millimeter_short">kgf*mm</string>
+
+    <!-- Fuzzy -->
+    <string name="gram_force_meter">Gramm-Kraft Meter</string>
+    <string name="gram_force_meter_short">gf*m</string>
+
+    <!-- Fuzzy -->
+    <string name="gram_force_centimeter">Gramm-Kraft Zentimeter</string>
+    <string name="gram_force_centimeter_short">gf*cm</string>
+
+    <!-- Fuzzy -->
+    <string name="gram_force_millimeter">Gramm-Kraft Millimeter</string>
+    <string name="gram_force_millimeter_short">gf*mm</string>
+
+    <!-- Fuzzy -->
+    <string name="ounce_force_foot">Unzen-Kraft-Fuß</string>
+    <string name="ounce_force_foot_short">ozf*ft</string>
+
+    <!-- Fuzzy -->
+    <string name="ounce_force_inch">Unze-Kraft-Zoll</string>
+    <string name="ounce_force_inch_short">ozf*in</string>
+    <string name="pound_force_foot">Pfund-Kraft-Fuß</string>
+    <string name="pound_force_foot_short">lbf*ft</string>
+
+    <!-- Fuzzy -->
+    <string name="pound_force_inch">Pfund-Kraft-Zoll</string>
+    <string name="pound_force_inch_short">lbf*in</string>
+
+    <!-- Flow rate -->
+    <string name="liter_per_hour">Liter/Stunde</string>
+    <string name="liter_per_hour_short">L/h</string>
+    <string name="liter_per_minute">Liter/Minute</string>
+    <string name="liter_per_minute_short">L/m</string>
+    <string name="liter_per_second">Liter/Sekunde</string>
+    <string name="liter_per_second_short">L/s</string>
+    <string name="milliliter_per_hour">Milliliter/Stunde</string>
+    <string name="milliliter_per_hour_short">mL/h</string>
+    <string name="milliliter_per_minute">Milliliter/Minute</string>
+    <string name="milliliter_per_minute_short">mL/m</string>
+    <string name="milliliter_per_second">Milliliter/Sekunde</string>
+    <string name="milliliter_per_second_short">mL/s</string>
+    <string name="cubic_meter_per_hour">Kubikmeter/Stunde</string>
+    <string name="cubic_meter_per_hour_short">m3/h</string>
+    <string name="cubic_meter_per_minute">Kubikmeter/Minute</string>
+    <string name="cubic_meter_per_minute_short">m3/m</string>
+    <string name="cubic_meter_per_second">Kubikmeter/Sekunde</string>
+    <string name="cubic_meter_per_second_short">m3/s</string>
+    <string name="cubic_millimeter_per_hour">Kubikmillimeter/Stunde</string>
+    <string name="cubic_millimeter_per_hour_short">mm3/h</string>
+    <string name="cubic_millimeter_per_minute">Kubikmillimeter/Minute</string>
+    <string name="cubic_millimeter_per_minute_short">mm3/m</string>
+    <string name="cubic_millimeter_per_second">Kubikmillimeter/Sekunde</string>
+    <string name="cubic_millimeter_per_second_short">mm3/s</string>
+    <string name="cubic_foot_per_hour">Kubikfuß/Stunde</string>
+    <string name="cubic_foot_per_hour_short">ft3/h</string>
+    <string name="cubic_foot_per_minute">Kubikfuß/Minute</string>
+    <string name="cubic_foot_per_minute_short">ft3/m</string>
+    <string name="cubic_foot_per_second">Kubikfuß/Sekunde</string>
+    <string name="cubic_foot_per_second_short">ft3/s</string>
+    <string name="gallon_per_hour_us">Gallone/Stunde (U.S.)</string>
+    <string name="gallon_per_hour_us_short">gal/h</string>
+    <string name="gallon_per_minute_us">Gallone/Minute(U.S.)</string>
+    <string name="gallon_per_minute_us_short">gal/m</string>
+    <string name="gallon_per_second_us">Gallone/Sekunde(U.S.)</string>
+    <string name="gallon_per_second_us_short">gal/s</string>
+    <string name="gallon_per_hour_imperial">Gallone/Stunde (Imperial)</string>
+    <string name="gallon_per_hour_imperial_short">gal/h</string>
+    <string name="gallon_per_minute_imperial">Gallone/Minute(Imperial)</string>
+    <string name="gallon_per_minute_imperial_short">gal/m</string>
+    <string name="gallon_per_second_imperial">Gallone/Sekunde(Imperial)</string>
+    <string name="gallon_per_second_imperial_short">gal/s</string>
+
+    <!-- Luminance -->
+    <string name="candela_per_square_meter">Candela/Quadratmeter</string>
+    <string name="candela_per_square_meter_short">cd/m^2</string>
+    <string name="candela_per_square_centimeter">Candela/Quadratzentimeter</string>
+    <string name="candela_per_square_centimeter_short">cd/cm^2</string>
+    <string name="candela_per_square_foot">Candela/Quadratfuß</string>
+    <string name="candela_per_square_foot_short">cd/ft^2</string>
+    <string name="candela_per_square_inch">Candela/Quadratzoll</string>
+    <string name="candela_per_square_inch_short">cd/in^2</string>
+    <string name="kilocandela_per_square_meter">Kilocandela/Quadratmeter</string>
+    <string name="kilocandela_per_square_meter_short">kcd</string>
+    <string name="stilb">Stilb</string>
+    <string name="stilb_short">sb</string>
+    <string name="lumen_per_square_meter_per_steradian">Lumen/Quadratmeter/Steradiant</string>
+    <string name="lumen_per_square_meter_per_steradian_short">lm/m^2/sr</string>
+    <string name="lumen_per_square_centimeter_per_steradian">Lumen/Quadratzentimeter/Steradian</string>
+    <string name="lumen_per_square_centimeter_per_steradian_short">lm/cm^2/sr</string>
+    <string name="lumen_per_square_foot_per_steradian">Lumen/Quadratfuß/Steradian</string>
+    <string name="lumen_per_square_foot_per_steradian_short">lm/ft^2/sr</string>
+    <string name="watt_per_square_centimeter_per_steradian">Watt/Quadratzentimeter/Steradian</string>
+    <string name="watt_per_square_centimeter_per_steradian_short">W/cm^2/sr</string>
+    <string name="nit">Nit</string>
+    <string name="nit_short">nt</string>
+    <string name="millinit">Millinit</string>
+    <string name="millinit_short">mnt</string>
+    <string name="lambert">Lambert</string>
+    <string name="lambert_short">L</string>
+    <string name="millilambert">Millilambert</string>
+    <string name="millilambert_short">mL</string>
+    <string name="foot_lambert">Fuß-Lambert</string>
+    <string name="foot_lambert_short">fL</string>
+    <string name="apostilb">Apostilb</string>
+    <string name="apostilb_short">asb</string>
+    <string name="blondel">Blondel</string>
+    <string name="blondel_short">blondel</string>
+    <string name="bril">Bril</string>
+    <string name="bril_short">bril</string>
+    <string name="skot">Skot</string>
+    <string name="skot_short">sk</string>
+    <string name="electrostatic_capacitance">Kapazität</string>
+    <string name="prefix">Präfix</string>
+    <string name="force">Kraft</string>
+    <string name="torque">Drehmoment</string>
+
+    <!-- Fuzzy -->
+    <string name="flow_rate">Fluss</string>
+    <string name="luminance">Leuchtdichte</string>
+
+    <!-- Fuzzy -->
+    <string name="format_time">Zeit formatieren</string>
+    <string name="format_time_support">Beispiel: 130 Minuten als 2h 10m anzeigen</string>
+    <string name="units_sorting">Einheitenlistensortierung</string>
+    <string name="units_sorting_support">Einheitenreihenfolge ändern</string>
+
+    <!-- Units list sorting -->
+    <string name="sort_by_usage">Benutzung</string>
+    <string name="sort_by_alphabetical">Alphabetisch</string>
+
+    <!-- Fuzzy -->
+    <string name="sort_by_scale_desc">Skala (Abst.)</string>
+
+    <!-- Fuzzy -->
+    <string name="sort_by_scale_asc">Skala (Aufst.)</string>
+    <string name="color_theme_support">Farbthema auswählen</string>
+    <string name="color_scheme">Farbschema</string>
+    <string name="selected_color">Ausgewählte Farbe</string>
+    <string name="monet_mode">Stil auswählen</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/Gj9ZCNPXIfKddDQgccvboVFz.jpg 
+https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
+
+Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
+    <string name="formatting_setting_support">Genauigkeit und Zahlendarstellung</string>
+    <string name="divide_by_zero_error">Kann nicht durch 0 teilen</string>
+    <string name="date_difference">Datumsunterschied</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
+    <string name="select_time">Zeit auswählen</string>
+    <string name="date_difference_start">Anfang</string>
+    <string name="date_difference_end">Ende</string>
+    <string name="date_difference_result">Unterschied</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_years">Jahre</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_months">Monate</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_days">Tage</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_hours">Stunden</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_minutes">Minuten</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
+
+Used in this dialog window. Should be short -->
+    <string name="next_label">Weiter</string>
 </resources>

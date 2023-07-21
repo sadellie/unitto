@@ -39,6 +39,7 @@ import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -65,19 +66,42 @@ import javax.inject.Inject
  */
 data class UserPreferences(
     val themingMode: ThemingMode = ThemingMode.AUTO,
-    val enableDynamicTheme: Boolean = false,
+    val enableDynamicTheme: Boolean = true,
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,
     val monetMode: MonetMode = MonetMode.TONAL_SPOT,
     val digitsPrecision: Int = 3,
-    val separator: Int = Separator.SPACES,
+    val separator: Int = Separator.SPACE,
     val outputFormat: Int = OutputFormat.PLAIN,
     val latestLeftSideUnit: String = MyUnitIDS.kilometer,
     val latestRightSideUnit: String = MyUnitIDS.mile,
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
     val enableVibrations: Boolean = true,
     val enableToolsExperiment: Boolean = false,
+    val startingScreen: String = TopLevelDestinations.Calculator.route,
+    val radianMode: Boolean = true,
+    val unitConverterFavoritesOnly: Boolean = false,
+    val unitConverterFormatTime: Boolean = false,
+    val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
+)
+
+data class UIPreferences(
+    val themingMode: ThemingMode = ThemingMode.AUTO,
+    val enableDynamicTheme: Boolean = false,
+    val enableAmoledTheme: Boolean = false,
+    val customColor: Color = Color.Unspecified,
+    val monetMode: MonetMode = MonetMode.TONAL_SPOT,
     val startingScreen: String = TopLevelDestinations.Converter.route,
+)
+
+data class MainPreferences(
+    val digitsPrecision: Int = 3,
+    val separator: Int = Separator.SPACE,
+    val outputFormat: Int = OutputFormat.PLAIN,
+    val latestLeftSideUnit: String = MyUnitIDS.kilometer,
+    val latestRightSideUnit: String = MyUnitIDS.mile,
+    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
+    val enableVibrations: Boolean = true,
     val radianMode: Boolean = true,
     val unitConverterFavoritesOnly: Boolean = false,
     val unitConverterFormatTime: Boolean = false,
@@ -112,7 +136,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
     }
 
-    val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
+    val uiPreferencesFlow: Flow<UIPreferences> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -128,8 +152,29 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val customColor: Color = preferences[PrefsKeys.CUSTOM_COLOR]?.let { Color(it.toULong()) } ?: Color.Unspecified
             val monetMode: MonetMode = preferences[PrefsKeys.MONET_MODE]?.let { MonetMode.valueOf(it) }
                 ?: MonetMode.TONAL_SPOT
+            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
+
+            UIPreferences(
+                themingMode = themingMode,
+                enableDynamicTheme = enableDynamicTheme,
+                enableAmoledTheme = enableAmoledTheme,
+                customColor = customColor,
+                monetMode = monetMode,
+                startingScreen = startingScreen
+            )
+        }
+
+    val mainPreferencesFlow: Flow<MainPreferences> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
             val digitsPrecision: Int = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
-            val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACES
+            val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE
             val outputFormat: Int = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
             val latestLeftSideUnit: String = preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
             val latestRightSideUnit: String = preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
@@ -147,19 +192,12 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
 
                 } ?: ALL_UNIT_GROUPS
             val enableVibrations: Boolean = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true
-            val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
-            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
             val radianMode: Boolean = preferences[PrefsKeys.RADIAN_MODE] ?: true
             val unitConverterFavoritesOnly: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: false
             val unitConverterFormatTime: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
             val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
 
-            UserPreferences(
-                themingMode = themingMode,
-                enableDynamicTheme = enableDynamicTheme,
-                enableAmoledTheme = enableAmoledTheme,
-                customColor = customColor,
-                monetMode = monetMode,
+            MainPreferences(
                 digitsPrecision = digitsPrecision,
                 separator = separator,
                 outputFormat = outputFormat,
@@ -167,14 +205,37 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 latestRightSideUnit = latestRightSideUnit,
                 shownUnitGroups = shownUnitGroups,
                 enableVibrations = enableVibrations,
-                enableToolsExperiment = enableToolsExperiment,
-                startingScreen = startingScreen,
                 radianMode = radianMode,
                 unitConverterFavoritesOnly = unitConverterFavoritesOnly,
                 unitConverterFormatTime = unitConverterFormatTime,
                 unitConverterSorting = unitConverterSorting,
             )
         }
+
+    val allPreferencesFlow = combine(
+        mainPreferencesFlow, uiPreferencesFlow
+    ) { main, ui ->
+        return@combine UserPreferences(
+            themingMode = ui.themingMode,
+            enableDynamicTheme = ui.enableDynamicTheme,
+            enableAmoledTheme = ui.enableAmoledTheme,
+            customColor = ui.customColor,
+            monetMode = ui.monetMode,
+            digitsPrecision = main.digitsPrecision,
+            separator = main.separator,
+            outputFormat = main.outputFormat,
+            latestLeftSideUnit = main.latestLeftSideUnit,
+            latestRightSideUnit = main.latestRightSideUnit,
+            shownUnitGroups = main.shownUnitGroups,
+            enableVibrations = main.enableVibrations,
+            enableToolsExperiment = false,
+            startingScreen = ui.startingScreen,
+            radianMode = main.radianMode,
+            unitConverterFavoritesOnly = main.unitConverterFavoritesOnly,
+            unitConverterFormatTime = main.unitConverterFormatTime,
+            unitConverterSorting = main.unitConverterSorting,
+        )
+    }
 
     /**
      * Update precision preference in DataStore
