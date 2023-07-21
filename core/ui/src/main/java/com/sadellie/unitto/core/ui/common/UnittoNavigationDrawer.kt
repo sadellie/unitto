@@ -139,7 +139,7 @@ fun rememberUnittoDrawerState(
     }
 }
 
-private val AnchoredDraggableState<UnittoDrawerState>.isOpen
+val AnchoredDraggableState<UnittoDrawerState>.isOpen
     get() = this.currentValue == UnittoDrawerState.OPEN
 
 suspend fun AnchoredDraggableState<UnittoDrawerState>.close() {

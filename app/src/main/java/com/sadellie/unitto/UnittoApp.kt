@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +41,7 @@ import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
 import com.sadellie.unitto.core.ui.common.UnittoModalNavigationDrawer
 import com.sadellie.unitto.core.ui.common.close
+import com.sadellie.unitto.core.ui.common.isOpen
 import com.sadellie.unitto.core.ui.common.open
 import com.sadellie.unitto.core.ui.common.rememberUnittoDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
@@ -132,6 +134,10 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                 )
             }
         )
+
+        BackHandler(drawerState.isOpen) {
+            drawerScope.launch { drawerState.close() }
+        }
 
         LaunchedEffect(useDarkIcons) {
             sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
