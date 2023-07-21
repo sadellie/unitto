@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.datedifference
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -33,6 +34,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,9 +74,10 @@ internal fun DateDifferenceScreen(
     navigateToSettings: () -> Unit,
     updateStart: (LocalDateTime) -> Unit,
     updateEnd: (LocalDateTime) -> Unit,
-    uiState: UIState
+    uiState: UIState,
 ) {
     var dialogState by remember { mutableStateOf(DialogState.NONE) }
+    val isVertical = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
 
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.date_difference)) },
@@ -141,7 +144,8 @@ internal fun DateDifferenceScreen(
                     updateStart(it)
                     dialogState = DialogState.FROM_DATE
                 },
-                confirmLabel = stringResource(R.string.next_label)
+                confirmLabel = stringResource(R.string.next_label),
+                vertical = isVertical,
             )
         }
 
@@ -152,7 +156,8 @@ internal fun DateDifferenceScreen(
                 onConfirm = {
                     updateStart(it)
                     resetDialog()
-                }
+                },
+                vertical = isVertical,
             )
         }
 
@@ -175,7 +180,8 @@ internal fun DateDifferenceScreen(
                     updateEnd(it)
                     dialogState = DialogState.TO_DATE
                 },
-                confirmLabel = stringResource(R.string.next_label)
+                confirmLabel = stringResource(R.string.next_label),
+                vertical = isVertical,
             )
         }
 
@@ -186,7 +192,8 @@ internal fun DateDifferenceScreen(
                 onConfirm = {
                     updateEnd(it)
                     resetDialog()
-                }
+                },
+                vertical = isVertical,
             )
         }
 

@@ -36,6 +36,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -63,6 +64,7 @@ fun TimePickerDialog(
     dismissLabel: String = stringResource(R.string.cancel_label),
     onDismiss: () -> Unit = {},
     onConfirm: (LocalDateTime) -> Unit,
+    vertical: Boolean
 ) {
     val pickerState = rememberTimePickerState(
         localDateTime.hour,
@@ -73,7 +75,7 @@ fun TimePickerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         modifier = modifier.wrapContentHeight(),
-        properties = DialogProperties()
+        properties = DialogProperties(usePlatformDefaultWidth = vertical)
     ) {
         Surface(
             modifier = modifier,
@@ -94,7 +96,8 @@ fun TimePickerDialog(
 
                 TimePicker(
                     state = pickerState,
-                    modifier = Modifier.padding(top = 20.dp)
+                    modifier = Modifier.padding(top = 20.dp),
+                    layoutType = if (vertical) TimePickerLayoutType.Vertical else TimePickerLayoutType.Horizontal
                 )
 
                 Row(
@@ -153,6 +156,7 @@ fun DatePickerDialog(
                 Box(modifier = Modifier
                     .align(Alignment.End)
                     .padding(DialogButtonsPadding)) {
+
                     AlertDialogFlowRow(
                         mainAxisSpacing = DialogButtonsMainAxisSpacing,
                         crossAxisSpacing = DialogButtonsCrossAxisSpacing
