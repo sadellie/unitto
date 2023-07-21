@@ -78,7 +78,7 @@ data class UserPreferences(
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
     val enableVibrations: Boolean = true,
     val enableToolsExperiment: Boolean = false,
-    val startingScreen: String = TopLevelDestinations.Converter.route,
+    val startingScreen: String = TopLevelDestinations.Calculator.route,
     val radianMode: Boolean = true,
     val unitConverterFavoritesOnly: Boolean = false,
     val unitConverterFormatTime: Boolean = false,
