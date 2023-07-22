@@ -46,9 +46,13 @@ internal class DateDifferenceViewModel @Inject constructor() : ViewModel() {
             viewModelScope, SharingStarted.WhileSubscribed(5000L), UIState()
         )
 
-    fun setStartTime(newTime: LocalDateTime) = _start.update { newTime }
+    fun setStartTime(hour: Int, minute: Int) = _start.update { it.withHour(hour).withMinute(minute) }
 
-    fun setEndTime(newTime: LocalDateTime) = _end.update { newTime }
+    fun setEndTime(hour: Int, minute: Int) = _end.update { it.withHour(hour).withMinute(minute) }
+
+    fun setStartDate(dateTime: LocalDateTime) = _start.update { dateTime }
+
+    fun setEndDate(dateTime: LocalDateTime) = _end.update { dateTime }
 
     init {
         viewModelScope.launch(Dispatchers.Default) {

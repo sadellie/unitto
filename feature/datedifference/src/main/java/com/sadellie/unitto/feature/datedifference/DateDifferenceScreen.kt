@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.datedifference
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -34,7 +33,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,8 +60,10 @@ internal fun DateDifferenceRoute(
         navigateToMenu = navigateToMenu,
         navigateToSettings = navigateToSettings,
         uiState = uiState.value,
-        updateStart = viewModel::setStartTime,
-        updateEnd = viewModel::setEndTime
+        setStartTime = viewModel::setStartTime,
+        setEndTime = viewModel::setEndTime,
+        setStartDate = viewModel::setStartDate,
+        setEndDate = viewModel::setEndDate,
     )
 }
 
@@ -72,12 +72,13 @@ internal fun DateDifferenceRoute(
 internal fun DateDifferenceScreen(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
-    updateStart: (LocalDateTime) -> Unit,
-    updateEnd: (LocalDateTime) -> Unit,
+    setStartTime: (Int, Int) -> Unit,
+    setEndTime: (Int, Int) -> Unit,
+    setStartDate: (LocalDateTime) -> Unit,
+    setEndDate: (LocalDateTime) -> Unit,
     uiState: UIState,
 ) {
     var dialogState by remember { mutableStateOf(DialogState.NONE) }
-    val isVertical = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
 
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.date_difference)) },
@@ -138,26 +139,26 @@ internal fun DateDifferenceScreen(
     when (dialogState) {
         DialogState.FROM -> {
             TimePickerDialog(
-                localDateTime = uiState.start,
+                hour = uiState.start.hour,
+                minute = uiState.start.minute,
                 onDismiss = ::resetDialog,
-                onConfirm = {
-                    updateStart(it)
+                onConfirm = { hour, minute ->
+                    setStartTime(hour, minute)
                     dialogState = DialogState.FROM_DATE
                 },
                 confirmLabel = stringResource(R.string.next_label),
-                vertical = isVertical,
             )
         }
 
         DialogState.FROM_TIME -> {
             TimePickerDialog(
-                localDateTime = uiState.start,
+                hour = uiState.start.hour,
+                minute = uiState.start.minute,
                 onDismiss = ::resetDialog,
-                onConfirm = {
-                    updateStart(it)
+                onConfirm = { hour, minute ->
+                    setStartTime(hour, minute)
                     resetDialog()
                 },
-                vertical = isVertical,
             )
         }
 
@@ -166,7 +167,7 @@ internal fun DateDifferenceScreen(
                 localDateTime = uiState.start,
                 onDismiss = ::resetDialog,
                 onConfirm = {
-                    updateStart(it)
+                    setStartDate(it)
                     resetDialog()
                 }
             )
@@ -174,26 +175,26 @@ internal fun DateDifferenceScreen(
 
         DialogState.TO -> {
             TimePickerDialog(
-                localDateTime = uiState.end,
+                hour = uiState.end.hour,
+                minute = uiState.end.minute,
                 onDismiss = ::resetDialog,
-                onConfirm = {
-                    updateEnd(it)
+                onConfirm = { hour, minute ->
+                    setEndTime(hour, minute)
                     dialogState = DialogState.TO_DATE
                 },
                 confirmLabel = stringResource(R.string.next_label),
-                vertical = isVertical,
             )
         }
 
         DialogState.TO_TIME -> {
             TimePickerDialog(
-                localDateTime = uiState.end,
+                hour = uiState.end.hour,
+                minute = uiState.end.minute,
                 onDismiss = ::resetDialog,
-                onConfirm = {
-                    updateEnd(it)
+                onConfirm = { hour, minute ->
+                    setEndTime(hour, minute)
                     resetDialog()
                 },
-                vertical = isVertical,
             )
         }
 
@@ -202,7 +203,7 @@ internal fun DateDifferenceScreen(
                 localDateTime = uiState.end,
                 onDismiss = ::resetDialog,
                 onConfirm = {
-                    updateEnd(it)
+                    setEndDate(it)
                     resetDialog()
                 }
             )
@@ -222,10 +223,12 @@ private fun DateDifferenceScreenPreview() {
     DateDifferenceScreen(
         navigateToMenu = {},
         navigateToSettings = {},
-        updateStart = {},
-        updateEnd = {},
+        setStartTime = { _, _ -> },
+        setEndTime = { _, _ -> },
         uiState = UIState(
             result = DateDifference.Default(4, 1, 2, 3, 4)
-        )
+        ),
+        setStartDate = {},
+        setEndDate = {},
     )
 }

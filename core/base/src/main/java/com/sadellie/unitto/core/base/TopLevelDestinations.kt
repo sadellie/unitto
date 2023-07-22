@@ -40,8 +40,8 @@ sealed class TopLevelDestinations(
     )
 
     object TimeZone : TopLevelDestinations(
-        route = "time_zone_route",
-        name = R.string.time_zone
+        route = "time_zone_graph",
+        name = R.string.time_zone_screen
     )
 
     object Settings : TopLevelDestinations(
@@ -54,5 +54,6 @@ val TOP_LEVEL_DESTINATIONS: Map<TopLevelDestinations, Int> by lazy {
     mapOf(
         TopLevelDestinations.Converter to R.string.unit_converter,
         TopLevelDestinations.Calculator to R.string.calculator,
+        TopLevelDestinations.DateDifference to R.string.date_difference,
     )
 }

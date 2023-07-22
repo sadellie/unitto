@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.base.R
 
-private val Montserrat = FontFamily(
+val Montserrat = FontFamily(
     Font(R.font.montserrat_light, weight = FontWeight.Light),
     Font(R.font.montserrat_regular, weight = FontWeight.Normal),
     Font(R.font.montserrat_medium, weight = FontWeight.Medium),
     Font(R.font.montserrat_semibold, weight = FontWeight.SemiBold),
 )
 
-private val Lato = FontFamily(
+val Lato = FontFamily(
     Font(R.font.lato_regular)
 )
 

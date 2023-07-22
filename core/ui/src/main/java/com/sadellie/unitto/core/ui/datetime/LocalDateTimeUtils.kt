@@ -16,30 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("UnstableApiUsage")
+package com.sadellie.unitto.core.ui.datetime
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.android.hilt")
+import android.text.format.DateFormat
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import java.time.LocalDateTime
+
+@Composable
+fun LocalDateTime.formatLocal(): String {
+    return if (DateFormat.is24HourFormat(LocalContext.current)) format24()
+    else format12()
 }
 
-android {
-    namespace = "com.sadellie.unitto.core.ui"
+/**
+ * Formats [LocalDateTime] into string that looks like
+ *
+ * 23:58
+ *
+ * @return Formatted string.
+ */
+fun LocalDateTime.format24(): String = this.format(time24Formatter)
 
-    // Workaround from https://github.com/robolectric/robolectric/pull/4736
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-}
-
-dependencies {
-    testImplementation(libs.junit)
-    testImplementation(libs.org.robolectric)
-    testImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    implementation(project(mapOf("path" to ":core:base")))
-}
+/**
+ * Formats [LocalDateTime] into string that looks like
+ *
+ * 11:58 am
+ *
+ * @return Formatted string.
+ */
+fun LocalDateTime.format12(): String = this.format(time12Formatter)

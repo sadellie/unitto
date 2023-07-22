@@ -95,7 +95,8 @@ internal fun UnittoNavigation(
 
         timeZoneScreen(
             navigateToMenu = openDrawer,
-            navigateToSettings = navController::navigateToSettings
+            navigateToSettings = navController::navigateToSettings,
+            navController = navController,
         )
     }
 }

@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.common
 
+import android.content.res.Configuration
 import android.text.format.DateFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -59,23 +61,25 @@ import kotlin.math.max
 @Composable
 fun TimePickerDialog(
     modifier: Modifier = Modifier,
-    localDateTime: LocalDateTime,
+    hour: Int,
+    minute: Int,
     confirmLabel: String = stringResource(R.string.ok_label),
     dismissLabel: String = stringResource(R.string.cancel_label),
     onDismiss: () -> Unit = {},
-    onConfirm: (LocalDateTime) -> Unit,
-    vertical: Boolean
+    onConfirm: (hour: Int, minute: Int) -> Unit,
 ) {
+    val isVertical = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
+
     val pickerState = rememberTimePickerState(
-        localDateTime.hour,
-        localDateTime.minute,
-        DateFormat.is24HourFormat(LocalContext.current)
+        initialHour = hour,
+        initialMinute = minute,
+        is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     )
 
     AlertDialog(
         onDismissRequest = onDismiss,
         modifier = modifier.wrapContentHeight(),
-        properties = DialogProperties(usePlatformDefaultWidth = vertical)
+        properties = DialogProperties(usePlatformDefaultWidth = isVertical)
     ) {
         Surface(
             modifier = modifier,
@@ -97,7 +101,7 @@ fun TimePickerDialog(
                 TimePicker(
                     state = pickerState,
                     modifier = Modifier.padding(top = 20.dp),
-                    layoutType = if (vertical) TimePickerLayoutType.Vertical else TimePickerLayoutType.Horizontal
+                    layoutType = if (isVertical) TimePickerLayoutType.Vertical else TimePickerLayoutType.Horizontal
                 )
 
                 Row(
@@ -110,13 +114,7 @@ fun TimePickerDialog(
                         Text(text = dismissLabel)
                     }
                     TextButton(
-                        onClick = {
-                            onConfirm(
-                                localDateTime
-                                    .withHour(pickerState.hour)
-                                    .withMinute(pickerState.minute)
-                            )
-                        }
+                        onClick = { onConfirm(pickerState.hour, pickerState.minute) }
                     ) {
                         Text(text = confirmLabel)
                     }

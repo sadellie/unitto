@@ -18,24 +18,72 @@
 
 package com.sadellie.unitto.timezone.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.timezone.AddTimeZoneRoute
 import com.sadellie.unitto.timezone.TimeZoneRoute
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
-private val timeZoneRoute: String by lazy { TopLevelDestinations.TimeZone.route }
+private val timeZoneGraph: String by lazy { TopLevelDestinations.TimeZone.route }
+internal const val timeZoneRoute = "time_zone_route"
+internal const val addTimeZoneRoute = "add_time_zone_route"
+internal const val userTimeArg = "userTime"
+
+fun NavController.navigateToAddTimeZone(
+    userTime: ZonedDateTime?
+) {
+    val formattedTime = userTime
+        ?.format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+        ?.replace("/", "|") // this is so wrong
+
+    navigate("$addTimeZoneRoute/$formattedTime")
+}
 
 fun NavGraphBuilder.timeZoneScreen(
     navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit
+    navigateToSettings: () -> Unit,
+    navController: NavHostController,
 ) {
-    composable(
-        route = timeZoneRoute,
-        deepLinks = listOf(
-            navDeepLink { uriPattern = "app://com.sadellie.unitto/$timeZoneRoute" }
-        )
+    navigation(
+        startDestination = timeZoneRoute,
+        route = timeZoneGraph,
+        deepLinks = listOf(navDeepLink { uriPattern = "app://com.sadellie.unitto/$timeZoneRoute" })
     ) {
-        TimeZoneRoute()
+        composable(timeZoneRoute) {
+            TimeZoneRoute(
+                navigateToMenu = navigateToMenu,
+                navigateToSettings = navigateToSettings,
+                navigateToAddTimeZone = navController::navigateToAddTimeZone
+            )
+        }
+
+        composable(
+            route = "$addTimeZoneRoute/{$userTimeArg}",
+            arguments = listOf(
+                navArgument(userTimeArg) {
+                    defaultValue = null
+                    nullable = true
+                    type = NavType.StringType
+                }
+            )
+        ) { stackEntry ->
+            val userTime = stackEntry.arguments
+                ?.getString(userTimeArg)
+                ?.replace("|", "/") // war crime, don't look
+                ?.let { ZonedDateTime.parse(it, DateTimeFormatter.ISO_ZONED_DATE_TIME) }
+
+            AddTimeZoneRoute(
+                navigateUp = navController::navigateUp,
+                userTime = userTime
+            )
+        }
     }
 }

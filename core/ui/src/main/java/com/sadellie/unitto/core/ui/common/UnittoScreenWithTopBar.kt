@@ -21,9 +21,11 @@ package com.sadellie.unitto.core.ui.common
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -35,6 +37,8 @@ import androidx.compose.ui.Modifier
  * @param navigationIcon See [CenterAlignedTopAppBar]
  * @param actions See [CenterAlignedTopAppBar]
  * @param colors See [CenterAlignedTopAppBar]
+ * @param floatingActionButton See [Scaffold]
+ * @param scrollBehavior See [CenterAlignedTopAppBar]
  * @param content See [Scaffold]
  */
 @Composable
@@ -44,6 +48,9 @@ fun UnittoScreenWithTopBar(
     navigationIcon: @Composable () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
+    floatingActionButton: @Composable () -> Unit = {},
+    floatingActionButtonPosition: FabPosition = FabPosition.End,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -53,9 +60,12 @@ fun UnittoScreenWithTopBar(
                 title = title,
                 navigationIcon = navigationIcon,
                 actions = actions,
-                colors = colors
+                colors = colors,
+                scrollBehavior = scrollBehavior,
             )
         },
+        floatingActionButton = floatingActionButton,
+        floatingActionButtonPosition = floatingActionButtonPosition,
         content = content
     )
 }

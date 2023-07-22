@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.database
+package com.sadellie.unitto.core.ui.datetime
 
-import androidx.room.AutoMigration
-import androidx.room.Database
-import androidx.room.RoomDatabase
+import java.time.format.DateTimeFormatter
 
-@Database(
-    version = 3,
-    exportSchema = true,
-    entities = [
-        UnitsEntity::class,
-        CalculatorHistoryEntity::class,
-        TimeZoneEntity::class
-    ],
-    autoMigrations = [
-        AutoMigration (from = 1, to = 2),
-        AutoMigration (from = 2, to = 3),
-    ]
-)
-abstract class UnittoDatabase : RoomDatabase() {
-    abstract fun unitsDao(): UnitsDao
-    abstract fun calculatorHistoryDao(): CalculatorHistoryDao
-    abstract fun timeZoneDao(): TimeZoneDao
-}
+// FIXME Duplicate from date difference
+internal val time24Formatter by lazy { DateTimeFormatter.ofPattern("HH:mm") }
+internal val time12Formatter by lazy { DateTimeFormatter.ofPattern("hh:mm a") }
+internal val dayMonthYear by lazy { DateTimeFormatter.ofPattern("d MMM y") }
+internal val zoneFormatPattern by lazy { DateTimeFormatter.ofPattern("O") }

@@ -72,11 +72,19 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
     // Navigation drawer stuff
     val drawerState = rememberUnittoDrawerState()
     val drawerScope = rememberCoroutineScope()
-    val mainTabs = listOf(
-        DrawerItems.Calculator,
-        DrawerItems.Converter,
-        DrawerItems.DateDifference
-    )
+    val mainTabs by remember(uiPrefs.enableToolsExperiment) {
+        derivedStateOf {
+            if (uiPrefs.enableToolsExperiment) {
+                listOf(
+                    DrawerItems.Calculator, DrawerItems.Converter, DrawerItems.DateDifference, DrawerItems.TimeZones
+                )
+            } else {
+                listOf(
+                    DrawerItems.Calculator, DrawerItems.Converter, DrawerItems.DateDifference,
+                )
+            }
+        }
+    }
     val additionalTabs = listOf(DrawerItems.Settings)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -129,7 +137,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                 UnittoNavigation(
                     navController = navController,
                     themmoController = it,
-                    startDestination = uiPrefs.startingScreen,
+                    startDestination = TopLevelDestinations.TimeZone.route,
                     openDrawer = { drawerScope.launch { drawerState.open() } }
                 )
             }

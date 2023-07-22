@@ -92,6 +92,7 @@ data class UIPreferences(
     val customColor: Color = Color.Unspecified,
     val monetMode: MonetMode = MonetMode.TONAL_SPOT,
     val startingScreen: String = TopLevelDestinations.Converter.route,
+    val enableToolsExperiment: Boolean = false,
 )
 
 data class MainPreferences(
@@ -153,6 +154,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val monetMode: MonetMode = preferences[PrefsKeys.MONET_MODE]?.let { MonetMode.valueOf(it) }
                 ?: MonetMode.TONAL_SPOT
             val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
+            val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
 
             UIPreferences(
                 themingMode = themingMode,
@@ -160,7 +162,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 enableAmoledTheme = enableAmoledTheme,
                 customColor = customColor,
                 monetMode = monetMode,
-                startingScreen = startingScreen
+                startingScreen = startingScreen,
+                enableToolsExperiment = enableToolsExperiment
             )
         }
 
@@ -228,7 +231,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             latestRightSideUnit = main.latestRightSideUnit,
             shownUnitGroups = main.shownUnitGroups,
             enableVibrations = main.enableVibrations,
-            enableToolsExperiment = false,
+            enableToolsExperiment = ui.enableToolsExperiment,
             startingScreen = ui.startingScreen,
             radianMode = main.radianMode,
             unitConverterFavoritesOnly = main.unitConverterFavoritesOnly,

@@ -30,9 +30,11 @@ android {
 dependencies {
     testImplementation(libs.junit)
     implementation(libs.com.github.sadellie.themmo)
+    implementation(libs.org.burnoutcrew.composereorderable)
 
     implementation(project(mapOf("path" to ":data:common")))
     implementation(project(mapOf("path" to ":data:userprefs")))
     implementation(project(mapOf("path" to ":data:database")))
+    implementation(project(mapOf("path" to ":data:timezone")))
     implementation(project(mapOf("path" to ":data:model")))
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.database
+plugins {
+    id("unitto.library")
+    id("unitto.android.hilt")
+}
 
-import androidx.room.AutoMigration
-import androidx.room.Database
-import androidx.room.RoomDatabase
+android {
+    namespace = "com.sadellie.unitto.data.timezone"
+}
 
-@Database(
-    version = 3,
-    exportSchema = true,
-    entities = [
-        UnitsEntity::class,
-        CalculatorHistoryEntity::class,
-        TimeZoneEntity::class
-    ],
-    autoMigrations = [
-        AutoMigration (from = 1, to = 2),
-        AutoMigration (from = 2, to = 3),
-    ]
-)
-abstract class UnittoDatabase : RoomDatabase() {
-    abstract fun unitsDao(): UnitsDao
-    abstract fun calculatorHistoryDao(): CalculatorHistoryDao
-    abstract fun timeZoneDao(): TimeZoneDao
+dependencies {
+    implementation(project(mapOf("path" to ":core:base")))
+    implementation(project(mapOf("path" to ":data:common")))
+    implementation(project(mapOf("path" to ":data:model")))
+    implementation(project(mapOf("path" to ":data:database")))
 }
