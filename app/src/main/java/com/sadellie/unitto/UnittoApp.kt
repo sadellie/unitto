@@ -125,7 +125,6 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 }
             },
