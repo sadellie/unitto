@@ -137,7 +137,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                 UnittoNavigation(
                     navController = navController,
                     themmoController = it,
-                    startDestination = TopLevelDestinations.TimeZone.route,
+                    startDestination = uiPrefs.startingScreen,
                     openDrawer = { drawerScope.launch { drawerState.open() } }
                 )
             }
