@@ -56,16 +56,17 @@ class UnittoDatabaseModule {
         return unittoDatabase.calculatorHistoryDao()
     }
 
-    /**
-     * Tells Hilt to use this method to get [TimeZoneDao]
-     *
-     * @param unittoDatabase Database for which we need DAO
-     * @return Singleton of [TimeZoneDao]
-     */
-    @Provides
-    fun provideTimeZoneDao(unittoDatabase: UnittoDatabase): TimeZoneDao {
-        return unittoDatabase.timeZoneDao()
-    }
+//    For some reason this fucks up the migration
+//    /**
+//     * Tells Hilt to use this method to get [TimeZoneDao]
+//     *
+//     * @param unittoDatabase Database for which we need DAO
+//     * @return Singleton of [TimeZoneDao]
+//     */
+//    @Provides
+//    fun provideTimeZoneDao(unittoDatabase: UnittoDatabase): TimeZoneDao {
+//        return unittoDatabase.timeZoneDao()
+//    }
 
     /**
      * Tells Hilt to use this method to get [UnittoDatabase]
