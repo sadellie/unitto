@@ -41,6 +41,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,7 +51,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
@@ -160,23 +160,36 @@ private fun PortraitKeyboard(
     ColumnWithConstraints(
         modifier = modifier
     ) { constraints ->
-        fun verticalFraction(fraction: Float): Dp = constraints.maxHeight * fraction
-        fun horizontalFraction(fraction: Float): Dp = constraints.maxWidth * fraction
+        val mainButtonHorizontalPadding by remember {
+            derivedStateOf { (constraints.maxWidth * 0.01f) }
+        }
+
+        val additionalButtonHeight by remember {
+            mutableStateOf(constraints.maxHeight * 0.09f)
+        }
+
+        val spacerHeight by remember {
+            mutableStateOf(constraints.maxHeight * 0.025f)
+        }
+
+        val additionalRowSpacedBy by remember {
+            mutableStateOf(constraints.maxWidth * 0.03f)
+        }
 
         val weightModifier = Modifier.weight(1f)
         val mainButtonModifier = Modifier
             .fillMaxSize()
             .weight(1f)
-            .padding(horizontalFraction(0.015f), verticalFraction(0.009f))
+            .padding(mainButtonHorizontalPadding)
         val additionalButtonModifier = Modifier
             .weight(1f)
-            .height(verticalFraction(0.09f))
+            .height(additionalButtonHeight)
 
-        Spacer(modifier = Modifier.height(verticalFraction(0.025f)))
+        Spacer(modifier = Modifier.height(spacerHeight))
 
         Row(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(horizontalFraction(0.03f))
+            horizontalArrangement = Arrangement.spacedBy(additionalRowSpacedBy)
         ) {
             // Additional buttons
             Crossfade(invMode, weightModifier) {
@@ -204,7 +217,7 @@ private fun PortraitKeyboard(
             }
 
             Box(
-                modifier = Modifier.size(verticalFraction(0.09f)),
+                modifier = Modifier.size(additionalButtonHeight),
                 contentAlignment = Alignment.Center
             ) {
                 // Expand/Collapse
@@ -217,7 +230,7 @@ private fun PortraitKeyboard(
             }
         }
 
-        Spacer(modifier = Modifier.height(verticalFraction(0.025f)))
+        Spacer(modifier = Modifier.height(spacerHeight))
 
         Row(weightModifier) {
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.LeftBracket, allowVibration) { addSymbol(Token.Operator.leftBracket) }
@@ -250,7 +263,7 @@ private fun PortraitKeyboard(
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, allowVibration) { evaluate() }
         }
 
-        Spacer(modifier = Modifier.height(verticalFraction(0.015f)))
+        Spacer(modifier = Modifier.height(spacerHeight))
     }
 }
 
