@@ -83,6 +83,7 @@ data class UserPreferences(
     val unitConverterFavoritesOnly: Boolean = false,
     val unitConverterFormatTime: Boolean = false,
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
+    val middleZero: Boolean = false,
 )
 
 data class UIPreferences(
@@ -107,6 +108,7 @@ data class MainPreferences(
     val unitConverterFavoritesOnly: Boolean = false,
     val unitConverterFormatTime: Boolean = false,
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
+    val middleZero: Boolean = false,
 )
 
 /**
@@ -135,6 +137,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val UNIT_CONVERTER_FAVORITES_ONLY = booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
         val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
         val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
+        val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
     }
 
     val uiPreferencesFlow: Flow<UIPreferences> = dataStore.data
@@ -199,6 +202,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val unitConverterFavoritesOnly: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: false
             val unitConverterFormatTime: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
             val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
+            val middleZero: Boolean = preferences[PrefsKeys.MIDDLE_ZERO] ?: false
 
             MainPreferences(
                 digitsPrecision = digitsPrecision,
@@ -212,6 +216,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 unitConverterFavoritesOnly = unitConverterFavoritesOnly,
                 unitConverterFormatTime = unitConverterFormatTime,
                 unitConverterSorting = unitConverterSorting,
+                middleZero = middleZero,
             )
         }
 
@@ -237,6 +242,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             unitConverterFavoritesOnly = main.unitConverterFavoritesOnly,
             unitConverterFormatTime = main.unitConverterFormatTime,
             unitConverterSorting = main.unitConverterSorting,
+            middleZero = main.middleZero,
         )
     }
 
@@ -367,6 +373,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateVibrations(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_VIBRATIONS] = enabled
+        }
+    }
+
+    /**
+     * Update preference on where zero should be.
+     *
+     * @param enabled True if user wants zero button to be in the middle.
+     */
+    suspend fun updateMiddleZero(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.MIDDLE_ZERO] = enabled
         }
     }
 

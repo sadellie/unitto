@@ -121,6 +121,7 @@ private fun ConverterScreen(
                         converterMode = uiState.mode,
                         allowVibration = uiState.allowVibration,
                         fractional = uiState.formatterSymbols.fractional,
+                        middleZero = uiState.middleZero
                     )
                 }
             )

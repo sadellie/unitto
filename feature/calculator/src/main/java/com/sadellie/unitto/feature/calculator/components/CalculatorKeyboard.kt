@@ -104,6 +104,7 @@ internal fun CalculatorKeyboard(
     radianMode: Boolean,
     fractional: String,
     allowVibration: Boolean,
+    middleZero: Boolean,
     addSymbol: (String) -> Unit,
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
@@ -116,6 +117,7 @@ internal fun CalculatorKeyboard(
             radianMode = radianMode,
             fractional = fractional,
             allowVibration = allowVibration,
+            middleZero = middleZero,
             addSymbol = addSymbol,
             toggleAngleMode = toggleAngleMode,
             deleteSymbol = deleteSymbol,
@@ -128,6 +130,7 @@ internal fun CalculatorKeyboard(
             radianMode = radianMode,
             fractional = fractional,
             allowVibration = allowVibration,
+            middleZero = middleZero,
             addSymbol = addSymbol,
             toggleAngleMode = toggleAngleMode,
             deleteSymbol = deleteSymbol,
@@ -143,6 +146,7 @@ private fun PortraitKeyboard(
     radianMode: Boolean,
     fractional: String,
     allowVibration: Boolean,
+    middleZero: Boolean,
     addSymbol: (String) -> Unit,
     toggleAngleMode: () -> Unit,
     deleteSymbol: () -> Unit,
@@ -257,8 +261,13 @@ private fun PortraitKeyboard(
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Plus, allowVibration) { addSymbol(Token.Operator.plus) }
         }
         Row(weightModifier) {
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
-            KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
+            if (middleZero) {
+                KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
+                KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
+            } else {
+                KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
+                KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
+            }
             KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, clearSymbols) { deleteSymbol() }
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, allowVibration) { evaluate() }
         }
@@ -345,6 +354,7 @@ private fun LandscapeKeyboard(
     radianMode: Boolean,
     fractional: String,
     allowVibration: Boolean,
+    middleZero: Boolean,
     addSymbol: (String) -> Unit,
     toggleAngleMode: () -> Unit,
     deleteSymbol: () -> Unit,
@@ -390,13 +400,21 @@ private fun LandscapeKeyboard(
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key7, allowVibration) { addSymbol(Token.Digit._7) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key4, allowVibration) { addSymbol(Token.Digit._4) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key1, allowVibration) { addSymbol(Token.Digit._1) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
+            if (middleZero) {
+                KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
+            } else {
+                KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
+            }
         }
         Column(Modifier.weight(1f)) {
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key8, allowVibration) { addSymbol(Token.Digit._8) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key5, allowVibration) { addSymbol(Token.Digit._5) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key2, allowVibration) { addSymbol(Token.Digit._2) }
-            KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
+            if (middleZero) {
+                KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
+            } else {
+                KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
+            }
         }
         Column(Modifier.weight(1f)) {
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, allowVibration) { addSymbol(Token.Digit._9) }
@@ -496,6 +514,7 @@ private fun PreviewCalculatorKeyboard() {
         deleteSymbol = {},
         toggleAngleMode = {},
         evaluate = {},
-        allowVibration = false
+        allowVibration = false,
+        middleZero = false,
     )
 }

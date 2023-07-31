@@ -1368,4 +1368,6 @@ Used in this dialog window. Should be short -->
     <string name="yesterday">Yesterday</string>
     <string name="search_text_field_placeholder">Search…</string>
     <string name="add_time_zone_title">Add time zone</string>
+    <string name="middle_zero_option">Zero in the middle</string>
+    <string name="middle_zero_option_support">Swap zero and decimal buttons</string>
 </resources>

@@ -50,6 +50,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
+     * @see UserPreferencesRepository.updateMiddleZero
+     */
+    fun updateMiddleZero(enabled: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updateMiddleZero(enabled)
+        }
+    }
+
+    /**
      * @see UserPreferencesRepository.updateStartingScreen
      */
     fun updateStartingScreen(startingScreen: String) {

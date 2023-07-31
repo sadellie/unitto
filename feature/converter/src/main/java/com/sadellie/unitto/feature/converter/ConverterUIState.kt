@@ -47,6 +47,7 @@ data class ConverterUIState(
     val unitTo: AbstractUnit? = null,
     val mode: ConverterMode = ConverterMode.DEFAULT,
     val allowVibration: Boolean = false,
+    val middleZero: Boolean = false,
     val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
 )
 

@@ -126,7 +126,8 @@ class ConverterViewModel @Inject constructor(
             unitTo = unitToValue,
             mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
             allowVibration = prefs.enableVibrations,
-            formatterSymbols = AllFormatterSymbols.getById(prefs.separator)
+            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
+            middleZero = prefs.middleZero,
         )
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), ConverterUIState()

@@ -78,10 +78,11 @@ internal fun ConverterKeyboard(
     converterMode: ConverterMode,
     allowVibration: Boolean,
     fractional: String,
+    middleZero: Boolean,
 ) {
     Crossfade(converterMode, modifier = modifier) {
         when (it) {
-            ConverterMode.DEFAULT -> DefaultKeyboard(addDigit, clearInput, deleteDigit, allowVibration, fractional)
+            ConverterMode.DEFAULT -> DefaultKeyboard(addDigit, clearInput, deleteDigit, allowVibration, fractional, middleZero)
             ConverterMode.BASE -> BaseKeyboard(addDigit, clearInput, deleteDigit, allowVibration)
         }
     }
@@ -94,6 +95,7 @@ private fun DefaultKeyboard(
     deleteDigit: () -> Unit,
     allowVibration: Boolean,
     fractional: String,
+    middleZero: Boolean,
 ) {
     val fractionalIcon = remember { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
     ColumnWithConstraints {
@@ -129,8 +131,13 @@ private fun DefaultKeyboard(
             KeyboardButtonFilled(bModifier, UnittoIcons.Minus, allowVibration) { addDigit(Token.Operator.minus) }
         }
         Row(cModifier, horizontalArrangement) {
-            KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(Token.Digit._0) }
-            KeyboardButtonLight(bModifier, fractionalIcon, allowVibration) { addDigit(Token.Digit.dot) }
+            if (middleZero) {
+                KeyboardButtonLight(bModifier, fractionalIcon, allowVibration) { addDigit(Token.Digit.dot) }
+                KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(Token.Digit._0) }
+            } else {
+                KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(Token.Digit._0) }
+                KeyboardButtonLight(bModifier, fractionalIcon, allowVibration) { addDigit(Token.Digit.dot) }
+            }
             KeyboardButtonLight(bModifier, UnittoIcons.Backspace, allowVibration, clearInput) { deleteDigit() }
             KeyboardButtonFilled(bModifier, UnittoIcons.Plus, allowVibration) { addDigit(Token.Operator.plus) }
         }

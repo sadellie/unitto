@@ -278,7 +278,8 @@ private fun CalculatorScreen(
                 clearSymbols = clearSymbols,
                 deleteSymbol = deleteSymbol,
                 toggleAngleMode = toggleAngleMode,
-                evaluate = evaluate
+                evaluate = evaluate,
+                middleZero = uiState.middleZero,
             )
         }
     }

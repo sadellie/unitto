@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.settings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
@@ -172,6 +173,22 @@ internal fun SettingsScreen(
 
             // ADDITIONAL GROUP
             item { Header(stringResource(R.string.additional_settings_group)) }
+
+            // MIDDLE ZERO
+            item {
+                UnittoListItem(
+                    label = stringResource(R.string.middle_zero_option),
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.ExposureZero,
+                            stringResource(R.string.middle_zero_option)
+                        )
+                    },
+                    supportContent = stringResource(R.string.middle_zero_option_support),
+                    switchState = userPrefs.value.middleZero,
+                    onSwitchChange = viewModel::updateMiddleZero
+                )
+            }
 
             // VIBRATIONS
             item {

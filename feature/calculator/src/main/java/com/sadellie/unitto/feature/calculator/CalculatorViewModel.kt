@@ -75,7 +75,8 @@ internal class CalculatorViewModel @Inject constructor(
             radianMode = userPrefs.radianMode,
             history = history,
             allowVibration = userPrefs.enableVibrations,
-            formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
+            formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
+            middleZero = userPrefs.middleZero,
         )
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState()

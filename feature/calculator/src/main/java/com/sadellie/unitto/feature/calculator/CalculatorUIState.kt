@@ -30,7 +30,8 @@ data class CalculatorUIState(
     val radianMode: Boolean = true,
     val history: List<HistoryItem> = emptyList(),
     val allowVibration: Boolean = false,
-    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces
+    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
+    val middleZero: Boolean = false,
 )
 
 sealed class CalculationResult(@StringRes val label: Int? = null) {
