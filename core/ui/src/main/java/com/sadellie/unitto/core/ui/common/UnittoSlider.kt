@@ -57,7 +57,10 @@ fun UnittoSlider(
     onValueChange: (Float) -> Unit,
     onValueChangeFinished: (Float) -> Unit = {}
 ) {
-    val animated = animateFloatAsState(targetValue = value)
+    val animated = animateFloatAsState(
+        targetValue = value.roundToInt().toFloat(),
+        animationSpec = spring()
+    )
 
     Slider(
         value = animated.value,
@@ -66,7 +69,6 @@ fun UnittoSlider(
         valueRange = valueRange,
         onValueChangeFinished = { onValueChangeFinished(animated.value) },
         track = { sliderPosition -> SquigglyTrack(sliderPosition) },
-        steps = valueRange.endInclusive.roundToInt(),
     )
 }
 
@@ -81,9 +83,8 @@ private fun SquigglyTrack(
     val coroutineScope = rememberCoroutineScope()
     var direct by remember { mutableFloatStateOf(0.72f) }
     val animatedDirect = animateFloatAsState(direct, spring(stiffness = Spring.StiffnessLow))
-    val slider = sliderState.valueRange.endInclusive
 
-    LaunchedEffect(sliderState.valueRange.endInclusive) {
+    LaunchedEffect(sliderState.value) {
         coroutineScope.launch {
             delay(200L)
             direct *= -1
@@ -97,10 +98,15 @@ private fun SquigglyTrack(
     ) {
         val width = size.width
         val height = size.height
+        val initialOffset = strokeWidth / 2
+        val thumbPosition = width
+            .times(sliderState.value)
+            .div(sliderState.valueRange.endInclusive)
+            .minus(initialOffset)
 
         val path = Path().apply {
             moveTo(
-                x = strokeWidth / 2,
+                x = initialOffset,
                 y = height.times(0.5f)
             )
             val amount = ceil(width.div(eachWaveWidth))
@@ -110,7 +116,6 @@ private fun SquigglyTrack(
 
                 relativeQuadraticBezierTo(
                     dx1 = eachWaveWidth * 0.5f,
-                    // 0.75, because 1.0 was clipping out of bound for some reason
                     dy1 = height.times(peek),
                     dx2 = eachWaveWidth,
                     dy2 = 0f
@@ -121,7 +126,7 @@ private fun SquigglyTrack(
         clipRect(
             top = 0f,
             left = 0f,
-            right = width.times(slider),
+            right = thumbPosition,
             bottom = height,
             clipOp = ClipOp.Intersect
         ) {
@@ -134,7 +139,7 @@ private fun SquigglyTrack(
 
         drawLine(
             color = unfilledColor,
-            start = Offset(width.times(slider), height.times(0.5f)),
+            start = Offset(thumbPosition, height.times(0.5f)),
             end = Offset(width, height.times(0.5f)),
             strokeWidth = strokeWidth,
             cap = StrokeCap.Round
@@ -148,11 +153,11 @@ private fun SquigglyTrack(
 @Preview(device = "spec:width=1920dp,height=1080dp,dpi=480")
 @Composable
 private fun PreviewNewSlider() {
-    var currentValue by remember { mutableFloatStateOf(0.9f) }
+    var currentValue by remember { mutableFloatStateOf(9f) }
 
     UnittoSlider(
         value = currentValue,
-        valueRange = 0f..1f,
+        valueRange = 0f..16f,
         onValueChange = { currentValue = it }
     )
 }
