@@ -36,7 +36,7 @@ import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.feature.converter.components.Keyboard
+import com.sadellie.unitto.feature.converter.components.ConverterKeyboard
 import com.sadellie.unitto.feature.converter.components.TopScreenPart
 
 @Composable
@@ -113,7 +113,7 @@ private fun ConverterScreen(
                     )
                 },
                 content2 = {
-                    Keyboard(
+                    ConverterKeyboard(
                         modifier = it,
                         addDigit = processInput,
                         deleteDigit = deleteDigit,

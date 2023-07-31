@@ -70,7 +70,7 @@ import com.sadellie.unitto.feature.converter.ConverterMode
  * @param converterMode
  */
 @Composable
-internal fun Keyboard(
+internal fun ConverterKeyboard(
     modifier: Modifier = Modifier,
     addDigit: (String) -> Unit = {},
     deleteDigit: () -> Unit = {},
