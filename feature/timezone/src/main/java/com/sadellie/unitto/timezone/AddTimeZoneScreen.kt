@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -46,9 +45,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.data.model.UnittoTimeZone
 import com.sadellie.unitto.timezone.components.SelectableTimeZone
-import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import java.time.ZonedDateTime
@@ -131,7 +130,6 @@ fun AddTimeZoneScreen(
                         .fillMaxWidth(),
                     currentTime = uiState.userTime
                 )
-                Divider()
             }
         }
     }
