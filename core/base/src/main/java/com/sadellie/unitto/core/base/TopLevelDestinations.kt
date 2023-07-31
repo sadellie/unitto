@@ -52,8 +52,8 @@ sealed class TopLevelDestinations(
 
 val TOP_LEVEL_DESTINATIONS: Map<TopLevelDestinations, Int> by lazy {
     mapOf(
-        TopLevelDestinations.Converter to R.string.unit_converter,
         TopLevelDestinations.Calculator to R.string.calculator,
+        TopLevelDestinations.Converter to R.string.unit_converter,
         TopLevelDestinations.DateDifference to R.string.date_difference,
     )
 }
