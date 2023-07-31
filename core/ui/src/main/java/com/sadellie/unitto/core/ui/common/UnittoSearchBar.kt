@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.timezone.components
+package com.sadellie.unitto.core.ui.common
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
@@ -46,6 +47,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
@@ -54,7 +56,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
 
 @Composable
 fun UnittoSearchBar(
@@ -113,12 +114,14 @@ fun UnittoSearchBar(
         },
         actions = {
             Crossfade(showSearch) { _showSearch ->
-                if (_showSearch) {
-                    ClearButton(visible = query.isNotEmpty()) { onQueryChange("") }
-                    searchActions()
-                } else {
-                    SearchButton { showSearch = true }
-                    noSearchActions()
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (_showSearch) {
+                        ClearButton(visible = query.isNotEmpty()) { onQueryChange("") }
+                        searchActions()
+                    } else {
+                        SearchButton { showSearch = true }
+                        noSearchActions()
+                    }
                 }
             }
         },

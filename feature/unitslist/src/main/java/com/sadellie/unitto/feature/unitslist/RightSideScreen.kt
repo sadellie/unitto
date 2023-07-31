@@ -33,12 +33,13 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.NumberBaseUnit
 import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.feature.unitslist.components.SearchBar
+import com.sadellie.unitto.feature.unitslist.components.FavoritesButton
 import com.sadellie.unitto.feature.unitslist.components.SearchPlaceholder
 import com.sadellie.unitto.feature.unitslist.components.UnitGroupHeader
 import com.sadellie.unitto.feature.unitslist.components.UnitListItem
@@ -92,19 +93,18 @@ internal fun RightSideScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SearchBar(
+            UnittoSearchBar(
+                query = uiState.value.searchQuery,
+                onQueryChange = { viewModel.onSearchQueryChange(it, true) },
+                navigateUp = navigateUp,
                 title = stringResource(R.string.units_screen_to),
-                value = uiState.value.searchQuery,
-                onValueChange = {
-                    viewModel.onSearchQueryChange(it, true)
-                },
-                favoritesOnly = uiState.value.favoritesOnly,
-                favoriteAction = {
-                    viewModel.toggleFavoritesOnly(true)
-                },
-                navigateUpAction = navigateUp,
-                focusManager = focusManager,
-                scrollBehavior = scrollBehavior
+                placeholder = stringResource(R.string.search_bar_placeholder),
+                noSearchActions = {
+                    FavoritesButton(
+                        favoritesOnly = uiState.value.favoritesOnly,
+                        favoriteAction = { viewModel.toggleFavoritesOnly(true) }
+                    )
+                }
             )
         }
     ) { paddingValues ->

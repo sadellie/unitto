@@ -46,9 +46,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.feature.unitslist.components.ChipsRow
-import com.sadellie.unitto.feature.unitslist.components.SearchBar
+import com.sadellie.unitto.feature.unitslist.components.FavoritesButton
 import com.sadellie.unitto.feature.unitslist.components.SearchPlaceholder
 import com.sadellie.unitto.feature.unitslist.components.UnitGroupHeader
 import com.sadellie.unitto.feature.unitslist.components.UnitListItem
@@ -91,15 +92,18 @@ internal fun LeftSideScreen(
             Column(
                 Modifier.background(chipsBackground.value)
             ) {
-                SearchBar(
+                UnittoSearchBar(
+                    query = uiState.value.searchQuery,
+                    onQueryChange = { viewModel.onSearchQueryChange(it, false) },
+                    navigateUp = navigateUp,
                     title = stringResource(R.string.units_screen_from),
-                    value = uiState.value.searchQuery,
-                    onValueChange = { viewModel.onSearchQueryChange(it, false) },
-                    favoritesOnly = uiState.value.favoritesOnly,
-                    favoriteAction = { viewModel.toggleFavoritesOnly(false) },
-                    navigateUpAction = navigateUp,
-                    focusManager = focusManager,
-                    scrollBehavior = scrollBehavior
+                    placeholder = stringResource(R.string.search_bar_placeholder),
+                    noSearchActions = {
+                        FavoritesButton(
+                            favoritesOnly = uiState.value.favoritesOnly,
+                            favoriteAction = { viewModel.toggleFavoritesOnly(false) }
+                        )
+                    }
                 )
                 ChipsRow(
                     chosenUnitGroup = uiState.value.chosenUnitGroup,
