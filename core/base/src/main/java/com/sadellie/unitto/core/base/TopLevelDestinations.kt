@@ -36,7 +36,7 @@ sealed class TopLevelDestinations(
 
     object DateDifference : TopLevelDestinations(
         route = "date_difference_route",
-        name = R.string.date_difference
+        name = R.string.date_calculator
     )
 
     object TimeZone : TopLevelDestinations(
@@ -54,6 +54,6 @@ val TOP_LEVEL_DESTINATIONS: Map<TopLevelDestinations, Int> by lazy {
     mapOf(
         TopLevelDestinations.Calculator to R.string.calculator,
         TopLevelDestinations.Converter to R.string.unit_converter,
-        TopLevelDestinations.DateDifference to R.string.date_difference,
+        TopLevelDestinations.DateDifference to R.string.date_calculator,
     )
 }
