@@ -44,6 +44,7 @@ android {
             isDebuggable = true
             isShrinkResources = false
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
         }
 
         // Release with analytics and minified, not debuggable
