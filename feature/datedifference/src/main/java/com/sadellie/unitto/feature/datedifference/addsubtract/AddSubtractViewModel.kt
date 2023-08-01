@@ -50,28 +50,6 @@ internal class AddSubtractViewModel @Inject constructor(
         .onEach { updateResult() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), AddSubtractState())
 
-    private fun updateResult() = viewModelScope.launch(Dispatchers.Default) {
-        // Gets canceled, works with latest _uiState only
-        _uiState.update { ui ->
-            val newResult = if (ui.addition) {
-                ui.start
-                    .plusYears(ui.years.ifEmpty { "0" }.toLong())
-                    .plusMonths(ui.months.ifEmpty { "0" }.toLong())
-                    .plusDays(ui.days.ifEmpty { "0" }.toLong())
-                    .plusHours(ui.hours.ifEmpty { "0" }.toLong())
-                    .plusMinutes(ui.minutes.ifEmpty { "0" }.toLong())
-            } else {
-                ui.start
-                    .minusYears(ui.years.ifEmpty { "0" }.toLong())
-                    .minusMonths(ui.months.ifEmpty { "0" }.toLong())
-                    .minusDays(ui.days.ifEmpty { "0" }.toLong())
-                    .minusHours(ui.hours.ifEmpty { "0" }.toLong())
-                    .minusMinutes(ui.minutes.ifEmpty { "0" }.toLong())
-            }
-            ui.copy(result = newResult)
-        }
-    }
-
     fun updateStart(newValue: ZonedDateTime) = _uiState.update { it.copy(start = newValue) }
 
     fun updateYears(newValue: String) = _uiState.update {
@@ -126,4 +104,26 @@ internal class AddSubtractViewModel @Inject constructor(
 
     // BCE is not handled properly because who gives a shit...
     fun updateAddition(newValue: Boolean) = _uiState.update { it.copy(addition = newValue) }
+
+    private fun updateResult() = viewModelScope.launch(Dispatchers.Default) {
+        // Gets canceled, works with latest _uiState only
+        _uiState.update { ui ->
+            val newResult = if (ui.addition) {
+                ui.start
+                    .plusYears(ui.years.ifEmpty { "0" }.toLong())
+                    .plusMonths(ui.months.ifEmpty { "0" }.toLong())
+                    .plusDays(ui.days.ifEmpty { "0" }.toLong())
+                    .plusHours(ui.hours.ifEmpty { "0" }.toLong())
+                    .plusMinutes(ui.minutes.ifEmpty { "0" }.toLong())
+            } else {
+                ui.start
+                    .minusYears(ui.years.ifEmpty { "0" }.toLong())
+                    .minusMonths(ui.months.ifEmpty { "0" }.toLong())
+                    .minusDays(ui.days.ifEmpty { "0" }.toLong())
+                    .minusHours(ui.hours.ifEmpty { "0" }.toLong())
+                    .minusMinutes(ui.minutes.ifEmpty { "0" }.toLong())
+            }
+            ui.copy(result = newResult)
+        }
+    }
 }
