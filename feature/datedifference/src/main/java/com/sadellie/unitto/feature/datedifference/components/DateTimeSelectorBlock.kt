@@ -19,6 +19,13 @@
 package com.sadellie.unitto.feature.datedifference.components
 
 import android.text.format.DateFormat
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -64,16 +71,26 @@ internal fun DateTimeSelectorBlock(
         Text(title, style = MaterialTheme.typography.labelMedium)
 
         if (DateFormat.is24HourFormat(LocalContext.current)) {
-            Text(
-                modifier = Modifier.clickable(
-                    indication = rememberRipple(),
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = onTimeClick
-                ),
-                text = dateTime.format(UnittoDateTimeFormatter.time24Formatter),
-                style = MaterialTheme.typography.displaySmall,
-                maxLines = 1
-            )
+            AnimatedContent(
+                targetState = dateTime.format(UnittoDateTimeFormatter.time24Formatter),
+                label = "date time change",
+                transitionSpec = {
+                    slideInVertically { height -> height } + fadeIn() togetherWith
+                            slideOutVertically { height -> -height } + fadeOut() using
+                            SizeTransform()
+                }
+            ) { time ->
+                Text(
+                    modifier = Modifier.clickable(
+                        indication = rememberRipple(),
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = onTimeClick
+                    ),
+                    text = time,
+                    style = MaterialTheme.typography.displaySmall,
+                    maxLines = 1
+                )
+            }
         } else {
             Column(
                 modifier = Modifier.clickable(
@@ -82,28 +99,56 @@ internal fun DateTimeSelectorBlock(
                     onClick = onTimeClick
                 )
             ) {
-                Text(
-                    text = dateTime.format(UnittoDateTimeFormatter.time12Formatter1),
-                    style = MaterialTheme.typography.displaySmall,
-                    maxLines = 1
-                )
-                Text(
-                    text = dateTime.format(UnittoDateTimeFormatter.time12Formatter2),
-                    style = MaterialTheme.typography.bodyLarge,
-                    maxLines = 1
-                )
+                AnimatedContent(
+                    targetState = dateTime,
+                    transitionSpec = {
+                        slideInVertically { height -> height } + fadeIn() togetherWith
+                                slideOutVertically { height -> -height } + fadeOut() using
+                                SizeTransform()
+                    }
+                ) { time ->
+                    Text(
+                        text = time.format(UnittoDateTimeFormatter.time12Formatter1),
+                        style = MaterialTheme.typography.displaySmall,
+                        maxLines = 1
+                    )
+                }
+
+                AnimatedContent(
+                    targetState = dateTime,
+                    transitionSpec = {
+                        slideInVertically { height -> height } + fadeIn() togetherWith
+                                slideOutVertically { height -> -height } + fadeOut() using
+                                SizeTransform()
+                    }
+                ) { time ->
+                    Text(
+                        text = time.format(UnittoDateTimeFormatter.time12Formatter2),
+                        style = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1
+                    )
+                }
             }
         }
 
-        Text(
-            modifier = Modifier.clickable(
-                indication = rememberRipple(),
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onDateClick
-            ),
-            text = dateTime.format(UnittoDateTimeFormatter.weekDayMonthYear),
-            style = MaterialTheme.typography.bodySmall
-        )
+        AnimatedContent(
+            targetState = dateTime,
+            transitionSpec = {
+                slideInVertically { height -> height } + fadeIn() togetherWith
+                        slideOutVertically { height -> -height } + fadeOut() using
+                        SizeTransform()
+            }
+        ) { date ->
+            Text(
+                modifier = Modifier.clickable(
+                    indication = rememberRipple(),
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = onDateClick
+                ),
+                text = date.format(UnittoDateTimeFormatter.weekDayMonthYear),
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }
 
