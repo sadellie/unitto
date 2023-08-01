@@ -20,15 +20,12 @@ package com.sadellie.unitto.feature.datedifference.difference
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.feature.datedifference.ZonedDateTimeDifference
 import com.sadellie.unitto.feature.datedifference.minus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -37,27 +34,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class DateDifferenceViewModel @Inject constructor() : ViewModel() {
-    private val _start = MutableStateFlow(ZonedDateTime.now())
-    private val _end = MutableStateFlow(ZonedDateTime.now())
-    private val _result = MutableStateFlow<ZonedDateTimeDifference>(ZonedDateTimeDifference.Zero)
+    private val _uiState = MutableStateFlow(DifferenceUIState())
 
-    val uiState = combine(_start, _end, _result) { start, end, result ->
-        return@combine DifferenceUIState(start, end, result)
-    }
+    val uiState = _uiState
+        .onEach { updateResult() }
         .stateIn(
             viewModelScope, SharingStarted.WhileSubscribed(5000L), DifferenceUIState()
         )
 
-    fun setStartDate(dateTime: ZonedDateTime) = _start.update { dateTime }
+    fun setStartDate(newValue: ZonedDateTime) = _uiState.update { it.copy(start = newValue) }
 
-    fun setEndDate(dateTime: ZonedDateTime) = _end.update { dateTime }
+    fun setEndDate(newValue: ZonedDateTime) = _uiState.update { it.copy(end = newValue) }
 
-    init {
-        viewModelScope.launch(Dispatchers.Default) {
-            merge(_start, _end).collectLatest {
-                val difference = _start.value - _end.value
-                _result.update { difference }
-            }
-        }
+    private fun updateResult() = viewModelScope.launch(Dispatchers.Default) {
+        _uiState.update { ui -> ui.copy(result = ui.start - ui.end) }
     }
 }
