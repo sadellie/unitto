@@ -16,10 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.datedifference
+package com.sadellie.unitto.feature.datedifference.difference
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.feature.datedifference.ZonedDateTimeDifference
+import com.sadellie.unitto.feature.datedifference.minus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,29 +32,25 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 internal class DateDifferenceViewModel @Inject constructor() : ViewModel() {
-    private val _start = MutableStateFlow(LocalDateTime.now())
-    private val _end = MutableStateFlow(LocalDateTime.now())
-    private val _result = MutableStateFlow<DateDifference>(DateDifference.Zero)
+    private val _start = MutableStateFlow(ZonedDateTime.now())
+    private val _end = MutableStateFlow(ZonedDateTime.now())
+    private val _result = MutableStateFlow<ZonedDateTimeDifference>(ZonedDateTimeDifference.Zero)
 
     val uiState = combine(_start, _end, _result) { start, end, result ->
-        return@combine UIState(start, end, result)
+        return@combine DifferenceUIState(start, end, result)
     }
         .stateIn(
-            viewModelScope, SharingStarted.WhileSubscribed(5000L), UIState()
+            viewModelScope, SharingStarted.WhileSubscribed(5000L), DifferenceUIState()
         )
 
-    fun setStartTime(hour: Int, minute: Int) = _start.update { it.withHour(hour).withMinute(minute) }
+    fun setStartDate(dateTime: ZonedDateTime) = _start.update { dateTime }
 
-    fun setEndTime(hour: Int, minute: Int) = _end.update { it.withHour(hour).withMinute(minute) }
-
-    fun setStartDate(dateTime: LocalDateTime) = _start.update { dateTime }
-
-    fun setEndDate(dateTime: LocalDateTime) = _end.update { dateTime }
+    fun setEndDate(dateTime: ZonedDateTime) = _end.update { dateTime }
 
     init {
         viewModelScope.launch(Dispatchers.Default) {

@@ -55,7 +55,7 @@ import com.sadellie.unitto.core.base.R
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import kotlin.math.max
 
 @Composable
@@ -127,13 +127,13 @@ fun TimePickerDialog(
 @Composable
 fun DatePickerDialog(
     modifier: Modifier = Modifier,
-    localDateTime: LocalDateTime,
+    localDateTime: ZonedDateTime,
     confirmLabel: String = stringResource(R.string.ok_label),
     dismissLabel: String = stringResource(R.string.cancel_label),
     onDismiss: () -> Unit = {},
-    onConfirm: (LocalDateTime) -> Unit,
+    onConfirm: (ZonedDateTime) -> Unit,
 ) {
-    val pickerState = rememberDatePickerState(localDateTime.toEpochSecond(ZoneOffset.UTC) * 1000)
+    val pickerState = rememberDatePickerState(localDateTime.toEpochSecond() * 1000)
 
     AlertDialog(
         onDismissRequest = onDismiss,

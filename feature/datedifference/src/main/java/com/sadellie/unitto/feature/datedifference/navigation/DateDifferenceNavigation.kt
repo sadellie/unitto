@@ -22,7 +22,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.feature.datedifference.DateDifferenceRoute
+import com.sadellie.unitto.feature.datedifference.DateToolsRoute
 
 private val dateDifferenceRoute: String by lazy { TopLevelDestinations.DateDifference.route }
 
@@ -36,7 +36,7 @@ fun NavGraphBuilder.dateDifferenceScreen(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$dateDifferenceRoute" }
         )
     ) {
-        DateDifferenceRoute(
+        DateToolsRoute(
             navigateToMenu = navigateToMenu,
             navigateToSettings = navigateToSettings
         )

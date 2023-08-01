@@ -20,32 +20,32 @@ package com.sadellie.unitto.feature.datedifference
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class DateDifferenceKtTest {
+class ZonedDateTimeDifferenceKtTest {
     private val fromatt: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-    private val `may 1 2023`: LocalDateTime = LocalDateTime.parse("2023-05-01 12:00", fromatt)
-    private val `may 2 2023`: LocalDateTime = LocalDateTime.parse("2023-05-02 12:00", fromatt)
-    private val `june 1 2023`: LocalDateTime = LocalDateTime.parse("2023-06-01 12:00", fromatt)
+    private val `may 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-01 12:00", fromatt)
+    private val `may 2 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-02 12:00", fromatt)
+    private val `june 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-06-01 12:00", fromatt)
 
     @Test
     fun `same dates`() {
-        assertEquals(DateDifference.Zero, `may 1 2023` - `may 1 2023`)
+        assertEquals(ZonedDateTimeDifference.Zero, `may 1 2023` - `may 1 2023`)
     }
 
     @Test
     fun `positive difference dates one day`() {
-        assertEquals(DateDifference.Default(days = 1), `may 1 2023` - `may 2 2023`)
+        assertEquals(ZonedDateTimeDifference.Default(days = 1), `may 1 2023` - `may 2 2023`)
     }
 
     @Test
     fun `positive difference dates one minth`() {
-        assertEquals(DateDifference.Default(months = 1), `may 1 2023` - `june 1 2023`)
+        assertEquals(ZonedDateTimeDifference.Default(months = 1), `may 1 2023` - `june 1 2023`)
     }
 
     @Test
     fun `negative difference dates one day`() {
-        assertEquals(DateDifference.Default(days = 1), `may 2 2023` - `may 1 2023`)
+        assertEquals(ZonedDateTimeDifference.Default(days = 1), `may 2 2023` - `may 1 2023`)
     }
 }

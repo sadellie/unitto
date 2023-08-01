@@ -47,20 +47,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.squashable
-import com.sadellie.unitto.feature.datedifference.DateDifference
+import com.sadellie.unitto.feature.datedifference.ZonedDateTimeDifference
 
 @Composable
 internal fun DateTimeResultBlock(
     modifier: Modifier = Modifier,
-    dateDifference: DateDifference
+    zonedDateTimeDifference: ZonedDateTimeDifference
 ) {
     val clipboardManager = LocalClipboardManager.current
 
-    val years = dateDifference.years.formatDateTimeValue(R.string.date_difference_years)
-    val months = dateDifference.months.formatDateTimeValue(R.string.date_difference_months)
-    val days = dateDifference.days.formatDateTimeValue(R.string.date_difference_days)
-    val hours = dateDifference.hours.formatDateTimeValue(R.string.date_difference_hours)
-    val minutes = dateDifference.minutes.formatDateTimeValue(R.string.date_difference_minutes)
+    val years = zonedDateTimeDifference.years.formatDateTimeValue(R.string.date_difference_years)
+    val months = zonedDateTimeDifference.months.formatDateTimeValue(R.string.date_difference_months)
+    val days = zonedDateTimeDifference.days.formatDateTimeValue(R.string.date_difference_days)
+    val hours = zonedDateTimeDifference.hours.formatDateTimeValue(R.string.date_difference_hours)
+    val minutes = zonedDateTimeDifference.minutes.formatDateTimeValue(R.string.date_difference_minutes)
 
     val texts = listOf(years, months, days, hours, minutes)
 
@@ -117,10 +117,10 @@ private fun Long.formatDateTimeValue(@StringRes id: Int): String {
 
 @Preview
 @Composable
-private fun PreviewCard() {
+private fun DateTimeResultBlockPreview() {
     DateTimeResultBlock(
         modifier = Modifier,
-        dateDifference = DateDifference.Default(
+        zonedDateTimeDifference = ZonedDateTimeDifference.Default(
             months = 1,
             days = 2,
             hours = 3,

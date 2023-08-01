@@ -16,12 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.datedifference
+package com.sadellie.unitto.feature.datedifference.difference
 
-import java.time.LocalDateTime
+import com.sadellie.unitto.feature.datedifference.ZonedDateTimeDifference
+import java.time.ZonedDateTime
 
-internal data class UIState(
-    val start: LocalDateTime = LocalDateTime.now(),
-    val end: LocalDateTime = LocalDateTime.now(),
-    val result: DateDifference = DateDifference.Zero
+internal data class DifferenceUIState(
+    val start: ZonedDateTime = ZonedDateTime.now(),
+    val end: ZonedDateTime = ZonedDateTime.now(),
+    val result: ZonedDateTimeDifference = ZonedDateTimeDifference.Zero
 )

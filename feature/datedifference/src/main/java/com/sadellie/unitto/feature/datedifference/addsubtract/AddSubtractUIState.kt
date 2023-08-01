@@ -16,19 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-}
+package com.sadellie.unitto.feature.datedifference.addsubtract
 
-android {
-    namespace = "com.sadellie.unitto.feature.datedifference"
-}
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import java.time.ZonedDateTime
 
-dependencies {
-    testImplementation(libs.junit)
-
-    implementation(project(mapOf("path" to ":data:userprefs")))
-}
+internal data class AddSubtractState(
+    val start: ZonedDateTime = ZonedDateTime.now(),
+    val result: ZonedDateTime = ZonedDateTime.now(),
+    val years: String = "",
+    val months: String = "",
+    val days: String = "",
+    val hours: String = "",
+    val minutes: String = "",
+    val addition: Boolean = true,
+    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
+)

@@ -1370,4 +1370,8 @@ Used in this dialog window. Should be short -->
     <string name="add_time_zone_title">Add time zone</string>
     <string name="middle_zero_option">Zero in the middle</string>
     <string name="middle_zero_option_support">Swap zero and decimal buttons</string>
+    <string name="difference">Difference</string>
+    <string name="add">Add</string>
+    <string name="subtract">Subtract</string>
+    <string name="date_calculator">Date calculator</string>
 </resources>

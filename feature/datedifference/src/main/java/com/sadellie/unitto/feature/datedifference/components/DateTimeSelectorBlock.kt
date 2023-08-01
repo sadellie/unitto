@@ -24,6 +24,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,24 +33,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.squashable
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 internal fun DateTimeSelectorBlock(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
-    dateTime: LocalDateTime,
-    onClick: () -> Unit,
-    onTimeClick: () -> Unit,
-    onDateClick: () -> Unit,
+    dateTime: ZonedDateTime,
+    onClick: () -> Unit = {},
+    onTimeClick: () -> Unit = {},
+    onDateClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
             .squashable(
                 onClick = onClick,
+                onLongClick = onLongClick,
                 interactionSource = remember { MutableInteractionSource() },
                 cornerRadiusRange = 8.dp..32.dp
             )
@@ -107,3 +111,13 @@ private val time24Formatter by lazy { DateTimeFormatter.ofPattern("HH:mm") }
 private val time12Formatter by lazy { DateTimeFormatter.ofPattern("hh:mm") }
 private val dateFormatter by lazy { DateTimeFormatter.ofPattern("EEE, MMM d, y") }
 private val mTimeFormatter by lazy { DateTimeFormatter.ofPattern("a") }
+
+@Preview
+@Composable
+fun DateTimeSelectorBlockPreview() {
+    DateTimeSelectorBlock(
+        title = "End",
+        dateTime = ZonedDateTime.now(),
+        modifier = Modifier.width(224.dp)
+    )
+}

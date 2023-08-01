@@ -18,10 +18,10 @@
 
 package com.sadellie.unitto.feature.datedifference
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
-internal sealed class DateDifference(
+internal sealed class ZonedDateTimeDifference(
     open val years: Long = 0,
     open val months: Long = 0,
     open val days: Long = 0,
@@ -34,7 +34,7 @@ internal sealed class DateDifference(
         override val days: Long = 0,
         override val hours: Long = 0,
         override val minutes: Long = 0,
-    ) : DateDifference(
+    ) : ZonedDateTimeDifference(
         years = years,
         months = months,
         days = days,
@@ -42,15 +42,15 @@ internal sealed class DateDifference(
         minutes = minutes,
     )
 
-    object Zero : DateDifference()
+    object Zero : ZonedDateTimeDifference()
 }
 
 // https://stackoverflow.com/a/25760725
-internal infix operator fun LocalDateTime.minus(localDateTime: LocalDateTime): DateDifference {
-    if (this == localDateTime) return DateDifference.Zero
+internal infix operator fun ZonedDateTime.minus(localDateTime: ZonedDateTime): ZonedDateTimeDifference {
+    if (this == localDateTime) return ZonedDateTimeDifference.Zero
 
-    var fromDateTime: LocalDateTime = this
-    var toDateTime: LocalDateTime = localDateTime
+    var fromDateTime: ZonedDateTime = this
+    var toDateTime: ZonedDateTime = localDateTime
 
     // Swap to avoid negative
     if (this > localDateTime) {
@@ -58,7 +58,7 @@ internal infix operator fun LocalDateTime.minus(localDateTime: LocalDateTime): D
         toDateTime = this
     }
 
-    var tempDateTime = LocalDateTime.from(fromDateTime)
+    var tempDateTime = ZonedDateTime.from(fromDateTime)
 
     val years = tempDateTime.until(toDateTime, ChronoUnit.YEARS)
 
@@ -74,9 +74,9 @@ internal infix operator fun LocalDateTime.minus(localDateTime: LocalDateTime): D
     tempDateTime = tempDateTime.plusHours(hours)
     val minutes = tempDateTime.until(toDateTime, ChronoUnit.MINUTES)
 
-    if (listOf(years, months, days, hours, minutes).sum() == 0L) return DateDifference.Zero
+    if (listOf(years, months, days, hours, minutes).sum() == 0L) return ZonedDateTimeDifference.Zero
 
-    return DateDifference.Default(
+    return ZonedDateTimeDifference.Default(
         years = years, months = months, days = days, hours = hours, minutes = minutes
     )
 }
