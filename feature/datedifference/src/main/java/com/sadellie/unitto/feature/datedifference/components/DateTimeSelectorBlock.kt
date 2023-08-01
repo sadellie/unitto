@@ -36,8 +36,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.squashable
+import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 internal fun DateTimeSelectorBlock(
@@ -70,7 +70,7 @@ internal fun DateTimeSelectorBlock(
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = onTimeClick
                 ),
-                text = dateTime.format(time24Formatter),
+                text = dateTime.format(UnittoDateTimeFormatter.time24Formatter),
                 style = MaterialTheme.typography.displaySmall,
                 maxLines = 1
             )
@@ -83,12 +83,12 @@ internal fun DateTimeSelectorBlock(
                 )
             ) {
                 Text(
-                    text = dateTime.format(time12Formatter),
+                    text = dateTime.format(UnittoDateTimeFormatter.time12Formatter1),
                     style = MaterialTheme.typography.displaySmall,
                     maxLines = 1
                 )
                 Text(
-                    text = dateTime.format(mTimeFormatter),
+                    text = dateTime.format(UnittoDateTimeFormatter.time12Formatter2),
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1
                 )
@@ -101,16 +101,11 @@ internal fun DateTimeSelectorBlock(
                 interactionSource = remember { MutableInteractionSource() },
                 onClick = onDateClick
             ),
-            text = dateTime.format(dateFormatter),
+            text = dateTime.format(UnittoDateTimeFormatter.weekDayMonthYear),
             style = MaterialTheme.typography.bodySmall
         )
     }
 }
-
-private val time24Formatter by lazy { DateTimeFormatter.ofPattern("HH:mm") }
-private val time12Formatter by lazy { DateTimeFormatter.ofPattern("hh:mm") }
-private val dateFormatter by lazy { DateTimeFormatter.ofPattern("EEE, MMM d, y") }
-private val mTimeFormatter by lazy { DateTimeFormatter.ofPattern("a") }
 
 @Preview
 @Composable

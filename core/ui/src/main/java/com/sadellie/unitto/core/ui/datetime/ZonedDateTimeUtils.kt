@@ -29,38 +29,9 @@ import kotlin.math.absoluteValue
 
 @Composable
 fun ZonedDateTime.formatLocal(): String {
-    return if (DateFormat.is24HourFormat(LocalContext.current)) format24()
-    else format12()
+    return if (DateFormat.is24HourFormat(LocalContext.current)) format(UnittoDateTimeFormatter.time24Formatter)
+    else format(UnittoDateTimeFormatter.time12FormatterFull)
 }
-
-/**
- * Formats [ZonedDateTime] into string that looks like
- *
- * 23:58
- *
- * @return Formatted string.
- */
-fun ZonedDateTime.format24(): String = this.format(time24Formatter)
-
-/**
- * Formats [ZonedDateTime] into string that looks like
- *
- * 11:58 am
- *
- * @return Formatted string.
- */
-fun ZonedDateTime.format12(): String = this.format(time12Formatter)
-
-/**
- * Formats [ZonedDateTime] into string that looks like
- *
- * 21 Jul 2023
- *
- * @return Formatted string.
- */
-fun ZonedDateTime.formatDayMonthYear(): String = this.format(dayMonthYear)
-
-fun ZonedDateTime.formatTimeZoneOffset(): String = this.format(zoneFormatPattern)
 
 /**
  * Format offset string. Examples:

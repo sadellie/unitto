@@ -83,9 +83,8 @@ import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.TimePickerDialog
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.common.squashable
-import com.sadellie.unitto.core.ui.datetime.formatDayMonthYear
+import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
 import com.sadellie.unitto.core.ui.datetime.formatLocal
-import com.sadellie.unitto.core.ui.datetime.formatTimeZoneOffset
 import com.sadellie.unitto.core.ui.theme.AppTypography
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
@@ -286,11 +285,10 @@ private fun UserTimeZone(
     ) {
         Column(Modifier.weight(1f)) {
             Text(
-                text = userTime.formatTimeZoneOffset(),
+                text = userTime.format(UnittoDateTimeFormatter.zoneFormatPattern),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )
-            // TODO Swipe to increase, touch to set
             AnimatedContent(
                 targetState = userTime.formatLocal(),
                 label = "user time change",
@@ -307,7 +305,7 @@ private fun UserTimeZone(
                 )
             }
             Text(
-                text = userTime.formatDayMonthYear(),
+                text = userTime.format(UnittoDateTimeFormatter.dayMonthYear),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )
