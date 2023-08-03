@@ -42,17 +42,18 @@ android {
         // Debug. No Analytics, not minified, debuggable
         debug {
             isDebuggable = true
-            isShrinkResources = false
             isMinifyEnabled = false
+            isShrinkResources = false
             applicationIdSuffix = ".debug"
         }
 
         // Release with analytics and minified, not debuggable
         release {
             initWith(getByName("debug"))
-            isShrinkResources = true
             isDebuggable = false
             isMinifyEnabled = true
+            isShrinkResources = true
+            applicationIdSuffix = ""
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
