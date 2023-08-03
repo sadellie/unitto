@@ -163,12 +163,7 @@ private fun PreviewUnittoModalNavigationDrawer() {
         drawer = {
             UnittoDrawerSheet(
                 modifier = Modifier,
-                mainTabs = listOf(
-                    DrawerItems.Calculator,
-                    DrawerItems.Calculator,
-                    DrawerItems.Calculator,
-                ),
-                additionalTabs = listOf(
+                tabs = listOf(
                     DrawerItems.Calculator,
                     DrawerItems.Calculator,
                     DrawerItems.Calculator,

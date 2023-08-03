@@ -50,13 +50,12 @@ fun NavController.navigateToUnitGroups() {
 
 fun NavGraphBuilder.settingGraph(
     themmoController: ThemmoController,
-    navController: NavHostController,
-    menuButtonClick: () -> Unit
+    navController: NavHostController
 ) {
     navigation(start, graph) {
         composable(start) {
             SettingsScreen(
-                menuButtonClick = menuButtonClick,
+                menuButtonClick = navController::navigateUp,
                 navControllerAction = navController::navigate
             )
         }

@@ -48,7 +48,7 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.TOP_LEVEL_GRAPH_ROUTES
 import com.sadellie.unitto.core.ui.common.Header
-import com.sadellie.unitto.core.ui.common.MenuButton
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
@@ -73,7 +73,7 @@ internal fun SettingsScreen(
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_screen),
-        navigationIcon = { MenuButton(menuButtonClick) }
+        navigationIcon = { NavigateUpButton(menuButtonClick) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
 

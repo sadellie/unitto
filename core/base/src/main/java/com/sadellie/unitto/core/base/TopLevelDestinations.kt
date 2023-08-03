@@ -116,6 +116,5 @@ val TOP_LEVEL_START_ROUTES by lazy {
         CALCULATOR_START,
         DATE_CALCULATOR_START,
         TIME_ZONE_START,
-        SETTINGS_START,
     )
 }

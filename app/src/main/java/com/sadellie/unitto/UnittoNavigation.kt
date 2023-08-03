@@ -79,8 +79,7 @@ internal fun UnittoNavigation(
 
         settingGraph(
             themmoController = themmoController,
-            navController = navController,
-            menuButtonClick = openDrawer
+            navController = navController
         )
 
         calculatorGraph(

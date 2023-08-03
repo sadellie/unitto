@@ -19,7 +19,6 @@
 package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -38,8 +37,7 @@ import com.sadellie.unitto.core.ui.model.DrawerItems
 @Composable
 fun UnittoDrawerSheet(
     modifier: Modifier,
-    mainTabs: List<DrawerItems>,
-    additionalTabs: List<DrawerItems>,
+    tabs: List<DrawerItems>,
     currentDestination: String?,
     onItemClick: (TopLevelDestinations) -> Unit
 ) {
@@ -53,20 +51,7 @@ fun UnittoDrawerSheet(
             color = MaterialTheme.colorScheme.primary
         )
 
-        mainTabs.forEach { drawerItem ->
-            val selected = drawerItem.destination.start == currentDestination
-            UnittoDrawerItem(
-                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-                destination = drawerItem.destination,
-                icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
-                selected = selected,
-                onClick = onItemClick
-            )
-        }
-
-        HorizontalDivider(Modifier.padding(28.dp, 16.dp))
-
-        additionalTabs.forEach { drawerItem ->
+        tabs.forEach { drawerItem ->
             val selected = drawerItem.destination.start == currentDestination
             UnittoDrawerItem(
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
@@ -84,12 +69,7 @@ fun UnittoDrawerSheet(
 private fun PreviewUnittoDrawerSheet() {
     UnittoDrawerSheet(
         modifier = Modifier,
-        mainTabs = listOf(
-            DrawerItems.Calculator,
-            DrawerItems.Calculator,
-            DrawerItems.Calculator,
-        ),
-        additionalTabs = listOf(
+        tabs = listOf(
             DrawerItems.Calculator,
             DrawerItems.Calculator,
             DrawerItems.Calculator,

@@ -77,7 +77,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
 
     val shortcutsScope = rememberCoroutineScope()
 
-    val mainTabs by remember(uiPrefs.enableToolsExperiment) {
+    val tabs by remember(uiPrefs.enableToolsExperiment) {
         derivedStateOf {
             if (uiPrefs.enableToolsExperiment) {
                 listOf(
@@ -90,7 +90,6 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
             }
         }
     }
-    val additionalTabs = listOf(DrawerItems.Settings)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val gesturesEnabled: Boolean by remember(navBackStackEntry?.destination) {
@@ -113,8 +112,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
             drawer = {
                 UnittoDrawerSheet(
                     modifier = Modifier,
-                    mainTabs = mainTabs,
-                    additionalTabs = additionalTabs,
+                    tabs = tabs,
                     currentDestination = navBackStackEntry?.destination?.route
                 ) { destination ->
                     drawerScope.launch { drawerState.close() }
