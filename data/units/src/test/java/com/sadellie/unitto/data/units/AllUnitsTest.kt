@@ -93,6 +93,7 @@ class AllUnitsTest {
         megabit_per_second.checkWith(kilobit_per_second, "2048", "2048000")
         mebibit_per_second.checkWith(kilobit_per_second, "2048", "2147483.648")
         gigabit_per_second.checkWith(kilobit_per_second, "2048", "2048000000")
+        gibibit_per_second.checkWith(mebibit_per_second, "24", "24576")
         terabit_per_second.checkWith(gigabyte_per_second, "2048", "256000")
         petabit_per_second.checkWith(gigabyte_per_second, "2048", "256000000")
         exabit_per_second.checkWith(petabit_per_second, "2048", "2048000")
@@ -102,6 +103,7 @@ class AllUnitsTest {
         megabyte_per_second.checkWith(kilobyte_per_second, "2048", "2048000")
         mebibyte_per_second.checkWith(bit_per_second, "2048", "17179869184")
         gigabyte_per_second.checkWith(kilobyte_per_second, "2048", "2048000000")
+        gibibyte_per_second.checkWith(mebibit_per_second, "24", "196608")
         terabyte_per_second.checkWith(gigabyte_per_second, "2048", "2048000")
         petabyte_per_second.checkWith(terabyte_per_second, "2048", "2048000")
         exabyte_per_second.checkWith(petabyte_per_second, "2048", "2048000")
@@ -125,13 +127,14 @@ class AllUnitsTest {
     }
 
     @Test
-    fun testFileSize() = testWithUnits {
+    fun testData() = testWithUnits {
         bit.checkWith(kilobit, "2048", "2.048")
         kibibit.checkWith(bit, "2048", "2097152")
         kilobit.checkWith(bit, "2048", "2048000")
         megabit.checkWith(kilobit, "2048", "2048000")
         mebibit.checkWith(kilobit, "2048", "2147483.648")
         gigabit.checkWith(kilobit, "2048", "2048000000")
+        gibibit.checkWith(mebibit, "24", "24576")
         terabit.checkWith(gigabyte, "2048", "256000")
         petabit.checkWith(gigabyte, "2048", "256000000")
         exabit.checkWith(petabit, "2048", "2048000")
@@ -141,6 +144,7 @@ class AllUnitsTest {
         megabyte.checkWith(kilobyte, "2048", "2048000")
         mebibyte.checkWith(bit, "2048", "17179869184")
         gigabyte.checkWith(kilobyte, "2048", "2048000000")
+        gibibyte.checkWith(mebibit, "24", "196608")
         terabyte.checkWith(gigabyte, "2048", "2048000")
         petabyte.checkWith(terabyte, "2048", "2048000")
         exabyte.checkWith(petabyte, "2048", "2048000")

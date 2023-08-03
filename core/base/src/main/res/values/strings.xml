@@ -175,6 +175,8 @@
     <string name="mebibit_short">Mib</string>
     <string name="gigabit">Gigabit</string>
     <string name="gigabit_short">Gb</string>
+    <string name="gibibit">Gibibit</string>
+    <string name="gibibit_short">Gib</string>
     <string name="terabit">Terabit</string>
     <string name="terabit_short">Tb</string>
     <string name="petabit">Petabit</string>
@@ -193,6 +195,8 @@
     <string name="mebibyte_short">MiB</string>
     <string name="gigabyte">Gigabyte</string>
     <string name="gigabyte_short">GB</string>
+    <string name="gibibyte">Gibibyte</string>
+    <string name="gibibyte_short">GiB</string>
     <string name="terabyte">Terabyte</string>
     <string name="terabyte_short">TB</string>
     <string name="petabyte">Petabyte</string>
@@ -213,6 +217,8 @@
     <string name="mebibit_per_second_short">Mib/s</string>
     <string name="gigabit_per_second">Gigabit/second</string>
     <string name="gigabit_per_second_short">Gb/s</string>
+    <string name="gibibit_per_second">Gibibit/second</string>
+    <string name="gibibit_per_second_short">Gib/s</string>
     <string name="terabit_per_second">Terabit/second</string>
     <string name="terabit_per_second_short">Tb/s</string>
     <string name="petabit_per_second">Petabit/second</string>
@@ -231,6 +237,8 @@
     <string name="mebibyte_per_second_short">MiB/s</string>
     <string name="gigabyte_per_second">Gigabyte/second</string>
     <string name="gigabyte_per_second_short">GB/s</string>
+    <string name="gibibyte_per_second">Gibibyte/second</string>
+    <string name="gibibyte_per_second_short">GiB/s</string>
     <string name="terabyte_per_second">Terabyte/second</string>
     <string name="terabyte_per_second_short">TB/s</string>
     <string name="petabyte_per_second">Petabyte/second</string>
