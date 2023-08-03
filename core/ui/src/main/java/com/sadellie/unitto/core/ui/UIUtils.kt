@@ -18,13 +18,20 @@
 
 package com.sadellie.unitto.core.ui
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
+import com.sadellie.unitto.core.base.R
 
 /**
  * Open given link in browser
  */
 fun openLink(mContext: Context, url: String) {
-    mContext.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+    try {
+        mContext.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(mContext, R.string.error_label, Toast.LENGTH_SHORT).show()
+    }
 }

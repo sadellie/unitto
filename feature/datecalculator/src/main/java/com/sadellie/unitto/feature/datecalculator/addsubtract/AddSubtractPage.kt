@@ -19,9 +19,11 @@
 package com.sadellie.unitto.feature.datecalculator.addsubtract
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -220,7 +222,11 @@ private fun Context.addEvent(start: ZonedDateTime, end: ZonedDateTime) {
         .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
 
-    startActivity(intent)
+    try {
+        startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(this, R.string.error_label, Toast.LENGTH_SHORT).show()
+    }
 }
 
 @Preview
