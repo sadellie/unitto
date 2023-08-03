@@ -20,8 +20,8 @@ package com.sadellie.unitto.feature.calculator.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
-import androidx.navigation.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
 
@@ -32,13 +32,14 @@ fun NavGraphBuilder.calculatorGraph(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
-    navigation(start, graph) {
-        composable(
-            route = start,
-            deepLinks = listOf(
-                navDeepLink { uriPattern = "app://com.sadellie.unitto/$start" }
-            )
-        ) {
+    navigation(
+        startDestination = start,
+        route = graph,
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
+        )
+    ) {
+        composable(start) {
             CalculatorRoute(
                 navigateToMenu = navigateToMenu,
                 navigateToSettings = navigateToSettings

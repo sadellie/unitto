@@ -20,8 +20,8 @@ package com.sadellie.unitto.feature.converter.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
-import androidx.navigation.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
@@ -36,13 +36,14 @@ fun NavGraphBuilder.converterGraph(
     navigateToMenu: () -> Unit,
     viewModel: ConverterViewModel
 ) {
-    navigation(start, graph) {
-        composable(
-            route = start,
-            deepLinks = listOf(
-                navDeepLink { uriPattern = "app://com.sadellie.unitto/$start" }
-            )
-        ) {
+    navigation(
+        startDestination = start,
+        route = graph,
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
+        )
+    ) {
+        composable(start) {
             ConverterRoute(
                 viewModel = viewModel,
                 navigateToLeftScreen = navigateToLeftScreen,

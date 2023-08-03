@@ -50,7 +50,7 @@ suspend fun Context.pushDynamicShortcut(
                 Intent.ACTION_VIEW,
                 Uri.parse("app://com.sadellie.unitto/$route"),
                 context,
-                this.javaClass
+                context.javaClass
             )
         )
         .build()

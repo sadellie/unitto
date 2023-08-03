@@ -55,13 +55,11 @@ fun NavGraphBuilder.timeZoneGraph(
     navigation(
         startDestination = start,
         route = graph,
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
+        )
     ) {
-        composable(
-            route = start,
-            deepLinks = listOf(
-                navDeepLink { uriPattern = "app://com.sadellie.unitto/$start" }
-            )
-        ) {
+        composable(start) {
             TimeZoneRoute(
                 navigateToMenu = navigateToMenu,
                 navigateToSettings = navigateToSettings,

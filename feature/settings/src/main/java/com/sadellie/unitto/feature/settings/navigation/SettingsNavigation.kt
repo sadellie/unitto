@@ -23,6 +23,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.settings.AboutScreen
 import com.sadellie.unitto.feature.settings.SettingsScreen
@@ -52,7 +53,13 @@ fun NavGraphBuilder.settingGraph(
     themmoController: ThemmoController,
     navController: NavHostController
 ) {
-    navigation(start, graph) {
+    navigation(
+        startDestination = start,
+        route = graph,
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
+        )
+    ) {
         composable(start) {
             SettingsScreen(
                 menuButtonClick = navController::navigateUp,
