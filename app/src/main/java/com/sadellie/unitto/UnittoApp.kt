@@ -81,11 +81,16 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
         derivedStateOf {
             if (uiPrefs.enableToolsExperiment) {
                 listOf(
-                    DrawerItems.Calculator, DrawerItems.Converter, DrawerItems.DateDifference, DrawerItems.TimeZones
+                    DrawerItems.Calculator,
+                    DrawerItems.Converter,
+                    DrawerItems.DateDifference,
+                    DrawerItems.TimeZones,
                 )
             } else {
                 listOf(
-                    DrawerItems.Calculator, DrawerItems.Converter, DrawerItems.DateDifference,
+                    DrawerItems.Calculator,
+                    DrawerItems.Converter,
+                    DrawerItems.DateDifference,
                 )
             }
         }
