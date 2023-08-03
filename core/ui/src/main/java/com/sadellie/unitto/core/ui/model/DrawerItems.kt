@@ -50,7 +50,7 @@ sealed class DrawerItems(
     )
 
     object DateDifference : DrawerItems(
-        destination = TopLevelDestinations.DateDifference,
+        destination = TopLevelDestinations.DateCalculator,
         selectedIcon = Icons.Filled.Event,
         defaultIcon = Icons.Outlined.Event
     )

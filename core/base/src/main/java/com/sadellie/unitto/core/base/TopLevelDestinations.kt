@@ -53,7 +53,7 @@ sealed class TopLevelDestinations(
         name = R.string.calculator
     )
 
-    data object DateDifference : TopLevelDestinations(
+    data object DateCalculator : TopLevelDestinations(
         graph = DATE_CALCULATOR_GRAPH,
         start = DATE_CALCULATOR_START,
         name = R.string.date_calculator
@@ -77,7 +77,7 @@ val TOP_LEVEL_GRAPH_ROUTES: Map<String, Int> by lazy {
     mapOf(
         TopLevelDestinations.Calculator.graph to R.string.calculator,
         TopLevelDestinations.Converter.graph to R.string.unit_converter,
-        TopLevelDestinations.DateDifference.graph to R.string.date_calculator,
+        TopLevelDestinations.DateCalculator.graph to R.string.date_calculator,
     )
 }
 

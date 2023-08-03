@@ -28,7 +28,7 @@ import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterGraph
-import com.sadellie.unitto.feature.datedifference.navigation.dateDifferenceGraph
+import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorGraph
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
@@ -88,7 +88,7 @@ internal fun UnittoNavigation(
             navigateToSettings = navController::navigateToSettings
         )
 
-        dateDifferenceGraph(
+        dateCalculatorGraph(
             navigateToMenu = openDrawer,
             navigateToSettings = navController::navigateToSettings
         )

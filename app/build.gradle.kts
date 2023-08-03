@@ -121,7 +121,7 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:calculator")))
     implementation(project(mapOf("path" to ":feature:settings")))
     implementation(project(mapOf("path" to ":feature:unitslist")))
-    implementation(project(mapOf("path" to ":feature:datedifference")))
+    implementation(project(mapOf("path" to ":feature:datecalculator")))
     implementation(project(mapOf("path" to ":feature:timezone")))
     implementation(project(mapOf("path" to ":data:model")))
     implementation(project(mapOf("path" to ":data:userprefs")))
