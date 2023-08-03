@@ -37,31 +37,31 @@ sealed class DrawerItems(
     val selectedIcon: ImageVector,
     val defaultIcon: ImageVector
 ) {
-    object Calculator : DrawerItems(
+    data object Calculator : DrawerItems(
         destination = TopLevelDestinations.Calculator,
         selectedIcon = Icons.Filled.Calculate,
         defaultIcon = Icons.Outlined.Calculate
     )
 
-    object Converter : DrawerItems(
+    data object Converter : DrawerItems(
         destination = TopLevelDestinations.Converter,
         selectedIcon = Icons.Filled.SwapHoriz,
         defaultIcon = Icons.Outlined.SwapHoriz
     )
 
-    object DateDifference : DrawerItems(
+    data object DateDifference : DrawerItems(
         destination = TopLevelDestinations.DateCalculator,
         selectedIcon = Icons.Filled.Event,
         defaultIcon = Icons.Outlined.Event
     )
 
-    object TimeZones : DrawerItems(
+    data object TimeZones : DrawerItems(
         destination = TopLevelDestinations.TimeZone,
         selectedIcon = Icons.Filled.Schedule,
         defaultIcon = Icons.Outlined.Schedule
     )
 
-    object Settings : DrawerItems(
+    data object Settings : DrawerItems(
         destination = TopLevelDestinations.Settings,
         selectedIcon = Icons.Filled.Settings,
         defaultIcon = Icons.Outlined.Settings

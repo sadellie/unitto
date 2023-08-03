@@ -60,6 +60,6 @@ sealed class ConversionResult {
     data class Default(val result: String) : ConversionResult()
     data class Time(val result: String) : ConversionResult()
     data class NumberBase(val result: String) : ConversionResult()
-    object Loading : ConversionResult()
-    object Error : ConversionResult()
+    data object Loading : ConversionResult()
+    data object Error : ConversionResult()
 }

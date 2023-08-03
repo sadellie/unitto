@@ -42,7 +42,7 @@ internal sealed class ZonedDateTimeDifference(
         minutes = minutes,
     )
 
-    object Zero : ZonedDateTimeDifference()
+    data object Zero : ZonedDateTimeDifference()
 }
 
 // https://stackoverflow.com/a/25760725

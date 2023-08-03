@@ -100,10 +100,9 @@ internal fun RightSideScreen(
                 title = stringResource(R.string.units_screen_to),
                 placeholder = stringResource(R.string.search_bar_placeholder),
                 noSearchActions = {
-                    FavoritesButton(
-                        favoritesOnly = uiState.value.favoritesOnly,
-                        favoriteAction = { viewModel.toggleFavoritesOnly(true) }
-                    )
+                    FavoritesButton(uiState.value.favoritesOnly) {
+                        viewModel.toggleFavoritesOnly(true)
+                    }
                 }
             )
         }

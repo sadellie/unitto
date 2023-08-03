@@ -103,7 +103,8 @@ internal fun TopScreenPart(
     var swapped by remember { mutableStateOf(false) }
     val swapButtonRotation: Float by animateFloatAsState(
         targetValue = if (swapped) 0f else 180f,
-        animationSpec = tween(easing = FastOutSlowInEasing)
+        animationSpec = tween(easing = FastOutSlowInEasing),
+        label = "Swap button rotation"
     )
     val mContext = LocalContext.current
 
@@ -165,7 +166,8 @@ internal fun TopScreenPart(
                 (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
                         togetherWith fadeOut())
                     .using(SizeTransform(clip = false))
-            }
+            },
+            label = "Animated short name from"
         ) { value ->
             Text(
                 text = value,
@@ -262,7 +264,8 @@ internal fun TopScreenPart(
                         // Exit animation
                         togetherWith fadeOut())
                     .using(SizeTransform(clip = false))
-            }
+            },
+            label = "Animated short label to"
         ) { value ->
             Text(
                 text = value,

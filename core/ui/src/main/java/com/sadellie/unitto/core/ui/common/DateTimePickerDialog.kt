@@ -153,11 +153,11 @@ fun DatePickerDialog(
 
                 Box(modifier = Modifier
                     .align(Alignment.End)
-                    .padding(DialogButtonsPadding)) {
+                    .padding(_dialogButtonsPadding)) {
 
                     AlertDialogFlowRow(
-                        mainAxisSpacing = DialogButtonsMainAxisSpacing,
-                        crossAxisSpacing = DialogButtonsCrossAxisSpacing
+                        mainAxisSpacing = _dialogButtonsMainAxisSpacing,
+                        crossAxisSpacing = _dialogButtonsCrossAxisSpacing
                     ) {
                         TextButton(
                             onClick = onDismiss
@@ -277,6 +277,6 @@ private fun AlertDialogFlowRow(
     }
 }
 
-private val DialogButtonsPadding by lazy { PaddingValues(bottom = 8.dp, end = 6.dp) }
-private val DialogButtonsMainAxisSpacing by lazy { 8.dp }
-private val DialogButtonsCrossAxisSpacing by lazy { 12.dp }
+private val _dialogButtonsPadding by lazy { PaddingValues(bottom = 8.dp, end = 6.dp) }
+private val _dialogButtonsMainAxisSpacing by lazy { 8.dp }
+private val _dialogButtonsCrossAxisSpacing by lazy { 12.dp }

@@ -27,18 +27,18 @@ import com.sadellie.unitto.feature.unitslist.LeftSideScreen
 import com.sadellie.unitto.feature.unitslist.RightSideScreen
 import com.sadellie.unitto.feature.unitslist.UnitsListViewModel
 
-const val leftSideRoute = "left_side_route"
-const val rightSideRoute = "right_side_route"
-private const val unitFromIdArg = "unitFromId"
-private const val unitToIdArg = "unitToId"
-private const val inputArg = "input"
+private const val LEFT_SIDE_ROUTE = "LEFT_SIDE_ROUTE"
+private const val RIGHT_SIDE_ROUTE = "RIGHT_SIDE_ROUTE"
+private const val UNIT_FROM_ARG = "UNIT_FROM_ARG"
+private const val UNIT_TO_ARG = "UNIT_FROM_ARG"
+private const val INPUT_ARG = "INPUT_ARG"
 
 fun NavController.navigateToLeftSide(unitFromId: String) {
-    navigate("$leftSideRoute/$unitFromId")
+    navigate("$LEFT_SIDE_ROUTE/$unitFromId")
 }
 
 fun NavController.navigateToRightSide(unitFromId: String, unitToId: String, input: String?) {
-    navigate("$rightSideRoute/$unitFromId/$unitToId/$input")
+    navigate("$RIGHT_SIDE_ROUTE/$unitFromId/$unitToId/$input")
 }
 
 fun NavGraphBuilder.leftScreen(
@@ -48,11 +48,11 @@ fun NavGraphBuilder.leftScreen(
     onSelect: (AbstractUnit) -> Unit
 ) {
     composable(
-        route = "$leftSideRoute/{$unitFromIdArg}"
+        route = "$LEFT_SIDE_ROUTE/{$UNIT_FROM_ARG}"
     ) {
         LeftSideScreen(
             viewModel = viewModel,
-            currentUnitId = it.arguments?.getString(unitFromIdArg),
+            currentUnitId = it.arguments?.getString(UNIT_FROM_ARG),
             navigateUp = navigateUp,
             navigateToSettingsAction = navigateToUnitGroups,
             selectAction = onSelect
@@ -68,11 +68,11 @@ fun NavGraphBuilder.rightScreen(
 
 ) {
     composable(
-        route = "$rightSideRoute/{$unitFromIdArg}/{$unitToIdArg}/{$inputArg}"
+        route = "$RIGHT_SIDE_ROUTE/{$UNIT_FROM_ARG}/{$UNIT_TO_ARG}/{$INPUT_ARG}"
     ) {
-        val unitFromId = it.arguments?.getString(unitFromIdArg) ?: return@composable
-        val unitToId = it.arguments?.getString(unitToIdArg) ?: return@composable
-        val input = it.arguments?.getString(inputArg)
+        val unitFromId = it.arguments?.getString(UNIT_FROM_ARG) ?: return@composable
+        val unitToId = it.arguments?.getString(UNIT_TO_ARG) ?: return@composable
+        val input = it.arguments?.getString(INPUT_ARG)
         viewModel.setSelectedChip(unitFromId, true)
 
         RightSideScreen(

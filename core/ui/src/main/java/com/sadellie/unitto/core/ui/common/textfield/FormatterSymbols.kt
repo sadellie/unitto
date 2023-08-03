@@ -21,9 +21,9 @@ package com.sadellie.unitto.core.ui.common.textfield
 import com.sadellie.unitto.core.base.Separator
 
 sealed class FormatterSymbols(val grouping: String, val fractional: String) {
-    object Spaces : FormatterSymbols(" ", ".")
-    object Period : FormatterSymbols(".", ",")
-    object Comma : FormatterSymbols(",", ".")
+    data object Spaces : FormatterSymbols(" ", ".")
+    data object Period : FormatterSymbols(".", ",")
+    data object Comma : FormatterSymbols(",", ".")
 }
 
 object AllFormatterSymbols {

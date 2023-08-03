@@ -46,6 +46,7 @@ fun Modifier.squashable(
     val cornerRadius: Int by animateIntAsState(
         targetValue = if (isPressed) cornerRadiusRange.first else cornerRadiusRange.last,
         animationSpec = tween(easing = FastOutSlowInEasing),
+        label = "Squashed animation"
     )
 
     Modifier
@@ -72,6 +73,7 @@ fun Modifier.squashable(
     val cornerRadius: Dp by animateDpAsState(
         targetValue = if (isPressed) cornerRadiusRange.start else cornerRadiusRange.endInclusive,
         animationSpec = tween(easing = FastOutSlowInEasing),
+        label = "Squashed animation"
     )
 
     Modifier

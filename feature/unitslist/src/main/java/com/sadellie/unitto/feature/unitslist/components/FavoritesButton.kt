@@ -34,15 +34,16 @@ import com.sadellie.unitto.core.base.R
 
 @Composable
 internal fun FavoritesButton(
-    favoritesOnly: Boolean,
-    favoriteAction: () -> Unit
+    state: Boolean,
+    onClick: () -> Unit
 ) {
-    IconButton(onClick = favoriteAction) {
+    IconButton(onClick = onClick) {
         AnimatedContent(
-            targetState = favoritesOnly,
+            targetState = state,
             transitionSpec = {
                 (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false))
-            }
+            },
+            label = "Animated click"
         ) {
             Icon(
                 if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,

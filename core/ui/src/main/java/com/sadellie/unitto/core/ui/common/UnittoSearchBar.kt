@@ -70,13 +70,13 @@ fun UnittoSearchBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors()
 ) {
-    var showSearch by remember { mutableStateOf(false) }
+    var showSearchInput by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
 
     fun stagedNavigateUp() {
-        if (showSearch) {
+        if (showSearchInput) {
             // Search text field is open, need to close it and clear search query
-            showSearch = false
+            showSearchInput = false
             // focusManager.clearFocus()
             onQueryChange("")
         } else {
@@ -88,8 +88,8 @@ fun UnittoSearchBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            Crossfade(showSearch) { _showSearch ->
-                if (_showSearch) {
+            Crossfade(showSearchInput) { showSearch ->
+                if (showSearch) {
                     LaunchedEffect(Unit) { focusRequester.requestFocus() }
 
                     SearchTextField(
@@ -113,13 +113,13 @@ fun UnittoSearchBar(
             NavigateUpButton { stagedNavigateUp() }
         },
         actions = {
-            Crossfade(showSearch) { _showSearch ->
+            Crossfade(showSearchInput) { showSearch ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (_showSearch) {
+                    if (showSearch) {
                         ClearButton(visible = query.isNotEmpty()) { onQueryChange("") }
                         searchActions()
                     } else {
-                        SearchButton { showSearch = true }
+                        SearchButton { showSearchInput = true }
                         noSearchActions()
                     }
                 }

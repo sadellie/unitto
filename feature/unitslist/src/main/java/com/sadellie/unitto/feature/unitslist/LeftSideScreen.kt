@@ -82,8 +82,9 @@ internal fun LeftSideScreen(
     }
 
     val chipsBackground = animateColorAsState(
-        if (needToTint) elevatedColor else MaterialTheme.colorScheme.surface,
-        tween(durationMillis = 500, easing = LinearOutSlowInEasing)
+        targetValue =  if (needToTint) elevatedColor else MaterialTheme.colorScheme.surface,
+        animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
+        label = "Chips background",
     )
 
     Scaffold(
@@ -99,10 +100,9 @@ internal fun LeftSideScreen(
                     title = stringResource(R.string.units_screen_from),
                     placeholder = stringResource(R.string.search_bar_placeholder),
                     noSearchActions = {
-                        FavoritesButton(
-                            favoritesOnly = uiState.value.favoritesOnly,
-                            favoriteAction = { viewModel.toggleFavoritesOnly(false) }
-                        )
+                        FavoritesButton(uiState.value.favoritesOnly) {
+                            viewModel.toggleFavoritesOnly(false)
+                        }
                     }
                 )
                 ChipsRow(

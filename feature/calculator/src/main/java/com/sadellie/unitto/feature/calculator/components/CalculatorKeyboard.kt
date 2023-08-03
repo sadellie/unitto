@@ -158,7 +158,8 @@ private fun PortraitKeyboard(
     var invMode: Boolean by remember { mutableStateOf(false) }
     val expandRotation: Float by animateFloatAsState(
         targetValue = if (showAdditional) 0f else 180f,
-        animationSpec = tween(easing = FastOutSlowInEasing)
+        animationSpec = tween(easing = FastOutSlowInEasing),
+        label = "Rotate on expand"
     )
 
     ColumnWithConstraints(

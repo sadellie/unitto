@@ -59,7 +59,8 @@ fun UnittoSlider(
 ) {
     val animated = animateFloatAsState(
         targetValue = value.roundToInt().toFloat(),
-        animationSpec = spring()
+        animationSpec = spring(),
+        label = "Thumb animation"
     )
 
     Slider(
@@ -82,7 +83,11 @@ private fun SquigglyTrack(
 ) {
     val coroutineScope = rememberCoroutineScope()
     var direct by remember { mutableFloatStateOf(0.72f) }
-    val animatedDirect = animateFloatAsState(direct, spring(stiffness = Spring.StiffnessLow))
+    val animatedDirect = animateFloatAsState(
+        targetValue = direct,
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+        label = "Track animation"
+    )
 
     LaunchedEffect(sliderState.value) {
         coroutineScope.launch {

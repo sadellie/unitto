@@ -19,7 +19,7 @@
 package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -64,7 +64,7 @@ fun UnittoDrawerSheet(
             )
         }
 
-        Divider(Modifier.padding(28.dp, 16.dp))
+        HorizontalDivider(Modifier.padding(28.dp, 16.dp))
 
         additionalTabs.forEach { drawerItem ->
             val selected = drawerItem.destination.start == currentDestination

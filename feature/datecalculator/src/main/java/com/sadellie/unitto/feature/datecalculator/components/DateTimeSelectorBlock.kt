@@ -73,12 +73,12 @@ internal fun DateTimeSelectorBlock(
         if (DateFormat.is24HourFormat(LocalContext.current)) {
             AnimatedContent(
                 targetState = dateTime.format(UnittoDateTimeFormatter.time24Formatter),
-                label = "date time change",
                 transitionSpec = {
                     slideInVertically { height -> height } + fadeIn() togetherWith
                             slideOutVertically { height -> -height } + fadeOut() using
                             SizeTransform()
-                }
+                },
+                label = "Animated 24 hour",
             ) { time ->
                 Text(
                     modifier = Modifier.clickable(
@@ -105,7 +105,8 @@ internal fun DateTimeSelectorBlock(
                         slideInVertically { height -> height } + fadeIn() togetherWith
                                 slideOutVertically { height -> -height } + fadeOut() using
                                 SizeTransform()
-                    }
+                    },
+                    label = "Animated 12 hour",
                 ) { time ->
                     Text(
                         text = time.format(UnittoDateTimeFormatter.time12Formatter1),
@@ -120,7 +121,8 @@ internal fun DateTimeSelectorBlock(
                         slideInVertically { height -> height } + fadeIn() togetherWith
                                 slideOutVertically { height -> -height } + fadeOut() using
                                 SizeTransform()
-                    }
+                    },
+                    label = "Animated am/pm",
                 ) { time ->
                     Text(
                         text = time.format(UnittoDateTimeFormatter.time12Formatter2),
@@ -137,7 +139,8 @@ internal fun DateTimeSelectorBlock(
                 slideInVertically { height -> height } + fadeIn() togetherWith
                         slideOutVertically { height -> -height } + fadeOut() using
                         SizeTransform()
-            }
+            },
+            label = "Animated date",
         ) { date ->
             Text(
                 modifier = Modifier.clickable(
