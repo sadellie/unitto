@@ -88,7 +88,7 @@ data class UserPreferences(
 
 data class UIPreferences(
     val themingMode: ThemingMode = ThemingMode.AUTO,
-    val enableDynamicTheme: Boolean = false,
+    val enableDynamicTheme: Boolean = true,
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,
     val monetMode: MonetMode = MonetMode.TONAL_SPOT,
@@ -151,7 +151,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         .map { preferences ->
             val themingMode: ThemingMode = preferences[PrefsKeys.THEMING_MODE]?.let { ThemingMode.valueOf(it) }
                 ?: ThemingMode.AUTO
-            val enableDynamicTheme: Boolean = preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: false
+            val enableDynamicTheme: Boolean = preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true
             val enableAmoledTheme: Boolean = preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
             val customColor: Color = preferences[PrefsKeys.CUSTOM_COLOR]?.let { Color(it.toULong()) } ?: Color.Unspecified
             val monetMode: MonetMode = preferences[PrefsKeys.MONET_MODE]?.let { MonetMode.valueOf(it) }
