@@ -32,32 +32,32 @@ import com.sadellie.unitto.timezone.TimeZoneRoute
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-private val timeZoneGraph: String by lazy { TopLevelDestinations.TimeZone.route }
-internal const val timeZoneRoute = "time_zone_route"
-internal const val addTimeZoneRoute = "add_time_zone_route"
-internal const val userTimeArg = "userTime"
+private val graph = TopLevelDestinations.TimeZone.start
+private val start: String = TopLevelDestinations.TimeZone.graph
+private const val ADD_TIME_ZONE_ROUTE = "ADD_TIME_ZONE_ROUTE"
+private const val USER_TIME_ARG = "USER_TIME_ARG"
 
-fun NavController.navigateToAddTimeZone(
+private fun NavController.navigateToAddTimeZone(
     userTime: ZonedDateTime?
 ) {
     val formattedTime = userTime
         ?.format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
         ?.replace("/", "|") // this is so wrong
 
-    navigate("$addTimeZoneRoute/$formattedTime")
+    navigate("$ADD_TIME_ZONE_ROUTE/$formattedTime")
 }
 
-fun NavGraphBuilder.timeZoneScreen(
+fun NavGraphBuilder.timeZoneGraph(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = timeZoneRoute,
-        route = timeZoneGraph,
-        deepLinks = listOf(navDeepLink { uriPattern = "app://com.sadellie.unitto/$timeZoneRoute" })
+        startDestination = start,
+        route = graph,
+        deepLinks = listOf(navDeepLink { uriPattern = "app://com.sadellie.unitto/$start" })
     ) {
-        composable(timeZoneRoute) {
+        composable(start) {
             TimeZoneRoute(
                 navigateToMenu = navigateToMenu,
                 navigateToSettings = navigateToSettings,
@@ -66,9 +66,9 @@ fun NavGraphBuilder.timeZoneScreen(
         }
 
         composable(
-            route = "$addTimeZoneRoute/{$userTimeArg}",
+            route = "$ADD_TIME_ZONE_ROUTE/{$USER_TIME_ARG}",
             arguments = listOf(
-                navArgument(userTimeArg) {
+                navArgument(USER_TIME_ARG) {
                     defaultValue = null
                     nullable = true
                     type = NavType.StringType
@@ -76,7 +76,7 @@ fun NavGraphBuilder.timeZoneScreen(
             )
         ) { stackEntry ->
             val userTime = stackEntry.arguments
-                ?.getString(userTimeArg)
+                ?.getString(USER_TIME_ARG)
                 ?.replace("|", "/") // war crime, don't look
                 ?.let { ZonedDateTime.parse(it, DateTimeFormatter.ISO_ZONED_DATE_TIME) }
 

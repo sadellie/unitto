@@ -32,12 +32,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.base.TOP_LEVEL_START_ROUTES
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
 import com.sadellie.unitto.core.ui.common.UnittoModalNavigationDrawer
 import com.sadellie.unitto.core.ui.common.close
@@ -88,16 +87,9 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
     val additionalTabs = listOf(DrawerItems.Settings)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute: TopLevelDestinations? by remember(navBackStackEntry?.destination) {
+    val gesturesEnabled: Boolean by remember(navBackStackEntry?.destination) {
         derivedStateOf {
-            val hierarchyRoutes = navBackStackEntry?.destination?.hierarchy?.map { it.route }
-                ?: emptySequence()
-
-            (mainTabs + additionalTabs)
-                .map { it.destination }
-                .firstOrNull {
-                    hierarchyRoutes.contains(it.route)
-                }
+            TOP_LEVEL_START_ROUTES.contains(navBackStackEntry?.destination?.route)
         }
     }
 
@@ -117,7 +109,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                     modifier = Modifier,
                     mainTabs = mainTabs,
                     additionalTabs = additionalTabs,
-                    currentDestination = currentRoute
+                    currentDestination = navBackStackEntry?.destination?.route
                 ) {
                     drawerScope.launch { drawerState.close() }
                     navController.navigate(it) {
@@ -125,12 +117,13 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                             saveState = true
                         }
                         launchSingleTop = true
+                        restoreState = true
                     }
                 }
             },
             modifier = Modifier,
             state = drawerState,
-            gesturesEnabled = true,
+            gesturesEnabled = gesturesEnabled,
             scope = drawerScope,
             content = {
                 UnittoNavigation(

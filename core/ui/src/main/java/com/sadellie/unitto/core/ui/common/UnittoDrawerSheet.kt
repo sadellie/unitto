@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.model.DrawerItems
 
 @Composable
@@ -40,7 +39,7 @@ fun UnittoDrawerSheet(
     modifier: Modifier,
     mainTabs: List<DrawerItems>,
     additionalTabs: List<DrawerItems>,
-    currentDestination: TopLevelDestinations?,
+    currentDestination: String?,
     onItemClick: (String) -> Unit
 ) {
     ModalDrawerSheet(
@@ -54,7 +53,7 @@ fun UnittoDrawerSheet(
         )
 
         mainTabs.forEach { drawerItem ->
-            val selected = drawerItem.destination == currentDestination
+            val selected = drawerItem.destination.start == currentDestination
             UnittoDrawerItem(
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                 destination = drawerItem.destination,
@@ -67,7 +66,7 @@ fun UnittoDrawerSheet(
         Divider(Modifier.padding(28.dp, 16.dp))
 
         additionalTabs.forEach { drawerItem ->
-            val selected = drawerItem.destination == currentDestination
+            val selected = drawerItem.destination.start == currentDestination
             UnittoDrawerItem(
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                 destination = drawerItem.destination,
@@ -94,7 +93,7 @@ private fun PreviewUnittoDrawerSheet() {
             DrawerItems.Calculator,
             DrawerItems.Calculator,
         ),
-        currentDestination = DrawerItems.Calculator.destination,
+        currentDestination = DrawerItems.Calculator.destination.start,
         onItemClick = {}
     )
 }

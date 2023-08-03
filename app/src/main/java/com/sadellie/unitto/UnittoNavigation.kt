@@ -25,10 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.sadellie.unitto.feature.calculator.navigation.calculatorScreen
+import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
 import com.sadellie.unitto.feature.converter.ConverterViewModel
-import com.sadellie.unitto.feature.converter.navigation.converterScreen
-import com.sadellie.unitto.feature.datedifference.navigation.dateDifferenceScreen
+import com.sadellie.unitto.feature.converter.navigation.converterGraph
+import com.sadellie.unitto.feature.datedifference.navigation.dateDifferenceGraph
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
@@ -37,7 +37,7 @@ import com.sadellie.unitto.feature.unitslist.navigation.leftScreen
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToLeftSide
 import com.sadellie.unitto.feature.unitslist.navigation.navigateToRightSide
 import com.sadellie.unitto.feature.unitslist.navigation.rightScreen
-import com.sadellie.unitto.timezone.navigation.timeZoneScreen
+import com.sadellie.unitto.timezone.navigation.timeZoneGraph
 import io.github.sadellie.themmo.ThemmoController
 
 @Composable
@@ -55,7 +55,7 @@ internal fun UnittoNavigation(
         startDestination = startDestination,
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
-        converterScreen(
+        converterGraph(
             navigateToLeftScreen = navController::navigateToLeftSide,
             navigateToRightScreen = navController::navigateToRightSide,
             navigateToSettings = navController::navigateToSettings,
@@ -83,17 +83,17 @@ internal fun UnittoNavigation(
             menuButtonClick = openDrawer
         )
 
-        calculatorScreen(
+        calculatorGraph(
             navigateToMenu = openDrawer,
             navigateToSettings = navController::navigateToSettings
         )
 
-        dateDifferenceScreen(
+        dateDifferenceGraph(
             navigateToMenu = openDrawer,
             navigateToSettings = navController::navigateToSettings
         )
 
-        timeZoneScreen(
+        timeZoneGraph(
             navigateToMenu = openDrawer,
             navigateToSettings = navController::navigateToSettings,
             navController = navController,

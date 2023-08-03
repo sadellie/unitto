@@ -20,26 +20,30 @@ package com.sadellie.unitto.feature.converter.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 
-private val converterRoute: String by lazy { TopLevelDestinations.Converter.route }
+private val graph = TopLevelDestinations.Converter.graph
+private val start = TopLevelDestinations.Converter.start
 
-fun NavGraphBuilder.converterScreen(
+fun NavGraphBuilder.converterGraph(
     navigateToLeftScreen: (String) -> Unit,
     navigateToRightScreen: (unitFrom: String, unitTo: String, input: String?) -> Unit,
     navigateToSettings: () -> Unit,
     navigateToMenu: () -> Unit,
     viewModel: ConverterViewModel
 ) {
-    composable(converterRoute) {
-        ConverterRoute(
-            viewModel = viewModel,
-            navigateToLeftScreen = navigateToLeftScreen,
-            navigateToRightScreen = navigateToRightScreen,
-            navigateToSettings = navigateToSettings,
-            navigateToMenu = navigateToMenu
-        )
+    navigation(start, graph) {
+        composable(start) {
+            ConverterRoute(
+                viewModel = viewModel,
+                navigateToLeftScreen = navigateToLeftScreen,
+                navigateToRightScreen = navigateToRightScreen,
+                navigateToSettings = navigateToSettings,
+                navigateToMenu = navigateToMenu
+            )
+        }
     }
 }

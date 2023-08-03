@@ -32,8 +32,8 @@ import com.sadellie.unitto.feature.settings.themes.ThemesRoute
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
-private val settingsGraph: String by lazy { TopLevelDestinations.Settings.route }
-private const val settingsRoute = "settings_route"
+private val graph = TopLevelDestinations.Settings.graph
+private val start = TopLevelDestinations.Settings.start
 internal const val themesRoute = "themes_route"
 internal const val unitsGroupRoute = "units_group_route"
 internal const val thirdPartyRoute = "third_party_route"
@@ -41,7 +41,7 @@ internal const val aboutRoute = "about_route"
 internal const val formattingRoute = "formatting_route"
 
 fun NavController.navigateToSettings() {
-    navigate(settingsRoute)
+    navigate(TopLevelDestinations.Settings.start)
 }
 
 fun NavController.navigateToUnitGroups() {
@@ -53,8 +53,8 @@ fun NavGraphBuilder.settingGraph(
     navController: NavHostController,
     menuButtonClick: () -> Unit
 ) {
-    navigation(settingsRoute, settingsGraph) {
-        composable(settingsRoute) {
+    navigation(start, graph) {
+        composable(start) {
             SettingsScreen(
                 menuButtonClick = menuButtonClick,
                 navControllerAction = navController::navigate

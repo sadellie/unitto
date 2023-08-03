@@ -46,7 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
+import com.sadellie.unitto.core.base.TOP_LEVEL_GRAPH_ROUTES
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
@@ -252,7 +252,7 @@ internal fun SettingsScreen(
             AlertDialogWithList(
                 title = stringResource(R.string.starting_screen_setting),
                 selectedItemIndex = userPrefs.value.startingScreen,
-                listItems = TOP_LEVEL_DESTINATIONS.mapKeys { it.key.route },
+                listItems = TOP_LEVEL_GRAPH_ROUTES,
                 selectAction = viewModel::updateStartingScreen,
                 dismissAction = { resetDialog() }
             )

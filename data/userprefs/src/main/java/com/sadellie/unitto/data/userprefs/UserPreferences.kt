@@ -78,7 +78,7 @@ data class UserPreferences(
     val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
     val enableVibrations: Boolean = true,
     val enableToolsExperiment: Boolean = false,
-    val startingScreen: String = TopLevelDestinations.Calculator.route,
+    val startingScreen: String = TopLevelDestinations.Calculator.graph,
     val radianMode: Boolean = true,
     val unitConverterFavoritesOnly: Boolean = false,
     val unitConverterFormatTime: Boolean = false,
@@ -92,7 +92,7 @@ data class UIPreferences(
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,
     val monetMode: MonetMode = MonetMode.TONAL_SPOT,
-    val startingScreen: String = TopLevelDestinations.Converter.route,
+    val startingScreen: String = TopLevelDestinations.Calculator.graph,
     val enableToolsExperiment: Boolean = false,
 )
 
@@ -156,7 +156,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val customColor: Color = preferences[PrefsKeys.CUSTOM_COLOR]?.let { Color(it.toULong()) } ?: Color.Unspecified
             val monetMode: MonetMode = preferences[PrefsKeys.MONET_MODE]?.let { MonetMode.valueOf(it) }
                 ?: MonetMode.TONAL_SPOT
-            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Converter.route
+            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Calculator.graph
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
 
             UIPreferences(

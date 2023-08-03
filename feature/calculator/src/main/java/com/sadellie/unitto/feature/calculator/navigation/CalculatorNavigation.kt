@@ -21,23 +21,28 @@ package com.sadellie.unitto.feature.calculator.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import androidx.navigation.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
 
-private val calculatorRoute: String by lazy { TopLevelDestinations.Calculator.route }
+private val graph = TopLevelDestinations.Calculator.graph
+private val start = TopLevelDestinations.Calculator.start
 
-fun NavGraphBuilder.calculatorScreen(
+fun NavGraphBuilder.calculatorGraph(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
-    composable(
-        route = calculatorRoute,
-        deepLinks = listOf(
-            navDeepLink { uriPattern = "app://com.sadellie.unitto/$calculatorRoute" }
-        )) {
-        CalculatorRoute(
-            navigateToMenu = navigateToMenu,
-            navigateToSettings = navigateToSettings
-        )
+    navigation(start, graph) {
+        composable(
+            route = start,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "app://com.sadellie.unitto/$start" }
+            )
+        ) {
+            CalculatorRoute(
+                navigateToMenu = navigateToMenu,
+                navigateToSettings = navigateToSettings
+            )
+        }
     }
 }

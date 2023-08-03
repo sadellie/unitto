@@ -20,40 +20,74 @@ package com.sadellie.unitto.core.base
 
 import androidx.annotation.StringRes
 
+// Don't touch, users have "..._route" in their settings
+private const val CONVERTER_GRAPH = "converter_route"
+private const val CONVERTER_START = "converter_start"
+
+private const val CALCULATOR_GRAPH = "calculator_route"
+private const val CALCULATOR_START = "calculator_start"
+
+private const val DATE_CALCULATOR_GRAPH = "date_calculator_route"
+private const val DATE_CALCULATOR_START = "date_calculator_start"
+
+private const val TIME_ZONE_GRAPH = "time_zone_route"
+private const val TIME_ZONE_START = "time_zone_start"
+
+private const val SETTINGS_GRAPH = "settings_route"
+private const val SETTINGS_START = "settings_start"
+
 sealed class TopLevelDestinations(
-    val route: String,
-    @StringRes val name: Int
+    val graph: String,
+    val start: String = graph,
+    @StringRes val name: Int,
 ) {
-    object Converter : TopLevelDestinations(
-        route = "converter_route",
+    data object Converter : TopLevelDestinations(
+        graph = CONVERTER_GRAPH,
+        start = CONVERTER_START,
         name = R.string.unit_converter
     )
 
-    object Calculator : TopLevelDestinations(
-        route = "calculator_route",
+    data object Calculator : TopLevelDestinations(
+        graph = CALCULATOR_GRAPH,
+        start = CALCULATOR_START,
         name = R.string.calculator
     )
 
-    object DateDifference : TopLevelDestinations(
-        route = "date_difference_route",
+    data object DateDifference : TopLevelDestinations(
+        graph = DATE_CALCULATOR_GRAPH,
+        start = DATE_CALCULATOR_START,
         name = R.string.date_calculator
     )
 
-    object TimeZone : TopLevelDestinations(
-        route = "time_zone_graph",
+    data object TimeZone : TopLevelDestinations(
+        graph = TIME_ZONE_GRAPH,
+        start = TIME_ZONE_START,
         name = R.string.time_zone_screen
     )
 
-    object Settings : TopLevelDestinations(
-        route = "settings_graph",
+    data object Settings : TopLevelDestinations(
+        graph = SETTINGS_GRAPH,
+        start = SETTINGS_START,
         name = R.string.settings_screen
     )
 }
 
-val TOP_LEVEL_DESTINATIONS: Map<TopLevelDestinations, Int> by lazy {
+// Shown in settings
+val TOP_LEVEL_GRAPH_ROUTES: Map<String, Int> by lazy {
     mapOf(
-        TopLevelDestinations.Calculator to R.string.calculator,
-        TopLevelDestinations.Converter to R.string.unit_converter,
-        TopLevelDestinations.DateDifference to R.string.date_calculator,
+        TopLevelDestinations.Calculator.graph to R.string.calculator,
+        TopLevelDestinations.Converter.graph to R.string.unit_converter,
+        TopLevelDestinations.DateDifference.graph to R.string.date_calculator,
+    )
+}
+
+// Only routes, not graphs!
+val TOP_LEVEL_START_ROUTES by lazy {
+    listOf(
+        CONVERTER_START,
+        CALCULATOR_START,
+        DATE_CALCULATOR_START,
+        TIME_ZONE_START,
+        SETTINGS_START,
     )
 }

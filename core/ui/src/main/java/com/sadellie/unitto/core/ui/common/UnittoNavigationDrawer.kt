@@ -173,7 +173,7 @@ private fun PreviewUnittoModalNavigationDrawer() {
                     DrawerItems.Calculator,
                     DrawerItems.Calculator,
                 ),
-                currentDestination = DrawerItems.Calculator.destination,
+                currentDestination = DrawerItems.Calculator.destination.start,
                 onItemClick = {}
             )
         },

@@ -21,24 +21,28 @@ package com.sadellie.unitto.feature.datedifference.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import androidx.navigation.navigation
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.datedifference.DateToolsRoute
 
-private val dateDifferenceRoute: String by lazy { TopLevelDestinations.DateDifference.route }
+private val graph = TopLevelDestinations.DateDifference.graph
+private val start = TopLevelDestinations.DateDifference.start
 
-fun NavGraphBuilder.dateDifferenceScreen(
+fun NavGraphBuilder.dateDifferenceGraph(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
-    composable(
-        route = dateDifferenceRoute,
-        deepLinks = listOf(
-            navDeepLink { uriPattern = "app://com.sadellie.unitto/$dateDifferenceRoute" }
-        )
-    ) {
-        DateToolsRoute(
-            navigateToMenu = navigateToMenu,
-            navigateToSettings = navigateToSettings
-        )
+    navigation(start, graph) {
+        composable(
+            route = start,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "app://com.sadellie.unitto/$start" }
+            )
+        ) {
+            DateToolsRoute(
+                navigateToMenu = navigateToMenu,
+                navigateToSettings = navigateToSettings
+            )
+        }
     }
 }

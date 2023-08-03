@@ -40,6 +40,6 @@ internal fun UnittoDrawerItem(
         label = { Text(stringResource(destination.name)) },
         icon = { Icon(icon, stringResource(destination.name)) },
         selected = selected,
-        onClick = { onClick(destination.route) }
+        onClick = { onClick(destination.graph) }
     )
 }
