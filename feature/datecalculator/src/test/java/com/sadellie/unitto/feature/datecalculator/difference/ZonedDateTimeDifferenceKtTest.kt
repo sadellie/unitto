@@ -18,8 +18,8 @@
 
 package com.sadellie.unitto.feature.datecalculator.difference
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import org.junit.Assert.assertEquals
+import org.junit.Test
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 

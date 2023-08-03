@@ -20,9 +20,9 @@ package com.sadellie.unitto.data.units
 
 import com.sadellie.unitto.data.model.NumberBaseUnit
 import com.sadellie.unitto.data.model.UnitGroup
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Test
 import java.math.BigDecimal
 
 class AllUnitsTest {
@@ -524,7 +524,7 @@ class AllUnitsTest {
         history[unitFrom.group] = content.plus(this)
     }
 
-    @AfterEach
+    @After
     fun after() {
         val unitGroup = history.keys.first()
         // GROUP : testedCount / totalCount
