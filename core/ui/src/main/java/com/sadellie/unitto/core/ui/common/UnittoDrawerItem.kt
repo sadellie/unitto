@@ -33,13 +33,13 @@ internal fun UnittoDrawerItem(
     destination: TopLevelDestinations,
     icon: ImageVector,
     selected: Boolean,
-    onClick: (String) -> Unit
+    onClick: (TopLevelDestinations) -> Unit
 ) {
     NavigationDrawerItem(
         modifier = modifier,
         label = { Text(stringResource(destination.name)) },
         icon = { Icon(icon, stringResource(destination.name)) },
         selected = selected,
-        onClick = { onClick(destination.graph) }
+        onClick = { onClick(destination) }
     )
 }

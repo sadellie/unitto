@@ -1,0 +1,31 @@
+<!--
+  ~ Unitto is a unit converter for Android
+  ~ Copyright (c) 2023 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="49dp"
+    android:viewportWidth="48"
+    android:viewportHeight="49">
+  <group>
+    <clip-path
+        android:pathData="M0,0.268h48v48h-48z"/>
+    <path
+        android:pathData="M16,36.268H19V32.268H23V29.268H19V25.268H16V29.268H12V32.268H16V36.268ZM26,34.768H36V31.768H26V34.768ZM26,29.768H36V26.768H26V29.768ZM28.2,22.168L31,19.368L33.8,22.168L35.9,20.068L33.1,17.168L35.9,14.368L33.8,12.268L31,15.068L28.2,12.268L26.1,14.368L28.9,17.168L26.1,20.068L28.2,22.168ZM12.5,18.668H22.5V15.668H12.5V18.668ZM10,42.268C8.9,42.268 7.958,41.877 7.175,41.093C6.392,40.31 6,39.368 6,38.268V10.268C6,9.168 6.392,8.227 7.175,7.443C7.958,6.66 8.9,6.268 10,6.268H38C39.1,6.268 40.042,6.66 40.825,7.443C41.608,8.227 42,9.168 42,10.268V38.268C42,39.368 41.608,40.31 40.825,41.093C40.042,41.877 39.1,42.268 38,42.268H10ZM10,38.268H38V10.268H10V38.268Z"
+        android:fillColor="#378648"/>
+  </group>
+</vector>

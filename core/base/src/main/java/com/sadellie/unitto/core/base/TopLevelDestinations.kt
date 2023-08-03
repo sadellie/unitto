@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.base
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
 // Don't touch, users have "..._route" in their settings
@@ -36,33 +37,60 @@ private const val TIME_ZONE_START = "time_zone_start"
 private const val SETTINGS_GRAPH = "settings_route"
 private const val SETTINGS_START = "settings_start"
 
+data class Shortcut(
+    @StringRes val shortcutShortLabel: Int,
+    @StringRes val shortcutLongLabel: Int,
+    @DrawableRes val shortcutDrawable: Int,
+)
+
 sealed class TopLevelDestinations(
     val graph: String,
     val start: String = graph,
     @StringRes val name: Int,
+    val shortcut: Shortcut? = null
 ) {
     data object Converter : TopLevelDestinations(
         graph = CONVERTER_GRAPH,
         start = CONVERTER_START,
-        name = R.string.unit_converter
+        name = R.string.unit_converter,
+        shortcut = Shortcut(
+            R.string.unit_converter,
+            R.string.unit_converter,
+            R.drawable.unit_converter_shortcut
+        )
     )
 
     data object Calculator : TopLevelDestinations(
         graph = CALCULATOR_GRAPH,
         start = CALCULATOR_START,
-        name = R.string.calculator
+        name = R.string.calculator,
+        shortcut = Shortcut(
+            R.string.calculator,
+            R.string.calculator,
+            R.drawable.calculator_shortcut
+        )
     )
 
     data object DateCalculator : TopLevelDestinations(
         graph = DATE_CALCULATOR_GRAPH,
         start = DATE_CALCULATOR_START,
-        name = R.string.date_calculator
+        name = R.string.date_calculator,
+        shortcut = Shortcut(
+            R.string.date_calculator,
+            R.string.date_calculator,
+            R.drawable.date_calculator_shortcut
+        )
     )
 
     data object TimeZone : TopLevelDestinations(
         graph = TIME_ZONE_GRAPH,
         start = TIME_ZONE_START,
-        name = R.string.time_zone_screen
+        name = R.string.time_zone_screen,
+        shortcut = Shortcut(
+            R.string.time_zone_screen,
+            R.string.time_zone_screen,
+            R.drawable.time_zone_shortcut
+        )
     )
 
     data object Settings : TopLevelDestinations(

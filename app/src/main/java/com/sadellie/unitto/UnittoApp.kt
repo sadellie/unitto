@@ -32,10 +32,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.sadellie.unitto.core.base.Shortcut
 import com.sadellie.unitto.core.base.TOP_LEVEL_START_ROUTES
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
 import com.sadellie.unitto.core.ui.common.UnittoModalNavigationDrawer
@@ -56,6 +58,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun UnittoApp(uiPrefs: UIPreferences) {
 
+    val mContext = LocalContext.current
     val themmoController = rememberThemmoController(
         lightColorScheme = LightThemeColors,
         darkColorScheme = DarkThemeColors,
@@ -71,6 +74,9 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
     // Navigation drawer stuff
     val drawerState = rememberUnittoDrawerState()
     val drawerScope = rememberCoroutineScope()
+
+    val shortcutsScope = rememberCoroutineScope()
+
     val mainTabs by remember(uiPrefs.enableToolsExperiment) {
         derivedStateOf {
             if (uiPrefs.enableToolsExperiment) {
@@ -110,14 +116,26 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                     mainTabs = mainTabs,
                     additionalTabs = additionalTabs,
                     currentDestination = navBackStackEntry?.destination?.route
-                ) {
+                ) { destination ->
                     drawerScope.launch { drawerState.close() }
-                    navController.navigate(it) {
+
+                    navController.navigate(destination.graph) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
+                    }
+
+                    shortcutsScope.launch {
+                        destination.shortcut?.let { shortcut: Shortcut ->
+                            mContext.pushDynamicShortcut(
+                                destination.graph,
+                                shortcut.shortcutShortLabel,
+                                shortcut.shortcutLongLabel,
+                                shortcut.shortcutDrawable
+                            )
+                        }
                     }
                 }
             },

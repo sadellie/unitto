@@ -1,0 +1,31 @@
+<!--
+  ~ Unitto is a unit converter for Android
+  ~ Copyright (c) 2023 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="49dp"
+    android:viewportWidth="48"
+    android:viewportHeight="49">
+  <group>
+    <clip-path
+        android:pathData="M0,0.268h48v48h-48z"/>
+    <path
+        android:pathData="M14,40.268L4,30.268L14,20.268L16.8,23.118L11.65,28.268H26V32.268H11.65L16.8,37.418L14,40.268ZM34,28.268L31.2,25.418L36.35,20.268H22V16.268H36.35L31.2,11.118L34,8.268L44,18.268L34,28.268Z"
+        android:fillColor="#378648"/>
+  </group>
+</vector>
