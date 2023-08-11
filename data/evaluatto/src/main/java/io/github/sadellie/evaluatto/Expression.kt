@@ -23,16 +23,18 @@ import com.sadellie.unitto.core.base.Token
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.tan
 import kotlin.math.acos
 import kotlin.math.asin
 import kotlin.math.atan
+import kotlin.math.cos
+import kotlin.math.exp
 import kotlin.math.ln
 import kotlin.math.log
-import kotlin.math.exp
 import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.tan
+
+private val maxFactorial by lazy { BigDecimal("9999") }
 
 sealed class ExpressionException(override val message: String): Exception(message) {
     class DivideByZero : ExpressionException("Can't divide by zero")
@@ -300,6 +302,7 @@ private fun BigDecimal.pow(n: BigDecimal): BigDecimal {
 private fun BigDecimal.factorial(): BigDecimal {
     if (this.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) != 0) throw ExpressionException.FactorialCalculation()
     if (this < BigDecimal.ZERO) throw ExpressionException.FactorialCalculation()
+    if (this > maxFactorial) throw ExpressionException.TooBig()
 
     var expr = this
     for (i in 1 until this.toInt()) {
