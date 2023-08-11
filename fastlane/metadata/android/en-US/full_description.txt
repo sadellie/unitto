@@ -15,3 +15,5 @@ Calculator, unit converter and more.
 • Ability to disable unit groups
 • Customizable number formatter
 • SI Standard
+
+Currency converter needs a thing called <b>Internet</b>, that's why it says "have full network access".

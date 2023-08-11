@@ -28,6 +28,8 @@
 - Customizable number **formatter**
 - **SI Standard**
 
+**Currency converter** needs Internet connection, stop asking stupid questions.
+
 ## 👅 [Translate](https://poeditor.com/join/project/T4zjmoq8dx)
 Join on **POEditor** to help.
 
