@@ -19,8 +19,6 @@
 package com.sadellie.unitto.feature.datecalculator
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -66,9 +64,7 @@ internal fun DateCalculatorScreen(
     val coroutineScope = rememberCoroutineScope()
 
     UnittoScreenWithTopBar(
-        modifier = Modifier
-            .navigationBarsPadding()
-            .imePadding(),
+        modifier = Modifier,
         title = { Text(stringResource(R.string.date_calculator)) },
         navigationIcon = { MenuButton(navigateToMenu) },
         actions = {

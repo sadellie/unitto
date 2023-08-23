@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Unitto">
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".MainActivity"
             android:allowTaskReparenting="true"
             android:exported="true">
