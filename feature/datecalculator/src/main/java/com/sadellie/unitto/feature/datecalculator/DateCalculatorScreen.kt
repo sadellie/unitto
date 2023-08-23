@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.R
@@ -58,6 +59,7 @@ internal fun DateCalculatorScreen(
 ) {
     val addSubtractLabel = "${stringResource(R.string.add)}/${stringResource(R.string.subtract)}"
     val differenceLabel = stringResource(R.string.difference)
+    val focusManager = LocalFocusManager.current
 
     val allTabs = remember { mutableListOf(addSubtractLabel, differenceLabel) }
     val pagerState = rememberPagerState { allTabs.size }
@@ -96,7 +98,9 @@ internal fun DateCalculatorScreen(
             ) { page ->
                 when (page) {
                     0 -> AddSubtractPage()
-                    1 -> DateDifferencePage()
+                    1 -> DateDifferencePage().also {
+                        focusManager.clearFocus(true)
+                    }
                 }
             }
         }
