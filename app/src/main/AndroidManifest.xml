@@ -8,7 +8,7 @@
         android:icon="@mipmap/ic_launcher_icon"
         android:label="@string/calculator"
 
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/Theme.Unitto">
         <activity
             android:windowSoftInputMode="adjustPan"
