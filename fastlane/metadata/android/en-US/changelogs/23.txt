@@ -1,0 +1,8 @@
+"Mikado Yellow" update:
+
+- Date calculator
+- Shortcuts
+- Option to swap zero and decimal buttons
+- Decimal percentages support
+- Manually update currency rates
+- Fix gestures

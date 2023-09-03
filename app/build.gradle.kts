@@ -34,8 +34,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 34
-        versionCode = 22
-        versionName = "Lilac Luster"
+        versionCode = 23
+        versionName = "Mikado Yellow"
     }
 
     buildTypes {

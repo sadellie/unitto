@@ -1,6 +1,6 @@
 [versions]
-appCode = "22"
-appName = "Lilac Luster"
+appCode = "23"
+appName = "Mikado Yellow"
 kotlin = "1.9.0"
 androidxCore = "1.10.1"
 androidGradlePlugin = "8.0.2"
