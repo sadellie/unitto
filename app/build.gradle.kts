@@ -36,6 +36,7 @@ android {
         targetSdk = 34
         versionCode = 23
         versionName = "Mikado Yellow"
+        resourceConfigurations += setOf("en", "de", "en-rGB", "fr", "it", "ru")
     }
 
     buildTypes {
