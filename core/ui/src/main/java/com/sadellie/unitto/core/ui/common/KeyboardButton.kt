@@ -42,22 +42,22 @@ fun BasicKeyboardButton(
     icon: ImageVector,
     iconColor: Color,
     allowVibration: Boolean,
-    contentHeight: Float
+    contentHeight: Float,
 ) {
     val view = LocalView.current
     val coroutineScope = rememberCoroutineScope()
+    fun vibrate() {
+        if (allowVibration) {
+            coroutineScope.launch {
+                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            }
+        }
+    }
 
     UnittoButton(
         modifier = modifier,
-        onClick = {
-            onClick()
-            if (allowVibration) {
-                coroutineScope.launch {
-                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                }
-            }
-                  },
-        onLongClick = onLongClick,
+        onClick = { onClick(); vibrate() },
+        onLongClick = if (onLongClick != null) { { onLongClick(); vibrate() } } else null,
         containerColor = containerColor,
         contentPadding = PaddingValues()
     ) {
@@ -116,7 +116,7 @@ fun KeyboardButtonAdditional(
     icon: ImageVector,
     allowVibration: Boolean,
     onLongClick: (() -> Unit)? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     BasicKeyboardButton(
         modifier = modifier,
@@ -131,4 +131,5 @@ fun KeyboardButtonAdditional(
 }
 
 @Composable
-private fun isPortrait() = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
+private fun isPortrait() =
+    LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
