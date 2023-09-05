@@ -30,6 +30,7 @@ android {
 dependencies {
     implementation(libs.com.github.sadellie.themmo)
     implementation(libs.org.burnoutcrew.composereorderable)
+    implementation(libs.androidx.appcompat)
 
     implementation(project(mapOf("path" to ":data:common")))
     implementation(project(mapOf("path" to ":data:model")))

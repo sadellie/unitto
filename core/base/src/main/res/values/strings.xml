@@ -1382,4 +1382,13 @@ Used in this dialog window. Should be short -->
     <string name="add">Add</string>
     <string name="subtract">Subtract</string>
     <string name="date_calculator">Date calculator</string>
+
+    <string name="locale_en" translatable="false">English</string>
+    <string name="locale_de" translatable="false">Deutsch</string>
+    <string name="locale_en_rGB" translatable="false">English (UK)</string>
+    <string name="locale_fr" translatable="false">Français</string>
+    <string name="locale_it" translatable="false">Italiano</string>
+    <string name="locale_ru" translatable="false">Русский</string>
+    <string name="language_setting">Language</string>
+    <string name="language_setting_support">Change the app language</string>
 </resources>

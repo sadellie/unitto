@@ -12,6 +12,7 @@ androidxComposeMaterial3 = "1.2.0-alpha04"
 androidxNavigation = "2.6.0"
 androidxLifecycleRuntimeCompose = "2.6.1"
 androidxHilt = "1.0.0"
+androidxAppCompat = "1.6.1"
 comGoogleDagger = "2.47"
 androidxComposeMaterialIconsExtended = "1.6.0-alpha02"
 androidxDatastore = "1.0.0"
@@ -61,6 +62,7 @@ com-squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "converter-m
 com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
 org-burnoutcrew-composereorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "orgBurnoutcrewComposereorderable" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 
 # classpath
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

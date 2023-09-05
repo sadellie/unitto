@@ -18,12 +18,14 @@
 
 package com.sadellie.unitto.feature.settings
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Rule
@@ -42,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.os.LocaleListCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
@@ -63,7 +66,7 @@ import com.sadellie.unitto.feature.settings.navigation.unitsGroupRoute
 internal fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
     menuButtonClick: () -> Unit,
-    navControllerAction: (String) -> Unit
+    navControllerAction: (String) -> Unit,
 ) {
     val mContext = LocalContext.current
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
@@ -206,6 +209,21 @@ internal fun SettingsScreen(
                 )
             }
 
+            // LANGUAGE
+            item {
+                ListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.Language,
+                            stringResource(R.string.language_setting)
+                        )
+                    },
+                    headlineContent = { Text(stringResource(R.string.language_setting)) },
+                    supportingContent = { Text(stringResource(R.string.language_setting_support)) },
+                    modifier = Modifier.clickable { dialogState = DialogState.LANGUAGE }
+                )
+            }
+
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
@@ -257,6 +275,7 @@ internal fun SettingsScreen(
                 dismissAction = { resetDialog() }
             )
         }
+
         DialogState.UNIT_LIST_SORTING -> {
             AlertDialogWithList(
                 title = stringResource(R.string.units_sorting),
@@ -271,6 +290,29 @@ internal fun SettingsScreen(
                 dismissAction = { resetDialog() }
             )
         }
+
+        DialogState.LANGUAGE -> {
+            AlertDialogWithList(
+                title = stringResource(R.string.language_setting),
+                listItems = mapOf(
+                    "" to R.string.auto_label,
+                    "en" to R.string.locale_en,
+                    "de" to R.string.locale_de,
+                    "en_rGB" to R.string.locale_en_rGB,
+                    "fr" to R.string.locale_fr,
+                    "it" to R.string.locale_it,
+                    "ru" to R.string.locale_ru,
+                ),
+                selectedItemIndex = AppCompatDelegate.getApplicationLocales().toLanguageTags(),
+                selectAction = {
+                    val selectedLocale = if (it == "") LocaleListCompat.getEmptyLocaleList()
+                        else LocaleListCompat.forLanguageTags(it)
+
+                    AppCompatDelegate.setApplicationLocales(selectedLocale)
+                },
+                dismissAction = { resetDialog() }
+            )
+        }
         // Dismissing alert dialog
         else -> {}
     }
@@ -280,5 +322,5 @@ internal fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, START_SCREEN, UNIT_LIST_SORTING
+    NONE, START_SCREEN, UNIT_LIST_SORTING, LANGUAGE
 }
