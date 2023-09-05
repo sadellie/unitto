@@ -225,6 +225,8 @@ private fun ThemesScreen(
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                item { Header(stringResource(R.string.color_scheme)) }
+
                 item {
                     UnittoListItem(
                         leadingContent = {
@@ -239,50 +241,50 @@ private fun ThemesScreen(
                         onSwitchChange = onDynamicThemeChange
                     )
                 }
-            }
 
-            item {
-                AnimatedVisibility(
-                    visible = !isDynamicThemeEnabled,
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut(),
-                ) {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.selected_color)) },
-                        supportingContent = {
-                            ColorSelector(
-                                modifier = Modifier.padding(top = 12.dp),
-                                selected = selectedColor,
-                                onItemClick = onColorChange,
-                                colorSchemes = colorSchemes,
-                                defaultColor = Color(0xFF186c31)
-                            )
-                        },
-                        modifier = Modifier.padding(start = 40.dp)
-                    )
+                item {
+                    AnimatedVisibility(
+                        visible = !isDynamicThemeEnabled,
+                        enter = expandVertically() + fadeIn(),
+                        exit = shrinkVertically() + fadeOut(),
+                    ) {
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.selected_color)) },
+                            supportingContent = {
+                                ColorSelector(
+                                    modifier = Modifier.padding(top = 12.dp),
+                                    selected = selectedColor,
+                                    onItemClick = onColorChange,
+                                    colorSchemes = colorSchemes,
+                                    defaultColor = Color(0xFF186c31)
+                                )
+                            },
+                            modifier = Modifier.padding(start = 40.dp)
+                        )
+                    }
                 }
-            }
 
-            item {
-                AnimatedVisibility(
-                    visible = (!isDynamicThemeEnabled) and (selectedColor != Color.Unspecified),
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut(),
-                ) {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.monet_mode)) },
-                        supportingContent = {
-                            MonetModeSelector(
-                                modifier = Modifier.padding(top = 12.dp),
-                                selected = monetMode,
-                                onItemClick = onMonetModeChange,
-                                monetModes = remember { MonetMode.values().toList() },
-                                customColor = selectedColor,
-                                themingMode = currentThemingMode,
-                            )
-                        },
-                        modifier = Modifier.padding(start = 40.dp)
-                    )
+                item {
+                    AnimatedVisibility(
+                        visible = (!isDynamicThemeEnabled) and (selectedColor != Color.Unspecified),
+                        enter = expandVertically() + fadeIn(),
+                        exit = shrinkVertically() + fadeOut(),
+                    ) {
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.monet_mode)) },
+                            supportingContent = {
+                                MonetModeSelector(
+                                    modifier = Modifier.padding(top = 12.dp),
+                                    selected = monetMode,
+                                    onItemClick = onMonetModeChange,
+                                    monetModes = remember { MonetMode.values().toList() },
+                                    customColor = selectedColor,
+                                    themingMode = currentThemingMode,
+                                )
+                            },
+                            modifier = Modifier.padding(start = 40.dp)
+                        )
+                    }
                 }
             }
         }
