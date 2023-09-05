@@ -1391,4 +1391,6 @@ Used in this dialog window. Should be short -->
     <string name="locale_ru" translatable="false">Русский</string>
     <string name="language_setting">Language</string>
     <string name="language_setting_support">Change the app language</string>
+    <string name="system_font_setting">System font</string>
+    <string name="system_font_setting_support">Use system font for texts in app</string>
 </resources>

@@ -33,6 +33,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.HdrAuto
@@ -48,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
@@ -83,6 +85,8 @@ internal fun ThemesRoute(
     themmoController: ThemmoController,
     viewModel: ThemesViewModel = hiltViewModel()
 ) {
+    val systemFont = viewModel.systemFont.collectAsStateWithLifecycle()
+
     ThemesScreen(
         navigateUpAction = navigateUpAction,
         currentThemingMode = themmoController.currentThemingMode,
@@ -114,7 +118,9 @@ internal fun ThemesRoute(
         onMonetModeChange = {
             themmoController.setMonetMode(it)
             viewModel.updateMonetMode(it)
-        }
+        },
+        systemFont = systemFont.value,
+        onSystemFontChange = viewModel::updateSystemFont
     )
 }
 
@@ -130,7 +136,9 @@ private fun ThemesScreen(
     selectedColor: Color,
     onColorChange: (Color) -> Unit,
     monetMode: MonetMode,
-    onMonetModeChange: (MonetMode) -> Unit
+    onMonetModeChange: (MonetMode) -> Unit,
+    systemFont: Boolean,
+    onSystemFontChange: (Boolean) -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.theme_setting),
@@ -201,7 +209,20 @@ private fun ThemesScreen(
                 }
             }
 
-            item { Header(stringResource(R.string.color_scheme)) }
+            item {
+                UnittoListItem(
+                    leadingContent = {
+                        Icon(
+                            Icons.Default.FontDownload,
+                            stringResource(R.string.system_font_setting),
+                        )
+                    },
+                    label = stringResource(R.string.system_font_setting),
+                    supportContent = stringResource(R.string.system_font_setting_support),
+                    switchState = systemFont,
+                    onSwitchChange = onSystemFontChange
+                )
+            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 item {
@@ -283,7 +304,9 @@ private fun Preview() {
             selectedColor = themmoController.currentCustomColor,
             onColorChange = themmoController::setCustomColor,
             monetMode = themmoController.currentMonetMode,
-            onMonetModeChange = themmoController::setMonetMode
+            onMonetModeChange = themmoController::setMonetMode,
+            systemFont = false,
+            onSystemFontChange = {}
         )
     }
 }

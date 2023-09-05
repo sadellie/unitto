@@ -84,6 +84,7 @@ data class UserPreferences(
     val unitConverterFormatTime: Boolean = false,
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
     val middleZero: Boolean = false,
+    val systemFont: Boolean = false,
 )
 
 data class UIPreferences(
@@ -94,6 +95,7 @@ data class UIPreferences(
     val monetMode: MonetMode = MonetMode.TONAL_SPOT,
     val startingScreen: String = TopLevelDestinations.Calculator.graph,
     val enableToolsExperiment: Boolean = false,
+    val systemFont: Boolean = false,
 )
 
 data class MainPreferences(
@@ -138,6 +140,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
         val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
         val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
+        val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
     }
 
     val uiPreferencesFlow: Flow<UIPreferences> = dataStore.data
@@ -158,6 +161,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 ?: MonetMode.TONAL_SPOT
             val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Calculator.graph
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
+            val systemFont: Boolean = preferences[PrefsKeys.SYSTEM_FONT] ?: false
 
             UIPreferences(
                 themingMode = themingMode,
@@ -166,7 +170,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 customColor = customColor,
                 monetMode = monetMode,
                 startingScreen = startingScreen,
-                enableToolsExperiment = enableToolsExperiment
+                enableToolsExperiment = enableToolsExperiment,
+                systemFont = systemFont
             )
         }
 
@@ -243,6 +248,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             unitConverterFormatTime = main.unitConverterFormatTime,
             unitConverterSorting = main.unitConverterSorting,
             middleZero = main.middleZero,
+            systemFont = ui.systemFont,
         )
     }
 
@@ -439,6 +445,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateUnitConverterSorting(sorting: UnitsListSorting) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_SORTING] = sorting.name
+        }
+    }
+
+    /**
+     * Update system font preference.
+     *
+     * @param enabled When true will use system font.
+     */
+    suspend fun updateSystemFont(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.SYSTEM_FONT] = enabled
         }
     }
 }

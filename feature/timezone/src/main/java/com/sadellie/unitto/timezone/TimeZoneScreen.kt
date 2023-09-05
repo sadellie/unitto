@@ -85,7 +85,7 @@ import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
 import com.sadellie.unitto.core.ui.datetime.formatLocal
-import com.sadellie.unitto.core.ui.theme.AppTypography
+import com.sadellie.unitto.core.ui.theme.AppTypographyUnitto
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
 import com.sadellie.unitto.data.model.UnittoTimeZone
@@ -355,7 +355,7 @@ fun PreviewTimeZoneScreen() {
             lightColorScheme = LightThemeColors,
             darkColorScheme = DarkThemeColors,
         ),
-        typography = AppTypography,
+        typography = AppTypographyUnitto,
     ) {
         TimeZoneScreen(
             uiState = TimeZoneUIState(

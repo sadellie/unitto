@@ -25,6 +25,9 @@ import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +35,14 @@ import javax.inject.Inject
 class ThemesViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository
 ) : ViewModel() {
+
+    val systemFont = userPrefsRepository.uiPreferencesFlow
+        .map { it.systemFont }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            false
+        )
 
     /**
      * @see UserPreferencesRepository.updateThemingMode
@@ -75,6 +86,15 @@ class ThemesViewModel @Inject constructor(
     fun updateMonetMode(monetMode: MonetMode) {
         viewModelScope.launch {
             userPrefsRepository.updateMonetMode(monetMode)
+        }
+    }
+
+    /**
+     * @see UserPreferencesRepository.updateSystemFont
+     */
+    fun updateSystemFont(enabled: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updateSystemFont(enabled)
         }
     }
 }
