@@ -30,7 +30,7 @@ import com.sadellie.unitto.feature.unitslist.UnitsListViewModel
 private const val LEFT_SIDE_ROUTE = "LEFT_SIDE_ROUTE"
 private const val RIGHT_SIDE_ROUTE = "RIGHT_SIDE_ROUTE"
 private const val UNIT_FROM_ARG = "UNIT_FROM_ARG"
-private const val UNIT_TO_ARG = "UNIT_FROM_ARG"
+private const val UNIT_TO_ARG = "UNIT_TO_ARG"
 private const val INPUT_ARG = "INPUT_ARG"
 
 fun NavController.navigateToLeftSide(unitFromId: String) {
