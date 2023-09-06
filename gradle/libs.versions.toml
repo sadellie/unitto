@@ -1,5 +1,5 @@
 [versions]
-appCode = "23"
+appCode = "24"
 appName = "Mikado Yellow"
 kotlin = "1.9.0"
 androidxCore = "1.10.1"
