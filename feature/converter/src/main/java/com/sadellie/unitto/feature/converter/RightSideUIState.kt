@@ -20,6 +20,7 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.base.OutputFormat
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
@@ -35,4 +36,5 @@ internal data class RightSideUIState(
     val input: String = "",
     val scale: Int = 3,
     val outputFormat: Int = OutputFormat.PLAIN,
+    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces
 )

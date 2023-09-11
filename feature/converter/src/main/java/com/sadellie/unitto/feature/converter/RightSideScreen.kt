@@ -35,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.DefaultUnit
@@ -116,7 +118,8 @@ private fun RightSideScreen(
                                     input = uiState.input,
                                     shortName = stringResource(it.shortName),
                                     scale = uiState.scale,
-                                    outputFormat = uiState.outputFormat
+                                    outputFormat = uiState.outputFormat,
+                                    formatterSymbols = uiState.formatterSymbols
                                 ),
                                 isFavorite = it.isFavorite,
                                 isSelected = it.id == uiState.unitTo?.id,
@@ -139,14 +142,18 @@ private fun formatUnitToSupportLabel(
     input: String,
     shortName: String,
     scale: Int,
-    outputFormat: Int
+    outputFormat: Int,
+    formatterSymbols: FormatterSymbols
 ): String {
     try {
         if ((unitFrom is DefaultUnit) and (unitTo is DefaultUnit)) {
             unitFrom as DefaultUnit
             unitTo as DefaultUnit
 
-            val conversion = unitFrom.convert(unitTo, BigDecimal(input)).format(scale, outputFormat)
+            val conversion = unitFrom
+                .convert(unitTo, BigDecimal(input))
+                .format(scale, outputFormat)
+                .formatExpression(formatterSymbols)
 
             return "$conversion $shortName"
         }

@@ -185,6 +185,7 @@ internal class ConverterViewModel @Inject constructor(
             input = calculation?.toPlainString() ?: input.text,
             scale = prefs.digitsPrecision,
             outputFormat = prefs.outputFormat,
+            formatterSymbols = AllFormatterSymbols.getById(prefs.separator)
         )
     }
         .onEach {
