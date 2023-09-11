@@ -69,7 +69,7 @@ internal class CalculatorViewModel @Inject constructor(
     val uiState = combine(
         _input, _output, _history, _userPrefs
     ) { input, output, history, userPrefs ->
-        return@combine CalculatorUIState(
+        return@combine CalculatorUIState.Ready(
             input = input,
             output = output,
             radianMode = userPrefs.radianMode,
@@ -79,7 +79,7 @@ internal class CalculatorViewModel @Inject constructor(
             middleZero = userPrefs.middleZero,
         )
     }.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState()
+        viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState.Loading
     )
 
     fun addTokens(tokens: String) = _input.update { it.addTokens(tokens) }

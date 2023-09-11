@@ -24,6 +24,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material3.Icon
@@ -48,9 +50,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
@@ -136,6 +140,118 @@ internal fun CalculatorKeyboard(
             deleteSymbol = deleteSymbol,
             clearSymbols = clearSymbols,
             evaluate = evaluate
+        )
+    }
+}
+
+@Composable
+internal fun CalculatorKeyboardLoading(
+    modifier: Modifier
+) {
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        PortraitKeyboardLoading(modifier)
+    } else {
+        LandscapeKeyboardLoading(modifier)
+    }
+}
+
+@Composable
+private fun PortraitKeyboardLoading(
+    modifier: Modifier
+) {
+    ColumnWithConstraints(
+        modifier = modifier
+    ) { constraints ->
+
+        val additionalButtonHeight by remember {
+            mutableStateOf(constraints.maxHeight * 0.09f)
+        }
+
+        val spacerHeight by remember {
+            mutableStateOf(constraints.maxHeight * 0.025f)
+        }
+
+        val additionalRowSpacedBy by remember {
+            mutableStateOf(constraints.maxWidth * 0.03f)
+        }
+
+        val weightModifier = Modifier.weight(1f)
+        val additionalButtonModifier = Modifier
+            .weight(1f)
+            .height(additionalButtonHeight)
+
+        Spacer(modifier = Modifier.height(spacerHeight))
+
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(additionalRowSpacedBy)
+        ) {
+            // Additional buttons
+            Box(weightModifier) {
+                AdditionalButtonsPortrait(
+                    modifier = additionalButtonModifier,
+                    allowVibration = false,
+                    addSymbol = {},
+                    showAdditional = false,
+                    radianMode = false,
+                    toggleAngleMode = {},
+                    toggleInvMode = {}
+                )
+            }
+
+            Box(
+                modifier = Modifier.size(additionalButtonHeight),
+                contentAlignment = Alignment.Center
+            ) {
+                // Expand/Collapse
+                IconButton(
+                    onClick = {  },
+                    colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
+                ) {
+                    Icon(Icons.Default.ExpandLess, null)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(spacerHeight))
+
+        Box(
+            modifier = weightModifier
+                .clip(RoundedCornerShape(32.dp))
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+                .fillMaxSize()
+        )
+
+        Spacer(modifier = Modifier.height(spacerHeight))
+    }
+}
+
+@Composable
+private fun LandscapeKeyboardLoading(
+    modifier: Modifier
+) {
+    RowWithConstraints(modifier) { constraints ->
+        val buttonModifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .padding(constraints.maxWidth * 0.005f, constraints.maxHeight * 0.02f)
+
+        AdditionalButtonsLandscape(
+            modifier = Modifier.weight(1f),
+            buttonModifier = buttonModifier,
+            allowVibration = false,
+            radianMode = false,
+            addSymbol = {},
+            toggleAngleMode = {},
+            toggleInvMode = {}
+        )
+
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(32.dp))
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+                .weight(5f)
+                .fillMaxSize()
         )
     }
 }

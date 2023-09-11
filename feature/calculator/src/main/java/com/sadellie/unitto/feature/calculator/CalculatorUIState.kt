@@ -24,15 +24,19 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 
-data class CalculatorUIState(
-    val input: TextFieldValue = TextFieldValue(),
-    val output: CalculationResult = CalculationResult.Default(),
-    val radianMode: Boolean = true,
-    val history: List<HistoryItem> = emptyList(),
-    val allowVibration: Boolean = false,
-    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
-    val middleZero: Boolean = false,
-)
+internal sealed class CalculatorUIState {
+    data object Loading : CalculatorUIState()
+
+    data class Ready(
+        val input: TextFieldValue = TextFieldValue(),
+        val output: CalculationResult = CalculationResult.Default(),
+        val radianMode: Boolean = true,
+        val history: List<HistoryItem> = emptyList(),
+        val allowVibration: Boolean = false,
+        val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
+        val middleZero: Boolean = false,
+    ) : CalculatorUIState()
+}
 
 sealed class CalculationResult(@StringRes val label: Int? = null) {
     data class Default(val text: String = "") : CalculationResult()

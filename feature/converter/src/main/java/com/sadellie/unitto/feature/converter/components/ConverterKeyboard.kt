@@ -18,19 +18,13 @@
 
 package com.sadellie.unitto.feature.converter.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
@@ -168,16 +162,4 @@ internal fun NumberBaseKeyboard(
                 Modifier.fillMaxSize().weight(2f).padding(it.maxWidth * 0.015f, it.maxHeight * 0.008f), UnittoIcons.Backspace, allowVibration, clearInput) { deleteDigit() }
         }
     }
-}
-
-@Composable
-internal fun LoadingKeyboard(
-    modifier: Modifier,
-) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(32.dp))
-            .background(MaterialTheme.colorScheme.inverseOnSurface)
-            .fillMaxSize()
-    )
 }

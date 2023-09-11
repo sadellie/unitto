@@ -70,6 +70,7 @@ import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
+import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboardLoading
 import com.sadellie.unitto.feature.calculator.components.HistoryList
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -80,25 +81,31 @@ internal fun CalculatorRoute(
     navigateToSettings: () -> Unit,
     viewModel: CalculatorViewModel = hiltViewModel()
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
-    CalculatorScreen(
-        uiState = uiState.value,
-        navigateToMenu = navigateToMenu,
-        navigateToSettings = navigateToSettings,
-        addSymbol = viewModel::addTokens,
-        clearSymbols = viewModel::clearInput,
-        deleteSymbol = viewModel::deleteTokens,
-        onCursorChange = viewModel::onCursorChange,
-        toggleAngleMode = viewModel::toggleCalculatorMode,
-        evaluate = viewModel::evaluate,
-        clearHistory = viewModel::clearHistory
-    )
+    when (uiState) {
+        is CalculatorUIState.Loading -> Loading(
+            navigateToMenu = navigateToMenu,
+            navigateToSettings = navigateToSettings,
+        )
+        is CalculatorUIState.Ready -> CalculatorScreen(
+            uiState = uiState,
+            navigateToMenu = navigateToMenu,
+            navigateToSettings = navigateToSettings,
+            addSymbol = viewModel::addTokens,
+            clearSymbols = viewModel::clearInput,
+            deleteSymbol = viewModel::deleteTokens,
+            onCursorChange = viewModel::onCursorChange,
+            toggleAngleMode = viewModel::toggleCalculatorMode,
+            evaluate = viewModel::evaluate,
+            clearHistory = viewModel::clearHistory
+        )
+    }
 }
 
 @Composable
 private fun CalculatorScreen(
-    uiState: CalculatorUIState,
+    uiState: CalculatorUIState.Ready,
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
     addSymbol: (String) -> Unit,
@@ -317,6 +324,80 @@ private fun CalculatorScreen(
     }
 }
 
+@Composable
+private fun Loading(
+    navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit,
+) {
+    UnittoScreenWithTopBar(
+        title = { Text(stringResource(R.string.calculator)) },
+        navigationIcon = { MenuButton { navigateToMenu() } },
+        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
+        actions = { SettingsButton(navigateToSettings) }
+    ) { paddingValues ->
+        BoxWithConstraints(
+            modifier = Modifier.padding(paddingValues),
+        ) {
+            // Input
+            Column(
+                Modifier
+                    .height(maxHeight * 0.25f)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        RoundedCornerShape(
+                            topStartPercent = 0, topEndPercent = 0,
+                            bottomStartPercent = 20, bottomEndPercent = 20
+                        )
+                    )
+                    .padding(top = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                UnformattedTextField(
+                    modifier = Modifier
+                        .weight(2f)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    value = TextFieldValue(),
+                    minRatio = 0.5f,
+                    onCursorChange = {},
+                )
+                if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    UnformattedTextField(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        value = TextFieldValue(),
+                        minRatio = 1f,
+                        onCursorChange = {},
+                        readOnly = true,
+                    )
+                }
+                // Handle
+                Box(
+                    Modifier
+                        .padding(8.dp)
+                        .background(
+                            MaterialTheme.colorScheme.onSurfaceVariant,
+                            RoundedCornerShape(100)
+                        )
+                        .sizeIn(24.dp, 4.dp)
+                )
+            }
+
+            // Keyboard
+            CalculatorKeyboardLoading(
+                modifier = Modifier
+                    .offset(y = maxHeight * 0.25f)
+                    .height(maxHeight * 0.75f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+            )
+        }
+    }
+}
+
 @Preview(widthDp = 432, heightDp = 1008, device = "spec:parent=pixel_5,orientation=portrait")
 @Preview(widthDp = 432, heightDp = 864, device = "spec:parent=pixel_5,orientation=portrait")
 @Preview(widthDp = 597, heightDp = 1393, device = "spec:parent=pixel_5,orientation=portrait")
@@ -346,7 +427,7 @@ private fun PreviewCalculatorScreen() {
     }
 
     CalculatorScreen(
-        uiState = CalculatorUIState(
+        uiState = CalculatorUIState.Ready(
             input = TextFieldValue("1.2345"),
             output = CalculationResult.Default("1234"),
             history = historyItems

@@ -28,12 +28,15 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.Icon
@@ -48,6 +51,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -56,6 +60,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
@@ -72,7 +77,6 @@ import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
-import com.sadellie.unitto.feature.converter.components.LoadingKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
 
@@ -191,7 +195,12 @@ private fun ConverterLoading(modifier: Modifier) {
             }
         },
         content2 = {
-            LoadingKeyboard(modifier = it)
+            Box(
+                modifier = it
+                    .clip(RoundedCornerShape(32.dp))
+                    .background(MaterialTheme.colorScheme.inverseOnSurface)
+                    .fillMaxSize()
+            )
         }
     )
 }
