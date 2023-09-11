@@ -524,6 +524,20 @@ class AllUnitsTest {
         skot.checkWith(lumen_per_square_meter_per_steradian, "6723", "2.14")
     }
 
+    @Test
+    fun testFuelConsumptionCollection() = testWithUnits {
+        kilometer_per_liter.checkWith(gallon_uk_per_mile, "47.45", "0.00746")
+        liter_per_kilometer.checkWith(kilometer_per_liter, "47.45", "0.02107")
+        liter_per_100_kilometer.checkWith(kilometer_per_liter, "47.45", "2.10748")
+        mile_per_gallon_uk.checkWith(mile_per_gallon_us, "47.45", "39.51039")
+        mile_per_gallon_us.checkWith(gallon_us_per_100_mile, "47.45", "2.10748")
+        mile_us_per_liter.checkWith(gallon_uk_per_100_mile, "47.45", "0.46358")
+        gallon_us_per_mile.checkWith(liter_per_100_kilometer, "47.45", "11160.93198")
+        gallon_uk_per_mile.checkWith(kilometer_per_liter, "47.45", "0.00746")
+        gallon_us_per_100_mile.checkWith(gallon_us_per_mile, "47.45", "0.4745")
+        gallon_uk_per_100_mile.checkWith(mile_per_gallon_us, "47.45", "1.75485")
+    }
+
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)

@@ -24,6 +24,8 @@ import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.unit.FuelBackward
+import com.sadellie.unitto.data.model.unit.FuelForward
 import com.sadellie.unitto.data.model.unit.NormalUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
 import com.sadellie.unitto.data.model.unit.ReverseUnit
@@ -39,6 +41,7 @@ import com.sadellie.unitto.data.units.collections.energyCollection
 import com.sadellie.unitto.data.units.collections.flowRateCollection
 import com.sadellie.unitto.data.units.collections.fluxCollection
 import com.sadellie.unitto.data.units.collections.forceCollection
+import com.sadellie.unitto.data.units.collections.fuelConsumptionCollection
 import com.sadellie.unitto.data.units.collections.lengthCollection
 import com.sadellie.unitto.data.units.collections.luminanceCollection
 import com.sadellie.unitto.data.units.collections.massCollection
@@ -91,7 +94,8 @@ class UnitsRepository @Inject constructor(
         forceCollection +
         torqueCollection +
         flowRateCollection +
-        luminanceCollection
+        luminanceCollection +
+        fuelConsumptionCollection
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -116,6 +120,16 @@ class UnitsRepository @Inject constructor(
                         pairId = based.pairedUnitId
                     )
                     is ReverseUnit -> foundUnit.copy(
+                        isFavorite = based.isFavorite,
+                        counter = based.frequency,
+                        pairId = based.pairedUnitId
+                    )
+                    is FuelForward -> foundUnit.copy(
+                        isFavorite = based.isFavorite,
+                        counter = based.frequency,
+                        pairId = based.pairedUnitId
+                    )
+                    is FuelBackward -> foundUnit.copy(
                         isFavorite = based.isFavorite,
                         counter = based.frequency,
                         pairId = based.pairedUnitId

@@ -1393,4 +1393,25 @@ Used in this dialog window. Should be short -->
     <string name="language_setting_support">Change the app language</string>
     <string name="system_font_setting">System font</string>
     <string name="system_font_setting_support">Use system font for texts in app</string>
+    <string name="fuel_consumption">Fuel</string>
+    <string name="km_per_l">Kilometer per liter</string>
+    <string name="km_per_l_short">km/L</string>
+    <string name="l_per_km">Liter per kilometer</string>
+    <string name="l_per_km_short">L/km</string>
+    <string name="l_per_100_km">Liter per 100 Kilometer</string>
+    <string name="l_per_100_km_short">L/100 km</string>
+    <string name="mi_per_gallon_uk">Mile per gallon (UK)</string>
+    <string name="mi_per_gallon_uk_short">mpg (UK)</string>
+    <string name="mi_per_gallon_us">Mile per gallon (US)</string>
+    <string name="mi_per_gallon_us_short">mpg (US)</string>
+    <string name="mi_us_per_l">Mile (US) per liter</string>
+    <string name="mi_us_per_l_short">mi/L (US)</string>
+    <string name="gallon_us_per_mile">Gallon per mile (US)</string>
+    <string name="gallon_us_per_mile_short">gal/mi (US)</string>
+    <string name="gallon_uk_per_mile">Gallon per mile (UK)</string>
+    <string name="gallon_uk_per_mile_short">gal/mi (UK)</string>
+    <string name="gallon_us_per_100_mile">Gallon per 100 mile (US)</string>
+    <string name="gallon_us_per_100_mile_short">gal/100 mi (US)</string>
+    <string name="gallon_uk_per_100_mile">Gallon per 100 mile (UK)</string>
+    <string name="gallon_uk_per_100_mile_short">gal/100 mi (UK)</string>
 </resources>
