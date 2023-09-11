@@ -28,10 +28,10 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 internal val temperatureCollection: List<AbstractUnit> by lazy {
-    listOf(celsius, fahrenheit, kelvin)
+    listOf(Celsius, Fahrenheit, Kelvin)
 }
 
-private val celsius = object : DefaultUnit {
+private data object Celsius : DefaultUnit {
     override val id: String = MyUnitIDS.celsius
     override val basicUnit: BigDecimal = BigDecimal.ONE
     override val group: UnitGroup = UnitGroup.TEMPERATURE
@@ -61,7 +61,7 @@ private val celsius = object : DefaultUnit {
     }
 }
 
-private val fahrenheit = object : DefaultUnit {
+private data object Fahrenheit : DefaultUnit {
     override val id: String = MyUnitIDS.fahrenheit
     override val basicUnit: BigDecimal = BigDecimal.ONE
     override val group: UnitGroup = UnitGroup.TEMPERATURE
@@ -93,7 +93,7 @@ private val fahrenheit = object : DefaultUnit {
     }
 }
 
-private val kelvin = object : DefaultUnit {
+private data object Kelvin : DefaultUnit {
     override val id: String = MyUnitIDS.kelvin
     override val basicUnit: BigDecimal = BigDecimal.ONE
     override val group: UnitGroup = UnitGroup.TEMPERATURE
