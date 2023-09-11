@@ -20,98 +20,104 @@ package com.sadellie.unitto.data.units.collections
 
 import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.data.common.setMinimumRequiredScale
-import com.sadellie.unitto.data.common.trimZeros
-import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 internal val temperatureCollection: List<AbstractUnit> by lazy {
-    listOf(
-        object : AbstractUnit(
-            unitId = MyUnitIDS.celsius,
-            basicUnit = BigDecimal.ONE,
-            group = UnitGroup.TEMPERATURE,
-            displayName = R.string.celsius,
-            shortName = R.string.celsius_short,
-        ) {
-            override fun convert(unitTo: AbstractUnit, value: BigDecimal, scale: Int): BigDecimal {
-                return when (unitTo.unitId) {
-                    MyUnitIDS.fahrenheit -> {
-                        value
-                            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .times(BigDecimal.valueOf(1.8))
-                            .plus(BigDecimal(32))
-                    }
-                    MyUnitIDS.kelvin -> {
-                        value
-                            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .plus(BigDecimal.valueOf(273.15))
-                    }
-                    else -> value
-                }
-                    .setMinimumRequiredScale(scale)
-                    .trimZeros()
+    listOf(celsius, fahrenheit, kelvin)
+}
+
+private val celsius = object : DefaultUnit {
+    override val id: String = MyUnitIDS.celsius
+    override val basicUnit: BigDecimal = BigDecimal.ONE
+    override val group: UnitGroup = UnitGroup.TEMPERATURE
+    override val displayName: Int = R.string.celsius
+    override val shortName: Int = R.string.celsius_short
+    override val isFavorite: Boolean = false
+    override val pairId: String? = null
+    override val counter: Int = 0
+
+    override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
+        return when (unitTo.id) {
+            MyUnitIDS.fahrenheit -> {
+                value
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .times(BigDecimal.valueOf(1.8))
+                    .plus(BigDecimal(32))
             }
-        },
-        object : AbstractUnit(
-            unitId = MyUnitIDS.fahrenheit,
-            basicUnit = BigDecimal.ONE,
-            group = UnitGroup.TEMPERATURE,
-            displayName = R.string.fahrenheit,
-            shortName = R.string.fahrenheit_short,
-        ) {
-            override fun convert(unitTo: AbstractUnit, value: BigDecimal, scale: Int): BigDecimal {
-                return when (unitTo.unitId) {
-                    MyUnitIDS.celsius -> {
-                        value
-                            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal(32))
-                            .times(BigDecimal(5))
-                            .div(BigDecimal(9))
-                    }
-                    MyUnitIDS.kelvin -> {
-                        value
-                            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal(32))
-                            .times(BigDecimal(5))
-                            .div(BigDecimal(9))
-                            .add(BigDecimal.valueOf(273.15))
-                    }
-                    else -> value
-                }
-                    .setMinimumRequiredScale(scale)
-                    .trimZeros()
+
+            MyUnitIDS.kelvin -> {
+                value
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .plus(BigDecimal.valueOf(273.15))
             }
-        },
-        object : AbstractUnit(
-            unitId = MyUnitIDS.kelvin,
-            basicUnit = BigDecimal.ONE,
-            group = UnitGroup.TEMPERATURE,
-            displayName = R.string.kelvin,
-            shortName = R.string.kelvin_short,
-        ) {
-            override fun convert(unitTo: AbstractUnit, value: BigDecimal, scale: Int): BigDecimal {
-                return when (unitTo.unitId) {
-                    MyUnitIDS.celsius -> {
-                        value
-                            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal(273.15))
-                    }
-                    MyUnitIDS.fahrenheit -> {
-                        value
-                            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal.valueOf(273.15))
-                            .times(BigDecimal.valueOf(1.8))
-                            .plus(BigDecimal(32))
-                    }
-                    else -> value
-                }
-                    .setMinimumRequiredScale(scale)
-                    .trimZeros()
+
+            else -> value
+        }
+    }
+}
+
+private val fahrenheit = object : DefaultUnit {
+    override val id: String = MyUnitIDS.fahrenheit
+    override val basicUnit: BigDecimal = BigDecimal.ONE
+    override val group: UnitGroup = UnitGroup.TEMPERATURE
+    override val displayName: Int = R.string.fahrenheit
+    override val shortName: Int = R.string.fahrenheit_short
+    override val isFavorite: Boolean = false
+    override val pairId: String? = null
+    override val counter: Int = 0
+
+    override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
+        return when (unitTo.id) {
+            MyUnitIDS.celsius -> {
+                value
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .minus(BigDecimal(32))
+                    .times(BigDecimal(5))
+                    .div(BigDecimal(9))
             }
-        },
-    )
+            MyUnitIDS.kelvin -> {
+                value
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .minus(BigDecimal(32))
+                    .times(BigDecimal(5))
+                    .div(BigDecimal(9))
+                    .add(BigDecimal.valueOf(273.15))
+            }
+            else -> value
+        }
+    }
+}
+
+private val kelvin = object : DefaultUnit {
+    override val id: String = MyUnitIDS.kelvin
+    override val basicUnit: BigDecimal = BigDecimal.ONE
+    override val group: UnitGroup = UnitGroup.TEMPERATURE
+    override val displayName: Int = R.string.kelvin
+    override val shortName: Int = R.string.kelvin_short
+    override val isFavorite: Boolean = false
+    override val pairId: String? = null
+    override val counter: Int = 0
+
+    override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
+        return when (unitTo.id) {
+            MyUnitIDS.celsius -> {
+                value
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .minus(BigDecimal(273.15))
+            }
+            MyUnitIDS.fahrenheit -> {
+                value
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .minus(BigDecimal.valueOf(273.15))
+                    .times(BigDecimal.valueOf(1.8))
+                    .plus(BigDecimal(32))
+            }
+            else -> value
+        }
+    }
 }

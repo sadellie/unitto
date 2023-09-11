@@ -16,42 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model
+package com.sadellie.unitto.data.model.unit
 
-import androidx.annotation.StringRes
 import com.sadellie.unitto.core.base.MAX_PRECISION
-import com.sadellie.unitto.data.common.setMinimumRequiredScale
-import com.sadellie.unitto.data.common.trimZeros
+import com.sadellie.unitto.data.model.UnitGroup
 import java.math.BigDecimal
+import java.math.RoundingMode
 
-/**
- * Same as [DefaultUnit], but conversion formula is different.
- *
- * @see DefaultUnit
- */
-class FlowRateUnit(
-    unitId: String,
-    basicUnit: BigDecimal,
-    group: UnitGroup,
-    @StringRes displayName: Int,
-    @StringRes shortName: Int,
-) : AbstractUnit(
-    unitId = unitId,
-    displayName = displayName,
-    shortName = shortName,
-    basicUnit = basicUnit,
-    group = group,
-) {
-    override fun convert(
-        unitTo: AbstractUnit,
-        value: BigDecimal,
-        scale: Int
-    ): BigDecimal {
-        return unitTo.basicUnit
-            .setScale(MAX_PRECISION)
+data class ReverseUnit(
+    override val id: String,
+    override val basicUnit: BigDecimal,
+    override val group: UnitGroup,
+    override val displayName: Int,
+    override val shortName: Int,
+    override val isFavorite: Boolean = false,
+    override val pairId: String? = null,
+    override val counter: Int = 0,
+) : DefaultUnit {
+    override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
+        // Avoid division by zero
+        if (unitTo.basicUnit.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ZERO
+
+        return unitTo
+            .basicUnit
+            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
             .div(this.basicUnit)
             .multiply(value)
-            .setMinimumRequiredScale(scale)
-            .trimZeros()
     }
 }

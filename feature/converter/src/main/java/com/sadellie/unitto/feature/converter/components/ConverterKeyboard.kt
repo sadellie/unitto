@@ -18,14 +18,19 @@
 
 package com.sadellie.unitto.feature.converter.components
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
@@ -58,38 +63,10 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Multiply
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
 import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
 import com.sadellie.unitto.core.ui.common.key.unittoicons.SquareRoot
-import com.sadellie.unitto.feature.converter.ConverterMode
-
-/**
- * Keyboard with button that looks like a calculator
- *
- * @param modifier Modifier that is applied to [Row]
- * @param addDigit Function that is called when clicking number and dot buttons
- * @param deleteDigit Function that is called when clicking delete "<" button
- * @param clearInput Function that is called when clicking clear "AC" button
- * @param converterMode
- */
-@Composable
-internal fun ConverterKeyboard(
-    modifier: Modifier = Modifier,
-    addDigit: (String) -> Unit = {},
-    deleteDigit: () -> Unit = {},
-    clearInput: () -> Unit = {},
-    converterMode: ConverterMode,
-    allowVibration: Boolean,
-    fractional: String,
-    middleZero: Boolean,
-) {
-    Crossfade(converterMode, modifier = modifier) {
-        when (it) {
-            ConverterMode.DEFAULT -> DefaultKeyboard(addDigit, clearInput, deleteDigit, allowVibration, fractional, middleZero)
-            ConverterMode.BASE -> BaseKeyboard(addDigit, clearInput, deleteDigit, allowVibration)
-        }
-    }
-}
 
 @Composable
-private fun DefaultKeyboard(
+internal fun DefaultKeyboard(
+    modifier: Modifier,
     addDigit: (String) -> Unit,
     clearInput: () -> Unit,
     deleteDigit: () -> Unit,
@@ -98,7 +75,7 @@ private fun DefaultKeyboard(
     middleZero: Boolean,
 ) {
     val fractionalIcon = remember { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
-    ColumnWithConstraints {
+    ColumnWithConstraints(modifier) {
         // Button modifier
         val bModifier = Modifier
             .fillMaxSize()
@@ -145,13 +122,14 @@ private fun DefaultKeyboard(
 }
 
 @Composable
-private fun BaseKeyboard(
+internal fun NumberBaseKeyboard(
+    modifier: Modifier,
     addDigit: (String) -> Unit,
     clearInput: () -> Unit,
     deleteDigit: () -> Unit,
     allowVibration: Boolean
 ) {
-    ColumnWithConstraints {
+    ColumnWithConstraints(modifier) {
         // Button modifier
         val bModifier = Modifier
             .fillMaxSize()
@@ -190,4 +168,16 @@ private fun BaseKeyboard(
                 Modifier.fillMaxSize().weight(2f).padding(it.maxWidth * 0.015f, it.maxHeight * 0.008f), UnittoIcons.Backspace, allowVibration, clearInput) { deleteDigit() }
         }
     }
+}
+
+@Composable
+internal fun LoadingKeyboard(
+    modifier: Modifier,
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(32.dp))
+            .background(MaterialTheme.colorScheme.inverseOnSurface)
+            .fillMaxSize()
+    )
 }

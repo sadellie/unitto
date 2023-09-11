@@ -123,7 +123,6 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:converter")))
     implementation(project(mapOf("path" to ":feature:calculator")))
     implementation(project(mapOf("path" to ":feature:settings")))
-    implementation(project(mapOf("path" to ":feature:unitslist")))
     implementation(project(mapOf("path" to ":feature:datecalculator")))
     implementation(project(mapOf("path" to ":feature:timezone")))
     implementation(project(mapOf("path" to ":data:model")))

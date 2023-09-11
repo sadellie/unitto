@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.unitslist.components
+package com.sadellie.unitto.feature.converter.components
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.scaleIn
@@ -43,11 +42,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,44 +50,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.data.model.AbstractUnit
 
-/**
- * Represents one list item. Once clicked will navigate up.
- *
- * @param unit The unit itself.
- * @param isSelected Whether this unit is selected or not (current pair of unit).
- * @param selectAction Function to change current unit. Called when choosing unit.
- * @param favoriteAction Function to mark unit as favorite. It's a toggle.
- * @param shortNameLabel String on the second line.
- */
-@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @Composable
-private fun BasicUnitListItem(
+internal fun BasicUnitListItem(
     modifier: Modifier,
-    unit: AbstractUnit,
+    name: String,
+    supportLabel: String,
+    isFavorite: Boolean,
     isSelected: Boolean,
-    selectAction: (AbstractUnit) -> Unit,
-    favoriteAction: (AbstractUnit) -> Unit,
-    shortNameLabel: String
+    onClick: () -> Unit,
+    favoriteUnit: () -> Unit,
 ) {
-    var isFavorite: Boolean by rememberSaveable { mutableStateOf(unit.isFavorite) }
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = { selectAction(unit) }
+                onClick = onClick
             )
             .padding(horizontal = 12.dp)
     ) {
         Row(
             modifier = Modifier
-                        .background(
-                            if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-                            RoundedCornerShape(24.dp)
-                        ).padding(paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp))
+                .background(
+                    if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+                    RoundedCornerShape(24.dp)
+                )
+                .padding(paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp))
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -103,14 +88,14 @@ private fun BasicUnitListItem(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = stringResource(unit.displayName),
+                    text = name,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = shortNameLabel,
+                    text = supportLabel,
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -122,7 +107,7 @@ private fun BasicUnitListItem(
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(false),
-                        onClick = { favoriteAction(unit); isFavorite = !isFavorite }
+                        onClick = favoriteUnit
                     ),
                 targetState = isFavorite,
                 transitionSpec = {
@@ -130,60 +115,10 @@ private fun BasicUnitListItem(
                 }
             ) {
                 Icon(
-                    if (unit.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                     contentDescription = stringResource(R.string.favorite_button_description)
                 )
             }
         }
     }
 }
-
-/**
- * Represents one list item. Once clicked will navigate up. Has without conversion.
- *
- * @param unit The unit itself.
- * @param isSelected Whether this unit is selected or not (current pair of unit).
- * @param selectAction Function to change current unit. Called when choosing unit.
- * @param favoriteAction Function to mark unit as favorite. It's a toggle.
- */
-@Composable
-internal fun UnitListItem(
-    modifier: Modifier,
-    unit: AbstractUnit,
-    isSelected: Boolean,
-    selectAction: (AbstractUnit) -> Unit,
-    favoriteAction: (AbstractUnit) -> Unit,
-) = BasicUnitListItem(
-    modifier = modifier,
-    unit = unit,
-    isSelected = isSelected,
-    selectAction = selectAction,
-    favoriteAction = favoriteAction,
-    shortNameLabel = stringResource(unit.shortName)
-)
-
-/**
- * Represents one list item. Once clicked will navigate up. Has with conversion.
- *
- * @param unit The unit itself.
- * @param isSelected Whether this unit is selected or not (current pair of unit).
- * @param selectAction Function to change current unit. Called when choosing unit.
- * @param favoriteAction Function to mark unit as favorite. It's a toggle.
- * @param convertValue Function to call that will convert this unit.
- */
-@Composable
-internal fun UnitListItem(
-    modifier: Modifier,
-    unit: AbstractUnit,
-    isSelected: Boolean,
-    selectAction: (AbstractUnit) -> Unit,
-    favoriteAction: (AbstractUnit) -> Unit,
-    convertValue: (AbstractUnit) -> String
-) = BasicUnitListItem(
-    modifier = modifier,
-    unit = unit,
-    isSelected = isSelected,
-    selectAction = selectAction,
-    favoriteAction = favoriteAction,
-    shortNameLabel = "${convertValue(unit)}${stringResource(unit.shortName)}"
-)

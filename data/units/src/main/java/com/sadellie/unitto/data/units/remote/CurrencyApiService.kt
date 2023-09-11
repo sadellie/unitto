@@ -49,5 +49,5 @@ interface CurrencyApiService {
 }
 
 object CurrencyApi {
-    val retrofitService: CurrencyApiService by lazy { retrofit.create(CurrencyApiService::class.java) }
+    val service: CurrencyApiService by lazy { retrofit.create(CurrencyApiService::class.java) }
 }

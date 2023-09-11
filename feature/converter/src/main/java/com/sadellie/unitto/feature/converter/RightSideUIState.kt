@@ -16,14 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.timezone
+package com.sadellie.unitto.feature.converter
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.data.model.UnittoTimeZone
-import java.time.ZonedDateTime
+import com.sadellie.unitto.core.base.OutputFormat
+import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.unit.AbstractUnit
 
-data class AddTimeZoneUIState(
+internal data class RightSideUIState(
+    val unitFrom: AbstractUnit? = null,
+    val unitTo: AbstractUnit? = null,
     val query: TextFieldValue = TextFieldValue(),
-    val list: List<UnittoTimeZone> = emptyList(),
-    val userTime: ZonedDateTime? = null,
+    val units: Map<UnitGroup, List<AbstractUnit>>? = null,
+    val favorites: Boolean = false,
+    val unitGroup: UnitGroup? = unitFrom?.group,
+    val sorting: UnitsListSorting = UnitsListSorting.USAGE,
+    val input: String = "",
+    val scale: Int = 3,
+    val outputFormat: Int = OutputFormat.PLAIN,
 )

@@ -18,26 +18,9 @@
 
 package com.sadellie.unitto.core.ui.common.textfield
 
-import android.content.Context
-import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 private val numbersRegex by lazy { Regex("[\\d.]+") }
-
-private val timeDivisions by lazy {
-    mapOf(
-        R.string.day_short to BigDecimal("86400000000000000000000"),
-        R.string.hour_short to BigDecimal("3600000000000000000000"),
-        R.string.minute_short to BigDecimal("60000000000000000000"),
-        R.string.second_short to BigDecimal("1000000000000000000"),
-        R.string.millisecond_short to BigDecimal("1000000000000000"),
-        R.string.microsecond_short to BigDecimal("1000000000000"),
-        R.string.nanosecond_short to BigDecimal("1000000000"),
-        R.string.attosecond_short to BigDecimal("1"),
-    )
-}
 
 fun String.clearAndFilterExpression(formatterSymbols: FormatterSymbols): String {
     var clean = this
@@ -56,51 +39,6 @@ fun String.clearAndFilterExpression(formatterSymbols: FormatterSymbols): String 
 
 internal fun String.clearAndFilterNumberBase(): String {
     return uppercase().cleanIt(Token.numberBaseTokens)
-}
-
-/**
- * Format string time conversion result into a more readable format.
- *
- * @param basicUnit Basic unit of the unit we convert to
- * @return String like "1d 12h 12s".
- */
-fun String.formatTime(
-    context: Context,
-    basicUnit: BigDecimal?,
-    formatterSymbols: FormatterSymbols
-): String {
-    // We get ugly version of input (non-fancy minus)
-    val input = this
-
-    if (basicUnit == null) return Token.Digit._0
-
-    try {
-        // Don't need magic if the input is zero
-        if (BigDecimal(input).compareTo(BigDecimal.ZERO) == 0) return Token.Digit._0
-    } catch (e: NumberFormatException) {
-        // For case such as "10-" and "("
-        return Token.Digit._0
-    }
-    // Attoseconds don't need "magic"
-    if (basicUnit.compareTo(BigDecimal.ONE) == 0) return input.formatExpression(formatterSymbols)
-
-    var result = if (input.startsWith("-")) Token.Operator.minus else ""
-    var remainingSeconds = BigDecimal(input)
-        .abs()
-        .multiply(basicUnit)
-        .setScale(0, RoundingMode.HALF_EVEN)
-
-    if (remainingSeconds.compareTo(BigDecimal.ZERO) == 0) return Token.Digit._0
-
-    timeDivisions.forEach { (timeStr, divider) ->
-        val division = remainingSeconds.divideAndRemainder(divider)
-        val time = division.component1()
-        remainingSeconds = division.component2()
-        if (time.compareTo(BigDecimal.ZERO) != 0) {
-            result += "${time.toPlainString().formatExpression(formatterSymbols)}${context.getString(timeStr)} "
-        }
-    }
-    return result.trimEnd()
 }
 
 fun String.formatExpression(

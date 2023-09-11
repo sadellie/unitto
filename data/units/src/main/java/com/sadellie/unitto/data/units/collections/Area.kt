@@ -19,27 +19,27 @@
 package com.sadellie.unitto.data.units.collections
 
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.DefaultUnit
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.unit.NormalUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
 import java.math.BigDecimal
 
 internal val areaCollection: List<AbstractUnit> by lazy {
     listOf(
-        DefaultUnit(MyUnitIDS.cent,                      BigDecimal.valueOf(6.083246572E+33),        UnitGroup.AREA, R.string.cent,                      R.string.cent_short),
-        DefaultUnit(MyUnitIDS.acre,                      BigDecimal.valueOf(6.083246572E+31),        UnitGroup.AREA, R.string.acre,                      R.string.acre_short),
-        DefaultUnit(MyUnitIDS.hectare,                   BigDecimal.valueOf(1.503202964E+32),        UnitGroup.AREA, R.string.hectare,                   R.string.hectare_short ),
-        DefaultUnit(MyUnitIDS.square_foot,               BigDecimal.valueOf(1.396521251E+27),        UnitGroup.AREA, R.string.square_foot,               R.string.square_foot_short),
-        DefaultUnit(MyUnitIDS.square_mile,               BigDecimal.valueOf(3.893277806E+34),        UnitGroup.AREA, R.string.square_mile,               R.string.square_mile_short),
-        DefaultUnit(MyUnitIDS.square_yard,               BigDecimal.valueOf(1.256869126E+28),        UnitGroup.AREA, R.string.square_yard,               R.string.square_yard_short),
-        DefaultUnit(MyUnitIDS.square_inch,               BigDecimal.valueOf(9.698064247E+24),        UnitGroup.AREA, R.string.square_inch,               R.string.square_inch_short),
-        DefaultUnit(MyUnitIDS.square_micrometer,         BigDecimal.valueOf(1.503202964E+16),        UnitGroup.AREA, R.string.square_micrometer,         R.string.square_micrometer_short),
-        DefaultUnit(MyUnitIDS.square_millimeter,         BigDecimal.valueOf(1.503202964E+22),        UnitGroup.AREA, R.string.square_millimeter,         R.string.square_millimeter_short),
-        DefaultUnit(MyUnitIDS.square_centimeter,         BigDecimal.valueOf(1.503202964E+24),        UnitGroup.AREA, R.string.square_centimeter,         R.string.square_centimeter_short),
-        DefaultUnit(MyUnitIDS.square_decimeter,          BigDecimal.valueOf(1.503202964E+26),        UnitGroup.AREA, R.string.square_decimeter,          R.string.square_decimeter_short),
-        DefaultUnit(MyUnitIDS.square_meter,              BigDecimal.valueOf(1.503202964E+28),        UnitGroup.AREA, R.string.square_meter,              R.string.square_meter_short),
-        DefaultUnit(MyUnitIDS.square_kilometer,          BigDecimal.valueOf(1.503202964E+34),        UnitGroup.AREA, R.string.square_kilometer,          R.string.square_kilometer_short),
-        DefaultUnit(MyUnitIDS.electron_cross_section,    BigDecimal.valueOf(1.0),                    UnitGroup.AREA, R.string.electron_cross_section,    R.string.electron_cross_section_short),
+        NormalUnit(MyUnitIDS.cent,                      BigDecimal.valueOf(6.083246572E+33),        UnitGroup.AREA, R.string.cent,                      R.string.cent_short),
+        NormalUnit(MyUnitIDS.acre,                      BigDecimal.valueOf(6.083246572E+31),        UnitGroup.AREA, R.string.acre,                      R.string.acre_short),
+        NormalUnit(MyUnitIDS.hectare,                   BigDecimal.valueOf(1.503202964E+32),        UnitGroup.AREA, R.string.hectare,                   R.string.hectare_short ),
+        NormalUnit(MyUnitIDS.square_foot,               BigDecimal.valueOf(1.396521251E+27),        UnitGroup.AREA, R.string.square_foot,               R.string.square_foot_short),
+        NormalUnit(MyUnitIDS.square_mile,               BigDecimal.valueOf(3.893277806E+34),        UnitGroup.AREA, R.string.square_mile,               R.string.square_mile_short),
+        NormalUnit(MyUnitIDS.square_yard,               BigDecimal.valueOf(1.256869126E+28),        UnitGroup.AREA, R.string.square_yard,               R.string.square_yard_short),
+        NormalUnit(MyUnitIDS.square_inch,               BigDecimal.valueOf(9.698064247E+24),        UnitGroup.AREA, R.string.square_inch,               R.string.square_inch_short),
+        NormalUnit(MyUnitIDS.square_micrometer,         BigDecimal.valueOf(1.503202964E+16),        UnitGroup.AREA, R.string.square_micrometer,         R.string.square_micrometer_short),
+        NormalUnit(MyUnitIDS.square_millimeter,         BigDecimal.valueOf(1.503202964E+22),        UnitGroup.AREA, R.string.square_millimeter,         R.string.square_millimeter_short),
+        NormalUnit(MyUnitIDS.square_centimeter,         BigDecimal.valueOf(1.503202964E+24),        UnitGroup.AREA, R.string.square_centimeter,         R.string.square_centimeter_short),
+        NormalUnit(MyUnitIDS.square_decimeter,          BigDecimal.valueOf(1.503202964E+26),        UnitGroup.AREA, R.string.square_decimeter,          R.string.square_decimeter_short),
+        NormalUnit(MyUnitIDS.square_meter,              BigDecimal.valueOf(1.503202964E+28),        UnitGroup.AREA, R.string.square_meter,              R.string.square_meter_short),
+        NormalUnit(MyUnitIDS.square_kilometer,          BigDecimal.valueOf(1.503202964E+34),        UnitGroup.AREA, R.string.square_kilometer,          R.string.square_kilometer_short),
+        NormalUnit(MyUnitIDS.electron_cross_section,    BigDecimal.valueOf(1.0),                    UnitGroup.AREA, R.string.electron_cross_section,    R.string.electron_cross_section_short),
     )
 }

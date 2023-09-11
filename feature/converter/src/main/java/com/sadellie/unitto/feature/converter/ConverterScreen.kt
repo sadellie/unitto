@@ -18,36 +18,73 @@
 
 package com.sadellie.unitto.feature.converter
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.SwapHoriz
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.feature.converter.components.ConverterKeyboard
-import com.sadellie.unitto.feature.converter.components.TopScreenPart
+import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
+import com.sadellie.unitto.data.common.format
+import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
+import com.sadellie.unitto.feature.converter.components.LoadingKeyboard
+import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
+import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
 
 @Composable
 internal fun ConverterRoute(
     viewModel: ConverterViewModel = hiltViewModel(),
-    navigateToLeftScreen: (String) -> Unit,
-    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String?) -> Unit,
+    navigateToLeftScreen: () -> Unit,
+    navigateToRightScreen: () -> Unit,
     navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit
+    navigateToSettings: () -> Unit,
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState = viewModel.converterUiState.collectAsStateWithLifecycle()
 
     ConverterScreen(
         uiState = uiState.value,
@@ -55,30 +92,28 @@ internal fun ConverterRoute(
         navigateToRightScreen = navigateToRightScreen,
         navigateToSettings = navigateToSettings,
         navigateToMenu = navigateToMenu,
-        swapMeasurements = viewModel::swapUnits,
+        swapUnits = viewModel::swapUnits,
         processInput = viewModel::addTokens,
         deleteDigit = viewModel::deleteTokens,
         clearInput = viewModel::clearInput,
         onCursorChange = viewModel::onCursorChange,
-        cutCallback = viewModel::deleteTokens,
-        onErrorClick = viewModel::updateCurrenciesRatesIfNeeded,
+        onErrorClick = viewModel::updateCurrencyRates,
     )
 }
 
 @Composable
 private fun ConverterScreen(
-    uiState: ConverterUIState,
-    navigateToLeftScreen: (String) -> Unit,
-    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String?) -> Unit,
+    uiState: UnitConverterUIState,
+    navigateToLeftScreen: () -> Unit,
+    navigateToRightScreen: () -> Unit,
     navigateToSettings: () -> Unit,
     navigateToMenu: () -> Unit,
-    swapMeasurements: () -> Unit,
+    swapUnits: () -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
     clearInput: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
-    cutCallback: () -> Unit,
-    onErrorClick: () -> Unit,
+    onErrorClick: (AbstractUnit) -> Unit,
 ) {
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.unit_converter)) },
@@ -89,44 +124,356 @@ private fun ConverterScreen(
         colors = TopAppBarDefaults
             .centerAlignedTopAppBarColors(containerColor = Color.Transparent),
         content = { padding ->
-            PortraitLandscape(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize(),
-                content1 = {
-                    TopScreenPart(
-                        modifier = it,
-                        inputValue = uiState.inputValue,
-                        calculatedValue = uiState.calculatedValue,
-                        outputValue = uiState.resultValue,
-                        unitFrom = uiState.unitFrom,
-                        unitTo = uiState.unitTo,
-                        navigateToLeftScreen = navigateToLeftScreen,
-                        navigateToRightScreen = navigateToRightScreen,
-                        swapUnits = swapMeasurements,
-                        converterMode = uiState.mode,
+            when (uiState) {
+                is UnitConverterUIState.Loading -> {
+                    ConverterLoading(modifier = Modifier.padding(padding))
+                }
+
+                is UnitConverterUIState.NumberBase -> {
+                    NumberBase(
+                        modifier = Modifier.padding(padding),
+                        uiState = uiState,
                         onCursorChange = onCursorChange,
-                        cutCallback = cutCallback,
-                        pasteCallback = processInput,
-                        formatterSymbols = uiState.formatterSymbols,
-                        onErrorClick = onErrorClick
-                    )
-                },
-                content2 = {
-                    ConverterKeyboard(
-                        modifier = it,
-                        addDigit = processInput,
+                        processInput = processInput,
                         deleteDigit = deleteDigit,
-                        clearInput = clearInput,
-                        converterMode = uiState.mode,
-                        allowVibration = uiState.allowVibration,
-                        fractional = uiState.formatterSymbols.fractional,
-                        middleZero = uiState.middleZero
+                        navigateToLeftScreen = navigateToLeftScreen,
+                        swapUnits = swapUnits,
+                        navigateToRightScreen = navigateToRightScreen,
+                        clearInput = clearInput
                     )
                 }
+
+                is UnitConverterUIState.Default -> {
+                    Default(
+                        modifier = Modifier.padding(padding),
+                        uiState = uiState,
+                        onCursorChange = onCursorChange,
+                        processInput = processInput,
+                        deleteDigit = deleteDigit,
+                        navigateToLeftScreen = navigateToLeftScreen,
+                        swapUnits = swapUnits,
+                        navigateToRightScreen = navigateToRightScreen,
+                        clearInput = clearInput,
+                        refreshCurrencyRates = onErrorClick
+                    )
+                }
+            }
+        }
+    )
+}
+
+@Composable
+private fun ConverterLoading(modifier: Modifier) {
+    PortraitLandscape(
+        modifier = modifier.fillMaxSize(),
+        content1 = { contentModifier ->
+            ColumnWithConstraints(modifier = contentModifier) {
+                val textFieldModifier = Modifier.weight(2f)
+
+                UnformattedTextField(
+                    modifier = textFieldModifier,
+                    value = TextFieldValue(stringResource(R.string.loading_label)),
+                    onCursorChange = {},
+                    minRatio = 0.7f,
+                    readOnly = true
+                )
+                AnimatedUnitShortName()
+
+                ConverterResultTextField(
+                    modifier = textFieldModifier,
+                    result = ConverterResult.Loading
+                )
+                AnimatedUnitShortName()
+
+                Spacer(modifier = Modifier.height(it.maxHeight * 0.03f))
+
+                UnitSelectionButtons()
+            }
+        },
+        content2 = {
+            LoadingKeyboard(modifier = it)
+        }
+    )
+}
+
+@Composable
+private fun NumberBase(
+    modifier: Modifier,
+    uiState: UnitConverterUIState.NumberBase,
+    onCursorChange: (TextRange) -> Unit,
+    processInput: (String) -> Unit,
+    deleteDigit: () -> Unit,
+    navigateToLeftScreen: () -> Unit,
+    swapUnits: () -> Unit,
+    navigateToRightScreen: () -> Unit,
+    clearInput: () -> Unit,
+) {
+    PortraitLandscape(
+        modifier = modifier.fillMaxSize(),
+        content1 = { contentModifier ->
+            ColumnWithConstraints(modifier = contentModifier) {
+                val textFieldModifier = Modifier.weight(2f)
+
+                UnformattedTextField(
+                    modifier = textFieldModifier,
+                    minRatio = 0.7f,
+                    placeholder = Token.Digit._0,
+                    value = uiState.input,
+                    onCursorChange = onCursorChange,
+                    pasteCallback = processInput,
+                    cutCallback = deleteDigit,
+                )
+                AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
+
+                ConverterResultTextField(
+                    modifier = textFieldModifier,
+                    result = uiState.result
+                )
+                AnimatedUnitShortName(stringResource(uiState.unitTo.shortName))
+
+                Spacer(modifier = Modifier.height(it.maxHeight * 0.03f))
+
+                UnitSelectionButtons(
+                    unitFromLabel = stringResource(uiState.unitFrom.displayName),
+                    unitToLabel = stringResource(uiState.unitTo.displayName),
+                    swapUnits = swapUnits,
+                    navigateToLeftScreen = navigateToLeftScreen,
+                    navigateToRightScreen = navigateToRightScreen
+                )
+            }
+        },
+        content2 = {
+            NumberBaseKeyboard(
+                modifier = it,
+                addDigit = processInput,
+                deleteDigit = deleteDigit,
+                clearInput = clearInput,
+                allowVibration = uiState.enableHaptic,
             )
         }
     )
+}
+
+@Composable
+private fun Default(
+    modifier: Modifier,
+    uiState: UnitConverterUIState.Default,
+    onCursorChange: (TextRange) -> Unit,
+    processInput: (String) -> Unit,
+    deleteDigit: () -> Unit,
+    navigateToLeftScreen: () -> Unit,
+    swapUnits: () -> Unit,
+    navigateToRightScreen: () -> Unit,
+    clearInput: () -> Unit,
+    refreshCurrencyRates: (AbstractUnit) -> Unit,
+) {
+    var calculation by remember(uiState.calculation) {
+        mutableStateOf(
+            TextFieldValue(uiState.calculation?.format(uiState.scale, uiState.outputFormat) ?: "")
+        )
+    }
+
+    PortraitLandscape(
+        modifier = modifier.fillMaxSize(),
+        content1 = { contentModifier ->
+            ColumnWithConstraints(modifier = contentModifier) {
+                val textFieldModifier = Modifier.weight(2f)
+
+                ExpressionTextField(
+                    modifier = textFieldModifier,
+                    minRatio = 0.7f,
+                    placeholder = Token.Digit._0,
+                    value = uiState.input,
+                    onCursorChange = onCursorChange,
+                    pasteCallback = processInput,
+                    cutCallback = deleteDigit,
+                    formatterSymbols = uiState.formatterSymbols,
+                )
+                AnimatedVisibility(
+                    visible = uiState.calculation != null,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    ExpressionTextField(
+                        modifier = Modifier,
+                        value = calculation,
+                        onCursorChange = { calculation = calculation.copy(selection = it) },
+                        formatterSymbols = uiState.formatterSymbols,
+                        minRatio = 0.7f,
+                        textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        readOnly = true
+                    )
+                }
+                AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
+
+                ConverterResultTextField(
+                    modifier = textFieldModifier,
+                    result = uiState.result,
+                    scale = uiState.scale,
+                    outputFormat = uiState.outputFormat,
+                    formatterSymbols = uiState.formatterSymbols,
+                    onErrorClick = { refreshCurrencyRates(uiState.unitFrom) }
+                )
+                AnimatedUnitShortName(
+                    stringResource(
+                        if (uiState.result is ConverterResult.Error) R.string.try_again_label
+                        else uiState.unitTo.shortName
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(it.maxHeight * 0.03f))
+
+                UnitSelectionButtons(
+                    unitFromLabel = stringResource(uiState.unitFrom.displayName),
+                    unitToLabel = stringResource(uiState.unitTo.displayName),
+                    swapUnits = swapUnits,
+                    navigateToLeftScreen = navigateToLeftScreen,
+                    navigateToRightScreen = navigateToRightScreen
+                )
+            }
+        },
+        content2 = {
+            DefaultKeyboard(
+                modifier = it,
+                addDigit = processInput,
+                deleteDigit = deleteDigit,
+                clearInput = clearInput,
+                allowVibration = uiState.enableHaptic,
+                fractional = uiState.formatterSymbols.fractional,
+                middleZero = uiState.middleZero
+            )
+        }
+    )
+}
+
+@Composable
+private fun ConverterResultTextField(
+    modifier: Modifier,
+    result: ConverterResult,
+    scale: Int = 0,
+    outputFormat: Int = OutputFormat.PLAIN,
+    formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
+    onErrorClick: () -> Unit = {},
+) {
+    val mContext = LocalContext.current
+    var resultTextField by remember(result) {
+        val value = when (result) {
+            is ConverterResult.Default -> result.value.format(scale, outputFormat)
+            is ConverterResult.NumberBase -> result.value.uppercase()
+            is ConverterResult.Time -> result.format(mContext, formatterSymbols)
+            else -> ""
+        }
+        mutableStateOf(TextFieldValue(value))
+    }
+
+    when (result) {
+        is ConverterResult.Loading -> {
+            UnformattedTextField(
+                modifier = modifier,
+                value = TextFieldValue(stringResource(R.string.loading_label)),
+                onCursorChange = {},
+                minRatio = 0.7f,
+                readOnly = true
+            )
+        }
+
+        is ConverterResult.Error -> {
+            UnformattedTextField(
+                modifier = modifier,
+                value = TextFieldValue(stringResource(R.string.error_label)),
+                onCursorChange = { onErrorClick() },
+                minRatio = 0.7f,
+                readOnly = true,
+                textColor = MaterialTheme.colorScheme.error,
+            )
+        }
+
+        is ConverterResult.Default -> {
+            ExpressionTextField(
+                modifier = modifier,
+                value = resultTextField,
+                onCursorChange = { resultTextField = resultTextField.copy(selection = it) },
+                formatterSymbols = formatterSymbols,
+                minRatio = 0.7f,
+                readOnly = true
+            )
+        }
+
+        is ConverterResult.NumberBase, is ConverterResult.Time -> {
+            UnformattedTextField(
+                modifier = modifier,
+                value = resultTextField,
+                onCursorChange = { resultTextField = resultTextField.copy(selection = it) },
+                minRatio = 0.7f,
+                readOnly = true
+            )
+        }
+    }
+}
+
+@Composable
+private fun AnimatedUnitShortName(
+    label: String = stringResource(R.string.loading_label),
+) {
+    AnimatedContent(
+        modifier = Modifier.fillMaxWidth(),
+        targetState = label,
+        transitionSpec = {
+            // Enter animation
+            (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                    togetherWith fadeOut()) using SizeTransform(clip = false)
+        },
+        label = "Animated short name from"
+    ) { value ->
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
+        )
+    }
+}
+
+@Composable
+private fun UnitSelectionButtons(
+    unitFromLabel: String = stringResource(R.string.loading_label),
+    unitToLabel: String = stringResource(R.string.loading_label),
+    swapUnits: () -> Unit = {},
+    navigateToLeftScreen: () -> Unit = {},
+    navigateToRightScreen: () -> Unit = {},
+) {
+    var swapped by remember { mutableStateOf(false) }
+    val swapButtonRotation: Float by animateFloatAsState(
+        targetValue = if (swapped) 0f else 180f,
+        animationSpec = tween(easing = FastOutSlowInEasing),
+        label = "Swap button rotation"
+    )
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        UnitSelectionButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            label = unitFromLabel,
+            onClick = navigateToLeftScreen
+        )
+        IconButton(
+            onClick = {
+                swapUnits()
+                swapped = !swapped
+            },
+        ) {
+            Icon(
+                modifier = Modifier.rotate(swapButtonRotation),
+                imageVector = Icons.Outlined.SwapHoriz,
+                contentDescription = stringResource(R.string.swap_units_description)
+            )
+        }
+        UnitSelectionButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            label = unitToLabel,
+            onClick = navigateToRightScreen
+        )
+    }
 }
 
 @Preview(widthDp = 432, heightDp = 1008, device = "spec:parent=pixel_5,orientation=portrait")
@@ -138,17 +485,16 @@ private fun ConverterScreen(
 @Composable
 private fun PreviewConverterScreen() {
     ConverterScreen(
-        uiState = ConverterUIState(inputValue = TextFieldValue("1234"), calculatedValue = null, resultValue = ConversionResult.Default("5678"), showLoading = false),
+        uiState = UnitConverterUIState.Loading,
         navigateToLeftScreen = {},
-        navigateToRightScreen = {_, _, _ -> },
+        navigateToRightScreen = {},
         navigateToSettings = {},
         navigateToMenu = {},
-        swapMeasurements = {},
+        swapUnits = {},
         processInput = {},
         deleteDigit = {},
         clearInput = {},
         onCursorChange = {},
-        cutCallback = {},
         onErrorClick = {},
     )
 }

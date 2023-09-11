@@ -32,10 +32,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.UnittoButton
 
 /**
@@ -50,17 +48,18 @@ import com.sadellie.unitto.core.ui.common.UnittoButton
 internal fun UnitSelectionButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    label: Int?,
+    label: String,
+    enabled: Boolean = true
 ) {
     UnittoButton(
         modifier = modifier,
         onClick = onClick,
-        enabled = label != null,
+        enabled = enabled,
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
     ) {
         AnimatedContent(
-            targetState = label ?: 0,
+            targetState = label,
             transitionSpec = {
                 if (targetState > initialState) {
                     (slideInVertically { height -> height } + fadeIn()) togetherWith
@@ -74,7 +73,7 @@ internal fun UnitSelectionButton(
             }
         ) {
             Text(
-                text = stringResource(label ?: R.string.loading_label),
+                text = it,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSecondaryContainer

@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.timezone
 
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.model.UnittoTimeZone
@@ -39,7 +40,7 @@ class AddTimeZoneViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _userTime = MutableStateFlow<ZonedDateTime?>(ZonedDateTime.now())
-    private val _query = MutableStateFlow("")
+    private val _query = MutableStateFlow(TextFieldValue())
 
     private val _filteredTimeZones = MutableStateFlow(emptyList<UnittoTimeZone>())
     val addTimeZoneUIState = combine(
@@ -56,9 +57,9 @@ class AddTimeZoneViewModel @Inject constructor(
         viewModelScope, SharingStarted.WhileSubscribed(5000), AddTimeZoneUIState()
     )
 
-    fun onQueryChange(query: String) {
+    fun onQueryChange(query: TextFieldValue) {
         _query.update { query }
-        filterTimeZones(query)
+        filterTimeZones(query.text)
     }
 
     private fun filterTimeZones(query: String = "") = viewModelScope.launch {

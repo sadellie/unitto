@@ -16,28 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model
+package com.sadellie.unitto.data.model.unit
 
-import androidx.annotation.StringRes
+import com.sadellie.unitto.data.model.UnitGroup
 import java.math.BigDecimal
 
-class NumberBaseUnit(
-    unitId: String,
-    val base: Int,
-    group: UnitGroup,
-    @StringRes displayName: Int,
-    @StringRes shortName: Int,
-) : AbstractUnit(
-    unitId = unitId,
-    displayName = displayName,
-    shortName = shortName,
-    basicUnit = BigDecimal.ONE,
-    group = group,
-) {
-    override fun convert(unitTo: AbstractUnit, value: BigDecimal, scale: Int): BigDecimal = this.basicUnit
-
-    fun convertToBase(input: String, toBase: Int): String {
-        return input.toBigInteger(base).toString(toBase)
+data class NumberBaseUnit(
+    override val id: String,
+    override val basicUnit: BigDecimal,
+    override val group: UnitGroup,
+    override val displayName: Int,
+    override val shortName: Int,
+    override val isFavorite: Boolean = false,
+    override val pairId: String? = null,
+    override val counter: Int = 0,
+) : AbstractUnit {
+    fun convert(toBase: NumberBaseUnit, input: String): String {
+        return input.toBigInteger(basicUnit.intValueExact()).toString(toBase.basicUnit.intValueExact())
     }
-
 }

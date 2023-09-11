@@ -18,18 +18,32 @@
 
 package com.sadellie.unitto.data.units
 
-import com.sadellie.unitto.data.model.NumberBaseUnit
+import android.content.Context
+import androidx.room.Room
+import com.sadellie.unitto.data.common.setMinimumRequiredScale
+import com.sadellie.unitto.data.common.trimZeros
+import com.sadellie.unitto.data.database.UnittoDatabase
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.unit.DefaultUnit
+import com.sadellie.unitto.data.model.unit.NumberBaseUnit
+import com.sadellie.unitto.data.model.unit.ReverseUnit
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import java.math.BigDecimal
 
+@RunWith(RobolectricTestRunner::class)
 class AllUnitsTest {
 
-    // Group and it's tested unit ids
     private var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
-    private val allUnitsRepository = AllUnitsRepository()
+    private val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
+    private val allUnitsRepository = UnitsRepository(
+        Room.inMemoryDatabaseBuilder(mContext, UnittoDatabase::class.java).build().unitsDao(),
+        mContext
+    )
 
     @Test
     fun testAcceleration() = testWithUnits {
@@ -514,12 +528,17 @@ class AllUnitsTest {
         val unitFrom = allUnitsRepository.getById(this)
         val unitTo = allUnitsRepository.getById(checkingId)
 
-        val actual = if (unitFrom.group == UnitGroup.NUMBER_BASE) {
-            (unitFrom as NumberBaseUnit)
-                .convertToBase(value, (unitTo as NumberBaseUnit).base)
-        } else {
-            unitFrom
-                .convert(unitTo, BigDecimal(value), 5)
+        val actual = when (unitFrom.group) {
+            UnitGroup.NUMBER_BASE -> (unitFrom as NumberBaseUnit).convert((unitTo as NumberBaseUnit), value)
+            UnitGroup.FLOW_RATE -> (unitFrom as ReverseUnit)
+                .convert((unitTo as DefaultUnit), BigDecimal(value))
+                .setMinimumRequiredScale(5)
+                .trimZeros()
+                .toPlainString()
+            else -> (unitFrom as DefaultUnit)
+                .convert((unitTo as DefaultUnit), BigDecimal(value))
+                .setMinimumRequiredScale(5)
+                .trimZeros()
                 .toPlainString()
         }
         assertEquals("Failed at $this to $checkingId", expected, actual)
@@ -532,7 +551,7 @@ class AllUnitsTest {
     fun after() {
         val unitGroup = history.keys.first()
         // GROUP : testedCount / totalCount
-        println("${unitGroup.name} : ${history[unitGroup]?.size} / ${allUnitsRepository.getCollectionByGroup(unitGroup).size}")
+        println("${unitGroup.name} : ${history[unitGroup]?.size} / ${allUnitsRepository.getCollection(unitGroup).size}")
     }
 
     private fun testWithUnits(block: MyUnitIDS.() -> Unit): Unit = with(MyUnitIDS, block = block)

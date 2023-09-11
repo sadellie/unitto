@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.unitslist.components
+package com.sadellie.unitto.feature.converter.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,11 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 
-/**
- * Placeholder that can be seen when there are no units found
- *
- * @param navigateToSettingsAction Action to perform when clicking open settings button.
- */
 @Composable
 internal fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
     Column(

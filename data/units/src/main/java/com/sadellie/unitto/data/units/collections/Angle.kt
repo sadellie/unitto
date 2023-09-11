@@ -19,19 +19,19 @@
 package com.sadellie.unitto.data.units.collections
 
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.DefaultUnit
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.unit.NormalUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
 import java.math.BigDecimal
 
 internal val angleCollection: List<AbstractUnit> by lazy {
     listOf(
-        DefaultUnit(MyUnitIDS.angle_second,  BigDecimal.valueOf(1),              UnitGroup.ANGLE,    R.string.angle_second,  R.string.angle_second_short),
-        DefaultUnit(MyUnitIDS.angle_minute,  BigDecimal.valueOf(60),             UnitGroup.ANGLE,    R.string.angle_minute,  R.string.angle_minute_short),
-        DefaultUnit(MyUnitIDS.degree,        BigDecimal.valueOf(3600),           UnitGroup.ANGLE,    R.string.degree,        R.string.degree_short),
-        DefaultUnit(MyUnitIDS.radian,        BigDecimal.valueOf(206264.8062471), UnitGroup.ANGLE,    R.string.radian,        R.string.radian_short),
-        DefaultUnit(MyUnitIDS.sextant,       BigDecimal.valueOf(216000),         UnitGroup.ANGLE,    R.string.sextant,       R.string.sextant_short),
-        DefaultUnit(MyUnitIDS.turn,          BigDecimal.valueOf(1296000),        UnitGroup.ANGLE,    R.string.turn,          R.string.turn_short),
+        NormalUnit(MyUnitIDS.angle_second,  BigDecimal.valueOf(1),              UnitGroup.ANGLE,    R.string.angle_second,  R.string.angle_second_short),
+        NormalUnit(MyUnitIDS.angle_minute,  BigDecimal.valueOf(60),             UnitGroup.ANGLE,    R.string.angle_minute,  R.string.angle_minute_short),
+        NormalUnit(MyUnitIDS.degree,        BigDecimal.valueOf(3600),           UnitGroup.ANGLE,    R.string.degree,        R.string.degree_short),
+        NormalUnit(MyUnitIDS.radian,        BigDecimal.valueOf(206264.8062471), UnitGroup.ANGLE,    R.string.radian,        R.string.radian_short),
+        NormalUnit(MyUnitIDS.sextant,       BigDecimal.valueOf(216000),         UnitGroup.ANGLE,    R.string.sextant,       R.string.sextant_short),
+        NormalUnit(MyUnitIDS.turn,          BigDecimal.valueOf(1296000),        UnitGroup.ANGLE,    R.string.turn,          R.string.turn_short),
     )
 }

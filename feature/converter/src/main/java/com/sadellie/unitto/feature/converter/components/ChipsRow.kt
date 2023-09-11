@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.unitslist.components
+package com.sadellie.unitto.feature.converter.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -63,7 +63,7 @@ import com.sadellie.unitto.data.model.UnitGroup
 internal fun ChipsRow(
     items: List<UnitGroup> = ALL_UNIT_GROUPS,
     chosenUnitGroup: UnitGroup?,
-    selectAction: (UnitGroup) -> Unit,
+    selectAction: (UnitGroup?) -> Unit,
     navigateToSettingsAction: () -> Unit,
     lazyListState: LazyListState
 ) {
@@ -79,7 +79,7 @@ internal fun ChipsRow(
             val isSelected: Boolean = item == chosenUnitGroup
             UnittoFilterChip(
                 isSelected = isSelected,
-                selectAction = { selectAction(item) }
+                selectAction = { selectAction(if (item == chosenUnitGroup) null else item) }
             ) {
                 AnimatedVisibility(visible = isSelected) {
                     Icon(

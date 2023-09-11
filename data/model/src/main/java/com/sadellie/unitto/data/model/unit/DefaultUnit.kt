@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,26 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.database
+package com.sadellie.unitto.data.model.unit
 
-import javax.inject.Inject
+import java.math.BigDecimal
 
-class UnitsRepository @Inject constructor (private val unitsDao: UnitsDao) {
-    /**
-     * Method to insert units. Will rewrite row if unit's id is already in database
-     *
-     * @param unit Unit to add
-     */
-    suspend fun insertUnits(unit: UnitsEntity) {
-        unitsDao.insertUnits(unit)
-    }
-
-    /**
-     * Method to get all units from units table
-     *
-     * @return List of [UnitsEntity] objects that represent one row in table
-     */
-    suspend fun getAll(): List<UnitsEntity> {
-        return unitsDao.getAll()
-    }
+interface DefaultUnit : AbstractUnit {
+    fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal
 }

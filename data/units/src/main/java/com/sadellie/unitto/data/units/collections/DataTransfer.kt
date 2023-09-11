@@ -19,33 +19,33 @@
 package com.sadellie.unitto.data.units.collections
 
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.DefaultUnit
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.unit.NormalUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
 import java.math.BigDecimal
 
 internal val dataTransferCollection: List<AbstractUnit> by lazy {
     listOf(
-        DefaultUnit(MyUnitIDS.bit_per_second,        BigDecimal.valueOf(1),                          UnitGroup.DATA_TRANSFER, R.string.bit_per_second,        R.string.bit_per_second_short),
-        DefaultUnit(MyUnitIDS.kibibit_per_second,    BigDecimal.valueOf(1_024),                      UnitGroup.DATA_TRANSFER, R.string.kibibit_per_second,    R.string.kibibit_per_second_short),
-        DefaultUnit(MyUnitIDS.kilobit_per_second,    BigDecimal.valueOf(1_000),                      UnitGroup.DATA_TRANSFER, R.string.kilobit_per_second,    R.string.kilobit_per_second_short),
-        DefaultUnit(MyUnitIDS.megabit_per_second,    BigDecimal.valueOf(1_000_000),                  UnitGroup.DATA_TRANSFER, R.string.megabit_per_second,    R.string.megabit_per_second_short),
-        DefaultUnit(MyUnitIDS.mebibit_per_second,    BigDecimal.valueOf(1_048_576),                  UnitGroup.DATA_TRANSFER, R.string.mebibit_per_second,    R.string.mebibit_per_second_short),
-        DefaultUnit(MyUnitIDS.gigabit_per_second,    BigDecimal.valueOf(1_000_000_000),              UnitGroup.DATA_TRANSFER, R.string.gigabit_per_second,    R.string.gigabit_per_second_short),
-        DefaultUnit(MyUnitIDS.gibibit_per_second,    BigDecimal.valueOf(1_073_741_824),              UnitGroup.DATA_TRANSFER, R.string.gibibit_per_second,    R.string.gibibit_per_second_short),
-        DefaultUnit(MyUnitIDS.terabit_per_second,    BigDecimal.valueOf(1_000_000_000_000),          UnitGroup.DATA_TRANSFER, R.string.terabit_per_second,    R.string.terabit_per_second_short),
-        DefaultUnit(MyUnitIDS.petabit_per_second,    BigDecimal.valueOf(1_000_000_000_000_000),      UnitGroup.DATA_TRANSFER, R.string.petabit_per_second,    R.string.petabit_per_second_short),
-        DefaultUnit(MyUnitIDS.exabit_per_second,     BigDecimal.valueOf(1_000_000_000_000_000_000),  UnitGroup.DATA_TRANSFER, R.string.exabit_per_second,     R.string.exabit_per_second_short),
-        DefaultUnit(MyUnitIDS.byte_per_second,       BigDecimal.valueOf(8),                          UnitGroup.DATA_TRANSFER, R.string.byte_per_second,       R.string.byte_per_second_short),
-        DefaultUnit(MyUnitIDS.kibibyte_per_second,   BigDecimal.valueOf(8_192),                      UnitGroup.DATA_TRANSFER, R.string.kibibyte_per_second,   R.string.kibibyte_per_second_short),
-        DefaultUnit(MyUnitIDS.kilobyte_per_second,   BigDecimal.valueOf(8_000),                      UnitGroup.DATA_TRANSFER, R.string.kilobyte_per_second,   R.string.kilobyte_per_second_short),
-        DefaultUnit(MyUnitIDS.megabyte_per_second,   BigDecimal.valueOf(8_000_000),                  UnitGroup.DATA_TRANSFER, R.string.megabyte_per_second,   R.string.megabyte_per_second_short),
-        DefaultUnit(MyUnitIDS.mebibyte_per_second,   BigDecimal.valueOf(8_388_608),                  UnitGroup.DATA_TRANSFER, R.string.mebibyte_per_second,   R.string.mebibyte_per_second_short),
-        DefaultUnit(MyUnitIDS.gigabyte_per_second,   BigDecimal.valueOf(8_000_000_000),              UnitGroup.DATA_TRANSFER, R.string.gigabyte_per_second,   R.string.gigabyte_per_second_short),
-        DefaultUnit(MyUnitIDS.gibibyte_per_second,   BigDecimal.valueOf(8_589_934_592),              UnitGroup.DATA_TRANSFER, R.string.gibibyte_per_second,   R.string.gibibyte_per_second_short),
-        DefaultUnit(MyUnitIDS.terabyte_per_second,   BigDecimal.valueOf(8_000_000_000_000),          UnitGroup.DATA_TRANSFER, R.string.terabyte_per_second,   R.string.terabyte_per_second_short),
-        DefaultUnit(MyUnitIDS.petabyte_per_second,   BigDecimal.valueOf(8_000_000_000_000_000),      UnitGroup.DATA_TRANSFER, R.string.petabyte_per_second,   R.string.petabyte_per_second_short),
-        DefaultUnit(MyUnitIDS.exabyte_per_second,    BigDecimal.valueOf(8_000_000_000_000_000_000),  UnitGroup.DATA_TRANSFER, R.string.exabyte_per_second,    R.string.exabyte_per_second_short),
+        NormalUnit(MyUnitIDS.bit_per_second,        BigDecimal.valueOf(1),                          UnitGroup.DATA_TRANSFER, R.string.bit_per_second,        R.string.bit_per_second_short),
+        NormalUnit(MyUnitIDS.kibibit_per_second,    BigDecimal.valueOf(1_024),                      UnitGroup.DATA_TRANSFER, R.string.kibibit_per_second,    R.string.kibibit_per_second_short),
+        NormalUnit(MyUnitIDS.kilobit_per_second,    BigDecimal.valueOf(1_000),                      UnitGroup.DATA_TRANSFER, R.string.kilobit_per_second,    R.string.kilobit_per_second_short),
+        NormalUnit(MyUnitIDS.megabit_per_second,    BigDecimal.valueOf(1_000_000),                  UnitGroup.DATA_TRANSFER, R.string.megabit_per_second,    R.string.megabit_per_second_short),
+        NormalUnit(MyUnitIDS.mebibit_per_second,    BigDecimal.valueOf(1_048_576),                  UnitGroup.DATA_TRANSFER, R.string.mebibit_per_second,    R.string.mebibit_per_second_short),
+        NormalUnit(MyUnitIDS.gigabit_per_second,    BigDecimal.valueOf(1_000_000_000),              UnitGroup.DATA_TRANSFER, R.string.gigabit_per_second,    R.string.gigabit_per_second_short),
+        NormalUnit(MyUnitIDS.gibibit_per_second,    BigDecimal.valueOf(1_073_741_824),              UnitGroup.DATA_TRANSFER, R.string.gibibit_per_second,    R.string.gibibit_per_second_short),
+        NormalUnit(MyUnitIDS.terabit_per_second,    BigDecimal.valueOf(1_000_000_000_000),          UnitGroup.DATA_TRANSFER, R.string.terabit_per_second,    R.string.terabit_per_second_short),
+        NormalUnit(MyUnitIDS.petabit_per_second,    BigDecimal.valueOf(1_000_000_000_000_000),      UnitGroup.DATA_TRANSFER, R.string.petabit_per_second,    R.string.petabit_per_second_short),
+        NormalUnit(MyUnitIDS.exabit_per_second,     BigDecimal.valueOf(1_000_000_000_000_000_000),  UnitGroup.DATA_TRANSFER, R.string.exabit_per_second,     R.string.exabit_per_second_short),
+        NormalUnit(MyUnitIDS.byte_per_second,       BigDecimal.valueOf(8),                          UnitGroup.DATA_TRANSFER, R.string.byte_per_second,       R.string.byte_per_second_short),
+        NormalUnit(MyUnitIDS.kibibyte_per_second,   BigDecimal.valueOf(8_192),                      UnitGroup.DATA_TRANSFER, R.string.kibibyte_per_second,   R.string.kibibyte_per_second_short),
+        NormalUnit(MyUnitIDS.kilobyte_per_second,   BigDecimal.valueOf(8_000),                      UnitGroup.DATA_TRANSFER, R.string.kilobyte_per_second,   R.string.kilobyte_per_second_short),
+        NormalUnit(MyUnitIDS.megabyte_per_second,   BigDecimal.valueOf(8_000_000),                  UnitGroup.DATA_TRANSFER, R.string.megabyte_per_second,   R.string.megabyte_per_second_short),
+        NormalUnit(MyUnitIDS.mebibyte_per_second,   BigDecimal.valueOf(8_388_608),                  UnitGroup.DATA_TRANSFER, R.string.mebibyte_per_second,   R.string.mebibyte_per_second_short),
+        NormalUnit(MyUnitIDS.gigabyte_per_second,   BigDecimal.valueOf(8_000_000_000),              UnitGroup.DATA_TRANSFER, R.string.gigabyte_per_second,   R.string.gigabyte_per_second_short),
+        NormalUnit(MyUnitIDS.gibibyte_per_second,   BigDecimal.valueOf(8_589_934_592),              UnitGroup.DATA_TRANSFER, R.string.gibibyte_per_second,   R.string.gibibyte_per_second_short),
+        NormalUnit(MyUnitIDS.terabyte_per_second,   BigDecimal.valueOf(8_000_000_000_000),          UnitGroup.DATA_TRANSFER, R.string.terabyte_per_second,   R.string.terabyte_per_second_short),
+        NormalUnit(MyUnitIDS.petabyte_per_second,   BigDecimal.valueOf(8_000_000_000_000_000),      UnitGroup.DATA_TRANSFER, R.string.petabyte_per_second,   R.string.petabyte_per_second_short),
+        NormalUnit(MyUnitIDS.exabyte_per_second,    BigDecimal.valueOf(8_000_000_000_000_000_000),  UnitGroup.DATA_TRANSFER, R.string.exabyte_per_second,    R.string.exabyte_per_second_short),
     )
 }

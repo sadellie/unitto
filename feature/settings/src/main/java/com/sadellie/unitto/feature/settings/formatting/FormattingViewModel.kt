@@ -43,7 +43,7 @@ import kotlin.math.ceil
 class FormattingViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-    private val _mainPreferences = userPreferencesRepository.mainPreferencesFlow
+    private val _mainPreferences = userPreferencesRepository.mainPrefsFlow
     private val _fractional = MutableStateFlow(false)
 
     val uiState = combine(_mainPreferences, _fractional) { mainPrefs, fractional ->

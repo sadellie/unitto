@@ -32,7 +32,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "units")
 class UnitsEntity(
     @PrimaryKey val unitId: String,
-    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean?,
-    @ColumnInfo(name = "paired_unit_id") val pairedUnitId: String?,
-    @ColumnInfo(name = "frequency") val frequency: Int? = 0,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean = false,
+    @ColumnInfo(name = "paired_unit_id") val pairedUnitId: String? = null,
+    @ColumnInfo(name = "frequency") val frequency: Int = 0,
 )

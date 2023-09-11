@@ -55,13 +55,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.base.R
 
 @Composable
 fun UnittoSearchBar(
     modifier: Modifier = Modifier,
-    query: String,
-    onQueryChange: (String) -> Unit,
+    query: TextFieldValue,
+    onQueryChange: (TextFieldValue) -> Unit,
     navigateUp: () -> Unit,
     title: String,
     searchActions: @Composable (RowScope.() -> Unit) = {},
@@ -78,7 +79,7 @@ fun UnittoSearchBar(
             // Search text field is open, need to close it and clear search query
             showSearchInput = false
             // focusManager.clearFocus()
-            onQueryChange("")
+            onQueryChange(TextFieldValue())
         } else {
             // No search text field is shown, can go back as usual
             navigateUp()
@@ -116,7 +117,7 @@ fun UnittoSearchBar(
             Crossfade(showSearchInput) { showSearch ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (showSearch) {
-                        ClearButton(visible = query.isNotEmpty()) { onQueryChange("") }
+                        ClearButton(visible = query.text.isNotEmpty()) { onQueryChange(TextFieldValue()) }
                         searchActions()
                     } else {
                         SearchButton { showSearchInput = true }
@@ -135,9 +136,9 @@ fun UnittoSearchBar(
 @Composable
 private fun SearchTextField(
     modifier: Modifier,
-    value: String,
+    value: TextFieldValue,
     placeholder: String,
-    onValueChange: (String) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     onSearch: KeyboardActionScope.() -> Unit
 ) {
     BasicTextField(
@@ -152,7 +153,7 @@ private fun SearchTextField(
         decorationBox = { innerTextField ->
             innerTextField()
             // Showing placeholder only when there is query is empty
-            value.ifEmpty {
+            value.text.ifEmpty {
                 Text(
                     modifier = Modifier.alpha(0.7f),
                     text = placeholder,

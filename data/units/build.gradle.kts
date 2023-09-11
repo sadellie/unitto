@@ -23,10 +23,16 @@ plugins {
 
 android {
     namespace = "com.sadellie.unitto.data.units"
+
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
     testImplementation(libs.junit)
+    testImplementation(libs.org.robolectric)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.datastore)

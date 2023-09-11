@@ -55,7 +55,7 @@ internal class CalculatorViewModel @Inject constructor(
     private val calculatorHistoryRepository: CalculatorHistoryRepository,
 ) : ViewModel() {
     private val _userPrefs: StateFlow<MainPreferences> =
-        userPrefsRepository.mainPreferencesFlow.stateIn(
+        userPrefsRepository.mainPrefsFlow.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
             MainPreferences()

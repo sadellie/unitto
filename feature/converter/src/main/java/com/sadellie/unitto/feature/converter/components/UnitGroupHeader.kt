@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.unitslist.components
+package com.sadellie.unitto.feature.converter.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable

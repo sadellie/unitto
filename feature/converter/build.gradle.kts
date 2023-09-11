@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id("unitto.library")
     id("unitto.library.compose")
@@ -25,10 +27,13 @@ plugins {
 
 android {
     namespace = "com.sadellie.unitto.feature.converter"
+
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
     testImplementation(libs.junit)
+    testImplementation(libs.org.robolectric)
     testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
     testImplementation(libs.androidx.room.runtime)
     testImplementation(libs.androidx.room.ktx)

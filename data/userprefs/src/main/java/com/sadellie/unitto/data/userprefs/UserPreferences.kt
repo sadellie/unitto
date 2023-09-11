@@ -31,9 +31,9 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
-import com.sadellie.unitto.data.model.AbstractUnit
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
 import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
@@ -175,7 +175,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             )
         }
 
-    val mainPreferencesFlow: Flow<MainPreferences> = dataStore.data
+    val mainPrefsFlow: Flow<MainPreferences> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -226,7 +226,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         }
 
     val allPreferencesFlow = combine(
-        mainPreferencesFlow, uiPreferencesFlow
+        mainPrefsFlow, uiPreferencesFlow
     ) { main, ui ->
         return@combine UserPreferences(
             themingMode = ui.themingMode,
@@ -285,17 +285,10 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         }
     }
 
-    /**
-     * Update latest used pair of [AbstractUnit] in DataStore. Need it so when user restarts the app,
-     * this pair will be already set.
-     *
-     * @param leftSideUnit [AbstractUnit] on the left
-     * @param rightSideUnit [AbstractUnit] on the right
-     */
-    suspend fun updateLatestPairOfUnits(leftSideUnit: AbstractUnit, rightSideUnit: AbstractUnit) {
+    suspend fun updateLatestPairOfUnits(unitFrom: AbstractUnit, unitTo: AbstractUnit) {
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.LATEST_LEFT_SIDE] = leftSideUnit.unitId
-            preferences[PrefsKeys.LATEST_RIGHT_SIDE] = rightSideUnit.unitId
+            preferences[PrefsKeys.LATEST_LEFT_SIDE] = unitFrom.id
+            preferences[PrefsKeys.LATEST_RIGHT_SIDE] = unitTo.id
         }
     }
 

@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.database
+package com.sadellie.unitto.feature.converter
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.unit.AbstractUnit
 
-@Dao
-interface UnitsDao {
-
-    @Query("SELECT * FROM units")
-    fun getAllFlow(): Flow<List<UnitsEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUnit(unit: UnitsEntity)
-
-    @Query("SELECT * FROM units WHERE unitId == :unitId LIMIT 1")
-    suspend fun getById(unitId: String): UnitsEntity?
-}
+internal data class LeftSideUIState(
+    val unitFrom: AbstractUnit? = null,
+    val query: TextFieldValue = TextFieldValue(),
+    val units: Map<UnitGroup, List<AbstractUnit>>? = null,
+    val favorites: Boolean = false,
+    val shownUnitGroups: List<UnitGroup> = emptyList(),
+    val unitGroup: UnitGroup? = unitFrom?.group,
+    val sorting: UnitsListSorting = UnitsListSorting.USAGE,
+)

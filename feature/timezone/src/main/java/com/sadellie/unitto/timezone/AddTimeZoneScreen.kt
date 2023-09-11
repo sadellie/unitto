@@ -40,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -83,7 +84,7 @@ internal fun AddTimeZoneRoute(
 fun AddTimeZoneScreen(
     uiState: AddTimeZoneUIState,
     navigateUp: () -> Unit,
-    onQueryChange: (String) -> Unit,
+    onQueryChange: (TextFieldValue) -> Unit,
     addToFavorites: (UnittoTimeZone) -> Unit,
 ) {
     val listState = rememberLazyListState()
