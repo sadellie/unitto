@@ -186,7 +186,7 @@ internal fun AboutScreen(
                     supportingContent = { Text("${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})") },
                     modifier = Modifier.combinedClickable {
                         if (userPrefs.value.enableToolsExperiment) {
-                            Toast.makeText(mContext, "Tools already enabled!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG).show()
                             return@combinedClickable
                         }
 
@@ -194,7 +194,7 @@ internal fun AboutScreen(
                         if (aboutItemClick < 7) return@combinedClickable
 
                         viewModel.enableToolsExperiment()
-                        Toast.makeText(mContext, "Tools enabled!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(mContext, "Experimental features enabled!", Toast.LENGTH_LONG).show()
                     }
                 )
             }

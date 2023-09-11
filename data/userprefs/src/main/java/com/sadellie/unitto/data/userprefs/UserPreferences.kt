@@ -111,6 +111,7 @@ data class MainPreferences(
     val unitConverterFormatTime: Boolean = false,
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
     val middleZero: Boolean = false,
+    val enableToolsExperiment: Boolean = false,
 )
 
 /**
@@ -208,6 +209,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val unitConverterFormatTime: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
             val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
             val middleZero: Boolean = preferences[PrefsKeys.MIDDLE_ZERO] ?: false
+            val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
 
             MainPreferences(
                 digitsPrecision = digitsPrecision,
@@ -222,6 +224,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 unitConverterFormatTime = unitConverterFormatTime,
                 unitConverterSorting = unitConverterSorting,
                 middleZero = middleZero,
+                enableToolsExperiment = enableToolsExperiment
             )
         }
 

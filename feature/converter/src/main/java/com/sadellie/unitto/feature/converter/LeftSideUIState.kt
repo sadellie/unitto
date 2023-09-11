@@ -31,4 +31,5 @@ internal data class LeftSideUIState(
     val shownUnitGroups: List<UnitGroup> = emptyList(),
     val unitGroup: UnitGroup? = unitFrom?.group,
     val sorting: UnitsListSorting = UnitsListSorting.USAGE,
+    val verticalList: Boolean = false,
 )

@@ -19,32 +19,53 @@
 package com.sadellie.unitto.feature.converter.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
@@ -118,6 +139,89 @@ internal fun ChipsRow(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ChipsFlexRow(
+    items: List<UnitGroup> = ALL_UNIT_GROUPS,
+    chosenUnitGroup: UnitGroup?,
+    selectAction: (UnitGroup?) -> Unit,
+    navigateToSettingsAction: () -> Unit,
+    lazyListState: LazyListState
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val transition = updateTransition(expanded, label = "Expanded transition")
+
+    val rowHeight by transition.animateDp({ tween() }, "Row height") {
+        if (it) 392.dp else 32.dp
+    }
+
+    val expandRotation by transition.animateFloat({ tween() }, "Expand rotation") {
+        if (it) 180f else 0f
+    }
+
+    Row(
+        modifier = Modifier
+            .padding(16.dp, 8.dp)
+            .heightIn(max = rowHeight)
+            .clipToBounds()
+    ) {
+        FlowRow(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState(), expanded)
+                .fillMaxHeight()
+                .weight(1f),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items.forEach { item ->
+                val isSelected: Boolean = item == chosenUnitGroup
+                UnittoFilterChip(
+                    isSelected = isSelected,
+                    selectAction = { selectAction(if (item == chosenUnitGroup) null else item) }
+                ) {
+                    AnimatedVisibility(visible = isSelected) {
+                        Icon(
+                            modifier = Modifier.height(18.dp),
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(R.string.checked_filter_description)
+                        )
+                    }
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = stringResource(item.res),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            UnittoFilterChip(
+                isSelected = false,
+                selectAction = navigateToSettingsAction,
+                paddingValues = PaddingValues(horizontal = 8.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.height(18.dp),
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.open_settings_description)
+                )
+            }
+        }
+
+        IconButton(
+            onClick = { expanded = !expanded },
+            modifier = Modifier.size(32.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ExpandMore,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(32.dp)
+                    .rotate(expandRotation)
+            )
+        }
+    }
+}
+
 /**
  * Basic chip implementation
  *
@@ -153,4 +257,40 @@ private fun UnittoFilterChip(
     ) {
         content()
     }
+}
+
+@Preview
+@Composable
+fun PreviewUnittoChips() {
+    var selected by remember { mutableStateOf<UnitGroup?>(UnitGroup.LENGTH) }
+
+    fun selectAction(unitGroup: UnitGroup?) {
+        selected = unitGroup
+    }
+
+    ChipsRow(
+        items = ALL_UNIT_GROUPS,
+        chosenUnitGroup = selected,
+        selectAction = { selectAction(it) },
+        navigateToSettingsAction = {},
+        lazyListState = rememberLazyListState()
+    )
+}
+
+@Preview(showSystemUi = true, showBackground = true, backgroundColor = 0xFFE0E0E0)
+@Composable
+fun PreviewChipsFlowRow() {
+    var selected by remember { mutableStateOf<UnitGroup?>(UnitGroup.LENGTH) }
+
+    fun selectAction(unitGroup: UnitGroup?) {
+        selected = unitGroup
+    }
+
+    ChipsFlexRow(
+        items = ALL_UNIT_GROUPS,
+        chosenUnitGroup = selected,
+        selectAction = { selectAction(it) },
+        navigateToSettingsAction = {},
+        lazyListState = rememberLazyListState()
+    )
 }

@@ -153,7 +153,8 @@ internal class ConverterViewModel @Inject constructor(
             unitFrom = unitFrom,
             sorting = prefs.unitConverterSorting,
             shownUnitGroups = prefs.shownUnitGroups,
-            favorites = prefs.unitConverterFavoritesOnly
+            favorites = prefs.unitConverterFavoritesOnly,
+            verticalList = prefs.enableToolsExperiment,
         )
     }
         .onEach {
@@ -162,7 +163,7 @@ internal class ConverterViewModel @Inject constructor(
                 unitGroup = it.unitGroup,
                 favoritesOnly = it.favorites,
                 sorting = it.sorting,
-                shownUnitGroups = it.shownUnitGroups
+                shownUnitGroups = it.shownUnitGroups,
             )
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LeftSideUIState())

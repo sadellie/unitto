@@ -51,6 +51,7 @@ import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.feature.converter.components.BasicUnitListItem
+import com.sadellie.unitto.feature.converter.components.ChipsFlexRow
 import com.sadellie.unitto.feature.converter.components.ChipsRow
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.SearchPlaceholder
@@ -129,13 +130,24 @@ private fun LeftSideScreen(
                         }
                     }
                 )
-                ChipsRow(
-                    chosenUnitGroup = uiState.unitGroup,
-                    items = uiState.shownUnitGroups,
-                    selectAction = updateUnitGroup,
-                    lazyListState = chipsRowLazyListState,
-                    navigateToSettingsAction = navigateToUnitGroups
-                )
+
+                if (uiState.verticalList) {
+                    ChipsFlexRow(
+                        chosenUnitGroup = uiState.unitGroup,
+                        items = uiState.shownUnitGroups,
+                        selectAction = updateUnitGroup,
+                        lazyListState = chipsRowLazyListState,
+                        navigateToSettingsAction = navigateToUnitGroups
+                    )
+                } else {
+                    ChipsRow(
+                        chosenUnitGroup = uiState.unitGroup,
+                        items = uiState.shownUnitGroups,
+                        selectAction = updateUnitGroup,
+                        lazyListState = chipsRowLazyListState,
+                        navigateToSettingsAction = navigateToUnitGroups
+                    )
+                }
             }
         }
     ) { paddingValues ->
