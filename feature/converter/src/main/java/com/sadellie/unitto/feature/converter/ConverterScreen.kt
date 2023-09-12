@@ -45,6 +45,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,6 +76,7 @@ import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.data.common.format
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
@@ -280,6 +282,15 @@ private fun Default(
         mutableStateOf(
             TextFieldValue(uiState.calculation?.format(uiState.scale, uiState.outputFormat) ?: "")
         )
+    }
+
+    val connection by connectivityState()
+
+    LaunchedEffect(connection) {
+        if ((connection == ConnectionState.Available) and (uiState.result == ConverterResult.Error)) {
+            val unitFrom = uiState.unitFrom
+            if (unitFrom.group == UnitGroup.CURRENCY) refreshCurrencyRates(unitFrom)
+        }
     }
 
     PortraitLandscape(
