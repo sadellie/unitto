@@ -38,6 +38,7 @@ import com.sadellie.unitto.data.units.stateIn
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
+import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -349,12 +350,13 @@ internal class ConverterViewModel @Inject constructor(
     ) = viewModelScope.launch(Dispatchers.Default) {
         val calculated = try {
             Expression(input.text.ifEmpty { Token.Digit._0 }).calculate()
+        } catch (e: ExpressionException.DivideByZero) {
+            _calculation.update { null }
+            return@launch
         } catch (e: Exception) {
-            null
+            return@launch
         }
         _calculation.update { if (input.text.isExpression()) calculated else null }
-
-        if (calculated == null) return@launch
 
         try {
             if ((unitFrom.group == UnitGroup.TIME) and (formatTime)) {

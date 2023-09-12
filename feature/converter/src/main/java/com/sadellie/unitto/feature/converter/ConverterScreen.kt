@@ -25,8 +25,10 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -310,8 +312,10 @@ private fun Default(
                     formatterSymbols = uiState.formatterSymbols,
                 )
                 AnimatedVisibility(
-                    visible = uiState.calculation != null,
-                    modifier = Modifier.weight(1f)
+                    visible = calculation.text.isNotEmpty(),
+                    modifier = Modifier.weight(1f),
+                    enter = expandVertically(clip = false),
+                    exit = shrinkVertically(clip = false)
                 ) {
                     ExpressionTextField(
                         modifier = Modifier,
