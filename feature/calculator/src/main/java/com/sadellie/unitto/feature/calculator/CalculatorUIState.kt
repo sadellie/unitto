@@ -35,6 +35,7 @@ internal sealed class CalculatorUIState {
         val allowVibration: Boolean = false,
         val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
         val middleZero: Boolean = false,
+        val partialHistoryView: Boolean = true,
     ) : CalculatorUIState()
 }
 

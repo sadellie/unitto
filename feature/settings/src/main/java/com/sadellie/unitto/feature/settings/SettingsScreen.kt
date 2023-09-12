@@ -22,15 +22,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
-import androidx.compose.material.icons.filled.Rule
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
 import androidx.compose.material3.Icon
@@ -55,12 +54,12 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
+import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
+import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.formattingRoute
 import com.sadellie.unitto.feature.settings.navigation.themesRoute
-import com.sadellie.unitto.feature.settings.navigation.unitsGroupRoute
 
 @Composable
 internal fun SettingsScreen(
@@ -125,52 +124,31 @@ internal fun SettingsScreen(
                 )
             }
 
-            // UNIT CONVERTER GROUP
-            item { Header(stringResource(R.string.unit_converter)) }
-
-            // UNIT GROUPS
             item {
                 ListItem(
                     leadingContent = {
                         Icon(
-                            Icons.Default.Rule,
-                            stringResource(R.string.disable_unit_group_description),
+                            Icons.Default.Calculate,
+                            stringResource(R.string.calculator),
                         )
                     },
-                    headlineContent = { Text(stringResource(R.string.unit_groups_setting)) },
-                    supportingContent = { Text(stringResource(R.string.unit_groups_support)) },
-                    modifier = Modifier.clickable { navControllerAction(unitsGroupRoute) }
+                    headlineContent = { Text(stringResource(R.string.calculator)) },
+                    supportingContent = { Text(stringResource(R.string.calculator_settings_support)) },
+                    modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
                 )
             }
 
-            // UNITS LIST SORTING
             item {
                 ListItem(
                     leadingContent = {
                         Icon(
-                            Icons.Default.Sort,
-                            stringResource(R.string.units_sorting)
+                            Icons.Default.SwapHoriz,
+                            stringResource(R.string.unit_converter),
                         )
                     },
-                    headlineContent = { Text(stringResource(R.string.units_sorting)) },
-                    supportingContent = { Text(stringResource(R.string.units_sorting_support)) },
-                    modifier = Modifier.clickable { dialogState = DialogState.UNIT_LIST_SORTING }
-                )
-            }
-
-            // FORMAT TIME
-            item {
-                UnittoListItem(
-                    label = stringResource(R.string.format_time),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Timer,
-                            stringResource(R.string.format_time)
-                        )
-                    },
-                    supportContent = stringResource(R.string.format_time_support),
-                    switchState = userPrefs.value.unitConverterFormatTime,
-                    onSwitchChange = viewModel::updateUnitConverterFormatTime
+                    headlineContent = { Text(stringResource(R.string.unit_converter)) },
+                    supportingContent = { Text(stringResource(R.string.converter_settings_support)) },
+                    modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) }
                 )
             }
 
@@ -276,21 +254,6 @@ internal fun SettingsScreen(
             )
         }
 
-        DialogState.UNIT_LIST_SORTING -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.units_sorting),
-                listItems = mapOf(
-                    UnitsListSorting.USAGE to R.string.sort_by_usage,
-                    UnitsListSorting.ALPHABETICAL to R.string.sort_by_alphabetical,
-                    UnitsListSorting.SCALE_DESC to R.string.sort_by_scale_desc,
-                    UnitsListSorting.SCALE_ASC to R.string.sort_by_scale_asc,
-                ),
-                selectedItemIndex = userPrefs.value.unitConverterSorting,
-                selectAction = viewModel::updateUnitConverterSorting,
-                dismissAction = { resetDialog() }
-            )
-        }
-
         DialogState.LANGUAGE -> {
             AlertDialogWithList(
                 title = stringResource(R.string.language_setting),
@@ -322,5 +285,5 @@ internal fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, START_SCREEN, UNIT_LIST_SORTING, LANGUAGE
+    NONE, START_SCREEN, LANGUAGE
 }

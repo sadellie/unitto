@@ -85,6 +85,7 @@ data class UserPreferences(
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
     val middleZero: Boolean = false,
     val systemFont: Boolean = false,
+    val partialHistoryView: Boolean = true,
 )
 
 data class UIPreferences(
@@ -112,6 +113,7 @@ data class MainPreferences(
     val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
     val middleZero: Boolean = false,
     val enableToolsExperiment: Boolean = false,
+    val partialHistoryView: Boolean = true,
 )
 
 /**
@@ -142,6 +144,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
         val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
         val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
+        val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
     }
 
     val uiPreferencesFlow: Flow<UIPreferences> = dataStore.data
@@ -210,6 +213,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
             val middleZero: Boolean = preferences[PrefsKeys.MIDDLE_ZERO] ?: false
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
+            val partialHistoryView: Boolean = preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: false
 
             MainPreferences(
                 digitsPrecision = digitsPrecision,
@@ -224,7 +228,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 unitConverterFormatTime = unitConverterFormatTime,
                 unitConverterSorting = unitConverterSorting,
                 middleZero = middleZero,
-                enableToolsExperiment = enableToolsExperiment
+                enableToolsExperiment = enableToolsExperiment,
+                partialHistoryView = partialHistoryView
             )
         }
 
@@ -252,6 +257,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             unitConverterSorting = main.unitConverterSorting,
             middleZero = main.middleZero,
             systemFont = ui.systemFont,
+            partialHistoryView = main.partialHistoryView
         )
     }
 
@@ -452,6 +458,17 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     suspend fun updateSystemFont(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.SYSTEM_FONT] = enabled
+        }
+    }
+
+    /**
+     * Update partial history view preference.
+     *
+     * @param enabled When true will enable partial history view.
+     */
+    suspend fun updatePartialHistoryView(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] = enabled
         }
     }
 }

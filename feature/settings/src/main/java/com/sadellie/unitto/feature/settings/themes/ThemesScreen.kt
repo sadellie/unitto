@@ -48,7 +48,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.Header
@@ -81,9 +80,9 @@ private val colorSchemes: List<Color> by lazy {
 
 @Composable
 internal fun ThemesRoute(
+    viewModel: ThemesViewModel,
     navigateUpAction: () -> Unit = {},
     themmoController: ThemmoController,
-    viewModel: ThemesViewModel = hiltViewModel()
 ) {
     val systemFont = viewModel.systemFont.collectAsStateWithLifecycle()
 

@@ -93,4 +93,13 @@ class SettingsViewModel @Inject constructor(
             userPrefsRepository.updateUnitConverterSorting(sorting)
         }
     }
+
+    /**
+     * @see UserPreferencesRepository.updatePartialHistoryView
+     */
+    fun updatePartialHistoryView(enabled: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updatePartialHistoryView(enabled)
+        }
+    }
 }

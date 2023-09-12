@@ -26,25 +26,34 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 
-internal enum class DragState { CLOSED, HALF, OPEN }
+internal enum class DragState { CLOSED, SMALL, OPEN }
 
 @Composable
 internal fun rememberDragState(
     initialValue: DragState = DragState.CLOSED,
     historyItem: Dp,
     max: Dp,
+    enablePartialView: Boolean,
 ): AnchoredDraggableState<DragState> {
     val historyItemHeight = with(LocalDensity.current) { historyItem.toPx() }
     val maxHeight = with(LocalDensity.current) { max.toPx() }
+    val anchors: DraggableAnchors<DragState> = if (enablePartialView) {
+        DraggableAnchors {
+            DragState.CLOSED at 0f
+            DragState.SMALL at historyItemHeight
+            DragState.OPEN at maxHeight
+        }
+    } else {
+        DraggableAnchors {
+            DragState.CLOSED at 0f
+            DragState.OPEN at maxHeight
+        }
+    }
 
-    return remember(key1 = historyItem) {
+    return remember(historyItem, enablePartialView) {
         AnchoredDraggableState(
             initialValue = initialValue,
-            anchors = DraggableAnchors {
-                DragState.CLOSED at 0f
-                DragState.HALF at historyItemHeight
-                DragState.OPEN at maxHeight
-            },
+            anchors = anchors,
             positionalThreshold = { 0f },
             velocityThreshold = { 0f },
             animationSpec = tween()

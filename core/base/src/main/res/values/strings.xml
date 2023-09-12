@@ -1414,4 +1414,8 @@ Used in this dialog window. Should be short -->
     <string name="gallon_us_per_100_mile_short">gal/100 mi (US)</string>
     <string name="gallon_uk_per_100_mile">Gallon per 100 mile (UK)</string>
     <string name="gallon_uk_per_100_mile_short">gal/100 mi (UK)</string>
+    <string name="partial_history_view_setting">Small history view</string>
+    <string name="partial_history_view_setting_support">Peek latest entrance in history</string>
+    <string name="calculator_settings_support">History view</string>
+    <string name="converter_settings_support">Unit groups, sorting, formatting</string>
 </resources>

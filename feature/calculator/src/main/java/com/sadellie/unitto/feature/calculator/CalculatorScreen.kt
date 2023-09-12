@@ -23,6 +23,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.snapTo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -48,6 +49,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,6 +74,7 @@ import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboardLoading
 import com.sadellie.unitto.feature.calculator.components.HistoryList
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -149,19 +152,28 @@ private fun CalculatorScreen(
             var historyItemHeight by remember { mutableStateOf(0.dp) }
             val textBoxHeight = maxHeight * 0.25f
             var dragStateCurrentValue by rememberSaveable { mutableStateOf(DragState.CLOSED) }
+            val corScope = rememberCoroutineScope()
 
             val dragState = rememberDragState(
                 historyItem = historyItemHeight,
                 max = maxHeight - textBoxHeight,
-                initialValue = dragStateCurrentValue
+                initialValue = dragStateCurrentValue,
+                enablePartialView = uiState.partialHistoryView
             )
-            val dragDp by remember(dragState.requireOffset()) {
+            val dragDp by remember(dragState) {
                 derivedStateOf {
                     focusManager.clearFocus(true)
-                    with(density) { dragState.requireOffset().toDp() }
+                    with(density) {
+                        try {
+                            dragState.requireOffset().toDp()
+                        } catch (e: IllegalStateException) {
+                            corScope.launch { dragState.snapTo(DragState.CLOSED) }
+                            0.dp
+                        }
+                    }
                 }
             }
-            val keyboardHeight by remember(dragState.requireOffset()) {
+            val keyboardHeight by remember(dragState) {
                 derivedStateOf {
                     if (dragDp > historyItemHeight) {
                         maxHeight - textBoxHeight - historyItemHeight

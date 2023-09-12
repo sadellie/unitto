@@ -77,6 +77,7 @@ internal class CalculatorViewModel @Inject constructor(
             allowVibration = userPrefs.enableVibrations,
             formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
             middleZero = userPrefs.middleZero,
+            partialHistoryView = userPrefs.partialHistoryView,
         )
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState.Loading

@@ -54,9 +54,9 @@ import com.sadellie.unitto.core.ui.openLink
 
 @Composable
 internal fun AboutScreen(
+    viewModel: SettingsViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
-    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val mContext = LocalContext.current
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()

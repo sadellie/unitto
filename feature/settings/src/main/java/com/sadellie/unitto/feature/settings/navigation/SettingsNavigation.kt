@@ -18,6 +18,8 @@
 
 package com.sadellie.unitto.feature.settings.navigation
 
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -26,6 +28,8 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.feature.settings.AboutScreen
+import com.sadellie.unitto.feature.settings.CalculatorSettingsScreen
+import com.sadellie.unitto.feature.settings.ConverterSettingsScreen
 import com.sadellie.unitto.feature.settings.SettingsScreen
 import com.sadellie.unitto.feature.settings.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
@@ -40,6 +44,8 @@ internal const val unitsGroupRoute = "units_group_route"
 internal const val thirdPartyRoute = "third_party_route"
 internal const val aboutRoute = "about_route"
 internal const val formattingRoute = "formatting_route"
+internal const val calculatorSettingsRoute = "calculator_settings_route"
+internal const val converterSettingsRoute = "converter_settings_route"
 
 fun NavController.navigateToSettings() {
     navigate(TopLevelDestinations.Settings.start)
@@ -61,7 +67,10 @@ fun NavGraphBuilder.settingGraph(
         )
     ) {
         composable(start) {
+            val parent = remember(it) { navController.getBackStackEntry(graph) }
+
             SettingsScreen(
+                viewModel = hiltViewModel(parent),
                 menuButtonClick = navController::navigateUp,
                 navControllerAction = navController::navigate
             )
@@ -69,6 +78,7 @@ fun NavGraphBuilder.settingGraph(
 
         composable(themesRoute) {
             ThemesRoute(
+                viewModel = hiltViewModel(),
                 navigateUpAction = navController::navigateUp,
                 themmoController = themmoController,
             )
@@ -81,21 +91,45 @@ fun NavGraphBuilder.settingGraph(
         }
 
         composable(aboutRoute) {
+            val parent = remember(it) { navController.getBackStackEntry(graph) }
+
             AboutScreen(
+                viewModel = hiltViewModel(parent),
                 navigateUpAction = navController::navigateUp,
-                navigateToThirdParty = { navController.navigate(thirdPartyRoute) },
+                navigateToThirdParty = { navController.navigate(thirdPartyRoute) }
             )
         }
 
         composable(unitsGroupRoute) {
             UnitGroupsScreen(
+                viewModel = hiltViewModel(),
                 navigateUpAction = navController::navigateUp,
             )
         }
 
         composable(formattingRoute) {
             FormattingRoute(
+                viewModel = hiltViewModel(),
                 navigateUpAction = navController::navigateUp
+            )
+        }
+
+        composable(calculatorSettingsRoute) {
+            val parent = remember(it) { navController.getBackStackEntry(graph) }
+
+            CalculatorSettingsScreen(
+                viewModel = hiltViewModel(parent),
+                navigateUpAction = navController::navigateUp,
+            )
+        }
+
+        composable(converterSettingsRoute) {
+            val parent = remember(it) { navController.getBackStackEntry(graph) }
+
+            ConverterSettingsScreen(
+                viewModel = hiltViewModel(parent),
+                navigateUpAction = navController::navigateUp,
+                navigateToUnitsGroup = { navController.navigate(unitsGroupRoute) }
             )
         }
     }
