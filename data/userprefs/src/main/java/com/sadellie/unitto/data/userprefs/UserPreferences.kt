@@ -213,7 +213,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
             val middleZero: Boolean = preferences[PrefsKeys.MIDDLE_ZERO] ?: false
             val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
-            val partialHistoryView: Boolean = preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: false
+            val partialHistoryView: Boolean = preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: true
 
             MainPreferences(
                 digitsPrecision = digitsPrecision,
