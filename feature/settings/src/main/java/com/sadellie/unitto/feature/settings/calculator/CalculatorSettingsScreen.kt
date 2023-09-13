@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.feature.settings.calculator
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
@@ -32,10 +33,10 @@ import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 
 @Composable
 internal fun CalculatorSettingsScreen(
-    viewModel: SettingsViewModel,
+    viewModel: CalculatorViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
 ) {
-    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.calculator),
@@ -52,7 +53,7 @@ internal fun CalculatorSettingsScreen(
                         )
                     },
                     supportContent = stringResource(R.string.partial_history_view_setting_support),
-                    switchState = userPrefs.value.partialHistoryView,
+                    switchState = prefs.value.partialHistoryView,
                     onSwitchChange = viewModel::updatePartialHistoryView
                 )
             }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,42 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.feature.settings.calculator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.userprefs.GeneralPreferences
+import com.sadellie.unitto.data.userprefs.CalculatorPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class SettingsViewModel @Inject constructor(
+class CalculatorViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
-    val userPrefs = userPrefsRepository.generalPrefs
-        .stateIn(viewModelScope, GeneralPreferences())
+    val prefs = userPrefsRepository.calculatorPrefs
+        .stateIn(viewModelScope, CalculatorPreferences())
 
-    /**
-     * @see UserPreferencesRepository.updateVibrations
-     */
-    fun updateVibrations(enabled: Boolean) = viewModelScope.launch {
-        userPrefsRepository.updateVibrations(enabled)
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateMiddleZero
-     */
-    fun updateMiddleZero(enabled: Boolean) = viewModelScope.launch {
-        userPrefsRepository.updateMiddleZero(enabled)
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateStartingScreen
-     */
-    fun updateStartingScreen(startingScreen: String) = viewModelScope.launch {
-        userPrefsRepository.updateStartingScreen(startingScreen)
+    fun updatePartialHistoryView(enabled: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updatePartialHistoryView(enabled)
     }
 }

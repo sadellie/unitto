@@ -87,7 +87,7 @@ class UnitGroupsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             unitGroupsRepository.updateShownGroups(
-                userPrefsRepository.mainPrefsFlow.first().shownUnitGroups
+                userPrefsRepository.unitGroupsPrefs.first().shownUnitGroups
             )
         }
     }

@@ -39,255 +39,222 @@ import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-/**
- * Represents user preferences that are user across the app
- *
- * @property themingMode [ThemingMode] from Themmo.
- * @property enableDynamicTheme Use dynamic color scheme
- * @property enableAmoledTheme Use amoled color scheme
- * @property customColor Generate custom color scheme from this color.
- * @property digitsPrecision Current [PRECISIONS]. Number of digits in fractional part
- * @property separator Current [Separator] that used to separate thousands
- * @property outputFormat Current [OutputFormat] that is applied to converted value (not input)
- * @property latestLeftSideUnit Latest [AbstractUnit] that was on the left side
- * @property latestRightSideUnit Latest [AbstractUnit] that was on the right side
- * @property shownUnitGroups [UnitGroup]s that user wants to see. Excludes other [UnitGroup]s,
- * @property enableVibrations When true will use haptic feedback in app.
- * @property enableToolsExperiment When true will enable experimental Tools screen.
- * @property radianMode AngleMode in mxParser. When true - Radian, when False - Degree.
- * @property unitConverterFavoritesOnly If true will show only units that are marked as favorite.
- * @property unitConverterFormatTime If true will format time to be more human readable.
- * @property unitConverterSorting Units list sorting mode.
- */
-data class UserPreferences(
-    val themingMode: ThemingMode = ThemingMode.AUTO,
-    val enableDynamicTheme: Boolean = true,
-    val enableAmoledTheme: Boolean = false,
-    val customColor: Color = Color.Unspecified,
-    val monetMode: MonetMode = MonetMode.TONAL_SPOT,
-    val digitsPrecision: Int = 3,
-    val separator: Int = Separator.SPACE,
-    val outputFormat: Int = OutputFormat.PLAIN,
-    val latestLeftSideUnit: String = MyUnitIDS.kilometer,
-    val latestRightSideUnit: String = MyUnitIDS.mile,
-    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
-    val enableVibrations: Boolean = true,
-    val enableToolsExperiment: Boolean = false,
-    val startingScreen: String = TopLevelDestinations.Calculator.graph,
-    val radianMode: Boolean = true,
-    val unitConverterFavoritesOnly: Boolean = false,
-    val unitConverterFormatTime: Boolean = false,
-    val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
-    val middleZero: Boolean = false,
-    val systemFont: Boolean = false,
-    val partialHistoryView: Boolean = true,
-)
+private object PrefsKeys {
+    val THEMING_MODE = stringPreferencesKey("THEMING_MODE_PREF_KEY")
+    val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")
+    val ENABLE_AMOLED_THEME = booleanPreferencesKey("ENABLE_AMOLED_THEME_PREF_KEY")
+    val CUSTOM_COLOR = longPreferencesKey("CUSTOM_COLOR_PREF_KEY")
+    val MONET_MODE = stringPreferencesKey("MONET_MODE_PREF_KEY")
+    val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
+    val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
+    val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
+    val LATEST_LEFT_SIDE = stringPreferencesKey("LATEST_LEFT_SIDE_PREF_KEY")
+    val LATEST_RIGHT_SIDE = stringPreferencesKey("LATEST_RIGHT_SIDE_PREF_KEY")
+    val SHOWN_UNIT_GROUPS = stringPreferencesKey("SHOWN_UNIT_GROUPS_PREF_KEY")
+    val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
+    val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
+    val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
+    val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
+    val UNIT_CONVERTER_FAVORITES_ONLY =
+        booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
+    val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
+    val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
+    val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
+    val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
+    val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
+}
 
-data class UIPreferences(
+data class AppPreferences(
     val themingMode: ThemingMode = ThemingMode.AUTO,
     val enableDynamicTheme: Boolean = true,
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,
-    val monetMode: MonetMode = MonetMode.TONAL_SPOT,
+    val monetMode: MonetMode = MonetMode.values().first(),
     val startingScreen: String = TopLevelDestinations.Calculator.graph,
     val enableToolsExperiment: Boolean = false,
     val systemFont: Boolean = false,
 )
 
-data class MainPreferences(
+data class GeneralPreferences(
+    val startingScreen: String = TopLevelDestinations.Calculator.graph,
+    val enableVibrations: Boolean = true,
+    val middleZero: Boolean = false,
+)
+
+data class CalculatorPreferences(
+    val radianMode: Boolean = true,
+    val enableVibrations: Boolean = true,
+    val separator: Int = Separator.SPACE,
+    val middleZero: Boolean = false,
+    val partialHistoryView: Boolean = true,
+    val precision: Int = 3,
+    val outputFormat: Int = OutputFormat.PLAIN,
+)
+
+data class ConverterPreferences(
+    val enableVibrations: Boolean = true,
+    val separator: Int = Separator.SPACE,
+    val middleZero: Boolean = false,
+    val precision: Int = 3,
+    val outputFormat: Int = OutputFormat.PLAIN,
+    val unitConverterFormatTime: Boolean = false,
+    val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
+    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
+    val unitConverterFavoritesOnly: Boolean = false,
+    val enableToolsExperiment: Boolean = false,
+    val latestLeftSideUnit: String = MyUnitIDS.kilometer,
+    val latestRightSideUnit: String = MyUnitIDS.mile,
+)
+
+data class ThemePreferences(
+    val systemFont: Boolean = false,
+)
+
+data class FormattingPreferences(
     val digitsPrecision: Int = 3,
     val separator: Int = Separator.SPACE,
     val outputFormat: Int = OutputFormat.PLAIN,
-    val latestLeftSideUnit: String = MyUnitIDS.kilometer,
-    val latestRightSideUnit: String = MyUnitIDS.mile,
-    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
-    val enableVibrations: Boolean = true,
-    val radianMode: Boolean = true,
-    val unitConverterFavoritesOnly: Boolean = false,
-    val unitConverterFormatTime: Boolean = false,
-    val unitConverterSorting: UnitsListSorting = UnitsListSorting.USAGE,
-    val middleZero: Boolean = false,
-    val enableToolsExperiment: Boolean = false,
-    val partialHistoryView: Boolean = true,
 )
 
-/**
- * Repository that works with DataStore
- */
+data class UnitGroupsPreferences(
+    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
+)
+
+data class AddSubtractPreferences(
+    val separator: Int = Separator.SPACE,
+)
+
+data class AboutPreferences(
+    val enableToolsExperiment: Boolean = false,
+)
+
 class UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
-    /**
-     * Keys for DataStore
-     */
-    private object PrefsKeys {
-        val THEMING_MODE = stringPreferencesKey("THEMING_MODE_PREF_KEY")
-        val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")
-        val ENABLE_AMOLED_THEME = booleanPreferencesKey("ENABLE_AMOLED_THEME_PREF_KEY")
-        val CUSTOM_COLOR = longPreferencesKey("CUSTOM_COLOR_PREF_KEY")
-        val MONET_MODE = stringPreferencesKey("MONET_MODE_PREF_KEY")
-        val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
-        val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
-        val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
-        val LATEST_LEFT_SIDE = stringPreferencesKey("LATEST_LEFT_SIDE_PREF_KEY")
-        val LATEST_RIGHT_SIDE = stringPreferencesKey("LATEST_RIGHT_SIDE_PREF_KEY")
-        val SHOWN_UNIT_GROUPS = stringPreferencesKey("SHOWN_UNIT_GROUPS_PREF_KEY")
-        val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
-        val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
-        val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
-        val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
-        val UNIT_CONVERTER_FAVORITES_ONLY = booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
-        val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
-        val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
-        val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
-        val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
-        val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
-    }
+    private val data = dataStore.data
+        .catch { if (it is IOException) emit(emptyPreferences()) else throw it }
 
-    val uiPreferencesFlow: Flow<UIPreferences> = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }
+    val appPrefs: Flow<AppPreferences> = data
         .map { preferences ->
-            val themingMode: ThemingMode = preferences[PrefsKeys.THEMING_MODE]?.let { ThemingMode.valueOf(it) }
-                ?: ThemingMode.AUTO
-            val enableDynamicTheme: Boolean = preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true
-            val enableAmoledTheme: Boolean = preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
-            val customColor: Color = preferences[PrefsKeys.CUSTOM_COLOR]?.let { Color(it.toULong()) } ?: Color.Unspecified
-            val monetMode: MonetMode = preferences[PrefsKeys.MONET_MODE]?.let { MonetMode.valueOf(it) }
-                ?: MonetMode.TONAL_SPOT
-            val startingScreen: String = preferences[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Calculator.graph
-            val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
-            val systemFont: Boolean = preferences[PrefsKeys.SYSTEM_FONT] ?: false
-
-            UIPreferences(
-                themingMode = themingMode,
-                enableDynamicTheme = enableDynamicTheme,
-                enableAmoledTheme = enableAmoledTheme,
-                customColor = customColor,
-                monetMode = monetMode,
-                startingScreen = startingScreen,
-                enableToolsExperiment = enableToolsExperiment,
-                systemFont = systemFont
+            AppPreferences(
+                themingMode = preferences[PrefsKeys.THEMING_MODE]?.letTryOrNull {
+                    ThemingMode.valueOf(it)
+                }
+                    ?: ThemingMode.AUTO,
+                enableDynamicTheme = preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true,
+                enableAmoledTheme = preferences[PrefsKeys.ENABLE_AMOLED_THEME] ?: false,
+                customColor = preferences[PrefsKeys.CUSTOM_COLOR]?.letTryOrNull { Color(it.toULong()) }
+                    ?: Color.Unspecified,
+                monetMode = preferences[PrefsKeys.MONET_MODE]?.letTryOrNull { MonetMode.valueOf(it) }
+                    ?: MonetMode.values().first(),
+                startingScreen = preferences[PrefsKeys.STARTING_SCREEN]
+                    ?: TopLevelDestinations.Calculator.graph,
+                enableToolsExperiment = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false,
+                systemFont = preferences[PrefsKeys.SYSTEM_FONT] ?: false
             )
         }
 
-    val mainPrefsFlow: Flow<MainPreferences> = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }
+    val generalPrefs: Flow<GeneralPreferences> = data
         .map { preferences ->
-            val digitsPrecision: Int = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3
-            val separator: Int = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE
-            val outputFormat: Int = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
-            val latestLeftSideUnit: String = preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
-            val latestRightSideUnit: String = preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
-            val shownUnitGroups: List<UnitGroup> =
-                preferences[PrefsKeys.SHOWN_UNIT_GROUPS]?.let { list ->
-                    // Everything is in hidden (nothing in shown)
-                    list.ifEmpty { return@let listOf() }
-
-                    try {
-                        list.split(",").map { UnitGroup.valueOf(it) }
-                    } catch (e: Exception) {
-                        // Bad thing happened, return null so all units will be shown
-                        null
-                    }
-
-                } ?: ALL_UNIT_GROUPS
-            val enableVibrations: Boolean = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true
-            val radianMode: Boolean = preferences[PrefsKeys.RADIAN_MODE] ?: true
-            val unitConverterFavoritesOnly: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: false
-            val unitConverterFormatTime: Boolean = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
-            val unitConverterSorting: UnitsListSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
-            val middleZero: Boolean = preferences[PrefsKeys.MIDDLE_ZERO] ?: false
-            val enableToolsExperiment: Boolean = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
-            val partialHistoryView: Boolean = preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: true
-
-            MainPreferences(
-                digitsPrecision = digitsPrecision,
-                separator = separator,
-                outputFormat = outputFormat,
-                latestLeftSideUnit = latestLeftSideUnit,
-                latestRightSideUnit = latestRightSideUnit,
-                shownUnitGroups = shownUnitGroups,
-                enableVibrations = enableVibrations,
-                radianMode = radianMode,
-                unitConverterFavoritesOnly = unitConverterFavoritesOnly,
-                unitConverterFormatTime = unitConverterFormatTime,
-                unitConverterSorting = unitConverterSorting,
-                middleZero = middleZero,
-                enableToolsExperiment = enableToolsExperiment,
-                partialHistoryView = partialHistoryView
+            GeneralPreferences(
+                startingScreen = preferences[PrefsKeys.STARTING_SCREEN]
+                    ?: TopLevelDestinations.Calculator.graph,
+                enableVibrations = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true,
+                middleZero = preferences[PrefsKeys.MIDDLE_ZERO] ?: false,
             )
         }
 
-    val allPreferencesFlow = combine(
-        mainPrefsFlow, uiPreferencesFlow
-    ) { main, ui ->
-        return@combine UserPreferences(
-            themingMode = ui.themingMode,
-            enableDynamicTheme = ui.enableDynamicTheme,
-            enableAmoledTheme = ui.enableAmoledTheme,
-            customColor = ui.customColor,
-            monetMode = ui.monetMode,
-            digitsPrecision = main.digitsPrecision,
-            separator = main.separator,
-            outputFormat = main.outputFormat,
-            latestLeftSideUnit = main.latestLeftSideUnit,
-            latestRightSideUnit = main.latestRightSideUnit,
-            shownUnitGroups = main.shownUnitGroups,
-            enableVibrations = main.enableVibrations,
-            enableToolsExperiment = ui.enableToolsExperiment,
-            startingScreen = ui.startingScreen,
-            radianMode = main.radianMode,
-            unitConverterFavoritesOnly = main.unitConverterFavoritesOnly,
-            unitConverterFormatTime = main.unitConverterFormatTime,
-            unitConverterSorting = main.unitConverterSorting,
-            middleZero = main.middleZero,
-            systemFont = ui.systemFont,
-            partialHistoryView = main.partialHistoryView
-        )
-    }
+    val calculatorPrefs: Flow<CalculatorPreferences> = data
+        .map { preferences ->
+            CalculatorPreferences(
+                radianMode = preferences[PrefsKeys.RADIAN_MODE] ?: true,
+                enableVibrations = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true,
+                separator = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE,
+                middleZero = preferences[PrefsKeys.MIDDLE_ZERO] ?: false,
+                partialHistoryView = preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: true,
+                precision = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3,
+                outputFormat = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
+            )
+        }
 
-    /**
-     * Update precision preference in DataStore
-     *
-     * @param precision One of the [PRECISIONS] to change to
-     */
+    val converterPrefs: Flow<ConverterPreferences> = data
+        .map { preferences ->
+            ConverterPreferences(
+                enableVibrations = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true,
+                separator = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE,
+                middleZero = preferences[PrefsKeys.MIDDLE_ZERO] ?: false,
+                precision = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3,
+                outputFormat = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN,
+                unitConverterFormatTime = preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME]
+                    ?: false,
+                unitConverterSorting = preferences[PrefsKeys.UNIT_CONVERTER_SORTING]
+                    ?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE,
+                shownUnitGroups = preferences[PrefsKeys.SHOWN_UNIT_GROUPS]?.letTryOrNull { list ->
+                    list.ifEmpty { return@letTryOrNull listOf() }.split(",")
+                        .map { UnitGroup.valueOf(it) }
+                } ?: ALL_UNIT_GROUPS,
+                unitConverterFavoritesOnly = preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY]
+                    ?: false,
+                enableToolsExperiment = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false,
+                latestLeftSideUnit = preferences[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer,
+                latestRightSideUnit = preferences[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile,
+            )
+        }
+
+    val themePrefs: Flow<ThemePreferences> = data
+        .map { preferences ->
+            ThemePreferences(
+                systemFont = preferences[PrefsKeys.SYSTEM_FONT] ?: false
+            )
+        }
+
+    val formattingPrefs: Flow<FormattingPreferences> = data
+        .map { preferences ->
+            FormattingPreferences(
+                digitsPrecision = preferences[PrefsKeys.DIGITS_PRECISION] ?: 3,
+                separator = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE,
+                outputFormat = preferences[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN,
+            )
+        }
+
+    val unitGroupsPrefs: Flow<UnitGroupsPreferences> = data
+        .map { preferences ->
+            UnitGroupsPreferences(
+                shownUnitGroups = preferences[PrefsKeys.SHOWN_UNIT_GROUPS]?.letTryOrNull { list ->
+                    list.ifEmpty { return@letTryOrNull listOf() }.split(",")
+                        .map { UnitGroup.valueOf(it) }
+                } ?: ALL_UNIT_GROUPS,
+            )
+        }
+
+    val addSubtractPrefs: Flow<AddSubtractPreferences> = data
+        .map { preferences ->
+            AddSubtractPreferences(
+                separator = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE
+            )
+        }
+
+    val aboutPrefs: Flow<AboutPreferences> = data
+        .map { preferences ->
+            AboutPreferences(
+                enableToolsExperiment = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
+            )
+        }
+
     suspend fun updateDigitsPrecision(precision: Int) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.DIGITS_PRECISION] = precision
         }
     }
 
-    /**
-     * Update separator preference in DataStore
-     *
-     * @param separator One of the [Separator] to change to
-     */
     suspend fun updateSeparator(separator: Int) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.SEPARATOR] = separator
         }
     }
 
-    /**
-     * Update outputFormat preference in DataStore
-     *
-     * @param outputFormat One of the [OutputFormat] to change to
-     */
     suspend fun updateOutputFormat(outputFormat: Int) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.OUTPUT_FORMAT] = outputFormat
@@ -301,66 +268,36 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         }
     }
 
-    /**
-     * Update [ThemingMode]. Saves value as a string.
-     *
-     * @param themingMode [ThemingMode] to save.
-     */
     suspend fun updateThemingMode(themingMode: ThemingMode) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.THEMING_MODE] = themingMode.name
         }
     }
 
-    /**
-     * Update preference on whether or not generate color scheme from device wallpaper.
-     *
-     * @param enabled True if user wants to enable this feature.
-     */
     suspend fun updateDynamicTheme(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_DYNAMIC_THEME] = enabled
         }
     }
 
-    /**
-     * Update preference on whether or not use true black colors.
-     *
-     * @param enabled True if user wants to enable this feature.
-     */
     suspend fun updateAmoledTheme(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_AMOLED_THEME] = enabled
         }
     }
 
-    /**
-     * Update preference on custom color scheme.
-     *
-     * @param color New custom color value.
-     */
     suspend fun updateCustomColor(color: Color) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.CUSTOM_COLOR] = color.value.toLong()
         }
     }
 
-    /**
-     * Update [MonetMode]. Saves value as a string.
-     *
-     * @param monetMode [MonetMode] to save.
-     */
     suspend fun updateMonetMode(monetMode: MonetMode) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.MONET_MODE] = monetMode.name
         }
     }
 
-    /**
-     * Update preference on starting screen route.
-     *
-     * @param startingScreen Route from [TopLevelDestinations].
-     */
     suspend fun updateStartingScreen(startingScreen: String) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.STARTING_SCREEN] = startingScreen
@@ -373,102 +310,63 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         }
     }
 
-    /**
-     * Update preference on whether or not use haptic feedback.
-     *
-     * @param enabled True if user wants to enable this feature.
-     */
     suspend fun updateVibrations(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_VIBRATIONS] = enabled
         }
     }
 
-    /**
-     * Update preference on where zero should be.
-     *
-     * @param enabled True if user wants zero button to be in the middle.
-     */
     suspend fun updateMiddleZero(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.MIDDLE_ZERO] = enabled
         }
     }
 
-    /**
-     * Update preference on whether or not show tools screen.
-     *
-     * @param enabled True if user wants to enable this feature.
-     */
     suspend fun updateToolsExperiment(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] = enabled
         }
     }
 
-    /**
-     * Update angle mode for calculator.
-     *
-     * @param radianMode When true - Radian, when False - Degree.
-     */
     suspend fun updateRadianMode(radianMode: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.RADIAN_MODE] = radianMode
         }
     }
 
-    /**
-     * Update units list favorite filter state.
-     *
-     * @param enabled When true will show only favorite units.
-     */
     suspend fun updateUnitConverterFavoritesOnly(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] = enabled
         }
     }
 
-    /**
-     * Update [UserPreferences.unitConverterFormatTime].
-     *
-     * @see UserPreferences.unitConverterFormatTime
-     */
     suspend fun updateUnitConverterFormatTime(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] = enabled
         }
     }
 
-    /**
-     * Update [UserPreferences.unitConverterSorting].
-     *
-     * @see UserPreferences.unitConverterSorting
-     */
     suspend fun updateUnitConverterSorting(sorting: UnitsListSorting) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_SORTING] = sorting.name
         }
     }
 
-    /**
-     * Update system font preference.
-     *
-     * @param enabled When true will use system font.
-     */
     suspend fun updateSystemFont(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.SYSTEM_FONT] = enabled
         }
     }
 
-    /**
-     * Update partial history view preference.
-     *
-     * @param enabled When true will enable partial history view.
-     */
     suspend fun updatePartialHistoryView(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] = enabled
         }
+    }
+
+    private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {
+        this?.let(block)
+    } catch (e: Exception) {
+        null
     }
 }

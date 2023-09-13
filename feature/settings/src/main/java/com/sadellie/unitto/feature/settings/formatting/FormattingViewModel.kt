@@ -25,14 +25,13 @@ import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
+import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -43,10 +42,10 @@ import kotlin.math.ceil
 class FormattingViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-    private val _mainPreferences = userPreferencesRepository.mainPrefsFlow
+    private val _prefs = userPreferencesRepository.formattingPrefs
     private val _fractional = MutableStateFlow(false)
 
-    val uiState = combine(_mainPreferences, _fractional) { mainPrefs, fractional ->
+    val uiState = combine(_prefs, _fractional) { mainPrefs, fractional ->
         val formatterSymbols = AllFormatterSymbols.getById(mainPrefs.separator)
 
         return@combine FormattingUIState(
@@ -62,7 +61,7 @@ class FormattingViewModel @Inject constructor(
             formatterSymbols = formatterSymbols
         )
     }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), FormattingUIState())
+        .stateIn(viewModelScope, FormattingUIState())
 
     fun togglePreview() = _fractional.update { !it }
 
@@ -88,29 +87,23 @@ class FormattingViewModel @Inject constructor(
     /**
      * @see UserPreferencesRepository.updateDigitsPrecision
      */
-    fun updatePrecision(precision: Int) {
-        viewModelScope.launch {
-            // In UI the slider for precision goes from 0 to 16, where 16 is treated as 1000 (MAX)
-            val newPrecision = if (precision > 15) MAX_PRECISION else precision
-            userPreferencesRepository.updateDigitsPrecision(newPrecision)
-        }
+    fun updatePrecision(precision: Int) = viewModelScope.launch {
+        // In UI the slider for precision goes from 0 to 16, where 16 is treated as 1000 (MAX)
+        val newPrecision = if (precision > 15) MAX_PRECISION else precision
+        userPreferencesRepository.updateDigitsPrecision(newPrecision)
     }
 
     /**
      * @see UserPreferencesRepository.updateSeparator
      */
-    fun updateSeparator(separator: Int) {
-        viewModelScope.launch {
-            userPreferencesRepository.updateSeparator(separator)
-        }
+    fun updateSeparator(separator: Int) = viewModelScope.launch {
+        userPreferencesRepository.updateSeparator(separator)
     }
 
     /**
      * @see UserPreferencesRepository.updateOutputFormat
      */
-    fun updateOutputFormat(outputFormat: Int) {
-        viewModelScope.launch {
-            userPreferencesRepository.updateOutputFormat(outputFormat)
-        }
+    fun updateOutputFormat(outputFormat: Int) = viewModelScope.launch {
+        userPreferencesRepository.updateOutputFormat(outputFormat)
     }
 }

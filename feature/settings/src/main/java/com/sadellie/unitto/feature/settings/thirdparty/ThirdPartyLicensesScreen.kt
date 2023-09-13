@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.feature.settings.thirdparty
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

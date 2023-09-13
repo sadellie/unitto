@@ -18,8 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.navigation
 
-import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -27,13 +25,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.feature.settings.AboutScreen
-import com.sadellie.unitto.feature.settings.CalculatorSettingsScreen
-import com.sadellie.unitto.feature.settings.ConverterSettingsScreen
 import com.sadellie.unitto.feature.settings.SettingsScreen
-import com.sadellie.unitto.feature.settings.ThirdPartyLicensesScreen
+import com.sadellie.unitto.feature.settings.about.AboutScreen
+import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsScreen
+import com.sadellie.unitto.feature.settings.converter.ConverterSettingsScreen
 import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
 import com.sadellie.unitto.feature.settings.themes.ThemesRoute
+import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
@@ -57,7 +55,7 @@ fun NavController.navigateToUnitGroups() {
 
 fun NavGraphBuilder.settingGraph(
     themmoController: ThemmoController,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = start,
@@ -67,10 +65,7 @@ fun NavGraphBuilder.settingGraph(
         )
     ) {
         composable(start) {
-            val parent = remember(it) { navController.getBackStackEntry(graph) }
-
             SettingsScreen(
-                viewModel = hiltViewModel(parent),
                 menuButtonClick = navController::navigateUp,
                 navControllerAction = navController::navigate
             )
@@ -78,58 +73,46 @@ fun NavGraphBuilder.settingGraph(
 
         composable(themesRoute) {
             ThemesRoute(
-                viewModel = hiltViewModel(),
                 navigateUpAction = navController::navigateUp,
                 themmoController = themmoController,
+            )
+        }
+
+        composable(formattingRoute) {
+            FormattingRoute(
+                navigateUpAction = navController::navigateUp
+            )
+        }
+
+        composable(calculatorSettingsRoute) {
+            CalculatorSettingsScreen(
+                navigateUpAction = navController::navigateUp,
+            )
+        }
+
+        composable(converterSettingsRoute) {
+            ConverterSettingsScreen(
+                navigateUpAction = navController::navigateUp,
+                navigateToUnitsGroup = { navController.navigate(unitsGroupRoute) }
+            )
+        }
+
+        composable(unitsGroupRoute) {
+            UnitGroupsScreen(
+                navigateUpAction = navController::navigateUp,
+            )
+        }
+
+        composable(aboutRoute) {
+            AboutScreen(
+                navigateUpAction = navController::navigateUp,
+                navigateToThirdParty = { navController.navigate(thirdPartyRoute) }
             )
         }
 
         composable(thirdPartyRoute) {
             ThirdPartyLicensesScreen(
                 navigateUpAction = navController::navigateUp,
-            )
-        }
-
-        composable(aboutRoute) {
-            val parent = remember(it) { navController.getBackStackEntry(graph) }
-
-            AboutScreen(
-                viewModel = hiltViewModel(parent),
-                navigateUpAction = navController::navigateUp,
-                navigateToThirdParty = { navController.navigate(thirdPartyRoute) }
-            )
-        }
-
-        composable(unitsGroupRoute) {
-            UnitGroupsScreen(
-                viewModel = hiltViewModel(),
-                navigateUpAction = navController::navigateUp,
-            )
-        }
-
-        composable(formattingRoute) {
-            FormattingRoute(
-                viewModel = hiltViewModel(),
-                navigateUpAction = navController::navigateUp
-            )
-        }
-
-        composable(calculatorSettingsRoute) {
-            val parent = remember(it) { navController.getBackStackEntry(graph) }
-
-            CalculatorSettingsScreen(
-                viewModel = hiltViewModel(parent),
-                navigateUpAction = navController::navigateUp,
-            )
-        }
-
-        composable(converterSettingsRoute) {
-            val parent = remember(it) { navController.getBackStackEntry(graph) }
-
-            ConverterSettingsScreen(
-                viewModel = hiltViewModel(parent),
-                navigateUpAction = navController::navigateUp,
-                navigateToUnitsGroup = { navController.navigate(unitsGroupRoute) }
             )
         }
     }

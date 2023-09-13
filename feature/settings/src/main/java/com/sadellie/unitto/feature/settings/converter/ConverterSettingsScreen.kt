@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.feature.settings.converter
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
@@ -44,11 +45,11 @@ import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable
 internal fun ConverterSettingsScreen(
-    viewModel: SettingsViewModel,
+    viewModel: ConverterViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
-    navigateToUnitsGroup: () -> Unit
+    navigateToUnitsGroup: () -> Unit,
 ) {
-    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     UnittoScreenWithLargeTopBar(
@@ -97,7 +98,7 @@ internal fun ConverterSettingsScreen(
                         )
                     },
                     supportContent = stringResource(R.string.format_time_support),
-                    switchState = userPrefs.value.unitConverterFormatTime,
+                    switchState = prefs.value.unitConverterFormatTime,
                     onSwitchChange = viewModel::updateUnitConverterFormatTime
                 )
             }
@@ -113,7 +114,7 @@ internal fun ConverterSettingsScreen(
                 UnitsListSorting.SCALE_DESC to R.string.sort_by_scale_desc,
                 UnitsListSorting.SCALE_ASC to R.string.sort_by_scale_asc,
             ),
-            selectedItemIndex = userPrefs.value.unitConverterSorting,
+            selectedItemIndex = prefs.value.unitConverterSorting,
             selectAction = viewModel::updateUnitConverterSorting,
             dismissAction = { showDialog = false }
         )

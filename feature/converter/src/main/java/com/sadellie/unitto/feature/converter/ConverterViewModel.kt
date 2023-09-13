@@ -33,8 +33,8 @@ import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
 import com.sadellie.unitto.data.units.UnitsRepository
-import com.sadellie.unitto.data.units.combine
-import com.sadellie.unitto.data.units.stateIn
+import com.sadellie.unitto.data.common.combine
+import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
@@ -79,7 +79,7 @@ internal class ConverterViewModel @Inject constructor(
         _result,
         _unitFrom,
         _unitTo,
-        userPrefsRepository.mainPrefsFlow,
+        userPrefsRepository.converterPrefs,
         _loadingCurrencies
     ) { input, calculation, result, unitFrom, unitTo, prefs, _ ->
         return@combine when {
@@ -93,7 +93,7 @@ internal class ConverterViewModel @Inject constructor(
                     enableHaptic = prefs.enableVibrations,
                     middleZero = prefs.middleZero,
                     formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
-                    scale = prefs.digitsPrecision,
+                    scale = prefs.precision,
                     outputFormat = prefs.outputFormat,
                     formatTime = prefs.unitConverterFormatTime,
                 )
@@ -147,7 +147,7 @@ internal class ConverterViewModel @Inject constructor(
     val leftSideUIState = combine(
         _unitFrom,
         _leftSideUIState,
-        userPrefsRepository.mainPrefsFlow,
+        userPrefsRepository.converterPrefs,
         unitsRepo.allUnits
     ) { unitFrom, ui, prefs, _ ->
         return@combine ui.copy(
@@ -175,7 +175,7 @@ internal class ConverterViewModel @Inject constructor(
         _input,
         _calculation,
         _rightSideUIState,
-        userPrefsRepository.mainPrefsFlow,
+        userPrefsRepository.converterPrefs,
         unitsRepo.allUnits
     ) { unitFrom, unitTo, input, calculation, ui, prefs, _ ->
         return@combine ui.copy(
@@ -184,7 +184,7 @@ internal class ConverterViewModel @Inject constructor(
             sorting = prefs.unitConverterSorting,
             favorites = prefs.unitConverterFavoritesOnly,
             input = calculation?.toPlainString() ?: input.text,
-            scale = prefs.digitsPrecision,
+            scale = prefs.precision,
             outputFormat = prefs.outputFormat,
             formatterSymbols = AllFormatterSymbols.getById(prefs.separator)
         )
@@ -387,10 +387,9 @@ internal class ConverterViewModel @Inject constructor(
         _result.update { ConverterResult.NumberBase(conversion) }
     }
 
-
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            val userPrefs = userPrefsRepository.mainPrefsFlow.first()
+            val userPrefs = userPrefsRepository.converterPrefs.first()
             val unitFrom = unitsRepo.getById(userPrefs.latestLeftSideUnit)
             val unitTo = unitsRepo.getById(userPrefs.latestRightSideUnit)
 

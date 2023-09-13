@@ -21,13 +21,12 @@ package com.sadellie.unitto.feature.settings.themes
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,13 +35,9 @@ class ThemesViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository
 ) : ViewModel() {
 
-    val systemFont = userPrefsRepository.uiPreferencesFlow
+    val systemFont = userPrefsRepository.themePrefs
         .map { it.systemFont }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            false
-        )
+        .stateIn(viewModelScope, false)
 
     /**
      * @see UserPreferencesRepository.updateThemingMode

@@ -42,7 +42,7 @@ internal class AddSubtractViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AddSubtractState())
 
     val uiState: StateFlow<AddSubtractState> = _uiState
-        .combine(userPreferencesRepository.allPreferencesFlow) { uiState, userPrefs ->
+        .combine(userPreferencesRepository.addSubtractPrefs) { uiState, userPrefs ->
             return@combine uiState.copy(
                 formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
             )

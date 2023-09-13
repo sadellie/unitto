@@ -41,10 +41,10 @@ internal class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val uiPrefs = userPrefsRepository.uiPreferencesFlow
+            val prefs = userPrefsRepository.appPrefs
                 .collectAsStateWithLifecycle(null).value
 
-            if (uiPrefs != null) UnittoApp(uiPrefs)
+            if (prefs != null) UnittoApp(prefs)
         }
     }
 

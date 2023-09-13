@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.feature.settings.about
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -54,12 +54,12 @@ import com.sadellie.unitto.core.ui.openLink
 
 @Composable
 internal fun AboutScreen(
-    viewModel: SettingsViewModel = hiltViewModel(),
+    viewModel: AboutViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
 ) {
     val mContext = LocalContext.current
-    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
     var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
@@ -185,7 +185,7 @@ internal fun AboutScreen(
                     headlineContent = { Text(stringResource(R.string.app_version_name_setting)) },
                     supportingContent = { Text("${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})") },
                     modifier = Modifier.combinedClickable {
-                        if (userPrefs.value.enableToolsExperiment) {
+                        if (prefs.value.enableToolsExperiment) {
                             Toast.makeText(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG).show()
                             return@combinedClickable
                         }
