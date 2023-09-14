@@ -23,9 +23,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Copyright
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.PrivacyTip
@@ -73,7 +73,7 @@ internal fun AboutScreen(
                 ListItem(
                     leadingContent = {
                         Icon(
-                            Icons.Default.Help,
+                            Icons.AutoMirrored.Filled.Help,
                             stringResource(R.string.currency_rates_note_setting)
                         )
                     },

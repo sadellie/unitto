@@ -313,7 +313,7 @@ private fun PortraitKeyboard(
             horizontalArrangement = Arrangement.spacedBy(additionalRowSpacedBy)
         ) {
             // Additional buttons
-            Crossfade(invMode, weightModifier) {
+            Crossfade(invMode, weightModifier, label = "Additional button") {
                 if (it) {
                     AdditionalButtonsPortraitInverse(
                         modifier = additionalButtonModifier,
@@ -487,7 +487,7 @@ private fun LandscapeKeyboard(
             .weight(1f)
             .padding(constraints.maxWidth * 0.005f, constraints.maxHeight * 0.02f)
 
-        Crossfade(invMode, Modifier.weight(3f)) {
+        Crossfade(invMode, Modifier.weight(3f), label = "Additional button") {
             Row {
                 if (it) {
                     AdditionalButtonsLandscapeInverse(

@@ -98,7 +98,8 @@ private fun RightSideScreen(
     ) { paddingValues ->
         Crossfade(
             targetState = uiState.units?.isNotEmpty(),
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
+            label = "Units list"
         ) { hasUnits ->
             when (hasUnits) {
                 true -> LazyColumn(Modifier.fillMaxSize()) {

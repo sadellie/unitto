@@ -112,7 +112,8 @@ internal fun BasicUnitListItem(
                 targetState = isFavorite,
                 transitionSpec = {
                     (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false))
-                }
+                },
+                label = "Favorite unit"
             ) {
                 Icon(
                     if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,

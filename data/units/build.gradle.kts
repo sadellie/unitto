@@ -19,20 +19,24 @@
 plugins {
     id("unitto.library")
     id("unitto.android.hilt")
+    id("unitto.room")
 }
 
 android {
     namespace = "com.sadellie.unitto.data.units"
 
     testOptions.unitTests.isIncludeAndroidResources = true
+
+    room {
+        val schemaLocation = "$projectDir/schemas"
+        schemaDirectory(schemaLocation)
+        println("Exported Database schema to $schemaLocation")
+    }
 }
 
 dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.org.robolectric)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
 
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.datastore)

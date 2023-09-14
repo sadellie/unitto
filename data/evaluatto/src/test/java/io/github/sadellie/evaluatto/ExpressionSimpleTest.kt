@@ -18,7 +18,7 @@
 
 package io.github.sadellie.evaluatto
 
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 class ExpressionSimpleTest {
 

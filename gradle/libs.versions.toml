@@ -2,19 +2,20 @@
 appCode = "23"
 appName = "Mikado Yellow"
 kotlin = "1.9.0"
-androidxCore = "1.10.1"
-androidGradlePlugin = "8.0.2"
+ksp = "1.9.0-1.0.13"
+androidxCore = "1.12.0"
+androidGradlePlugin = "8.1.1"
 orgJetbrainsKotlinxCoroutinesTest = "1.7.2"
-androidxCompose = "1.6.0-alpha02"
+androidxCompose = "1.6.0-alpha05"
 androidxComposeCompiler = "1.5.0"
-androidxComposeUi = "1.6.0-alpha02"
-androidxComposeMaterial3 = "1.2.0-alpha04"
-androidxNavigation = "2.6.0"
-androidxLifecycleRuntimeCompose = "2.6.1"
+androidxComposeUi = "1.6.0-alpha05"
+androidxComposeMaterial3 = "1.2.0-alpha07"
+androidxNavigation = "2.7.2"
+androidxLifecycleRuntimeCompose = "2.6.2"
 androidxHilt = "1.0.0"
 androidxAppCompat = "1.6.1"
 comGoogleDagger = "2.47"
-androidxComposeMaterialIconsExtended = "1.6.0-alpha02"
+androidxComposeMaterialIconsExtended = "1.6.0-alpha05"
 androidxDatastore = "1.0.0"
 comGoogleAccompanist = "0.30.1"
 androidxRoom = "2.6.0-beta01"
@@ -68,8 +69,11 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 com-google-dagger = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "comGoogleDagger" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
 [plugins]
 android-gradlePlugin = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "comGoogleDagger" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "androidxRoom" }

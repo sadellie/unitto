@@ -89,7 +89,7 @@ fun UnittoSearchBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            Crossfade(showSearchInput) { showSearch ->
+            Crossfade(showSearchInput, label = "Search input") { showSearch ->
                 if (showSearch) {
                     LaunchedEffect(Unit) { focusRequester.requestFocus() }
 
@@ -114,7 +114,7 @@ fun UnittoSearchBar(
             NavigateUpButton { stagedNavigateUp() }
         },
         actions = {
-            Crossfade(showSearchInput) { showSearch ->
+            Crossfade(showSearchInput, label = "Search unit") { showSearch ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (showSearch) {
                         ClearButton(visible = query.text.isNotEmpty()) { onQueryChange(TextFieldValue()) }

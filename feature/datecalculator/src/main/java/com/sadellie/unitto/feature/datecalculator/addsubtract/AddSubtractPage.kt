@@ -148,7 +148,7 @@ private fun AddSubtractView(
                     SegmentedButton(
                         selected = uiState.addition,
                         onClick = { updateAddition(true) },
-                        shape = SegmentedButtonDefaults.shape(position = 0, count = 2),
+                        shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
                         icon = {}
                     ) {
                         Icon(Icons.Outlined.Add, null)
@@ -156,7 +156,7 @@ private fun AddSubtractView(
                     SegmentedButton(
                         selected = !uiState.addition,
                         onClick = { updateAddition(false) },
-                        shape = SegmentedButtonDefaults.shape(position = 1, count = 2),
+                        shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
                         icon = {}
                     ) {
                         Icon(Icons.Outlined.Remove, null)

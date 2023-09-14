@@ -82,7 +82,7 @@ fun RowScope.SegmentedButton(
         contentPadding = PaddingValues(horizontal = 12.dp)
     ) {
         if (icon != null) {
-            Crossfade(targetState = selected) {
+            Crossfade(selected, label = "Selected state") {
                 if (it) {
                     Icon(Icons.Default.Check, null, Modifier.size(18.dp))
                 } else {

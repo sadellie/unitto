@@ -16,24 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto
-
-import com.android.build.api.dsl.CommonExtension
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
-internal fun Project.configureCompose(
-    commonExtension: CommonExtension<*, *, *, *, *>,
-) {
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-
-        composeOptions {
+@Suppress("UNUSED")
+class UnittoRoomPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        with(target) {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-            kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
+            with(pluginManager) {
+                apply("com.google.devtools.ksp")
+                apply("androidx.room")
+            }
+
+            dependencies {
+                "implementation"(libs.findLibrary("androidx.room.runtime").get())
+                "implementation"(libs.findLibrary("androidx.room.ktx").get())
+                "ksp"(libs.findLibrary("androidx.room.compiler").get())
+            }
         }
     }
 }

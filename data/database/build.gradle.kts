@@ -19,22 +19,15 @@
 plugins {
     id("unitto.library")
     id("unitto.android.hilt")
+    id("unitto.room")
 }
 
 android {
     namespace = "com.sadellie.unitto.data.database"
 
-    // Long thingy
-    val schemaLocation = "$projectDir/schemas"
-    defaultConfig
-        .javaCompileOptions
-        .annotationProcessorOptions
-        .arguments["room.schemaLocation"] = schemaLocation
-    println("Exported Database schema to $schemaLocation")
-}
-
-dependencies {
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
+    room {
+        val schemaLocation = "$projectDir/schemas"
+        schemaDirectory(schemaLocation)
+        println("Exported Database schema to $schemaLocation")
+    }
 }

@@ -70,7 +70,8 @@ internal fun UnitSelectionButton(
                 }.using(
                     SizeTransform(clip = false)
                 )
-            }
+            },
+            label = "Unit change"
         ) {
             Text(
                 text = it,
