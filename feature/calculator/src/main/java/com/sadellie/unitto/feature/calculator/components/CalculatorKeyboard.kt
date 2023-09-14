@@ -96,6 +96,7 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Multiply
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Percent
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Pi
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Power10
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Rad
 import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Sin
@@ -458,7 +459,7 @@ private fun AdditionalButtonsPortraitInverse(
                     KeyboardButtonAdditional(modifier, UnittoIcons.Inv, allowVibration) { toggleInvMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.E, allowVibration) { addSymbol(Token.Const.e) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Exp, allowVibration) { addSymbol(Token.Func.expBracket) }
-                    KeyboardButtonAdditional(modifier, UnittoIcons.Log, allowVibration) { addSymbol(Token.Func.logBracket) }
+                    KeyboardButtonAdditional(modifier, UnittoIcons.Power10, allowVibration) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                 }
             }
         }
@@ -615,7 +616,7 @@ private fun AdditionalButtonsLandscapeInverse(
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.Const.pi) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Factorial, allowVibration) { addSymbol(Token.Operator.factorial) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.AcTan, allowVibration) { addSymbol(Token.Func.actanBracket) }
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Log, allowVibration) { addSymbol(Token.Func.logBracket) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Power10, allowVibration) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
     }
 }
 
