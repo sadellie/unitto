@@ -45,6 +45,7 @@ internal sealed class UnitConverterUIState {
         val scale: Int,
         val outputFormat: Int,
         val formatTime: Boolean,
+        val currencyRateUpdateState: CurrencyRateUpdateState,
     ) : UnitConverterUIState()
 
     data class NumberBase(

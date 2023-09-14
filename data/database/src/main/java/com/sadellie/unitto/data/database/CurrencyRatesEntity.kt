@@ -16,29 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.unit
+package com.sadellie.unitto.data.database
 
-import com.sadellie.unitto.core.base.MAX_PRECISION
-import com.sadellie.unitto.data.model.UnitGroup
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.math.BigDecimal
-import java.math.RoundingMode
 
-data class ReverseUnit(
-    override val id: String,
-    override val basicUnit: BigDecimal,
-    override val group: UnitGroup,
-    override val displayName: Int,
-    override val shortName: Int,
-    override val isFavorite: Boolean = false,
-    override val pairId: String? = null,
-    override val counter: Int = 0,
-) : DefaultUnit {
-    override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
-
-        return unitTo
-            .basicUnit
-            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-            .div(this.basicUnit)
-            .multiply(value)
-    }
-}
+@Entity(tableName = "currency_rates")
+class CurrencyRatesEntity(
+    @PrimaryKey(autoGenerate = true) val entityId: Int = 0,
+    @ColumnInfo(name = "base_unit_id") val baseUnitId: String,
+    @ColumnInfo(name = "timestamp") val date: Long,
+    @ColumnInfo(name = "pair_unit_id") val pairUnitId: String,
+    @ColumnInfo(name = "pair_unit_value") val pairUnitValue: BigDecimal?
+)

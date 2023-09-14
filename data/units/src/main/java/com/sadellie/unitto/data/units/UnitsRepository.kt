@@ -19,6 +19,9 @@
 package com.sadellie.unitto.data.units
 
 import android.content.Context
+import android.util.Log
+import com.sadellie.unitto.data.database.CurrencyRatesDao
+import com.sadellie.unitto.data.database.CurrencyRatesEntity
 import com.sadellie.unitto.data.database.UnitsDao
 import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.model.UnitGroup
@@ -65,37 +68,39 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
+import java.time.LocalDate
 import javax.inject.Inject
 
 class UnitsRepository @Inject constructor(
     private val unitsDao: UnitsDao,
+    private val currencyRatesDao: CurrencyRatesDao,
     @ApplicationContext private val mContext: Context,
 ) {
     private val myUnits = MutableStateFlow(
         lengthCollection +
-        currencyCollection +
-        massCollection +
-        speedCollection +
-        temperatureCollection +
-        areaCollection +
-        timeCollection +
-        volumeCollection +
-        dataCollection +
-        pressureCollection +
-        accelerationCollection +
-        energyCollection +
-        powerCollection +
-        angleCollection +
-        dataTransferCollection +
-        fluxCollection +
-        numberBaseCollection +
-        electrostaticCapacitance +
-        prefixCollection +
-        forceCollection +
-        torqueCollection +
-        flowRateCollection +
-        luminanceCollection +
-        fuelConsumptionCollection
+                currencyCollection +
+                massCollection +
+                speedCollection +
+                temperatureCollection +
+                areaCollection +
+                timeCollection +
+                volumeCollection +
+                dataCollection +
+                pressureCollection +
+                accelerationCollection +
+                energyCollection +
+                powerCollection +
+                angleCollection +
+                dataTransferCollection +
+                fluxCollection +
+                numberBaseCollection +
+                electrostaticCapacitance +
+                prefixCollection +
+                forceCollection +
+                torqueCollection +
+                flowRateCollection +
+                luminanceCollection +
+                fuelConsumptionCollection
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -108,27 +113,31 @@ class UnitsRepository @Inject constructor(
         .mapLatest { basedList ->
             basedList.forEach { based ->
                 // Have to use a copy so that composable can detect changes
-                val updatedUnit = when(val foundUnit = getById(based.unitId)) {
+                val updatedUnit = when (val foundUnit = getById(based.unitId)) {
                     is NormalUnit -> foundUnit.copy(
                         isFavorite = based.isFavorite,
                         counter = based.frequency,
                         pairId = based.pairedUnitId
                     )
+
                     is NumberBaseUnit -> foundUnit.copy(
                         isFavorite = based.isFavorite,
                         counter = based.frequency,
                         pairId = based.pairedUnitId
                     )
+
                     is ReverseUnit -> foundUnit.copy(
                         isFavorite = based.isFavorite,
                         counter = based.frequency,
                         pairId = based.pairedUnitId
                     )
+
                     is FuelForward -> foundUnit.copy(
                         isFavorite = based.isFavorite,
                         counter = based.frequency,
                         pairId = based.pairedUnitId
                     )
+
                     is FuelBackward -> foundUnit.copy(
                         isFavorite = based.isFavorite,
                         counter = based.frequency,
@@ -220,23 +229,45 @@ class UnitsRepository @Inject constructor(
         }
     }
 
-    suspend fun updateRates(unit: AbstractUnit) = withContext(Dispatchers.IO) {
-        val conversions: Map<String, BigDecimal> = CurrencyApi.service.getCurrencyPairs(unit.id).currency
+    suspend fun updateRates(unit: AbstractUnit): LocalDate? = withContext(Dispatchers.IO) {
+        try {
+            val conversions = CurrencyApi.service.getCurrencyPairs(unit.id)
+            val rates = conversions.currency
+                .map { (pairId, pairValue) ->
+                    CurrencyRatesEntity(
+                        baseUnitId = unit.id,
+                        date = LocalDate.parse(conversions.date).toEpochDay(),
+                        pairUnitId = pairId,
+                        pairUnitValue = BigDecimal.valueOf(pairValue)
+                    )
+                }
+            currencyRatesDao.insertRates(rates)
+        } catch (e: Exception) {
+            Log.d("UnitsRepository", "Skipped update: $e")
+        }
+        val basedConversions = currencyRatesDao.getLatestRates(baseId = unit.id)
 
-        myUnits.update { item ->
-            item.map {
-                if (it.group != UnitGroup.CURRENCY) return@map it
-                if (it !is NormalUnit) return@map it
+        myUnits.update { units ->
+            units.map { localUnit ->
+                if (localUnit.group != UnitGroup.CURRENCY) return@map localUnit
+                if (localUnit !is ReverseUnit) return@map localUnit
 
-                val rate = conversions.getOrElse(it.id) { BigDecimal.ZERO }
+                val rate = basedConversions
+                    .firstOrNull { localUnit.id == it.pairUnitId }
+                    ?.pairUnitValue ?: BigDecimal.ZERO
 
                 return@map if (rate > BigDecimal.ZERO) {
-                    it.copy(basicUnit = rate)
+                    localUnit.copy(basicUnit = rate)
                 } else {
-                    it.copy(basicUnit = BigDecimal.ZERO)
+                    localUnit.copy(basicUnit = BigDecimal.ZERO)
                 }
             }
         }
+
+        return@withContext basedConversions
+            .firstOrNull()
+            ?.date
+            ?.let { LocalDate.ofEpochDay(it) }
     }
 
     fun filterUnits(

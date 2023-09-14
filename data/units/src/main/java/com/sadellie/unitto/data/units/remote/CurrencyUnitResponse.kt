@@ -20,7 +20,6 @@ package com.sadellie.unitto.data.units.remote
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
-import java.math.BigDecimal
 
 /**
  * Represents a response object from currency-api
@@ -30,7 +29,7 @@ import java.math.BigDecimal
  */
 data class CurrencyUnitResponse(
     val date: String,
-    val currency: Map<String, BigDecimal>
+    val currency: Map<String, Double>
 )
 
 /**
@@ -42,12 +41,9 @@ internal class CurrencyAdapter {
 
     @Suppress("UNUSED", "UNCHECKED_CAST")
     @FromJson fun fromJson(response: Map<String, Any>): CurrencyUnitResponse {
-        val pairsBD: Map<String, BigDecimal> = (response[response.keys.elementAt(1)] as Map<String, Double>)
-            .mapValues { it.value.toBigDecimal() }
-
         return CurrencyUnitResponse(
             date = response["date"] as String,
-            currency = pairsBD
+            currency = (response[response.keys.elementAt(1)]) as Map<String, Double>
         )
     }
 }

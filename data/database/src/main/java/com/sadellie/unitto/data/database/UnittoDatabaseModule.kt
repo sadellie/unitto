@@ -34,23 +34,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class UnittoDatabaseModule {
-    /**
-     * Tells Hilt to use this method to get [UnitsDao]
-     *
-     * @param unittoDatabase Database for which we need DAO
-     * @return Singleton of [UnitsDao]
-     */
+
     @Provides
     fun provideUnitsDao(unittoDatabase: UnittoDatabase): UnitsDao {
         return unittoDatabase.unitsDao()
     }
 
-    /**
-     * Tells Hilt to use this method to get [CalculatorHistoryDao]
-     *
-     * @param unittoDatabase Database for which we need DAO
-     * @return Singleton of [CalculatorHistoryDao]
-     */
     @Provides
     fun provideCalculatorHistoryDao(unittoDatabase: UnittoDatabase): CalculatorHistoryDao {
         return unittoDatabase.calculatorHistoryDao()
@@ -67,6 +56,11 @@ class UnittoDatabaseModule {
 //    fun provideTimeZoneDao(unittoDatabase: UnittoDatabase): TimeZoneDao {
 //        return unittoDatabase.timeZoneDao()
 //    }
+
+    @Provides
+    fun provideCurrencyRatesDao(unittoDatabase: UnittoDatabase): CurrencyRatesDao {
+        return unittoDatabase.currencyRatesDao()
+    }
 
     /**
      * Tells Hilt to use this method to get [UnittoDatabase]

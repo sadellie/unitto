@@ -36,5 +36,6 @@ internal data class RightSideUIState(
     val input: String = "",
     val scale: Int = 3,
     val outputFormat: Int = OutputFormat.PLAIN,
-    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces
+    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
+    val currencyRateUpdateState: CurrencyRateUpdateState = CurrencyRateUpdateState.Nothing
 )

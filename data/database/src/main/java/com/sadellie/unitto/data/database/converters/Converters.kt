@@ -16,29 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.unit
+package com.sadellie.unitto.data.database.converters
 
-import com.sadellie.unitto.core.base.MAX_PRECISION
-import com.sadellie.unitto.data.model.UnitGroup
+import androidx.room.TypeConverter
 import java.math.BigDecimal
-import java.math.RoundingMode
 
-data class ReverseUnit(
-    override val id: String,
-    override val basicUnit: BigDecimal,
-    override val group: UnitGroup,
-    override val displayName: Int,
-    override val shortName: Int,
-    override val isFavorite: Boolean = false,
-    override val pairId: String? = null,
-    override val counter: Int = 0,
-) : DefaultUnit {
-    override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
+class Converters {
 
-        return unitTo
-            .basicUnit
-            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-            .div(this.basicUnit)
-            .multiply(value)
+    @TypeConverter
+    fun stringToBigDecimal(value: String): BigDecimal = try {
+        BigDecimal(value)
+    } catch (e: Exception) {
+        BigDecimal.ZERO
     }
+
+    @TypeConverter
+    fun bigDecimalToString(value: BigDecimal?): String? = try {
+        value?.toPlainString()
+    } catch (e: Exception) {
+        null
+    }
+
 }

@@ -48,6 +48,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -77,6 +78,7 @@ import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
+import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
@@ -285,8 +287,13 @@ private fun Default(
             TextFieldValue(uiState.calculation?.format(uiState.scale, uiState.outputFormat) ?: "")
         )
     }
-
     val connection by connectivityState()
+    val lastUpdate by remember(uiState) {
+        derivedStateOf {
+            if (uiState.currencyRateUpdateState !is CurrencyRateUpdateState.Ready) return@derivedStateOf null
+            uiState.currencyRateUpdateState.date.format(UnittoDateTimeFormatter.weekDayMonthYear)
+        }
+    }
 
     LaunchedEffect(connection) {
         if ((connection == ConnectionState.Available) and (uiState.result == ConverterResult.Error)) {
@@ -300,6 +307,23 @@ private fun Default(
         content1 = { contentModifier ->
             ColumnWithConstraints(modifier = contentModifier) {
                 val textFieldModifier = Modifier.weight(2f)
+
+                AnimatedVisibility(
+                    visible = lastUpdate != null,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .clip(RoundedCornerShape(50))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .fillMaxWidth(),
+                        text = lastUpdate.orEmpty(),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+                }
 
                 ExpressionTextField(
                     modifier = textFieldModifier,

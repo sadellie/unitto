@@ -26,15 +26,15 @@ import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
+import com.sadellie.unitto.data.common.combine
 import com.sadellie.unitto.data.common.isExpression
+import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
 import com.sadellie.unitto.data.units.UnitsRepository
-import com.sadellie.unitto.data.common.combine
-import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
@@ -60,8 +60,6 @@ internal class ConverterViewModel @Inject constructor(
     private val unitsRepo: UnitsRepository,
 ) : ViewModel() {
 
-    enum class CurrencyRateUpdateState { READY, LOADING, ERROR }
-
     private val _input = MutableStateFlow(TextFieldValue())
     private val _calculation = MutableStateFlow<BigDecimal?>(null)
     private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
@@ -70,7 +68,7 @@ internal class ConverterViewModel @Inject constructor(
 
     private val _leftSideUIState = MutableStateFlow(LeftSideUIState())
     private val _rightSideUIState = MutableStateFlow(RightSideUIState())
-    private val _loadingCurrencies = MutableStateFlow(CurrencyRateUpdateState.READY)
+    private val _currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Loading)
     private var _loadCurrenciesJob: Job? = null
 
     val converterUiState: StateFlow<UnitConverterUIState> = combine(
@@ -80,8 +78,8 @@ internal class ConverterViewModel @Inject constructor(
         _unitFrom,
         _unitTo,
         userPrefsRepository.converterPrefs,
-        _loadingCurrencies
-    ) { input, calculation, result, unitFrom, unitTo, prefs, _ ->
+        _currenciesState
+    ) { input, calculation, result, unitFrom, unitTo, prefs, currenciesState ->
         return@combine when {
             (unitFrom is DefaultUnit) and (unitTo is DefaultUnit) -> {
                 UnitConverterUIState.Default(
@@ -96,6 +94,7 @@ internal class ConverterViewModel @Inject constructor(
                     scale = prefs.precision,
                     outputFormat = prefs.outputFormat,
                     formatTime = prefs.unitConverterFormatTime,
+                    currencyRateUpdateState = currenciesState
                 )
             }
             (unitFrom is NumberBaseUnit) and (unitTo is NumberBaseUnit) -> {
@@ -111,16 +110,16 @@ internal class ConverterViewModel @Inject constructor(
         }
     }
         .onEach { ui ->
-            when (_loadingCurrencies.value) {
-                CurrencyRateUpdateState.LOADING -> {
+            when (_currenciesState.value) {
+                is CurrencyRateUpdateState.Loading -> {
                     _result.update { ConverterResult.Loading }
                     return@onEach
                 }
-                CurrencyRateUpdateState.ERROR -> {
+                is CurrencyRateUpdateState.Error -> {
                     _result.update { ConverterResult.Error }
                     return@onEach
                 }
-                CurrencyRateUpdateState.READY -> {}
+                is CurrencyRateUpdateState.Ready, is CurrencyRateUpdateState.Nothing -> {}
             }
 
             when (ui) {
@@ -176,8 +175,9 @@ internal class ConverterViewModel @Inject constructor(
         _calculation,
         _rightSideUIState,
         userPrefsRepository.converterPrefs,
-        unitsRepo.allUnits
-    ) { unitFrom, unitTo, input, calculation, ui, prefs, _ ->
+        _currenciesState,
+        unitsRepo.allUnits,
+    ) { unitFrom, unitTo, input, calculation, ui, prefs, currenciesState, _ ->
         return@combine ui.copy(
             unitFrom = unitFrom,
             unitTo = unitTo,
@@ -186,7 +186,8 @@ internal class ConverterViewModel @Inject constructor(
             input = calculation?.toPlainString() ?: input.text,
             scale = prefs.precision,
             outputFormat = prefs.outputFormat,
-            formatterSymbols = AllFormatterSymbols.getById(prefs.separator)
+            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
+            currencyRateUpdateState = currenciesState
         )
     }
         .onEach {
@@ -206,7 +207,7 @@ internal class ConverterViewModel @Inject constructor(
             .also { oldUnitFrom -> _unitTo.update { oldUnitFrom } }
 
         _loadCurrenciesJob?.cancel()
-        _loadingCurrencies.update { CurrencyRateUpdateState.READY }
+        _currenciesState.update { CurrencyRateUpdateState.Nothing }
         _unitFrom.value?.let {
             if (it.group == UnitGroup.CURRENCY) updateCurrencyRates(it)
         }
@@ -230,14 +231,15 @@ internal class ConverterViewModel @Inject constructor(
     fun updateCurrencyRates(unit: AbstractUnit) {
         _loadCurrenciesJob = viewModelScope.launch(Dispatchers.IO) {
             try {
-                _loadingCurrencies.update { CurrencyRateUpdateState.LOADING }
-                unitsRepo.updateRates(unit)
+                _currenciesState.update { CurrencyRateUpdateState.Loading }
+                val updateDate = unitsRepo.updateRates(unit) ?: throw Exception("Empty cache")
+
                 // Set to fresh objects with updated basic unit values
                 _unitFrom.update { unitsRepo.getById(it!!.id) }
                 _unitTo.update { unitsRepo.getById(it!!.id) }
-                _loadingCurrencies.update { CurrencyRateUpdateState.READY }
+                _currenciesState.update { CurrencyRateUpdateState.Ready(updateDate) }
             } catch (e: Exception) {
-                _loadingCurrencies.update { CurrencyRateUpdateState.ERROR }
+                _currenciesState.update { CurrencyRateUpdateState.Error }
             }
         }
     }
@@ -253,7 +255,7 @@ internal class ConverterViewModel @Inject constructor(
         }
 
         _loadCurrenciesJob?.cancel()
-        _loadingCurrencies.update { CurrencyRateUpdateState.READY }
+        _currenciesState.update { CurrencyRateUpdateState.Nothing }
         if (unit.group == UnitGroup.CURRENCY) updateCurrencyRates(unit)
 
         _unitFrom.update {

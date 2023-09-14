@@ -38,6 +38,7 @@ import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
@@ -120,7 +121,8 @@ private fun RightSideScreen(
                                     shortName = stringResource(it.shortName),
                                     scale = uiState.scale,
                                     outputFormat = uiState.outputFormat,
-                                    formatterSymbols = uiState.formatterSymbols
+                                    formatterSymbols = uiState.formatterSymbols,
+                                    readyCurrencies = uiState.currencyRateUpdateState is CurrencyRateUpdateState.Ready,
                                 ),
                                 isFavorite = it.isFavorite,
                                 isSelected = it.id == uiState.unitTo?.id,
@@ -144,9 +146,14 @@ private fun formatUnitToSupportLabel(
     shortName: String,
     scale: Int,
     outputFormat: Int,
-    formatterSymbols: FormatterSymbols
+    formatterSymbols: FormatterSymbols,
+    readyCurrencies: Boolean,
 ): String {
     try {
+        if ((unitFrom?.group == UnitGroup.CURRENCY) and !readyCurrencies) {
+            return shortName
+        }
+
         if ((unitFrom is DefaultUnit) and (unitTo is DefaultUnit)) {
             unitFrom as DefaultUnit
             unitTo as DefaultUnit
