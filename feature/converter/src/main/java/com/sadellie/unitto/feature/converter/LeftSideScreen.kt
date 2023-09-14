@@ -61,7 +61,7 @@ import com.sadellie.unitto.feature.converter.components.UnitGroupHeader
 internal fun LeftSideRoute(
     viewModel: ConverterViewModel,
     navigateUp: () -> Unit,
-    navigateToUnitGroups: () -> Unit
+    navigateToUnitGroups: () -> Unit,
 ) {
     val uiState = viewModel.leftSideUIState.collectAsStateWithLifecycle()
 
@@ -94,7 +94,7 @@ private fun LeftSideScreen(
         derivedStateOf { scrollBehavior.state.overlappedFraction > 0.01f }
     }
     val chipsBackground = animateColorAsState(
-        targetValue =  if (needToTint) elevatedColor else MaterialTheme.colorScheme.surface,
+        targetValue = if (needToTint) elevatedColor else MaterialTheme.colorScheme.surface,
         animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
         label = "Chips background",
     )
@@ -170,12 +170,17 @@ private fun LeftSideScreen(
                                 supportLabel = stringResource(it.shortName),
                                 isFavorite = it.isFavorite,
                                 isSelected = it.id == uiState.unitFrom?.id,
-                                onClick = { updateUnitFrom(it); navigateUp() },
+                                onClick = {
+                                    onQueryChange(TextFieldValue())
+                                    updateUnitFrom(it)
+                                    navigateUp()
+                                },
                                 favoriteUnit = { favoriteUnit(it) }
                             )
                         }
                     }
                 }
+
                 false -> SearchPlaceholder(navigateToSettingsAction = navigateToUnitGroups)
                 null -> {}
             }

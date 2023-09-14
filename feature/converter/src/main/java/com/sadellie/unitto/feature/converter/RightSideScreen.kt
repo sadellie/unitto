@@ -126,12 +126,17 @@ private fun RightSideScreen(
                                 ),
                                 isFavorite = it.isFavorite,
                                 isSelected = it.id == uiState.unitTo?.id,
-                                onClick = { updateUnitTo(it); navigateUp() },
+                                onClick = {
+                                    onQueryChange(TextFieldValue())
+                                    updateUnitTo(it)
+                                    navigateUp()
+                                },
                                 favoriteUnit = { favoriteUnit(it) }
                             )
                         }
                     }
                 }
+
                 false -> SearchPlaceholder(navigateToSettingsAction = navigateToUnitGroups)
                 null -> {}
             }
