@@ -68,7 +68,7 @@ internal class ConverterViewModel @Inject constructor(
 
     private val _leftSideUIState = MutableStateFlow(LeftSideUIState())
     private val _rightSideUIState = MutableStateFlow(RightSideUIState())
-    private val _currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Loading)
+    private val _currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
     private var _loadCurrenciesJob: Job? = null
 
     val converterUiState: StateFlow<UnitConverterUIState> = combine(
