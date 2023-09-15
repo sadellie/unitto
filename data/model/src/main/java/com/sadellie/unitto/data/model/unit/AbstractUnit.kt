@@ -32,6 +32,17 @@ interface AbstractUnit {
     val isFavorite: Boolean
     val pairId: String?
     val counter: Int
+
+    fun clone(
+        id: String = this.id,
+        basicUnit: BigDecimal = this.basicUnit,
+        group: UnitGroup = this.group,
+        displayName: Int = this.displayName,
+        shortName: Int = this.shortName,
+        isFavorite: Boolean = this.isFavorite,
+        pairId: String? = this.pairId,
+        counter: Int = this.counter,
+    ): AbstractUnit
 }
 
 fun Sequence<AbstractUnit>.filterByLev(stringA: String, context: Context): Sequence<AbstractUnit> {

@@ -27,10 +27,6 @@ import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.FuelBackward
-import com.sadellie.unitto.data.model.unit.FuelForward
-import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.model.unit.NumberBaseUnit
 import com.sadellie.unitto.data.model.unit.ReverseUnit
 import com.sadellie.unitto.data.model.unit.filterByLev
 import com.sadellie.unitto.data.units.collections.accelerationCollection
@@ -113,39 +109,12 @@ class UnitsRepository @Inject constructor(
         .mapLatest { basedList ->
             basedList.forEach { based ->
                 // Have to use a copy so that composable can detect changes
-                val updatedUnit = when (val foundUnit = getById(based.unitId)) {
-                    is NormalUnit -> foundUnit.copy(
+                val updatedUnit = getById(based.unitId)
+                    .clone(
                         isFavorite = based.isFavorite,
                         counter = based.frequency,
                         pairId = based.pairedUnitId
                     )
-
-                    is NumberBaseUnit -> foundUnit.copy(
-                        isFavorite = based.isFavorite,
-                        counter = based.frequency,
-                        pairId = based.pairedUnitId
-                    )
-
-                    is ReverseUnit -> foundUnit.copy(
-                        isFavorite = based.isFavorite,
-                        counter = based.frequency,
-                        pairId = based.pairedUnitId
-                    )
-
-                    is FuelForward -> foundUnit.copy(
-                        isFavorite = based.isFavorite,
-                        counter = based.frequency,
-                        pairId = based.pairedUnitId
-                    )
-
-                    is FuelBackward -> foundUnit.copy(
-                        isFavorite = based.isFavorite,
-                        counter = based.frequency,
-                        pairId = based.pairedUnitId
-                    )
-
-                    else -> return@forEach
-                }
 
                 myUnits.update { units ->
                     units.replace(updatedUnit) { it.id == updatedUnit.id }

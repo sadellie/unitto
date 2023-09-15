@@ -53,4 +53,24 @@ data class FuelBackward(
             else -> BigDecimal.ZERO
         }
     }
+
+    override fun clone(
+        id: String,
+        basicUnit: BigDecimal,
+        group: UnitGroup,
+        displayName: Int,
+        shortName: Int,
+        isFavorite: Boolean,
+        pairId: String?,
+        counter: Int,
+    ): FuelBackward = copy(
+        id = id,
+        basicUnit = basicUnit,
+        group = group,
+        displayName = displayName,
+        shortName = shortName,
+        isFavorite = isFavorite,
+        pairId = pairId,
+        counter = counter,
+    )
 }

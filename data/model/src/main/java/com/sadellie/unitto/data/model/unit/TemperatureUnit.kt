@@ -21,7 +21,7 @@ package com.sadellie.unitto.data.model.unit
 import com.sadellie.unitto.data.model.UnitGroup
 import java.math.BigDecimal
 
-data class NumberBaseUnit(
+data class TemperatureUnit(
     override val id: String,
     override val basicUnit: BigDecimal,
     override val group: UnitGroup,
@@ -30,10 +30,9 @@ data class NumberBaseUnit(
     override val isFavorite: Boolean = false,
     override val pairId: String? = null,
     override val counter: Int = 0,
-) : AbstractUnit {
-    fun convert(toBase: NumberBaseUnit, input: String): String {
-        return input.toBigInteger(basicUnit.intValueExact()).toString(toBase.basicUnit.intValueExact())
-    }
+    val customConvert: (unitTo: DefaultUnit, value: BigDecimal) -> BigDecimal
+): DefaultUnit {
+    override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal = customConvert(unitTo, value)
 
     override fun clone(
         id: String,
@@ -44,7 +43,7 @@ data class NumberBaseUnit(
         isFavorite: Boolean,
         pairId: String?,
         counter: Int,
-    ): NumberBaseUnit = copy(
+    ): TemperatureUnit = copy(
         id = id,
         basicUnit = basicUnit,
         group = group,

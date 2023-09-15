@@ -43,4 +43,24 @@ data class NormalUnit(
             .multiply(value)
             .div(unitTo.basicUnit)
     }
+
+    override fun clone(
+        id: String,
+        basicUnit: BigDecimal,
+        group: UnitGroup,
+        displayName: Int,
+        shortName: Int,
+        isFavorite: Boolean,
+        pairId: String?,
+        counter: Int,
+    ): NormalUnit = copy(
+        id = id,
+        basicUnit = basicUnit,
+        group = group,
+        displayName = displayName,
+        shortName = shortName,
+        isFavorite = isFavorite,
+        pairId = pairId,
+        counter = counter,
+    )
 }
