@@ -183,7 +183,7 @@ internal class ConverterViewModel @Inject constructor(
             unitTo = unitTo,
             sorting = prefs.unitConverterSorting,
             favorites = prefs.unitConverterFavoritesOnly,
-            input = calculation?.toPlainString() ?: input.text,
+            input = (calculation?.toPlainString() ?: input.text).replace(Token.Operator.minus, "-"),
             scale = prefs.precision,
             outputFormat = prefs.outputFormat,
             formatterSymbols = AllFormatterSymbols.getById(prefs.separator),

@@ -110,7 +110,6 @@ private fun RightSideScreen(
                         }
 
                         items(units, { it.id }) {
-
                             BasicUnitListItem(
                                 modifier = Modifier.animateItemPlacement(),
                                 name = stringResource(it.displayName),
@@ -154,11 +153,10 @@ private fun formatUnitToSupportLabel(
     formatterSymbols: FormatterSymbols,
     readyCurrencies: Boolean,
 ): String {
-    try {
-        if ((unitFrom?.group == UnitGroup.CURRENCY) and !readyCurrencies) {
-            return shortName
-        }
+    if ((unitFrom?.group == UnitGroup.CURRENCY) and !readyCurrencies) return shortName
+    if (input.isEmpty()) return shortName
 
+    try {
         if ((unitFrom is DefaultUnit) and (unitTo is DefaultUnit)) {
             unitFrom as DefaultUnit
             unitTo as DefaultUnit
