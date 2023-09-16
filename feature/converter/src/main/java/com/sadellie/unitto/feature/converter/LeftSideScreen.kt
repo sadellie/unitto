@@ -102,13 +102,14 @@ private fun LeftSideScreen(
     val chipsRowLazyListState = rememberLazyListState()
 
     LaunchedEffect(uiState.unitFrom, uiState.shownUnitGroups) {
-        // TODO Scroll to initially selected unit group
         if (uiState.unitFrom == null) return@LaunchedEffect
         updateUnitGroup(uiState.unitFrom.group)
 
         val groupToSelect = uiState.shownUnitGroups.indexOf(uiState.unitFrom.group)
         if (groupToSelect > -1) {
-            chipsRowLazyListState.animateScrollToItem(groupToSelect)
+            kotlin.runCatching {
+                chipsRowLazyListState.animateScrollToItem(groupToSelect)
+            }
         }
     }
 
