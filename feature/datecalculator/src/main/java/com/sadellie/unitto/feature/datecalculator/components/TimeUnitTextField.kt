@@ -22,7 +22,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Icon
@@ -31,43 +30,39 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 
 @Composable
 internal fun TimeUnitTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    modifier: Modifier,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     label: String,
-    imeAction: ImeAction = ImeAction.Next,
     formatterSymbols: FormatterSymbols
-) {
+) = CompositionLocalProvider(LocalTextInputService provides null) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = { newValue ->
-            onValueChange(newValue.filter { it.isDigit() })
+            onValueChange(newValue.copy(newValue.text.filter { it.isDigit() }))
         },
         label = { Text(label, color = MaterialTheme.colorScheme.onSurfaceVariant) },
         trailingIcon = {
             AnimatedVisibility(
-                visible = value.isNotBlank(),
+                visible = value.text.isNotBlank(),
                 enter = scaleIn(),
                 exit = scaleOut()
             ) {
-                IconButton(onClick = { onValueChange("") }) {
+                IconButton(onClick = { onValueChange(TextFieldValue()) }) {
                     Icon(Icons.Outlined.Clear, null)
                 }
             }
         },
-        keyboardOptions = KeyboardOptions(
-            autoCorrect = false,
-            keyboardType = KeyboardType.Decimal,
-            imeAction = imeAction
-        ),
         visualTransformation = ExpressionTransformer(formatterSymbols)
     )
 }

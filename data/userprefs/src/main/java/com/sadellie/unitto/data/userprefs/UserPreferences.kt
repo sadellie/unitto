@@ -126,6 +126,7 @@ data class UnitGroupsPreferences(
 
 data class AddSubtractPreferences(
     val separator: Int = Separator.SPACE,
+    val enableVibrations: Boolean = true,
 )
 
 data class AboutPreferences(
@@ -232,7 +233,8 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     val addSubtractPrefs: Flow<AddSubtractPreferences> = data
         .map { preferences ->
             AddSubtractPreferences(
-                separator = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE
+                separator = preferences[PrefsKeys.SEPARATOR] ?: Separator.SPACE,
+                enableVibrations = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true,
             )
         }
 

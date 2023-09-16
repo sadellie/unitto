@@ -386,7 +386,7 @@ private fun PortraitKeyboard(
                 KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
                 KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
             }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, clearSymbols) { deleteSymbol() }
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, onLongClick = clearSymbols) { deleteSymbol() }
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, allowVibration) { evaluate() }
         }
 
@@ -538,7 +538,7 @@ private fun LandscapeKeyboard(
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, allowVibration) { addSymbol(Token.Digit._9) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key6, allowVibration) { addSymbol(Token.Digit._6) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, allowVibration) { addSymbol(Token.Digit._3) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Backspace, allowVibration, clearSymbols) { deleteSymbol() }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Backspace, allowVibration, onLongClick = clearSymbols) { deleteSymbol() }
         }
 
         Column(Modifier.weight(1f)) {

@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import android.content.res.Configuration
 import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -29,20 +28,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
+import com.sadellie.unitto.core.ui.isPortrait
 import kotlinx.coroutines.launch
 
 @Composable
 fun BasicKeyboardButton(
     modifier: Modifier,
+    contentHeight: Float,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)?,
     containerColor: Color,
     icon: ImageVector,
     iconColor: Color,
     allowVibration: Boolean,
-    contentHeight: Float,
 ) {
     val view = LocalView.current
     val coroutineScope = rememberCoroutineScope()
@@ -53,7 +52,6 @@ fun BasicKeyboardButton(
             }
         }
     }
-
     UnittoButton(
         modifier = modifier,
         onClick = { onClick(); vibrate() },
@@ -75,18 +73,19 @@ fun KeyboardButtonLight(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
+    contentHeight: Float = if (isPortrait()) 0.51f else 0.7f,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
     BasicKeyboardButton(
         modifier = modifier,
+        contentHeight = contentHeight,
         onClick = onClick,
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
-        contentHeight = if (isPortrait()) 0.51f else 0.7f
     )
 }
 
@@ -95,18 +94,19 @@ fun KeyboardButtonFilled(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
+    contentHeight: Float = if (isPortrait()) 0.51f else 0.7f,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
     BasicKeyboardButton(
         modifier = modifier,
+        contentHeight = contentHeight,
         onClick = onClick,
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSecondaryContainer,
         allowVibration = allowVibration,
-        contentHeight = if (isPortrait()) 0.51f else 0.7f
     )
 }
 
@@ -115,21 +115,18 @@ fun KeyboardButtonAdditional(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
+    contentHeight: Float = 0.8f,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
     BasicKeyboardButton(
         modifier = modifier,
+        contentHeight = contentHeight,
         onClick = onClick,
         onLongClick = onLongClick,
         containerColor = Color.Transparent,
         icon = icon,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
-        contentHeight = if (isPortrait()) 0.8f else 0.8f
     )
 }
-
-@Composable
-private fun isPortrait() =
-    LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT

@@ -109,7 +109,7 @@ internal fun DefaultKeyboard(
                 KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(Token.Digit._0) }
                 KeyboardButtonLight(bModifier, fractionalIcon, allowVibration) { addDigit(Token.Digit.dot) }
             }
-            KeyboardButtonLight(bModifier, UnittoIcons.Backspace, allowVibration, clearInput) { deleteDigit() }
+            KeyboardButtonLight(bModifier, UnittoIcons.Backspace, allowVibration, onLongClick = clearInput) { deleteDigit() }
             KeyboardButtonFilled(bModifier, UnittoIcons.Plus, allowVibration) { addDigit(Token.Operator.plus) }
         }
     }
@@ -159,7 +159,7 @@ internal fun NumberBaseKeyboard(
         Row(cModifier, horizontalArrangement) {
             KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration) { addDigit(Token.Digit._0) }
             KeyboardButtonLight(
-                Modifier.fillMaxSize().weight(2f).padding(it.maxWidth * 0.015f, it.maxHeight * 0.008f), UnittoIcons.Backspace, allowVibration, clearInput) { deleteDigit() }
+                Modifier.fillMaxSize().weight(2f).padding(it.maxWidth * 0.015f, it.maxHeight * 0.008f), UnittoIcons.Backspace, allowVibration, onLongClick = clearInput) { deleteDigit() }
         }
     }
 }
