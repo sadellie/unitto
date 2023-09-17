@@ -205,7 +205,7 @@ class UnitsRepository @Inject constructor(
                 .map { (pairId, pairValue) ->
                     CurrencyRatesEntity(
                         baseUnitId = unit.id,
-                        date = LocalDate.parse(conversions.date).toEpochDay(),
+                        date = LocalDate.now().toEpochDay(),
                         pairUnitId = pairId,
                         pairUnitValue = BigDecimal.valueOf(pairValue)
                     )
