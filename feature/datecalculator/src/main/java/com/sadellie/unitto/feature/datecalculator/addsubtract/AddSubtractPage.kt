@@ -122,7 +122,7 @@ private fun AddSubtractView(
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(showKeyboard, landscape) {
-        toggleTopBar(showKeyboard and landscape)
+        toggleTopBar(!(showKeyboard and landscape))
     }
 
     BackHandler(showKeyboard) {
