@@ -317,7 +317,7 @@ private fun Default(
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .background(MaterialTheme.colorScheme.inverseOnSurface)
                             .fillMaxWidth(),
                         text = lastUpdate.orEmpty(),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
