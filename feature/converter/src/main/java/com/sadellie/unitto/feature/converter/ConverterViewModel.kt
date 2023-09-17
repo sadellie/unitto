@@ -20,6 +20,7 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.base.Token
@@ -58,9 +59,11 @@ import javax.inject.Inject
 internal class ConverterViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val unitsRepo: UnitsRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _input = MutableStateFlow(TextFieldValue())
+    private val converterInputKey = "CONVERTER_INPUT"
+    private val _input = MutableStateFlow(TextFieldValue(savedStateHandle[converterInputKey] ?: ""))
     private val _calculation = MutableStateFlow<BigDecimal?>(null)
     private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
     private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)
@@ -220,11 +223,22 @@ internal class ConverterViewModel @Inject constructor(
         }
     }
 
-    fun addTokens(tokens: String) = _input.update { it.addTokens(tokens) }
+    fun addTokens(tokens: String) = _input.update {
+        val newValue = it.addTokens(tokens)
+        savedStateHandle[converterInputKey] = newValue.text
+        newValue
+    }
 
-    fun deleteTokens() = _input.update { it.deleteTokens() }
+    fun deleteTokens() = _input.update {
+        val newValue = it.deleteTokens()
+        savedStateHandle[converterInputKey] = newValue.text
+        newValue
+    }
 
-    fun clearInput() = _input.update { TextFieldValue() }
+    fun clearInput() = _input.update {
+        savedStateHandle[converterInputKey] = ""
+        TextFieldValue()
+    }
 
     fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
 
