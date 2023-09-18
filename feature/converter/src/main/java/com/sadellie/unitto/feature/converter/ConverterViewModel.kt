@@ -48,7 +48,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -112,15 +112,15 @@ internal class ConverterViewModel @Inject constructor(
             else -> UnitConverterUIState.Loading
         }
     }
-        .onEach { ui ->
+        .mapLatest { ui ->
             when (_currenciesState.value) {
                 is CurrencyRateUpdateState.Loading -> {
                     _result.update { ConverterResult.Loading }
-                    return@onEach
+                    return@mapLatest ui
                 }
                 is CurrencyRateUpdateState.Error -> {
                     _result.update { ConverterResult.Error }
-                    return@onEach
+                    return@mapLatest ui
                 }
                 is CurrencyRateUpdateState.Ready, is CurrencyRateUpdateState.Nothing -> {}
             }
@@ -143,6 +143,7 @@ internal class ConverterViewModel @Inject constructor(
                 }
                 is UnitConverterUIState.Loading -> {}
             }
+            ui
         }
         .stateIn(viewModelScope, UnitConverterUIState.Loading)
 
@@ -160,7 +161,7 @@ internal class ConverterViewModel @Inject constructor(
             verticalList = prefs.enableToolsExperiment,
         )
     }
-        .onEach {
+        .mapLatest {
             filterUnitsLeft(
                 query = it.query,
                 unitGroup = it.unitGroup,
@@ -168,6 +169,7 @@ internal class ConverterViewModel @Inject constructor(
                 sorting = it.sorting,
                 shownUnitGroups = it.shownUnitGroups,
             )
+            it
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LeftSideUIState())
 
@@ -193,7 +195,7 @@ internal class ConverterViewModel @Inject constructor(
             currencyRateUpdateState = currenciesState
         )
     }
-        .onEach {
+        .mapLatest {
             filterUnitsRight(
                 query = it.query,
                 unitGroup = it.unitTo?.group,
@@ -201,6 +203,7 @@ internal class ConverterViewModel @Inject constructor(
                 sorting = it.sorting,
                 shownUnitGroups = emptyList(),
             )
+            it
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, RightSideUIState())
 

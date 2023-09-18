@@ -58,7 +58,14 @@ internal sealed class UnitConverterUIState {
 }
 
 internal sealed class ConverterResult {
-    data class Default(val value: BigDecimal) : ConverterResult()
+    data class Default(val value: BigDecimal) : ConverterResult() {
+        override fun equals(other: Any?): Boolean {
+            if (other !is Default) return false
+            return this.value.compareTo(other.value) == 0
+        }
+
+        override fun hashCode(): Int = value.hashCode()
+    }
 
     data class NumberBase(val value: String) : ConverterResult()
 
