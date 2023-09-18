@@ -24,9 +24,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Rule
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Timer
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,30 +56,22 @@ internal fun ConverterSettingsScreen(
         LazyColumn(contentPadding = padding) {
             // UNIT GROUPS
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.AutoMirrored.Filled.Rule,
-                            stringResource(R.string.disable_unit_group_description),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.unit_groups_setting)) },
-                    supportingContent = { Text(stringResource(R.string.unit_groups_support)) },
+                UnittoListItem(
+                    icon = Icons.AutoMirrored.Filled.Rule,
+                    iconDescription = stringResource(R.string.unit_groups_setting),
+                    headlineText = stringResource(R.string.unit_groups_setting),
+                    supportingText = stringResource(R.string.unit_groups_support),
                     modifier = Modifier.clickable { navigateToUnitsGroup() }
                 )
             }
 
             // UNITS LIST SORTING
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.AutoMirrored.Filled.Sort,
-                            stringResource(R.string.units_sorting)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.units_sorting)) },
-                    supportingContent = { Text(stringResource(R.string.units_sorting_support)) },
+                UnittoListItem(
+                    icon = Icons.AutoMirrored.Filled.Sort,
+                    iconDescription = stringResource(R.string.units_sorting),
+                    headlineText = stringResource(R.string.units_sorting),
+                    supportingText = stringResource(R.string.units_sorting_support),
                     modifier = Modifier.clickable { showDialog = true }
                 )
             }
@@ -90,14 +79,10 @@ internal fun ConverterSettingsScreen(
             // FORMAT TIME
             item {
                 UnittoListItem(
-                    label = stringResource(R.string.format_time),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Timer,
-                            stringResource(R.string.format_time)
-                        )
-                    },
-                    supportContent = stringResource(R.string.format_time_support),
+                    icon = Icons.Default.Timer,
+                    iconDescription = stringResource(R.string.format_time),
+                    headlineText = stringResource(R.string.format_time),
+                    supportingText = stringResource(R.string.format_time_support),
                     switchState = prefs.value.unitConverterFormatTime,
                     onSwitchChange = viewModel::updateUnitConverterFormatTime
                 )

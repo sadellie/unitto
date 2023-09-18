@@ -34,7 +34,6 @@ import androidx.compose.material.icons.filled.Architecture
 import androidx.compose.material.icons.filled.EMobiledata
 import androidx.compose.material.icons.filled._123
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,6 +57,7 @@ import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
+import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoSlider
 import com.sadellie.unitto.core.ui.common.squashable
@@ -147,7 +147,7 @@ fun FormattingScreen(
             }
 
             item("precision_label") {
-                ListItem(
+                UnittoListItem(
                     leadingContent = {
                         Icon(Icons.Default.Architecture, stringResource(R.string.precision_setting))
                     },
@@ -176,7 +176,7 @@ fun FormattingScreen(
             }
 
             item("separator_label") {
-                ListItem(
+                UnittoListItem(
                     leadingContent = {
                         Icon(Icons.Default._123, stringResource(R.string.precision_setting))
                     },
@@ -213,7 +213,7 @@ fun FormattingScreen(
             }
 
             item("output_format_label") {
-                ListItem(
+                UnittoListItem(
                     leadingContent = {
                         Icon(Icons.Default.EMobiledata, stringResource(R.string.precision_setting))
                     },

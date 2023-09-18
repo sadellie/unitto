@@ -32,9 +32,6 @@ import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.os.LocaleListCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -54,6 +52,7 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
+import com.sadellie.unitto.data.userprefs.GeneralPreferences
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
@@ -62,13 +61,33 @@ import com.sadellie.unitto.feature.settings.navigation.formattingRoute
 import com.sadellie.unitto.feature.settings.navigation.themesRoute
 
 @Composable
-internal fun SettingsScreen(
+internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
     menuButtonClick: () -> Unit,
     navControllerAction: (String) -> Unit,
 ) {
-    val mContext = LocalContext.current
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+
+    SettingsScreen(
+        userPrefs = userPrefs.value,
+        menuButtonClick = menuButtonClick,
+        navControllerAction = navControllerAction,
+        updateMiddleZero = viewModel::updateMiddleZero,
+        updateVibrations = viewModel::updateVibrations,
+        updateStartingScreen = viewModel::updateStartingScreen
+    )
+}
+
+@Composable
+private fun SettingsScreen(
+    userPrefs: GeneralPreferences,
+    menuButtonClick: () -> Unit,
+    navControllerAction: (String) -> Unit,
+    updateMiddleZero: (Boolean) -> Unit,
+    updateVibrations: (Boolean) -> Unit,
+    updateStartingScreen: (String) -> Unit
+) {
+    val mContext = LocalContext.current
     var dialogState: DialogState by rememberSaveable {
         mutableStateOf(DialogState.NONE)
     }
@@ -81,73 +100,53 @@ internal fun SettingsScreen(
 
             // THEME
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Palette,
-                            stringResource(R.string.theme_setting),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.theme_setting)) },
-                    supportingContent = { Text(stringResource(R.string.theme_setting_support)) },
+                UnittoListItem(
+                    icon = Icons.Default.Palette,
+                    iconDescription = stringResource(R.string.theme_setting),
+                    headlineText = stringResource(R.string.theme_setting),
+                    supportingText = stringResource(R.string.theme_setting_support),
                     modifier = Modifier.clickable { navControllerAction(themesRoute) }
                 )
             }
 
             // START SCREEN
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Home,
-                            stringResource(R.string.starting_screen_setting),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.starting_screen_setting)) },
-                    supportingContent = { Text(stringResource(R.string.starting_screen_setting_support)) },
+                UnittoListItem(
+                    icon = Icons.Default.Home,
+                    iconDescription = stringResource(R.string.starting_screen_setting),
+                    headlineText = stringResource(R.string.starting_screen_setting),
+                    supportingText = stringResource(R.string.starting_screen_setting_support),
                     modifier = Modifier.clickable { dialogState = DialogState.START_SCREEN }
                 )
             }
 
             // FORMATTING
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default._123,
-                            stringResource(R.string.formatting_setting),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.formatting_setting)) },
-                    supportingContent = { Text(stringResource(R.string.formatting_setting_support)) },
+                UnittoListItem(
+                    icon = Icons.Default._123,
+                    iconDescription = stringResource(R.string.formatting_setting),
+                    headlineText = stringResource(R.string.formatting_setting),
+                    supportingText = stringResource(R.string.formatting_setting_support),
                     modifier = Modifier.clickable { navControllerAction(formattingRoute) }
                 )
             }
 
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Calculate,
-                            stringResource(R.string.calculator),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.calculator)) },
-                    supportingContent = { Text(stringResource(R.string.calculator_settings_support)) },
+                UnittoListItem(
+                    icon = Icons.Default.Calculate,
+                    iconDescription = stringResource(R.string.calculator),
+                    headlineText = stringResource(R.string.calculator),
+                    supportingText = stringResource(R.string.calculator_settings_support),
                     modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
                 )
             }
 
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.SwapHoriz,
-                            stringResource(R.string.unit_converter),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.unit_converter)) },
-                    supportingContent = { Text(stringResource(R.string.converter_settings_support)) },
+                UnittoListItem(
+                    icon = Icons.Default.SwapHoriz,
+                    iconDescription = stringResource(R.string.unit_converter),
+                    headlineText = stringResource(R.string.unit_converter),
+                    supportingText = stringResource(R.string.converter_settings_support),
                     modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) }
                 )
             }
@@ -158,46 +157,36 @@ internal fun SettingsScreen(
             // MIDDLE ZERO
             item {
                 UnittoListItem(
-                    label = stringResource(R.string.middle_zero_option),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.ExposureZero,
-                            stringResource(R.string.middle_zero_option)
-                        )
-                    },
-                    supportContent = stringResource(R.string.middle_zero_option_support),
-                    switchState = userPrefs.value.middleZero,
-                    onSwitchChange = viewModel::updateMiddleZero
+                    icon = Icons.Default.ExposureZero,
+                    iconDescription = stringResource(R.string.middle_zero_option),
+                    headlineText = stringResource(R.string.middle_zero_option),
+                    supportingText = stringResource(R.string.middle_zero_option_support),
+                    modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
+                    switchState = userPrefs.middleZero,
+                    onSwitchChange = updateMiddleZero
                 )
             }
 
             // VIBRATIONS
             item {
                 UnittoListItem(
-                    label = stringResource(R.string.enable_vibrations),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Vibration,
-                            stringResource(R.string.enable_vibrations)
-                        )
-                    },
-                    supportContent = stringResource(R.string.enable_vibrations_support),
-                    switchState = userPrefs.value.enableVibrations,
-                    onSwitchChange = viewModel::updateVibrations
+                    icon = Icons.Default.Vibration,
+                    iconDescription = stringResource(R.string.enable_vibrations),
+                    headlineText = stringResource(R.string.enable_vibrations),
+                    supportingText = stringResource(R.string.enable_vibrations_support),
+                    modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
+                    switchState = userPrefs.enableVibrations,
+                    onSwitchChange = updateVibrations
                 )
             }
 
             // LANGUAGE
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Language,
-                            stringResource(R.string.language_setting)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.language_setting)) },
-                    supportingContent = { Text(stringResource(R.string.language_setting_support)) },
+                UnittoListItem(
+                    icon = Icons.Default.Language,
+                    iconDescription = stringResource(R.string.language_setting),
+                    headlineText = stringResource(R.string.language_setting),
+                    supportingText = stringResource(R.string.language_setting_support),
                     modifier = Modifier.clickable { dialogState = DialogState.LANGUAGE }
                 )
             }
@@ -205,14 +194,10 @@ internal fun SettingsScreen(
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item {
-                    ListItem(
-                        leadingContent = {
-                            Icon(
-                                Icons.Default.RateReview,
-                                stringResource(R.string.rate_this_app),
-                            )
-                        },
-                        headlineContent = { Text(stringResource(R.string.rate_this_app)) },
+                    UnittoListItem(
+                        icon = Icons.Default.RateReview,
+                        iconDescription = stringResource(R.string.rate_this_app),
+                        headlineText = stringResource(R.string.rate_this_app),
                         modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                     )
                 }
@@ -220,15 +205,11 @@ internal fun SettingsScreen(
 
             // More settings
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Info,
-                            stringResource(R.string.about_unitto),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.about_unitto)) },
-                    supportingContent = { Text(stringResource(R.string.about_unitto_support)) },
+                UnittoListItem(
+                    icon = Icons.Default.Info,
+                    iconDescription = stringResource(R.string.about_unitto),
+                    headlineText = stringResource(R.string.about_unitto),
+                    supportingText = stringResource(R.string.about_unitto_support),
                     modifier = Modifier.clickable { navControllerAction(aboutRoute) }
                 )
             }
@@ -247,9 +228,9 @@ internal fun SettingsScreen(
         DialogState.START_SCREEN -> {
             AlertDialogWithList(
                 title = stringResource(R.string.starting_screen_setting),
-                selectedItemIndex = userPrefs.value.startingScreen,
+                selectedItemIndex = userPrefs.startingScreen,
                 listItems = TOP_LEVEL_GRAPH_ROUTES,
-                selectAction = viewModel::updateStartingScreen,
+                selectAction = updateStartingScreen,
                 dismissAction = { resetDialog() }
             )
         }
@@ -286,4 +267,17 @@ internal fun SettingsScreen(
  */
 private enum class DialogState {
     NONE, START_SCREEN, LANGUAGE
+}
+
+@Preview
+@Composable
+private fun PreviewSettingsScreen() {
+    SettingsScreen(
+        userPrefs = GeneralPreferences(),
+        menuButtonClick = { /*TODO*/ },
+        navControllerAction = {},
+        updateMiddleZero = {},
+        updateVibrations = {},
+        updateStartingScreen = {}
+    )
 }

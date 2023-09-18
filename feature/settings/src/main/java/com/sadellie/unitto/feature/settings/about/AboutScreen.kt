@@ -31,8 +31,6 @@ import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -49,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 
@@ -70,28 +69,20 @@ internal fun AboutScreen(
         LazyColumn(contentPadding = padding) {
             // CURRENCY RATE NOTE
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.AutoMirrored.Filled.Help,
-                            stringResource(R.string.currency_rates_note_setting)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.currency_rates_note_setting)) },
+                UnittoListItem(
+                    icon = Icons.AutoMirrored.Filled.Help,
+                    iconDescription = stringResource(R.string.currency_rates_note_setting),
+                    headlineText = stringResource(R.string.currency_rates_note_setting),
                     modifier = Modifier.clickable { showDialog = true }
                 )
             }
 
             // TERMS AND CONDITIONS
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.PrivacyTip,
-                            stringResource(R.string.terms_and_conditions)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.terms_and_conditions)) },
+                UnittoListItem(
+                    icon = Icons.Default.PrivacyTip,
+                    iconDescription = stringResource(R.string.terms_and_conditions),
+                    headlineText = stringResource(R.string.terms_and_conditions),
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -103,14 +94,10 @@ internal fun AboutScreen(
 
             // PRIVACY POLICY
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Policy,
-                            stringResource(R.string.privacy_policy)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.privacy_policy)) },
+                UnittoListItem(
+                    icon = Icons.Default.Policy,
+                    iconDescription = stringResource(R.string.privacy_policy),
+                    headlineText = stringResource(R.string.privacy_policy),
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -122,14 +109,10 @@ internal fun AboutScreen(
 
             // OPEN SOURCE
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Code,
-                            stringResource(R.string.open_source)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.open_source)) },
+                UnittoListItem(
+                    icon = Icons.Default.Code,
+                    iconDescription = stringResource(R.string.open_source),
+                    headlineText = stringResource(R.string.open_source),
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -141,15 +124,11 @@ internal fun AboutScreen(
 
             // TRANSLATE
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Translate,
-                            stringResource(R.string.translate_app)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.translate_app)) },
-                    supportingContent = { Text(stringResource(R.string.translate_app_support)) },
+                UnittoListItem(
+                    icon = Icons.Default.Translate,
+                    iconDescription = stringResource(R.string.translate_app),
+                    headlineText = stringResource(R.string.translate_app),
+                    supportingText = stringResource(R.string.translate_app_support),
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -161,29 +140,21 @@ internal fun AboutScreen(
 
             // THIRD PARTY
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Copyright,
-                            stringResource(R.string.third_party_licenses)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.third_party_licenses)) },
+                UnittoListItem(
+                    icon = Icons.Default.Copyright,
+                    iconDescription = stringResource(R.string.third_party_licenses),
+                    headlineText = stringResource(R.string.third_party_licenses),
                     modifier = Modifier.clickable { navigateToThirdParty() }
                 )
             }
 
             // APP VERSION
             item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Info,
-                            stringResource(R.string.app_version_name_setting)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.app_version_name_setting)) },
-                    supportingContent = { Text("${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})") },
+                UnittoListItem(
+                    icon = Icons.Default.Info,
+                    iconDescription = stringResource(R.string.app_version_name_setting),
+                    headlineText = stringResource(R.string.app_version_name_setting),
+                    supportingText = "${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})",
                     modifier = Modifier.combinedClickable {
                         if (prefs.value.enableToolsExperiment) {
                             Toast.makeText(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG).show()

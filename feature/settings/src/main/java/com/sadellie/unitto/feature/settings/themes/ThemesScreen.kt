@@ -39,7 +39,6 @@ import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.HdrAuto
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -147,7 +146,7 @@ private fun ThemesScreen(
         LazyColumn(contentPadding = paddingValues) {
 
             item {
-                ListItem(
+                UnittoListItem(
                     leadingContent = {
                         Icon(
                             Icons.Default.Palette,
@@ -195,14 +194,10 @@ private fun ThemesScreen(
                     exit = shrinkVertically() + fadeOut(),
                 ) {
                     UnittoListItem(
-                        leadingContent = {
-                            Icon(
-                                Icons.Default.DarkMode,
-                                stringResource(R.string.force_amoled_mode),
-                            )
-                        },
-                        label = stringResource(R.string.force_amoled_mode),
-                        supportContent = stringResource(R.string.force_amoled_mode_support),
+                        icon = Icons.Default.DarkMode,
+                        iconDescription = stringResource(R.string.force_amoled_mode),
+                        headlineText = stringResource(R.string.force_amoled_mode),
+                        supportingText = stringResource(R.string.force_amoled_mode_support),
                         switchState = isAmoledThemeEnabled,
                         onSwitchChange = onAmoledThemeChange
                     )
@@ -211,14 +206,10 @@ private fun ThemesScreen(
 
             item {
                 UnittoListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.FontDownload,
-                            stringResource(R.string.system_font_setting),
-                        )
-                    },
-                    label = stringResource(R.string.system_font_setting),
-                    supportContent = stringResource(R.string.system_font_setting_support),
+                    icon = Icons.Default.FontDownload,
+                    iconDescription = stringResource(R.string.system_font_setting),
+                    headlineText = stringResource(R.string.system_font_setting),
+                    supportingText = stringResource(R.string.system_font_setting_support),
                     switchState = systemFont,
                     onSwitchChange = onSystemFontChange
                 )
@@ -229,14 +220,10 @@ private fun ThemesScreen(
 
                 item {
                     UnittoListItem(
-                        leadingContent = {
-                            Icon(
-                                Icons.Default.Colorize,
-                                stringResource(R.string.enable_dynamic_colors),
-                            )
-                        },
-                        label = stringResource(R.string.enable_dynamic_colors),
-                        supportContent = stringResource(R.string.enable_dynamic_colors_support),
+                        icon = Icons.Default.Colorize,
+                        iconDescription = stringResource(R.string.enable_dynamic_colors),
+                        headlineText = stringResource(R.string.enable_dynamic_colors),
+                        supportingText = stringResource(R.string.enable_dynamic_colors_support),
                         switchState = isDynamicThemeEnabled,
                         onSwitchChange = onDynamicThemeChange
                     )
@@ -248,7 +235,7 @@ private fun ThemesScreen(
                         enter = expandVertically() + fadeIn(),
                         exit = shrinkVertically() + fadeOut(),
                     ) {
-                        ListItem(
+                        UnittoListItem(
                             headlineContent = { Text(stringResource(R.string.selected_color)) },
                             supportingContent = {
                                 ColorSelector(
@@ -259,7 +246,7 @@ private fun ThemesScreen(
                                     defaultColor = Color(0xFF186c31)
                                 )
                             },
-                            modifier = Modifier.padding(start = 40.dp)
+                            modifier = Modifier.padding(start = 40.dp),
                         )
                     }
                 }
@@ -270,7 +257,7 @@ private fun ThemesScreen(
                         enter = expandVertically() + fadeIn(),
                         exit = shrinkVertically() + fadeOut(),
                     ) {
-                        ListItem(
+                        UnittoListItem(
                             headlineContent = { Text(stringResource(R.string.monet_mode)) },
                             supportingContent = {
                                 MonetModeSelector(

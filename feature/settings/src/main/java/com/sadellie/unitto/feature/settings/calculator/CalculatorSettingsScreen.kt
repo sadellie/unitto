@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.settings.calculator
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,14 +44,10 @@ internal fun CalculatorSettingsScreen(
         LazyColumn(contentPadding = padding) {
             item {
                 UnittoListItem(
-                    label = stringResource(R.string.partial_history_view_setting),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Timer,
-                            stringResource(R.string.partial_history_view_setting)
-                        )
-                    },
-                    supportContent = stringResource(R.string.partial_history_view_setting_support),
+                    headlineText = stringResource(R.string.partial_history_view_setting),
+                    icon = Icons.Default.Timer,
+                    iconDescription = stringResource(R.string.partial_history_view_setting),
+                    supportingText = stringResource(R.string.partial_history_view_setting_support),
                     switchState = prefs.value.partialHistoryView,
                     onSwitchChange = viewModel::updatePartialHistoryView
                 )

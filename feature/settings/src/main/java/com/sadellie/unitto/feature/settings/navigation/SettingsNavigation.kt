@@ -25,7 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.feature.settings.SettingsScreen
+import com.sadellie.unitto.feature.settings.SettingsRoute
 import com.sadellie.unitto.feature.settings.about.AboutScreen
 import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsScreen
 import com.sadellie.unitto.feature.settings.converter.ConverterSettingsScreen
@@ -65,7 +65,7 @@ fun NavGraphBuilder.settingGraph(
         )
     ) {
         composable(start) {
-            SettingsScreen(
+            SettingsRoute(
                 menuButtonClick = navController::navigateUp,
                 navControllerAction = navController::navigate
             )
