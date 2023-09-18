@@ -22,11 +22,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.unittoComposable
+import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.timezone.AddTimeZoneRoute
 import com.sadellie.unitto.timezone.TimeZoneRoute
 import java.time.ZonedDateTime
@@ -52,14 +52,14 @@ fun NavGraphBuilder.timeZoneGraph(
     navigateToSettings: () -> Unit,
     navController: NavHostController,
 ) {
-    navigation(
+    unittoNavigation(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
         )
     ) {
-        composable(start) {
+        unittoComposable(start) {
             TimeZoneRoute(
                 navigateToMenu = navigateToMenu,
                 navigateToSettings = navigateToSettings,
@@ -67,7 +67,7 @@ fun NavGraphBuilder.timeZoneGraph(
             )
         }
 
-        composable(
+        unittoComposable(
             route = "$ADD_TIME_ZONE_ROUTE/{$USER_TIME_ARG}",
             arguments = listOf(
                 navArgument(USER_TIME_ARG) {

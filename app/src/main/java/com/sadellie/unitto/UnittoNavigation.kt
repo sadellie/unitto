@@ -18,6 +18,8 @@
 
 package com.sadellie.unitto
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -43,7 +45,9 @@ internal fun UnittoNavigation(
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() }
     ) {
         converterGraph(
             openDrawer = openDrawer,

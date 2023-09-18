@@ -22,10 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.unittoComposable
+import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.LeftSideRoute
@@ -42,19 +42,19 @@ fun NavGraphBuilder.converterGraph(
     navigateToSettings: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
-    navigation(
+    unittoNavigation(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
         )
     ) {
-        composable(start) { backStackEntry ->
+        unittoComposable(start) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 navController.getBackStackEntry(graph)
             }
 
-             val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
+            val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
 
             ConverterRoute(
                 viewModel = parentViewModel,
@@ -65,7 +65,7 @@ fun NavGraphBuilder.converterGraph(
             )
         }
 
-        composable(LEFT) { backStackEntry ->
+        unittoComposable(LEFT) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 navController.getBackStackEntry(graph)
             }
@@ -79,7 +79,7 @@ fun NavGraphBuilder.converterGraph(
             )
         }
 
-        composable(RIGHT) { backStackEntry ->
+        unittoComposable(RIGHT) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 navController.getBackStackEntry(graph)
             }

@@ -19,10 +19,10 @@
 package com.sadellie.unitto.feature.datecalculator.navigation
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.unittoComposable
+import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.datecalculator.DateCalculatorRoute
 
 private val graph = TopLevelDestinations.DateCalculator.graph
@@ -32,14 +32,14 @@ fun NavGraphBuilder.dateCalculatorGraph(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
-    navigation(
+    unittoNavigation(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
         )
     ) {
-        composable(start) {
+        unittoComposable(start) {
             DateCalculatorRoute(
                 navigateToMenu = navigateToMenu,
                 navigateToSettings = navigateToSettings
