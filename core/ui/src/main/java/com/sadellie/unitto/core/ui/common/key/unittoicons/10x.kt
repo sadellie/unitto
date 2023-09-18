@@ -11,7 +11,8 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 
-val @receiver:Suppress("UNUSED") UnittoIcons.Power10: ImageVector
+@Suppress("UnusedReceiverParameter")
+val UnittoIcons.Power10: ImageVector
     get() {
         if (_power10 != null) {
             return _power10!!
