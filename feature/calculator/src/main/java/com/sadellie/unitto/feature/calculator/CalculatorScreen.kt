@@ -58,6 +58,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,30 +86,57 @@ internal fun CalculatorRoute(
     navigateToSettings: () -> Unit,
     viewModel: CalculatorViewModel = hiltViewModel()
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
+    CalculatorScreen(
+        uiState = uiState.value,
+        navigateToMenu = navigateToMenu,
+        navigateToSettings = navigateToSettings,
+        addTokens = viewModel::addTokens,
+        clearInput = viewModel::clearInput,
+        deleteTokens = viewModel::deleteTokens,
+        onCursorChange = viewModel::onCursorChange,
+        toggleCalculatorMode = viewModel::toggleCalculatorMode,
+        evaluate = viewModel::evaluate,
+        clearHistory = viewModel::clearHistory
+    )
+}
+
+@Composable
+internal fun CalculatorScreen(
+    uiState: CalculatorUIState,
+    navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit,
+    addTokens: (String) -> Unit,
+    clearInput: () -> Unit,
+    deleteTokens: () -> Unit,
+    onCursorChange: (TextRange) -> Unit,
+    toggleCalculatorMode: () -> Unit,
+    evaluate: () -> Unit,
+    clearHistory: () -> Unit
+) {
     when (uiState) {
         is CalculatorUIState.Loading -> Loading(
             navigateToMenu = navigateToMenu,
             navigateToSettings = navigateToSettings,
         )
-        is CalculatorUIState.Ready -> CalculatorScreen(
+        is CalculatorUIState.Ready -> Ready(
             uiState = uiState,
             navigateToMenu = navigateToMenu,
             navigateToSettings = navigateToSettings,
-            addSymbol = viewModel::addTokens,
-            clearSymbols = viewModel::clearInput,
-            deleteSymbol = viewModel::deleteTokens,
-            onCursorChange = viewModel::onCursorChange,
-            toggleAngleMode = viewModel::toggleCalculatorMode,
-            evaluate = viewModel::evaluate,
-            clearHistory = viewModel::clearHistory
+            addSymbol = addTokens,
+            clearSymbols = clearInput,
+            deleteSymbol = deleteTokens,
+            onCursorChange = onCursorChange,
+            toggleAngleMode = toggleCalculatorMode,
+            evaluate = evaluate,
+            clearHistory = clearHistory
         )
     }
 }
 
 @Composable
-private fun CalculatorScreen(
+private fun Ready(
     uiState: CalculatorUIState.Ready,
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
@@ -137,7 +166,8 @@ private fun CalculatorScreen(
                                 Icons.Default.Delete,
                                 stringResource(R.string.calculator_clear_history_title)
                             )
-                        }
+                        },
+                        modifier = Modifier.semantics { testTag = "historyButton" }
                     )
                 } else {
                     SettingsButton(navigateToSettings)
@@ -202,7 +232,8 @@ private fun CalculatorScreen(
 
             // Input
             Column(
-                Modifier
+                modifier = Modifier
+                    .semantics { testTag = "inputBox" }
                     .offset(y = dragDp)
                     .height(textBoxHeight)
                     .background(
@@ -286,6 +317,7 @@ private fun CalculatorScreen(
             // Keyboard
             CalculatorKeyboard(
                 modifier = Modifier
+                    .semantics { testTag = "ready" }
                     .offset(y = dragDp + textBoxHeight)
                     .height(keyboardHeight)
                     .fillMaxWidth()
@@ -337,7 +369,7 @@ private fun CalculatorScreen(
 }
 
 @Composable
-private fun Loading(
+internal fun Loading(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
 ) {
@@ -401,6 +433,7 @@ private fun Loading(
             // Keyboard
             CalculatorKeyboardLoading(
                 modifier = Modifier
+                    .semantics { testTag = "loading" }
                     .offset(y = maxHeight * 0.25f)
                     .height(maxHeight * 0.75f)
                     .fillMaxWidth()
@@ -446,11 +479,11 @@ private fun PreviewCalculatorScreen() {
         ),
         navigateToMenu = {},
         navigateToSettings = {},
-        addSymbol = {},
-        clearSymbols = {},
-        deleteSymbol = {},
+        addTokens = {},
+        clearInput = {},
+        deleteTokens = {},
         onCursorChange = {},
-        toggleAngleMode = {},
+        toggleCalculatorMode = {},
         evaluate = {},
         clearHistory = {}
     )

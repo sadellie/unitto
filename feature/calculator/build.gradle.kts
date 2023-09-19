@@ -25,10 +25,14 @@ plugins {
 
 android {
     namespace = "com.sadellie.unitto.feature.calculator"
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
     testImplementation(libs.junit)
+    testImplementation(libs.org.robolectric)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(project(":data:common"))
     implementation(project(":data:userprefs"))
