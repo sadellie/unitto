@@ -64,6 +64,7 @@ internal fun DateCalculatorScreen(
     val differenceLabel = stringResource(R.string.difference)
     val focusManager = LocalFocusManager.current
     var topBarShown by remember { mutableStateOf(true) }
+    var showKeyboard by remember { mutableStateOf(false) }
 
     val allTabs = remember { mutableListOf(addSubtractLabel, differenceLabel) }
     val pagerState = rememberPagerState { allTabs.size }
@@ -101,11 +102,14 @@ internal fun DateCalculatorScreen(
             ) { page ->
                 when (page) {
                     0 -> AddSubtractPage(
-                        toggleTopBar = { topBarShown = it }
+                        toggleTopBar = { topBarShown = it },
+                        showKeyboard = showKeyboard,
+                        toggleKeyboard = {showKeyboard = it }
                     )
                     1 -> {
                         focusManager.clearFocus(true)
                         topBarShown = true
+                        showKeyboard = false
 
                         DateDifferencePage()
                     }
