@@ -63,7 +63,11 @@ internal class ConverterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val converterInputKey = "CONVERTER_INPUT"
-    private val _input = MutableStateFlow(TextFieldValue(savedStateHandle[converterInputKey] ?: ""))
+    private val _input = MutableStateFlow(
+        with(savedStateHandle[converterInputKey] ?: "") {
+            TextFieldValue(this, TextRange(this.length))
+        }
+    )
     private val _calculation = MutableStateFlow<BigDecimal?>(null)
     private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
     private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)
