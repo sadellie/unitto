@@ -30,8 +30,8 @@ class UnittoLibraryFeaturePlugin : Plugin<Project> {
             dependencies {
                 "implementation"(libs.findLibrary("androidx.navigation").get())
 
-                "implementation"(project(mapOf("path" to ":core:base")))
-                "implementation"(project(mapOf("path" to ":core:ui")))
+                "implementation"(project(":core:base"))
+                "implementation"(project(":core:ui"))
             }
         }
     }

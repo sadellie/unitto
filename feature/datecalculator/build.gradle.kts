@@ -30,5 +30,5 @@ android {
 dependencies {
     testImplementation(libs.junit)
 
-    implementation(project(mapOf("path" to ":data:userprefs")))
+    implementation(project(":data:userprefs"))
 }

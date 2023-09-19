@@ -16,8 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("UnstableApiUsage")
-
 plugins {
     // Basic stuff
     id("com.android.application")
@@ -120,13 +118,13 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.appcompat)
 
-    implementation(project(mapOf("path" to ":feature:converter")))
-    implementation(project(mapOf("path" to ":feature:calculator")))
-    implementation(project(mapOf("path" to ":feature:settings")))
-    implementation(project(mapOf("path" to ":feature:datecalculator")))
-    implementation(project(mapOf("path" to ":feature:timezone")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":core:ui")))
-    implementation(project(mapOf("path" to ":core:base")))
+    implementation(project(":feature:converter"))
+    implementation(project(":feature:calculator"))
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:datecalculator"))
+    implementation(project(":feature:timezone"))
+    implementation(project(":data:model"))
+    implementation(project(":data:userprefs"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:base"))
 }

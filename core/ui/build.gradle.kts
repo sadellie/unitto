@@ -43,5 +43,5 @@ dependencies {
 
     implementation(libs.androidx.navigation)
 
-    implementation(project(mapOf("path" to ":core:base")))
+    implementation(project(":core:base"))
 }

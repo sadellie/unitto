@@ -30,10 +30,10 @@ android {
 dependencies {
     testImplementation(libs.junit)
 
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:calculator")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:evaluatto")))
+    implementation(project(":data:common"))
+    implementation(project(":data:userprefs"))
+    implementation(project(":data:database"))
+    implementation(project(":data:calculator"))
+    implementation(project(":data:model"))
+    implementation(project(":data:evaluatto"))
 }

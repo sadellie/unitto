@@ -47,8 +47,8 @@ dependencies {
     implementation(libs.org.burnoutcrew.composereorderable)
     implementation(libs.com.github.sadellie.themmo)
 
-    implementation(project(mapOf("path" to ":core:base")))
-    implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:model")))
+    implementation(project(":core:base"))
+    implementation(project(":data:database"))
+    implementation(project(":data:common"))
+    implementation(project(":data:model"))
 }
