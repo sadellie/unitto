@@ -20,12 +20,48 @@ package com.sadellie.unitto.core.ui.common.textfield
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.base.Token
 
 fun TextFieldValue.addTokens(tokens: String): TextFieldValue {
+    val ahead by lazy { text.tokenAhead(selection.start) }
+
+    when (tokens) {
+        Token.Operator.plus,
+        Token.Operator.multiply,
+        Token.Operator.divide,
+        Token.Operator.power -> {
+            if (ahead == Token.Operator.plus) return deleteAheadAndAdd(tokens)
+            if (ahead == Token.Operator.minus) return deleteAheadAndAdd(tokens)
+            if (ahead == Token.Operator.multiply) return deleteAheadAndAdd(tokens)
+            if (ahead == Token.Operator.divide) return deleteAheadAndAdd(tokens)
+            if (ahead == Token.Operator.sqrt) return deleteAheadAndAdd(tokens)
+            if (ahead == Token.Operator.power) return deleteAheadAndAdd(tokens)
+            if (ahead == "") return deleteTokens()
+        }
+        Token.Operator.minus -> {
+            if (ahead == Token.Operator.plus) return deleteAheadAndAdd(tokens)
+            if (ahead == Token.Operator.minus) return deleteAheadAndAdd(tokens)
+        }
+        Token.Digit.dot -> {
+            if (ahead == Token.Digit.dot) return deleteAheadAndAdd(tokens)
+        }
+    }
+
     return this.copy(
         text = text.replaceRange(selection.start, selection.end, tokens),
         selection = TextRange(selection.start + tokens.length)
     )
+}
+
+/**
+ * <b>!!! Recursive !!!</b> (one wrong step and you are dead 💀)
+ */
+private fun TextFieldValue.deleteAheadAndAdd(tokens: String): TextFieldValue {
+    var newValue = this
+    if (!selection.collapsed) newValue = this.deleteTokens()
+    return newValue
+        .deleteTokens()
+        .addTokens(tokens)
 }
 
 fun TextFieldValue.deleteTokens(): TextFieldValue {
