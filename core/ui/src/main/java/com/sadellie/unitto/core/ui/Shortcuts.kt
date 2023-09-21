@@ -16,11 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto
+package com.sadellie.unitto.core.ui
 
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -41,7 +44,56 @@ suspend fun Context.pushDynamicShortcut(
 
     val context = this@pushDynamicShortcut
 
-    val shortcut = ShortcutInfoCompat.Builder(context, route)
+    val shortcut = shortcutInfoCompat(
+        context = context,
+        route = route,
+        shortLabel = shortLabel,
+        longLabel = longLabel,
+        drawable = drawable
+    )
+
+    kotlin.runCatching {
+        ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
+    }
+}
+
+fun Context.addShortcut(
+    route: String,
+    @StringRes shortLabel: Int,
+    @StringRes longLabel: Int,
+    @DrawableRes drawable: Int,
+) {
+    val context = this@addShortcut
+
+    val shortcut = shortcutInfoCompat(
+        context = context,
+        route = route,
+        shortLabel = shortLabel,
+        longLabel = longLabel,
+        drawable = drawable
+    )
+
+    val shortCutIntent = ShortcutManagerCompat.createShortcutResultIntent(context, shortcut)
+
+    try {
+        ShortcutManagerCompat.requestPinShortcut(
+            context,
+            shortcut,
+            PendingIntent.getBroadcast(context, 0, shortCutIntent, FLAG_IMMUTABLE).intentSender
+        )
+    } catch (e: Exception) {
+        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+    }
+}
+
+private fun Context.shortcutInfoCompat(
+    context: Context,
+    route: String,
+    shortLabel: Int,
+    longLabel: Int,
+    drawable: Int,
+): ShortcutInfoCompat {
+    return ShortcutInfoCompat.Builder(context, route)
         .setShortLabel(getString(shortLabel))
         .setLongLabel(getString(longLabel))
         .setIcon(IconCompat.createWithResource(context, drawable))
@@ -54,6 +106,4 @@ suspend fun Context.pushDynamicShortcut(
             )
         )
         .build()
-
-    ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
 }

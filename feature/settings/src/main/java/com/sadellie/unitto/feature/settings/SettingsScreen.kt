@@ -46,7 +46,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.TOP_LEVEL_GRAPH_ROUTES
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
@@ -58,43 +57,40 @@ import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.formattingRoute
+import com.sadellie.unitto.feature.settings.navigation.startingScreenRoute
 import com.sadellie.unitto.feature.settings.navigation.themesRoute
 
 @Composable
 internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
-    menuButtonClick: () -> Unit,
+    navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
 ) {
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
 
     SettingsScreen(
         userPrefs = userPrefs.value,
-        menuButtonClick = menuButtonClick,
+        navigateUp = navigateUp,
         navControllerAction = navControllerAction,
         updateMiddleZero = viewModel::updateMiddleZero,
         updateVibrations = viewModel::updateVibrations,
-        updateStartingScreen = viewModel::updateStartingScreen
     )
 }
 
 @Composable
 private fun SettingsScreen(
     userPrefs: GeneralPreferences,
-    menuButtonClick: () -> Unit,
+    navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
     updateMiddleZero: (Boolean) -> Unit,
     updateVibrations: (Boolean) -> Unit,
-    updateStartingScreen: (String) -> Unit
 ) {
     val mContext = LocalContext.current
-    var dialogState: DialogState by rememberSaveable {
-        mutableStateOf(DialogState.NONE)
-    }
+    var dialogState: DialogState by rememberSaveable { mutableStateOf(DialogState.NONE) }
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_screen),
-        navigationIcon = { NavigateUpButton(menuButtonClick) }
+        navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
 
@@ -116,7 +112,7 @@ private fun SettingsScreen(
                     iconDescription = stringResource(R.string.starting_screen_setting),
                     headlineText = stringResource(R.string.starting_screen_setting),
                     supportingText = stringResource(R.string.starting_screen_setting_support),
-                    modifier = Modifier.clickable { dialogState = DialogState.START_SCREEN }
+                    modifier = Modifier.clickable { navControllerAction(startingScreenRoute) }
                 )
             }
 
@@ -225,16 +221,6 @@ private fun SettingsScreen(
 
     // Showing dialog
     when (dialogState) {
-        DialogState.START_SCREEN -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.starting_screen_setting),
-                selectedItemIndex = userPrefs.startingScreen,
-                listItems = TOP_LEVEL_GRAPH_ROUTES,
-                selectAction = updateStartingScreen,
-                dismissAction = { resetDialog() }
-            )
-        }
-
         DialogState.LANGUAGE -> {
             AlertDialogWithList(
                 title = stringResource(R.string.language_setting),
@@ -266,7 +252,7 @@ private fun SettingsScreen(
  * All possible states for alert dialog that opens when user clicks on settings.
  */
 private enum class DialogState {
-    NONE, START_SCREEN, LANGUAGE
+    NONE, LANGUAGE
 }
 
 @Preview
@@ -274,10 +260,9 @@ private enum class DialogState {
 private fun PreviewSettingsScreen() {
     SettingsScreen(
         userPrefs = GeneralPreferences(),
-        menuButtonClick = { /*TODO*/ },
+        navigateUp = {},
         navControllerAction = {},
         updateMiddleZero = {},
         updateVibrations = {},
-        updateStartingScreen = {}
     )
 }

@@ -46,6 +46,7 @@ import com.sadellie.unitto.core.ui.common.isOpen
 import com.sadellie.unitto.core.ui.common.open
 import com.sadellie.unitto.core.ui.common.rememberUnittoDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
+import com.sadellie.unitto.core.ui.pushDynamicShortcut
 import com.sadellie.unitto.core.ui.theme.AppTypographySystem
 import com.sadellie.unitto.core.ui.theme.AppTypographyUnitto
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors

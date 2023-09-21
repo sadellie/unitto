@@ -85,7 +85,12 @@ fun UnittoListItem(
                 )
             }
         }
-        trailingContent?.invoke()
+        trailingContent?.let {
+            ProvideColor(
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                content = it
+            )
+        }
     }
 }
 

@@ -80,7 +80,6 @@ data class AppPreferences(
 )
 
 data class GeneralPreferences(
-    val startingScreen: String = TopLevelDestinations.Calculator.graph,
     val enableVibrations: Boolean = true,
     val middleZero: Boolean = false,
 )
@@ -133,6 +132,10 @@ data class AboutPreferences(
     val enableToolsExperiment: Boolean = false,
 )
 
+data class StartingScreenPreferences(
+    val startingScreen: String = TopLevelDestinations.Calculator.graph,
+)
+
 class UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
     private val data = dataStore.data
         .catch { if (it is IOException) emit(emptyPreferences()) else throw it }
@@ -160,8 +163,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     val generalPrefs: Flow<GeneralPreferences> = data
         .map { preferences ->
             GeneralPreferences(
-                startingScreen = preferences[PrefsKeys.STARTING_SCREEN]
-                    ?: TopLevelDestinations.Calculator.graph,
                 enableVibrations = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true,
                 middleZero = preferences[PrefsKeys.MIDDLE_ZERO] ?: false,
             )
@@ -242,6 +243,14 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         .map { preferences ->
             AboutPreferences(
                 enableToolsExperiment = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
+            )
+        }
+
+    val startingScreenPrefs: Flow<StartingScreenPreferences> = data
+        .map { preferences ->
+            StartingScreenPreferences(
+                startingScreen = preferences[PrefsKeys.STARTING_SCREEN]
+                    ?: TopLevelDestinations.Calculator.graph,
             )
         }
 

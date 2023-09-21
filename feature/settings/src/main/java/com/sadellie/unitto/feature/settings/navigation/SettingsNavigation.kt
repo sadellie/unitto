@@ -30,6 +30,7 @@ import com.sadellie.unitto.feature.settings.about.AboutScreen
 import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsScreen
 import com.sadellie.unitto.feature.settings.converter.ConverterSettingsScreen
 import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
+import com.sadellie.unitto.feature.settings.startingscreen.StartingScreenRoute
 import com.sadellie.unitto.feature.settings.themes.ThemesRoute
 import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
@@ -38,6 +39,7 @@ import io.github.sadellie.themmo.ThemmoController
 private val graph = TopLevelDestinations.Settings.graph
 private val start = TopLevelDestinations.Settings.start
 internal const val themesRoute = "themes_route"
+internal const val startingScreenRoute = "starting_screen_route"
 internal const val unitsGroupRoute = "units_group_route"
 internal const val thirdPartyRoute = "third_party_route"
 internal const val aboutRoute = "about_route"
@@ -66,7 +68,7 @@ fun NavGraphBuilder.settingGraph(
     ) {
         unittoComposable(start) {
             SettingsRoute(
-                menuButtonClick = navController::navigateUp,
+                navigateUp = navController::navigateUp,
                 navControllerAction = navController::navigate
             )
         }
@@ -75,6 +77,12 @@ fun NavGraphBuilder.settingGraph(
             ThemesRoute(
                 navigateUpAction = navController::navigateUp,
                 themmoController = themmoController,
+            )
+        }
+
+        unittoComposable(startingScreenRoute) {
+            StartingScreenRoute(
+                navigateUp = navController::navigateUp,
             )
         }
 
