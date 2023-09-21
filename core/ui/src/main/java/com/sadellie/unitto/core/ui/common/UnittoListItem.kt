@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,8 +59,8 @@ fun UnittoListItem(
     Row(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
-            .heightIn(min = 56.dp)
-            .padding(top = 14.dp, bottom = 14.dp, start = 16.dp, end = 24.dp),
+            .padding(start = 16.dp, end = 24.dp)
+            .heightIn(min = if (supportingContent == null) 56.dp else 72.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -70,7 +71,7 @@ fun UnittoListItem(
             )
         }
 
-        Column(Modifier.weight(1f)) {
+        Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
             ProvideTextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 textStyle = MaterialTheme.typography.bodyLarge,
@@ -161,42 +162,44 @@ private fun ProvideColor(
 @Preview
 @Composable
 fun PreviewUnittoListItem1() {
-    UnittoListItem(
-        modifier = Modifier,
-        headlineContent = { Text("Headline") },
-        supportingContent = { Text("Support") },
-        leadingContent = {
-            Icon(
-                imageVector = Icons.Default.Home,
-                contentDescription = null
-            )
-        },
-    )
-}
+    Column {
+        UnittoListItem(
+            modifier = Modifier,
+            headlineContent = { Text("Headline") },
+            supportingContent = { Text("Support") },
+            leadingContent = {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null
+                )
+            },
+        )
 
-@Preview
-@Composable
-private fun PreviewUnittoListItem2() {
-    UnittoListItem(
-        icon = Icons.Default.Home,
-        headlineText = "Text text",
-        supportingText = "Support text support text support text support text",
-        modifier = Modifier,
-        trailing = {},
-        iconDescription = ""
-    )
-}
+        UnittoListItem(
+            modifier = Modifier,
+            headlineContent = { Text("Headline") },
+            leadingContent = {
+                RadioButton(selected = false, onClick = {})
+            },
+        )
 
-@Preview
-@Composable
-private fun PreviewUnittoListItem3() {
-    UnittoListItem(
-        icon = Icons.Default.Home,
-        headlineText = "Text text",
-        supportingText = "Support text support text support text support text",
-        modifier = Modifier,
-        onSwitchChange = {},
-        iconDescription = "",
-        switchState = true,
-    )
+        UnittoListItem(
+            icon = Icons.Default.Home,
+            headlineText = "Text text",
+            supportingText = "Support text support text support text support text",
+            modifier = Modifier,
+            trailing = {},
+            iconDescription = ""
+        )
+
+        UnittoListItem(
+            icon = Icons.Default.Home,
+            headlineText = "Text text",
+            supportingText = "Support text support text support text support text",
+            modifier = Modifier,
+            onSwitchChange = {},
+            iconDescription = "",
+            switchState = true,
+        )
+    }
 }
