@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,15 +34,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.DefaultUnit
+import com.sadellie.unitto.data.model.unit.NormalUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
+import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.feature.converter.components.BasicUnitListItem
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.SearchPlaceholder
@@ -54,22 +59,26 @@ internal fun RightSideRoute(
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
-    val uiState = viewModel.rightSideUIState.collectAsStateWithLifecycle()
-
-    RightSideScreen(
-        uiState = uiState.value,
-        onQueryChange = viewModel::queryChangeRight,
-        toggleFavoritesOnly = viewModel::favoritesOnlyChange,
-        updateUnitTo = viewModel::updateUnitTo,
-        favoriteUnit = viewModel::favoriteUnit,
-        navigateUp = navigateUp,
-        navigateToUnitGroups = navigateToUnitGroups,
-    )
+    when (
+        val uiState = viewModel.rightSideUIState.collectAsStateWithLifecycle().value
+    ) {
+        is RightSideUIState.Loading -> Box(Modifier.fillMaxSize())
+        is RightSideUIState.Ready ->
+            RightSideScreen(
+                uiState = uiState,
+                onQueryChange = viewModel::queryChangeRight,
+                toggleFavoritesOnly = viewModel::favoritesOnlyChange,
+                updateUnitTo = viewModel::updateUnitTo,
+                favoriteUnit = viewModel::favoriteUnit,
+                navigateUp = navigateUp,
+                navigateToUnitGroups = navigateToUnitGroups,
+            )
+    }
 }
 
 @Composable
 private fun RightSideScreen(
-    uiState: RightSideUIState,
+    uiState: RightSideUIState.Ready,
     onQueryChange: (TextFieldValue) -> Unit,
     toggleFavoritesOnly: (Boolean) -> Unit,
     updateUnitTo: (AbstractUnit) -> Unit,
@@ -98,13 +107,13 @@ private fun RightSideScreen(
         }
     ) { paddingValues ->
         Crossfade(
-            targetState = uiState.units?.isNotEmpty(),
+            targetState = uiState.units.isNotEmpty(),
             modifier = Modifier.padding(paddingValues),
             label = "Units list"
         ) { hasUnits ->
             when (hasUnits) {
                 true -> LazyColumn(Modifier.fillMaxSize()) {
-                    uiState.units?.forEach { (unitGroup, units) ->
+                    uiState.units.forEach { (unitGroup, units) ->
                         item(unitGroup.name) {
                             UnitGroupHeader(Modifier.animateItemPlacement(), unitGroup)
                         }
@@ -124,7 +133,7 @@ private fun RightSideScreen(
                                     readyCurrencies = uiState.currencyRateUpdateState is CurrencyRateUpdateState.Ready,
                                 ),
                                 isFavorite = it.isFavorite,
-                                isSelected = it.id == uiState.unitTo?.id,
+                                isSelected = it.id == uiState.unitTo.id,
                                 onClick = {
                                     onQueryChange(TextFieldValue())
                                     updateUnitTo(it)
@@ -137,7 +146,6 @@ private fun RightSideScreen(
                 }
 
                 false -> SearchPlaceholder(navigateToSettingsAction = navigateToUnitGroups)
-                null -> {}
             }
         }
     }
@@ -187,8 +195,32 @@ private fun formatUnitToSupportLabel(
 @Preview
 @Composable
 private fun RightSideScreenPreview() {
+    val units: Map<UnitGroup, List<AbstractUnit>> = mapOf(
+        UnitGroup.LENGTH to listOf(
+            NormalUnit(MyUnitIDS.meter, BigDecimal.valueOf(1.0E+18), UnitGroup.LENGTH, R.string.meter, R.string.meter_short),
+            NormalUnit(MyUnitIDS.kilometer, BigDecimal.valueOf(1.0E+21), UnitGroup.LENGTH, R.string.kilometer, R.string.kilometer_short),
+            NormalUnit(MyUnitIDS.nautical_mile, BigDecimal.valueOf(1.852E+21), UnitGroup.LENGTH, R.string.nautical_mile, R.string.nautical_mile_short),
+            NormalUnit(MyUnitIDS.inch, BigDecimal.valueOf(25_400_000_000_000_000), UnitGroup.LENGTH, R.string.inch, R.string.inch_short),
+            NormalUnit(MyUnitIDS.foot, BigDecimal.valueOf(304_800_000_000_002_200), UnitGroup.LENGTH, R.string.foot, R.string.foot_short),
+            NormalUnit(MyUnitIDS.yard, BigDecimal.valueOf(914_400_000_000_006_400), UnitGroup.LENGTH, R.string.yard, R.string.yard_short),
+            NormalUnit(MyUnitIDS.mile, BigDecimal.valueOf(1_609_344_000_000_010_500_000.0), UnitGroup.LENGTH, R.string.mile, R.string.mile_short),
+        )
+    )
+
     RightSideScreen(
-        uiState = RightSideUIState(),
+        uiState = RightSideUIState.Ready(
+            unitFrom = units.values.first().first(),
+            units = units,
+            query = TextFieldValue(),
+            favorites = false,
+            sorting = UnitsListSorting.USAGE,
+            unitTo = units.values.first()[1],
+            input = "100",
+            scale = 3,
+            outputFormat = OutputFormat.PLAIN,
+            formatterSymbols = FormatterSymbols.Spaces,
+            currencyRateUpdateState = CurrencyRateUpdateState.Nothing
+        ),
         onQueryChange = {},
         toggleFavoritesOnly = {},
         updateUnitTo = {},

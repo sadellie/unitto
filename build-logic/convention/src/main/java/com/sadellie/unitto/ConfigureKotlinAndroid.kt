@@ -73,7 +73,6 @@ internal fun Project.configureKotlinAndroid(
                 "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
                 "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                 "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
-                "-opt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             )
             jvmTarget = JavaVersion.VERSION_11.toString()

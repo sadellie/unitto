@@ -90,9 +90,6 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
-        freeCompilerArgs = freeCompilerArgs + listOf(
-            "-opt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
-        )
     }
 
     composeOptions {

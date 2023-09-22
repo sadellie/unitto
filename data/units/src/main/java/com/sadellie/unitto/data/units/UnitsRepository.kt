@@ -245,7 +245,7 @@ class UnitsRepository @Inject constructor(
         favoritesOnly: Boolean,
         hideBrokenUnits: Boolean,
         sorting: UnitsListSorting,
-        shownUnitGroups: List<UnitGroup>,
+        shownUnitGroups: List<UnitGroup> = emptyList(),
     ): Map<UnitGroup, List<AbstractUnit>> {
         // Leave only shown unit groups
         var units: Sequence<AbstractUnit> = if (unitGroup == null) {

@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.base
 
+@Suppress("ObjectPropertyName")
 object Token {
     object Digit {
         const val _1 = "1"

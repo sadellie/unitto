@@ -23,13 +23,17 @@ import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 
-internal data class LeftSideUIState(
-    val unitFrom: AbstractUnit? = null,
-    val query: TextFieldValue = TextFieldValue(),
-    val units: Map<UnitGroup, List<AbstractUnit>>? = null,
-    val favorites: Boolean = false,
-    val shownUnitGroups: List<UnitGroup> = emptyList(),
-    val unitGroup: UnitGroup? = unitFrom?.group,
-    val sorting: UnitsListSorting = UnitsListSorting.USAGE,
-    val verticalList: Boolean = false,
-)
+internal sealed class LeftSideUIState {
+    data object Loading : LeftSideUIState()
+
+    data class Ready(
+        val unitFrom: AbstractUnit,
+        val query: TextFieldValue,
+        val units: Map<UnitGroup, List<AbstractUnit>> = emptyMap(),
+        val favorites: Boolean,
+        val shownUnitGroups: List<UnitGroup>,
+        val unitGroup: UnitGroup?,
+        val sorting: UnitsListSorting,
+        val verticalList: Boolean,
+    ) : LeftSideUIState()
+}

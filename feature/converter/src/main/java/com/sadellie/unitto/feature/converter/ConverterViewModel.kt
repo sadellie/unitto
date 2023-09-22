@@ -45,7 +45,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.mapLatest
@@ -73,8 +72,13 @@ internal class ConverterViewModel @Inject constructor(
     private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)
     private val _unitTo = MutableStateFlow<AbstractUnit?>(null)
 
-    private val _leftSideUIState = MutableStateFlow(LeftSideUIState())
-    private val _rightSideUIState = MutableStateFlow(RightSideUIState())
+    private val _leftQuery = MutableStateFlow(TextFieldValue())
+    private val _leftUnits = MutableStateFlow<Map<UnitGroup, List<AbstractUnit>>>(emptyMap())
+    private val _leftUnitGroup = MutableStateFlow<UnitGroup?>(null)
+
+    private val _rightQuery = MutableStateFlow(TextFieldValue())
+    private val _rightUnits = MutableStateFlow<Map<UnitGroup, List<AbstractUnit>>>(emptyMap())
+
     private val _currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
     private var _loadCurrenciesJob: Job? = null
 
@@ -153,19 +157,28 @@ internal class ConverterViewModel @Inject constructor(
 
     val leftSideUIState = combine(
         _unitFrom,
-        _leftSideUIState,
+        _leftQuery,
+        _leftUnits,
+        _leftUnitGroup,
         userPrefsRepository.converterPrefs,
         unitsRepo.allUnits
-    ) { unitFrom, ui, prefs, _ ->
-        return@combine ui.copy(
+    ) { unitFrom, query, units, unitGroup, prefs, _ ->
+        unitFrom ?: return@combine LeftSideUIState.Loading
+
+        return@combine LeftSideUIState.Ready(
             unitFrom = unitFrom,
             sorting = prefs.unitConverterSorting,
             shownUnitGroups = prefs.shownUnitGroups,
             favorites = prefs.unitConverterFavoritesOnly,
             verticalList = prefs.enableToolsExperiment,
+            query = query,
+            units = units,
+            unitGroup = unitGroup
         )
     }
         .mapLatest {
+            if (it !is LeftSideUIState.Ready) return@mapLatest it
+
             filterUnitsLeft(
                 query = it.query,
                 unitGroup = it.unitGroup,
@@ -175,19 +188,23 @@ internal class ConverterViewModel @Inject constructor(
             )
             it
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, LeftSideUIState())
+        .stateIn(viewModelScope, SharingStarted.Lazily, LeftSideUIState.Loading)
 
     val rightSideUIState = combine(
         _unitFrom,
         _unitTo,
         _input,
         _calculation,
-        _rightSideUIState,
+        _rightQuery,
+        _rightUnits,
         userPrefsRepository.converterPrefs,
         _currenciesState,
         unitsRepo.allUnits,
-    ) { unitFrom, unitTo, input, calculation, ui, prefs, currenciesState, _ ->
-        return@combine ui.copy(
+    ) { unitFrom, unitTo, input, calculation, query, units, prefs, currenciesState, _ ->
+        unitFrom ?: return@combine RightSideUIState.Loading
+        unitTo ?: return@combine RightSideUIState.Loading
+
+        return@combine RightSideUIState.Ready(
             unitFrom = unitFrom,
             unitTo = unitTo,
             sorting = prefs.unitConverterSorting,
@@ -196,20 +213,23 @@ internal class ConverterViewModel @Inject constructor(
             scale = prefs.precision,
             outputFormat = prefs.outputFormat,
             formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
-            currencyRateUpdateState = currenciesState
+            currencyRateUpdateState = currenciesState,
+            query = query,
+            units = units,
         )
     }
         .mapLatest {
+            if (it !is RightSideUIState.Ready) return@mapLatest it
+
             filterUnitsRight(
                 query = it.query,
-                unitGroup = it.unitTo?.group,
+                unitGroup = it.unitTo.group,
                 favoritesOnly = it.favorites,
                 sorting = it.sorting,
-                shownUnitGroups = emptyList(),
             )
             it
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, RightSideUIState())
+        .stateIn(viewModelScope, SharingStarted.Lazily, RightSideUIState.Loading)
 
     fun swapUnits() {
         _unitFrom
@@ -303,21 +323,15 @@ internal class ConverterViewModel @Inject constructor(
         }
     }
 
-    fun queryChangeLeft(query: TextFieldValue) = _leftSideUIState.update {
-        it.copy(query = query)
-    }
+    fun queryChangeLeft(query: TextFieldValue) = _leftQuery.update { query }
 
-    fun queryChangeRight(query: TextFieldValue) = _rightSideUIState.update {
-        it.copy(query = query)
-    }
+    fun queryChangeRight(query: TextFieldValue) = _rightQuery.update { query }
 
     fun favoritesOnlyChange(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateUnitConverterFavoritesOnly(enabled)
     }
 
-    fun updateUnitGroupLeft(unitGroup: UnitGroup?) = _leftSideUIState.update {
-        it.copy(unitGroup = unitGroup)
-    }
+    fun updateUnitGroupLeft(unitGroup: UnitGroup?) = _leftUnitGroup.update { unitGroup }
 
     fun favoriteUnit(unit: AbstractUnit) = viewModelScope.launch {
         unitsRepo.favorite(unit)
@@ -330,16 +344,14 @@ internal class ConverterViewModel @Inject constructor(
         sorting: UnitsListSorting,
         shownUnitGroups: List<UnitGroup>,
     ) = viewModelScope.launch(Dispatchers.Default) {
-        _leftSideUIState.update {
-            it.copy(
-                units = unitsRepo.filterUnits(
-                    query = query.text,
-                    unitGroup = unitGroup,
-                    favoritesOnly = favoritesOnly,
-                    hideBrokenUnits = false,
-                    sorting = sorting,
-                    shownUnitGroups = shownUnitGroups
-                )
+        _leftUnits.update {
+            unitsRepo.filterUnits(
+                query = query.text,
+                unitGroup = unitGroup,
+                favoritesOnly = favoritesOnly,
+                hideBrokenUnits = false,
+                sorting = sorting,
+                shownUnitGroups = shownUnitGroups
             )
         }
     }
@@ -349,18 +361,14 @@ internal class ConverterViewModel @Inject constructor(
         unitGroup: UnitGroup?,
         favoritesOnly: Boolean,
         sorting: UnitsListSorting,
-        shownUnitGroups: List<UnitGroup>,
     ) = viewModelScope.launch(Dispatchers.Default) {
-        _rightSideUIState.update {
-            it.copy(
-                units = unitsRepo.filterUnits(
-                    query = query.text,
-                    unitGroup = unitGroup,
-                    favoritesOnly = favoritesOnly,
-                    hideBrokenUnits = true,
-                    sorting = sorting,
-                    shownUnitGroups = shownUnitGroups
-                )
+        _rightUnits.update {
+            unitsRepo.filterUnits(
+                query = query.text,
+                unitGroup = unitGroup,
+                favoritesOnly = favoritesOnly,
+                hideBrokenUnits = true,
+                sorting = sorting,
             )
         }
     }

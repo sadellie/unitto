@@ -19,23 +19,25 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 
-internal data class RightSideUIState(
-    val unitFrom: AbstractUnit? = null,
-    val unitTo: AbstractUnit? = null,
-    val query: TextFieldValue = TextFieldValue(),
-    val units: Map<UnitGroup, List<AbstractUnit>>? = null,
-    val favorites: Boolean = false,
-    val unitGroup: UnitGroup? = unitFrom?.group,
-    val sorting: UnitsListSorting = UnitsListSorting.USAGE,
-    val input: String = "",
-    val scale: Int = 3,
-    val outputFormat: Int = OutputFormat.PLAIN,
-    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
-    val currencyRateUpdateState: CurrencyRateUpdateState = CurrencyRateUpdateState.Nothing
-)
+internal sealed class RightSideUIState {
+    data object Loading : RightSideUIState()
+
+    data class Ready(
+        val unitFrom: AbstractUnit,
+        val unitTo: AbstractUnit,
+        val query: TextFieldValue,
+        val units: Map<UnitGroup, List<AbstractUnit>>,
+        val favorites: Boolean,
+        val sorting: UnitsListSorting,
+        val input: String,
+        val scale: Int,
+        val outputFormat: Int,
+        val formatterSymbols: FormatterSymbols,
+        val currencyRateUpdateState: CurrencyRateUpdateState,
+    ) : RightSideUIState()
+}
