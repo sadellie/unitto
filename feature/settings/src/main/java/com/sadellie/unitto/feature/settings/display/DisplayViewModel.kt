@@ -16,28 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.themes
+package com.sadellie.unitto.feature.settings.display
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
+import com.sadellie.unitto.data.userprefs.DisplayPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ThemesViewModel @Inject constructor(
+class DisplayViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository
 ) : ViewModel() {
 
-    val systemFont = userPrefsRepository.themePrefs
-        .map { it.systemFont }
-        .stateIn(viewModelScope, false)
+    val prefs = userPrefsRepository.displayPrefs
+        .stateIn(viewModelScope, DisplayPreferences())
 
     /**
      * @see UserPreferencesRepository.updateThemingMode
@@ -91,5 +90,9 @@ class ThemesViewModel @Inject constructor(
         viewModelScope.launch {
             userPrefsRepository.updateSystemFont(enabled)
         }
+    }
+
+    fun updateMiddleZero(enabled: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateMiddleZero(enabled)
     }
 }

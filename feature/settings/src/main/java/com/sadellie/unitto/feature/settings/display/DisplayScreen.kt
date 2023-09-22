@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.themes
+package com.sadellie.unitto.feature.settings.display
 
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
@@ -24,6 +24,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -33,7 +34,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.FontDownload
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.HdrAuto
@@ -79,15 +82,16 @@ private val colorSchemes: List<Color> by lazy {
 }
 
 @Composable
-internal fun ThemesRoute(
-    viewModel: ThemesViewModel = hiltViewModel(),
-    navigateUpAction: () -> Unit = {},
+internal fun DisplayRoute(
+    viewModel: DisplayViewModel = hiltViewModel(),
+    navigateUp: () -> Unit = {},
     themmoController: ThemmoController,
+    navigateToLanguages: () -> Unit
 ) {
-    val systemFont = viewModel.systemFont.collectAsStateWithLifecycle()
+    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
 
-    ThemesScreen(
-        navigateUpAction = navigateUpAction,
+    DisplayScreen(
+        navigateUp = navigateUp,
         currentThemingMode = themmoController.currentThemingMode,
         onThemeChange = {
             themmoController.setThemingMode(it)
@@ -118,14 +122,17 @@ internal fun ThemesRoute(
             themmoController.setMonetMode(it)
             viewModel.updateMonetMode(it)
         },
-        systemFont = systemFont.value,
-        onSystemFontChange = viewModel::updateSystemFont
+        systemFont = prefs.value.systemFont,
+        updateSystemFont = viewModel::updateSystemFont,
+        middleZero = prefs.value.middleZero,
+        updateMiddleZero = viewModel::updateMiddleZero,
+        navigateToLanguages = navigateToLanguages
     )
 }
 
 @Composable
-private fun ThemesScreen(
-    navigateUpAction: () -> Unit,
+private fun DisplayScreen(
+    navigateUp: () -> Unit,
     currentThemingMode: ThemingMode,
     onThemeChange: (ThemingMode) -> Unit,
     isDynamicThemeEnabled: Boolean,
@@ -137,13 +144,18 @@ private fun ThemesScreen(
     monetMode: MonetMode,
     onMonetModeChange: (MonetMode) -> Unit,
     systemFont: Boolean,
-    onSystemFontChange: (Boolean) -> Unit,
+    updateSystemFont: (Boolean) -> Unit,
+    middleZero: Boolean,
+    updateMiddleZero: (Boolean) -> Unit,
+    navigateToLanguages: () -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.theme_setting),
-        navigationIcon = { NavigateUpButton(navigateUpAction) }
+        title = stringResource(R.string.display_settings),
+        navigationIcon = { NavigateUpButton(navigateUp) }
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
+
+            item { Header(stringResource(R.string.color_scheme)) }
 
             item {
                 UnittoListItem(
@@ -204,20 +216,7 @@ private fun ThemesScreen(
                 }
             }
 
-            item {
-                UnittoListItem(
-                    icon = Icons.Default.FontDownload,
-                    iconDescription = stringResource(R.string.system_font_setting),
-                    headlineText = stringResource(R.string.system_font_setting),
-                    supportingText = stringResource(R.string.system_font_setting_support),
-                    switchState = systemFont,
-                    onSwitchChange = onSystemFontChange
-                )
-            }
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-                item { Header(stringResource(R.string.color_scheme)) }
-
                 item {
                     UnittoListItem(
                         icon = Icons.Default.Colorize,
@@ -274,6 +273,42 @@ private fun ThemesScreen(
                     }
                 }
             }
+
+            item { Header(stringResource(R.string.additional_settings_group)) }
+
+            item {
+                UnittoListItem(
+                    icon = Icons.Default.FontDownload,
+                    iconDescription = stringResource(R.string.system_font_setting),
+                    headlineText = stringResource(R.string.system_font_setting),
+                    supportingText = stringResource(R.string.system_font_setting_support),
+                    switchState = systemFont,
+                    onSwitchChange = updateSystemFont
+                )
+            }
+
+            // MIDDLE ZERO
+            item {
+                UnittoListItem(
+                    icon = Icons.Default.ExposureZero,
+                    iconDescription = stringResource(R.string.middle_zero_option),
+                    headlineText = stringResource(R.string.middle_zero_option),
+                    supportingText = stringResource(R.string.middle_zero_option_support),
+                    switchState = middleZero,
+                    onSwitchChange = updateMiddleZero
+                )
+            }
+
+            // LANGUAGE
+            item {
+                UnittoListItem(
+                    icon = Icons.Default.Language,
+                    iconDescription = stringResource(R.string.language_setting),
+                    headlineText = stringResource(R.string.language_setting),
+                    supportingText = stringResource(R.string.language_setting_support),
+                    modifier = Modifier.clickable { navigateToLanguages() }
+                )
+            }
         }
     }
 }
@@ -282,8 +317,8 @@ private fun ThemesScreen(
 @Composable
 private fun Preview() {
     Themmo { themmoController ->
-        ThemesScreen(
-            navigateUpAction = {},
+        DisplayScreen(
+            navigateUp = {},
             currentThemingMode = themmoController.currentThemingMode,
             onThemeChange = themmoController::setThemingMode,
             isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
@@ -295,7 +330,10 @@ private fun Preview() {
             monetMode = themmoController.currentMonetMode,
             onMonetModeChange = themmoController::setMonetMode,
             systemFont = false,
-            onSystemFontChange = {}
+            updateSystemFont = {},
+            middleZero = false,
+            updateMiddleZero = {},
+            navigateToLanguages = {}
         )
     }
 }

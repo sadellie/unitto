@@ -30,15 +30,17 @@ import com.sadellie.unitto.feature.settings.about.AboutScreen
 import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsScreen
 import com.sadellie.unitto.feature.settings.converter.ConverterSettingsScreen
 import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
+import com.sadellie.unitto.feature.settings.language.LanguageRoute
 import com.sadellie.unitto.feature.settings.startingscreen.StartingScreenRoute
-import com.sadellie.unitto.feature.settings.themes.ThemesRoute
+import com.sadellie.unitto.feature.settings.display.DisplayRoute
 import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
 private val graph = TopLevelDestinations.Settings.graph
 private val start = TopLevelDestinations.Settings.start
-internal const val themesRoute = "themes_route"
+internal const val displayRoute = "display_route"
+internal const val languageRoute = "language_route"
 internal const val startingScreenRoute = "starting_screen_route"
 internal const val unitsGroupRoute = "units_group_route"
 internal const val thirdPartyRoute = "third_party_route"
@@ -73,10 +75,17 @@ fun NavGraphBuilder.settingGraph(
             )
         }
 
-        unittoComposable(themesRoute) {
-            ThemesRoute(
-                navigateUpAction = navController::navigateUp,
+        unittoComposable(displayRoute) {
+            DisplayRoute(
+                navigateUp = navController::navigateUp,
                 themmoController = themmoController,
+                navigateToLanguages = { navController.navigate(languageRoute) }
+            )
+        }
+
+        unittoComposable(languageRoute) {
+            LanguageRoute(
+                navigateUp = navController::navigateUp,
             )
         }
 

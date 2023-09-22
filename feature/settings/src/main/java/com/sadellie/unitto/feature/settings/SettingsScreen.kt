@@ -18,30 +18,22 @@
 
 package com.sadellie.unitto.feature.settings
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Calculate
-import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.os.LocaleListCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
@@ -52,13 +44,12 @@ import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.userprefs.GeneralPreferences
-import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
+import com.sadellie.unitto.feature.settings.navigation.displayRoute
 import com.sadellie.unitto.feature.settings.navigation.formattingRoute
 import com.sadellie.unitto.feature.settings.navigation.startingScreenRoute
-import com.sadellie.unitto.feature.settings.navigation.themesRoute
 
 @Composable
 internal fun SettingsRoute(
@@ -72,7 +63,6 @@ internal fun SettingsRoute(
         userPrefs = userPrefs.value,
         navigateUp = navigateUp,
         navControllerAction = navControllerAction,
-        updateMiddleZero = viewModel::updateMiddleZero,
         updateVibrations = viewModel::updateVibrations,
     )
 }
@@ -82,11 +72,9 @@ private fun SettingsScreen(
     userPrefs: GeneralPreferences,
     navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
-    updateMiddleZero: (Boolean) -> Unit,
     updateVibrations: (Boolean) -> Unit,
 ) {
     val mContext = LocalContext.current
-    var dialogState: DialogState by rememberSaveable { mutableStateOf(DialogState.NONE) }
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_screen),
@@ -98,10 +86,10 @@ private fun SettingsScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Palette,
-                    iconDescription = stringResource(R.string.theme_setting),
-                    headlineText = stringResource(R.string.theme_setting),
+                    iconDescription = stringResource(R.string.display_settings),
+                    headlineText = stringResource(R.string.display_settings),
                     supportingText = stringResource(R.string.theme_setting_support),
-                    modifier = Modifier.clickable { navControllerAction(themesRoute) }
+                    modifier = Modifier.clickable { navControllerAction(displayRoute) }
                 )
             }
 
@@ -150,19 +138,6 @@ private fun SettingsScreen(
             // ADDITIONAL GROUP
             item { Header(stringResource(R.string.additional_settings_group)) }
 
-            // MIDDLE ZERO
-            item {
-                UnittoListItem(
-                    icon = Icons.Default.ExposureZero,
-                    iconDescription = stringResource(R.string.middle_zero_option),
-                    headlineText = stringResource(R.string.middle_zero_option),
-                    supportingText = stringResource(R.string.middle_zero_option_support),
-                    modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
-                    switchState = userPrefs.middleZero,
-                    onSwitchChange = updateMiddleZero
-                )
-            }
-
             // VIBRATIONS
             item {
                 UnittoListItem(
@@ -173,17 +148,6 @@ private fun SettingsScreen(
                     modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
                     switchState = userPrefs.enableVibrations,
                     onSwitchChange = updateVibrations
-                )
-            }
-
-            // LANGUAGE
-            item {
-                UnittoListItem(
-                    icon = Icons.Default.Language,
-                    iconDescription = stringResource(R.string.language_setting),
-                    headlineText = stringResource(R.string.language_setting),
-                    supportingText = stringResource(R.string.language_setting_support),
-                    modifier = Modifier.clickable { dialogState = DialogState.LANGUAGE }
                 )
             }
 
@@ -211,48 +175,6 @@ private fun SettingsScreen(
             }
         }
     }
-
-    /**
-     * Function to reset currently displayed dialog.
-     */
-    fun resetDialog() {
-        dialogState = DialogState.NONE
-    }
-
-    // Showing dialog
-    when (dialogState) {
-        DialogState.LANGUAGE -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.language_setting),
-                listItems = mapOf(
-                    "" to R.string.auto_label,
-                    "en" to R.string.locale_en,
-                    "de" to R.string.locale_de,
-                    "en_rGB" to R.string.locale_en_rGB,
-                    "fr" to R.string.locale_fr,
-                    "it" to R.string.locale_it,
-                    "ru" to R.string.locale_ru,
-                ),
-                selectedItemIndex = AppCompatDelegate.getApplicationLocales().toLanguageTags(),
-                selectAction = {
-                    val selectedLocale = if (it == "") LocaleListCompat.getEmptyLocaleList()
-                        else LocaleListCompat.forLanguageTags(it)
-
-                    AppCompatDelegate.setApplicationLocales(selectedLocale)
-                },
-                dismissAction = { resetDialog() }
-            )
-        }
-        // Dismissing alert dialog
-        else -> {}
-    }
-}
-
-/**
- * All possible states for alert dialog that opens when user clicks on settings.
- */
-private enum class DialogState {
-    NONE, LANGUAGE
 }
 
 @Preview
@@ -262,7 +184,6 @@ private fun PreviewSettingsScreen() {
         userPrefs = GeneralPreferences(),
         navigateUp = {},
         navControllerAction = {},
-        updateMiddleZero = {},
         updateVibrations = {},
     )
 }

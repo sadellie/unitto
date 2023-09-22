@@ -40,11 +40,4 @@ internal class SettingsViewModel @Inject constructor(
     fun updateVibrations(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateVibrations(enabled)
     }
-
-    /**
-     * @see UserPreferencesRepository.updateMiddleZero
-     */
-    fun updateMiddleZero(enabled: Boolean) = viewModelScope.launch {
-        userPrefsRepository.updateMiddleZero(enabled)
-    }
 }

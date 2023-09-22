@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.Copyright
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.PrivacyTip
-import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -117,22 +116,6 @@ internal fun AboutScreen(
                         openLink(
                             mContext,
                             "https://github.com/sadellie/unitto"
-                        )
-                    }
-                )
-            }
-
-            // TRANSLATE
-            item {
-                UnittoListItem(
-                    icon = Icons.Default.Translate,
-                    iconDescription = stringResource(R.string.translate_app),
-                    headlineText = stringResource(R.string.translate_app),
-                    supportingText = stringResource(R.string.translate_app_support),
-                    modifier = Modifier.clickable {
-                        openLink(
-                            mContext,
-                            "https://poeditor.com/join/project/T4zjmoq8dx"
                         )
                     }
                 )

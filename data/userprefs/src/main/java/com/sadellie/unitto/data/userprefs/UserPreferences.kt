@@ -81,7 +81,6 @@ data class AppPreferences(
 
 data class GeneralPreferences(
     val enableVibrations: Boolean = true,
-    val middleZero: Boolean = false,
 )
 
 data class CalculatorPreferences(
@@ -109,8 +108,9 @@ data class ConverterPreferences(
     val latestRightSideUnit: String = MyUnitIDS.mile,
 )
 
-data class ThemePreferences(
+data class DisplayPreferences(
     val systemFont: Boolean = false,
+    val middleZero: Boolean = false,
 )
 
 data class FormattingPreferences(
@@ -164,7 +164,6 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
         .map { preferences ->
             GeneralPreferences(
                 enableVibrations = preferences[PrefsKeys.ENABLE_VIBRATIONS] ?: true,
-                middleZero = preferences[PrefsKeys.MIDDLE_ZERO] ?: false,
             )
         }
 
@@ -205,10 +204,11 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
             )
         }
 
-    val themePrefs: Flow<ThemePreferences> = data
+    val displayPrefs: Flow<DisplayPreferences> = data
         .map { preferences ->
-            ThemePreferences(
-                systemFont = preferences[PrefsKeys.SYSTEM_FONT] ?: false
+            DisplayPreferences(
+                systemFont = preferences[PrefsKeys.SYSTEM_FONT] ?: false,
+                middleZero = preferences[PrefsKeys.MIDDLE_ZERO] ?: false,
             )
         }
 
