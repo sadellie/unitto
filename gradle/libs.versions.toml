@@ -1,6 +1,6 @@
 [versions]
-appCode = "23"
-appName = "Mikado Yellow"
+appCode = "24"
+appName = "Nadeshiko Pink"
 kotlin = "1.9.0"
 ksp = "1.9.0-1.0.13"
 androidxCore = "1.12.0"
