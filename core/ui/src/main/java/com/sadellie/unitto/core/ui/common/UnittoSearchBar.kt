@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.R
 
 @Composable
@@ -95,7 +96,8 @@ fun UnittoSearchBar(
 
                     SearchTextField(
                         modifier = Modifier
-                            .focusRequester(focusRequester),
+                            .focusRequester(focusRequester)
+                            .fillMaxWidth(),
                         value = query,
                         placeholder = placeholder,
                         onValueChange = onQueryChange,
@@ -194,4 +196,16 @@ private fun ClearButton(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun UnittoSearchBarPreview() {
+    UnittoSearchBar(
+        query = TextFieldValue("test"),
+        onQueryChange = {},
+        navigateUp = {},
+        title = "Title",
+        placeholder = "placeholder"
+    )
 }
