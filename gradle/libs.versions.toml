@@ -1,5 +1,5 @@
 [versions]
-appCode = "24"
+appCode = "25"
 appName = "Nadeshiko Pink"
 kotlin = "1.9.0"
 ksp = "1.9.0-1.0.13"
