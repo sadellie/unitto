@@ -75,25 +75,20 @@ fun UnittoSearchBar(
     var showSearchInput by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
 
-    fun stagedNavigateUp() {
-        if (showSearchInput) {
-            // Search text field is open, need to close it and clear search query
-            showSearchInput = false
-            // focusManager.clearFocus()
-            onQueryChange(TextFieldValue())
-        } else {
-            // No search text field is shown, can go back as usual
-            navigateUp()
-        }
-    }
+     LaunchedEffect(showSearchInput) {
+         if (showSearchInput) focusRequester.requestFocus() else onQueryChange(TextFieldValue())
+     }
 
-    TopAppBar(
+    BackHandler(showSearchInput) { showSearchInput = false }
+
+    Crossfade(
         modifier = modifier,
-        title = {
-            Crossfade(showSearchInput, label = "Search input") { showSearch ->
-                if (showSearch) {
-                    LaunchedEffect(Unit) { focusRequester.requestFocus() }
-
+        targetState = showSearchInput,
+        label = "Search input"
+    ) { showSearch ->
+        if (showSearch) {
+            TopAppBar(
+                title = {
                     SearchTextField(
                         modifier = Modifier
                             .focusRequester(focusRequester)
@@ -103,36 +98,42 @@ fun UnittoSearchBar(
                         onValueChange = onQueryChange,
                         onSearch = {}
                     )
-                } else {
+                },
+                navigationIcon = {
+                    NavigateUpButton { showSearchInput = false }
+                },
+                actions = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        ClearButton(visible = query.text.isNotEmpty()) { onQueryChange(TextFieldValue()) }
+                        searchActions()
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+                colors = colors,
+            )
+        } else {
+            TopAppBar(
+                title = {
                     Text(
                         text = title,
                         modifier = Modifier.fillMaxWidth(),
                         style = MaterialTheme.typography.titleLarge
                     )
-                }
-            }
-        },
-        navigationIcon = {
-            NavigateUpButton { stagedNavigateUp() }
-        },
-        actions = {
-            Crossfade(showSearchInput, label = "Search unit") { showSearch ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (showSearch) {
-                        ClearButton(visible = query.text.isNotEmpty()) { onQueryChange(TextFieldValue()) }
-                        searchActions()
-                    } else {
+                },
+                navigationIcon = {
+                    NavigateUpButton { navigateUp() }
+                },
+                actions = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         SearchButton { showSearchInput = true }
                         noSearchActions()
                     }
-                }
-            }
-        },
-        scrollBehavior = scrollBehavior,
-        colors = colors,
-    )
-
-    BackHandler { stagedNavigateUp() }
+                },
+                scrollBehavior = scrollBehavior,
+                colors = colors,
+            )
+        }
+    }
 }
 
 @Composable
