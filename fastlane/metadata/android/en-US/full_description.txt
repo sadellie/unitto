@@ -16,4 +16,19 @@ Calculator, unit converter and more.
 • Customizable number formatter
 • SI Standard
 
-Currency converter needs a thing called <b>Internet</b>, that's why it says "have full network access".
+<b>Permissions</b>
+
+com.sadellie.unitto.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+Read (boring): https://developer.android.com/about/versions/14/behavior-changes-14#runtime-receivers-exported
+
+android.permission.INTERNET
+Used in Unit Converter to update currency rates. Requests are made only when you select a currency unit.
+
+android.permission.ACCESS_NETWORK_STATE
+Used in Unit Converter as a callback. Retries to update currency rates if there was an error (no network, for example) and the Internet connection is back.
+
+Non-free network service
+<i>Non-free</i> doesn't mean that you need to pay, put your credit card away. In this context it means that you can't host it on your machine.
+
+The app uses https://github.com/fawazahmed0/currency-api by https://github.com/fawazahmed0
+Requests are send to cdn.jsdelivr.net.
