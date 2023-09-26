@@ -18,11 +18,18 @@
 
 package com.sadellie.unitto.core.ui.theme
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.base.R
@@ -48,7 +55,7 @@ val Typography.numbersDisplayMedium by lazy {
         letterSpacing = (-0.25).sp,
     )
 }
-    
+
 val TypographyUnitto by lazy {
     Typography(
         displayLarge = TextStyle(
@@ -136,22 +143,25 @@ val TypographyUnitto by lazy {
             letterSpacing = 0.4.sp,
         ),
         labelLarge = TextStyle(
+            fontFamily = montserratFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            letterSpacing = 0.1.sp,
+            letterSpacing = (-0.4).sp,
         ),
         labelMedium = TextStyle(
+            fontFamily = montserratFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
             lineHeight = 16.sp,
-            letterSpacing = 0.5.sp,
+            letterSpacing = (-0.3).sp,
         ),
         labelSmall = TextStyle(
+            fontFamily = montserratFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 10.sp,
             lineHeight = 16.sp,
-            letterSpacing = 0.sp,
+            letterSpacing = (-0.3).sp,
         ),
     )
 }
@@ -169,4 +179,39 @@ private val montserratFamily by lazy {
 
 private val latoFamily by lazy {
     FontFamily(Font(R.font.lato_regular))
+}
+
+@Preview(widthDp = 480)
+@Composable
+private fun PreviewTypography() {
+    MaterialTheme(
+        typography = TypographyUnitto
+    ) {
+        val textStyles = mapOf(
+            "displayLarge" to MaterialTheme.typography.displayLarge,
+            "displayMedium" to MaterialTheme.typography.displayMedium,
+            "displaySmall" to MaterialTheme.typography.displaySmall,
+            "headlineLarge" to MaterialTheme.typography.headlineLarge,
+            "headlineMedium" to MaterialTheme.typography.headlineMedium,
+            "headlineSmall" to MaterialTheme.typography.headlineSmall,
+            "titleLarge" to MaterialTheme.typography.titleLarge,
+            "titleMedium" to MaterialTheme.typography.titleMedium,
+            "titleSmall" to MaterialTheme.typography.titleSmall,
+            "bodyLarge" to MaterialTheme.typography.bodyLarge,
+            "bodyMedium" to MaterialTheme.typography.bodyMedium,
+            "bodySmall" to MaterialTheme.typography.bodySmall,
+            "labelLarge" to MaterialTheme.typography.labelLarge,
+            "labelMedium" to MaterialTheme.typography.labelMedium,
+            "labelSmall" to MaterialTheme.typography.labelSmall,
+        )
+
+        LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
+
+            textStyles.forEach { (label, style) ->
+                item {
+                    Text("$label 123", style = style, color = MaterialTheme.colorScheme.onBackground)
+                }
+            }
+        }
+    }
 }
