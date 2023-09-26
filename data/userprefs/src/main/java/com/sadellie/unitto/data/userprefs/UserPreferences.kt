@@ -73,7 +73,7 @@ data class AppPreferences(
     val enableDynamicTheme: Boolean = true,
     val enableAmoledTheme: Boolean = false,
     val customColor: Color = Color.Unspecified,
-    val monetMode: MonetMode = MonetMode.values().first(),
+    val monetMode: MonetMode = MonetMode.TonalSpot,
     val startingScreen: String = TopLevelDestinations.Calculator.graph,
     val enableToolsExperiment: Boolean = false,
     val systemFont: Boolean = false,
@@ -152,7 +152,7 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
                 customColor = preferences[PrefsKeys.CUSTOM_COLOR]?.letTryOrNull { Color(it.toULong()) }
                     ?: Color.Unspecified,
                 monetMode = preferences[PrefsKeys.MONET_MODE]?.letTryOrNull { MonetMode.valueOf(it) }
-                    ?: MonetMode.values().first(),
+                    ?: MonetMode.TonalSpot,
                 startingScreen = preferences[PrefsKeys.STARTING_SCREEN]
                     ?: TopLevelDestinations.Calculator.graph,
                 enableToolsExperiment = preferences[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false,

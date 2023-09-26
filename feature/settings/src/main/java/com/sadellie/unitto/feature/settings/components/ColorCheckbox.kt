@@ -55,25 +55,23 @@ internal fun ColorSelector(
     selected: Color,
     onItemClick: (Color) -> Unit,
     colorSchemes: List<Color>,
-    defaultColor: Color? = null
+    defaultColor: Color
 ) {
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        if (defaultColor != null) {
-            // Default, Unitto colors
-            item {
-                ColorCheckbox(
-                    color = defaultColor,
-                    selected = Color.Unspecified == selected,
-                    onClick = { onItemClick(Color.Unspecified) }
-                )
-            }
+        // Default, Unitto colors
+        item(defaultColor.value.toLong()) {
+            ColorCheckbox(
+                color = defaultColor,
+                selected = Color.Unspecified == selected,
+                onClick = { onItemClick(Color.Unspecified) }
+            )
         }
 
         colorSchemes.forEach {
-            item {
+            item(it.value.toLong()) {
                 ColorCheckbox(
                     color = it,
                     selected = it == selected,

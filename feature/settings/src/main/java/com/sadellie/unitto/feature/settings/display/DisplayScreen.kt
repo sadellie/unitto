@@ -68,27 +68,12 @@ import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 
-private val colorSchemes: List<Color> by lazy {
-    listOf(
-        Color(0xFFF6A1BC),
-        Color(0xFFFDA387),
-        Color(0xFFEAAF60),
-        Color(0xFFC2BD64),
-        Color(0xFF94C78A),
-        Color(0xFF73C9B5),
-        Color(0xFF72C6DA),
-        Color(0xFF8FBEF2),
-        Color(0xFFB6B3F6),
-        Color(0xFFDCA8E4),
-    )
-}
-
 @Composable
 internal fun DisplayRoute(
     viewModel: DisplayViewModel = hiltViewModel(),
     navigateUp: () -> Unit = {},
     themmoController: ThemmoController,
-    navigateToLanguages: () -> Unit
+    navigateToLanguages: () -> Unit,
 ) {
     val prefs = viewModel.prefs.collectAsStateWithLifecycle()
 
@@ -103,8 +88,8 @@ internal fun DisplayRoute(
         onDynamicThemeChange = {
             // Prevent old devices from using other monet modes when dynamic theming is on
             if (it) {
-                themmoController.setMonetMode(MonetMode.TONAL_SPOT)
-                viewModel.updateMonetMode(MonetMode.TONAL_SPOT)
+                themmoController.setMonetMode(MonetMode.TonalSpot)
+                viewModel.updateMonetMode(MonetMode.TonalSpot)
             }
             themmoController.enableDynamicTheme(it)
             viewModel.updateDynamicTheme(it)
