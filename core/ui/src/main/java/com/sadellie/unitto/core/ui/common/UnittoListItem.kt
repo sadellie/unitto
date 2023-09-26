@@ -126,26 +126,24 @@ fun UnittoListItem(
     supportingText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
-) {
-    UnittoListItem(
-        modifier = Modifier
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
-                onClick = { onSwitchChange(!switchState) }
-            ),
-        headlineText = headlineText,
-        supportingText = supportingText,
-        icon = icon,
-        iconDescription = iconDescription,
-        trailing = {
-            Switch(
-                checked = switchState,
-                onCheckedChange = { onSwitchChange(it) }
-            )
-        }
-    )
-}
+) = UnittoListItem(
+    modifier = modifier
+        .clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = rememberRipple(),
+            onClick = { onSwitchChange(!switchState) }
+        ),
+    headlineText = headlineText,
+    supportingText = supportingText,
+    icon = icon,
+    iconDescription = iconDescription,
+    trailing = {
+        Switch(
+            checked = switchState,
+            onCheckedChange = { onSwitchChange(it) }
+        )
+    }
+)
 
 @Composable
 private fun ProvideTextStyle(
