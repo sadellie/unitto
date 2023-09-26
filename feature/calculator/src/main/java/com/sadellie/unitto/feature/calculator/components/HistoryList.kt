@@ -114,7 +114,7 @@ private fun HistoryListPlaceholder(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(Icons.Default.History, null)
+            Icon(Icons.Default.History, stringResource(R.string.calculator_no_history))
             Text(stringResource(R.string.calculator_no_history))
         }
     }
