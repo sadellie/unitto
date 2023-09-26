@@ -29,8 +29,8 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
-    testImplementation(libs.org.robolectric)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.org.robolectric.robolectric)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 

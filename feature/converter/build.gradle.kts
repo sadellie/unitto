@@ -30,16 +30,16 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
-    testImplementation(libs.org.robolectric)
-    testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.org.robolectric.robolectric)
+    testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
     testImplementation(libs.androidx.room.runtime)
     testImplementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
-    testImplementation(libs.androidx.datastore)
+    testImplementation(libs.androidx.datastore.datastore.preferences)
 
-    implementation(libs.com.squareup.moshi)
-    implementation(libs.com.squareup.retrofit2)
+    implementation(libs.com.squareup.moshi.moshi.kotlin)
+    implementation(libs.com.squareup.retrofit2.converter.moshi)
 
     implementation(project(":data:common"))
     implementation(project(":data:database"))

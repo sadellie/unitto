@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.datastore.datastore.preferences)
     implementation(libs.com.github.sadellie.themmo)
 
     implementation(project(":core:base"))

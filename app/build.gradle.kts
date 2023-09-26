@@ -104,16 +104,16 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
-    implementation(libs.androidx.core)
-    coreLibraryDesugaring(libs.android.desugarJdkLibs)
+    implementation(libs.androidx.core.core.ktx)
+    coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs)
 
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.com.google.accompanist.systemuicontroller)
-    implementation(libs.androidx.datastore)
-    implementation(libs.androidx.appcompat)
+    implementation(libs.com.google.accompanist.accompanist.systemuicontroller)
+    implementation(libs.androidx.datastore.datastore.preferences)
+    implementation(libs.androidx.appcompat.appcompat)
 
     implementation(project(":feature:converter"))
     implementation(project(":feature:calculator"))

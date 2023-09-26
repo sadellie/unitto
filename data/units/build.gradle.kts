@@ -35,17 +35,14 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
-    testImplementation(libs.org.robolectric)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.org.robolectric.robolectric)
 
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
+    implementation(libs.androidx.datastore.datastore.preferences)
 
-    implementation(libs.com.squareup.moshi)
-    implementation(libs.com.squareup.retrofit2)
-
-    implementation(libs.org.burnoutcrew.composereorderable)
-    implementation(libs.com.github.sadellie.themmo)
+    implementation(libs.com.squareup.moshi.moshi.kotlin)
+    implementation(libs.com.squareup.retrofit2.converter.moshi)
 
     implementation(project(":core:base"))
     implementation(project(":data:database"))

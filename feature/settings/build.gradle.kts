@@ -29,8 +29,8 @@ android {
 
 dependencies {
     implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.org.burnoutcrew.composereorderable)
-    implementation(libs.androidx.appcompat)
+    implementation(libs.org.burnoutcrew.composereorderable.reorderable)
+    implementation(libs.androidx.appcompat.appcompat)
 
     implementation(project(":data:common"))
     implementation(project(":data:model"))

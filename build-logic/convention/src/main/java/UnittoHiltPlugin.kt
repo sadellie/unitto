@@ -32,10 +32,10 @@ class UnittoHiltPlugin : Plugin<Project> {
             }
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
-                "implementation"(libs.findLibrary("androidx.hilt").get())
-                "implementation"(libs.findLibrary("com.google.dagger.android").get())
-                "kapt"(libs.findLibrary("com.google.dagger.processor").get())
-                "kapt"(libs.findLibrary("com.google.dagger.compiler").get())
+                "implementation"(libs.findLibrary("androidx.hilt.hilt.navigation.compose").get())
+                "implementation"(libs.findLibrary("com.google.dagger.android.hilt.android").get())
+                "kapt"(libs.findLibrary("com.google.dagger.dagger.android.processor").get())
+                "kapt"(libs.findLibrary("com.google.dagger.hilt.compiler").get())
             }
         }
     }

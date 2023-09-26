@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
 
     implementation(project(":data:userprefs"))
 }

@@ -28,9 +28,9 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
     implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.org.burnoutcrew.composereorderable)
+    implementation(libs.org.burnoutcrew.composereorderable.reorderable)
 
     implementation(project(":data:common"))
     implementation(project(":data:userprefs"))

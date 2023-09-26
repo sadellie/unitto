@@ -25,8 +25,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.core.core.ktx)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(project(":core:base"))
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
 }
