@@ -37,7 +37,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -209,7 +209,7 @@ private fun PortraitKeyboardLoading(
                     onClick = {  },
                     colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
                 ) {
-                    Icon(Icons.Default.ExpandLess, null)
+                    Icon(Icons.Default.ExpandMore, null)
                 }
             }
         }
@@ -274,7 +274,7 @@ private fun PortraitKeyboard(
     var showAdditional: Boolean by remember { mutableStateOf(false) }
     var invMode: Boolean by remember { mutableStateOf(false) }
     val expandRotation: Float by animateFloatAsState(
-        targetValue = if (showAdditional) 0f else 180f,
+        targetValue = if (showAdditional) 180f else 0f,
         animationSpec = tween(easing = FastOutSlowInEasing),
         label = "Rotate on expand"
     )
@@ -347,7 +347,7 @@ private fun PortraitKeyboard(
                     onClick = { showAdditional = !showAdditional },
                     colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
                 ) {
-                    Icon(Icons.Default.ExpandLess, null, Modifier.rotate(expandRotation))
+                    Icon(Icons.Default.ExpandMore, null, Modifier.rotate(expandRotation))
                 }
             }
         }
