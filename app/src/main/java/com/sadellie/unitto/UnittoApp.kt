@@ -47,8 +47,8 @@ import com.sadellie.unitto.core.ui.common.open
 import com.sadellie.unitto.core.ui.common.rememberUnittoDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.pushDynamicShortcut
-import com.sadellie.unitto.core.ui.theme.AppTypographySystem
-import com.sadellie.unitto.core.ui.theme.AppTypographyUnitto
+import com.sadellie.unitto.core.ui.theme.TypographySystem
+import com.sadellie.unitto.core.ui.theme.TypographyUnitto
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
 import com.sadellie.unitto.data.userprefs.AppPreferences
@@ -107,7 +107,7 @@ internal fun UnittoApp(prefs: AppPreferences) {
 
     Themmo(
         themmoController = themmoController,
-        typography = if (prefs.systemFont) AppTypographySystem else AppTypographyUnitto,
+        typography = if (prefs.systemFont) TypographySystem else TypographyUnitto,
         animationSpec = tween(250)
     ) {
         val backgroundColor = MaterialTheme.colorScheme.background

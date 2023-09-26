@@ -66,7 +66,7 @@ import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnittoTextToolbar
 import com.sadellie.unitto.core.ui.common.textfield.clearAndFilterExpression
 import com.sadellie.unitto.core.ui.common.textfield.copyWithoutGrouping
-import com.sadellie.unitto.core.ui.theme.NumbersTextStyleDisplayMedium
+import com.sadellie.unitto.core.ui.theme.numbersDisplayMedium
 import com.sadellie.unitto.data.model.HistoryItem
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -212,7 +212,7 @@ private fun HistoryListItem(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                textStyle = NumbersTextStyleDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.End),
+                textStyle = MaterialTheme.typography.numbersDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.End),
                 readOnly = true,
                 visualTransformation = ExpressionTransformer(formatterSymbols),
                 interactionSource = expressionInteractionSource
@@ -237,7 +237,7 @@ private fun HistoryListItem(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                textStyle = NumbersTextStyleDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), textAlign = TextAlign.End),
+                textStyle = MaterialTheme.typography.numbersDisplayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), textAlign = TextAlign.End),
                 readOnly = true,
                 visualTransformation = ExpressionTransformer(formatterSymbols),
                 interactionSource = resultInteractionSource
