@@ -106,14 +106,15 @@ internal fun ChipsRow(
                     Icon(
                         modifier = Modifier.height(18.dp),
                         imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(R.string.checked_filter_description)
+                        contentDescription = stringResource(R.string.checked_filter_description),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
                     text = stringResource(item.res),
                     style = MaterialTheme.typography.labelLarge,
-                    color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -183,14 +184,15 @@ fun ChipsFlexRow(
                         Icon(
                             modifier = Modifier.height(18.dp),
                             imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(R.string.checked_filter_description)
+                            contentDescription = stringResource(R.string.checked_filter_description),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                     Text(
                         modifier = Modifier.padding(start = 8.dp),
                         text = stringResource(item.res),
                         style = MaterialTheme.typography.labelLarge,
-                        color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

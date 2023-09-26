@@ -105,7 +105,7 @@ fun KeyboardButtonFilled(
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         icon = icon,
-        iconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
         allowVibration = allowVibration,
     )
 }

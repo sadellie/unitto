@@ -61,6 +61,8 @@ internal fun BasicUnitListItem(
     onClick: () -> Unit,
     favoriteUnit: () -> Unit,
 ) {
+    val itemColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -90,7 +92,8 @@ internal fun BasicUnitListItem(
                         .fillMaxWidth(),
                     text = name,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = itemColor,
                 )
                 Text(
                     modifier = Modifier
@@ -99,7 +102,7 @@ internal fun BasicUnitListItem(
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = itemColor
                 )
             }
             AnimatedContent(
@@ -116,8 +119,9 @@ internal fun BasicUnitListItem(
                 label = "Favorite unit"
             ) {
                 Icon(
-                    if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                    contentDescription = stringResource(R.string.favorite_button_description)
+                    imageVector = if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    contentDescription = stringResource(R.string.favorite_button_description),
+                    tint = itemColor
                 )
             }
         }
