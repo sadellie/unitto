@@ -18,23 +18,17 @@
 
 package com.sadellie.unitto.feature.converter.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,7 +37,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -51,23 +44,20 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.AssistChip
+import com.sadellie.unitto.core.ui.common.FilterChip
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 
@@ -97,26 +87,14 @@ internal fun ChipsRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(items, key = { it.name }) { item ->
-            val isSelected: Boolean = item == chosenUnitGroup
-            UnittoFilterChip(
-                isSelected = isSelected,
-                selectAction = { selectAction(if (item == chosenUnitGroup) null else item) }
-            ) {
-                AnimatedVisibility(visible = isSelected) {
-                    Icon(
-                        modifier = Modifier.height(18.dp),
-                        imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(R.string.checked_filter_description),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                }
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = stringResource(item.res),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            val selected: Boolean = item == chosenUnitGroup
+            FilterChip(
+                selected = selected,
+                onClick = { selectAction(if (selected) null else item) },
+                label = stringResource(item.res),
+                imageVector = Icons.Default.Check,
+                contentDescription = stringResource(R.string.checked_filter_description)
+            )
         }
 
         /**
@@ -125,17 +103,11 @@ internal fun ChipsRow(
          * scrolling right (to the last one).
          */
         item("settings") {
-            UnittoFilterChip(
-                isSelected = false,
-                selectAction = navigateToSettingsAction,
-                paddingValues = PaddingValues(horizontal = 8.dp)
-            ) {
-                Icon(
-                    modifier = Modifier.height(18.dp),
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.open_settings_description)
-                )
-            }
+            AssistChip(
+                onClick = navigateToSettingsAction,
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(R.string.open_settings_description)
+            )
         }
     }
 }
@@ -175,38 +147,20 @@ fun ChipsFlexRow(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items.forEach { item ->
-                val isSelected: Boolean = item == chosenUnitGroup
-                UnittoFilterChip(
-                    isSelected = isSelected,
-                    selectAction = { selectAction(if (item == chosenUnitGroup) null else item) }
-                ) {
-                    AnimatedVisibility(visible = isSelected) {
-                        Icon(
-                            modifier = Modifier.height(18.dp),
-                            imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(R.string.checked_filter_description),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
-                    Text(
-                        modifier = Modifier.padding(start = 8.dp),
-                        text = stringResource(item.res),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            UnittoFilterChip(
-                isSelected = false,
-                selectAction = navigateToSettingsAction,
-                paddingValues = PaddingValues(horizontal = 8.dp)
-            ) {
-                Icon(
-                    modifier = Modifier.height(18.dp),
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.open_settings_description)
+                val selected: Boolean = item == chosenUnitGroup
+                FilterChip(
+                    selected = selected,
+                    onClick = { selectAction(if (selected) null else item) },
+                    label = stringResource(item.res),
+                    imageVector = Icons.Default.Check,
+                    contentDescription = stringResource(R.string.checked_filter_description)
                 )
             }
+            AssistChip(
+                onClick = navigateToSettingsAction,
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(R.string.open_settings_description)
+            )
         }
 
         IconButton(
@@ -221,43 +175,6 @@ fun ChipsFlexRow(
                     .rotate(expandRotation)
             )
         }
-    }
-}
-
-/**
- * Basic chip implementation
- *
- * @param isSelected Chip state.
- * @param selectAction Action to perform when clicking chip.
- * @param paddingValues Padding values applied to Row.
- * @param content Content of the list. Icon and/or label.
- */
-@Composable
-private fun UnittoFilterChip(
-    isSelected: Boolean,
-    selectAction: () -> Unit,
-    paddingValues: PaddingValues = PaddingValues(start = 8.dp, end = 16.dp),
-    content: @Composable RowScope.() -> Unit
-) {
-    val chipShape = RoundedCornerShape(8.dp)
-    Row(
-        modifier = Modifier
-            .height(32.dp)
-            .clip(chipShape)
-            .background(
-                if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
-            )
-            // Remove border when selected
-            .border(
-                1.dp,
-                if (isSelected) Color.Transparent else MaterialTheme.colorScheme.outline,
-                chipShape
-            )
-            .clickable { selectAction() }
-            .padding(paddingValues),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        content()
     }
 }
 
