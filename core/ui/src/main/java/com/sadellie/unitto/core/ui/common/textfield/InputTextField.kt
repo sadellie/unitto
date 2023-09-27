@@ -197,7 +197,7 @@ private fun AutoSizableTextField(
     ) {
         with(density) {
             // Cursor handle is not visible without this, 0.836f is the minimum required factor here
-            nFontSize = maxHeight.toSp() * 0.835f
+            nFontSize = maxHeight.toSp() * 0.83f
             minFontSize = nFontSize * minRatio
         }
 

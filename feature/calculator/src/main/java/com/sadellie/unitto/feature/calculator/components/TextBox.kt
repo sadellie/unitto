@@ -20,7 +20,6 @@ package com.sadellie.unitto.feature.calculator.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -67,13 +66,12 @@ fun TextBox(
                     bottomStartPercent = 20, bottomEndPercent = 20
                 )
             )
-            .padding(top = 12.dp),
+            .padding(top = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ExpressionTextField(
             modifier = Modifier
-                .weight(2f)
+                .weight(3f)
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             value = input,
@@ -92,7 +90,7 @@ fun TextBox(
 
                     ExpressionTextField(
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(2f)
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = outputTF,
@@ -109,7 +107,7 @@ fun TextBox(
 
                     UnformattedTextField(
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(2f)
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = TextFieldValue(label),
