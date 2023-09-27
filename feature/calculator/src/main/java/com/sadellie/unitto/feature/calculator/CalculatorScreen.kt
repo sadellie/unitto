@@ -20,10 +20,12 @@ package com.sadellie.unitto.feature.calculator
 
 import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
-import androidx.compose.foundation.gestures.snapTo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -49,7 +51,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -70,13 +71,13 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboardLoading
+import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
 import com.sadellie.unitto.feature.calculator.components.HistoryList
-import kotlinx.coroutines.launch
+import com.sadellie.unitto.feature.calculator.components.TextBox
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -179,146 +180,89 @@ private fun Ready(
             modifier = Modifier.padding(paddingValues),
         ) {
             val density = LocalDensity.current
-            var historyItemHeight by remember { mutableStateOf(0.dp) }
-            val textBoxHeight = maxHeight * 0.25f
-            var dragStateCurrentValue by rememberSaveable { mutableStateOf(DragState.CLOSED) }
-            val corScope = rememberCoroutineScope()
 
-            val dragState = rememberDragState(
-                historyItem = historyItemHeight,
-                max = maxHeight - textBoxHeight,
-                initialValue = dragStateCurrentValue,
-                enablePartialView = uiState.partialHistoryView
-            )
-            val dragDp by remember(dragState) {
+            val textBoxHeight = maxHeight * 0.25f
+
+            val dragState = remember {
+                AnchoredDraggableState(
+                    initialValue = DragState.CLOSED,
+                    positionalThreshold = { distance -> distance * 0.5f },
+                    velocityThreshold = { with(density) { HistoryItemHeight.toPx() } },
+                    animationSpec = tween()
+                )
+            }
+
+            var historyListHeight by remember { mutableStateOf(0.dp) }
+            val keyboardHeight by remember(historyListHeight) {
                 derivedStateOf {
-                    focusManager.clearFocus(true)
-                    with(density) {
-                        try {
-                            dragState.requireOffset().toDp()
-                        } catch (e: IllegalStateException) {
-                            corScope.launch { dragState.snapTo(DragState.CLOSED) }
-                            0.dp
+                    if (historyListHeight > HistoryItemHeight) {
+                        maxHeight - textBoxHeight - HistoryItemHeight
+                    } else {
+                        maxHeight - textBoxHeight - historyListHeight
+                    }
+                }
+            }
+
+            LaunchedEffect(uiState.partialHistoryView) {
+                val anchors: DraggableAnchors<DragState> = with(density) {
+                    if (uiState.partialHistoryView) {
+                        DraggableAnchors {
+                            DragState.CLOSED at 0f
+                            DragState.SMALL at HistoryItemHeight.toPx()
+                            DragState.OPEN at (maxHeight * 0.75f).toPx()
+                        }
+                    } else {
+                        DraggableAnchors {
+                            DragState.CLOSED at 0f
+                            DragState.OPEN at (maxHeight * 0.75f).toPx()
                         }
                     }
                 }
-            }
-            val keyboardHeight by remember(dragState) {
-                derivedStateOf {
-                    if (dragDp > historyItemHeight) {
-                        maxHeight - textBoxHeight - historyItemHeight
-                    } else {
-                        maxHeight - textBoxHeight - dragDp
-                    }
-                }
+                dragState.updateAnchors(anchors)
             }
 
-            LaunchedEffect(dragState.currentValue) {
-                dragStateCurrentValue = dragState.currentValue
+            LaunchedEffect(dragState.offset) {
+                with(density) {
+                    if (!dragState.offset.isNaN()) {
+                        historyListHeight = dragState.requireOffset().toDp()
+                    }
+                }
+
+                focusManager.clearFocus()
                 showClearHistoryButton = dragState.currentValue == DragState.OPEN
             }
 
-            // History
             HistoryList(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                     .fillMaxWidth()
-                    .height(dragDp),
+                    .height(historyListHeight),
                 historyItems = uiState.history,
-                heightCallback = { historyItemHeight = it },
                 formatterSymbols = uiState.formatterSymbols,
-                addTokens = addSymbol,
+                addTokens = addSymbol
             )
 
-            // Input
-            Column(
+            TextBox(
                 modifier = Modifier
-                    .semantics { testTag = "inputBox" }
-                    .offset(y = dragDp)
+                    .offset(y = historyListHeight)
                     .height(textBoxHeight)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        RoundedCornerShape(
-                            topStartPercent = 0, topEndPercent = 0,
-                            bottomStartPercent = 20, bottomEndPercent = 20
-                        )
-                    )
+                    .fillMaxWidth()
                     .anchoredDraggable(
                         state = dragState,
                         orientation = Orientation.Vertical
                     )
-                    .padding(top = 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                ExpressionTextField(
-                    modifier = Modifier
-                        .weight(2f)
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    value = uiState.input,
-                    minRatio = 0.5f,
-                    cutCallback = deleteSymbol,
-                    pasteCallback = addSymbol,
-                    onCursorChange = onCursorChange,
-                    formatterSymbols = uiState.formatterSymbols
-                )
-                if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    when (uiState.output) {
-                        is CalculationResult.Default -> {
-                            var output by remember(uiState.output) {
-                                mutableStateOf(TextFieldValue(uiState.output.text))
-                            }
+                ,
+                formatterSymbols = uiState.formatterSymbols,
+                input = uiState.input,
+                deleteSymbol = deleteSymbol,
+                addSymbol = addSymbol,
+                onCursorChange = onCursorChange,
+                output = uiState.output
+            )
 
-                            ExpressionTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 8.dp),
-                                value = output,
-                                minRatio = 1f,
-                                onCursorChange = { output = output.copy(selection = it) },
-                                formatterSymbols = uiState.formatterSymbols,
-                                textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
-                                readOnly = true,
-                            )
-                        }
-
-                        else -> {
-                            val label = uiState.output.label?.let { stringResource(it) } ?: ""
-
-                            UnformattedTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 8.dp),
-                                value = TextFieldValue(label),
-                                minRatio = 1f,
-                                onCursorChange = {},
-                                textColor = MaterialTheme.colorScheme.error,
-                                readOnly = true,
-                            )
-                        }
-                    }
-
-                }
-                // Handle
-                Box(
-                    Modifier
-                        .padding(8.dp)
-                        .background(
-                            MaterialTheme.colorScheme.onSurfaceVariant,
-                            RoundedCornerShape(100)
-                        )
-                        .sizeIn(24.dp, 4.dp)
-                )
-            }
-
-            // Keyboard
             CalculatorKeyboard(
                 modifier = Modifier
                     .semantics { testTag = "ready" }
-                    .offset(y = dragDp + textBoxHeight)
+                    .offset(y = historyListHeight + textBoxHeight)
                     .height(keyboardHeight)
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),

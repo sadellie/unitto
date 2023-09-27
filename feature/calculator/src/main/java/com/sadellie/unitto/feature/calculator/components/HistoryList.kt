@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,9 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
@@ -58,7 +57,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
@@ -75,14 +73,12 @@ import java.util.Locale
 internal fun HistoryList(
     modifier: Modifier,
     historyItems: List<HistoryItem>,
-    heightCallback: (Dp) -> Unit,
     formatterSymbols: FormatterSymbols,
     addTokens: (String) -> Unit,
 ) {
     if (historyItems.isEmpty()) {
         HistoryListPlaceholder(
             modifier = modifier,
-            heightCallback = heightCallback
         )
     } else {
         HistoryListContent(
@@ -90,7 +86,6 @@ internal fun HistoryList(
             historyItems = historyItems,
             addTokens = addTokens,
             formatterSymbols = formatterSymbols,
-            heightCallback = heightCallback
         )
     }
 }
@@ -98,19 +93,14 @@ internal fun HistoryList(
 @Composable
 private fun HistoryListPlaceholder(
     modifier: Modifier,
-    heightCallback: (Dp) -> Unit,
 ) {
-    val density = LocalDensity.current
-
     Column(
         modifier = modifier.wrapContentHeight(unbounded = true),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = Modifier
-                .onPlaced { heightCallback(with(density) { it.size.height.toDp() }) }
-                .fillMaxWidth()
-                .padding(vertical = 32.dp),
+            modifier = Modifier.height(HistoryItemHeight),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -126,12 +116,8 @@ private fun HistoryListContent(
     historyItems: List<HistoryItem>,
     addTokens: (String) -> Unit,
     formatterSymbols: FormatterSymbols,
-    heightCallback: (Dp) -> Unit,
 ) {
-    val density = LocalDensity.current
     val state = rememberLazyListState()
-    val firstItem by remember(historyItems) { mutableStateOf(historyItems.first()) }
-    val restOfTheItems by remember(firstItem) { mutableStateOf(historyItems.drop(1)) }
 
     LaunchedEffect(historyItems) { state.scrollToItem(0) }
 
@@ -141,19 +127,8 @@ private fun HistoryListContent(
         reverseLayout = true,
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom)
     ) {
-        // We do this so that callback for items height is called only once
-        item(firstItem.id) {
+        items(historyItems, { it.id }) { historyItem ->
             HistoryListItem(
-                modifier = Modifier.onPlaced { heightCallback(with(density) { it.size.height.toDp() }) },
-                historyItem = historyItems.first(),
-                formatterSymbols = formatterSymbols,
-                addTokens = addTokens,
-            )
-        }
-
-        items(restOfTheItems, { it.id }) { historyItem ->
-            HistoryListItem(
-                modifier = Modifier,
                 historyItem = historyItem,
                 formatterSymbols = formatterSymbols,
                 addTokens = addTokens,
@@ -193,7 +168,10 @@ private fun HistoryListItem(
         }
     }
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.height(HistoryItemHeight),
+        verticalArrangement = Arrangement.Center
+    ) {
         CompositionLocalProvider(
             LocalTextInputService provides null,
             LocalTextToolbar provides UnittoTextToolbar(
@@ -246,6 +224,8 @@ private fun HistoryListItem(
     }
 }
 
+internal val HistoryItemHeight = 92.dp
+
 @Preview
 @Composable
 private fun PreviewHistoryList() {
@@ -275,7 +255,6 @@ private fun PreviewHistoryList() {
             .fillMaxSize(),
         historyItems = historyItems,
         formatterSymbols = FormatterSymbols.Spaces,
-        heightCallback = {},
         addTokens = {}
     )
 }
