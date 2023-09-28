@@ -82,8 +82,7 @@ private fun SettingsScreen(
     ) { padding ->
         LazyColumn(contentPadding = padding) {
 
-            // THEME
-            item {
+            item("theme") {
                 UnittoListItem(
                     icon = Icons.Default.Palette,
                     iconDescription = stringResource(R.string.display_settings),
@@ -93,8 +92,7 @@ private fun SettingsScreen(
                 )
             }
 
-            // START SCREEN
-            item {
+            item("starting screen") {
                 UnittoListItem(
                     icon = Icons.Default.Home,
                     iconDescription = stringResource(R.string.starting_screen_setting),
@@ -104,8 +102,7 @@ private fun SettingsScreen(
                 )
             }
 
-            // FORMATTING
-            item {
+            item("formatting") {
                 UnittoListItem(
                     icon = Icons.Default._123,
                     iconDescription = stringResource(R.string.formatting_setting),
@@ -115,7 +112,7 @@ private fun SettingsScreen(
                 )
             }
 
-            item {
+            item("calculator") {
                 UnittoListItem(
                     icon = Icons.Default.Calculate,
                     iconDescription = stringResource(R.string.calculator),
@@ -125,7 +122,7 @@ private fun SettingsScreen(
                 )
             }
 
-            item {
+            item("unit converter") {
                 UnittoListItem(
                     icon = Icons.Default.SwapHoriz,
                     iconDescription = stringResource(R.string.unit_converter),
@@ -135,11 +132,9 @@ private fun SettingsScreen(
                 )
             }
 
-            // ADDITIONAL GROUP
-            item { Header(stringResource(R.string.additional_settings_group)) }
+            item("additional") { Header(stringResource(R.string.additional_settings_group)) }
 
-            // VIBRATIONS
-            item {
+            item("vibrations") {
                 UnittoListItem(
                     icon = Icons.Default.Vibration,
                     iconDescription = stringResource(R.string.enable_vibrations),
@@ -153,7 +148,7 @@ private fun SettingsScreen(
 
             // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
-                item {
+                item("rate this app") {
                     UnittoListItem(
                         icon = Icons.Default.RateReview,
                         iconDescription = stringResource(R.string.rate_this_app),
@@ -163,8 +158,7 @@ private fun SettingsScreen(
                 }
             }
 
-            // More settings
-            item {
+            item("about") {
                 UnittoListItem(
                     icon = Icons.Default.Info,
                     iconDescription = stringResource(R.string.about_unitto),

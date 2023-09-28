@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
@@ -49,15 +50,32 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
+import com.sadellie.unitto.data.userprefs.AboutPreferences
 
 @Composable
-internal fun AboutScreen(
+internal fun AboutRoute(
     viewModel: AboutViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
 ) {
-    val mContext = LocalContext.current
     val prefs = viewModel.prefs.collectAsStateWithLifecycle()
+
+    AboutScreen(
+        prefs = prefs.value,
+        navigateUpAction = navigateUpAction,
+        navigateToThirdParty = navigateToThirdParty,
+        enableToolsExperiment = viewModel::enableToolsExperiment
+    )
+}
+
+@Composable
+private fun AboutScreen(
+    prefs: AboutPreferences,
+    navigateUpAction: () -> Unit,
+    navigateToThirdParty: () -> Unit,
+    enableToolsExperiment: () -> Unit,
+) {
+    val mContext = LocalContext.current
     var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
@@ -139,7 +157,7 @@ internal fun AboutScreen(
                     headlineText = stringResource(R.string.app_version_name_setting),
                     supportingText = "${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})",
                     modifier = Modifier.combinedClickable {
-                        if (prefs.value.enableToolsExperiment) {
+                        if (prefs.enableToolsExperiment) {
                             Toast.makeText(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG).show()
                             return@combinedClickable
                         }
@@ -147,7 +165,7 @@ internal fun AboutScreen(
                         aboutItemClick++
                         if (aboutItemClick < 7) return@combinedClickable
 
-                        viewModel.enableToolsExperiment()
+                        enableToolsExperiment()
                         Toast.makeText(mContext, "Experimental features enabled!", Toast.LENGTH_LONG).show()
                     }
                 )
@@ -171,4 +189,15 @@ internal fun AboutScreen(
             onDismissRequest = { showDialog = false }
         )
     }
+}
+
+@Preview
+@Composable
+fun PreviewAboutScreen() {
+    AboutScreen(
+        prefs = AboutPreferences(),
+        navigateUpAction = {},
+        navigateToThirdParty = {},
+        enableToolsExperiment = {}
+    )
 }

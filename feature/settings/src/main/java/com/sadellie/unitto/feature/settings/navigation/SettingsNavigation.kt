@@ -26,13 +26,13 @@ import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.settings.SettingsRoute
-import com.sadellie.unitto.feature.settings.about.AboutScreen
-import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsScreen
-import com.sadellie.unitto.feature.settings.converter.ConverterSettingsScreen
+import com.sadellie.unitto.feature.settings.about.AboutRoute
+import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsRoute
+import com.sadellie.unitto.feature.settings.converter.ConverterSettingsRoute
+import com.sadellie.unitto.feature.settings.display.DisplayRoute
 import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
 import com.sadellie.unitto.feature.settings.language.LanguageRoute
 import com.sadellie.unitto.feature.settings.startingscreen.StartingScreenRoute
-import com.sadellie.unitto.feature.settings.display.DisplayRoute
 import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
@@ -102,13 +102,13 @@ fun NavGraphBuilder.settingGraph(
         }
 
         unittoComposable(calculatorSettingsRoute) {
-            CalculatorSettingsScreen(
+            CalculatorSettingsRoute(
                 navigateUpAction = navController::navigateUp,
             )
         }
 
         unittoComposable(converterSettingsRoute) {
-            ConverterSettingsScreen(
+            ConverterSettingsRoute(
                 navigateUpAction = navController::navigateUp,
                 navigateToUnitsGroup = { navController.navigate(unitsGroupRoute) }
             )
@@ -121,7 +121,7 @@ fun NavGraphBuilder.settingGraph(
         }
 
         unittoComposable(aboutRoute) {
-            AboutScreen(
+            AboutRoute(
                 navigateUpAction = navController::navigateUp,
                 navigateToThirdParty = { navController.navigate(thirdPartyRoute) }
             )

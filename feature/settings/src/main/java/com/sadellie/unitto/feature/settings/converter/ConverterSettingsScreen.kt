@@ -31,6 +31,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
@@ -38,15 +39,34 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.userprefs.ConverterPreferences
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable
-internal fun ConverterSettingsScreen(
+internal fun ConverterSettingsRoute(
     viewModel: ConverterViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
     navigateToUnitsGroup: () -> Unit,
 ) {
     val prefs = viewModel.prefs.collectAsStateWithLifecycle()
+
+    ConverterSettingsScreen(
+        prefs = prefs.value,
+        navigateUpAction = navigateUpAction,
+        navigateToUnitsGroup = navigateToUnitsGroup,
+        updateUnitConverterFormatTime = viewModel::updateUnitConverterFormatTime,
+        updateUnitConverterSorting = viewModel::updateUnitConverterSorting
+    )
+}
+
+@Composable
+private fun ConverterSettingsScreen(
+    prefs: ConverterPreferences,
+    navigateUpAction: () -> Unit,
+    navigateToUnitsGroup: () -> Unit,
+    updateUnitConverterFormatTime: (Boolean) -> Unit,
+    updateUnitConverterSorting: (UnitsListSorting) -> Unit,
+) {
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     UnittoScreenWithLargeTopBar(
@@ -54,8 +74,7 @@ internal fun ConverterSettingsScreen(
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
-            // UNIT GROUPS
-            item {
+            item("unit group") {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Rule,
                     iconDescription = stringResource(R.string.unit_groups_setting),
@@ -65,8 +84,7 @@ internal fun ConverterSettingsScreen(
                 )
             }
 
-            // UNITS LIST SORTING
-            item {
+            item("units sorting") {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Sort,
                     iconDescription = stringResource(R.string.units_sorting),
@@ -76,15 +94,14 @@ internal fun ConverterSettingsScreen(
                 )
             }
 
-            // FORMAT TIME
-            item {
+            item("format time") {
                 UnittoListItem(
                     icon = Icons.Default.Timer,
                     iconDescription = stringResource(R.string.format_time),
                     headlineText = stringResource(R.string.format_time),
                     supportingText = stringResource(R.string.format_time_support),
-                    switchState = prefs.value.unitConverterFormatTime,
-                    onSwitchChange = viewModel::updateUnitConverterFormatTime
+                    switchState = prefs.unitConverterFormatTime,
+                    onSwitchChange = updateUnitConverterFormatTime
                 )
             }
         }
@@ -99,9 +116,21 @@ internal fun ConverterSettingsScreen(
                 UnitsListSorting.SCALE_DESC to R.string.sort_by_scale_desc,
                 UnitsListSorting.SCALE_ASC to R.string.sort_by_scale_asc,
             ),
-            selectedItemIndex = prefs.value.unitConverterSorting,
-            selectAction = viewModel::updateUnitConverterSorting,
+            selectedItemIndex = prefs.unitConverterSorting,
+            selectAction = updateUnitConverterSorting,
             dismissAction = { showDialog = false }
         )
     }
+}
+
+@Preview
+@Composable
+private fun PreviewConverterSettingsScreen() {
+    ConverterSettingsScreen(
+        prefs = ConverterPreferences(),
+        navigateUpAction = {},
+        navigateToUnitsGroup = {},
+        updateUnitConverterFormatTime = {},
+        updateUnitConverterSorting = {}
+    )
 }

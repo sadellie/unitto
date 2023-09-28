@@ -23,35 +23,60 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.data.userprefs.CalculatorPreferences
 
 @Composable
-internal fun CalculatorSettingsScreen(
+internal fun CalculatorSettingsRoute(
     viewModel: CalculatorViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
 ) {
     val prefs = viewModel.prefs.collectAsStateWithLifecycle()
 
+    CalculatorSettingsScreen(
+        prefs = prefs.value,
+        navigateUpAction = navigateUpAction,
+        updatePartialHistoryView = viewModel::updatePartialHistoryView
+    )
+}
+
+@Composable
+private fun CalculatorSettingsScreen(
+    prefs: CalculatorPreferences,
+    navigateUpAction: () -> Unit,
+    updatePartialHistoryView: (Boolean) -> Unit,
+) {
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.calculator),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
-            item {
+            item("partial history") {
                 UnittoListItem(
                     headlineText = stringResource(R.string.partial_history_view_setting),
                     icon = Icons.Default.Timer,
                     iconDescription = stringResource(R.string.partial_history_view_setting),
                     supportingText = stringResource(R.string.partial_history_view_setting_support),
-                    switchState = prefs.value.partialHistoryView,
-                    onSwitchChange = viewModel::updatePartialHistoryView
+                    switchState = prefs.partialHistoryView,
+                    onSwitchChange = updatePartialHistoryView
                 )
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun PreviewCalculatorSettingsScreen() {
+    CalculatorSettingsScreen(
+        prefs = CalculatorPreferences(),
+        navigateUpAction = {},
+        updatePartialHistoryView = {}
+    )
 }
