@@ -91,3 +91,4 @@ lint/tmp/
 /app/google-services.json
 
 /tools
+/dirty
