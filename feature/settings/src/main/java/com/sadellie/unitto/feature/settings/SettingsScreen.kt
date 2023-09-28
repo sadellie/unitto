@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.settings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -64,6 +65,7 @@ internal fun SettingsRoute(
         navigateUp = navigateUp,
         navControllerAction = navControllerAction,
         updateVibrations = viewModel::updateVibrations,
+        clearCache = viewModel::clearCache
     )
 }
 
@@ -73,6 +75,7 @@ private fun SettingsScreen(
     navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
     updateVibrations: (Boolean) -> Unit,
+    clearCache: () -> Unit,
 ) {
     val mContext = LocalContext.current
 
@@ -146,7 +149,15 @@ private fun SettingsScreen(
                 )
             }
 
-            // RATE THIS APP
+            item("clear cache") {
+                UnittoListItem(
+                    headlineText = stringResource(R.string.clear_cache),
+                    icon = Icons.Default.Cached,
+                    iconDescription = stringResource(R.string.clear_cache),
+                    modifier = Modifier.clickable { clearCache() },
+                )
+            }
+
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 item("rate this app") {
                     UnittoListItem(
@@ -179,5 +190,6 @@ private fun PreviewSettingsScreen() {
         navigateUp = {},
         navControllerAction = {},
         updateVibrations = {},
+        clearCache = {}
     )
 }

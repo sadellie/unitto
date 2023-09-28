@@ -1419,4 +1419,5 @@ Used in this dialog window. Should be short -->
     <string name="calculator_settings_support">History view</string>
     <string name="converter_settings_support">Unit groups, sorting, formatting</string>
     <string name="display_settings">Display</string>
+    <string name="clear_cache">Clear cache</string>
 </resources>

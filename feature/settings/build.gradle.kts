@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.androidx.appcompat.appcompat)
 
     implementation(project(":data:common"))
+    implementation(project(":data:database"))
     implementation(project(":data:model"))
     implementation(project(":data:userprefs"))
     implementation(project(":data:licenses"))

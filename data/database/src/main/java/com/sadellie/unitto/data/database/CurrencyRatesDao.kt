@@ -31,4 +31,7 @@ interface CurrencyRatesDao {
 
     @Query("SELECT DISTINCT * FROM currency_rates WHERE timestamp = (SELECT MAX(timestamp) FROM currency_rates) AND base_unit_id = :baseId")
     suspend fun getLatestRates(baseId: String): List<CurrencyRatesEntity>
+
+    @Query("DELETE FROM currency_rates")
+    suspend fun clear()
 }
