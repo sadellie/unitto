@@ -199,23 +199,28 @@ class UnitsRepository @Inject constructor(
     }
 
     suspend fun updateRates(unit: AbstractUnit): LocalDate? = withContext(Dispatchers.IO) {
-        try {
-            val conversions = CurrencyApi.service.getCurrencyPairs(unit.id)
-            val rates = conversions.currency
-                .map { (pairId, pairValue) ->
-                    CurrencyRatesEntity(
-                        baseUnitId = unit.id,
-                        date = LocalDate.now().toEpochDay(),
-                        pairUnitId = pairId,
-                        pairUnitValue = BigDecimal.valueOf(pairValue)
-                    )
-                }
-            currencyRatesDao.insertRates(rates)
-        } catch (e: Exception) {
-            Log.d("UnitsRepository", "Skipped update: $e")
-        }
-        val basedConversions = currencyRatesDao.getLatestRates(baseId = unit.id)
+        var basedConversions = currencyRatesDao.getLatestRates(baseId = unit.id)
+        val epochDay = LocalDate.now().toEpochDay()
 
+        if (basedConversions.firstOrNull()?.date != epochDay) {
+            try {
+                val conversions = CurrencyApi.service.getCurrencyPairs(unit.id)
+                val rates = conversions.currency
+                    .map { (pairId, pairValue) ->
+                        CurrencyRatesEntity(
+                            baseUnitId = unit.id,
+                            date = epochDay,
+                            pairUnitId = pairId,
+                            pairUnitValue = BigDecimal.valueOf(pairValue)
+                        )
+                    }
+                currencyRatesDao.insertRates(rates)
+
+                basedConversions = currencyRatesDao.getLatestRates(baseId = unit.id)
+            } catch (e: Exception) {
+                Log.d("UnitsRepository", "Skipped update: $e")
+            }
+        }
         myUnits.update { units ->
             units.map { localUnit ->
                 if (localUnit.group != UnitGroup.CURRENCY) return@map localUnit
