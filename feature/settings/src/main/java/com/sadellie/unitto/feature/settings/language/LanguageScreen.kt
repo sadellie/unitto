@@ -36,6 +36,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,13 +54,18 @@ import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.openLink
 
 private val languages = mapOf(
-    "" to R.string.auto_label,
+    "" to R.string.system,
     "en" to R.string.locale_en,
-    "en_rGB" to R.string.locale_en_rGB,
+    "en-GB" to R.string.locale_en_rGB,
     "de" to R.string.locale_de,
+    "es" to R.string.locale_es,
     "fr" to R.string.locale_fr,
+    "hu" to R.string.locale_hu,
+    "id" to R.string.locale_in,
     "it" to R.string.locale_it,
+    "nl" to R.string.locale_nl,
     "ru" to R.string.locale_ru,
+    "tr" to R.string.locale_tr,
 )
 
 @Composable
@@ -75,14 +82,23 @@ private fun LanguageScreen(
     navigateUp: () -> Unit,
 ) {
     val mContext = LocalContext.current
-    val currentLangKey = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+    val currentLangKey by remember {
+        mutableStateOf(AppCompatDelegate.getApplicationLocales().toLanguageTags())
+    }
+
+    fun changeLanguage(langKey: String) {
+        val selectedLocale = if (langKey == "") LocaleListCompat.getEmptyLocaleList()
+        else LocaleListCompat.forLanguageTags(langKey)
+
+        AppCompatDelegate.setApplicationLocales(selectedLocale)
+        navigateUp()
+    }
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.language_setting),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
-
             item("translate") {
                 Box(Modifier.padding(16.dp, 8.dp)) {
                     Row(
@@ -105,7 +121,10 @@ private fun LanguageScreen(
                             modifier = Modifier.size(24.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
+                        Column(
+                            Modifier
+                                .weight(1f)
+                                .padding(vertical = 8.dp)) {
                             Text(
                                 text = stringResource(R.string.translate_app),
                                 style = MaterialTheme.typography.bodyLarge,
@@ -139,13 +158,6 @@ private fun LanguageScreen(
             }
         }
     }
-}
-
-private fun changeLanguage(langKey: String) {
-    val selectedLocale = if (langKey == "") LocaleListCompat.getEmptyLocaleList()
-    else LocaleListCompat.forLanguageTags(langKey)
-
-    AppCompatDelegate.setApplicationLocales(selectedLocale)
 }
 
 @Preview

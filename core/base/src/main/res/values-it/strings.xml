@@ -63,7 +63,7 @@
     <string name="gram">Grammo</string>
     <string name="gram_short">g</string>
     <string name="kilogram">Chilogrammo</string>
-    <string name="kilogram_short">hg</string>
+    <string name="kilogram_short">kg</string>
     <string name="metric_ton">Tonnellata metrica</string>
     <string name="metric_ton_short">t</string>
     <string name="imperial_ton">Tonnellata imperiale</string>
@@ -101,45 +101,45 @@
     <!-- Speed -->
     <string name="millimeter_per_hour">Millimetro all\'ora</string>
     <string name="millimeter_per_hour_short">mm/h</string>
-    <string name="millimeter_per_minute">Millimetro al minuto</string>
+    <string name="millimeter_per_minute">Millimetro/minuto</string>
     <string name="millimeter_per_minute_short">mm/m</string>
-    <string name="millimeter_per_second">Millimetro al secondo</string>
+    <string name="millimeter_per_second">Millimetro/secondo</string>
     <string name="millimeter_per_second_short">mm/s</string>
     <string name="centimeter_per_hour">Centimetro all\'ora</string>
     <string name="centimeter_per_hour_short">cm/h</string>
-    <string name="centimeter_per_minute">Centimetro al minuto</string>
+    <string name="centimeter_per_minute">Centimetro/minuto</string>
     <string name="centimeter_per_minute_short">cm/m</string>
-    <string name="centimeter_per_second">Centimetro al secondo</string>
+    <string name="centimeter_per_second">Centimetro/secondo</string>
     <string name="centimeter_per_second_short">cm/s</string>
     <string name="meter_per_hour">Metro all\'ora</string>
     <string name="meter_per_hour_short">m/h</string>
-    <string name="meter_per_minute">Metro al minuto</string>
+    <string name="meter_per_minute">Metro/minuto</string>
     <string name="meter_per_minute_short">m/m</string>
-    <string name="meter_per_second">Metro al secondo</string>
+    <string name="meter_per_second">Metro/secondo</string>
     <string name="meter_per_second_short">m/s</string>
     <string name="kilometer_per_hour">Chilometro all\'ora</string>
     <string name="kilometer_per_hour_short">km/h</string>
-    <string name="kilometer_per_minute">Chilometro al minuto</string>
+    <string name="kilometer_per_minute">Chilometro/minuto</string>
     <string name="kilometer_per_minute_short">km/m</string>
-    <string name="kilometer_per_second">Chilometro al secondo</string>
+    <string name="kilometer_per_second">Chilometro/secondo</string>
     <string name="kilometer_per_second_short">km/s</string>
     <string name="foot_per_hour">Piede all\'ora</string>
     <string name="foot_per_hour_short">ft/h</string>
-    <string name="foot_per_minute">Piede al minuto</string>
+    <string name="foot_per_minute">Piede/minuto</string>
     <string name="foot_per_minute_short">ft/m</string>
-    <string name="foot_per_second">Piede al secondo</string>
+    <string name="foot_per_second">Piede/secondo</string>
     <string name="foot_per_second_short">ft/s</string>
     <string name="yard_per_hour">Iarda all\'ora</string>
     <string name="yard_per_hour_short">yd/h</string>
     <string name="yard_per_minute">Iarda al minuto</string>
     <string name="yard_per_minute_short">yd/m</string>
-    <string name="yard_per_second">Iarda al secondo</string>
+    <string name="yard_per_second">Iarda/secondo</string>
     <string name="yard_per_second_short">yd/s</string>
     <string name="mile_per_hour">Miglia all\'ora</string>
     <string name="mile_per_hour_short">mi/h</string>
     <string name="mile_per_minute">Miglia al minuto</string>
     <string name="mile_per_minute_short">mi/m</string>
-    <string name="mile_per_second">Miglia al secondo</string>
+    <string name="mile_per_second">Miglia/secondo</string>
     <string name="mile_per_second_short">mi/s</string>
     <string name="knot">Nodi</string>
     <string name="knot_short">kt</string>
@@ -190,41 +190,41 @@
     <string name="exabyte_short">EB</string>
 
     <!-- Data transfer -->
-    <string name="bit_per_second">Bit al secondo</string>
+    <string name="bit_per_second">Bit/secondo</string>
     <string name="bit_per_second_short">b/s</string>
-    <string name="kibibit_per_second">Kibibit al secondo</string>
+    <string name="kibibit_per_second">Kibibit/secondo</string>
     <string name="kibibit_per_second_short">Kib/s</string>
-    <string name="kilobit_per_second">Kilobit al secondo</string>
+    <string name="kilobit_per_second">Kilobit/secondo</string>
     <string name="kilobit_per_second_short">Kb/s</string>
-    <string name="megabit_per_second">Megabit al secondo</string>
+    <string name="megabit_per_second">Megabit/secondo</string>
     <string name="megabit_per_second_short">Mb/s</string>
-    <string name="mebibit_per_second">Mebibit al secondo</string>
+    <string name="mebibit_per_second">Mebibit/secondo</string>
     <string name="mebibit_per_second_short">Mib/s</string>
-    <string name="gigabit_per_second">Gigabit al secondo</string>
+    <string name="gigabit_per_second">Gigabit/secondo</string>
     <string name="gigabit_per_second_short">Gb/s</string>
-    <string name="terabit_per_second">Terabit al secondo</string>
+    <string name="terabit_per_second">Terabit/secondo</string>
     <string name="terabit_per_second_short">Tb/s</string>
-    <string name="petabit_per_second">Petabit al secondo</string>
+    <string name="petabit_per_second">Petabit/secondo</string>
     <string name="petabit_per_second_short">Pb/s</string>
-    <string name="exabit_per_second">Exabit al secondo</string>
+    <string name="exabit_per_second">Exabit/secondo</string>
     <string name="exabit_per_second_short">Eb/s</string>
-    <string name="byte_per_second">Byte al secondo</string>
+    <string name="byte_per_second">Byte/secondo</string>
     <string name="byte_per_second_short">B/s</string>
-    <string name="kibibyte_per_second">Kibibyte al secondo</string>
+    <string name="kibibyte_per_second">Kibibyte/secondo</string>
     <string name="kibibyte_per_second_short">KiB/s</string>
-    <string name="kilobyte_per_second">Kilobyte al secondo</string>
+    <string name="kilobyte_per_second">Kilobyte/secondo</string>
     <string name="kilobyte_per_second_short">KB/s</string>
-    <string name="megabyte_per_second">Megabyte al secondo</string>
+    <string name="megabyte_per_second">Megabyte/secondo</string>
     <string name="megabyte_per_second_short">MB/s</string>
-    <string name="mebibyte_per_second">Mebibyte al secondo</string>
+    <string name="mebibyte_per_second">Mebibyte/secondo</string>
     <string name="mebibyte_per_second_short">MiB/s</string>
-    <string name="gigabyte_per_second">Gigabyte al secondo</string>
+    <string name="gigabyte_per_second">Gigabyte/secondo</string>
     <string name="gigabyte_per_second_short">GB/s</string>
-    <string name="terabyte_per_second">Terabyte al secondo</string>
+    <string name="terabyte_per_second">Terabyte/secondo</string>
     <string name="terabyte_per_second_short">TB/s</string>
-    <string name="petabyte_per_second">Petabyte al secondo</string>
+    <string name="petabyte_per_second">Petabyte/secondo</string>
     <string name="petabyte_per_second_short">PB/s</string>
-    <string name="exabyte_per_second">Exabyte al secondo</string>
+    <string name="exabyte_per_second">Exabyte/secondo</string>
     <string name="exabyte_per_second_short">EB/s</string>
 
     <!-- Volume -->
@@ -234,7 +234,7 @@
     <string name="milliliter_short">mL</string>
     <string name="liter">Litro</string>
     <string name="liter_short">L</string>
-    <string name="us_liquid_gallon">Gallone USA</string>
+    <string name="us_liquid_gallon">Gallone US</string>
     <string name="us_liquid_gallon_short">gal (US)</string>
     <string name="us_liquid_quart">Quarto US</string>
     <string name="us_liquid_quart_short">qt (US)</string>
@@ -259,7 +259,7 @@
     <string name="imperial_fluid_ounce">Oncia liquida imperiale</string>
     <string name="imperial_fluid_ounce_short">fl oz (UK)</string>
     <string name="imperial_tablespoon">Cucchiaio imperiale</string>
-    <string name="imperial_tablespoon_short">Cucchiaino (UK)</string>
+    <string name="imperial_tablespoon_short">Cucchiaio (UK)</string>
     <string name="imperial_teaspoon">Cucchiaino imperiale</string>
     <string name="imperial_teaspoon_short">Cucchiaino (UK)</string>
     <string name="cubic_millimeter">Millimetro cubo</string>
@@ -344,9 +344,9 @@
     <string name="megaton_short">Mt</string>
     <string name="gigaton">Gigatone di TNT</string>
     <string name="gigaton_short">Gt</string>
-    <string name="calorie_th">Calorie (th)</string>
+    <string name="calorie_th">Caloria (th)</string>
     <string name="calorie_th_short">cal</string>
-    <string name="kilocalorie_th">Kilocalorie (th)</string>
+    <string name="kilocalorie_th">Chilocaloria (th)</string>
     <string name="kilocalorie_th_short">kcal</string>
 
     <!-- Power -->
@@ -400,7 +400,9 @@
     <string name="megapascal">Megapascal</string>
     <string name="megapascal_short">MPa</string>
     <string name="gigapascal">Gigapascal</string>
-    <string name="gigapascal_short">GPA</string>
+
+    <!-- it should be GPa, not GPA -->
+    <string name="gigapascal_short">GPa</string>
     <string name="terapascal">Terapascal</string>
     <string name="terapascal_short">TPa</string>
     <string name="petapascal">Petapascal</string>
@@ -641,11 +643,11 @@
     <string name="temperature">Temperatura</string>
     <string name="speed">Velocità</string>
     <string name="mass">Massa</string>
-    <string name="data">Data</string>
+    <string name="data">Dati</string>
     <string name="energy">Energia</string>
     <string name="power">Potenza</string>
     <string name="angle">Angolo</string>
-    <string name="data_transfer">Traferimenti dati</string>
+    <string name="data_transfer">Traferimento dati</string>
     <string name="pressure">Pressione</string>
     <string name="acceleration">Accelerazione</string>
     <string name="currency">Valuta</string>
@@ -744,7 +746,9 @@
     <string name="megaweber_short">MWb</string>
     <string name="gigaweber">Gigaweber</string>
     <string name="gigaweber_short">GWb</string>
-    <string name="flux">Flusso</string>
+
+    <!-- If flusso magnetico is too long it could be "Flusso magn." -->
+    <string name="flux">Flusso magnetico</string>
     <string name="open_source">Vedi codice sorgente</string>
     <string name="translate_app">Traduci questa app</string>
     <string name="translate_app_support">Unisciti al progetto POEditor per aiutare</string>
@@ -991,11 +995,17 @@
     <string name="cubic_foot_per_minute_short">ft3/m</string>
     <string name="cubic_foot_per_second">Piede cubo/secondo</string>
     <string name="cubic_foot_per_second_short">ft3/s</string>
-    <string name="gallon_per_hour_us">Gallone/ora (U.S.)</string>
+
+    <!-- It would be better written (US) without dots -->
+    <string name="gallon_per_hour_us">Gallone/ora (US)</string>
     <string name="gallon_per_hour_us_short">gal/h</string>
-    <string name="gallon_per_minute_us">Gallone/minuto (U.S.)</string>
+
+    <!-- It would be better written (US) without dots -->
+    <string name="gallon_per_minute_us">Gallone/minuto (US)</string>
     <string name="gallon_per_minute_us_short">gal/m</string>
-    <string name="gallon_per_second_us">Gallone/secondo (U.S.)</string>
+
+    <!-- It would be better written (US) without dots -->
+    <string name="gallon_per_second_us">Gallone/secondo (US)</string>
     <string name="gallon_per_second_us_short">gal/s</string>
     <string name="gallon_per_hour_imperial">Gallone/ora (Imperiale)</string>
     <string name="gallon_per_hour_imperial_short">gal/h</string>
@@ -1098,4 +1108,37 @@ Maybe this can be labeled better? Let me know. It should be something that can d
 Used in this dialog window. Should be short -->
     <string name="next_label">Avanti</string>
     <string name="formatting_setting_preview_box_label">Anteprima (tocca per cambiare)</string>
+    <string name="gibibit">Gibibit</string>
+    <string name="gibibit_short">Gib</string>
+    <string name="gibibyte">Gibibyte</string>
+    <string name="gibibyte_short">GiB</string>
+    <string name="gibibit_per_second">Gibibit/secondo</string>
+    <string name="gibibit_per_second_short">Gib/s</string>
+    <string name="gibibyte_per_second">Gibibyte/secondo</string>
+    <string name="gibibyte_per_second_short">GiB/s</string>
+    <string name="time_zone_screen">Fusi orari</string>
+    <string name="try_again_label">Click per riprovare</string>
+    <string name="tomorrow">Domani</string>
+    <string name="yesterday">Ieri</string>
+    <string name="search_text_field_placeholder">Cerca…</string>
+    <string name="add_time_zone_title">Aggiungi fuso orario</string>
+    <string name="middle_zero_option">Zero al centro</string>
+    <string name="middle_zero_option_support">Scambia pulsanti zero e decimali</string>
+    <string name="difference">Differenza</string>
+    <string name="add">Aggiungi</string>
+    <string name="subtract">Sottrai</string>
+    <string name="date_calculator">Calcolatore data</string>
+    <string name="language_setting">Lingua</string>
+    <string name="language_setting_support">Cambia lingua dell\'app</string>
+    <string name="system_font_setting">Font di sistema</string>
+    <string name="system_font_setting_support">Usa font di sistema per i testi nell\'app</string>
+    <string name="fuel_consumption">Carburante</string>
+    <string name="km_per_l_short">km/L</string>
+    <string name="l_per_km_short">L/km</string>
+    <string name="l_per_100_km_short">L/100 km</string>
+    <string name="partial_history_view_setting">Vista cronologia parziale</string>
+    <string name="partial_history_view_setting_support">Vedi ultimo risultato in cronologia</string>
+    <string name="calculator_settings_support">Vista cronologia</string>
+    <string name="converter_settings_support">Gruppi di unità, ordine, formato</string>
+    <string name="display_settings">Schermo</string>
 </resources>

@@ -34,7 +34,19 @@ android {
         targetSdk = 34
         versionCode = 25
         versionName = "Nadeshiko Pink"
-        resourceConfigurations += setOf("en", "de", "en-rGB", "fr", "it", "ru")
+        resourceConfigurations += setOf(
+            "en",
+            "en-rGB",
+            "de",
+            "es",
+            "fr",
+            "hu",
+            "in",
+            "it",
+            "nl",
+            "ru",
+            "tr",
+        )
     }
 
     buildTypes {
