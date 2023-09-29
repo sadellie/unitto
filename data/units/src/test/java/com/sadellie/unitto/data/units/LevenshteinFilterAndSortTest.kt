@@ -38,7 +38,7 @@ val baseList = listOf(
     NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.kilometer, R.string.kilometer_short),
     NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.mile, R.string.mile_short),
     NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.pound, R.string.pound_short),
-    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.kilometer_per_square_second, R.string.kilometer_per_square_second_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.kilometer_per_second, R.string.kilometer_per_second_short),
 )
 
 @RunWith(RobolectricTestRunner::class)
@@ -52,7 +52,7 @@ class LevenshteinFilterAndSortTest {
         val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
-            listOf("Kilometer", "Kilometer per square", "Attometer", "Nanometer"),
+            listOf("Kilometer", "Kilometer/second", "Attometer", "Nanometer"),
             result
         )
     }
@@ -63,7 +63,7 @@ class LevenshteinFilterAndSortTest {
         val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
-            listOf("Kilometer per square", "Kilometer"),
+            listOf("Kilometer", "Kilometer/second"),
             result
         )
     }
@@ -74,7 +74,7 @@ class LevenshteinFilterAndSortTest {
         val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
-            listOf("Meter", "Attometer", "Nanometer", "Millimeter", "Kilometer","Kilometer per square"),
+            listOf("Meter", "Attometer", "Nanometer", "Millimeter", "Kilometer","Kilometer/second"),
             result
         )
     }
@@ -96,7 +96,7 @@ class LevenshteinFilterAndSortTest {
         val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
-            listOf("Attometer", "Nanometer", "Millimeter", "Meter", "Kilometer", "Kilometer per square"),
+            listOf("Attometer", "Nanometer", "Millimeter", "Meter", "Kilometer", "Kilometer/second"),
             result
         )
     }

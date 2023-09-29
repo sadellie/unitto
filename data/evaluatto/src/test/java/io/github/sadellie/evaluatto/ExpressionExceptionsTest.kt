@@ -39,4 +39,7 @@ class ExpressionExceptionsTest {
 
     @Test
     fun `ugly ahh expression2`() = assertExprFail(TokenizerException.BadNumber::class.java, "...")
+
+    @Test
+    fun `too big`() = assertExprFail(ExpressionException.TooBig::class.java, "999999!")
 }

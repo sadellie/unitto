@@ -18,6 +18,7 @@
 
 plugins {
     id("unitto.library")
+    id("unitto.android.library.jacoco")
 }
 
 android {

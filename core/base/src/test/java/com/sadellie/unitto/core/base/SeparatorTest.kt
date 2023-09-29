@@ -16,19 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+package com.sadellie.unitto.core.base
 
-android {
-    namespace = "com.sadellie.unitto.data.timezone"
-}
+import org.junit.Assert
+import org.junit.Test
 
-dependencies {
-    implementation(project(":core:base"))
-    implementation(project(":data:common"))
-    implementation(project(":data:model"))
-    implementation(project(":data:database"))
+class SeparatorTest {
+
+    @Test
+    fun testExists() {
+        Assert.assertNotNull(Separator)
+    }
+
+    @Test
+    fun testSeparatorSpace() {
+        Assert.assertEquals(0, Separator.SPACE)
+    }
+
+    @Test
+    fun testSeparatorPeriod() {
+        Assert.assertEquals(1, Separator.PERIOD)
+    }
+
+    @Test
+    fun testSeparatorComma() {
+        Assert.assertEquals(2, Separator.COMMA)
+    }
 }

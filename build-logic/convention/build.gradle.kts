@@ -65,5 +65,15 @@ gradlePlugin {
             id = "unitto.room"
             implementationClass = "UnittoRoomPlugin"
         }
+
+        register("unittoAndroidApplicationJacoco") {
+            id = "unitto.android.application.jacoco"
+            implementationClass = "UnittoAndroidApplicationJacocoPlugin"
+        }
+
+        register("unittoAndroidLibraryJacocoPlugin") {
+            id = "unitto.android.library.jacoco"
+            implementationClass = "UnittoAndroidLibraryJacocoPlugin"
+        }
     }
 }

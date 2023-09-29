@@ -39,6 +39,12 @@ internal fun Project.configureKotlinAndroid(
             minSdk = 21
         }
 
+        buildTypes {
+            getByName("debug") {
+                enableUnitTestCoverage = true
+            }
+        }
+
         flavorDimensions += "mainFlavorDimension"
         productFlavors {
             create("playStore") {}

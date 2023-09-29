@@ -18,23 +18,21 @@
 
 package com.sadellie.unitto.core.ui
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.sadellie.unitto.core.ui.datetime.formatOffset
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.Assert.assertEquals
-import org.robolectric.RobolectricTestRunner
 import java.time.ZonedDateTime
 
-@RunWith(RobolectricTestRunner::class)
 class ZonedDateTimeUtilsTest {
 
     @get: Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun `no difference`() = composeTestRule.setContent {
+    fun noDifference() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -45,7 +43,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show positive hour`() = composeTestRule.setContent {
+    fun showPositiveHour() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -58,7 +56,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show positive hour minute`() = composeTestRule.setContent {
+    fun showPositiveHourMinute() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -71,7 +69,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show positive hour minute day`() = composeTestRule.setContent {
+    fun showPositiveHourMinuteDay() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -84,7 +82,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show positive minute`() = composeTestRule.setContent {
+    fun showPositiveMinute() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -97,7 +95,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show positive minute day`() = composeTestRule.setContent {
+    fun showPositiveMinuteDay() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(23)
             .withMinute(45)
@@ -110,7 +108,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show negative hour`() = composeTestRule.setContent {
+    fun showNegativeHour() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -123,7 +121,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show negative hour minute`() = composeTestRule.setContent {
+    fun showNegativeHourMinute() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -136,7 +134,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show negative hour minute day`() = composeTestRule.setContent {
+    fun showNegativeHourMinuteDay() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -149,7 +147,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show negative minute`() = composeTestRule.setContent {
+    fun showNegativeMinute() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(12)
             .withMinute(0)
@@ -162,7 +160,7 @@ class ZonedDateTimeUtilsTest {
     }
 
     @Test
-    fun `show negative minute day`() = composeTestRule.setContent {
+    fun showNegativeMinuteDay() = composeTestRule.setContent {
         val currentTime = ZonedDateTime.now()
             .withHour(0)
             .withMinute(15)

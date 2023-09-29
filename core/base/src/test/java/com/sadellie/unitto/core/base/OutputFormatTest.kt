@@ -16,15 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.android.hilt")
-}
+package com.sadellie.unitto.core.base
 
-android {
-    namespace = "com.sadellie.unitto.data.epoch"
-}
+import org.junit.Assert
+import org.junit.Test
 
-dependencies {
-    testImplementation(libs.junit.junit)
+class OutputFormatTest {
+
+    @Test
+    fun testExists() {
+        Assert.assertNotNull(OutputFormat)
+    }
+
+    @Test
+    fun testOutputFormatPlain() {
+        Assert.assertEquals(0, OutputFormat.PLAIN)
+    }
+
+    @Test
+    fun testOutputFormatAllowEngineering() {
+        Assert.assertEquals(1, OutputFormat.ALLOW_ENGINEERING)
+    }
+
+    @Test
+    fun testOutputFormatForceEngineering() {
+        Assert.assertEquals(2, OutputFormat.FORCE_ENGINEERING)
+    }
 }
