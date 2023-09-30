@@ -227,8 +227,10 @@ private fun Ready(
                         historyListHeight = dragState.requireOffset().toDp()
                     }
                 }
-
                 focusManager.clearFocus()
+            }
+
+            LaunchedEffect(dragState.currentValue) {
                 showClearHistoryButton = dragState.currentValue == DragState.OPEN
             }
 
