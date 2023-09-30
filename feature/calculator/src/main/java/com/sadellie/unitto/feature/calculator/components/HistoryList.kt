@@ -224,7 +224,7 @@ private fun HistoryListItem(
     }
 }
 
-internal val HistoryItemHeight = 92.dp
+internal val HistoryItemHeight = 108.dp
 
 @Preview
 @Composable
