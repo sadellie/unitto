@@ -186,8 +186,8 @@ private fun Ready(
             val dragState = remember {
                 AnchoredDraggableState(
                     initialValue = DragState.CLOSED,
-                    positionalThreshold = { distance -> distance * 0.5f },
-                    velocityThreshold = { with(density) { HistoryItemHeight.toPx() } },
+                    positionalThreshold = { 0f },
+                    velocityThreshold = { 0f },
                     animationSpec = tween()
                 )
             }
