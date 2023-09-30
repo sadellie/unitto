@@ -23,19 +23,20 @@ plugins {
 group = "com.sadellie.unitto.buildlogic"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }
 
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.ksp.gradlePlugin)
 }
 
 gradlePlugin {
@@ -58,6 +59,11 @@ gradlePlugin {
         register("unittoLibraryComposePlugin") {
             id = "unitto.library.compose"
             implementationClass = "UnittoLibraryComposePlugin"
+        }
+
+        register("unittoRoomPlugin") {
+            id = "unitto.room"
+            implementationClass = "UnittoRoomPlugin"
         }
     }
 }

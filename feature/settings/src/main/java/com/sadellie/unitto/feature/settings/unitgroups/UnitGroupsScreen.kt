@@ -61,7 +61,7 @@ import org.burnoutcrew.reorderable.reorderable
 @Composable
 internal fun UnitGroupsScreen(
     viewModel: UnitGroupsViewModel = hiltViewModel(),
-    navigateUpAction: () -> Unit
+    navigateUpAction: () -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.unit_groups_setting),

@@ -23,39 +23,57 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
-import android.widget.Toast
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.textfield.addTokens
+import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
+import com.sadellie.unitto.core.ui.isPortrait
+import com.sadellie.unitto.core.ui.showToast
+import com.sadellie.unitto.feature.datecalculator.components.AddSubtractKeyboard
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeSelectorBlock
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
@@ -65,18 +83,24 @@ import java.time.ZonedDateTime
 @Composable
 internal fun AddSubtractPage(
     viewModel: AddSubtractViewModel = hiltViewModel(),
+    toggleTopBar: (Boolean) -> Unit,
+    showKeyboard: Boolean,
+    toggleKeyboard: (Boolean) -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     AddSubtractView(
         uiState = uiState,
+        toggleTopBar = toggleTopBar,
+        showKeyboard = showKeyboard,
+        toggleKeyboard = toggleKeyboard,
         updateStart = viewModel::updateStart,
         updateYears = viewModel::updateYears,
         updateMonths = viewModel::updateMonths,
         updateDays = viewModel::updateDays,
         updateHours = viewModel::updateHours,
         updateMinutes = viewModel::updateMinutes,
-        updateAddition = viewModel::updateAddition
+        updateAddition = viewModel::updateAddition,
     )
 }
 
@@ -85,35 +109,66 @@ internal fun AddSubtractPage(
 @Composable
 private fun AddSubtractView(
     uiState: AddSubtractState,
+    toggleTopBar: (Boolean) -> Unit,
+    showKeyboard: Boolean,
+    toggleKeyboard: (Boolean) -> Unit,
     updateStart: (ZonedDateTime) -> Unit,
-    updateYears: (String) -> Unit,
-    updateMonths: (String) -> Unit,
-    updateDays: (String) -> Unit,
-    updateHours: (String) -> Unit,
-    updateMinutes: (String) -> Unit,
+    updateYears: (TextFieldValue) -> Unit,
+    updateMonths: (TextFieldValue) -> Unit,
+    updateDays: (TextFieldValue) -> Unit,
+    updateHours: (TextFieldValue) -> Unit,
+    updateMinutes: (TextFieldValue) -> Unit,
     updateAddition: (Boolean) -> Unit,
 ) {
-    var dialogState by remember { mutableStateOf(DialogState.NONE) }
     val mContext = LocalContext.current
+    val focusManager = LocalFocusManager.current
+    val landscape = !isPortrait()
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = { mContext.addEvent(uiState.start, uiState.result) }) {
-                Icon(
-                    imageVector = Icons.Default.Event,
-                    contentDescription = null,
-                )
-            }
-        }
-    ) {
-        LazyColumn(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(bottom = 88.dp)
+    var dialogState by remember { mutableStateOf(DialogState.NONE) }
+    var addSymbol: ((TextFieldValue) -> Unit)? by remember { mutableStateOf(null) }
+    var focusedTextFieldValue: TextFieldValue? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(showKeyboard, landscape) {
+        toggleTopBar(!(showKeyboard and landscape))
+    }
+
+    LaunchedEffect(addSymbol, focusedTextFieldValue) {
+        toggleKeyboard((addSymbol != null) and (focusedTextFieldValue != null))
+    }
+
+    BackHandler(showKeyboard) {
+        focusManager.clearFocus()
+        addSymbol = null
+        focusedTextFieldValue = null
+    }
+
+    Column(Modifier.fillMaxSize()) {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
+                        mContext.addEvent(uiState.start, uiState.result)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Event,
+                        contentDescription = null,
+                    )
+                }
+            },
+            contentWindowInsets = WindowInsets(0,0,0,0)
         ) {
-            item("dates") {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
                 FlowRow(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(vertical = 16.dp),
                     maxItemsInEachRow = 2,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -138,9 +193,7 @@ private fun AddSubtractView(
                         dateTime = uiState.result,
                     )
                 }
-            }
 
-            item("modes") {
                 SingleChoiceSegmentedButtonRow(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -148,57 +201,119 @@ private fun AddSubtractView(
                     SegmentedButton(
                         selected = uiState.addition,
                         onClick = { updateAddition(true) },
-                        shape = SegmentedButtonDefaults.shape(position = 0, count = 2),
+                        shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
                         icon = {}
                     ) {
-                        Icon(Icons.Outlined.Add, null)
+                        Icon(Icons.Outlined.Add, stringResource(R.string.add))
                     }
                     SegmentedButton(
                         selected = !uiState.addition,
                         onClick = { updateAddition(false) },
-                        shape = SegmentedButtonDefaults.shape(position = 1, count = 2),
+                        shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
                         icon = {}
                     ) {
-                        Icon(Icons.Outlined.Remove, null)
+                        Icon(Icons.Outlined.Remove, stringResource(R.string.subtract))
                     }
                 }
-            }
 
-            item("textFields") {
-                Column {
-                    TimeUnitTextField(
-                        value = uiState.years,
-                        onValueChange = updateYears,
-                        label = stringResource(R.string.date_difference_years),
-                        formatterSymbols = uiState.formatterSymbols
-                    )
-                    TimeUnitTextField(
-                        value = uiState.months,
-                        onValueChange = updateMonths,
-                        label = stringResource(R.string.date_difference_months),
-                        formatterSymbols = uiState.formatterSymbols
-                    )
-                    TimeUnitTextField(
-                        value = uiState.days,
-                        onValueChange = updateDays,
-                        label = stringResource(R.string.date_difference_days),
-                        formatterSymbols = uiState.formatterSymbols
-                    )
-                    TimeUnitTextField(
-                        value = uiState.hours,
-                        onValueChange = updateHours,
-                        label = stringResource(R.string.date_difference_hours),
-                        formatterSymbols = uiState.formatterSymbols
-                    )
-                    TimeUnitTextField(
-                        value = uiState.minutes,
-                        onValueChange = updateMinutes,
-                        label = stringResource(R.string.date_difference_minutes),
-                        imeAction = ImeAction.Done,
-                        formatterSymbols = uiState.formatterSymbols
-                    )
-                }
+                TimeUnitTextField(
+                    modifier = Modifier.onFocusEvent {
+                        if (it.hasFocus) {
+                            addSymbol = updateYears
+                            focusedTextFieldValue = uiState.years
+                        }
+                    },
+                    value = uiState.years,
+                    onValueChange = updateYears,
+                    label = stringResource(R.string.date_difference_years),
+                    formatterSymbols = uiState.formatterSymbols
+                )
+
+                TimeUnitTextField(
+                    modifier = Modifier.onFocusEvent {
+                        if (it.hasFocus) {
+                            addSymbol = updateMonths
+                            focusedTextFieldValue = uiState.months
+                        }
+                    },
+                    value = uiState.months,
+                    onValueChange = updateMonths,
+                    label = stringResource(R.string.date_difference_months),
+                    formatterSymbols = uiState.formatterSymbols
+                )
+
+                TimeUnitTextField(
+                    modifier = Modifier.onFocusEvent {
+                        if (it.hasFocus) {
+                            addSymbol = updateDays
+                            focusedTextFieldValue = uiState.days
+                        }
+                    },
+                    value = uiState.days,
+                    onValueChange = updateDays,
+                    label = stringResource(R.string.date_difference_days),
+                    formatterSymbols = uiState.formatterSymbols
+                )
+
+                TimeUnitTextField(
+                    modifier = Modifier.onFocusEvent {
+                        if (it.hasFocus) {
+                            addSymbol = updateHours
+                            focusedTextFieldValue = uiState.hours
+                        }
+                    },
+                    value = uiState.hours,
+                    onValueChange = updateHours,
+                    label = stringResource(R.string.date_difference_hours),
+                    formatterSymbols = uiState.formatterSymbols
+                )
+
+                TimeUnitTextField(
+                    modifier = Modifier.onFocusEvent {
+                        if (it.hasFocus) {
+                            addSymbol = updateMinutes
+                            focusedTextFieldValue = uiState.minutes
+                        }
+                    },
+                    value = uiState.minutes,
+                    onValueChange = updateMinutes,
+                    label = stringResource(R.string.date_difference_minutes),
+                    formatterSymbols = uiState.formatterSymbols
+                )
             }
+        }
+        AnimatedVisibility(
+            visible = showKeyboard,
+            enter = slideInVertically { it / 2 } + fadeIn(),
+            exit = slideOutVertically { it / 2 } + fadeOut()
+        ) {
+            HorizontalDivider()
+            AddSubtractKeyboard(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .fillMaxHeight(if (isPortrait()) 0.4f else 0.6f)
+                    .padding(2.dp, 4.dp),
+                addSymbol = {
+                    val newValue = focusedTextFieldValue?.addTokens(it)
+                    if (newValue != null) {
+                        addSymbol?.invoke(newValue)
+                    }
+                },
+                deleteSymbol = {
+                    val newValue = focusedTextFieldValue?.deleteTokens()
+                    if (newValue != null) {
+                        addSymbol?.invoke(newValue)
+                    }
+                },
+                onConfirm = {
+                    focusManager.clearFocus()
+                    addSymbol = null
+                    focusedTextFieldValue = null
+                },
+                allowVibration = uiState.allowVibration,
+                imeAction = if (addSymbol == updateMinutes) ImeAction.Done else ImeAction.Next
+            )
         }
     }
 
@@ -225,7 +340,7 @@ private fun Context.addEvent(start: ZonedDateTime, end: ZonedDateTime) {
     try {
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {
-        Toast.makeText(this, R.string.error_label, Toast.LENGTH_SHORT).show()
+        showToast(this, this.getString(R.string.error_label))
     }
 }
 
@@ -234,14 +349,17 @@ private fun Context.addEvent(start: ZonedDateTime, end: ZonedDateTime) {
 fun AddSubtractViewPreview() {
     AddSubtractView(
         uiState = AddSubtractState(
-            years = "12"
+            years = TextFieldValue("12")
         ),
+        toggleTopBar = {},
+        showKeyboard = false,
+        toggleKeyboard = {},
         updateStart = {},
         updateYears = {},
         updateMonths = {},
         updateDays = {},
         updateHours = {},
         updateMinutes = {},
-        updateAddition = {}
+        updateAddition = {},
     )
 }

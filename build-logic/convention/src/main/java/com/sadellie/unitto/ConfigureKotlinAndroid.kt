@@ -29,9 +29,8 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-@Suppress("UnstableApiUsage")
 internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *>,
 ) {
     commonExtension.apply {
         compileSdk = 34
@@ -74,7 +73,7 @@ internal fun Project.configureKotlinAndroid(
                 "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
                 "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                 "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
-                "-opt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             )
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
@@ -90,10 +89,10 @@ internal fun Project.configureKotlinAndroid(
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     dependencies {
-        add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
+        add("coreLibraryDesugaring", libs.findLibrary("com.android.tools.desugar.jdk.libs").get())
     }
 }
 
-fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+fun CommonExtension<*, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }

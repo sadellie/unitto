@@ -11,7 +11,8 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 
-val @receiver:Suppress("UNUSED") UnittoIcons.Percent: ImageVector
+@Suppress("UnusedReceiverParameter")
+val UnittoIcons.Percent: ImageVector
     get() {
         if (_percent != null) {
             return _percent!!

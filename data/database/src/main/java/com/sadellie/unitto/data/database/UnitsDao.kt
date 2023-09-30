@@ -22,12 +22,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UnitsDao {
+
     @Query("SELECT * FROM units")
-    suspend fun getAll(): List<UnitsEntity>
+    fun getAllFlow(): Flow<List<UnitsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUnits(vararg units: UnitsEntity)
+    suspend fun insertUnit(unit: UnitsEntity)
+
+    @Query("SELECT * FROM units WHERE unitId == :unitId LIMIT 1")
+    suspend fun getById(unitId: String): UnitsEntity?
 }

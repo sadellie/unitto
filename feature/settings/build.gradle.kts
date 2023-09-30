@@ -29,10 +29,12 @@ android {
 
 dependencies {
     implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.org.burnoutcrew.composereorderable)
+    implementation(libs.org.burnoutcrew.composereorderable.reorderable)
+    implementation(libs.androidx.appcompat.appcompat)
 
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:licenses")))
+    implementation(project(":data:common"))
+    implementation(project(":data:database"))
+    implementation(project(":data:model"))
+    implementation(project(":data:userprefs"))
+    implementation(project(":data:licenses"))
 }

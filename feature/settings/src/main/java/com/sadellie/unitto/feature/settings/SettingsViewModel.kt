@@ -20,77 +20,38 @@ package com.sadellie.unitto.feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.userprefs.UserPreferences
+import com.sadellie.unitto.data.common.stateIn
+import com.sadellie.unitto.data.database.CurrencyRatesDao
+import com.sadellie.unitto.data.userprefs.GeneralPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+internal class SettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
+    private val currencyRatesDao: CurrencyRatesDao,
 ) : ViewModel() {
-    val userPrefs = userPrefsRepository.allPreferencesFlow
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            UserPreferences()
-        )
+    val userPrefs = userPrefsRepository.generalPrefs
+        .stateIn(viewModelScope, GeneralPreferences())
+
+    val cachePercentage = currencyRatesDao.size()
+        .map {
+            (it / 100_000f).coerceIn(0f, 1f)
+        }
+        .stateIn(viewModelScope, 0f)
 
     /**
      * @see UserPreferencesRepository.updateVibrations
      */
-    fun updateVibrations(enabled: Boolean) {
-        viewModelScope.launch {
-            userPrefsRepository.updateVibrations(enabled)
-        }
+    fun updateVibrations(enabled: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateVibrations(enabled)
     }
 
-    /**
-     * @see UserPreferencesRepository.updateMiddleZero
-     */
-    fun updateMiddleZero(enabled: Boolean) {
-        viewModelScope.launch {
-            userPrefsRepository.updateMiddleZero(enabled)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateStartingScreen
-     */
-    fun updateStartingScreen(startingScreen: String) {
-        viewModelScope.launch {
-            userPrefsRepository.updateStartingScreen(startingScreen)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateToolsExperiment
-     */
-    fun enableToolsExperiment() {
-        viewModelScope.launch {
-            userPrefsRepository.updateToolsExperiment(true)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateUnitConverterFormatTime
-     */
-    fun updateUnitConverterFormatTime(enabled: Boolean) {
-        viewModelScope.launch {
-            userPrefsRepository.updateUnitConverterFormatTime(enabled)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateUnitConverterSorting
-     */
-    fun updateUnitConverterSorting(sorting: UnitsListSorting) {
-        viewModelScope.launch {
-            userPrefsRepository.updateUnitConverterSorting(sorting)
-        }
+    fun clearCache() = viewModelScope.launch(Dispatchers.IO) {
+        currencyRatesDao.clear()
     }
 }

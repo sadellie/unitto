@@ -18,25 +18,20 @@
 
 package com.sadellie.unitto
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
-import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.navigation.converterGraph
 import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorGraph
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
-import com.sadellie.unitto.feature.unitslist.UnitsListViewModel
-import com.sadellie.unitto.feature.unitslist.navigation.leftScreen
-import com.sadellie.unitto.feature.unitslist.navigation.navigateToLeftSide
-import com.sadellie.unitto.feature.unitslist.navigation.navigateToRightSide
-import com.sadellie.unitto.feature.unitslist.navigation.rightScreen
 import com.sadellie.unitto.timezone.navigation.timeZoneGraph
 import io.github.sadellie.themmo.ThemmoController
 
@@ -47,34 +42,18 @@ internal fun UnittoNavigation(
     startDestination: String,
     openDrawer: () -> Unit
 ) {
-    val converterViewModel: ConverterViewModel = hiltViewModel()
-    val unitsListViewModel: UnitsListViewModel = hiltViewModel()
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() }
     ) {
         converterGraph(
-            navigateToLeftScreen = navController::navigateToLeftSide,
-            navigateToRightScreen = navController::navigateToRightSide,
+            openDrawer = openDrawer,
+            navController = navController,
             navigateToSettings = navController::navigateToSettings,
-            navigateToMenu = openDrawer,
-            viewModel = converterViewModel
-        )
-
-        leftScreen(
-            viewModel = unitsListViewModel,
-            navigateUp = navController::navigateUp,
-            navigateToUnitGroups = navController::navigateToUnitGroups,
-            onSelect = converterViewModel::updateUnitFrom
-        )
-
-        rightScreen(
-            viewModel = unitsListViewModel,
-            navigateUp = navController::navigateUp,
-            navigateToUnitGroups = navController::navigateToUnitGroups,
-            onSelect = converterViewModel::updateUnitTo
+            navigateToUnitGroups = navController::navigateToUnitGroups
         )
 
         settingGraph(

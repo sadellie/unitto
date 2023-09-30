@@ -21,8 +21,11 @@ package com.sadellie.unitto.core.ui
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
 import com.sadellie.unitto.core.base.R
 
 /**
@@ -32,6 +35,17 @@ fun openLink(mContext: Context, url: String) {
     try {
         mContext.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
     } catch (e: ActivityNotFoundException) {
-        Toast.makeText(mContext, R.string.error_label, Toast.LENGTH_SHORT).show()
+        showToast(mContext, mContext.getString(R.string.error_label))
     }
 }
+
+fun showToast(
+    mContext: Context,
+    text: String,
+    duration: Int = Toast.LENGTH_SHORT
+) {
+    Toast.makeText(mContext, text, duration).show()
+}
+
+@Composable
+fun isPortrait() = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT

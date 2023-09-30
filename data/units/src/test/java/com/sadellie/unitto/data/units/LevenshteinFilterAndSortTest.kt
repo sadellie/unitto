@@ -18,34 +18,38 @@
 
 package com.sadellie.unitto.data.units
 
-import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.DefaultUnit
+import android.content.Context
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.sortByLev
+import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.unit.filterByLev
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import java.math.BigDecimal
 
-val baseList: List<AbstractUnit> = listOf(
-    "Attometer",
-    "Nanometer",
-    "Millimeter",
-    "Meter",
-    "Kilometer",
-    "Mile",
-    "Pound",
-    "Kilometer per square"
-).map { name ->
-    DefaultUnit("", BigDecimal.ONE, UnitGroup.ANGLE, 0, 0)
-        .also { it.renderedName = name }
-}
+val baseList = listOf(
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.attometer, R.string.attometer_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.nanometer, R.string.nanometer_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.millimeter, R.string.millimeter_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.meter, R.string.meter_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.kilometer, R.string.kilometer_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.mile, R.string.mile_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.pound, R.string.pound_short),
+    NormalUnit("", BigDecimal.ONE, UnitGroup.ANGLE, R.string.kilometer_per_square_second, R.string.kilometer_per_square_second_short),
+)
 
+@RunWith(RobolectricTestRunner::class)
 class LevenshteinFilterAndSortTest {
+
+    private val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
 
     @Test
     fun testOneEdit() {
         val searchQuery = "Kelometer"
-        val result = baseList.asSequence().sortByLev(searchQuery).map { it.renderedName }.toList()
+        val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
             listOf("Kilometer", "Kilometer per square", "Attometer", "Nanometer"),
@@ -56,7 +60,7 @@ class LevenshteinFilterAndSortTest {
     @Test
     fun testLongQuery() {
         val searchQuery = "Kelometers per"
-        val result = baseList.asSequence().sortByLev(searchQuery).map { it.renderedName }.toList()
+        val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
             listOf("Kilometer per square", "Kilometer"),
@@ -67,7 +71,7 @@ class LevenshteinFilterAndSortTest {
     @Test
     fun testMultipleMatches() {
         val searchQuery = "meter"
-        val result = baseList.asSequence().sortByLev(searchQuery).map { it.renderedName }.toList()
+        val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
             listOf("Meter", "Attometer", "Nanometer", "Millimeter", "Kilometer","Kilometer per square"),
@@ -78,7 +82,7 @@ class LevenshteinFilterAndSortTest {
     @Test
     fun testNone() {
         val searchQuery = "Very long unit name that doesn't exist"
-        val result = baseList.asSequence().sortByLev(searchQuery).map { it.renderedName }.toList()
+        val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
             listOf<String>(),
@@ -89,7 +93,7 @@ class LevenshteinFilterAndSortTest {
     @Test
     fun testLowerAndUpperCases() {
         val searchQuery = "T"
-        val result = baseList.asSequence().sortByLev(searchQuery).map { it.renderedName }.toList()
+        val result = baseList.asSequence().filterByLev(searchQuery, mContext).map { mContext.getString(it.displayName) }.toList()
         println(result)
         assertEquals(
             listOf("Attometer", "Nanometer", "Millimeter", "Meter", "Kilometer", "Kilometer per square"),

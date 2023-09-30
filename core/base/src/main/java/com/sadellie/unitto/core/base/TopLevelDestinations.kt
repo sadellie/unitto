@@ -101,11 +101,12 @@ sealed class TopLevelDestinations(
 }
 
 // Shown in settings
-val TOP_LEVEL_GRAPH_ROUTES: Map<String, Int> by lazy {
-    mapOf(
-        TopLevelDestinations.Calculator.graph to R.string.calculator,
-        TopLevelDestinations.Converter.graph to R.string.unit_converter,
-        TopLevelDestinations.DateCalculator.graph to R.string.date_calculator,
+val TOP_LEVEL_DESTINATIONS by lazy {
+    listOf(
+        TopLevelDestinations.Calculator,
+        TopLevelDestinations.Converter,
+        TopLevelDestinations.DateCalculator,
+        // TopLevelDestinations.TimeZone,
     )
 }
 

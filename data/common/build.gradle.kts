@@ -25,6 +25,8 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":core:base")))
-    testImplementation(libs.junit)
+    implementation(libs.androidx.core.core.ktx)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
+    implementation(project(":core:base"))
+    testImplementation(libs.junit.junit)
 }

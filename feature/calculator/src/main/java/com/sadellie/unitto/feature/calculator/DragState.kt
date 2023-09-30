@@ -18,36 +18,4 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.gestures.AnchoredDraggableState
-import androidx.compose.foundation.gestures.DraggableAnchors
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
-
-internal enum class DragState { CLOSED, HALF, OPEN }
-
-@Composable
-internal fun rememberDragState(
-    initialValue: DragState = DragState.CLOSED,
-    historyItem: Dp,
-    max: Dp,
-): AnchoredDraggableState<DragState> {
-    val historyItemHeight = with(LocalDensity.current) { historyItem.toPx() }
-    val maxHeight = with(LocalDensity.current) { max.toPx() }
-
-    return remember(key1 = historyItem) {
-        AnchoredDraggableState(
-            initialValue = initialValue,
-            anchors = DraggableAnchors {
-                DragState.CLOSED at 0f
-                DragState.HALF at historyItemHeight
-                DragState.OPEN at maxHeight
-            },
-            positionalThreshold = { 0f },
-            velocityThreshold = { 0f },
-            animationSpec = tween()
-        )
-    }
-}
+internal enum class DragState { CLOSED, SMALL, OPEN }

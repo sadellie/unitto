@@ -18,11 +18,12 @@
 
 package com.sadellie.unitto.timezone
 
+import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.data.model.UnittoTimeZone
 import java.time.ZonedDateTime
 
 data class AddTimeZoneUIState(
-    val query: String = "",
+    val query: TextFieldValue = TextFieldValue(),
     val list: List<UnittoTimeZone> = emptyList(),
     val userTime: ZonedDateTime? = null,
 )

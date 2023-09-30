@@ -19,26 +19,33 @@
 plugins {
     id("unitto.library")
     id("unitto.android.hilt")
+    id("unitto.room")
 }
 
 android {
     namespace = "com.sadellie.unitto.data.units"
+
+    testOptions.unitTests.isIncludeAndroidResources = true
+
+    room {
+        val schemaLocation = "$projectDir/schemas"
+        schemaDirectory(schemaLocation)
+        println("Exported Database schema to $schemaLocation")
+    }
 }
 
 dependencies {
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.org.robolectric.robolectric)
 
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
+    implementation(libs.androidx.datastore.datastore.preferences)
 
-    implementation(libs.com.squareup.moshi)
-    implementation(libs.com.squareup.retrofit2)
+    implementation(libs.com.squareup.moshi.moshi.kotlin)
+    implementation(libs.com.squareup.retrofit2.converter.moshi)
 
-    implementation(libs.org.burnoutcrew.composereorderable)
-    implementation(libs.com.github.sadellie.themmo)
-
-    implementation(project(mapOf("path" to ":core:base")))
-    implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:model")))
+    implementation(project(":core:base"))
+    implementation(project(":data:database"))
+    implementation(project(":data:common"))
+    implementation(project(":data:model"))
 }

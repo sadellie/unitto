@@ -18,6 +18,8 @@
 
 package com.sadellie.unitto.feature.datecalculator.addsubtract
 
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
@@ -42,9 +44,10 @@ internal class AddSubtractViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AddSubtractState())
 
     val uiState: StateFlow<AddSubtractState> = _uiState
-        .combine(userPreferencesRepository.allPreferencesFlow) { uiState, userPrefs ->
+        .combine(userPreferencesRepository.addSubtractPrefs) { uiState, userPrefs ->
             return@combine uiState.copy(
-                formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
+                formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
+                allowVibration = userPrefs.enableVibrations,
             )
         }
         .onEach { updateResult() }
@@ -52,78 +55,57 @@ internal class AddSubtractViewModel @Inject constructor(
 
     fun updateStart(newValue: ZonedDateTime) = _uiState.update { it.copy(start = newValue) }
 
-    fun updateYears(newValue: String) = _uiState.update {
-        val years = when {
-            newValue.isEmpty() -> newValue
-            newValue.toLong() > 9_999L -> "9999"
-            else -> newValue
-        }
-
-        it.copy(years = years)
+    fun updateYears(value: TextFieldValue) = _uiState.update {
+        it.copy(years = checkWithMax(value, 9_999L))
     }
 
-    fun updateMonths(newValue: String) = _uiState.update {
-        val months = when {
-            newValue.isEmpty() -> newValue
-            newValue.toLong() > 9_999L -> "9999"
-            else -> newValue
-        }
-
-        it.copy(months = months)
+    fun updateMonths(value: TextFieldValue) = _uiState.update {
+        it.copy(months = checkWithMax(value, 9_999L))
     }
 
-    fun updateDays(newValue: String) = _uiState.update {
-        val days = when {
-            newValue.isEmpty() -> newValue
-            newValue.toLong() > 99_999L -> "99999"
-            else -> newValue
-        }
-
-        it.copy(days = days)
+    fun updateDays(value: TextFieldValue) = _uiState.update {
+        it.copy(days = checkWithMax(value, 99_999L))
     }
 
-    fun updateHours(newValue: String) = _uiState.update {
-        val hours = when {
-            newValue.isEmpty() -> newValue
-            newValue.toLong() > 9_999_999L -> "9999999"
-            else -> newValue
-        }
-
-        it.copy(hours = hours)
+    fun updateHours(value: TextFieldValue) = _uiState.update {
+        it.copy(hours = checkWithMax(value, 9_999_999L))
     }
 
-    fun updateMinutes(newValue: String) = _uiState.update {
-        val minutes = when {
-            newValue.isEmpty() -> newValue
-            newValue.toLong() > 99_999_999L -> "99999999"
-            else -> newValue
-        }
-
-        it.copy(minutes = minutes)
+    fun updateMinutes(value: TextFieldValue) = _uiState.update {
+        it.copy(minutes = checkWithMax(value, 99_999_999L))
     }
 
     // BCE is not handled properly because who gives a shit...
-    fun updateAddition(newValue: Boolean) = _uiState.update { it.copy(addition = newValue) }
+    fun updateAddition(newValue: Boolean) = _uiState.update {
+        it.copy(addition = newValue)
+    }
 
     private fun updateResult() = viewModelScope.launch(Dispatchers.Default) {
         // Gets canceled, works with latest _uiState only
         _uiState.update { ui ->
             val newResult = if (ui.addition) {
                 ui.start
-                    .plusYears(ui.years.ifEmpty { "0" }.toLong())
-                    .plusMonths(ui.months.ifEmpty { "0" }.toLong())
-                    .plusDays(ui.days.ifEmpty { "0" }.toLong())
-                    .plusHours(ui.hours.ifEmpty { "0" }.toLong())
-                    .plusMinutes(ui.minutes.ifEmpty { "0" }.toLong())
+                    .plusYears(ui.years.text.ifEmpty { "0" }.toLong())
+                    .plusMonths(ui.months.text.ifEmpty { "0" }.toLong())
+                    .plusDays(ui.days.text.ifEmpty { "0" }.toLong())
+                    .plusHours(ui.hours.text.ifEmpty { "0" }.toLong())
+                    .plusMinutes(ui.minutes.text.ifEmpty { "0" }.toLong())
             } else {
                 ui.start
-                    .minusYears(ui.years.ifEmpty { "0" }.toLong())
-                    .minusMonths(ui.months.ifEmpty { "0" }.toLong())
-                    .minusDays(ui.days.ifEmpty { "0" }.toLong())
-                    .minusHours(ui.hours.ifEmpty { "0" }.toLong())
-                    .minusMinutes(ui.minutes.ifEmpty { "0" }.toLong())
+                    .minusYears(ui.years.text.ifEmpty { "0" }.toLong())
+                    .minusMonths(ui.months.text.ifEmpty { "0" }.toLong())
+                    .minusDays(ui.days.text.ifEmpty { "0" }.toLong())
+                    .minusHours(ui.hours.text.ifEmpty { "0" }.toLong())
+                    .minusMinutes(ui.minutes.text.ifEmpty { "0" }.toLong())
             }
             ui.copy(result = newResult)
         }
+    }
+
+    private fun checkWithMax(value: TextFieldValue, maxValue: Long): TextFieldValue {
+        if (value.text.isEmpty()) return value
+        if (value.text.toLong() <= maxValue) return value
+        val maxValueText = maxValue.toString()
+        return TextFieldValue(maxValueText, TextRange(maxValueText.length))
     }
 }

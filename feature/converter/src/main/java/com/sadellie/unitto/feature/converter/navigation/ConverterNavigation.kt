@@ -18,38 +18,78 @@
 
 package com.sadellie.unitto.feature.converter.navigation
 
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
+import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.unittoComposable
+import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
+import com.sadellie.unitto.feature.converter.LeftSideRoute
+import com.sadellie.unitto.feature.converter.RightSideRoute
 
 private val graph = TopLevelDestinations.Converter.graph
 private val start = TopLevelDestinations.Converter.start
+private const val LEFT = "left"
+private const val RIGHT = "right"
 
 fun NavGraphBuilder.converterGraph(
-    navigateToLeftScreen: (String) -> Unit,
-    navigateToRightScreen: (unitFrom: String, unitTo: String, input: String?) -> Unit,
+    openDrawer: () -> Unit,
+    navController: NavHostController,
     navigateToSettings: () -> Unit,
-    navigateToMenu: () -> Unit,
-    viewModel: ConverterViewModel
+    navigateToUnitGroups: () -> Unit,
 ) {
-    navigation(
+    unittoNavigation(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
         )
     ) {
-        composable(start) {
+        unittoComposable(start) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry(graph)
+            }
+
+            val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
+
             ConverterRoute(
-                viewModel = viewModel,
-                navigateToLeftScreen = navigateToLeftScreen,
-                navigateToRightScreen = navigateToRightScreen,
+                viewModel = parentViewModel,
+                navigateToLeftScreen = { navController.navigate(LEFT) },
+                navigateToRightScreen = { navController.navigate(RIGHT) },
                 navigateToSettings = navigateToSettings,
-                navigateToMenu = navigateToMenu
+                navigateToMenu = openDrawer
+            )
+        }
+
+        unittoComposable(LEFT) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry(graph)
+            }
+
+            val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
+
+            LeftSideRoute(
+                viewModel = parentViewModel,
+                navigateUp = navController::navigateUp,
+                navigateToUnitGroups = navigateToUnitGroups
+            )
+        }
+
+        unittoComposable(RIGHT) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry(graph)
+            }
+
+            val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
+
+            RightSideRoute(
+                viewModel = parentViewModel,
+                navigateUp = navController::navigateUp,
+                navigateToUnitGroups = navigateToUnitGroups
             )
         }
     }

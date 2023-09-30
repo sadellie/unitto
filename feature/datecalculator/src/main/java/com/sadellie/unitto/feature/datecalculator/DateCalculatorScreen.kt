@@ -26,8 +26,11 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -60,6 +63,8 @@ internal fun DateCalculatorScreen(
     val addSubtractLabel = "${stringResource(R.string.add)}/${stringResource(R.string.subtract)}"
     val differenceLabel = stringResource(R.string.difference)
     val focusManager = LocalFocusManager.current
+    var topBarShown by remember { mutableStateOf(true) }
+    var showKeyboard by remember { mutableStateOf(false) }
 
     val allTabs = remember { mutableListOf(addSubtractLabel, differenceLabel) }
     val pagerState = rememberPagerState { allTabs.size }
@@ -69,9 +74,8 @@ internal fun DateCalculatorScreen(
         modifier = Modifier,
         title = { Text(stringResource(R.string.date_calculator)) },
         navigationIcon = { MenuButton(navigateToMenu) },
-        actions = {
-            SettingsButton(navigateToSettings)
-        },
+        actions = { SettingsButton(navigateToSettings) },
+        showTopBar = topBarShown,
     ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues),
@@ -97,9 +101,17 @@ internal fun DateCalculatorScreen(
                 verticalAlignment = Alignment.Top
             ) { page ->
                 when (page) {
-                    0 -> AddSubtractPage()
-                    1 -> DateDifferencePage().also {
+                    0 -> AddSubtractPage(
+                        toggleTopBar = { topBarShown = it },
+                        showKeyboard = showKeyboard,
+                        toggleKeyboard = {showKeyboard = it }
+                    )
+                    1 -> {
                         focusManager.clearFocus(true)
+                        topBarShown = true
+                        showKeyboard = false
+
+                        DateDifferencePage()
                     }
                 }
             }

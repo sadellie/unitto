@@ -18,8 +18,8 @@
 
 package io.github.sadellie.evaluatto
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import java.math.BigDecimal
 import java.math.RoundingMode
 

@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Length -->
+    <string name="attometer">Attometre</string>
+    <string name="attometer_short">am</string>
+    <string name="nanometer">Nanometre</string>
+    <string name="nanometer_short">nm</string>
+    <string name="micrometer">Mikrometre</string>
+    <string name="micrometer_short">μm</string>
+    <string name="millimeter">Milimetre</string>
+    <string name="millimeter_short">mm</string>
+    <string name="centimeter">Santimetre</string>
+    <string name="centimeter_short">cm</string>
+    <string name="decimeter">Desimetre</string>
+    <string name="decimeter_short">dm</string>
+    <string name="meter">Metre</string>
+    <string name="meter_short">m</string>
+    <string name="kilometer">Kilometre</string>
+    <string name="kilometer_short">km</string>
+    <string name="mile">Mil</string>
+    <string name="yard">Yarda</string>
+    <string name="yard_short">yd</string>
+    <string name="foot">Fit</string>
+    <string name="foot_short">ft</string>
+    <string name="inch">İnç</string>
+    <string name="inch_short">in</string>
+    <string name="light_year">Işık yılı</string>
+    <string name="light_year_short">ly</string>
+    <string name="parsec">Parsek</string>
+    <string name="parsec_short">pc</string>
+    <string name="kiloparsec">Kiloparsek</string>
+    <string name="kiloparsec_short">kpc</string>
+    <string name="megaparsec">Megaparsek</string>
+    <string name="megaparsec_short">Mpc</string>
+    <string name="mercury_equatorial_radius">Merkür ekvator yarıçapı</string>
+    <string name="mercury_equatorial_radius_short">Merkür R</string>
+    <string name="venus_equatorial_radius">Venüs ekvator yarıçapı</string>
+    <string name="venus_equatorial_radius_short">Venüs R</string>
+    <string name="earth_equatorial_radius">Dünya ekvator yarıçapı</string>
+    <string name="earth_equatorial_radius_short">Dünya R</string>
+    <string name="mars_equatorial_radius">Mars ekvator yarıçapı</string>
+    <string name="mars_equatorial_radius_short">Mars R</string>
+    <string name="jupiter_equatorial_radius">Jüpiter ekvator yarıçapı</string>
+    <string name="jupiter_equatorial_radius_short">Jüpiter R</string>
+    <string name="saturn_equatorial_radius">Satürn ekvator yarıçapı</string>
+    <string name="saturn_equatorial_radius_short">Satürn R</string>
+    <string name="uranus_equatorial_radius">Uranüs ekvator yarıçapı</string>
+    <string name="uranus_equatorial_radius_short">Uranüs R</string>
+    <string name="neptune_equatorial_radius">Neptün ekvator yarıçapı</string>
+    <string name="neptune_equatorial_radius_short">Neptün R</string>
+    <string name="sun_equatorial_radius">Güneş ekvator yarıçapı</string>
+    <string name="sun_equatorial_radius_short">Güneş R</string>
+
+    <!-- Mass -->
+    <string name="electron_mass_rest">Elektron kütlesi</string>
+    <string name="electron_mass_rest_short">me</string>
+    <string name="atomic_mass_unit">Dalton</string>
+    <string name="atomic_mass_unit_short">u</string>
+    <string name="milligram">Miligram</string>
+    <string name="milligram_short">mg</string>
+    <string name="gram">Gram</string>
+    <string name="gram_short">g</string>
+    <string name="kilogram">Kilogram</string>
+    <string name="kilogram_short">kg</string>
+    <string name="metric_ton">Metrik ton</string>
+    <string name="metric_ton_short">t</string>
+    <string name="imperial_ton">İngiliz tonu</string>
+    <string name="imperial_ton_short">t (UK)</string>
+    <string name="pound">Pound</string>
+    <string name="pound_short">lbs</string>
+    <string name="ounce">Ons</string>
+    <string name="ounce_short">oz</string>
+    <string name="carat">Karat</string>
+    <string name="carat_short">ct</string>
+    <string name="mercury_mass">Merkür kütlesi</string>
+    <string name="mercury_mass_short">Merkür M</string>
+    <string name="venus_mass">Venüs kütlesi</string>
+    <string name="venus_mass_short">Venüs M</string>
+    <string name="earth_mass">Dünya kütlesi</string>
+    <string name="earth_mass_short">Dünya M</string>
+    <string name="mars_mass">Mars kütlesi</string>
+    <string name="mars_mass_short">Mars M</string>
+    <string name="jupiter_mass">Jüpiter kütlesi</string>
+    <string name="jupiter_mass_short">Jüpiter M</string>
+    <string name="saturn_mass">Satürn kütlesi</string>
+    <string name="saturn_mass_short">Satürn M</string>
+    <string name="uranus_mass">Uranüs kütlesi</string>
+    <string name="uranus_mass_short">Uranüs M</string>
+    <string name="neptune_mass">Neptün kütlesi</string>
+    <string name="neptune_mass_short">Neptün M</string>
+    <string name="sun_mass">Güneş kütlesi</string>
+    <string name="sun_mass_short">Güneş M</string>
+
+    <!-- Temperature -->
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenhayt</string>
+    <string name="kelvin">Kelvin</string>
+
+    <!-- Speed -->
+    <string name="millimeter_per_hour">Milimetre/saat</string>
+    <string name="millimeter_per_hour_short">mm/sa</string>
+    <string name="millimeter_per_minute">Milimetre/dakika</string>
+    <string name="millimeter_per_minute_short">Milimetre/dk</string>
+    <string name="millimeter_per_second">Milimetre/saniye</string>
+    <string name="millimeter_per_second_short">mm/sn</string>
+    <string name="centimeter_per_hour">Santimetre/saat</string>
+    <string name="centimeter_per_hour_short">cm/sa</string>
+    <string name="centimeter_per_minute">Santimetre/dakika</string>
+    <string name="centimeter_per_minute_short">cm/dk</string>
+    <string name="centimeter_per_second">Santimetre/saniye</string>
+    <string name="centimeter_per_second_short">cm/sn</string>
+    <string name="meter_per_hour">Metre/saat</string>
+    <string name="meter_per_hour_short">m/sa</string>
+    <string name="meter_per_minute">Metre/dakika</string>
+    <string name="meter_per_minute_short">m/dk</string>
+    <string name="meter_per_second">Metre/saniye</string>
+    <string name="meter_per_second_short">m/sn</string>
+    <string name="kilometer_per_hour">Kilometre/saat</string>
+    <string name="kilometer_per_hour_short">km/sa</string>
+    <string name="kilometer_per_minute">Kilometre/dakika</string>
+    <string name="kilometer_per_minute_short">km/dk</string>
+    <string name="kilometer_per_second">Kilometre/saniye</string>
+    <string name="kilometer_per_second_short">km/sn</string>
+    <string name="foot_per_hour">Fit/saat</string>
+    <string name="foot_per_hour_short">ft/sa</string>
+    <string name="foot_per_minute">Fit/dakika</string>
+    <string name="foot_per_minute_short">ft/dk</string>
+    <string name="foot_per_second">Fit/saniye</string>
+    <string name="foot_per_second_short">ft/sn</string>
+    <string name="yard_per_hour">Yarda/saat</string>
+    <string name="yard_per_hour_short">yd/sa</string>
+    <string name="yard_per_minute">Yarda/dakika</string>
+    <string name="yard_per_minute_short">yd/dk</string>
+    <string name="yard_per_second">Yarda/saniye</string>
+    <string name="yard_per_second_short">yd/sn</string>
+    <string name="mile_per_hour">Mil/saat</string>
+    <string name="mile_per_hour_short">mi/sa</string>
+    <string name="mile_per_minute">Mil/dakika</string>
+    <string name="mile_per_minute_short">mi/dk</string>
+    <string name="mile_per_second">Mil/saniye</string>
+    <string name="mile_per_second_short">mi/sn</string>
+    <string name="knot">Knot</string>
+    <string name="knot_short">kt</string>
+    <string name="velocity_of_light_in_vacuum">Işığın boşluktaki hızı</string>
+    <string name="cosmic_velocity_first">İlk Kozmik Hız</string>
+    <string name="cosmic_velocity_second">İkinci Kozmik Hız</string>
+    <string name="cosmic_velocity_third">Üçüncü Kozmik Hız</string>
+    <string name="earths_orbital_speed">Dünyanın yörünge hızı</string>
+    <string name="mach">Mach</string>
+    <string name="mach_si_standard">Mach (SI)</string>
+
+    <!-- File size -->
+    <string name="bit">Bit</string>
+    <string name="bit_short">b</string>
+    <string name="kibibit">Kibibit</string>
+    <string name="kibibit_short">Kib</string>
+    <string name="kilobit">Kilobit</string>
+    <string name="kilobit_short">Kb</string>
+    <string name="megabit">Megabit</string>
+    <string name="megabit_short">Mb</string>
+    <string name="mebibit">Mebibit</string>
+    <string name="gigabit">Gigabit</string>
+    <string name="terabit">Terabit</string>
+    <string name="petabit">Petabit</string>
+    <string name="exabit">Eksabit</string>
+    <string name="byte_">Bayt</string>
+    <string name="kibibyte">Kibibayt</string>
+    <string name="kilobyte">Kilobayt</string>
+    <string name="megabyte">Megabayt</string>
+    <string name="mebibyte">Mebibayt</string>
+    <string name="gigabyte">Gigabayt</string>
+    <string name="terabyte">Terabayt</string>
+    <string name="petabyte">Petabayt</string>
+    <string name="exabyte">Eksabayt</string>
+
+    <!-- Data transfer -->
+    <string name="bit_per_second">Bit/saniye</string>
+    <string name="kibibit_per_second">Kibibit/saniye</string>
+    <string name="kilobit_per_second">Kibibit/saniye</string>
+    <string name="megabit_per_second">Megabit/saniye</string>
+    <string name="mebibit_per_second">Mebibit/saniye</string>
+    <string name="gigabit_per_second">Gigabit/saniye</string>
+    <string name="terabit_per_second">Terabit/saniye</string>
+    <string name="petabit_per_second">Petabit/saniye</string>
+    <string name="exabit_per_second">Eksabit/saniye</string>
+    <string name="byte_per_second">Bayt/saniye</string>
+    <string name="kibibyte_per_second">Kibibayt/saniye</string>
+    <string name="kilobyte_per_second">Kilobayt/saniye</string>
+    <string name="megabyte_per_second">Megabayt/saniye</string>
+    <string name="mebibyte_per_second">Mebibayt/saniye</string>
+    <string name="gigabyte_per_second">Gigabayt/saniye</string>
+    <string name="terabyte_per_second">Terabayt/saniye</string>
+    <string name="petabyte_per_second">Petabayt/saniye</string>
+    <string name="exabyte_per_second">Eksabayt/saniye</string>
+
+    <!-- Volume -->
+    <string name="attoliter">Attolitre</string>
+    <string name="milliliter">Mililitre</string>
+    <string name="liter">Litre</string>
+    <string name="cubic_millimeter">Milimetreküp</string>
+    <string name="cubic_centimeter">Santimetreküp</string>
+    <string name="cubic_meter">Metreküp</string>
+    <string name="cubic_kilometer">Kilometreküp</string>
+
+    <!-- Time -->
+    <string name="attosecond">Attosaniye</string>
+    <string name="nanosecond">Nanosaniye</string>
+    <string name="microsecond">Mikrosaniye</string>
+    <string name="millisecond">Milisaniye</string>
+    <string name="second">Saniye</string>
+    <string name="second_short">sn</string>
+    <string name="minute">Dakika</string>
+    <string name="minute_short">dk</string>
+    <string name="hour">Saat</string>
+    <string name="hour_short">sa</string>
+    <string name="day">Gün</string>
+    <string name="day_short">g</string>
+    <string name="week">Hafta</string>
+    <string name="week_short">h</string>
+    <string name="acre">Dönüm</string>
+    <string name="hectare">Hektar</string>
+    <string name="square_foot">Fitkare</string>
+    <string name="square_mile">Milkare</string>
+    <string name="square_yard">Yardakare</string>
+    <string name="square_inch">İnçkare</string>
+    <string name="square_micrometer">Mikrometrekare</string>
+    <string name="square_millimeter">Milimetrekare</string>
+    <string name="square_centimeter">Santimetrekare</string>
+    <string name="square_decimeter">Desimetrekare</string>
+    <string name="square_meter">Metrekare</string>
+    <string name="square_kilometer">Kilometrekare</string>
+    <string name="energy_horse_power_metric">Beygir gücü</string>
+    <string name="calorie_th">Kalori (th)</string>
+    <string name="kilocalorie_th">Kilokalori (th)</string>
+    <string name="horse_power_mechanical">Beygir gücü</string>
+
+    <!-- Angle -->
+    <string name="angle_second">Saniye</string>
+    <string name="angle_minute">Dakika</string>
+    <string name="degree">Derece</string>
+    <string name="radian">Radyan</string>
+    <string name="sextant">Sekstant</string>
+    <string name="turn">Tur</string>
+
+    <!-- Pressure -->
+    <string name="attopascal">Attopaskal</string>
+    <string name="femtopascal">Femtopaskal</string>
+    <string name="picopascal">Pikopaskal</string>
+    <string name="nanopascal">Nanopaskal</string>
+    <string name="micropascal">Mikropaskal</string>
+    <string name="millipascal">Milipaskal</string>
+    <string name="centipascal">Santipaskal</string>
+    <string name="decipascal">Desipaskal</string>
+    <string name="pascal">Paskal</string>
+    <string name="dekapascal">Dekapaskal</string>
+    <string name="hectopascal">Hektopaskal</string>
+    <string name="megapascal">Megapaskal</string>
+    <string name="gigapascal">Gigapaskal</string>
+    <string name="terapascal">Terapaskal</string>
+    <string name="petapascal">Petapaskal</string>
+    <string name="exapascal">Eksapaskal</string>
+    <string name="psi">Pound/inçkare</string>
+    <string name="ksi">Kilopound/inçkare</string>
+    <string name="standard_atmosphere">Standart atmosfer</string>
+    <string name="millimeter_of_mercury">Milimetre cıva</string>
+
+    <!-- Acceleration -->
+    <string name="attometer_per_square_second">Attometre/saniye kare</string>
+    <string name="femtometer_per_square_second">Femtometre/saniye kare</string>
+    <string name="picometer_per_square_second">Pikometre/saniye kare</string>
+    <string name="nanometer_per_square_second">Nanometre/saniye kare</string>
+    <string name="micrometer_per_square_second">Mikrometre/saniye kare</string>
+    <string name="millimeter_per_square_second">Milimetre/saniye kare</string>
+    <string name="centimeter_per_square_second">Santimetre/saniye kare</string>
+    <string name="decimeter_per_square_second">Desimetre/saniye kare</string>
+    <string name="meter_per_square_second">Metre/saniye kare</string>
+    <string name="kilometer_per_square_second">Kilometre/saniye kare</string>
+    <string name="dekameter_per_square_second">Dekametre/saniye kare</string>
+    <string name="hectometer_per_square_second">Hektometre/saniye kare</string>
+    <string name="mercury_surface_gravity">Merkür yüzey yerçekimi</string>
+    <string name="venus_surface_gravity">Venüs yüzey yerçekimi</string>
+    <string name="earth_surface_gravity">Dünya yüzeyi yerçekimi</string>
+    <string name="mars_surface_gravity">Mars yüzey yerçekimi</string>
+    <string name="jupiter_surface_gravity">Jüpiter yüzey yerçekimi</string>
+    <string name="saturn_surface_gravity">Satürn yüzey yerçekimi</string>
+    <string name="uranus_surface_gravity">Uranüs yüzey yerçekimi</string>
+    <string name="neptune_surface_gravity">Neptün yüzey yerçekimi</string>
+    <string name="sun_surface_gravity">Güneş yüzeyi yerçekimi</string>
+    <string name="currency_aed">Birleşik Arap Emirlikleri Dirhemi</string>
+    <string name="currency_afn">Afgan Afganisi</string>
+    <string name="currency_all">Arnavutluk Leki</string>
+    <string name="currency_amd">Ermenistan Dramı</string>
+    <string name="currency_ang">Hollanda Antilleri Guldeni</string>
+    <string name="currency_aoa">Angola Kwanzası</string>
+    <string name="currency_ars">Arjantin Pesosu</string>
+    <string name="currency_aud">Avustralya Doları</string>
+    <string name="currency_awg">Aruba Florini</string>
+    <string name="currency_azn">Azerbaycan Manatı</string>
+    <string name="currency_bam">Bosna-Hersek Markı</string>
+    <string name="currency_bbd">Barbados Doları</string>
+    <string name="currency_bdt">Bangladeş Takası</string>
+    <string name="currency_bgn">Bulgar Levası</string>
+    <string name="currency_bhd">Bahreyn Dinarı</string>
+    <string name="currency_bif">Burundi Frangı</string>
+    <string name="currency_bmd">Bermuda Doları</string>
+    <string name="currency_bnd">Brunei Doları</string>
+    <string name="currency_bob">Bolivya Bolivianosu</string>
+    <string name="currency_brl">Brezilya Reali</string>
+    <string name="currency_bsd">Bahama Doları</string>
+    <string name="currency_btn">Bhutan parası</string>
+    <string name="currency_bwp">Botsvana Pulası</string>
+    <string name="currency_byn">Yeni Beyaz Rusya Rublesi</string>
+    <string name="currency_byr">Beyaz Rusya Rublesi</string>
+    <string name="currency_eur">Euro</string>
+    <string name="currency_gbp">İngiliz Sterlini</string>
+    <string name="currency_try">Türk Lirası</string>
+    <string name="currency_ttd">Trinidad ve Tobago Doları</string>
+    <string name="currency_twd">Yeni Tayvan Doları</string>
+    <string name="currency_tzs">Tanzanya Şilini</string>
+    <string name="currency_uah">Ukrayna Grivnası</string>
+    <string name="currency_ugx">Uganda Şilini</string>
+    <string name="currency_usd">ABD Doları</string>
+    <string name="currency_uyu">Uruguay Pesosu</string>
+    <string name="currency_uzs">Özbekistan Somu</string>
+    <string name="currency_vef">Venezuela Bolivarı</string>
+    <string name="currency_vnd">Vietnam Dongu</string>
+    <string name="currency_vuv">Vanuatu Vatusu</string>
+    <string name="currency_wst">Samoa Talası</string>
+    <string name="currency_xaf">Orta Afrika CFA Frangı</string>
+    <string name="currency_xag">Ons Gümüş</string>
+    <string name="currency_xcd">Doğu Karayip Doları</string>
+    <string name="currency_xof">Batı Afrika CFA Frangı</string>
+    <string name="currency_xpf">CFP Frangı</string>
+    <string name="currency_yer">Yemen Riyali</string>
+    <string name="currency_zar">Güney Afrika Randı</string>
+    <string name="currency_zmk">Zambiya kvaçası</string>
+    <string name="currency_zmw">Zambiya Kvaçası</string>
+    <string name="currency_zwl">Zimbabve doları</string>
+
+    <!-- Groups -->
+    <string name="length">Uzunluk</string>
+    <string name="time">Zaman</string>
+    <string name="volume">Hacim</string>
+    <string name="area">Alan</string>
+    <string name="temperature">Sıcaklık</string>
+    <string name="speed">Hız</string>
+    <string name="mass">Kütle</string>
+    <string name="data">Veri</string>
+    <string name="energy">Enerji</string>
+    <string name="power">Güç</string>
+    <string name="angle">Açı</string>
+    <string name="data_transfer">Veri transferi</string>
+    <string name="pressure">Basınç</string>
+    <string name="acceleration">İvme</string>
+    <string name="currency">Para birimi</string>
+
+    <!-- Screen names -->
+    <string name="units_screen_from">Şundan çevir</string>
+    <string name="units_screen_to">Şuna çevir</string>
+    <string name="settings_screen">Ayarlar</string>
+
+    <!-- Settings items -->
+    <string name="theme_setting">Temalar</string>
+    <string name="precision_setting">Hassasiyet</string>
+    <string name="separator_setting">Ayırıcı</string>
+    <string name="exponential_notation_setting">Üstel gösterim</string>
+    <string name="unit_groups_setting">Birim grupları</string>
+    <string name="currency_rates_note_setting">Döviz kurları yanlış mı?</string>
+    <string name="currency_rates_note_title">Not</string>
+    <string name="currency_rates_note_text">Döviz kurları günlük olarak güncellenmektedir. Uygulamada gerçek zamanlı piyasa izleme yoktur</string>
+    <string name="terms_and_conditions">Şartlar ve Koşullar</string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="third_party_licenses">Üçüncü taraf lisansları</string>
+    <string name="rate_this_app">Bu uygulamayı oyla</string>
+    <string name="formatting_setting">Biçimlendirme</string>
+    <string name="additional_settings_group">Diğer ayarlar</string>
+
+    <!-- Precision -->
+    <string name="precision_setting_support">Ondalık basamak sayısı</string>
+    <string name="precision_setting_info">Dönüştürülen değerler tercih edilen değerden daha yüksek bir kesinliğe sahip olabilir.</string>
+    <string name="max_precision">%1$s (Maks)</string>
+
+    <!-- Separator -->
+    <string name="separator_setting_support">Grup ayırıcı sembol</string>
+    <string name="period">Nokta</string>
+    <string name="comma">Virgül</string>
+    <string name="space">Boşluk</string>
+
+    <!-- Output format -->
+    <string name="exponential_notation_setting_support">Sayının bir kısmını E ile değiştir</string>
+
+    <!-- Theme -->
+    <string name="theme_setting_support">Uygulama görünümü</string>
+    <string name="auto_label">Oto.</string>
+    <string name="force_light_mode">Açık</string>
+    <string name="force_dark_mode">Koyu</string>
+    <string name="color_theme">Renk teması</string>
+    <string name="force_amoled_mode">AMOLED Koyu</string>
+    <string name="force_amoled_mode_support">Koyu temalarda siyah arkaplan rengi kullan</string>
+    <string name="enable_dynamic_colors">Dinamik renkler</string>
+    <string name="enable_dynamic_colors_support">Duvar kağıdındaki renkleri kullan</string>
+
+    <!-- MISC. -->
+    <string name="loading_label">Yükleniyor…</string>
+    <string name="error_label">Hata</string>
+    <string name="copied">%1$s kopyalandı!</string>
+    <string name="cancel_label">İptal</string>
+    <string name="search_bar_placeholder">Birim ara</string>
+    <string name="search_placeholder">Sonuç bulunamadı</string>
+    <string name="search_placeholder_button_label">Ayarları aç</string>
+    <string name="search_placeholder_secondary">Yazım hatası olmadığından emin olun, farklı filtreler deneyin veya devre dışı bırakılan birim gruplarını kontrol edin.</string>
+    <string name="hello_label">Merhaba!</string>
+    <string name="enabled_label">Etkin</string>
+    <string name="disabled_label">Devre dışı</string>
+
+    <!-- Content descriptions -->
+    <string name="navigate_up_description">Yukarı git</string>
+    <string name="checked_filter_description">İşaretli filtre</string>
+    <string name="open_settings_description">Ayarları aç</string>
+    <string name="swap_units_description">Birimleri değiştir</string>
+    <string name="search_button_description">Arama düğmesi</string>
+    <string name="clear_input_description">Girdiyi temizle</string>
+    <string name="favorite_button_description">Birimi favorilere ekleyin veya favorilerden çıkarın</string>
+    <string name="empty_search_result_description">Arama sonucunu temizle</string>
+    <string name="drop_down_description">Açılır menüyü aç veya kapat</string>
+    <string name="enable_unit_group_description">Birim grubunu etkinleştir</string>
+    <string name="reorder_unit_group_description">Birim grubunu yeniden sırala</string>
+    <string name="disable_unit_group_description">Birim grubunu devre dışı bırak</string>
+    <string name="app_version_name_setting">Versiyon adı</string>
+    <string name="about_unitto">Unitto hakkında</string>
+    <string name="about_unitto_support">Uygulama hakkında bilgi edinin</string>
+    <string name="unit_groups_support">Birimleri devre dışı bırakın ve yeniden düzenleyin</string>
+    <string name="open_source">Kaynak kodunu görüntüle</string>
+    <string name="translate_app">Bu uygulamayı çevir</string>
+    <string name="translate_app_support">Yardım etmek için POEditor projesine katılın</string>
+    <string name="enable_vibrations">Titreşimler</string>
+    <string name="enable_vibrations_support">Klavye düğmelerini tıklattığınızda dokunsal geri bildirim</string>
+    <string name="kilopascal">Kilopaskal</string>
+    <string name="micron_of_mercury">Mikron cıva</string>
+
+    <!-- Calculator -->
+    <string name="calculator">Hesap Makinesi</string>
+    <string name="nautical_mile">Deniz mili</string>
+    <string name="starting_screen_setting">Başlangıç ekranı</string>
+    <string name="starting_screen_setting_support">Uygulamayı başlattığınızda hangi ekranın gösterileceğini seçin</string>
+
+    <!-- Tools -->
+    <string name="unit_converter">Birim dönüştürücü</string>
+    <string name="calculator_clear_history_label">Temizle</string>
+    <string name="calculator_clear_history_title">Geçmişi temizle</string>
+    <string name="calculator_clear_history_support">Geçmişteki tüm ifadeler tamamen silinecek. Bu işlem geri alınamaz!</string>
+    <string name="calculator_no_history">Geçmiş yok</string>
+    <string name="open_menu_description">Menüyü aç</string>
+    <string name="microgram">Mikrogram</string>
+    <string name="picofarad">Pikofarad</string>
+    <string name="microfarad">Mikrofarad</string>
+    <string name="prefix_hecto">Hekto</string>
+    <string name="prefix_deca">Deka</string>
+    <string name="prefix_deci">Desi</string>
+    <string name="prefix_centi">Santi</string>
+    <string name="prefix_micro">Mikro</string>
+    <string name="prefix_pico">Piko</string>
+    <string name="prefix_yocto">Yokto</string>
+    <string name="gram_force">Gram-kuvvet</string>
+    <string name="kilogram_force">Kilogram-kuvvet</string>
+    <string name="ton_force">Ton-kuvvet</string>
+    <string name="joule_per_meter">Joule/metre</string>
+    <string name="joule_per_centimeter">Joule/santimetre</string>
+    <string name="kilopound_force">Kilopound-kuvvet</string>
+    <string name="pound_force">Pound-kuvvet</string>
+    <string name="ounce_force">Ons kuvvet</string>
+
+    <!-- Torque -->
+    <string name="newton_meter">Newton metre</string>
+    <string name="newton_centimeter">Newton santimetre</string>
+    <string name="newton_millimeter">Newton milimetre</string>
+    <string name="kilonewton_meter">Kilonewton metre</string>
+    <string name="dyne_meter">Dyne metre</string>
+    <string name="dyne_centimeter">Dyne santimetre</string>
+    <string name="dyne_millimeter">Dyne milimetre</string>
+    <string name="kilogram_force_meter">Kilogram-kuvvet metre</string>
+    <string name="kilogram_force_centimeter">Kilogram-kuvvet santimetre</string>
+    <string name="kilogram_force_millimeter">Kilogram-kuvvet milimetre</string>
+    <string name="gram_force_meter">Gram-kuvvet metre</string>
+    <string name="gram_force_centimeter">Gram-kuvvet santimetre</string>
+    <string name="gram_force_millimeter">Gram-kuvvet milimetre</string>
+    <string name="ounce_force_foot">Ons-kuvvet fit</string>
+    <string name="ounce_force_inch">Ons-kuvvet inç</string>
+    <string name="pound_force_foot">Pound-kuvvet fit</string>
+    <string name="pound_force_inch">Pound-kuvvet inç</string>
+
+    <!-- Flow rate -->
+    <string name="liter_per_hour">Litre/saat</string>
+    <string name="liter_per_hour_short">L/sa</string>
+    <string name="liter_per_minute">Litre/dakika</string>
+    <string name="liter_per_minute_short">L/dk</string>
+    <string name="liter_per_second">Litre/saniye</string>
+    <string name="liter_per_second_short">L/sn</string>
+    <string name="milliliter_per_hour">Mililitre/saat</string>
+    <string name="milliliter_per_hour_short">mL/sa</string>
+    <string name="milliliter_per_minute">Mililitre/dakika</string>
+    <string name="milliliter_per_minute_short">mL/dk</string>
+    <string name="milliliter_per_second">Mililitre/saniye</string>
+    <string name="milliliter_per_second_short">mL/sn</string>
+    <string name="cubic_meter_per_hour">Metreküp/saat</string>
+    <string name="cubic_meter_per_hour_short">m3/sa</string>
+    <string name="cubic_meter_per_minute">Metreküp/dakika</string>
+    <string name="cubic_meter_per_minute_short">m3/dk</string>
+    <string name="cubic_meter_per_second">Metreküp/saniye</string>
+    <string name="cubic_meter_per_second_short">m3/sn</string>
+    <string name="cubic_millimeter_per_hour">Milimetreküp/saat</string>
+    <string name="cubic_millimeter_per_hour_short">mm3/sa</string>
+    <string name="cubic_millimeter_per_minute">Milimetreküp/dakika</string>
+    <string name="cubic_millimeter_per_minute_short">mm3/dk</string>
+    <string name="cubic_millimeter_per_second">Milimetreküp/saniye</string>
+    <string name="cubic_millimeter_per_second_short">mm3/sn</string>
+    <string name="cubic_foot_per_hour">Fitküp/saat</string>
+    <string name="cubic_foot_per_hour_short">ft/sa</string>
+    <string name="cubic_foot_per_minute">Fitküp/dakika</string>
+    <string name="cubic_foot_per_minute_short">ft/dk</string>
+    <string name="cubic_foot_per_second">Fitküp/saniye</string>
+    <string name="cubic_foot_per_second_short">ft/sn</string>
+    <string name="gallon_per_hour_us">Galon/saat (ABD)</string>
+    <string name="gallon_per_minute_us">Galon/dakika (ABD)</string>
+    <string name="gallon_per_second_us">Galon/saniye (ABD)</string>
+    <string name="gallon_per_hour_imperial">Galon/saat (İngiliz)</string>
+    <string name="gallon_per_minute_imperial">Galon/dakika (İngiliz)</string>
+    <string name="gallon_per_second_imperial">Galon/saniye (İngiliz)</string>
+
+    <!-- Luminance -->
+    <string name="candela_per_square_meter">Kandela/metrekare</string>
+    <string name="candela_per_square_centimeter">Kandela/santimetrekare</string>
+    <string name="candela_per_square_foot">Kandela/fitkare</string>
+    <string name="candela_per_square_inch">Kandela/inçkare</string>
+    <string name="kilocandela_per_square_meter">Kilokandela/metrekare</string>
+    <string name="lumen_per_square_meter_per_steradian">Lümen/metrekare/steradyan</string>
+    <string name="lumen_per_square_centimeter_per_steradian">Lümen/santimetrekare/steradyan</string>
+    <string name="lumen_per_square_foot_per_steradian">Lümen/fitkare/steradyan</string>
+    <string name="watt_per_square_centimeter_per_steradian">Watt/santimetrekare/steradyan</string>
+    <string name="electrostatic_capacitance">Kapasitans</string>
+    <string name="prefix">Önek</string>
+    <string name="force">Kuvvet</string>
+    <string name="torque">Tork</string>
+    <string name="flow_rate">Akış hızı</string>
+    <string name="luminance">Luminans</string>
+    <string name="format_time">Zaman biçimi</string>
+    <string name="format_time_support">Örnek: 130 dakikayı 2sa 10dk olarak göster</string>
+    <string name="units_sorting">Birim listesi sıralaması</string>
+    <string name="units_sorting_support">Birim sırasını değiştir</string>
+
+    <!-- Units list sorting -->
+    <string name="sort_by_usage">Kullanım</string>
+    <string name="sort_by_alphabetical">Alfabetik</string>
+    <string name="sort_by_scale_desc">Ölçek (Azalan)</string>
+    <string name="sort_by_scale_asc">Ölçek (Artan)</string>
+    <string name="color_theme_support">Bir tema modu seçin</string>
+    <string name="color_scheme">Renk şeması</string>
+    <string name="selected_color">Seçilen renk</string>
+    <string name="monet_mode">Seçilen stil</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/Gj9ZCNPXIfKddDQgccvboVFz.jpg 
+https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
+
+Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
+    <string name="formatting_setting_support">Kesinlik ve sayıların görünümü</string>
+    <string name="divide_by_zero_error">0\'a bölünemez</string>
+    <string name="date_difference">Tarih farkı</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
+    <string name="select_time">Zaman seçin</string>
+    <string name="date_difference_start">Başlangıç</string>
+    <string name="date_difference_end">Bitiş</string>
+    <string name="date_difference_result">Fark</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_years">Yıl</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_months">Ay</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_days">Gün</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_hours">Saat</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_minutes">Dakika</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
+
+Used in this dialog window. Should be short -->
+    <string name="next_label">Sonraki</string>
+    <string name="formatting_setting_preview_box_label">Önizleme (geçiş yapmak için tıklayın)</string>
+</resources>

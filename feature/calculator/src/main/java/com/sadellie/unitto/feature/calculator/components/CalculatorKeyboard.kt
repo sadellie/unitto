@@ -24,6 +24,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,8 +35,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -48,9 +50,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
@@ -92,6 +96,7 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Multiply
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Percent
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Pi
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Power10
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Rad
 import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Sin
@@ -141,6 +146,118 @@ internal fun CalculatorKeyboard(
 }
 
 @Composable
+internal fun CalculatorKeyboardLoading(
+    modifier: Modifier
+) {
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        PortraitKeyboardLoading(modifier)
+    } else {
+        LandscapeKeyboardLoading(modifier)
+    }
+}
+
+@Composable
+private fun PortraitKeyboardLoading(
+    modifier: Modifier
+) {
+    ColumnWithConstraints(
+        modifier = modifier
+    ) { constraints ->
+
+        val additionalButtonHeight by remember {
+            mutableStateOf(constraints.maxHeight * 0.09f)
+        }
+
+        val spacerHeight by remember {
+            mutableStateOf(constraints.maxHeight * 0.025f)
+        }
+
+        val additionalRowSpacedBy by remember {
+            mutableStateOf(constraints.maxWidth * 0.03f)
+        }
+
+        val weightModifier = Modifier.weight(1f)
+        val additionalButtonModifier = Modifier
+            .weight(1f)
+            .height(additionalButtonHeight)
+
+        Spacer(modifier = Modifier.height(spacerHeight))
+
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(additionalRowSpacedBy)
+        ) {
+            // Additional buttons
+            Box(weightModifier) {
+                AdditionalButtonsPortrait(
+                    modifier = additionalButtonModifier,
+                    allowVibration = false,
+                    addSymbol = {},
+                    showAdditional = false,
+                    radianMode = false,
+                    toggleAngleMode = {},
+                    toggleInvMode = {}
+                )
+            }
+
+            Box(
+                modifier = Modifier.size(additionalButtonHeight),
+                contentAlignment = Alignment.Center
+            ) {
+                // Expand/Collapse
+                IconButton(
+                    onClick = {  },
+                    colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
+                ) {
+                    Icon(Icons.Default.ExpandMore, null)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(spacerHeight))
+
+        Box(
+            modifier = weightModifier
+                .clip(RoundedCornerShape(32.dp))
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+                .fillMaxSize()
+        )
+
+        Spacer(modifier = Modifier.height(spacerHeight))
+    }
+}
+
+@Composable
+private fun LandscapeKeyboardLoading(
+    modifier: Modifier
+) {
+    RowWithConstraints(modifier) { constraints ->
+        val buttonModifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .padding(constraints.maxWidth * 0.005f, constraints.maxHeight * 0.02f)
+
+        AdditionalButtonsLandscape(
+            modifier = Modifier.weight(1f),
+            buttonModifier = buttonModifier,
+            allowVibration = false,
+            radianMode = false,
+            addSymbol = {},
+            toggleAngleMode = {},
+            toggleInvMode = {}
+        )
+
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(32.dp))
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+                .weight(5f)
+                .fillMaxSize()
+        )
+    }
+}
+
+@Composable
 private fun PortraitKeyboard(
     modifier: Modifier,
     radianMode: Boolean,
@@ -157,7 +274,7 @@ private fun PortraitKeyboard(
     var showAdditional: Boolean by remember { mutableStateOf(false) }
     var invMode: Boolean by remember { mutableStateOf(false) }
     val expandRotation: Float by animateFloatAsState(
-        targetValue = if (showAdditional) 0f else 180f,
+        targetValue = if (showAdditional) 180f else 0f,
         animationSpec = tween(easing = FastOutSlowInEasing),
         label = "Rotate on expand"
     )
@@ -197,7 +314,7 @@ private fun PortraitKeyboard(
             horizontalArrangement = Arrangement.spacedBy(additionalRowSpacedBy)
         ) {
             // Additional buttons
-            Crossfade(invMode, weightModifier) {
+            Crossfade(invMode, weightModifier, label = "Additional button") {
                 if (it) {
                     AdditionalButtonsPortraitInverse(
                         modifier = additionalButtonModifier,
@@ -230,7 +347,7 @@ private fun PortraitKeyboard(
                     onClick = { showAdditional = !showAdditional },
                     colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
                 ) {
-                    Icon(Icons.Default.ExpandLess, null, Modifier.rotate(expandRotation))
+                    Icon(Icons.Default.ExpandMore, null, Modifier.rotate(expandRotation))
                 }
             }
         }
@@ -269,7 +386,7 @@ private fun PortraitKeyboard(
                 KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration) { addSymbol(Token.Digit._0) }
                 KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration) { addSymbol(Token.Digit.dot) }
             }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, clearSymbols) { deleteSymbol() }
+            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, onLongClick = clearSymbols) { deleteSymbol() }
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, allowVibration) { evaluate() }
         }
 
@@ -342,7 +459,7 @@ private fun AdditionalButtonsPortraitInverse(
                     KeyboardButtonAdditional(modifier, UnittoIcons.Inv, allowVibration) { toggleInvMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.E, allowVibration) { addSymbol(Token.Const.e) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Exp, allowVibration) { addSymbol(Token.Func.expBracket) }
-                    KeyboardButtonAdditional(modifier, UnittoIcons.Log, allowVibration) { addSymbol(Token.Func.logBracket) }
+                    KeyboardButtonAdditional(modifier, UnittoIcons.Power10, allowVibration) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                 }
             }
         }
@@ -371,7 +488,7 @@ private fun LandscapeKeyboard(
             .weight(1f)
             .padding(constraints.maxWidth * 0.005f, constraints.maxHeight * 0.02f)
 
-        Crossfade(invMode, Modifier.weight(3f)) {
+        Crossfade(invMode, Modifier.weight(3f), label = "Additional button") {
             Row {
                 if (it) {
                     AdditionalButtonsLandscapeInverse(
@@ -421,7 +538,7 @@ private fun LandscapeKeyboard(
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, allowVibration) { addSymbol(Token.Digit._9) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key6, allowVibration) { addSymbol(Token.Digit._6) }
             KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, allowVibration) { addSymbol(Token.Digit._3) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Backspace, allowVibration, clearSymbols) { deleteSymbol() }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Backspace, allowVibration, onLongClick = clearSymbols) { deleteSymbol() }
         }
 
         Column(Modifier.weight(1f)) {
@@ -499,7 +616,7 @@ private fun AdditionalButtonsLandscapeInverse(
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.Const.pi) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Factorial, allowVibration) { addSymbol(Token.Operator.factorial) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.AcTan, allowVibration) { addSymbol(Token.Func.actanBracket) }
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Log, allowVibration) { addSymbol(Token.Func.logBracket) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Power10, allowVibration) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
     }
 }
 

@@ -31,7 +31,7 @@ import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
-import com.sadellie.unitto.data.userprefs.MainPreferences
+import com.sadellie.unitto.data.userprefs.CalculatorPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
@@ -54,11 +54,11 @@ internal class CalculatorViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val calculatorHistoryRepository: CalculatorHistoryRepository,
 ) : ViewModel() {
-    private val _userPrefs: StateFlow<MainPreferences> =
-        userPrefsRepository.mainPreferencesFlow.stateIn(
+    private val _prefs: StateFlow<CalculatorPreferences> =
+        userPrefsRepository.calculatorPrefs.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            MainPreferences()
+            CalculatorPreferences()
         )
 
     private val _input: MutableStateFlow<TextFieldValue> = MutableStateFlow(TextFieldValue())
@@ -67,9 +67,9 @@ internal class CalculatorViewModel @Inject constructor(
     private val _history = calculatorHistoryRepository.historyFlow
 
     val uiState = combine(
-        _input, _output, _history, _userPrefs
+        _input, _output, _history, _prefs
     ) { input, output, history, userPrefs ->
-        return@combine CalculatorUIState(
+        return@combine CalculatorUIState.Ready(
             input = input,
             output = output,
             radianMode = userPrefs.radianMode,
@@ -77,9 +77,10 @@ internal class CalculatorViewModel @Inject constructor(
             allowVibration = userPrefs.enableVibrations,
             formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
             middleZero = userPrefs.middleZero,
+            partialHistoryView = userPrefs.partialHistoryView,
         )
     }.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState()
+        viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState.Loading
     )
 
     fun addTokens(tokens: String) = _input.update { it.addTokens(tokens) }
@@ -111,7 +112,7 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun toggleCalculatorMode() = viewModelScope.launch {
-        userPrefsRepository.updateRadianMode(!_userPrefs.value.radianMode)
+        userPrefsRepository.updateRadianMode(!_prefs.value.radianMode)
     }
 
     fun clearHistory() = viewModelScope.launch(Dispatchers.IO) {
@@ -125,14 +126,14 @@ internal class CalculatorViewModel @Inject constructor(
 
         return try {
             CalculationResult.Default(
-                Expression(currentInput, radianMode = _userPrefs.value.radianMode)
+                Expression(currentInput, radianMode = _prefs.value.radianMode)
                     .calculate()
                     .also {
                         if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
                     }
-                    .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
+                    .setMinimumRequiredScale(_prefs.value.precision)
                     .trimZeros()
-                    .toStringWith(_userPrefs.value.outputFormat)
+                    .toStringWith(_prefs.value.outputFormat)
             )
         } catch (e: ExpressionException.DivideByZero) {
             CalculationResult.DivideByZeroError
@@ -144,7 +145,7 @@ internal class CalculatorViewModel @Inject constructor(
     init {
         // Observe and invoke calculation without UI lag.
         viewModelScope.launch(Dispatchers.Default) {
-            merge(_userPrefs, _input).collectLatest {
+            merge(_prefs, _input).collectLatest {
                 val calculated = calculateInput()
                 _output.update {
                     // Don't show error when simply entering stuff

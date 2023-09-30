@@ -46,27 +46,29 @@ import com.sadellie.unitto.core.ui.common.isOpen
 import com.sadellie.unitto.core.ui.common.open
 import com.sadellie.unitto.core.ui.common.rememberUnittoDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
-import com.sadellie.unitto.core.ui.theme.AppTypography
+import com.sadellie.unitto.core.ui.pushDynamicShortcut
+import com.sadellie.unitto.core.ui.theme.TypographySystem
+import com.sadellie.unitto.core.ui.theme.TypographyUnitto
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
-import com.sadellie.unitto.data.userprefs.UIPreferences
+import com.sadellie.unitto.data.userprefs.AppPreferences
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun UnittoApp(uiPrefs: UIPreferences) {
+internal fun UnittoApp(prefs: AppPreferences) {
 
     val mContext = LocalContext.current
     val themmoController = rememberThemmoController(
         lightColorScheme = LightThemeColors,
         darkColorScheme = DarkThemeColors,
-        themingMode = uiPrefs.themingMode,
-        dynamicThemeEnabled = uiPrefs.enableDynamicTheme,
-        amoledThemeEnabled = uiPrefs.enableAmoledTheme,
-        customColor = uiPrefs.customColor,
-        monetMode = uiPrefs.monetMode
+        themingMode = prefs.themingMode,
+        dynamicThemeEnabled = prefs.enableDynamicTheme,
+        amoledThemeEnabled = prefs.enableAmoledTheme,
+        customColor = prefs.customColor,
+        monetMode = prefs.monetMode
     )
     val navController = rememberNavController()
     val sysUiController = rememberSystemUiController()
@@ -77,9 +79,9 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
 
     val shortcutsScope = rememberCoroutineScope()
 
-    val tabs by remember(uiPrefs.enableToolsExperiment) {
+    val tabs by remember(prefs.enableToolsExperiment) {
         derivedStateOf {
-            if (uiPrefs.enableToolsExperiment) {
+            if (prefs.enableToolsExperiment) {
                 listOf(
                     DrawerItems.Calculator,
                     DrawerItems.Converter,
@@ -105,7 +107,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
 
     Themmo(
         themmoController = themmoController,
-        typography = AppTypography,
+        typography = if (prefs.systemFont) TypographySystem else TypographyUnitto,
         animationSpec = tween(250)
     ) {
         val backgroundColor = MaterialTheme.colorScheme.background
@@ -150,7 +152,7 @@ internal fun UnittoApp(uiPrefs: UIPreferences) {
                 UnittoNavigation(
                     navController = navController,
                     themmoController = it,
-                    startDestination = uiPrefs.startingScreen,
+                    startDestination = prefs.startingScreen,
                     openDrawer = { drawerScope.launch { drawerState.open() } }
                 )
             }

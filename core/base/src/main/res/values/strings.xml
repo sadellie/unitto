@@ -175,8 +175,6 @@
     <string name="mebibit_short">Mib</string>
     <string name="gigabit">Gigabit</string>
     <string name="gigabit_short">Gb</string>
-    <string name="gibibit">Gibibit</string>
-    <string name="gibibit_short">Gib</string>
     <string name="terabit">Terabit</string>
     <string name="terabit_short">Tb</string>
     <string name="petabit">Petabit</string>
@@ -195,8 +193,6 @@
     <string name="mebibyte_short">MiB</string>
     <string name="gigabyte">Gigabyte</string>
     <string name="gigabyte_short">GB</string>
-    <string name="gibibyte">Gibibyte</string>
-    <string name="gibibyte_short">GiB</string>
     <string name="terabyte">Terabyte</string>
     <string name="terabyte_short">TB</string>
     <string name="petabyte">Petabyte</string>
@@ -217,8 +213,6 @@
     <string name="mebibit_per_second_short">Mib/s</string>
     <string name="gigabit_per_second">Gigabit/second</string>
     <string name="gigabit_per_second_short">Gb/s</string>
-    <string name="gibibit_per_second">Gibibit/second</string>
-    <string name="gibibit_per_second_short">Gib/s</string>
     <string name="terabit_per_second">Terabit/second</string>
     <string name="terabit_per_second_short">Tb/s</string>
     <string name="petabit_per_second">Petabit/second</string>
@@ -237,8 +231,6 @@
     <string name="mebibyte_per_second_short">MiB/s</string>
     <string name="gigabyte_per_second">Gigabyte/second</string>
     <string name="gigabyte_per_second_short">GB/s</string>
-    <string name="gibibyte_per_second">Gibibyte/second</string>
-    <string name="gibibyte_per_second_short">GiB/s</string>
     <string name="terabyte_per_second">Terabyte/second</string>
     <string name="terabyte_per_second_short">TB/s</string>
     <string name="petabyte_per_second">Petabyte/second</string>
@@ -422,7 +414,7 @@
     <string name="megapascal">Megapascal</string>
     <string name="megapascal_short">MPa</string>
     <string name="gigapascal">Gigapascal</string>
-    <string name="gigapascal_short">GPA</string>
+    <string name="gigapascal_short">GPa</string>
     <string name="terapascal">Terapascal</string>
     <string name="terapascal_short">TPa</string>
     <string name="petapascal">Petapascal</string>
@@ -925,7 +917,6 @@
     <string name="units_screen_from">Convert from</string>
     <string name="units_screen_to">Convert to</string>
     <string name="settings_screen">Settings</string>
-    <string name="time_zone_screen">Time zones</string>
 
     <!-- Settings items -->
     <string name="theme_setting">Themes</string>
@@ -971,7 +962,6 @@
     <!-- MISC. -->
     <string name="loading_label">Loading…</string>
     <string name="error_label">Error</string>
-    <string name="try_again_label">Click to try again</string>
     <string name="copied">Copied %1$s!</string>
     <string name="cancel_label">Cancel</string>
     <string name="ok_label" translatable="false">OK</string>
@@ -1265,11 +1255,11 @@
     <string name="cubic_foot_per_minute_short">ft3/m</string>
     <string name="cubic_foot_per_second">Cubic Foot/second</string>
     <string name="cubic_foot_per_second_short">ft3/s</string>
-    <string name="gallon_per_hour_us">Gallon/hour (U.S.)</string>
+    <string name="gallon_per_hour_us">Gallon/hour (US)</string>
     <string name="gallon_per_hour_us_short">gal/h</string>
-    <string name="gallon_per_minute_us">Gallon/minute (U.S.)</string>
+    <string name="gallon_per_minute_us">Gallon/minute (US)</string>
     <string name="gallon_per_minute_us_short">gal/m</string>
-    <string name="gallon_per_second_us">Gallon/second (U.S.)</string>
+    <string name="gallon_per_second_us">Gallon/second (US)</string>
     <string name="gallon_per_second_us_short">gal/s</string>
     <string name="gallon_per_hour_imperial">Gallon/hour (Imperial)</string>
     <string name="gallon_per_hour_imperial_short">gal/h</string>
@@ -1372,6 +1362,16 @@ Maybe this can be labeled better? Let me know. It should be something that can d
 Used in this dialog window. Should be short -->
     <string name="next_label">Next</string>
     <string name="formatting_setting_preview_box_label">Preview (click to switch)</string>
+    <string name="gibibit">Gibibit</string>
+    <string name="gibibit_short">Gib</string>
+    <string name="gibibyte">Gibibyte</string>
+    <string name="gibibyte_short">GiB</string>
+    <string name="gibibit_per_second">Gibibit/second</string>
+    <string name="gibibit_per_second_short">Gib/s</string>
+    <string name="gibibyte_per_second">Gibibyte/second</string>
+    <string name="gibibyte_per_second_short">GiB/s</string>
+    <string name="time_zone_screen">Time zones</string>
+    <string name="try_again_label">Click to try again</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="yesterday">Yesterday</string>
     <string name="search_text_field_placeholder">Search…</string>
@@ -1382,4 +1382,49 @@ Used in this dialog window. Should be short -->
     <string name="add">Add</string>
     <string name="subtract">Subtract</string>
     <string name="date_calculator">Date calculator</string>
+    <string name="locale_en" translatable="false">English</string>
+    <string name="locale_de" translatable="false">Deutsch</string>
+    <string name="locale_en_rGB" translatable="false">English (UK)</string>
+    <string name="locale_fr" translatable="false">Français</string>
+    <string name="locale_it" translatable="false">Italiano</string>
+    <string name="locale_ru" translatable="false">Русский</string>
+    <string name="language_setting">Language</string>
+    <string name="language_setting_support">Change the app language</string>
+    <string name="system_font_setting">System font</string>
+    <string name="system_font_setting_support">Use system font for texts in app</string>
+    <string name="fuel_consumption">Fuel</string>
+    <string name="km_per_l">Kilometer/liter</string>
+    <string name="km_per_l_short">km/L</string>
+    <string name="l_per_km">Liter/kilometer</string>
+    <string name="l_per_km_short">L/km</string>
+    <string name="l_per_100_km">Liter/100 Kilometer</string>
+    <string name="l_per_100_km_short">L/100 km</string>
+    <string name="mi_per_gallon_uk">Mile/gallon (UK)</string>
+    <string name="mi_per_gallon_uk_short">mpg (UK)</string>
+    <string name="mi_per_gallon_us">Mile/gallon (US)</string>
+    <string name="mi_per_gallon_us_short">mpg (US)</string>
+    <string name="mi_us_per_l">Mile/liter (US)</string>
+    <string name="mi_us_per_l_short">mi/L (US)</string>
+    <string name="gallon_us_per_mile">Gallon/mile (US)</string>
+    <string name="gallon_us_per_mile_short">gal/mi (US)</string>
+    <string name="gallon_uk_per_mile">Gallon/mile (UK)</string>
+    <string name="gallon_uk_per_mile_short">gal/mi (UK)</string>
+    <string name="gallon_us_per_100_mile">Gallon/100 mile (US)</string>
+    <string name="gallon_us_per_100_mile_short">gal/100 mi (US)</string>
+    <string name="gallon_uk_per_100_mile">Gallon/100 mile (UK)</string>
+    <string name="gallon_uk_per_100_mile_short">gal/100 mi (UK)</string>
+    <string name="partial_history_view_setting">Partial history view</string>
+    <string name="partial_history_view_setting_support">Peek latest entrance in history</string>
+    <string name="calculator_settings_support">History view</string>
+    <string name="converter_settings_support">Unit groups, sorting, formatting</string>
+    <string name="display_settings">Display</string>
+    <string name="clear_cache">Clear cache</string>
+    <string name="locale_es" translatable="false">Español</string>
+    <string name="locale_hu" translatable="false">Magyar</string>
+    <string name="locale_in" translatable="false">Indonesia</string>
+    <string name="locale_nl" translatable="false">Dutch</string>
+    <string name="locale_tr" translatable="false">Türkçe</string>
+
+    <!-- Option name to use system default setting -->
+    <string name="system">System</string>
 </resources>

@@ -85,7 +85,7 @@ fun UnittoModalNavigationDrawer(
                 orientation = Orientation.Horizontal,
                 enabled = gesturesEnabled or state.isOpen,
             )
-            .padding(end = 18.dp) // Draggable when closed
+            .padding(end = if (state.isOpen) 0.dp else 18.dp) // Draggable when closed
         ) {
             drawer()
         }

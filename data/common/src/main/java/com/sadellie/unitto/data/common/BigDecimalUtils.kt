@@ -24,6 +24,16 @@ import java.math.RoundingMode
 import kotlin.math.floor
 import kotlin.math.log10
 
+fun BigDecimal.format(
+    scale: Int,
+    outputFormat: Int
+): String {
+    return this
+        .setMinimumRequiredScale(scale)
+        .trimZeros()
+        .toStringWith(outputFormat)
+}
+
 /**
  * Shorthand function to use correct `toString` method according to [outputFormat].
  */

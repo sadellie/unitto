@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
 
-    implementation(project(mapOf("path" to ":data:userprefs")))
+    implementation(project(":data:userprefs"))
 }

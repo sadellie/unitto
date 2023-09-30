@@ -16,8 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("UnstableApiUsage")
-
 plugins {
     // Basic stuff
     id("com.android.application")
@@ -34,8 +32,21 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 34
-        versionCode = 24
-        versionName = "Mikado Yellow"
+        versionCode = 26
+        versionName = "Nadeshiko Pink"
+        resourceConfigurations += setOf(
+            "en",
+            "en-rGB",
+            "de",
+            "es",
+            "fr",
+            "hu",
+            "in",
+            "it",
+            "nl",
+            "ru",
+            "tr",
+        )
     }
 
     buildTypes {
@@ -91,9 +102,6 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
-        freeCompilerArgs = freeCompilerArgs + listOf(
-            "-opt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
-        )
     }
 
     composeOptions {
@@ -108,24 +116,24 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
-    implementation(libs.androidx.core)
-    coreLibraryDesugaring(libs.android.desugarJdkLibs)
+    implementation(libs.androidx.core.core.ktx)
+    coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs)
 
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.com.google.accompanist.systemuicontroller)
-    implementation(libs.androidx.datastore)
+    implementation(libs.com.google.accompanist.accompanist.systemuicontroller)
+    implementation(libs.androidx.datastore.datastore.preferences)
+    implementation(libs.androidx.appcompat.appcompat)
 
-    implementation(project(mapOf("path" to ":feature:converter")))
-    implementation(project(mapOf("path" to ":feature:calculator")))
-    implementation(project(mapOf("path" to ":feature:settings")))
-    implementation(project(mapOf("path" to ":feature:unitslist")))
-    implementation(project(mapOf("path" to ":feature:datecalculator")))
-    implementation(project(mapOf("path" to ":feature:timezone")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":core:ui")))
-    implementation(project(mapOf("path" to ":core:base")))
+    implementation(project(":feature:converter"))
+    implementation(project(":feature:calculator"))
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:datecalculator"))
+    implementation(project(":feature:timezone"))
+    implementation(project(":data:model"))
+    implementation(project(":data:userprefs"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:base"))
 }

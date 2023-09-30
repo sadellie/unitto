@@ -43,7 +43,7 @@ class UnittoLibraryPlugin : Plugin<Project> {
 
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
-                "implementation"(libs.findLibrary("androidx.core").get())
+                "implementation"(libs.findLibrary("androidx.core.core.ktx").get())
             }
         }
     }

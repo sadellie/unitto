@@ -642,4 +642,16 @@ object MyUnitIDS {
     const val blondel = "blondel"
     const val bril = "bril"
     const val skot = "skot"
+
+    // FUEL
+    const val kilometer_per_liter = "kilometer_per_liter"
+    const val liter_per_kilometer = "liter_per_kilometer"
+    const val liter_per_100_kilometer = "liter_per_100_kilometer"
+    const val mile_per_gallon_uk = "mile_per_gallon_uk"
+    const val mile_per_gallon_us = "mile_per_gallon_us"
+    const val mile_us_per_liter = "mile_us_per_liter"
+    const val gallon_us_per_mile = "gallon_us_per_mile"
+    const val gallon_uk_per_mile = "gallon_uk_per_mile"
+    const val gallon_us_per_100_mile = "gallon_us_per_100_mile"
+    const val gallon_uk_per_100_mile = "gallon_uk_per_100_mile"
 }

@@ -26,10 +26,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.datastore.datastore.preferences)
     implementation(libs.com.github.sadellie.themmo)
 
-    implementation(project(mapOf("path" to ":core:base")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:units")))
+    implementation(project(":core:base"))
+    implementation(project(":data:model"))
+    implementation(project(":data:units"))
 }

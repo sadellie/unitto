@@ -99,47 +99,47 @@
     <string name="kelvin">Kelvin</string>
 
     <!-- Speed -->
-    <string name="millimeter_per_hour">Millimètre par heure</string>
+    <string name="millimeter_per_hour">Millimètre/heure</string>
     <string name="millimeter_per_hour_short">mm/h</string>
-    <string name="millimeter_per_minute">Millimètre par minute</string>
+    <string name="millimeter_per_minute">Millimètre/minute</string>
     <string name="millimeter_per_minute_short">mm/m</string>
-    <string name="millimeter_per_second">Millimètre par seconde</string>
+    <string name="millimeter_per_second">Millimètre/seconde</string>
     <string name="millimeter_per_second_short">mm/s</string>
-    <string name="centimeter_per_hour">Centimètre par heure</string>
+    <string name="centimeter_per_hour">Centimètre/heure</string>
     <string name="centimeter_per_hour_short">cm/h</string>
-    <string name="centimeter_per_minute">Centimètre par minute</string>
+    <string name="centimeter_per_minute">Centimètre/minute</string>
     <string name="centimeter_per_minute_short">cm/m</string>
-    <string name="centimeter_per_second">Centimètre par seconde</string>
+    <string name="centimeter_per_second">Centimètre/seconde</string>
     <string name="centimeter_per_second_short">cm/s</string>
-    <string name="meter_per_hour">Mètre par heure</string>
+    <string name="meter_per_hour">Mètre/heure</string>
     <string name="meter_per_hour_short">m/h</string>
-    <string name="meter_per_minute">Mètre par minute</string>
+    <string name="meter_per_minute">Mètre/minute</string>
     <string name="meter_per_minute_short">m/m</string>
-    <string name="meter_per_second">Mètre par seconde</string>
+    <string name="meter_per_second">Mètre/seconde</string>
     <string name="meter_per_second_short">m/s</string>
-    <string name="kilometer_per_hour">Kilomètre par heure</string>
+    <string name="kilometer_per_hour">Kilomètre/heure</string>
     <string name="kilometer_per_hour_short">km/h</string>
-    <string name="kilometer_per_minute">Kilomètre par minute</string>
+    <string name="kilometer_per_minute">Kilomètre/minute</string>
     <string name="kilometer_per_minute_short">km/m</string>
-    <string name="kilometer_per_second">Kilomètre par seconde</string>
+    <string name="kilometer_per_second">Kilomètre/seconde</string>
     <string name="kilometer_per_second_short">km/s</string>
-    <string name="foot_per_hour">Pied par heure</string>
+    <string name="foot_per_hour">Pied/heure</string>
     <string name="foot_per_hour_short">ft/h</string>
-    <string name="foot_per_minute">Pied par minute</string>
+    <string name="foot_per_minute">Pied/minute</string>
     <string name="foot_per_minute_short">ft/m</string>
-    <string name="foot_per_second">Pied par seconde</string>
+    <string name="foot_per_second">Pied/seconde</string>
     <string name="foot_per_second_short">ft/s</string>
-    <string name="yard_per_hour">Yard par heure</string>
+    <string name="yard_per_hour">Yard/heure</string>
     <string name="yard_per_hour_short">yd/h</string>
-    <string name="yard_per_minute">Yard par minute</string>
+    <string name="yard_per_minute">Yard/minute</string>
     <string name="yard_per_minute_short">yd/m</string>
-    <string name="yard_per_second">Yard par seconde</string>
+    <string name="yard_per_second">Yard/seconde</string>
     <string name="yard_per_second_short">yd/s</string>
-    <string name="mile_per_hour">Mile par heure</string>
+    <string name="mile_per_hour">Mile/heure</string>
     <string name="mile_per_hour_short">mi/h</string>
-    <string name="mile_per_minute">Mile par minute</string>
+    <string name="mile_per_minute">Mile/minute</string>
     <string name="mile_per_minute_short">mi/m</string>
-    <string name="mile_per_second">Mile par seconde</string>
+    <string name="mile_per_second">Mile/seconde</string>
     <string name="mile_per_second_short">mi/s</string>
     <string name="knot">Nœud</string>
     <string name="knot_short">nd</string>
@@ -190,41 +190,41 @@
     <string name="exabyte_short">EB</string>
 
     <!-- Data transfer -->
-    <string name="bit_per_second">Bit per second</string>
+    <string name="bit_per_second">Bit/second</string>
     <string name="bit_per_second_short">b/s</string>
-    <string name="kibibit_per_second">Kibibit per second</string>
+    <string name="kibibit_per_second">Kibibit/second</string>
     <string name="kibibit_per_second_short">Kib/s</string>
-    <string name="kilobit_per_second">Kilobit per second</string>
+    <string name="kilobit_per_second">Kilobit/second</string>
     <string name="kilobit_per_second_short">Kb/s</string>
-    <string name="megabit_per_second">Megabit per second</string>
+    <string name="megabit_per_second">Megabit/second</string>
     <string name="megabit_per_second_short">Mb/s</string>
-    <string name="mebibit_per_second">Mebibit per second</string>
+    <string name="mebibit_per_second">Mebibit/second</string>
     <string name="mebibit_per_second_short">Mib/s</string>
-    <string name="gigabit_per_second">Gigabit per second</string>
+    <string name="gigabit_per_second">Gigabit/second</string>
     <string name="gigabit_per_second_short">Gb/s</string>
-    <string name="terabit_per_second">Térabit par seconde</string>
+    <string name="terabit_per_second">Térabit/seconde</string>
     <string name="terabit_per_second_short">Tb/s</string>
-    <string name="petabit_per_second">Pétabit par seconde</string>
+    <string name="petabit_per_second">Pétabit/seconde</string>
     <string name="petabit_per_second_short">Pb/s</string>
-    <string name="exabit_per_second">Exabit par seconde</string>
+    <string name="exabit_per_second">Exabit/seconde</string>
     <string name="exabit_per_second_short">Eb/s</string>
-    <string name="byte_per_second">Byte par seconde</string>
+    <string name="byte_per_second">Byte/seconde</string>
     <string name="byte_per_second_short">B/s</string>
-    <string name="kibibyte_per_second">Kibibyte par seconde</string>
+    <string name="kibibyte_per_second">Kibibyte/seconde</string>
     <string name="kibibyte_per_second_short">KiB/s</string>
-    <string name="kilobyte_per_second">Kilobyte par seconde</string>
+    <string name="kilobyte_per_second">Kilobyte/seconde</string>
     <string name="kilobyte_per_second_short">KB/s</string>
-    <string name="megabyte_per_second">Mégabyte par seconde</string>
+    <string name="megabyte_per_second">Mégabyte/seconde</string>
     <string name="megabyte_per_second_short">MB/s</string>
-    <string name="mebibyte_per_second">Mébibyte par seconde</string>
+    <string name="mebibyte_per_second">Mébibyte/seconde</string>
     <string name="mebibyte_per_second_short">MiB/s</string>
-    <string name="gigabyte_per_second">Gigabyte par seconde</string>
+    <string name="gigabyte_per_second">Gigabyte/seconde</string>
     <string name="gigabyte_per_second_short">GB/s</string>
-    <string name="terabyte_per_second">Térabyte par seconde</string>
+    <string name="terabyte_per_second">Térabyte/seconde</string>
     <string name="terabyte_per_second_short">TB/s</string>
-    <string name="petabyte_per_second">Petabyte par seconde</string>
+    <string name="petabyte_per_second">Petabyte/seconde</string>
     <string name="petabyte_per_second_short">PB/s</string>
-    <string name="exabyte_per_second">Exabyte par seconde</string>
+    <string name="exabyte_per_second">Exabyte/seconde</string>
     <string name="exabyte_per_second_short">EB/s</string>
 
     <!-- Volume -->
@@ -400,7 +400,7 @@
     <string name="megapascal">Mégapascal</string>
     <string name="megapascal_short">MPa</string>
     <string name="gigapascal">Gigapascal</string>
-    <string name="gigapascal_short">GPA</string>
+    <string name="gigapascal_short">GPa</string>
     <string name="terapascal">Térapascal</string>
     <string name="terapascal_short">TPa</string>
     <string name="petapascal">Pétapascal</string>
@@ -417,15 +417,15 @@
     <string name="millimeter_of_mercury_short">mm Hg</string>
 
     <!-- Acceleration -->
-    <string name="attometer_per_square_second">Attomètre par seconde carrée</string>
+    <string name="attometer_per_square_second">Attomètre/seconde carrée</string>
     <string name="attometer_per_square_second_short">am/s^2</string>
-    <string name="femtometer_per_square_second">Femtomètre par seconde carrée</string>
+    <string name="femtometer_per_square_second">Femtomètre/seconde carrée</string>
     <string name="femtometer_per_square_second_short">fm/s^2</string>
-    <string name="picometer_per_square_second">Picomètre par seconde carrée</string>
+    <string name="picometer_per_square_second">Picomètre/seconde carrée</string>
     <string name="picometer_per_square_second_short">pm/s^2</string>
-    <string name="nanometer_per_square_second">Nanomètre par seconde carrée</string>
+    <string name="nanometer_per_square_second">Nanomètre/seconde carrée</string>
     <string name="nanometer_per_square_second_short">nm/s^2</string>
-    <string name="micrometer_per_square_second">Micromètre par seconde carrée</string>
+    <string name="micrometer_per_square_second">Micromètre/seconde carrée</string>
     <string name="micrometer_per_square_second_short">µm/s^2</string>
     <string name="millimeter_per_square_second">Millimètre par seconde carrée</string>
     <string name="millimeter_per_square_second_short">mm/s^2</string>
@@ -433,13 +433,13 @@
     <string name="centimeter_per_square_second_short">cm/s^2</string>
     <string name="decimeter_per_square_second">Décimètre par seconde carrée</string>
     <string name="decimeter_per_square_second_short">dm/s^2</string>
-    <string name="meter_per_square_second">Mètre par seconde carrée</string>
+    <string name="meter_per_square_second">Mètre/seconde carrée</string>
     <string name="meter_per_square_second_short">m/s^2</string>
-    <string name="kilometer_per_square_second">Kilomètre par seconde carrée</string>
+    <string name="kilometer_per_square_second">Kilomètre/seconde carrée</string>
     <string name="kilometer_per_square_second_short">km/s^2</string>
-    <string name="dekameter_per_square_second">Décamètre par seconde carrée</string>
+    <string name="dekameter_per_square_second">Décamètre/seconde carrée</string>
     <string name="dekameter_per_square_second_short">dam/s^2</string>
-    <string name="hectometer_per_square_second">Hectomètre par seconde carrée</string>
+    <string name="hectometer_per_square_second">Hectomètre/seconde carrée</string>
     <string name="hectometer_per_square_second_short">hm/s^2</string>
     <string name="gal">Gal</string>
     <string name="gal_short">Gal</string>
@@ -663,6 +663,7 @@
     <!-- Fuzzy -->
     <string name="exponential_notation_setting">Notation exponentielle</string>
     <string name="unit_groups_setting">Groupes d\'unités</string>
+    <string name="currency_rates_note_setting">Taux de conversion faux ?</string>
     <string name="currency_rates_note_title">Note</string>
     <string name="currency_rates_note_text">Les taux de change sont mis à jour quotidiennement. L\'application ne permet pas de suivre le marché en temps réel.</string>
     <string name="terms_and_conditions">Termes et conditions</string>
@@ -684,9 +685,16 @@
 
     <!-- Fuzzy -->
     <string name="space">Espaces</string>
+
+    <!-- Output format -->
+    <string name="exponential_notation_setting_support">Remplacer une partie du nombre par E</string>
+
+    <!-- Theme -->
+    <string name="theme_setting_support">Look and Feel de l\'App</string>
     <string name="auto_label">Auto</string>
     <string name="force_light_mode">Clair</string>
     <string name="force_dark_mode">Sombre</string>
+    <string name="color_theme">Thème couleur</string>
     <string name="force_amoled_mode">AMOLED Noir</string>
     <string name="force_amoled_mode_support">Utiliser un fond noir pour les thèmes sombres</string>
     <string name="enable_dynamic_colors">Couleurs dynamiques</string>
@@ -695,6 +703,7 @@
     <!-- MISC. -->
     <string name="loading_label">Chargement…</string>
     <string name="error_label">Erreur</string>
+    <string name="copied">%1$s! copié</string>
     <string name="cancel_label">Annuler</string>
     <string name="search_bar_placeholder">Rechercher des unités</string>
     <string name="search_placeholder">Aucun résultat trouvé</string>
@@ -721,4 +730,378 @@
     <string name="about_unitto">À propos d\'Unitto</string>
     <string name="about_unitto_support">En savoir plus sur l\'application</string>
     <string name="unit_groups_support">Désactiver et réorganiser les unités</string>
+    <string name="cent">cent</string>
+    <string name="cent_short">cent</string>
+
+    <!-- Flux -->
+    <string name="maxwell">Maxwell</string>
+    <string name="maxwell_short">Mx</string>
+    <string name="weber">Weber</string>
+    <string name="weber_short">Wb</string>
+    <string name="milliweber">Milliweber</string>
+    <string name="milliweber_short">mWb</string>
+    <string name="microweber">Microweber</string>
+    <string name="microweber_short">μWb</string>
+    <string name="kiloweber">Kiloweber</string>
+    <string name="kiloweber_short">kWb</string>
+    <string name="megaweber">Megaweber</string>
+    <string name="megaweber_short">MWb</string>
+    <string name="gigaweber">Gigaweber</string>
+    <string name="gigaweber_short">GWb</string>
+    <string name="flux">Flux</string>
+    <string name="open_source">Voir le code source</string>
+    <string name="translate_app">Traduire cette app</string>
+    <string name="translate_app_support">Rejoignez le projet POEditor pour aider</string>
+
+    <!-- Number base -->
+    <string name="binary">Binaire</string>
+    <string name="binary_short">base2</string>
+    <string name="ternary">Ternaire</string>
+    <string name="ternary_short">base3</string>
+    <string name="quaternary">Quaternaire</string>
+    <string name="quaternary_short">base4</string>
+    <string name="quinary">Quinaire</string>
+    <string name="quinary_short">base5</string>
+    <string name="senary">Senaire</string>
+    <string name="senary_short">base6</string>
+    <string name="septenary">Septenaire</string>
+    <string name="septenary_short">base7</string>
+    <string name="octal">Octal</string>
+    <string name="octal_short">base8</string>
+    <string name="nonary">Nonaire</string>
+    <string name="nonary_short">base9</string>
+    <string name="decimal">Décimal</string>
+    <string name="decimal_short">base10</string>
+    <string name="undecimal">Non-décimal</string>
+    <string name="undecimal_short">base11</string>
+    <string name="duodecimal">Duodécimal</string>
+    <string name="duodecimal_short">base12</string>
+    <string name="tridecimal">Tridécimal</string>
+    <string name="tridecimal_short">base13</string>
+    <string name="tetradecimal">Tétradécimal</string>
+    <string name="tetradecimal_short">base14</string>
+    <string name="pentadecimal">Pentadécimal</string>
+    <string name="pentadecimal_short">base15</string>
+    <string name="hexadecimal">Hexadécimal</string>
+    <string name="hexadecimal_short">base16</string>
+    <string name="number_base">Base</string>
+    <string name="enable_vibrations">Vibrations</string>
+    <string name="enable_vibrations_support">Retour haptique lors du click sur les boutons du clavier</string>
+    <string name="millibar">Millibar</string>
+    <string name="millibar_short">mbar</string>
+    <string name="kilopascal">Kilopascal</string>
+
+    <!-- Fuzzy -->
+    <string name="kilopascal_short">kPa</string>
+    <string name="micron_of_mercury">Micron de mercure</string>
+    <string name="micron_of_mercury_short">μmHg</string>
+
+    <!-- Tools -->
+    <string name="epoch_converter">Convertisseur d\'Epoch</string>
+
+    <!-- Calculator -->
+    <string name="calculator">Calculatrice</string>
+
+    <!-- Epoch -->
+    <string name="year_short">y</string>
+    <string name="month_short">m</string>
+    <string name="nautical_mile">Mile nautique</string>
+    <string name="nautical_mile_short">M</string>
+    <string name="starting_screen_setting">Écran de départ</string>
+    <string name="starting_screen_setting_support">Choisissez quel écran est affiché lors du démarrage de l\'app</string>
+
+    <!-- Tools -->
+    <string name="unit_converter">Convertisseur d\'unités</string>
+    <string name="calculator_clear_history_label">Clear</string>
+    <string name="calculator_clear_history_title">Vider l\'historique</string>
+    <string name="calculator_clear_history_support">Toutes les expressions de l\'historique seront supprimées pour toujours. Cette action ne peux pas être annulée !</string>
+    <string name="calculator_no_history">Pas d\'historique</string>
+    <string name="open_menu_description">Ouvrir le menu</string>
+    <string name="microgram">Microgramme</string>
+    <string name="microgram_short">µg</string>
+
+    <!-- ELECTROSTATIC CAPACITANCE -->
+    <string name="attofarad">Attofarad</string>
+    <string name="attofarad_short">aF</string>
+    <string name="statfarad">Statfarad</string>
+    <string name="statfarad_short">stF</string>
+    <string name="farad">Farad</string>
+    <string name="farad_short">F</string>
+    <string name="exafarad">Exafarad</string>
+    <string name="exafarad_short">EF</string>
+    <string name="picofarad">Picofarad</string>
+    <string name="picofarad_short">pF</string>
+    <string name="nanofarad">Nanofarad</string>
+    <string name="nanofarad_short">nF</string>
+    <string name="microfarad">Microfarad</string>
+    <string name="microfarad_short">µF</string>
+    <string name="millifarad">Millifarad</string>
+    <string name="millifarad_short">mF</string>
+    <string name="kilofarad">Kilofarad</string>
+    <string name="kilofarad_short">kF</string>
+    <string name="megafarad">Megafarad</string>
+    <string name="megafarad_short">MF</string>
+    <string name="gigafarad">Gigafarad</string>
+    <string name="gigafarad_short">GF</string>
+    <string name="petafarad">Petafarad</string>
+    <string name="petafarad_short">PF</string>
+
+    <!-- Prefixes -->
+    <string name="prefix_quetta">Quetta</string>
+    <string name="prefix_quetta_short">Q</string>
+    <string name="prefix_ronna">Ronna</string>
+    <string name="prefix_ronna_short">R</string>
+    <string name="prefix_yotta">Yotta</string>
+    <string name="prefix_yotta_short">Y</string>
+    <string name="prefix_zetta">Zetta</string>
+    <string name="prefix_zetta_short">Z</string>
+    <string name="prefix_exa">Exa</string>
+    <string name="prefix_exa_short">E</string>
+    <string name="prefix_peta">Peta</string>
+    <string name="prefix_peta_short">P</string>
+    <string name="prefix_tera">Tera</string>
+    <string name="prefix_tera_short">T</string>
+    <string name="prefix_giga">Giga</string>
+    <string name="prefix_giga_short">G</string>
+    <string name="prefix_mega">Mega</string>
+    <string name="prefix_mega_short">M</string>
+    <string name="prefix_kilo">Kilo</string>
+    <string name="prefix_kilo_short">k</string>
+    <string name="prefix_hecto">Hecto</string>
+    <string name="prefix_hecto_short">h</string>
+    <string name="prefix_deca">Deca</string>
+    <string name="prefix_deca_short">da</string>
+    <string name="prefix_base">Base</string>
+    <string name="prefix_base_short">Base</string>
+    <string name="prefix_deci">Déci</string>
+    <string name="prefix_deci_short">d</string>
+    <string name="prefix_centi">Centi</string>
+    <string name="prefix_centi_short">c</string>
+    <string name="prefix_milli">Milli</string>
+    <string name="prefix_milli_short">m</string>
+    <string name="prefix_micro">Micro</string>
+    <string name="prefix_micro_short">μ</string>
+    <string name="prefix_nano">Nano</string>
+    <string name="prefix_nano_short">n</string>
+    <string name="prefix_pico">Pico</string>
+    <string name="prefix_pico_short">p</string>
+    <string name="prefix_femto">Femto</string>
+    <string name="prefix_femto_short">f</string>
+    <string name="prefix_atto">Atto</string>
+    <string name="prefix_atto_short">a</string>
+    <string name="prefix_zepto">Zepto</string>
+    <string name="prefix_zepto_short">z</string>
+    <string name="prefix_yocto">Yocto</string>
+    <string name="prefix_yocto_short">y</string>
+    <string name="prefix_ronto">Ronto</string>
+    <string name="prefix_ronto_short">r</string>
+    <string name="prefix_quecto">Quecto</string>
+    <string name="prefix_quecto_short">q</string>
+
+    <!-- Force -->
+    <string name="newton">Newton</string>
+    <string name="newton_short">N</string>
+    <string name="kilonewton">Kilonewton</string>
+    <string name="kilonewton_short">kN</string>
+    <string name="gram_force">Gramme-force</string>
+    <string name="gram_force_short">gf</string>
+    <string name="kilogram_force">Kilogramme-force</string>
+    <string name="kilogram_force_short">kgf</string>
+    <string name="ton_force">Tonne-force</string>
+    <string name="ton_force_short">tf</string>
+    <string name="millinewton">Millinewton</string>
+    <string name="millinewton_short">mN</string>
+    <string name="attonewton">Attonewton</string>
+    <string name="attonewton_short">aN</string>
+    <string name="dyne">Dyne</string>
+    <string name="dyne_short">dyn</string>
+    <string name="joule_per_meter">Joule/Mètre</string>
+    <string name="joule_per_meter_short">J/m</string>
+    <string name="joule_per_centimeter">Joule/centimètre</string>
+    <string name="joule_per_centimeter_short">J/cm</string>
+    <string name="kilopound_force">Kilopound-force</string>
+    <string name="kilopound_force_short">kipf</string>
+    <string name="pound_force">Pound-force</string>
+    <string name="pound_force_short">lbf</string>
+    <string name="ounce_force">Ounce-force</string>
+    <string name="ounce_force_short">ozf</string>
+    <string name="pond">Pond</string>
+    <string name="pond_short">p</string>
+    <string name="kilopond">Kilopond</string>
+    <string name="kilopond_short">kp</string>
+
+    <!-- Torque -->
+    <string name="newton_meter">Newton mètre</string>
+    <string name="newton_meter_short">N*m</string>
+    <string name="newton_centimeter">Newton centimètre</string>
+    <string name="newton_centimeter_short">N*cm</string>
+    <string name="newton_millimeter">Newton millimètre</string>
+    <string name="newton_millimeter_short">N*mm</string>
+    <string name="kilonewton_meter">Kilonewton mètre</string>
+    <string name="kilonewton_meter_short">kN*m</string>
+    <string name="dyne_meter">Dyne mètre</string>
+    <string name="dyne_meter_short">dyn*m</string>
+    <string name="dyne_centimeter">Dyne centimètre</string>
+    <string name="dyne_centimeter_short">dyn*cm</string>
+    <string name="dyne_millimeter">Dyne millimètre</string>
+    <string name="dyne_millimeter_short">dyn*mm</string>
+    <string name="kilogram_force_meter">Kilogramme-force mètre</string>
+    <string name="kilogram_force_meter_short">kgf*m</string>
+    <string name="kilogram_force_centimeter">Kilogramme-force centimètre</string>
+    <string name="kilogram_force_centimeter_short">kgf*cm</string>
+    <string name="kilogram_force_millimeter">Kilogramme-force millimètre</string>
+    <string name="kilogram_force_millimeter_short">kgf*mm</string>
+    <string name="gram_force_meter">Gramme-force mètre</string>
+    <string name="gram_force_meter_short">gf*m</string>
+    <string name="gram_force_centimeter">Gramme-force centimètre</string>
+    <string name="gram_force_centimeter_short">gf*cm</string>
+    <string name="gram_force_millimeter">Gramme-force millimètre</string>
+    <string name="gram_force_millimeter_short">gf*mm</string>
+    <string name="ounce_force_foot">Ounce-force pied</string>
+    <string name="ounce_force_foot_short">ozf*ft</string>
+    <string name="ounce_force_inch">Ounce-force pouce</string>
+    <string name="ounce_force_inch_short">ozf*in</string>
+    <string name="pound_force_foot">Pound-force pied</string>
+    <string name="pound_force_foot_short">lbf*ft</string>
+    <string name="pound_force_inch">Livre-force pouce</string>
+    <string name="pound_force_inch_short">lbf*in</string>
+
+    <!-- Flow rate -->
+    <string name="liter_per_hour">Litre/heure</string>
+    <string name="liter_per_hour_short">L/h</string>
+    <string name="liter_per_minute">Litre/minute</string>
+    <string name="liter_per_minute_short">L/m</string>
+    <string name="liter_per_second">Litre/seconde</string>
+    <string name="liter_per_second_short">L/s</string>
+    <string name="milliliter_per_hour">Millilitre/heure</string>
+    <string name="milliliter_per_hour_short">mL/h</string>
+    <string name="milliliter_per_minute">Millilitre/minute</string>
+    <string name="milliliter_per_minute_short">mL/m</string>
+    <string name="milliliter_per_second">Millilitre/seconde</string>
+    <string name="milliliter_per_second_short">mL/s</string>
+    <string name="cubic_meter_per_hour">Mètre cube</string>
+    <string name="cubic_meter_per_hour_short">m³/h</string>
+    <string name="cubic_meter_per_minute">Mètre cube/minute</string>
+    <string name="cubic_meter_per_minute_short">m³/m</string>
+    <string name="cubic_meter_per_second">Mètre cube/seconde</string>
+    <string name="cubic_meter_per_second_short">m³/s</string>
+    <string name="cubic_millimeter_per_hour">Millimètre cube/heure</string>
+    <string name="cubic_millimeter_per_hour_short">mm³/h</string>
+    <string name="cubic_millimeter_per_minute">Millimètre cube/minute</string>
+    <string name="cubic_millimeter_per_minute_short">mm³/m</string>
+    <string name="cubic_millimeter_per_second">Millimètre cube/seconde</string>
+    <string name="cubic_millimeter_per_second_short">mm³/s</string>
+    <string name="cubic_foot_per_hour">Pied cube/heure</string>
+    <string name="cubic_foot_per_hour_short">ft³/h</string>
+    <string name="cubic_foot_per_minute">Pied cube/minute</string>
+    <string name="cubic_foot_per_minute_short">ft³/m</string>
+    <string name="cubic_foot_per_second">Pied Cube/seconde</string>
+    <string name="cubic_foot_per_second_short">ft³/s</string>
+    <string name="gallon_per_hour_us">Gallon/heure (US)</string>
+    <string name="gallon_per_hour_us_short">gal/h</string>
+    <string name="gallon_per_minute_us">Gallon/minute (US)</string>
+    <string name="gallon_per_minute_us_short">gal/m</string>
+    <string name="gallon_per_second_us">Gallon/seconde (US)</string>
+    <string name="gallon_per_second_us_short">gal/s</string>
+    <string name="gallon_per_hour_imperial">Gallon/heure (Impérial)</string>
+    <string name="gallon_per_hour_imperial_short">gal/h</string>
+    <string name="gallon_per_minute_imperial">Gallon/minute (Impérial)</string>
+    <string name="gallon_per_minute_imperial_short">gal/m</string>
+    <string name="gallon_per_second_imperial">Gallon/seconde (Impérial)</string>
+    <string name="gallon_per_second_imperial_short">gal/s</string>
+
+    <!-- Luminance -->
+    <string name="candela_per_square_meter">Candela/mètre carré</string>
+    <string name="candela_per_square_meter_short">cd/m²</string>
+    <string name="candela_per_square_centimeter">Candela/centimètre carré</string>
+    <string name="candela_per_square_centimeter_short">cd/cm²</string>
+    <string name="candela_per_square_foot">Candela/pied carré</string>
+    <string name="candela_per_square_foot_short">cd/ft²</string>
+    <string name="candela_per_square_inch">Candela/pouce carré</string>
+    <string name="candela_per_square_inch_short">cd/in²</string>
+    <string name="kilocandela_per_square_meter">Kilocandela/mètre carré</string>
+    <string name="kilocandela_per_square_meter_short">kcd/m²</string>
+    <string name="stilb">Stilb</string>
+    <string name="stilb_short">sb</string>
+    <string name="lumen_per_square_meter_per_steradian">Lumen/mètre carré/steradian</string>
+    <string name="lumen_per_square_meter_per_steradian_short">lm/m²/sr</string>
+    <string name="lumen_per_square_centimeter_per_steradian">Lumen/centimètre carré/steradian</string>
+    <string name="lumen_per_square_centimeter_per_steradian_short">lm/cm²/sr</string>
+    <string name="lumen_per_square_foot_per_steradian">Lumen/pied carré/steradian</string>
+    <string name="lumen_per_square_foot_per_steradian_short">lm/ft²/sr</string>
+    <string name="watt_per_square_centimeter_per_steradian">Watt/centimètre carré/steradian</string>
+    <string name="watt_per_square_centimeter_per_steradian_short">W/cm²/sr</string>
+    <string name="nit">Nit</string>
+    <string name="nit_short">nt</string>
+    <string name="millinit">Millinit</string>
+    <string name="millinit_short">mnt</string>
+    <string name="lambert">Lambert</string>
+    <string name="lambert_short">L</string>
+    <string name="millilambert">Millilambert</string>
+    <string name="millilambert_short">mL</string>
+    <string name="foot_lambert">Pied-lambert</string>
+    <string name="foot_lambert_short">fL</string>
+    <string name="apostilb">Apostilb</string>
+    <string name="apostilb_short">asb</string>
+    <string name="blondel">Blondel</string>
+    <string name="blondel_short">blondel</string>
+    <string name="bril">Bril</string>
+    <string name="bril_short">bril</string>
+    <string name="skot">Skot</string>
+    <string name="skot_short">sk</string>
+    <string name="electrostatic_capacitance">Capacité</string>
+    <string name="prefix">Préfixe</string>
+    <string name="force">Force</string>
+    <string name="torque">Couple</string>
+    <string name="flow_rate">Flux</string>
+    <string name="luminance">Luminance</string>
+    <string name="format_time">Formatter l\'heure</string>
+    <string name="format_time_support">Exemple : Afficher 130 minutes comme 2h 10m</string>
+    <string name="units_sorting">Tri de la liste d\'unités</string>
+    <string name="units_sorting_support">Changer l\'ordre des unités</string>
+
+    <!-- Units list sorting -->
+    <string name="sort_by_usage">Utilisation</string>
+    <string name="sort_by_alphabetical">Alphabétique</string>
+    <string name="sort_by_scale_desc">Échelle (Desc.)</string>
+    <string name="sort_by_scale_asc">Échelle (Asc.)</string>
+    <string name="color_theme_support">Choisir un mode de thème</string>
+    <string name="color_scheme">Palette de couleurs</string>
+    <string name="selected_color">Couleur sélectionnée</string>
+    <string name="monet_mode">Style sélectionné</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/Gj9ZCNPXIfKddDQgccvboVFz.jpg 
+https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
+
+Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
+    <string name="formatting_setting_support">Précision et format des nombres</string>
+    <string name="divide_by_zero_error">Impossible de diviser par 0</string>
+    <string name="date_difference">Différence entre deux dates</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
+    <string name="select_time">Choisir le temps</string>
+    <string name="date_difference_start">Début</string>
+    <string name="date_difference_end">Fin</string>
+    <string name="date_difference_result">Différence</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_years">Années</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_months">Mois</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_days">Jours</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_hours">Heures</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_difference_minutes">Minutes</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
+
+Used in this dialog window. Should be short -->
+    <string name="next_label">Suite</string>
+    <string name="formatting_setting_preview_box_label">Aperçu (cliquez pour changer)</string>
 </resources>

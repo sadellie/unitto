@@ -28,10 +28,10 @@ class UnittoLibraryFeaturePlugin : Plugin<Project> {
         with(target) {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
-                "implementation"(libs.findLibrary("androidx.navigation").get())
+                "implementation"(libs.findLibrary("androidx.navigation.navigation.compose").get())
 
-                "implementation"(project(mapOf("path" to ":core:base")))
-                "implementation"(project(mapOf("path" to ":core:ui")))
+                "implementation"(project(":core:base"))
+                "implementation"(project(":core:ui"))
             }
         }
     }

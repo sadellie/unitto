@@ -18,267 +18,190 @@
 
 package com.sadellie.unitto.feature.settings
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExposureZero
+import androidx.compose.material.icons.filled.Cached
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
-import androidx.compose.material.icons.filled.Rule
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.TOP_LEVEL_GRAPH_ROUTES
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
+import com.sadellie.unitto.core.ui.showToast
+import com.sadellie.unitto.data.userprefs.GeneralPreferences
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
+import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
+import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
+import com.sadellie.unitto.feature.settings.navigation.displayRoute
 import com.sadellie.unitto.feature.settings.navigation.formattingRoute
-import com.sadellie.unitto.feature.settings.navigation.themesRoute
-import com.sadellie.unitto.feature.settings.navigation.unitsGroupRoute
+import com.sadellie.unitto.feature.settings.navigation.startingScreenRoute
 
 @Composable
-internal fun SettingsScreen(
+internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
-    menuButtonClick: () -> Unit,
-    navControllerAction: (String) -> Unit
+    navigateUp: () -> Unit,
+    navControllerAction: (String) -> Unit,
+) {
+    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+    val cachePercentage = viewModel.cachePercentage.collectAsStateWithLifecycle()
+
+    SettingsScreen(
+        userPrefs = userPrefs.value,
+        navigateUp = navigateUp,
+        navControllerAction = navControllerAction,
+        updateVibrations = viewModel::updateVibrations,
+        cachePercentage = cachePercentage.value,
+        clearCache = viewModel::clearCache,
+    )
+}
+
+@Composable
+private fun SettingsScreen(
+    userPrefs: GeneralPreferences,
+    navigateUp: () -> Unit,
+    navControllerAction: (String) -> Unit,
+    updateVibrations: (Boolean) -> Unit,
+    cachePercentage: Float,
+    clearCache: () -> Unit,
 ) {
     val mContext = LocalContext.current
-    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
-    var dialogState: DialogState by rememberSaveable {
-        mutableStateOf(DialogState.NONE)
-    }
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_screen),
-        navigationIcon = { NavigateUpButton(menuButtonClick) }
+        navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
-        LazyColumn(contentPadding = padding) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(padding)
+        ) {
+            UnittoListItem(
+                icon = Icons.Default.Palette,
+                iconDescription = stringResource(R.string.display_settings),
+                headlineText = stringResource(R.string.display_settings),
+                supportingText = stringResource(R.string.theme_setting_support),
+                modifier = Modifier.clickable { navControllerAction(displayRoute) }
+            )
 
-            // THEME
-            item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Palette,
-                            stringResource(R.string.theme_setting),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.theme_setting)) },
-                    supportingContent = { Text(stringResource(R.string.theme_setting_support)) },
-                    modifier = Modifier.clickable { navControllerAction(themesRoute) }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default.Home,
+                iconDescription = stringResource(R.string.starting_screen_setting),
+                headlineText = stringResource(R.string.starting_screen_setting),
+                supportingText = stringResource(R.string.starting_screen_setting_support),
+                modifier = Modifier.clickable { navControllerAction(startingScreenRoute) }
+            )
 
-            // START SCREEN
-            item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Home,
-                            stringResource(R.string.starting_screen_setting),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.starting_screen_setting)) },
-                    supportingContent = { Text(stringResource(R.string.starting_screen_setting_support)) },
-                    modifier = Modifier.clickable { dialogState = DialogState.START_SCREEN }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default._123,
+                iconDescription = stringResource(R.string.formatting_setting),
+                headlineText = stringResource(R.string.formatting_setting),
+                supportingText = stringResource(R.string.formatting_setting_support),
+                modifier = Modifier.clickable { navControllerAction(formattingRoute) }
+            )
 
-            // FORMATTING
-            item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default._123,
-                            stringResource(R.string.formatting_setting),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.formatting_setting)) },
-                    supportingContent = { Text(stringResource(R.string.formatting_setting_support)) },
-                    modifier = Modifier.clickable { navControllerAction(formattingRoute) }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default.Calculate,
+                iconDescription = stringResource(R.string.calculator),
+                headlineText = stringResource(R.string.calculator),
+                supportingText = stringResource(R.string.calculator_settings_support),
+                modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
+            )
 
-            // UNIT CONVERTER GROUP
-            item { Header(stringResource(R.string.unit_converter)) }
+            UnittoListItem(
+                icon = Icons.Default.SwapHoriz,
+                iconDescription = stringResource(R.string.unit_converter),
+                headlineText = stringResource(R.string.unit_converter),
+                supportingText = stringResource(R.string.converter_settings_support),
+                modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) }
+            )
 
-            // UNIT GROUPS
-            item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Rule,
-                            stringResource(R.string.disable_unit_group_description),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.unit_groups_setting)) },
-                    supportingContent = { Text(stringResource(R.string.unit_groups_support)) },
-                    modifier = Modifier.clickable { navControllerAction(unitsGroupRoute) }
-                )
-            }
+            Header(stringResource(R.string.additional_settings_group))
 
-            // UNITS LIST SORTING
-            item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Sort,
-                            stringResource(R.string.units_sorting)
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.units_sorting)) },
-                    supportingContent = { Text(stringResource(R.string.units_sorting_support)) },
-                    modifier = Modifier.clickable { dialogState = DialogState.UNIT_LIST_SORTING }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default.Vibration,
+                iconDescription = stringResource(R.string.enable_vibrations),
+                headlineText = stringResource(R.string.enable_vibrations),
+                supportingText = stringResource(R.string.enable_vibrations_support),
+                modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
+                switchState = userPrefs.enableVibrations,
+                onSwitchChange = updateVibrations
+            )
 
-            // FORMAT TIME
-            item {
+            AnimatedVisibility(
+                visible = cachePercentage > 0,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut(),
+            ) {
                 UnittoListItem(
-                    label = stringResource(R.string.format_time),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Timer,
-                            stringResource(R.string.format_time)
-                        )
-                    },
-                    supportContent = stringResource(R.string.format_time_support),
-                    switchState = userPrefs.value.unitConverterFormatTime,
-                    onSwitchChange = viewModel::updateUnitConverterFormatTime
+                    headlineText = stringResource(R.string.clear_cache),
+                    icon = Icons.Default.Cached,
+                    iconDescription = stringResource(R.string.clear_cache),
+                    modifier = Modifier.clickable { clearCache(); showToast(mContext, "👌") },
                 )
             }
 
-            // ADDITIONAL GROUP
-            item { Header(stringResource(R.string.additional_settings_group)) }
-
-            // MIDDLE ZERO
-            item {
-                UnittoListItem(
-                    label = stringResource(R.string.middle_zero_option),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.ExposureZero,
-                            stringResource(R.string.middle_zero_option)
-                        )
-                    },
-                    supportContent = stringResource(R.string.middle_zero_option_support),
-                    switchState = userPrefs.value.middleZero,
-                    onSwitchChange = viewModel::updateMiddleZero
-                )
-            }
-
-            // VIBRATIONS
-            item {
-                UnittoListItem(
-                    label = stringResource(R.string.enable_vibrations),
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Vibration,
-                            stringResource(R.string.enable_vibrations)
-                        )
-                    },
-                    supportContent = stringResource(R.string.enable_vibrations_support),
-                    switchState = userPrefs.value.enableVibrations,
-                    onSwitchChange = viewModel::updateVibrations
-                )
-            }
-
-            // RATE THIS APP
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
-                item {
-                    ListItem(
-                        leadingContent = {
-                            Icon(
-                                Icons.Default.RateReview,
-                                stringResource(R.string.rate_this_app),
-                            )
-                        },
-                        headlineContent = { Text(stringResource(R.string.rate_this_app)) },
-                        modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
-                    )
-                }
-            }
-
-            // More settings
-            item {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Info,
-                            stringResource(R.string.about_unitto),
-                        )
-                    },
-                    headlineContent = { Text(stringResource(R.string.about_unitto)) },
-                    supportingContent = { Text(stringResource(R.string.about_unitto_support)) },
-                    modifier = Modifier.clickable { navControllerAction(aboutRoute) }
+                UnittoListItem(
+                    icon = Icons.Default.RateReview,
+                    iconDescription = stringResource(R.string.rate_this_app),
+                    headlineText = stringResource(R.string.rate_this_app),
+                    modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                 )
             }
-        }
-    }
 
-    /**
-     * Function to reset currently displayed dialog.
-     */
-    fun resetDialog() {
-        dialogState = DialogState.NONE
-    }
-
-    // Showing dialog
-    when (dialogState) {
-        DialogState.START_SCREEN -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.starting_screen_setting),
-                selectedItemIndex = userPrefs.value.startingScreen,
-                listItems = TOP_LEVEL_GRAPH_ROUTES,
-                selectAction = viewModel::updateStartingScreen,
-                dismissAction = { resetDialog() }
+            UnittoListItem(
+                icon = Icons.Default.Info,
+                iconDescription = stringResource(R.string.about_unitto),
+                headlineText = stringResource(R.string.about_unitto),
+                supportingText = stringResource(R.string.about_unitto_support),
+                modifier = Modifier.clickable { navControllerAction(aboutRoute) }
             )
         }
-        DialogState.UNIT_LIST_SORTING -> {
-            AlertDialogWithList(
-                title = stringResource(R.string.units_sorting),
-                listItems = mapOf(
-                    UnitsListSorting.USAGE to R.string.sort_by_usage,
-                    UnitsListSorting.ALPHABETICAL to R.string.sort_by_alphabetical,
-                    UnitsListSorting.SCALE_DESC to R.string.sort_by_scale_desc,
-                    UnitsListSorting.SCALE_ASC to R.string.sort_by_scale_asc,
-                ),
-                selectedItemIndex = userPrefs.value.unitConverterSorting,
-                selectAction = viewModel::updateUnitConverterSorting,
-                dismissAction = { resetDialog() }
-            )
-        }
-        // Dismissing alert dialog
-        else -> {}
     }
 }
 
-/**
- * All possible states for alert dialog that opens when user clicks on settings.
- */
-private enum class DialogState {
-    NONE, START_SCREEN, UNIT_LIST_SORTING
+@Preview
+@Composable
+private fun PreviewSettingsScreen() {
+    var cacheSize by remember { mutableFloatStateOf(0.9f) }
+
+    SettingsScreen(
+        userPrefs = GeneralPreferences(),
+        navigateUp = {},
+        navControllerAction = {},
+        updateVibrations = {},
+        cachePercentage = cacheSize,
+        clearCache = { cacheSize = 0f }
+    )
 }

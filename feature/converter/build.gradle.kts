@@ -25,23 +25,26 @@ plugins {
 
 android {
     namespace = "com.sadellie.unitto.feature.converter"
+
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
-    testImplementation(libs.junit)
-    testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.org.robolectric.robolectric)
+    testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
     testImplementation(libs.androidx.room.runtime)
     testImplementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
-    testImplementation(libs.androidx.datastore)
+    testImplementation(libs.androidx.datastore.datastore.preferences)
 
-    implementation(libs.com.squareup.moshi)
-    implementation(libs.com.squareup.retrofit2)
+    implementation(libs.com.squareup.moshi.moshi.kotlin)
+    implementation(libs.com.squareup.retrofit2.converter.moshi)
 
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:units")))
-    implementation(project(mapOf("path" to ":data:evaluatto")))
+    implementation(project(":data:common"))
+    implementation(project(":data:database"))
+    implementation(project(":data:model"))
+    implementation(project(":data:userprefs"))
+    implementation(project(":data:units"))
+    implementation(project(":data:evaluatto"))
 }

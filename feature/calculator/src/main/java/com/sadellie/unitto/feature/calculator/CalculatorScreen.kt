@@ -20,7 +20,10 @@ package com.sadellie.unitto.feature.calculator
 
 import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Arrangement
@@ -56,6 +59,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,11 +71,13 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
+import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboardLoading
+import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
 import com.sadellie.unitto.feature.calculator.components.HistoryList
+import com.sadellie.unitto.feature.calculator.components.TextBox
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -86,19 +93,52 @@ internal fun CalculatorRoute(
         uiState = uiState.value,
         navigateToMenu = navigateToMenu,
         navigateToSettings = navigateToSettings,
-        addSymbol = viewModel::addTokens,
-        clearSymbols = viewModel::clearInput,
-        deleteSymbol = viewModel::deleteTokens,
+        addTokens = viewModel::addTokens,
+        clearInput = viewModel::clearInput,
+        deleteTokens = viewModel::deleteTokens,
         onCursorChange = viewModel::onCursorChange,
-        toggleAngleMode = viewModel::toggleCalculatorMode,
+        toggleCalculatorMode = viewModel::toggleCalculatorMode,
         evaluate = viewModel::evaluate,
         clearHistory = viewModel::clearHistory
     )
 }
 
 @Composable
-private fun CalculatorScreen(
+internal fun CalculatorScreen(
     uiState: CalculatorUIState,
+    navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit,
+    addTokens: (String) -> Unit,
+    clearInput: () -> Unit,
+    deleteTokens: () -> Unit,
+    onCursorChange: (TextRange) -> Unit,
+    toggleCalculatorMode: () -> Unit,
+    evaluate: () -> Unit,
+    clearHistory: () -> Unit
+) {
+    when (uiState) {
+        is CalculatorUIState.Loading -> Loading(
+            navigateToMenu = navigateToMenu,
+            navigateToSettings = navigateToSettings,
+        )
+        is CalculatorUIState.Ready -> Ready(
+            uiState = uiState,
+            navigateToMenu = navigateToMenu,
+            navigateToSettings = navigateToSettings,
+            addSymbol = addTokens,
+            clearSymbols = clearInput,
+            deleteSymbol = deleteTokens,
+            onCursorChange = onCursorChange,
+            toggleAngleMode = toggleCalculatorMode,
+            evaluate = evaluate,
+            clearHistory = clearHistory
+        )
+    }
+}
+
+@Composable
+private fun Ready(
+    uiState: CalculatorUIState.Ready,
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
     addSymbol: (String) -> Unit,
@@ -127,7 +167,8 @@ private fun CalculatorScreen(
                                 Icons.Default.Delete,
                                 stringResource(R.string.calculator_clear_history_title)
                             )
-                        }
+                        },
+                        modifier = Modifier.semantics { testTag = "historyButton" }
                     )
                 } else {
                     SettingsButton(navigateToSettings)
@@ -139,135 +180,91 @@ private fun CalculatorScreen(
             modifier = Modifier.padding(paddingValues),
         ) {
             val density = LocalDensity.current
-            var historyItemHeight by remember { mutableStateOf(0.dp) }
-            val textBoxHeight = maxHeight * 0.25f
-            var dragStateCurrentValue by rememberSaveable { mutableStateOf(DragState.CLOSED) }
 
-            val dragState = rememberDragState(
-                historyItem = historyItemHeight,
-                max = maxHeight - textBoxHeight,
-                initialValue = dragStateCurrentValue
-            )
-            val dragDp by remember(dragState.requireOffset()) {
-                derivedStateOf {
-                    focusManager.clearFocus(true)
-                    with(density) { dragState.requireOffset().toDp() }
-                }
+            val textBoxHeight = maxHeight * 0.25f
+
+            val dragState = remember {
+                AnchoredDraggableState(
+                    initialValue = DragState.CLOSED,
+                    positionalThreshold = { 0f },
+                    velocityThreshold = { 0f },
+                    animationSpec = tween()
+                )
             }
-            val keyboardHeight by remember(dragState.requireOffset()) {
+
+            var historyListHeight by remember { mutableStateOf(0.dp) }
+            val keyboardHeight by remember(historyListHeight) {
                 derivedStateOf {
-                    if (dragDp > historyItemHeight) {
-                        maxHeight - textBoxHeight - historyItemHeight
+                    if (historyListHeight > HistoryItemHeight) {
+                        maxHeight - textBoxHeight - HistoryItemHeight
                     } else {
-                        maxHeight - textBoxHeight - dragDp
+                        maxHeight - textBoxHeight - historyListHeight
                     }
                 }
             }
 
+            LaunchedEffect(uiState.partialHistoryView) {
+                val anchors: DraggableAnchors<DragState> = with(density) {
+                    if (uiState.partialHistoryView) {
+                        DraggableAnchors {
+                            DragState.CLOSED at 0f
+                            DragState.SMALL at HistoryItemHeight.toPx()
+                            DragState.OPEN at (maxHeight * 0.75f).toPx()
+                        }
+                    } else {
+                        DraggableAnchors {
+                            DragState.CLOSED at 0f
+                            DragState.OPEN at (maxHeight * 0.75f).toPx()
+                        }
+                    }
+                }
+                dragState.updateAnchors(anchors)
+            }
+
+            LaunchedEffect(dragState.offset) {
+                with(density) {
+                    if (!dragState.offset.isNaN()) {
+                        historyListHeight = dragState.requireOffset().toDp()
+                    }
+                }
+                focusManager.clearFocus()
+            }
+
             LaunchedEffect(dragState.currentValue) {
-                dragStateCurrentValue = dragState.currentValue
                 showClearHistoryButton = dragState.currentValue == DragState.OPEN
             }
 
-            // History
             HistoryList(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                     .fillMaxWidth()
-                    .height(dragDp),
+                    .height(historyListHeight),
                 historyItems = uiState.history,
-                heightCallback = { historyItemHeight = it },
                 formatterSymbols = uiState.formatterSymbols,
-                addTokens = addSymbol,
+                addTokens = addSymbol
             )
 
-            // Input
-            Column(
-                Modifier
-                    .offset(y = dragDp)
+            TextBox(
+                modifier = Modifier
+                    .offset(y = historyListHeight)
                     .height(textBoxHeight)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        RoundedCornerShape(
-                            topStartPercent = 0, topEndPercent = 0,
-                            bottomStartPercent = 20, bottomEndPercent = 20
-                        )
-                    )
+                    .fillMaxWidth()
                     .anchoredDraggable(
                         state = dragState,
                         orientation = Orientation.Vertical
                     )
-                    .padding(top = 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                ExpressionTextField(
-                    modifier = Modifier
-                        .weight(2f)
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    value = uiState.input,
-                    minRatio = 0.5f,
-                    cutCallback = deleteSymbol,
-                    pasteCallback = addSymbol,
-                    onCursorChange = onCursorChange,
-                    formatterSymbols = uiState.formatterSymbols
-                )
-                if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    when (uiState.output) {
-                        is CalculationResult.Default -> {
-                            var output by remember(uiState.output) {
-                                mutableStateOf(TextFieldValue(uiState.output.text))
-                            }
+                ,
+                formatterSymbols = uiState.formatterSymbols,
+                input = uiState.input,
+                deleteSymbol = deleteSymbol,
+                addSymbol = addSymbol,
+                onCursorChange = onCursorChange,
+                output = uiState.output
+            )
 
-                            ExpressionTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 8.dp),
-                                value = output,
-                                minRatio = 1f,
-                                onCursorChange = { output = output.copy(selection = it) },
-                                formatterSymbols = uiState.formatterSymbols,
-                                textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
-                                readOnly = true,
-                            )
-                        }
-
-                        else -> {
-                            val label = uiState.output.label?.let { stringResource(it) } ?: ""
-
-                            UnformattedTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 8.dp),
-                                value = TextFieldValue(label),
-                                minRatio = 1f,
-                                onCursorChange = {},
-                                textColor = MaterialTheme.colorScheme.error,
-                                readOnly = true,
-                            )
-                        }
-                    }
-
-                }
-                // Handle
-                Box(
-                    Modifier
-                        .padding(8.dp)
-                        .background(
-                            MaterialTheme.colorScheme.onSurfaceVariant,
-                            RoundedCornerShape(100)
-                        )
-                        .sizeIn(24.dp, 4.dp)
-                )
-            }
-
-            // Keyboard
             CalculatorKeyboard(
                 modifier = Modifier
-                    .offset(y = dragDp + textBoxHeight)
+                    .semantics { testTag = "ready" }
+                    .offset(y = historyListHeight + textBoxHeight)
                     .height(keyboardHeight)
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -317,6 +314,81 @@ private fun CalculatorScreen(
     }
 }
 
+@Composable
+internal fun Loading(
+    navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit,
+) {
+    UnittoScreenWithTopBar(
+        title = { Text(stringResource(R.string.calculator)) },
+        navigationIcon = { MenuButton { navigateToMenu() } },
+        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
+        actions = { SettingsButton(navigateToSettings) }
+    ) { paddingValues ->
+        BoxWithConstraints(
+            modifier = Modifier.padding(paddingValues),
+        ) {
+            // Input
+            Column(
+                Modifier
+                    .height(maxHeight * 0.25f)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        RoundedCornerShape(
+                            topStartPercent = 0, topEndPercent = 0,
+                            bottomStartPercent = 20, bottomEndPercent = 20
+                        )
+                    )
+                    .padding(top = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                UnformattedTextField(
+                    modifier = Modifier
+                        .weight(2f)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    value = TextFieldValue(),
+                    minRatio = 0.5f,
+                    onCursorChange = {},
+                )
+                if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    UnformattedTextField(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        value = TextFieldValue(),
+                        minRatio = 1f,
+                        onCursorChange = {},
+                        readOnly = true,
+                    )
+                }
+                // Handle
+                Box(
+                    Modifier
+                        .padding(8.dp)
+                        .background(
+                            MaterialTheme.colorScheme.onSurfaceVariant,
+                            RoundedCornerShape(100)
+                        )
+                        .sizeIn(24.dp, 4.dp)
+                )
+            }
+
+            // Keyboard
+            CalculatorKeyboardLoading(
+                modifier = Modifier
+                    .semantics { testTag = "loading" }
+                    .offset(y = maxHeight * 0.25f)
+                    .height(maxHeight * 0.75f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+            )
+        }
+    }
+}
+
 @Preview(widthDp = 432, heightDp = 1008, device = "spec:parent=pixel_5,orientation=portrait")
 @Preview(widthDp = 432, heightDp = 864, device = "spec:parent=pixel_5,orientation=portrait")
 @Preview(widthDp = 597, heightDp = 1393, device = "spec:parent=pixel_5,orientation=portrait")
@@ -346,18 +418,18 @@ private fun PreviewCalculatorScreen() {
     }
 
     CalculatorScreen(
-        uiState = CalculatorUIState(
+        uiState = CalculatorUIState.Ready(
             input = TextFieldValue("1.2345"),
             output = CalculationResult.Default("1234"),
             history = historyItems
         ),
         navigateToMenu = {},
         navigateToSettings = {},
-        addSymbol = {},
-        clearSymbols = {},
-        deleteSymbol = {},
+        addTokens = {},
+        clearInput = {},
+        deleteTokens = {},
         onCursorChange = {},
-        toggleAngleMode = {},
+        toggleCalculatorMode = {},
         evaluate = {},
         clearHistory = {}
     )

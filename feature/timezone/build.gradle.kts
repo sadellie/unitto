@@ -28,13 +28,13 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
     implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.org.burnoutcrew.composereorderable)
+    implementation(libs.org.burnoutcrew.composereorderable.reorderable)
 
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:userprefs")))
-    implementation(project(mapOf("path" to ":data:database")))
-    implementation(project(mapOf("path" to ":data:timezone")))
-    implementation(project(mapOf("path" to ":data:model")))
+    implementation(project(":data:common"))
+    implementation(project(":data:userprefs"))
+    implementation(project(":data:database"))
+    implementation(project(":data:timezone"))
+    implementation(project(":data:model"))
 }

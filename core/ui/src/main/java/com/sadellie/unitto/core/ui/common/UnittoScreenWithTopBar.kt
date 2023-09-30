@@ -18,6 +18,11 @@
 
 package com.sadellie.unitto.core.ui.common
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -51,18 +56,25 @@ fun UnittoScreenWithTopBar(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    showTopBar: Boolean = true,
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = title,
-                navigationIcon = navigationIcon,
-                actions = actions,
-                colors = colors,
-                scrollBehavior = scrollBehavior,
-            )
+            AnimatedVisibility(
+                visible = showTopBar,
+                enter = slideInVertically() + fadeIn(),
+                exit = slideOutVertically() + fadeOut()
+            ) {
+                CenterAlignedTopAppBar(
+                    title = title,
+                    navigationIcon = navigationIcon,
+                    actions = actions,
+                    colors = colors,
+                    scrollBehavior = scrollBehavior,
+                )
+            }
         },
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,

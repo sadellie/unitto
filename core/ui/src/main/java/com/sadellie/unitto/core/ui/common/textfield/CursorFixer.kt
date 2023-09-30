@@ -36,12 +36,24 @@ fun String.fixCursor(pos: Int, grouping: String): Int {
     return listOf(leftCursor, rightCursor).minBy { abs(it - pos) }
 }
 
+/**
+ * Same as [String.tokenAhead], but more efficient. We only need a number, not string.
+ * Don't replace!
+ */
 fun String.tokenLengthAhead(pos: Int): Int {
     Token.Func.allWithOpeningBracket.forEach {
         if (pos.isAfterToken(this, it)) return it.length
     }
 
     return 1
+}
+
+fun String.tokenAhead(pos: Int): String {
+    Token.Func.allWithOpeningBracket.forEach {
+        if (pos.isAfterToken(this, it)) return it
+    }
+
+    return substring((pos - 1).coerceAtLeast(0), pos)
 }
 
 private fun String.isPlacedIllegallyAt(pos: Int, grouping: String): Boolean {
@@ -71,3 +83,36 @@ private fun Int.isAfterToken(str: String, token: String): Boolean {
         .substring((this - token.length).coerceAtLeast(0), this)
         .contains(token)
 }
+
+
+// This can make [TextFieldValue.addTokens] better by checking tokens both ways. Needs more tests
+//fun String.tokenAfter(pos: Int): String {
+//    Token.Func.allWithOpeningBracket.forEach {
+//        if (pos.isBeforeToken(this, it)) return it
+//    }
+//
+//    return substring(pos, (pos + 1).coerceAtMost(this.length))
+//}
+
+//private fun String.numberNearby(cursor: Int): String {
+//    val text = this
+//
+//    var aheadCursor = cursor
+//    var afterCursor = cursor
+//
+//    while (text.tokenAhead(aheadCursor) in Token.Digit.allWithDot) {
+//        aheadCursor--
+//    }
+//
+//    while (text.tokenAfter(afterCursor) in Token.Digit.allWithDot) {
+//        afterCursor++
+//    }
+//
+//    return text.substring(aheadCursor, afterCursor)
+//}
+
+//private fun Int.isBeforeToken(str: String, token: String): Boolean {
+//    return str
+//        .substring(this, (this + token.length).coerceAtMost(str.length))
+//        .contains(token)
+//}

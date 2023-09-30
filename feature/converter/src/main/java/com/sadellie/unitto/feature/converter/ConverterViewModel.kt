@@ -20,36 +20,34 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
+import com.sadellie.unitto.data.common.combine
 import com.sadellie.unitto.data.common.isExpression
-import com.sadellie.unitto.data.common.setMinimumRequiredScale
-import com.sadellie.unitto.data.common.toStringWith
-import com.sadellie.unitto.data.common.trimZeros
-import com.sadellie.unitto.data.database.UnitsEntity
-import com.sadellie.unitto.data.database.UnitsRepository
-import com.sadellie.unitto.data.model.AbstractUnit
-import com.sadellie.unitto.data.model.NumberBaseUnit
+import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.units.AllUnitsRepository
-import com.sadellie.unitto.data.units.MyUnitIDS
-import com.sadellie.unitto.data.units.combine
-import com.sadellie.unitto.data.userprefs.MainPreferences
+import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.unit.DefaultUnit
+import com.sadellie.unitto.data.model.unit.NumberBaseUnit
+import com.sadellie.unitto.data.units.UnitsRepository
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -57,306 +55,378 @@ import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
-class ConverterViewModel @Inject constructor(
+internal class ConverterViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
-    private val unitRepository: UnitsRepository,
-    private val allUnitsRepository: AllUnitsRepository
+    private val unitsRepo: UnitsRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _userPrefs = userPrefsRepository.mainPreferencesFlow.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        MainPreferences()
+    private val converterInputKey = "CONVERTER_INPUT"
+    private val _input = MutableStateFlow(
+        with(savedStateHandle[converterInputKey] ?: "") {
+            TextFieldValue(this, TextRange(this.length))
+        }
     )
+    private val _calculation = MutableStateFlow<BigDecimal?>(null)
+    private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
+    private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)
+    private val _unitTo = MutableStateFlow<AbstractUnit?>(null)
 
-    /**
-     * Unit on the left, the one we convert from. Initially null, meaning we didn't restore it yet.
-     */
-    private val _unitFrom: MutableStateFlow<AbstractUnit?> = MutableStateFlow(null)
+    private val _leftQuery = MutableStateFlow(TextFieldValue())
+    private val _leftUnits = MutableStateFlow<Map<UnitGroup, List<AbstractUnit>>>(emptyMap())
+    private val _leftUnitGroup = MutableStateFlow<UnitGroup?>(null)
 
-    /**
-     * Unit on the right, the one we convert to. Initially null, meaning we didn't restore it yet.
-     */
-    private val _unitTo: MutableStateFlow<AbstractUnit?> = MutableStateFlow(null)
+    private val _rightQuery = MutableStateFlow(TextFieldValue())
+    private val _rightUnits = MutableStateFlow<Map<UnitGroup, List<AbstractUnit>>>(emptyMap())
 
-    private val _input: MutableStateFlow<TextFieldValue> = MutableStateFlow(TextFieldValue())
+    private val _currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
+    private var _loadCurrenciesJob: Job? = null
 
-    /**
-     * Calculation result. Null when [_input] is not an expression.
-     */
-    private val _calculated: MutableStateFlow<String?> = MutableStateFlow(null)
-
-    /**
-     * Conversion result.
-     */
-    private val _result: MutableStateFlow<ConversionResult> = MutableStateFlow(ConversionResult.Loading)
-
-    /**
-     * True when loading something from network.
-     */
-    private val _showLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    /**
-     * True if there was error while loading data.
-     */
-    private val _showError: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    /**
-     * Current state of UI.
-     */
-    val uiState: StateFlow<ConverterUIState> = combine(
+    val converterUiState: StateFlow<UnitConverterUIState> = combine(
         _input,
+        _calculation,
+        _result,
         _unitFrom,
         _unitTo,
-        _calculated,
-        _result,
-        _userPrefs,
-        _showError,
-        _showLoading
-    ) { inputValue, unitFromValue, unitToValue, calculatedValue, resultValue, prefs, showError, showLoading ->
-        return@combine ConverterUIState(
-            inputValue = inputValue,
-            calculatedValue = calculatedValue,
-            resultValue = when {
-                showError -> ConversionResult.Error
-                showLoading -> ConversionResult.Loading
-                else -> resultValue
-            },
-            unitFrom = unitFromValue,
-            unitTo = unitToValue,
-            mode = if (_unitFrom.value is NumberBaseUnit) ConverterMode.BASE else ConverterMode.DEFAULT,
-            allowVibration = prefs.enableVibrations,
-            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
-            middleZero = prefs.middleZero,
+        userPrefsRepository.converterPrefs,
+        _currenciesState
+    ) { input, calculation, result, unitFrom, unitTo, prefs, currenciesState ->
+        return@combine when {
+            (unitFrom is DefaultUnit) and (unitTo is DefaultUnit) -> {
+                UnitConverterUIState.Default(
+                    input = input,
+                    calculation = calculation,
+                    result = result,
+                    unitFrom = unitFrom as DefaultUnit,
+                    unitTo = unitTo as DefaultUnit,
+                    enableHaptic = prefs.enableVibrations,
+                    middleZero = prefs.middleZero,
+                    formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
+                    scale = prefs.precision,
+                    outputFormat = prefs.outputFormat,
+                    formatTime = prefs.unitConverterFormatTime,
+                    currencyRateUpdateState = currenciesState
+                )
+            }
+            (unitFrom is NumberBaseUnit) and (unitTo is NumberBaseUnit) -> {
+                UnitConverterUIState.NumberBase(
+                    input = input,
+                    result = result,
+                    unitFrom = unitFrom as NumberBaseUnit,
+                    unitTo = unitTo as NumberBaseUnit,
+                    enableHaptic = prefs.enableVibrations,
+                )
+            }
+            else -> UnitConverterUIState.Loading
+        }
+    }
+        .mapLatest { ui ->
+            when (_currenciesState.value) {
+                is CurrencyRateUpdateState.Loading -> {
+                    _result.update { ConverterResult.Loading }
+                    return@mapLatest ui
+                }
+                is CurrencyRateUpdateState.Error -> {
+                    _result.update { ConverterResult.Error }
+                    return@mapLatest ui
+                }
+                is CurrencyRateUpdateState.Ready, is CurrencyRateUpdateState.Nothing -> {}
+            }
+
+            when (ui) {
+                is UnitConverterUIState.Default -> {
+                    convertDefault(
+                        unitFrom = ui.unitFrom,
+                        unitTo = ui.unitTo,
+                        input = ui.input,
+                        formatTime = ui.formatTime
+                    )
+                }
+                is UnitConverterUIState.NumberBase -> {
+                    convertNumberBase(
+                        unitFrom = ui.unitFrom,
+                        unitTo = ui.unitTo,
+                        input = ui.input
+                    )
+                }
+                is UnitConverterUIState.Loading -> {}
+            }
+            ui
+        }
+        .stateIn(viewModelScope, UnitConverterUIState.Loading)
+
+    val leftSideUIState = combine(
+        _unitFrom,
+        _leftQuery,
+        _leftUnits,
+        _leftUnitGroup,
+        userPrefsRepository.converterPrefs,
+        unitsRepo.allUnits
+    ) { unitFrom, query, units, unitGroup, prefs, _ ->
+        unitFrom ?: return@combine LeftSideUIState.Loading
+
+        return@combine LeftSideUIState.Ready(
+            unitFrom = unitFrom,
+            sorting = prefs.unitConverterSorting,
+            shownUnitGroups = prefs.shownUnitGroups,
+            favorites = prefs.unitConverterFavoritesOnly,
+            verticalList = prefs.enableToolsExperiment,
+            query = query,
+            units = units,
+            unitGroup = unitGroup
         )
-    }.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000), ConverterUIState()
-    )
-
-    fun addTokens(tokens: String) = _input.update { it.addTokens(tokens) }
-    fun deleteTokens() = _input.update { it.deleteTokens() }
-    fun clearInput() = _input.update { TextFieldValue() }
-    fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
-
-    /**
-     * Update [_unitFrom] and set [_unitTo] from pair. Also updates stats for this [unit].
-     */
-    fun updateUnitFrom(unit: AbstractUnit) {
-        // We change from something to base converter or the other way around
-        if ((_unitFrom.value?.group == UnitGroup.NUMBER_BASE) xor (unit.group == UnitGroup.NUMBER_BASE)) {
-            _calculated.update { null }
-            clearInput()
-        }
-
-        _unitFrom.update { unit }
-
-        /**
-         * Update pair [_unitTo] if it exists
-         */
-        val pair = unit.pairedUnit
-        if (pair != null) {
-            _unitTo.update { allUnitsRepository.getById(pair) }
-        } else {
-            // No pair, get something from same group
-            _unitTo.update { allUnitsRepository.getCollectionByGroup(unit.group).first() }
-        }
-        incrementCounter(unit)
-        saveLatestPairOfUnits()
-        updateCurrenciesRatesIfNeeded()
     }
+        .mapLatest {
+            if (it !is LeftSideUIState.Ready) return@mapLatest it
 
-    /**
-     * Update [_unitTo] and update pair for [_unitFrom].
-     */
-    fun updateUnitTo(unit: AbstractUnit) {
-        _unitTo.update { unit }
-        _unitFrom.value?.pairedUnit = unit.unitId
-        updatePairedUnit(_unitFrom.value ?: return)
-        incrementCounter(unit)
-        saveLatestPairOfUnits()
+            filterUnitsLeft(
+                query = it.query,
+                unitGroup = it.unitGroup,
+                favoritesOnly = it.favorites,
+                sorting = it.sorting,
+                shownUnitGroups = it.shownUnitGroups,
+            )
+            it
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, LeftSideUIState.Loading)
+
+    val rightSideUIState = combine(
+        _unitFrom,
+        _unitTo,
+        _input,
+        _calculation,
+        _rightQuery,
+        _rightUnits,
+        userPrefsRepository.converterPrefs,
+        _currenciesState,
+        unitsRepo.allUnits,
+    ) { unitFrom, unitTo, input, calculation, query, units, prefs, currenciesState, _ ->
+        unitFrom ?: return@combine RightSideUIState.Loading
+        unitTo ?: return@combine RightSideUIState.Loading
+
+        return@combine RightSideUIState.Ready(
+            unitFrom = unitFrom,
+            unitTo = unitTo,
+            sorting = prefs.unitConverterSorting,
+            favorites = prefs.unitConverterFavoritesOnly,
+            input = (calculation?.toPlainString() ?: input.text).replace(Token.Operator.minus, "-"),
+            scale = prefs.precision,
+            outputFormat = prefs.outputFormat,
+            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
+            currencyRateUpdateState = currenciesState,
+            query = query,
+            units = units,
+        )
     }
+        .mapLatest {
+            if (it !is RightSideUIState.Ready) return@mapLatest it
 
-    /**
-     * Swap [_unitFrom] and [_unitTo].
-     */
+            filterUnitsRight(
+                query = it.query,
+                unitGroup = it.unitTo.group,
+                favoritesOnly = it.favorites,
+                sorting = it.sorting,
+            )
+            it
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, RightSideUIState.Loading)
+
     fun swapUnits() {
         _unitFrom
             .getAndUpdate { _unitTo.value }
             .also { oldUnitFrom -> _unitTo.update { oldUnitFrom } }
-        saveLatestPairOfUnits()
-        updateCurrenciesRatesIfNeeded()
-    }
 
-    private fun convertInput() {
-        when (_unitFrom.value?.group) {
-            UnitGroup.NUMBER_BASE -> convertAsNumberBase()
-            else -> convertAsExpression()
-        }
-    }
-
-    private fun convertAsNumberBase() = viewModelScope.launch(Dispatchers.Default) {
-        // Units are still loading, don't convert anything yet
-        val unitFrom = _unitFrom.value ?: return@launch
-        val unitTo = _unitTo.value ?: return@launch
-
-        val conversionResult = try {
-            (unitFrom as NumberBaseUnit).convertToBase(
-                input = _input.value.text.ifEmpty { "0" },
-                toBase = (unitTo as NumberBaseUnit).base
-            )
-        } catch (e: Exception) {
-            when (e) {
-                is ClassCastException -> return@launch
-                is NumberFormatException, is IllegalArgumentException -> ""
-                else -> throw e
-            }
-        }
-        _result.update { ConversionResult.NumberBase(conversionResult) }
-    }
-
-    private fun convertAsExpression() = viewModelScope.launch(Dispatchers.Default) {
-        val unitFrom = _unitFrom.value ?: return@launch
-        val unitTo = _unitTo.value ?: return@launch
-        val input = _input.value.text.ifEmpty { "0" }
-
-        if (input.isEmpty()) {
-            _calculated.update { null }
-            _result.update { ConversionResult.Default("") }
-            return@launch
+        _loadCurrenciesJob?.cancel()
+        _currenciesState.update { CurrencyRateUpdateState.Nothing }
+        _unitFrom.value?.let {
+            if (it.group == UnitGroup.CURRENCY) updateCurrencyRates(it)
         }
 
-        val evaluationResult = try {
-            Expression(input)
-                .calculate()
-                .also {
-                    if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
-                }
-                .setMinimumRequiredScale(_userPrefs.value.digitsPrecision)
-                .trimZeros()
-        } catch (e: ExpressionException.DivideByZero) {
-            _calculated.update { null }
-            return@launch
-        } catch (e: Exception) {
-            return@launch
-        }
-
-        _calculated.update {
-            if (input.isExpression()) evaluationResult.toStringWith(_userPrefs.value.outputFormat)
-            else null
-        }
-
-        val conversionResult = unitFrom.convert(
-            unitTo = unitTo,
-            value = evaluationResult,
-            scale = _userPrefs.value.digitsPrecision
-        ).toStringWith(_userPrefs.value.outputFormat)
-
-        _result.update {
-            if ((unitFrom.group == UnitGroup.TIME) and (_userPrefs.value.unitConverterFormatTime))
-                ConversionResult.Time(conversionResult)
-            else
-                ConversionResult.Default(conversionResult)
-        }
-    }
-
-    private fun incrementCounter(unit: AbstractUnit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            unitRepository.insertUnits(
-                UnitsEntity(
-                    unitId = unit.unitId,
-                    isFavorite = unit.isFavorite,
-                    pairedUnitId = unit.pairedUnit,
-                    // This will increment counter on unit in list too
-                    frequency = ++unit.counter
-                )
-            )
-        }
-    }
-
-    private fun updatePairedUnit(unit: AbstractUnit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            unitRepository.insertUnits(
-                UnitsEntity(
-                    unitId = unit.unitId,
-                    isFavorite = unit.isFavorite,
-                    pairedUnitId = unit.pairedUnit,
-                    frequency = unit.counter
-                )
-            )
-        }
-    }
-
-    fun updateCurrenciesRatesIfNeeded() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _showError.update { false }
-            _showLoading.update { false }
-
-            // Units are still loading, don't convert anything yet
-            if (_unitFrom.value?.group != UnitGroup.CURRENCY) return@launch
-            val unitFrom = _unitFrom.value ?: return@launch
-            // Starting to load stuff
-            _showLoading.update { true }
-
-            try {
-                allUnitsRepository.updateBasicUnitsForCurrencies(unitFrom)
-                convertAsExpression()
-            } catch (e: Exception) {
-                // Dangerous and stupid, but who cares
-                _showError.update { true }
-            } finally {
-                /**
-                 * Loaded, convert (this will trigger flow to call convertInput). Even if there was
-                 * an error, it's OK and user will not see conversion result in that case.
-                 */
-                _showLoading.update { false }
-            }
-        }
-    }
-
-    private fun saveLatestPairOfUnits() {
-        viewModelScope.launch(Dispatchers.IO) {
-            // Units are still loading, don't convert anything yet
-            val unitFrom = _unitFrom.value ?: return@launch
-            val unitTo = _unitTo.value ?: return@launch
-            userPrefsRepository.updateLatestPairOfUnits(unitFrom, unitTo)
-        }
-    }
-
-    private fun startObserving() {
         viewModelScope.launch {
-            merge(_input, _unitFrom, _unitTo, _showLoading, _userPrefs).collectLatest {
-                convertInput()
+            val unitTo = _unitTo.value ?: return@launch
+            val unitFrom = _unitFrom.value ?: return@launch
+
+            userPrefsRepository.updateLatestPairOfUnits(unitFrom = unitFrom, unitTo = unitTo)
+        }
+    }
+
+    fun addTokens(tokens: String) = _input.update {
+        val newValue = it.addTokens(tokens)
+        savedStateHandle[converterInputKey] = newValue.text
+        newValue
+    }
+
+    fun deleteTokens() = _input.update {
+        val newValue = it.deleteTokens()
+        savedStateHandle[converterInputKey] = newValue.text
+        newValue
+    }
+
+    fun clearInput() = _input.update {
+        savedStateHandle[converterInputKey] = ""
+        TextFieldValue()
+    }
+
+    fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
+
+    fun updateCurrencyRates(unit: AbstractUnit) {
+        _loadCurrenciesJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _currenciesState.update { CurrencyRateUpdateState.Loading }
+                val updateDate = unitsRepo.updateRates(unit) ?: throw Exception("Empty cache")
+
+                // Set to fresh objects with updated basic unit values
+                _unitFrom.update { unitsRepo.getById(it!!.id) }
+                _unitTo.update { unitsRepo.getById(it!!.id) }
+                _currenciesState.update { CurrencyRateUpdateState.Ready(updateDate) }
+            } catch (e: Exception) {
+                _currenciesState.update { CurrencyRateUpdateState.Error }
             }
         }
     }
 
-    private fun loadInitialUnitPair() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val initialUserPrefs = userPrefsRepository.mainPreferencesFlow.first()
+    fun updateUnitFrom(unit: AbstractUnit) {
+        val pair = unitsRepo.getById(
+            unit.pairId ?: unitsRepo.getCollection(unit.group).first().id
+        )
 
-            // First we load latest pair of units
-            _unitFrom.update {
-                try {
-                    allUnitsRepository.getById(initialUserPrefs.latestLeftSideUnit)
-                } catch (e: java.util.NoSuchElementException) {
-                    allUnitsRepository.getById(MyUnitIDS.kilometer)
-                }
-            }
-
-            _unitTo.update {
-                try {
-                    allUnitsRepository.getById(initialUserPrefs.latestRightSideUnit)
-                } catch (e: java.util.NoSuchElementException) {
-                    allUnitsRepository.getById(MyUnitIDS.mile)
-                }
-            }
-
-            updateCurrenciesRatesIfNeeded()
+        viewModelScope.launch(Dispatchers.Default) {
+            unitsRepo.incrementCounter(unit)
+            userPrefsRepository.updateLatestPairOfUnits(unitFrom = unit, unitTo = pair)
         }
+
+        _loadCurrenciesJob?.cancel()
+        _currenciesState.update { CurrencyRateUpdateState.Nothing }
+        if (unit.group == UnitGroup.CURRENCY) updateCurrencyRates(unit)
+
+        _unitFrom.update {
+            // We change from something to base converter or the other way around
+            if ((it?.group == UnitGroup.NUMBER_BASE) xor (unit.group == UnitGroup.NUMBER_BASE))
+                clearInput()
+
+            unit
+        }
+        _unitTo.update { pair }
+    }
+
+    fun updateUnitTo(unit: AbstractUnit) {
+        _unitTo.update { unit }
+
+        viewModelScope.launch {
+            val unitTo = _unitTo.value ?: return@launch
+            val unitFrom = _unitFrom.value ?: return@launch
+
+            unitsRepo.incrementCounter(unitTo)
+
+            unitsRepo.setPair(unitFrom, unitTo)
+            userPrefsRepository.updateLatestPairOfUnits(unitFrom = unitFrom, unitTo = unitTo)
+        }
+    }
+
+    fun queryChangeLeft(query: TextFieldValue) = _leftQuery.update { query }
+
+    fun queryChangeRight(query: TextFieldValue) = _rightQuery.update { query }
+
+    fun favoritesOnlyChange(enabled: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateUnitConverterFavoritesOnly(enabled)
+    }
+
+    fun updateUnitGroupLeft(unitGroup: UnitGroup?) = _leftUnitGroup.update { unitGroup }
+
+    fun favoriteUnit(unit: AbstractUnit) = viewModelScope.launch {
+        unitsRepo.favorite(unit)
+    }
+
+    private fun filterUnitsLeft(
+        query: TextFieldValue,
+        unitGroup: UnitGroup?,
+        favoritesOnly: Boolean,
+        sorting: UnitsListSorting,
+        shownUnitGroups: List<UnitGroup>,
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        _leftUnits.update {
+            unitsRepo.filterUnits(
+                query = query.text,
+                unitGroup = unitGroup,
+                favoritesOnly = favoritesOnly,
+                hideBrokenUnits = false,
+                sorting = sorting,
+                shownUnitGroups = shownUnitGroups
+            )
+        }
+    }
+
+    private fun filterUnitsRight(
+        query: TextFieldValue,
+        unitGroup: UnitGroup?,
+        favoritesOnly: Boolean,
+        sorting: UnitsListSorting,
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        _rightUnits.update {
+            unitsRepo.filterUnits(
+                query = query.text,
+                unitGroup = unitGroup,
+                favoritesOnly = favoritesOnly,
+                hideBrokenUnits = true,
+                sorting = sorting,
+            )
+        }
+    }
+
+    private fun convertDefault(
+        unitFrom: DefaultUnit,
+        unitTo: DefaultUnit,
+        input: TextFieldValue,
+        formatTime: Boolean,
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        val calculated = try {
+            Expression(input.text.ifEmpty { Token.Digit._0 }).calculate()
+        } catch (e: ExpressionException.DivideByZero) {
+            _calculation.update { null }
+            return@launch
+        } catch (e: Exception) {
+            return@launch
+        }
+        _calculation.update { if (input.text.isExpression()) calculated else null }
+
+        try {
+            if ((unitFrom.group == UnitGroup.TIME) and (formatTime)) {
+                _result.update { formatTime(calculated.multiply(unitFrom.basicUnit)) }
+
+                return@launch
+            }
+
+            val conversion = unitFrom.convert(unitTo, calculated)
+
+            _result.update { ConverterResult.Default(conversion) }
+        } catch (e: Exception) {
+            _result.update { ConverterResult.Default(BigDecimal.ZERO) }
+        }
+    }
+
+    private fun convertNumberBase(
+        unitFrom: NumberBaseUnit,
+        unitTo: NumberBaseUnit,
+        input: TextFieldValue,
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        val conversion = try {
+            unitFrom.convert(unitTo, input.text.ifEmpty { Token.Digit._0 })
+        } catch (e: Exception) {
+            ""
+        }
+
+        _result.update { ConverterResult.NumberBase(conversion) }
     }
 
     init {
-        loadInitialUnitPair()
-        startObserving()
+        viewModelScope.launch(Dispatchers.Default) {
+            val userPrefs = userPrefsRepository.converterPrefs.first()
+            val unitFrom = unitsRepo.getById(userPrefs.latestLeftSideUnit)
+            val unitTo = unitsRepo.getById(userPrefs.latestRightSideUnit)
+
+            _unitFrom.update { unitFrom }
+            _unitTo.update { unitTo }
+            if (unitFrom.group == UnitGroup.CURRENCY) updateCurrencyRates(unitFrom)
+        }
     }
 }

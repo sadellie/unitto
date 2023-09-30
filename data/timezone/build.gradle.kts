@@ -26,8 +26,8 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":core:base")))
-    implementation(project(mapOf("path" to ":data:common")))
-    implementation(project(mapOf("path" to ":data:model")))
-    implementation(project(mapOf("path" to ":data:database")))
+    implementation(project(":core:base"))
+    implementation(project(":data:common"))
+    implementation(project(":data:model"))
+    implementation(project(":data:database"))
 }
