@@ -32,7 +32,7 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 34
-        versionCode = 25
+        versionCode = 26
         versionName = "Nadeshiko Pink"
         resourceConfigurations += setOf(
             "en",

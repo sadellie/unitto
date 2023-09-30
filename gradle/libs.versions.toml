@@ -1,5 +1,5 @@
 [versions]
-appCode = "25"
+appCode = "26"
 appName = "Nadeshiko Pink"
 
 androidGradlePlugin = "8.1.1"
