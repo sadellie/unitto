@@ -1133,12 +1133,33 @@ Used in this dialog window. Should be short -->
     <string name="system_font_setting">Font di sistema</string>
     <string name="system_font_setting_support">Usa font di sistema per i testi nell\'app</string>
     <string name="fuel_consumption">Carburante</string>
+    <string name="km_per_l">Chilometro/litro</string>
     <string name="km_per_l_short">km/L</string>
+    <string name="l_per_km">Litro/chilometro</string>
     <string name="l_per_km_short">L/km</string>
+    <string name="l_per_100_km">Litro/100 chilometri</string>
     <string name="l_per_100_km_short">L/100 km</string>
+    <string name="mi_per_gallon_uk">Miglia/gallone (UK)</string>
+    <string name="mi_per_gallon_uk_short">mpg (UK)</string>
+    <string name="mi_per_gallon_us">Miglia/gallone (US)</string>
+    <string name="mi_per_gallon_us_short">mpg (US)</string>
+    <string name="mi_us_per_l">Miglia/litro (US)</string>
+    <string name="mi_us_per_l_short">mi/L (US)</string>
+    <string name="gallon_us_per_mile">Gallone/miglio (US)</string>
+    <string name="gallon_us_per_mile_short">gal/mi (US)</string>
+    <string name="gallon_uk_per_mile">Gallone/miglio (UK)</string>
+    <string name="gallon_uk_per_mile_short">gal/mi (UK)</string>
+    <string name="gallon_us_per_100_mile">Gallone/100 miglia (US)</string>
+    <string name="gallon_us_per_100_mile_short">gal/100 mi (US)</string>
+    <string name="gallon_uk_per_100_mile">Gallone/100 miglia (UK)</string>
+    <string name="gallon_uk_per_100_mile_short">gal/100 mi (UK)</string>
     <string name="partial_history_view_setting">Vista cronologia parziale</string>
     <string name="partial_history_view_setting_support">Vedi ultimo risultato in cronologia</string>
     <string name="calculator_settings_support">Vista cronologia</string>
     <string name="converter_settings_support">Gruppi di unità, ordine, formato</string>
     <string name="display_settings">Schermo</string>
+    <string name="clear_cache">Pulisci cache</string>
+
+    <!-- Option name to use system default setting -->
+    <string name="system">Sistema</string>
 </resources>

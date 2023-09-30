@@ -1146,6 +1146,7 @@ Used in this dialog window. Should be short -->
     <string name="calculator_settings_support">Вид истории</string>
     <string name="converter_settings_support">Группы единиц, сортировка, форматирование</string>
     <string name="display_settings">Внешний вид</string>
+    <string name="clear_cache">Очистить кэш</string>
 
     <!-- Option name to use system default setting -->
     <string name="system">Системный</string>
