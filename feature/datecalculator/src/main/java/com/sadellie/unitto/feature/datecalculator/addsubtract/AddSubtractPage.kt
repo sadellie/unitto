@@ -23,7 +23,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -73,6 +72,7 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.core.ui.isPortrait
+import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.feature.datecalculator.components.AddSubtractKeyboard
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeSelectorBlock
@@ -340,7 +340,7 @@ private fun Context.addEvent(start: ZonedDateTime, end: ZonedDateTime) {
     try {
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {
-        Toast.makeText(this, R.string.error_label, Toast.LENGTH_SHORT).show()
+        showToast(this, this.getString(R.string.error_label))
     }
 }
 

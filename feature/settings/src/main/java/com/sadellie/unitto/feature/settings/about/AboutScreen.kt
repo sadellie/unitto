@@ -50,6 +50,7 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
+import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.data.userprefs.AboutPreferences
 
 @Composable
@@ -158,7 +159,7 @@ private fun AboutScreen(
                     supportingText = "${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})",
                     modifier = Modifier.combinedClickable {
                         if (prefs.enableToolsExperiment) {
-                            Toast.makeText(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG).show()
+                            showToast(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG)
                             return@combinedClickable
                         }
 
@@ -166,7 +167,7 @@ private fun AboutScreen(
                         if (aboutItemClick < 7) return@combinedClickable
 
                         enableToolsExperiment()
-                        Toast.makeText(mContext, "Experimental features enabled!", Toast.LENGTH_LONG).show()
+                        showToast(mContext, "Experimental features enabled!", Toast.LENGTH_LONG)
                     }
                 )
             }

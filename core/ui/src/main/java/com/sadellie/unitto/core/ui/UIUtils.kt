@@ -35,8 +35,16 @@ fun openLink(mContext: Context, url: String) {
     try {
         mContext.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
     } catch (e: ActivityNotFoundException) {
-        Toast.makeText(mContext, R.string.error_label, Toast.LENGTH_SHORT).show()
+        showToast(mContext, mContext.getString(R.string.error_label))
     }
+}
+
+fun showToast(
+    mContext: Context,
+    text: String,
+    duration: Int = Toast.LENGTH_SHORT
+) {
+    Toast.makeText(mContext, text, duration).show()
 }
 
 @Composable

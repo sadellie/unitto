@@ -18,8 +18,23 @@
 
 package com.sadellie.unitto.feature.settings
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.Calculate
@@ -29,12 +44,24 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled._123
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
@@ -44,6 +71,7 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
+import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.data.userprefs.GeneralPreferences
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
@@ -59,13 +87,15 @@ internal fun SettingsRoute(
     navControllerAction: (String) -> Unit,
 ) {
     val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+    val cachePercentage = viewModel.cachePercentage.collectAsStateWithLifecycle()
 
     SettingsScreen(
         userPrefs = userPrefs.value,
         navigateUp = navigateUp,
         navControllerAction = navControllerAction,
         updateVibrations = viewModel::updateVibrations,
-        clearCache = viewModel::clearCache
+        cachePercentage = cachePercentage.value,
+        clearCache = viewModel::clearCache,
     )
 }
 
@@ -75,6 +105,7 @@ private fun SettingsScreen(
     navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
     updateVibrations: (Boolean) -> Unit,
+    cachePercentage: Float,
     clearCache: () -> Unit,
 ) {
     val mContext = LocalContext.current
@@ -83,101 +114,122 @@ private fun SettingsScreen(
         title = stringResource(R.string.settings_screen),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
-        LazyColumn(contentPadding = padding) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(padding)
+        ) {
+            UnittoListItem(
+                icon = Icons.Default.Palette,
+                iconDescription = stringResource(R.string.display_settings),
+                headlineText = stringResource(R.string.display_settings),
+                supportingText = stringResource(R.string.theme_setting_support),
+                modifier = Modifier.clickable { navControllerAction(displayRoute) }
+            )
 
-            item("theme") {
-                UnittoListItem(
-                    icon = Icons.Default.Palette,
-                    iconDescription = stringResource(R.string.display_settings),
-                    headlineText = stringResource(R.string.display_settings),
-                    supportingText = stringResource(R.string.theme_setting_support),
-                    modifier = Modifier.clickable { navControllerAction(displayRoute) }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default.Home,
+                iconDescription = stringResource(R.string.starting_screen_setting),
+                headlineText = stringResource(R.string.starting_screen_setting),
+                supportingText = stringResource(R.string.starting_screen_setting_support),
+                modifier = Modifier.clickable { navControllerAction(startingScreenRoute) }
+            )
 
-            item("starting screen") {
-                UnittoListItem(
-                    icon = Icons.Default.Home,
-                    iconDescription = stringResource(R.string.starting_screen_setting),
-                    headlineText = stringResource(R.string.starting_screen_setting),
-                    supportingText = stringResource(R.string.starting_screen_setting_support),
-                    modifier = Modifier.clickable { navControllerAction(startingScreenRoute) }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default._123,
+                iconDescription = stringResource(R.string.formatting_setting),
+                headlineText = stringResource(R.string.formatting_setting),
+                supportingText = stringResource(R.string.formatting_setting_support),
+                modifier = Modifier.clickable { navControllerAction(formattingRoute) }
+            )
 
-            item("formatting") {
-                UnittoListItem(
-                    icon = Icons.Default._123,
-                    iconDescription = stringResource(R.string.formatting_setting),
-                    headlineText = stringResource(R.string.formatting_setting),
-                    supportingText = stringResource(R.string.formatting_setting_support),
-                    modifier = Modifier.clickable { navControllerAction(formattingRoute) }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default.Calculate,
+                iconDescription = stringResource(R.string.calculator),
+                headlineText = stringResource(R.string.calculator),
+                supportingText = stringResource(R.string.calculator_settings_support),
+                modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
+            )
 
-            item("calculator") {
-                UnittoListItem(
-                    icon = Icons.Default.Calculate,
-                    iconDescription = stringResource(R.string.calculator),
-                    headlineText = stringResource(R.string.calculator),
-                    supportingText = stringResource(R.string.calculator_settings_support),
-                    modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
-                )
-            }
+            UnittoListItem(
+                icon = Icons.Default.SwapHoriz,
+                iconDescription = stringResource(R.string.unit_converter),
+                headlineText = stringResource(R.string.unit_converter),
+                supportingText = stringResource(R.string.converter_settings_support),
+                modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) }
+            )
 
-            item("unit converter") {
-                UnittoListItem(
-                    icon = Icons.Default.SwapHoriz,
-                    iconDescription = stringResource(R.string.unit_converter),
-                    headlineText = stringResource(R.string.unit_converter),
-                    supportingText = stringResource(R.string.converter_settings_support),
-                    modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) }
-                )
-            }
+            Header(stringResource(R.string.additional_settings_group))
 
-            item("additional") { Header(stringResource(R.string.additional_settings_group)) }
+            UnittoListItem(
+                icon = Icons.Default.Vibration,
+                iconDescription = stringResource(R.string.enable_vibrations),
+                headlineText = stringResource(R.string.enable_vibrations),
+                supportingText = stringResource(R.string.enable_vibrations_support),
+                modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
+                switchState = userPrefs.enableVibrations,
+                onSwitchChange = updateVibrations
+            )
 
-            item("vibrations") {
-                UnittoListItem(
-                    icon = Icons.Default.Vibration,
-                    iconDescription = stringResource(R.string.enable_vibrations),
-                    headlineText = stringResource(R.string.enable_vibrations),
-                    supportingText = stringResource(R.string.enable_vibrations_support),
-                    modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
-                    switchState = userPrefs.enableVibrations,
-                    onSwitchChange = updateVibrations
-                )
-            }
-
-            item("clear cache") {
+            AnimatedVisibility(
+                visible = cachePercentage > 0,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut(),
+            ) {
                 UnittoListItem(
                     headlineText = stringResource(R.string.clear_cache),
                     icon = Icons.Default.Cached,
                     iconDescription = stringResource(R.string.clear_cache),
-                    modifier = Modifier.clickable { clearCache() },
+                    modifier = Modifier.clickable { clearCache(); showToast(mContext, "👌") },
+                    trailing = {
+                        Box(
+                            Modifier
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.errorContainer)
+                                .size(52.dp, 24.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Box(
+                                Modifier
+                                    .background(
+                                        MaterialTheme.colorScheme.error.copy(alpha = cachePercentage)
+                                            .compositeOver(Color.Green)
+                                    )
+                                    .height(24.dp)
+                                    .fillMaxWidth(cachePercentage),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (cachePercentage == 1f) {
+                                    Icon(
+                                        imageVector = Icons.Default.Warning,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onError,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 )
             }
 
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
-                item("rate this app") {
-                    UnittoListItem(
-                        icon = Icons.Default.RateReview,
-                        iconDescription = stringResource(R.string.rate_this_app),
-                        headlineText = stringResource(R.string.rate_this_app),
-                        modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
-                    )
-                }
-            }
-
-            item("about") {
                 UnittoListItem(
-                    icon = Icons.Default.Info,
-                    iconDescription = stringResource(R.string.about_unitto),
-                    headlineText = stringResource(R.string.about_unitto),
-                    supportingText = stringResource(R.string.about_unitto_support),
-                    modifier = Modifier.clickable { navControllerAction(aboutRoute) }
+                    icon = Icons.Default.RateReview,
+                    iconDescription = stringResource(R.string.rate_this_app),
+                    headlineText = stringResource(R.string.rate_this_app),
+                    modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                 )
             }
+
+            UnittoListItem(
+                icon = Icons.Default.Info,
+                iconDescription = stringResource(R.string.about_unitto),
+                headlineText = stringResource(R.string.about_unitto),
+                supportingText = stringResource(R.string.about_unitto_support),
+                modifier = Modifier.clickable { navControllerAction(aboutRoute) }
+            )
         }
     }
 }
@@ -185,11 +237,14 @@ private fun SettingsScreen(
 @Preview
 @Composable
 private fun PreviewSettingsScreen() {
+    var cacheSize by remember { mutableFloatStateOf(0.9f) }
+
     SettingsScreen(
         userPrefs = GeneralPreferences(),
         navigateUp = {},
         navControllerAction = {},
         updateVibrations = {},
-        clearCache = {}
+        cachePercentage = cacheSize,
+        clearCache = { cacheSize = 0f }
     )
 }

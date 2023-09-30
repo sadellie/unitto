@@ -23,7 +23,6 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -82,7 +81,7 @@ fun Context.addShortcut(
             PendingIntent.getBroadcast(context, 0, shortCutIntent, FLAG_IMMUTABLE).intentSender
         )
     } catch (e: Exception) {
-        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+        showToast(context, e.message ?: "Error")
     }
 }
 

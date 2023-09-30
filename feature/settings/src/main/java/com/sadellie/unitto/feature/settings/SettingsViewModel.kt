@@ -25,6 +25,8 @@ import com.sadellie.unitto.data.database.CurrencyRatesDao
 import com.sadellie.unitto.data.userprefs.GeneralPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,6 +38,12 @@ internal class SettingsViewModel @Inject constructor(
     val userPrefs = userPrefsRepository.generalPrefs
         .stateIn(viewModelScope, GeneralPreferences())
 
+    val cachePercentage = currencyRatesDao.size()
+        .map {
+            (it / 100_000f).coerceIn(0f, 1f)
+        }
+        .stateIn(viewModelScope, 0f)
+
     /**
      * @see UserPreferencesRepository.updateVibrations
      */
@@ -43,7 +51,7 @@ internal class SettingsViewModel @Inject constructor(
         userPrefsRepository.updateVibrations(enabled)
     }
 
-    fun clearCache() = viewModelScope.launch {
+    fun clearCache() = viewModelScope.launch(Dispatchers.IO) {
         currencyRatesDao.clear()
     }
 }
