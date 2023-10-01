@@ -19,6 +19,7 @@
 plugins {
     id("unitto.library")
     id("unitto.android.hilt")
+    id("unitto.android.library.jacoco")
 }
 
 android {

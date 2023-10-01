@@ -21,6 +21,8 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
 
+    id("unitto.android.application.jacoco")
+    id("jacoco")
     id("unitto.android.hilt")
 }
 
@@ -56,6 +58,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".debug"
+            enableUnitTestCoverage = true
         }
 
         // Release with analytics and minified, not debuggable

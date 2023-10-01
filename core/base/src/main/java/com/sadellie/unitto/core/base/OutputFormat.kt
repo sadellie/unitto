@@ -19,7 +19,7 @@
 package com.sadellie.unitto.core.base
 
 /**
- * Output format here means whether or now use engineering notation
+ * Output format here means whether or not use engineering notation
  */
 object OutputFormat {
     // Never use engineering notation

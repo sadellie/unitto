@@ -16,19 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+package com.sadellie.unitto
 
-android {
-    namespace = "com.sadellie.unitto.data.timezone"
-}
+import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.kotlin.dsl.getByType
 
-dependencies {
-    implementation(project(":core:base"))
-    implementation(project(":data:common"))
-    implementation(project(":data:model"))
-    implementation(project(":data:database"))
-}
+val Project.libs
+    get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")

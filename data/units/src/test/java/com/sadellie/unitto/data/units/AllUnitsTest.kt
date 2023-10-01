@@ -40,9 +40,11 @@ class AllUnitsTest {
 
     private var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
     private val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
+    private val database = Room.inMemoryDatabaseBuilder(mContext, UnittoDatabase::class.java).build()
     private val allUnitsRepository = UnitsRepository(
-        Room.inMemoryDatabaseBuilder(mContext, UnittoDatabase::class.java).build().unitsDao(),
-        mContext
+        unitsDao = database.unitsDao(),
+        currencyRatesDao = database.currencyRatesDao(),
+        mContext = mContext
     )
 
     @Test

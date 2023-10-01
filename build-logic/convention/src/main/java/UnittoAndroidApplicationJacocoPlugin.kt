@@ -16,19 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.sadellie.unitto.configureJacoco
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
 
-android {
-    namespace = "com.sadellie.unitto.data.timezone"
-}
-
-dependencies {
-    implementation(project(":core:base"))
-    implementation(project(":data:common"))
-    implementation(project(":data:model"))
-    implementation(project(":data:database"))
+@Suppress("UNUSED")
+class UnittoAndroidApplicationJacocoPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        with(target) {
+            with(pluginManager) {
+                apply("org.gradle.jacoco")
+                apply("com.android.application")
+            }
+            val extension = extensions.getByType<ApplicationAndroidComponentsExtension>()
+            configureJacoco(extension)
+        }
+    }
 }

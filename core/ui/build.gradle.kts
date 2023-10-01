@@ -22,23 +22,20 @@ plugins {
     id("unitto.library")
     id("unitto.library.compose")
     id("unitto.android.hilt")
+    id("unitto.android.library.jacoco")
 }
 
 android {
     namespace = "com.sadellie.unitto.core.ui"
 
     // Workaround from https://github.com/robolectric/robolectric/pull/4736
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
     testImplementation(libs.junit.junit)
     testImplementation(libs.org.robolectric.robolectric)
-    testImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(libs.androidx.navigation.navigation.compose)

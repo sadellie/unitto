@@ -18,14 +18,10 @@
 
 package com.sadellie.unitto.core.ui
 
-import androidx.compose.ui.test.junit4.createComposeRule
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import org.junit.Assert.assertEquals
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
 private const val ENG_VALUE = "123E+21"
 private const val ENG_VALUE_FRACTIONAL = "123.3E+21"
@@ -37,11 +33,7 @@ private const val COMPLETE_EXPR = "50+123456÷8×0.8-12+0-√9×4^9+2×(9+8×7)"
 private const val LONG_HALF_COMPLETE_EXPR = "50+123456÷89078..9×0.8-12+0-√9×4^9+2×(9+8×7)×sin(13sin123cos"
 private const val SOME_BRACKETS = "(((((((("
 
-@RunWith(RobolectricTestRunner::class)
 class FormatterTest {
-
-    @get: Rule
-    val composeTestRule = createComposeRule()
 
     @Test
     fun setSeparatorSpaces() {

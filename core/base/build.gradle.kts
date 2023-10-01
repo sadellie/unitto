@@ -18,6 +18,7 @@
 
 plugins {
     id("unitto.library")
+    id("unitto.android.library.jacoco")
 }
 
 android {
@@ -44,9 +45,9 @@ android {
         buildConfig = true
     }
 
-    lint {
-        this.warning.add("MissingTranslation")
-    }
+    testOptions.unitTests.isIncludeAndroidResources = true
+
+    lint.warning.add("MissingTranslation")
 }
 
 fun com.android.build.api.dsl.VariantDimension.storeLink(url: String) {
@@ -55,4 +56,8 @@ fun com.android.build.api.dsl.VariantDimension.storeLink(url: String) {
         "STORE_LINK",
         "\"${url}\""
     )
+}
+
+dependencies {
+    testImplementation(libs.junit.junit)
 }

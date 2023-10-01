@@ -24,10 +24,10 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class ZonedDateTimeDifferenceKtTest {
-    private val fromatt: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-    private val `may 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-01 12:00", fromatt)
-    private val `may 2 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-02 12:00", fromatt)
-    private val `june 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-06-01 12:00", fromatt)
+    private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
+    private val `may 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-01T12:00+01:00[Europe/Paris]", formatter)
+    private val `may 2 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-02T12:00+01:00[Europe/Paris]", formatter)
+    private val `june 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-06-01T12:00+01:00[Europe/Paris]", formatter)
 
     @Test
     fun `same dates`() {
