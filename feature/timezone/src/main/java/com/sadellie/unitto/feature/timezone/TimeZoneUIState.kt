@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.timezone
+package com.sadellie.unitto.feature.timezone
 
 import com.sadellie.unitto.data.model.UnittoTimeZone
 import java.time.ZonedDateTime

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.timezone.components
+package com.sadellie.unitto.feature.timezone.components
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ListItem

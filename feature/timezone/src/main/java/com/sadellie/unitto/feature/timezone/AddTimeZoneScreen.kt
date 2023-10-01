@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.timezone
+package com.sadellie.unitto.feature.timezone
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -48,7 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.data.model.UnittoTimeZone
-import com.sadellie.unitto.timezone.components.SelectableTimeZone
+import com.sadellie.unitto.feature.timezone.components.SelectableTimeZone
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import java.time.ZonedDateTime

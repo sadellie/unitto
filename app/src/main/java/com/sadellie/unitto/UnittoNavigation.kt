@@ -32,7 +32,7 @@ import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorGraph
 import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
-import com.sadellie.unitto.timezone.navigation.timeZoneGraph
+import com.sadellie.unitto.feature.timezone.navigation.timeZoneGraph
 import io.github.sadellie.themmo.ThemmoController
 
 @Composable

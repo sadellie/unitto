@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.timezone
+package com.sadellie.unitto.feature.timezone
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -89,7 +89,7 @@ import com.sadellie.unitto.core.ui.theme.TypographyUnitto
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
 import com.sadellie.unitto.data.model.UnittoTimeZone
-import com.sadellie.unitto.timezone.components.TimeZoneListItem
+import com.sadellie.unitto.feature.timezone.components.TimeZoneListItem
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.delay

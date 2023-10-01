@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.timezone.navigation
+package com.sadellie.unitto.feature.timezone.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -27,8 +27,8 @@ import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
-import com.sadellie.unitto.timezone.AddTimeZoneRoute
-import com.sadellie.unitto.timezone.TimeZoneRoute
+import com.sadellie.unitto.feature.timezone.AddTimeZoneRoute
+import com.sadellie.unitto.feature.timezone.TimeZoneRoute
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
