@@ -55,7 +55,7 @@ internal fun ThirdPartyLicensesScreen(
     val mContext = LocalContext.current
 
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.third_party_licenses),
+        title = stringResource(R.string.settings_third_party_licenses),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(

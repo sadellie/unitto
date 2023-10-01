@@ -79,7 +79,7 @@ private fun DateDifferenceView(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            title = stringResource(R.string.date_difference_start),
+            title = stringResource(R.string.date_calculator_start),
             dateTime = uiState.start,
             onClick = { dialogState = DialogState.FROM },
             onLongClick = { setStartDate(ZonedDateTime.now()) },
@@ -91,7 +91,7 @@ private fun DateDifferenceView(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            title = stringResource(R.string.date_difference_end),
+            title = stringResource(R.string.date_calculator_end),
             dateTime = uiState.end,
             onClick = { dialogState = DialogState.TO },
             onLongClick = { setStartDate(ZonedDateTime.now()) },

@@ -71,13 +71,13 @@ fun ZonedDateTime.formatOffset(
     val minute = absoluteOffset % 3600 / 60
 
     if (hour != 0L) {
-        resultBuffer += "${hour}${stringResource(R.string.hour_short)}"
+        resultBuffer += "${hour}${stringResource(R.string.unit_hour_short)}"
     }
 
     // TODO Very ugly
     if (minute != 0L) {
         if (hour != 0L) resultBuffer += " "
-        resultBuffer += "${minute}${stringResource(R.string.minute_short)}"
+        resultBuffer += "${minute}${stringResource(R.string.unit_minute_short)}"
     }
 
     // Day after time string

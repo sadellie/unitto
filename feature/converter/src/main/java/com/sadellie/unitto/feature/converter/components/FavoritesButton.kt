@@ -47,7 +47,7 @@ internal fun FavoritesButton(
         ) {
             Icon(
                 if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                contentDescription = stringResource(R.string.favorite_button_description)
+                contentDescription = stringResource(R.string.converter_favorite_button_description)
             )
         }
     }

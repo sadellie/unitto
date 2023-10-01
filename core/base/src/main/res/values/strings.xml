@@ -1,1430 +1,1429 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Unitto</string>
+    <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>
+    <string name="calculator_divide_by_zero_error">Can\'t divide by 0</string>
+    <string name="calculator_no_history">No history</string>
 
-    <!-- Length -->
-    <string name="attometer">Attometer</string>
-    <string name="attometer_short">am</string>
-    <string name="nanometer">Nanometer</string>
-    <string name="nanometer_short">nm</string>
-    <string name="micrometer">Micrometer</string>
-    <string name="micrometer_short">μm</string>
-    <string name="millimeter">Millimeter</string>
-    <string name="millimeter_short">mm</string>
-    <string name="centimeter">Centimeter</string>
-    <string name="centimeter_short">cm</string>
-    <string name="decimeter">Decimeter</string>
-    <string name="decimeter_short">dm</string>
-    <string name="meter">Meter</string>
-    <string name="meter_short">m</string>
-    <string name="kilometer">Kilometer</string>
-    <string name="kilometer_short">km</string>
-    <string name="mile">Mile</string>
-    <string name="mile_short">Mi</string>
-    <string name="yard">Yard</string>
-    <string name="yard_short">yd</string>
-    <string name="foot">Foot</string>
-    <string name="foot_short">ft</string>
-    <string name="inch">Inch</string>
-    <string name="inch_short">in</string>
-    <string name="light_year">Light year</string>
-    <string name="light_year_short">ly</string>
-    <string name="parsec">Parsec</string>
-    <string name="parsec_short">pc</string>
-    <string name="kiloparsec">Kiloparsec</string>
-    <string name="kiloparsec_short">kpc</string>
-    <string name="megaparsec">Megaparsec</string>
-    <string name="megaparsec_short">Mpc</string>
-    <string name="mercury_equatorial_radius">Mercury equatorial radius</string>
-    <string name="mercury_equatorial_radius_short">Mercury R</string>
-    <string name="venus_equatorial_radius">Venus equatorial radius</string>
-    <string name="venus_equatorial_radius_short">Venus R</string>
-    <string name="earth_equatorial_radius">Earth equatorial radius</string>
-    <string name="earth_equatorial_radius_short">Earth R</string>
-    <string name="mars_equatorial_radius">Mars equatorial radius</string>
-    <string name="mars_equatorial_radius_short">Mars R</string>
-    <string name="jupiter_equatorial_radius">Jupiter equatorial radius</string>
-    <string name="jupiter_equatorial_radius_short">Jupiter R</string>
-    <string name="saturn_equatorial_radius">Saturn equatorial radius</string>
-    <string name="saturn_equatorial_radius_short">Saturn R</string>
-    <string name="uranus_equatorial_radius">Uranus equatorial radius</string>
-    <string name="uranus_equatorial_radius_short">Uranus R</string>
-    <string name="neptune_equatorial_radius">Neptune equatorial radius</string>
-    <string name="neptune_equatorial_radius_short">Neptune R</string>
-    <string name="sun_equatorial_radius">Sun equatorial radius</string>
-    <string name="sun_equatorial_radius_short">Sun R</string>
-
-    <!-- Mass -->
-    <string name="electron_mass_rest">Electron mass</string>
-    <string name="electron_mass_rest_short">me</string>
-    <string name="atomic_mass_unit">Dalton</string>
-    <string name="atomic_mass_unit_short">u</string>
-    <string name="milligram">Milligram</string>
-    <string name="milligram_short">mg</string>
-    <string name="gram">Gram</string>
-    <string name="gram_short">g</string>
-    <string name="kilogram">Kilogram</string>
-    <string name="kilogram_short">kg</string>
-    <string name="metric_ton">Metric ton</string>
-    <string name="metric_ton_short">t</string>
-    <string name="imperial_ton">Imperial ton</string>
-    <string name="imperial_ton_short">t (UK)</string>
-    <string name="pound">Pound</string>
-    <string name="pound_short">lbs</string>
-    <string name="ounce">Ounce</string>
-    <string name="ounce_short">oz</string>
-    <string name="carat">Carat</string>
-    <string name="carat_short">ct</string>
-    <string name="mercury_mass">Mercury mass</string>
-    <string name="mercury_mass_short">Mercury M</string>
-    <string name="venus_mass">Venus mass</string>
-    <string name="venus_mass_short">Venus M</string>
-    <string name="earth_mass">Earth mass</string>
-    <string name="earth_mass_short">Earth M</string>
-    <string name="mars_mass">Mars mass</string>
-    <string name="mars_mass_short">Mars M</string>
-    <string name="jupiter_mass">Jupiter mass</string>
-    <string name="jupiter_mass_short">Jupiter M</string>
-    <string name="saturn_mass">Saturn mass</string>
-    <string name="saturn_mass_short">Saturn M</string>
-    <string name="uranus_mass">Uranus mass</string>
-    <string name="uranus_mass_short">Uranus M</string>
-    <string name="neptune_mass">Neptune mass</string>
-    <string name="neptune_mass_short">Neptune M</string>
-    <string name="sun_mass">Sun mass</string>
-    <string name="sun_mass_short">Sun M</string>
-
-    <!-- Temperature -->
-    <string name="celsius">Celsius</string>
-    <string name="celsius_short" translatable="false">°C</string>
-    <string name="fahrenheit">Fahrenheit</string>
-    <string name="fahrenheit_short" translatable="false">°F</string>
-    <string name="kelvin">Kelvin</string>
-    <string name="kelvin_short" translatable="false">K</string>
-
-    <!-- Speed -->
-    <string name="millimeter_per_hour">Millimeter/hour</string>
-    <string name="millimeter_per_hour_short">mm/h</string>
-    <string name="millimeter_per_minute">Millimeter/minute</string>
-    <string name="millimeter_per_minute_short">mm/m</string>
-    <string name="millimeter_per_second">Millimeter/second</string>
-    <string name="millimeter_per_second_short">mm/s</string>
-    <string name="centimeter_per_hour">Centimeter/hour</string>
-    <string name="centimeter_per_hour_short">cm/h</string>
-    <string name="centimeter_per_minute">Centimeter/minute</string>
-    <string name="centimeter_per_minute_short">cm/m</string>
-    <string name="centimeter_per_second">Centimeter/second</string>
-    <string name="centimeter_per_second_short">cm/s</string>
-    <string name="meter_per_hour">Meter/hour</string>
-    <string name="meter_per_hour_short">m/h</string>
-    <string name="meter_per_minute">Meter/minute</string>
-    <string name="meter_per_minute_short">m/m</string>
-    <string name="meter_per_second">Meter/second</string>
-    <string name="meter_per_second_short">m/s</string>
-    <string name="kilometer_per_hour">Kilometer/hour</string>
-    <string name="kilometer_per_hour_short">km/h</string>
-    <string name="kilometer_per_minute">Kilometer/minute</string>
-    <string name="kilometer_per_minute_short">km/m</string>
-    <string name="kilometer_per_second">Kilometer/second</string>
-    <string name="kilometer_per_second_short">km/s</string>
-    <string name="foot_per_hour">Foot/hour</string>
-    <string name="foot_per_hour_short">ft/h</string>
-    <string name="foot_per_minute">Foot/minute</string>
-    <string name="foot_per_minute_short">ft/m</string>
-    <string name="foot_per_second">Foot/second</string>
-    <string name="foot_per_second_short">ft/s</string>
-    <string name="yard_per_hour">Yard/hour</string>
-    <string name="yard_per_hour_short">yd/h</string>
-    <string name="yard_per_minute">Yard/minute</string>
-    <string name="yard_per_minute_short">yd/m</string>
-    <string name="yard_per_second">Yard/second</string>
-    <string name="yard_per_second_short">yd/s</string>
-    <string name="mile_per_hour">Mile/hour</string>
-    <string name="mile_per_hour_short">mi/h</string>
-    <string name="mile_per_minute">Mile/minute</string>
-    <string name="mile_per_minute_short">mi/m</string>
-    <string name="mile_per_second">Mile/second</string>
-    <string name="mile_per_second_short">mi/s</string>
-    <string name="knot">Knot</string>
-    <string name="knot_short">kt</string>
-    <string name="velocity_of_light_in_vacuum">Speed of light in vacuum</string>
-    <string name="velocity_of_light_in_vacuum_short" translatable="false">c</string>
-    <string name="cosmic_velocity_first">First Cosmic Velocity</string>
-    <string name="cosmic_velocity_first_short" translatable="false">v1</string>
-    <string name="cosmic_velocity_second">Second Cosmic Velocity</string>
-    <string name="cosmic_velocity_second_short" translatable="false">v2</string>
-    <string name="cosmic_velocity_third">Third Cosmic Velocity</string>
-    <string name="cosmic_velocity_third_short" translatable="false">v3</string>
-    <string name="earths_orbital_speed">Earth\'s orbital speed</string>
-    <string name="earths_orbital_speed_short" translatable="false">ve</string>
-    <string name="mach">Mach</string>
-    <string name="mach_short" translatable="false">M</string>
-    <string name="mach_si_standard">Mach (SI)</string>
-    <string name="mach_si_standard_short" translatable="false">M</string>
-
-    <!-- File size -->
-    <string name="bit">Bit</string>
-    <string name="bit_short">b</string>
-    <string name="kibibit">Kibibit</string>
-    <string name="kibibit_short">Kib</string>
-    <string name="kilobit">Kilobit</string>
-    <string name="kilobit_short">Kb</string>
-    <string name="megabit">Megabit</string>
-    <string name="megabit_short">Mb</string>
-    <string name="mebibit">Mebibit</string>
-    <string name="mebibit_short">Mib</string>
-    <string name="gigabit">Gigabit</string>
-    <string name="gigabit_short">Gb</string>
-    <string name="terabit">Terabit</string>
-    <string name="terabit_short">Tb</string>
-    <string name="petabit">Petabit</string>
-    <string name="petabit_short">Pb</string>
-    <string name="exabit">Exabit</string>
-    <string name="exabit_short">Eb</string>
-    <string name="byte_">Byte</string>
-    <string name="byte_short">B</string>
-    <string name="kibibyte">Kibibyte</string>
-    <string name="kibibyte_short">KiB</string>
-    <string name="kilobyte">Kilobyte</string>
-    <string name="kilobyte_short">KB</string>
-    <string name="megabyte">Megabyte</string>
-    <string name="megabyte_short">MB</string>
-    <string name="mebibyte">Mebibyte</string>
-    <string name="mebibyte_short">MiB</string>
-    <string name="gigabyte">Gigabyte</string>
-    <string name="gigabyte_short">GB</string>
-    <string name="terabyte">Terabyte</string>
-    <string name="terabyte_short">TB</string>
-    <string name="petabyte">Petabyte</string>
-    <string name="petabyte_short">PB</string>
-    <string name="exabyte">Exabyte</string>
-    <string name="exabyte_short">EB</string>
-
-    <!-- Data transfer -->
-    <string name="bit_per_second">Bit/second</string>
-    <string name="bit_per_second_short">b/s</string>
-    <string name="kibibit_per_second">Kibibit/second</string>
-    <string name="kibibit_per_second_short">Kib/s</string>
-    <string name="kilobit_per_second">Kilobit/second</string>
-    <string name="kilobit_per_second_short">Kb/s</string>
-    <string name="megabit_per_second">Megabit/second</string>
-    <string name="megabit_per_second_short">Mb/s</string>
-    <string name="mebibit_per_second">Mebibit/second</string>
-    <string name="mebibit_per_second_short">Mib/s</string>
-    <string name="gigabit_per_second">Gigabit/second</string>
-    <string name="gigabit_per_second_short">Gb/s</string>
-    <string name="terabit_per_second">Terabit/second</string>
-    <string name="terabit_per_second_short">Tb/s</string>
-    <string name="petabit_per_second">Petabit/second</string>
-    <string name="petabit_per_second_short">Pb/s</string>
-    <string name="exabit_per_second">Exabit/second</string>
-    <string name="exabit_per_second_short">Eb/s</string>
-    <string name="byte_per_second">Byte/second</string>
-    <string name="byte_per_second_short">B/s</string>
-    <string name="kibibyte_per_second">Kibibyte/second</string>
-    <string name="kibibyte_per_second_short">KiB/s</string>
-    <string name="kilobyte_per_second">Kilobyte/second</string>
-    <string name="kilobyte_per_second_short">KB/s</string>
-    <string name="megabyte_per_second">Megabyte/second</string>
-    <string name="megabyte_per_second_short">MB/s</string>
-    <string name="mebibyte_per_second">Mebibyte/second</string>
-    <string name="mebibyte_per_second_short">MiB/s</string>
-    <string name="gigabyte_per_second">Gigabyte/second</string>
-    <string name="gigabyte_per_second_short">GB/s</string>
-    <string name="terabyte_per_second">Terabyte/second</string>
-    <string name="terabyte_per_second_short">TB/s</string>
-    <string name="petabyte_per_second">Petabyte/second</string>
-    <string name="petabyte_per_second_short">PB/s</string>
-    <string name="exabyte_per_second">Exabyte/second</string>
-    <string name="exabyte_per_second_short">EB/s</string>
-
-    <!-- Volume -->
-    <string name="attoliter">Attoliter</string>
-    <string name="attoliter_short">aL</string>
-    <string name="milliliter">Milliliter</string>
-    <string name="milliliter_short">mL</string>
-    <string name="liter">Liter</string>
-    <string name="liter_short">L</string>
-    <string name="us_liquid_gallon">US liquid gallon</string>
-    <string name="us_liquid_gallon_short">gal (US)</string>
-    <string name="us_liquid_quart">US liquid quart</string>
-    <string name="us_liquid_quart_short">qt (US)</string>
-    <string name="us_liquid_pint">US liquid pint</string>
-    <string name="us_liquid_pint_short">pt (US)</string>
-    <string name="us_legal_cup">US legal cup</string>
-    <string name="us_legal_cup_short">cup (US)</string>
-    <string name="us_fluid_ounce">US fluid ounce</string>
-    <string name="us_fluid_ounce_short">fl oz (US)</string>
-    <string name="us_tablespoon">US tablespoon</string>
-    <string name="us_tablespoon_short">tablespoon (US)</string>
-    <string name="us_teaspoon">US teaspoon</string>
-    <string name="us_teaspoon_short">teaspoon (US)</string>
-    <string name="imperial_gallon">Imperial gallon</string>
-    <string name="imperial_gallon_short">gal (UK)</string>
-    <string name="imperial_quart">Imperial quart</string>
-    <string name="imperial_quart_short">qt (UK)</string>
-    <string name="imperial_pint">Imperial pint</string>
-    <string name="imperial_pint_short">pt (UK)</string>
-    <string name="imperial_cup">Imperial cup</string>
-    <string name="imperial_cup_short">cup (UK)</string>
-    <string name="imperial_fluid_ounce">Imperial fluid ounce</string>
-    <string name="imperial_fluid_ounce_short">fl oz (UK)</string>
-    <string name="imperial_tablespoon">Imperial tablespoon</string>
-    <string name="imperial_tablespoon_short">tablespoon (UK)</string>
-    <string name="imperial_teaspoon">Imperial teaspoon</string>
-    <string name="imperial_teaspoon_short">teaspoon (UK)</string>
-    <string name="cubic_millimeter">Cubic millimeter</string>
-    <string name="cubic_millimeter_short">mm^3</string>
-    <string name="cubic_centimeter">Cubic centimeter</string>
-    <string name="cubic_centimeter_short">cm^3</string>
-    <string name="cubic_meter">Cubic meter</string>
-    <string name="cubic_meter_short">m^3</string>
-    <string name="cubic_kilometer">Cubic kilometer</string>
-    <string name="cubic_kilometer_short">km^3</string>
-
-    <!-- Time -->
-    <string name="attosecond">Attosecond</string>
-    <string name="attosecond_short">as</string>
-    <string name="nanosecond">Nanosecond</string>
-    <string name="nanosecond_short">ns</string>
-    <string name="microsecond">Microsecond</string>
-    <string name="microsecond_short">µs</string>
-    <string name="millisecond">Millisecond</string>
-    <string name="millisecond_short">ms</string>
-    <string name="jiffy">Jiffy</string>
-    <string name="jiffy_short">j</string>
-    <string name="second">Second</string>
-    <string name="second_short">s</string>
-    <string name="minute">Minute</string>
-    <string name="minute_short">m</string>
-    <string name="hour">Hour</string>
-    <string name="hour_short">h</string>
-    <string name="day">Day</string>
-    <string name="day_short">d</string>
-    <string name="week">Week</string>
-    <string name="week_short">w</string>
-
-    <!-- Area -->
-    <string name="electron_cross_section">Electron cross section</string>
-    <string name="electron_cross_section_short">ecs</string>
-    <string name="acre">Acre</string>
-    <string name="acre_short">ac</string>
-    <string name="hectare">Hectare</string>
-    <string name="hectare_short">ha</string>
-    <string name="square_foot">Square foot</string>
-    <string name="square_foot_short">ft^2</string>
-    <string name="square_mile">Square mile</string>
-    <string name="square_mile_short">mi^2</string>
-    <string name="square_yard">Square yard</string>
-    <string name="square_yard_short">yd^2</string>
-    <string name="square_inch">Square inch</string>
-    <string name="square_inch_short">in^2</string>
-    <string name="square_micrometer">Square micrometer</string>
-    <string name="square_micrometer_short">µm^2</string>
-    <string name="square_millimeter">Square millimeter</string>
-    <string name="square_millimeter_short">mm^2</string>
-    <string name="square_centimeter">Square centimeter</string>
-    <string name="square_centimeter_short">cm^2</string>
-    <string name="square_decimeter">Square decimeter</string>
-    <string name="square_decimeter_short">dm^2</string>
-    <string name="square_meter">Square meter</string>
-    <string name="square_meter_short">m^2</string>
-    <string name="square_kilometer">Square kilometer</string>
-    <string name="square_kilometer_short">km^2</string>
-
-    <!-- Energy -->
-    <string name="electron_volt">Electron volt</string>
-    <string name="electron_volt_short">eV</string>
-    <string name="attojoule">Attojoule</string>
-    <string name="attojoule_short">aJ</string>
-    <string name="energy_horse_power_metric">Horse power</string>
-    <string name="energy_horse_power_metric_short">hp</string>
-    <string name="joule">Joule</string>
-    <string name="joule_short">J</string>
-    <string name="kilojoule">Kilojoule</string>
-    <string name="kilojoule_short">kJ</string>
-    <string name="gigajoule">Megajoule</string>
-    <string name="gigajoule_short">MJ</string>
-    <string name="megajoule">Gigajoule</string>
-    <string name="megajoule_short">GJ</string>
-    <string name="energy_ton">Ton of TNT</string>
-    <string name="energy_ton_short">t</string>
-    <string name="kiloton">Kiloton of TNT</string>
-    <string name="kiloton_short">kt</string>
-    <string name="megaton">Megaton of TNT</string>
-    <string name="megaton_short">Mt</string>
-    <string name="gigaton">Gigaton of TNT</string>
-    <string name="gigaton_short">Gt</string>
-    <string name="calorie_th">Calorie (th)</string>
-    <string name="calorie_th_short">cal</string>
-    <string name="kilocalorie_th">Kilocalorie (th)</string>
-    <string name="kilocalorie_th_short">kcal</string>
-
-    <!-- Power -->
-    <string name="attowatt">Attowatt</string>
-    <string name="attowatt_short">aW</string>
-    <string name="watt">Watt</string>
-    <string name="watt_short">W</string>
-    <string name="kilowatt">Kilowatt</string>
-    <string name="kilowatt_short">kW</string>
-    <string name="megawatt">Megawatt</string>
-    <string name="megawatt_short">MG</string>
-    <string name="horse_power_mechanical">Horsepower</string>
-    <string name="horse_power_mechanical_short">hp</string>
-
-    <!-- Angle -->
-    <string name="angle_second">Second</string>
-    <string name="angle_second_short" translatable="false">\"</string>
-    <string name="angle_minute">Minute</string>
-    <string name="angle_minute_short" translatable="false">\'</string>
-    <string name="degree">Degree</string>
-    <string name="degree_short" translatable="false">°</string>
-    <string name="radian">Radian</string>
-    <string name="radian_short">rad</string>
-    <string name="sextant">Sextant</string>
-    <string name="sextant_short">sxt</string>
-    <string name="turn">Turn</string>
-    <string name="turn_short">tr</string>
-
-    <!-- Pressure -->
-    <string name="attopascal">Attopascal</string>
-    <string name="attopascal_short">aPa</string>
-    <string name="femtopascal">Femtopascal</string>
-    <string name="femtopascal_short">fPa</string>
-    <string name="picopascal">Picopascal</string>
-    <string name="picopascal_short">pPa</string>
-    <string name="nanopascal">Nanopascal</string>
-    <string name="nanopascal_short">nPa</string>
-    <string name="micropascal">Micropascal</string>
-    <string name="micropascal_short">µPa</string>
-    <string name="millipascal">Millipascal</string>
-    <string name="millipascal_short">mPa</string>
-    <string name="centipascal">Centipascal</string>
-    <string name="centipascal_short">cPa</string>
-    <string name="decipascal">Decipascal</string>
-    <string name="decipascal_short">dPa</string>
-    <string name="pascal">Pascal</string>
-    <string name="pascal_short">Pa</string>
-    <string name="dekapascal">Dekapascal</string>
-    <string name="dekapascal_short">daPa</string>
-    <string name="hectopascal">Hectopascal</string>
-    <string name="hectopascal_short">hPa</string>
-    <string name="bar">Bar</string>
-    <string name="bar_short">bar</string>
-    <string name="megapascal">Megapascal</string>
-    <string name="megapascal_short">MPa</string>
-    <string name="gigapascal">Gigapascal</string>
-    <string name="gigapascal_short">GPa</string>
-    <string name="terapascal">Terapascal</string>
-    <string name="terapascal_short">TPa</string>
-    <string name="petapascal">Petapascal</string>
-    <string name="petapascal_short">PPa</string>
-    <string name="exapascal">Exapascal</string>
-    <string name="exapascal_short">EPa</string>
-    <string name="psi">Pound/square inch</string>
-    <string name="psi_short" translatable="false">psi</string>
-    <string name="ksi">Kilopound/square inch</string>
-    <string name="ksi_short" translatable="false">ksi</string>
-    <string name="standard_atmosphere">Standard atmosphere</string>
-    <string name="standard_atmosphere_short">atm</string>
-    <string name="torr">Torr</string>
-    <string name="torr_short">torr</string>
-    <string name="millimeter_of_mercury">Millimeter of mercury</string>
-    <string name="millimeter_of_mercury_short">mm Hg</string>
-
-    <!-- Acceleration -->
-    <string name="attometer_per_square_second">Attometer/square second</string>
-    <string name="attometer_per_square_second_short">am/s^2</string>
-    <string name="femtometer_per_square_second">Femtometer/square second</string>
-    <string name="femtometer_per_square_second_short">fm/s^2</string>
-    <string name="picometer_per_square_second">Picometer/square second</string>
-    <string name="picometer_per_square_second_short">pm/s^2</string>
-    <string name="nanometer_per_square_second">Nanometer/square second</string>
-    <string name="nanometer_per_square_second_short">nm/s^2</string>
-    <string name="micrometer_per_square_second">Micrometer/square second</string>
-    <string name="micrometer_per_square_second_short">µm/s^2</string>
-    <string name="millimeter_per_square_second">Millimeter/square second</string>
-    <string name="millimeter_per_square_second_short">mm/s^2</string>
-    <string name="centimeter_per_square_second">Centimeter/square second</string>
-    <string name="centimeter_per_square_second_short">cm/s^2</string>
-    <string name="decimeter_per_square_second">Decimeter/square second</string>
-    <string name="decimeter_per_square_second_short">dm/s^2</string>
-    <string name="meter_per_square_second">Meter/square second</string>
-    <string name="meter_per_square_second_short">m/s^2</string>
-    <string name="kilometer_per_square_second">Kilometer/square second</string>
-    <string name="kilometer_per_square_second_short">km/s^2</string>
-    <string name="dekameter_per_square_second">Dekameter/square second</string>
-    <string name="dekameter_per_square_second_short">dam/s^2</string>
-    <string name="hectometer_per_square_second">Hectometer/square second</string>
-    <string name="hectometer_per_square_second_short">hm/s^2</string>
-    <string name="gal">Gal</string>
-    <string name="gal_short">Gal</string>
-    <string name="mercury_surface_gravity">Mercury surface gravity</string>
-    <string name="mercury_surface_gravity_short">Mercury g</string>
-    <string name="venus_surface_gravity">Venus surface gravity</string>
-    <string name="venus_surface_gravity_short">Venus g</string>
-    <string name="earth_surface_gravity">Earth surface gravity</string>
-    <string name="earth_surface_gravity_short">Earth g</string>
-    <string name="mars_surface_gravity">Mars surface gravity</string>
-    <string name="mars_surface_gravity_short">Mars g</string>
-    <string name="jupiter_surface_gravity">Jupiter surface gravity</string>
-    <string name="jupiter_surface_gravity_short">Jupiter g</string>
-    <string name="saturn_surface_gravity">Saturn surface gravity</string>
-    <string name="saturn_surface_gravity_short">Saturn g</string>
-    <string name="uranus_surface_gravity">Uranus surface gravity</string>
-    <string name="uranus_surface_gravity_short">Uranus g</string>
-    <string name="neptune_surface_gravity">Neptune surface gravity</string>
-    <string name="neptune_surface_gravity_short">Neptune g</string>
-    <string name="sun_surface_gravity">Sun surface gravity</string>
-    <string name="sun_surface_gravity_short">Sun g</string>
-
-    <!-- Currency -->
-    <string name="currency_1inch" translatable="false">1inch Network</string>
-    <string name="currency_1inch_short" translatable="false">NCH</string>
-    <string name="currency_ada">Cardano</string>
-    <string name="currency_ada_short" translatable="false">ADA</string>
-    <string name="currency_aed">United Arab Emirates Dirham</string>
-    <string name="currency_aed_short" translatable="false">AED</string>
-    <string name="currency_afn">Afghan afghani</string>
-    <string name="currency_afn_short" translatable="false">AFN</string>
-    <string name="currency_algo" translatable="false">Algorand</string>
-    <string name="currency_algo_short" translatable="false">LGO</string>
-    <string name="currency_all">Albanian lek</string>
-    <string name="currency_all_short" translatable="false">ALL</string>
-    <string name="currency_amd">Armenian dram</string>
-    <string name="currency_amd_short" translatable="false">AMD</string>
-    <string name="currency_ang">Netherlands Antillean Guilder</string>
-    <string name="currency_ang_short" translatable="false">ANG</string>
-    <string name="currency_aoa">Angolan kwanza</string>
-    <string name="currency_aoa_short" translatable="false">AOA</string>
-    <string name="currency_ars">Argentine peso</string>
-    <string name="currency_ars_short" translatable="false">ARS</string>
-    <string name="currency_atom" translatable="false">Atomic Coin</string>
-    <string name="currency_atom_short" translatable="false">TOM</string>
-    <string name="currency_aud">Australian dollar</string>
-    <string name="currency_aud_short" translatable="false">AUD</string>
-    <string name="currency_avax" translatable="false">Avalanche</string>
-    <string name="currency_avax_short" translatable="false">VAX</string>
-    <string name="currency_awg">Aruban florin</string>
-    <string name="currency_awg_short" translatable="false">AWG</string>
-    <string name="currency_azn">Azerbaijani manat</string>
-    <string name="currency_azn_short" translatable="false">AZN</string>
-    <string name="currency_bam">Bosnia-Herzegovina Convertible Mark</string>
-    <string name="currency_bam_short" translatable="false">BAM</string>
-    <string name="currency_bbd">Bajan dollar</string>
-    <string name="currency_bbd_short" translatable="false">BBD</string>
-    <string name="currency_bch" translatable="false">Bitcoin Cash</string>
-    <string name="currency_bch_short" translatable="false">BCH</string>
-    <string name="currency_bdt">Bangladeshi taka</string>
-    <string name="currency_bdt_short" translatable="false">BDT</string>
-    <string name="currency_bgn">Bulgarian lev</string>
-    <string name="currency_bgn_short" translatable="false">BGN</string>
-    <string name="currency_bhd">Bahraini dinar</string>
-    <string name="currency_bhd_short" translatable="false">BHD</string>
-    <string name="currency_bif">Burundian Franc</string>
-    <string name="currency_bif_short" translatable="false">BIF</string>
-    <string name="currency_bmd">Bermudan dollar</string>
-    <string name="currency_bmd_short" translatable="false">BMD</string>
-    <string name="currency_bnb" translatable="false">Binance Coin</string>
-    <string name="currency_bnb_short" translatable="false">BNB</string>
-    <string name="currency_bnd">Brunei dollar</string>
-    <string name="currency_bnd_short" translatable="false">BND</string>
-    <string name="currency_bob">Bolivian boliviano</string>
-    <string name="currency_bob_short" translatable="false">BOB</string>
-    <string name="currency_brl">Brazilian real</string>
-    <string name="currency_brl_short" translatable="false">BRL</string>
-    <string name="currency_bsd">Bahamian dollar</string>
-    <string name="currency_bsd_short" translatable="false">BSD</string>
-    <string name="currency_btc" translatable="false">Bitcoin</string>
-    <string name="currency_btc_short" translatable="false">BTC</string>
-    <string name="currency_btn">Bhutan currency</string>
-    <string name="currency_btn_short" translatable="false">BTN</string>
-    <string name="currency_busd" translatable="false">Binance USD</string>
-    <string name="currency_busd_short" translatable="false">USD</string>
-    <string name="currency_bwp">Botswanan Pula</string>
-    <string name="currency_bwp_short" translatable="false">BWP</string>
-    <string name="currency_byn">New Belarusian Ruble</string>
-    <string name="currency_byn_short" translatable="false">BYN</string>
-    <string name="currency_byr">Belarusian Ruble</string>
-    <string name="currency_byr_short" translatable="false">BYR</string>
-    <string name="currency_bzd">Belize dollar</string>
-    <string name="currency_bzd_short" translatable="false">BZD</string>
-    <string name="currency_cad">Canadian dollar</string>
-    <string name="currency_cad_short" translatable="false">CAD</string>
-    <string name="currency_cdf">Congolese franc</string>
-    <string name="currency_cdf_short" translatable="false">CDF</string>
-    <string name="currency_chf">Swiss franc</string>
-    <string name="currency_chf_short" translatable="false">CHF</string>
-    <string name="currency_chz" translatable="false">Chiliz</string>
-    <string name="currency_chz_short" translatable="false">CHZ</string>
-    <string name="currency_clf">Chilean Unit of Account (UF)</string>
-    <string name="currency_clf_short" translatable="false">CLF</string>
-    <string name="currency_clp">Chilean peso</string>
-    <string name="currency_clp_short" translatable="false">CLP</string>
-    <string name="currency_cny">Chinese Yuan</string>
-    <string name="currency_cny_short" translatable="false">CNY</string>
-    <string name="currency_cop">Colombian peso</string>
-    <string name="currency_cop_short" translatable="false">COP</string>
-    <string name="currency_crc">Costa Rican Colón</string>
-    <string name="currency_crc_short" translatable="false">CRC</string>
-    <string name="currency_cro" translatable="false">Crypto.com Chain Token</string>
-    <string name="currency_cro_short" translatable="false">CRO</string>
-    <string name="currency_cuc">Cuban convertible peso</string>
-    <string name="currency_cuc_short" translatable="false">CUC</string>
-    <string name="currency_cup">Cuban Peso</string>
-    <string name="currency_cup_short" translatable="false">CUP</string>
-    <string name="currency_cve">Cape Verdean escudo</string>
-    <string name="currency_cve_short" translatable="false">CVE</string>
-    <string name="currency_czk">Czech koruna</string>
-    <string name="currency_czk_short" translatable="false">CZK</string>
-    <string name="currency_dai">Dai</string>
-    <string name="currency_dai_short" translatable="false">DAI</string>
-    <string name="currency_djf">Djiboutian franc</string>
-    <string name="currency_djf_short" translatable="false">DJF</string>
-    <string name="currency_dkk">Danish krone</string>
-    <string name="currency_dkk_short" translatable="false">DKK</string>
-    <string name="currency_doge" translatable="false">Dogecoin</string>
-    <string name="currency_doge_short" translatable="false">OGE</string>
-    <string name="currency_dop">Dominican peso</string>
-    <string name="currency_dop_short" translatable="false">DOP</string>
-    <string name="currency_dot" translatable="false">Dotcoin</string>
-    <string name="currency_dot_short" translatable="false">DOT</string>
-    <string name="currency_dzd">Algerian dinar</string>
-    <string name="currency_dzd_short" translatable="false">DZD</string>
-    <string name="currency_egld" translatable="false">Elrond</string>
-    <string name="currency_egld_short" translatable="false">GLD</string>
-    <string name="currency_egp">Egyptian pound</string>
-    <string name="currency_egp_short" translatable="false">EGP</string>
-    <string name="currency_enj" translatable="false">Enjin Coin</string>
-    <string name="currency_enj_short" translatable="false">ENJ</string>
-    <string name="currency_ern">Eritrean nakfa</string>
-    <string name="currency_ern_short" translatable="false">ERN</string>
-    <string name="currency_etb">Ethiopian birr</string>
-    <string name="currency_etb_short" translatable="false">ETB</string>
-    <string name="currency_etc" translatable="false">Ethereum Classic</string>
-    <string name="currency_etc_short" translatable="false">ETC</string>
-    <string name="currency_eth" translatable="false">Ether</string>
-    <string name="currency_eth_short" translatable="false">ETH</string>
-    <string name="currency_eur">Euro</string>
-    <string name="currency_eur_short" translatable="false">EUR</string>
-    <string name="currency_fil" translatable="false">FileCoin</string>
-    <string name="currency_fil_short" translatable="false">FIL</string>
-    <string name="currency_fjd">Fijian dollar</string>
-    <string name="currency_fjd_short" translatable="false">FJD</string>
-    <string name="currency_fkp">Falkland Islands pound</string>
-    <string name="currency_fkp_short" translatable="false">FKP</string>
-    <string name="currency_ftt" translatable="false">FarmaTrust</string>
-    <string name="currency_ftt_short" translatable="false">FTT</string>
-    <string name="currency_gbp">Pound sterling</string>
-    <string name="currency_gbp_short" translatable="false">GBP</string>
-    <string name="currency_gel">Georgian lari</string>
-    <string name="currency_gel_short" translatable="false">GEL</string>
-    <string name="currency_ggp" translatable="false">GGPro</string>
-    <string name="currency_ggp_short" translatable="false">GGP</string>
-    <string name="currency_ghs">Ghanaian cedi</string>
-    <string name="currency_ghs_short" translatable="false">GHS</string>
-    <string name="currency_gip">Gibraltar pound</string>
-    <string name="currency_gip_short" translatable="false">GIP</string>
-    <string name="currency_gmd">Gambian dalasi</string>
-    <string name="currency_gmd_short" translatable="false">GMD</string>
-    <string name="currency_gnf">Guinean franc</string>
-    <string name="currency_gnf_short" translatable="false">GNF</string>
-    <string name="currency_grt" translatable="false">Golden Ratio Token</string>
-    <string name="currency_grt_short" translatable="false">GRT</string>
-    <string name="currency_gtq">Guatemalan quetzal</string>
-    <string name="currency_gtq_short" translatable="false">GTQ</string>
-    <string name="currency_gyd">Guyanaese Dollar</string>
-    <string name="currency_gyd_short" translatable="false">GYD</string>
-    <string name="currency_hkd">Hong Kong dollar</string>
-    <string name="currency_hkd_short" translatable="false">HKD</string>
-    <string name="currency_hnl">Honduran lempira</string>
-    <string name="currency_hnl_short" translatable="false">HNL</string>
-    <string name="currency_hrk">Croatian kuna</string>
-    <string name="currency_hrk_short" translatable="false">HRK</string>
-    <string name="currency_htg">Haitian gourde</string>
-    <string name="currency_htg_short" translatable="false">HTG</string>
-    <string name="currency_huf">Hungarian forint</string>
-    <string name="currency_huf_short" translatable="false">HUF</string>
-    <string name="currency_icp" translatable="false">Internet Computer</string>
-    <string name="currency_icp_short" translatable="false">ICP</string>
-    <string name="currency_idr">Indonesian rupiah</string>
-    <string name="currency_idr_short" translatable="false">IDR</string>
-    <string name="currency_ils">Israeli New Shekel</string>
-    <string name="currency_ils_short" translatable="false">ILS</string>
-    <string name="currency_imp" translatable="false">CoinIMP</string>
-    <string name="currency_imp_short" translatable="false">IMP</string>
-    <string name="currency_inj" translatable="false">Injective</string>
-    <string name="currency_inj_short" translatable="false">INJ</string>
-    <string name="currency_inr">Indian rupee</string>
-    <string name="currency_inr_short" translatable="false">INR</string>
-    <string name="currency_iqd">Iraqi dinar</string>
-    <string name="currency_iqd_short" translatable="false">IQD</string>
-    <string name="currency_irr">Iranian rial</string>
-    <string name="currency_irr_short" translatable="false">IRR</string>
-    <string name="currency_isk">Icelandic króna</string>
-    <string name="currency_isk_short" translatable="false">ISK</string>
-    <string name="currency_jep">Jersey Pound</string>
-    <string name="currency_jep_short" translatable="false">JEP</string>
-    <string name="currency_jmd">Jamaican dollar</string>
-    <string name="currency_jmd_short" translatable="false">JMD</string>
-    <string name="currency_jod">Jordanian dinar</string>
-    <string name="currency_jod_short" translatable="false">JOD</string>
-    <string name="currency_jpy">Japanese yen</string>
-    <string name="currency_jpy_short" translatable="false">JPY</string>
-    <string name="currency_kes">Kenyan shilling</string>
-    <string name="currency_kes_short" translatable="false">KES</string>
-    <string name="currency_kgs">Kyrgystani Som</string>
-    <string name="currency_kgs_short" translatable="false">KGS</string>
-    <string name="currency_khr">Cambodian riel</string>
-    <string name="currency_khr_short" translatable="false">KHR</string>
-    <string name="currency_kmf">Comorian franc</string>
-    <string name="currency_kmf_short" translatable="false">KMF</string>
-    <string name="currency_kpw">North Korean won</string>
-    <string name="currency_kpw_short" translatable="false">KPW</string>
-    <string name="currency_krw">South Korean won</string>
-    <string name="currency_krw_short" translatable="false">KRW</string>
-    <string name="currency_ksm" translatable="false">Kusama</string>
-    <string name="currency_ksm_short" translatable="false">KSM</string>
-    <string name="currency_kwd">Kuwaiti dinar</string>
-    <string name="currency_kwd_short" translatable="false">KWD</string>
-    <string name="currency_kyd">Cayman Islands dollar</string>
-    <string name="currency_kyd_short" translatable="false">KYD</string>
-    <string name="currency_kzt">Kazakhstani tenge</string>
-    <string name="currency_kzt_short" translatable="false">KZT</string>
-    <string name="currency_lak">Laotian Kip</string>
-    <string name="currency_lak_short" translatable="false">LAK</string>
-    <string name="currency_lbp">Lebanese pound</string>
-    <string name="currency_lbp_short" translatable="false">LBP</string>
-    <string name="currency_link" translatable="false">ChainLink</string>
-    <string name="currency_link_short" translatable="false">INK</string>
-    <string name="currency_lkr">Sri Lankan rupee</string>
-    <string name="currency_lkr_short" translatable="false">LKR</string>
-    <string name="currency_lrd">Liberian dollar</string>
-    <string name="currency_lrd_short" translatable="false">LRD</string>
-    <string name="currency_lsl">Lesotho loti</string>
-    <string name="currency_lsl_short" translatable="false">LSL</string>
-    <string name="currency_ltc" translatable="false">Litecoin</string>
-    <string name="currency_ltc_short" translatable="false">LTC</string>
-    <string name="currency_ltl">Lithuanian litas</string>
-    <string name="currency_ltl_short" translatable="false">LTL</string>
-    <string name="currency_luna" translatable="false">Luna Coin</string>
-    <string name="currency_luna_short" translatable="false">UNA</string>
-    <string name="currency_lvl">Latvian lats</string>
-    <string name="currency_lvl_short" translatable="false">LVL</string>
-    <string name="currency_lyd">Libyan dinar</string>
-    <string name="currency_lyd_short" translatable="false">LYD</string>
-    <string name="currency_mad">Moroccan dirham</string>
-    <string name="currency_mad_short" translatable="false">MAD</string>
-    <string name="currency_matic" translatable="false">Polygon</string>
-    <string name="currency_matic_short" translatable="false">TIC</string>
-    <string name="currency_mdl">Moldovan leu</string>
-    <string name="currency_mdl_short" translatable="false">MDL</string>
-    <string name="currency_mga">Malagasy ariary</string>
-    <string name="currency_mga_short" translatable="false">MGA</string>
-    <string name="currency_mkd">Macedonian denar</string>
-    <string name="currency_mkd_short" translatable="false">MKD</string>
-    <string name="currency_mmk">Myanmar Kyat</string>
-    <string name="currency_mmk_short" translatable="false">MMK</string>
-    <string name="currency_mnt">Mongolian tugrik</string>
-    <string name="currency_mnt_short" translatable="false">MNT</string>
-    <string name="currency_mop">Macanese pataca</string>
-    <string name="currency_mop_short" translatable="false">MOP</string>
-    <string name="currency_mro">Mauritanian ouguiya</string>
-    <string name="currency_mro_short" translatable="false">MRO</string>
-    <string name="currency_mur">Mauritian rupee</string>
-    <string name="currency_mur_short" translatable="false">MUR</string>
-    <string name="currency_mvr">Maldivian rufiyaa</string>
-    <string name="currency_mvr_short" translatable="false">MVR</string>
-    <string name="currency_mwk">Malawian kwacha</string>
-    <string name="currency_mwk_short" translatable="false">MWK</string>
-    <string name="currency_mxn">Mexican peso</string>
-    <string name="currency_mxn_short" translatable="false">MXN</string>
-    <string name="currency_myr">Malaysian ringgit</string>
-    <string name="currency_myr_short" translatable="false">MYR</string>
-    <string name="currency_mzn">Mozambican Metical</string>
-    <string name="currency_mzn_short" translatable="false">MZN</string>
-    <string name="currency_nad">Namibian dollar</string>
-    <string name="currency_nad_short" translatable="false">NAD</string>
-    <string name="currency_ngn">Nigerian naira</string>
-    <string name="currency_ngn_short" translatable="false">NGN</string>
-    <string name="currency_nio">Nicaraguan córdoba</string>
-    <string name="currency_nio_short" translatable="false">NIO</string>
-    <string name="currency_nok">Norwegian krone</string>
-    <string name="currency_nok_short" translatable="false">NOK</string>
-    <string name="currency_npr">Nepalese rupee</string>
-    <string name="currency_npr_short" translatable="false">NPR</string>
-    <string name="currency_nzd">New Zealand dollar</string>
-    <string name="currency_nzd_short" translatable="false">NZD</string>
-    <string name="currency_omr">Omani rial</string>
-    <string name="currency_omr_short" translatable="false">OMR</string>
-    <string name="currency_one" translatable="false">Menlo One</string>
-    <string name="currency_one_short" translatable="false">ONE</string>
-    <string name="currency_pab">Panamanian balboa</string>
-    <string name="currency_pab_short" translatable="false">PAB</string>
-    <string name="currency_pen">Sol</string>
-    <string name="currency_pen_short" translatable="false">PEN</string>
-    <string name="currency_pgk">Papua New Guinean kina</string>
-    <string name="currency_pgk_short" translatable="false">PGK</string>
-    <string name="currency_php">Philippine peso</string>
-    <string name="currency_php_short" translatable="false">PHP</string>
-    <string name="currency_pkr">Pakistani rupee</string>
-    <string name="currency_pkr_short" translatable="false">PKR</string>
-    <string name="currency_pln">Poland złoty</string>
-    <string name="currency_pln_short" translatable="false">PLN</string>
-    <string name="currency_pyg">Paraguayan guarani</string>
-    <string name="currency_pyg_short" translatable="false">PYG</string>
-    <string name="currency_qar">Qatari Rial</string>
-    <string name="currency_qar_short" translatable="false">QAR</string>
-    <string name="currency_ron">Romanian leu</string>
-    <string name="currency_ron_short" translatable="false">RON</string>
-    <string name="currency_rsd">Serbian dinar</string>
-    <string name="currency_rsd_short" translatable="false">RSD</string>
-    <string name="currency_rub">Russian ruble</string>
-    <string name="currency_rub_short" translatable="false">RUB</string>
-    <string name="currency_rwf">Rwandan Franc</string>
-    <string name="currency_rwf_short" translatable="false">RWF</string>
-    <string name="currency_sar">Saudi riyal</string>
-    <string name="currency_sar_short" translatable="false">SAR</string>
-    <string name="currency_sbd">Solomon Islands dollar</string>
-    <string name="currency_sbd_short" translatable="false">SBD</string>
-    <string name="currency_scr">Seychellois rupee</string>
-    <string name="currency_scr_short" translatable="false">SCR</string>
-    <string name="currency_sdg">Sudanese pound</string>
-    <string name="currency_sdg_short" translatable="false">SDG</string>
-    <string name="currency_sek">Swedish krona</string>
-    <string name="currency_sek_short" translatable="false">SEK</string>
-    <string name="currency_sgd">Singapore dollar</string>
-    <string name="currency_sgd_short" translatable="false">SGD</string>
-    <string name="currency_shib">Shiba Inu</string>
-    <string name="currency_shib_short" translatable="false">HIB</string>
-    <string name="currency_shp">Saint Helena pound</string>
-    <string name="currency_shp_short" translatable="false">SHP</string>
-    <string name="currency_sll">Sierra Leonean leone</string>
-    <string name="currency_sll_short" translatable="false">SLL</string>
-    <string name="currency_sol" translatable="false">Sola</string>
-    <string name="currency_sol_short" translatable="false">SOL</string>
-    <string name="currency_sos">Somali shilling</string>
-    <string name="currency_sos_short" translatable="false">SOS</string>
-    <string name="currency_srd">Surinamese dollar</string>
-    <string name="currency_srd_short" translatable="false">SRD</string>
-    <string name="currency_std">São Tomé and Príncipe Dobra (pre-2018)</string>
-    <string name="currency_std_short" translatable="false">STD</string>
-    <string name="currency_svc">Salvadoran Colón</string>
-    <string name="currency_svc_short" translatable="false">SVC</string>
-    <string name="currency_syp">Syrian pound</string>
-    <string name="currency_syp_short" translatable="false">SYP</string>
-    <string name="currency_szl">Swazi lilangeni</string>
-    <string name="currency_szl_short" translatable="false">SZL</string>
-    <string name="currency_thb">Thai baht</string>
-    <string name="currency_thb_short" translatable="false">THB</string>
-    <string name="currency_theta">Theta</string>
-    <string name="currency_theta_short" translatable="false">ETA</string>
-    <string name="currency_tjs">Tajikistani somoni</string>
-    <string name="currency_tjs_short" translatable="false">TJS</string>
-    <string name="currency_tmt">Turkmenistani manat</string>
-    <string name="currency_tmt_short" translatable="false">TMT</string>
-    <string name="currency_tnd">Tunisian dinar</string>
-    <string name="currency_tnd_short" translatable="false">TND</string>
-    <string name="currency_top">Tongan Paʻanga</string>
-    <string name="currency_top_short" translatable="false">TOP</string>
-    <string name="currency_trx" translatable="false">TRON</string>
-    <string name="currency_trx_short" translatable="false">TRX</string>
-    <string name="currency_try">Turkish lira</string>
-    <string name="currency_try_short" translatable="false">TRY</string>
-    <string name="currency_ttd">Trinidad &amp; Tobago Dollar</string>
-    <string name="currency_ttd_short" translatable="false">TTD</string>
-    <string name="currency_twd">New Taiwan dollar</string>
-    <string name="currency_twd_short" translatable="false">TWD</string>
-    <string name="currency_tzs">Tanzanian shilling</string>
-    <string name="currency_tzs_short" translatable="false">TZS</string>
-    <string name="currency_uah">Ukrainian hryvnia</string>
-    <string name="currency_uah_short" translatable="false">UAH</string>
-    <string name="currency_ugx">Ugandan shilling</string>
-    <string name="currency_ugx_short" translatable="false">UGX</string>
-    <string name="currency_uni">Universe</string>
-    <string name="currency_uni_short" translatable="false">UNI</string>
-    <string name="currency_usd">United States dollar</string>
-    <string name="currency_usd_short" translatable="false">USD</string>
-    <string name="currency_usdc">USD Coin</string>
-    <string name="currency_usdc_short" translatable="false">SDC</string>
-    <string name="currency_usdt" translatable="false">Tether</string>
-    <string name="currency_usdt_short" translatable="false">SDT</string>
-    <string name="currency_uyu">Uruguayan peso</string>
-    <string name="currency_uyu_short" translatable="false">UYU</string>
-    <string name="currency_uzs">Uzbekistani som</string>
-    <string name="currency_uzs_short" translatable="false">UZS</string>
-    <string name="currency_vef">Sovereign Bolivar</string>
-    <string name="currency_vef_short" translatable="false">VEF</string>
-    <string name="currency_vet" translatable="false">Vechain</string>
-    <string name="currency_vet_short" translatable="false">VET</string>
-    <string name="currency_vnd">Vietnamese dong</string>
-    <string name="currency_vnd_short" translatable="false">VND</string>
-    <string name="currency_vuv">Vanuatu vatu</string>
-    <string name="currency_vuv_short" translatable="false">VUV</string>
-    <string name="currency_wbtc">Wrapped Bitcoin</string>
-    <string name="currency_wbtc_short" translatable="false">BTC</string>
-    <string name="currency_wst">Samoan tala</string>
-    <string name="currency_wst_short" translatable="false">WST</string>
-    <string name="currency_xaf">Central African CFA franc</string>
-    <string name="currency_xaf_short" translatable="false">XAF</string>
-    <string name="currency_xag">Silver Ounce</string>
-    <string name="currency_xag_short" translatable="false">XAG</string>
-    <string name="currency_xau" translatable="false">XauCoin</string>
-    <string name="currency_xau_short" translatable="false">XAU</string>
-    <string name="currency_xcd">East Caribbean dollar</string>
-    <string name="currency_xcd_short" translatable="false">XCD</string>
-    <string name="currency_xdr">Special Drawing Rights</string>
-    <string name="currency_xdr_short" translatable="false">XDR</string>
-    <string name="currency_xlm" translatable="false">Stellar</string>
-    <string name="currency_xlm_short" translatable="false">XLM</string>
-    <string name="currency_xmr" translatable="false">Monero</string>
-    <string name="currency_xmr_short" translatable="false">XMR</string>
-    <string name="currency_xof">West African CFA franc</string>
-    <string name="currency_xof_short" translatable="false">XOF</string>
-    <string name="currency_xpf">CFP franc</string>
-    <string name="currency_xpf_short" translatable="false">XPF</string>
-    <string name="currency_xrp" translatable="false">XRP</string>
-    <string name="currency_xrp_short" translatable="false">XRP</string>
-    <string name="currency_yer">Yemeni rial</string>
-    <string name="currency_yer_short" translatable="false">YER</string>
-    <string name="currency_zar">South African rand</string>
-    <string name="currency_zar_short" translatable="false">ZAR</string>
-    <string name="currency_zmk">Zambian kwacha</string>
-    <string name="currency_zmk_short" translatable="false">ZMK</string>
-    <string name="currency_zmw">Zambian Kwacha</string>
-    <string name="currency_zmw_short" translatable="false">ZMW</string>
-    <string name="currency_zwl">Zimbabwean Dollar</string>
-    <string name="currency_zwl_short" translatable="false">ZWL</string>
-
-    <!-- Groups -->
-    <string name="length">Length</string>
-    <string name="time">Time</string>
-    <string name="volume">Volume</string>
-    <string name="area">Area</string>
-    <string name="temperature">Temperature</string>
-    <string name="speed">Speed</string>
-    <string name="mass">Mass</string>
-    <string name="data">Data</string>
-    <string name="energy">Energy</string>
-    <string name="power">Power</string>
-    <string name="angle">Angle</string>
-    <string name="data_transfer">Data transfer</string>
-    <string name="pressure">Pressure</string>
-    <string name="acceleration">Acceleration</string>
-    <string name="currency">Currency</string>
+    <!-- Calculator -->
+    <string name="calculator_title">Calculator</string>
+    <string name="cancel_label">Cancel</string>
+    <string name="checked_filter_description">Checked filter</string>
+    <string name="clear_history_label">Clear history</string>
+    <string name="clear_input_description">Clear input</string>
+    <string name="clear_label">Clear</string>
+    <string name="click_to_try_again_label">Click to try again</string>
+    <string name="converter_favorite_button_description">Add or remove unit from favorites</string>
 
     <!-- Screen names -->
-    <string name="units_screen_from">Convert from</string>
-    <string name="units_screen_to">Convert to</string>
-    <string name="settings_screen">Settings</string>
+    <string name="converter_left_side_title">Convert from</string>
+    <string name="converter_no_results_support">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
+    <string name="converter_right_side_title">Convert to</string>
+    <string name="converter_search_bar_placeholder">Search units</string>
+    <string name="converter_swap_units_description">Swap units</string>
+    <string name="copied_label">Copied %1$s!</string>
+    <string name="date_calculator_add">Add</string>
 
-    <!-- Settings items -->
-    <string name="theme_setting">Themes</string>
-    <string name="precision_setting">Precision</string>
-    <string name="separator_setting">Separator</string>
-    <string name="exponential_notation_setting">Exponential notation</string>
-    <string name="unit_groups_setting">Unit groups</string>
-    <string name="currency_rates_note_setting">Wrong currency rates?</string>
-    <string name="currency_rates_note_title">Note</string>
-    <string name="currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
-    <string name="terms_and_conditions">Terms and Conditions</string>
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="third_party_licenses">Third party licenses</string>
-    <string name="rate_this_app">Rate this app</string>
-    <string name="formatting_setting">Formatting</string>
-    <string name="additional_settings_group">Additional</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_calculator_days">Days</string>
+    <string name="date_calculator_difference">Difference</string>
+    <string name="date_calculator_end">End</string>
 
-    <!-- Precision -->
-    <string name="precision_setting_support">Number of decimal places</string>
-    <string name="precision_setting_info">Converted values may have a precision higher than the preferred one.</string>
-    <string name="max_precision">%1$s (Max)</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_calculator_hours">Hours</string>
 
-    <!-- Separator -->
-    <string name="separator_setting_support">Group separator symbol</string>
-    <string name="period">Period</string>
-    <string name="comma">Comma</string>
-    <string name="space">Space</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_calculator_minutes">Minutes</string>
 
-    <!-- Output format -->
-    <string name="exponential_notation_setting_support">Replace part of the number with E</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_calculator_months">Months</string>
+    <string name="date_calculator_start">Start</string>
+    <string name="date_calculator_subtract">Subtract</string>
+    <string name="date_calculator_title">Date calculator</string>
 
-    <!-- Theme -->
-    <string name="theme_setting_support">App look and feel</string>
-    <string name="auto_label">Auto</string>
-    <string name="force_light_mode">Light</string>
-    <string name="force_dark_mode">Dark</string>
-    <string name="color_theme">Color theme</string>
-    <string name="force_amoled_mode">AMOLED Dark</string>
-    <string name="force_amoled_mode_support">Use black background for dark themes</string>
-    <string name="enable_dynamic_colors">Dynamic colors</string>
-    <string name="enable_dynamic_colors_support">Use colors from your wallpaper</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
+    <string name="date_calculator_years">Years</string>
+    <string name="disabled_label">Disabled</string>
+    <string name="drop_down_description">Open or close drop down menu</string>
+    <string name="enabled_label">Enabled</string>
+
+    <!-- Tools -->
+    <string name="epoch_converter_title">Epoch converter</string>
+    <string name="error_label">Error</string>
+    <string name="hello_label">Hello!</string>
 
     <!-- MISC. -->
     <string name="loading_label">Loading…</string>
-    <string name="error_label">Error</string>
-    <string name="copied">Copied %1$s!</string>
-    <string name="cancel_label">Cancel</string>
-    <string name="ok_label" translatable="false">OK</string>
-    <string name="search_bar_placeholder">Search units</string>
-    <string name="search_placeholder">No results found</string>
-    <string name="search_placeholder_button_label">Open settings</string>
-    <string name="search_placeholder_secondary">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
-    <string name="hello_label">Hello!</string>
-    <string name="enabled_label">Enabled</string>
-    <string name="disabled_label">Disabled</string>
+    <string name="locale_de" translatable="false">Deutsch</string>
+    <string name="locale_en" translatable="false">English</string>
+    <string name="locale_en_rGB" translatable="false">English (UK)</string>
+    <string name="locale_es" translatable="false">Español</string>
+    <string name="locale_fr" translatable="false">Français</string>
+    <string name="locale_hu" translatable="false">Magyar</string>
+    <string name="locale_in" translatable="false">Indonesia</string>
+    <string name="locale_it" translatable="false">Italiano</string>
+    <string name="locale_nl" translatable="false">Dutch</string>
+    <string name="locale_ru" translatable="false">Русский</string>
+    <string name="locale_tr" translatable="false">Türkçe</string>
 
     <!-- Content descriptions -->
     <string name="navigate_up_description">Navigate up</string>
-    <string name="checked_filter_description">Checked filter</string>
-    <string name="open_settings_description">Open settings</string>
-    <string name="swap_units_description">Swap units</string>
-    <string name="search_button_description">Search button</string>
-    <string name="clear_input_description">Clear input</string>
-    <string name="favorite_button_description">Add or remove unit from favorites</string>
-    <string name="empty_search_result_description">Empty search result</string>
-    <string name="drop_down_description">Open or close drop down menu</string>
-    <string name="enable_unit_group_description">Enable unit group</string>
-    <string name="reorder_unit_group_description">Reorder unit group</string>
-    <string name="disable_unit_group_description">Disable unit group</string>
-    <string name="app_version_name_setting">Version name</string>
-    <string name="about_unitto">About Unitto</string>
-    <string name="about_unitto_support">Learn about the app</string>
-    <string name="unit_groups_support">Disable and rearrange units</string>
-    <string name="cent">Cent</string>
-    <string name="cent_short">cent</string>
-
-    <!-- Flux -->
-    <string name="maxwell">Maxwell</string>
-    <string name="maxwell_short">Mx</string>
-    <string name="weber">Weber</string>
-    <string name="weber_short">Wb</string>
-    <string name="milliweber">Milliweber</string>
-    <string name="milliweber_short">mWb</string>
-    <string name="microweber">Microweber</string>
-    <string name="microweber_short">μWb</string>
-    <string name="kiloweber">Kiloweber</string>
-    <string name="kiloweber_short">kWb</string>
-    <string name="megaweber">Megaweber</string>
-    <string name="megaweber_short">MWb</string>
-    <string name="gigaweber">Gigaweber</string>
-    <string name="gigaweber_short">GWb</string>
-    <string name="flux">Flux</string>
-    <string name="open_source">View source code</string>
-    <string name="translate_app">Translate this app</string>
-    <string name="translate_app_support">Join POEditor project to help</string>
-
-    <!-- Number base -->
-    <string name="binary">Binary</string>
-    <string name="binary_short">base2</string>
-    <string name="ternary">Ternary</string>
-    <string name="ternary_short">base3</string>
-    <string name="quaternary">Quaternary</string>
-    <string name="quaternary_short">base4</string>
-    <string name="quinary">Quinary</string>
-    <string name="quinary_short">base5</string>
-    <string name="senary">Senary</string>
-    <string name="senary_short">base6</string>
-    <string name="septenary">Septenary</string>
-    <string name="septenary_short">base7</string>
-    <string name="octal">Octal</string>
-    <string name="octal_short">base8</string>
-    <string name="nonary">Nonary</string>
-    <string name="nonary_short">base9</string>
-    <string name="decimal">Decimal</string>
-    <string name="decimal_short">base10</string>
-    <string name="undecimal">Undecimal</string>
-    <string name="undecimal_short">base11</string>
-    <string name="duodecimal">Duodecimal</string>
-    <string name="duodecimal_short">base12</string>
-    <string name="tridecimal">Tridecimal</string>
-    <string name="tridecimal_short">base13</string>
-    <string name="tetradecimal">Tetradecimal</string>
-    <string name="tetradecimal_short">base14</string>
-    <string name="pentadecimal">Pentadecimal</string>
-    <string name="pentadecimal_short">base15</string>
-    <string name="hexadecimal">Hexadecimal</string>
-    <string name="hexadecimal_short">base16</string>
-    <string name="number_base">Base</string>
-    <string name="enable_vibrations">Vibrations</string>
-    <string name="enable_vibrations_support">Haptic feedback when clicking keyboard buttons</string>
-    <string name="millibar">Millibar</string>
-    <string name="millibar_short">mbar</string>
-    <string name="kilopascal">Kilopascal</string>
-    <string name="kilopascal_short">kPa</string>
-    <string name="micron_of_mercury">Micron of mercury</string>
-    <string name="micron_of_mercury_short">μmHg</string>
-
-    <!-- Tools -->
-    <string name="epoch_converter">Epoch converter</string>
-
-    <!-- Calculator -->
-    <string name="calculator">Calculator</string>
-
-    <!-- Epoch -->
-    <string name="year_short">y</string>
-    <string name="month_short">m</string>
-    <string name="nautical_mile">Nautical mile</string>
-    <string name="nautical_mile_short">M</string>
-    <string name="starting_screen_setting">Starting screen</string>
-    <string name="starting_screen_setting_support">Choose which screen is shown when you launch the app</string>
-
-    <!-- Tools -->
-    <string name="unit_converter">Unit converter</string>
-    <string name="calculator_clear_history_label">Clear</string>
-    <string name="calculator_clear_history_title">Clear history</string>
-    <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>
-    <string name="calculator_no_history">No history</string>
-    <string name="open_menu_description">Open menu</string>
-    <string name="microgram">Microgram</string>
-    <string name="microgram_short">µg</string>
-
-    <!-- ELECTROSTATIC CAPACITANCE -->
-    <string name="attofarad">Attofarad</string>
-    <string name="attofarad_short">aF</string>
-    <string name="statfarad">Statfarad</string>
-    <string name="statfarad_short">stF</string>
-    <string name="farad">Farad</string>
-    <string name="farad_short">F</string>
-    <string name="exafarad">Exafarad</string>
-    <string name="exafarad_short">EF</string>
-    <string name="picofarad">Picofarad</string>
-    <string name="picofarad_short">pF</string>
-    <string name="nanofarad">Nanofarad</string>
-    <string name="nanofarad_short">nF</string>
-    <string name="microfarad">Microfarad</string>
-    <string name="microfarad_short">µF</string>
-    <string name="millifarad">Millifarad</string>
-    <string name="millifarad_short">mF</string>
-    <string name="kilofarad">Kilofarad</string>
-    <string name="kilofarad_short">kF</string>
-    <string name="megafarad">Megafarad</string>
-    <string name="megafarad_short">MF</string>
-    <string name="gigafarad">Gigafarad</string>
-    <string name="gigafarad_short">GF</string>
-    <string name="petafarad">Petafarad</string>
-    <string name="petafarad_short">PF</string>
-
-    <!-- Prefixes -->
-    <string name="prefix_quetta">Quetta</string>
-    <string name="prefix_quetta_short">Q</string>
-    <string name="prefix_ronna">Ronna</string>
-    <string name="prefix_ronna_short">R</string>
-    <string name="prefix_yotta">Yotta</string>
-    <string name="prefix_yotta_short">Y</string>
-    <string name="prefix_zetta">Zetta</string>
-    <string name="prefix_zetta_short">Z</string>
-    <string name="prefix_exa">Exa</string>
-    <string name="prefix_exa_short">E</string>
-    <string name="prefix_peta">Peta</string>
-    <string name="prefix_peta_short">P</string>
-    <string name="prefix_tera">Tera</string>
-    <string name="prefix_tera_short">T</string>
-    <string name="prefix_giga">Giga</string>
-    <string name="prefix_giga_short">G</string>
-    <string name="prefix_mega">Mega</string>
-    <string name="prefix_mega_short">M</string>
-    <string name="prefix_kilo">Kilo</string>
-    <string name="prefix_kilo_short">k</string>
-    <string name="prefix_hecto">Hecto</string>
-    <string name="prefix_hecto_short">h</string>
-    <string name="prefix_deca">Deca</string>
-    <string name="prefix_deca_short">da</string>
-    <string name="prefix_base">Base</string>
-    <string name="prefix_base_short">Base</string>
-    <string name="prefix_deci">Deci</string>
-    <string name="prefix_deci_short">d</string>
-    <string name="prefix_centi">Centi</string>
-    <string name="prefix_centi_short">c</string>
-    <string name="prefix_milli">Milli</string>
-    <string name="prefix_milli_short">m</string>
-    <string name="prefix_micro">Micro</string>
-    <string name="prefix_micro_short">μ</string>
-    <string name="prefix_nano">Nano</string>
-    <string name="prefix_nano_short">n</string>
-    <string name="prefix_pico">Pico</string>
-    <string name="prefix_pico_short">p</string>
-    <string name="prefix_femto">Femto</string>
-    <string name="prefix_femto_short">f</string>
-    <string name="prefix_atto">Atto</string>
-    <string name="prefix_atto_short">a</string>
-    <string name="prefix_zepto">Zepto</string>
-    <string name="prefix_zepto_short">z</string>
-    <string name="prefix_yocto">Yocto</string>
-    <string name="prefix_yocto_short">y</string>
-    <string name="prefix_ronto">Ronto</string>
-    <string name="prefix_ronto_short">r</string>
-    <string name="prefix_quecto">Quecto</string>
-    <string name="prefix_quecto_short">q</string>
-
-    <!-- Force -->
-    <string name="newton">Newton</string>
-    <string name="newton_short">N</string>
-    <string name="kilonewton">Kilonewton</string>
-    <string name="kilonewton_short">kN</string>
-    <string name="gram_force">Gram-force</string>
-    <string name="gram_force_short">gf</string>
-    <string name="kilogram_force">Kilogram-force</string>
-    <string name="kilogram_force_short">kgf</string>
-    <string name="ton_force">Ton-force</string>
-    <string name="ton_force_short">tf</string>
-    <string name="millinewton">Millinewton</string>
-    <string name="millinewton_short">mN</string>
-    <string name="attonewton">Attonewton</string>
-    <string name="attonewton_short">aN</string>
-    <string name="dyne">Dyne</string>
-    <string name="dyne_short">dyn</string>
-    <string name="joule_per_meter">Joule/meter</string>
-    <string name="joule_per_meter_short">J/m</string>
-    <string name="joule_per_centimeter">Joule/centimeter</string>
-    <string name="joule_per_centimeter_short">J/cm</string>
-    <string name="kilopound_force">Kilopound-force</string>
-    <string name="kilopound_force_short">kipf</string>
-    <string name="pound_force">Pound-force</string>
-    <string name="pound_force_short">lbf</string>
-    <string name="ounce_force">Ounce-force</string>
-    <string name="ounce_force_short">ozf</string>
-    <string name="pond">Pond</string>
-    <string name="pond_short">p</string>
-    <string name="kilopond">Kilopond</string>
-    <string name="kilopond_short">kp</string>
-
-    <!-- Torque -->
-    <string name="newton_meter">Newton meter</string>
-    <string name="newton_meter_short">N*m</string>
-    <string name="newton_centimeter">Newton centimeter</string>
-    <string name="newton_centimeter_short">N*cm</string>
-    <string name="newton_millimeter">Newton millimeter</string>
-    <string name="newton_millimeter_short">N*mm</string>
-    <string name="kilonewton_meter">Kilonewton meter</string>
-    <string name="kilonewton_meter_short">kN*m</string>
-    <string name="dyne_meter">Dyne meter</string>
-    <string name="dyne_meter_short">dyn*m</string>
-    <string name="dyne_centimeter">Dyne centimeter</string>
-    <string name="dyne_centimeter_short">dyn*cm</string>
-    <string name="dyne_millimeter">Dyne millimeter</string>
-    <string name="dyne_millimeter_short">dyn*mm</string>
-    <string name="kilogram_force_meter">Kilogram-force meter</string>
-    <string name="kilogram_force_meter_short">kgf*m</string>
-    <string name="kilogram_force_centimeter">Kilogram-force centimeter</string>
-    <string name="kilogram_force_centimeter_short">kgf*cm</string>
-    <string name="kilogram_force_millimeter">Kilogram-force millimeter</string>
-    <string name="kilogram_force_millimeter_short">kgf*mm</string>
-    <string name="gram_force_meter">Gram-force meter</string>
-    <string name="gram_force_meter_short">gf*m</string>
-    <string name="gram_force_centimeter">Gram-force centimeter</string>
-    <string name="gram_force_centimeter_short">gf*cm</string>
-    <string name="gram_force_millimeter">Gram-force millimeter</string>
-    <string name="gram_force_millimeter_short">gf*mm</string>
-    <string name="ounce_force_foot">Ounce-force foot</string>
-    <string name="ounce_force_foot_short">ozf*ft</string>
-    <string name="ounce_force_inch">Ounce-force inch</string>
-    <string name="ounce_force_inch_short">ozf*in</string>
-    <string name="pound_force_foot">Pound-force foot</string>
-    <string name="pound_force_foot_short">lbf*ft</string>
-    <string name="pound_force_inch">Pound-force inch</string>
-    <string name="pound_force_inch_short">lbf*in</string>
-
-    <!-- Flow rate -->
-    <string name="liter_per_hour">Liter/hour</string>
-    <string name="liter_per_hour_short">L/h</string>
-    <string name="liter_per_minute">Liter/minute</string>
-    <string name="liter_per_minute_short">L/m</string>
-    <string name="liter_per_second">Liter/second</string>
-    <string name="liter_per_second_short">L/s</string>
-    <string name="milliliter_per_hour">Milliliter/hour</string>
-    <string name="milliliter_per_hour_short">mL/h</string>
-    <string name="milliliter_per_minute">Milliliter/minute</string>
-    <string name="milliliter_per_minute_short">mL/m</string>
-    <string name="milliliter_per_second">Milliliter/second</string>
-    <string name="milliliter_per_second_short">mL/s</string>
-    <string name="cubic_meter_per_hour">Cubic Meter/hour</string>
-    <string name="cubic_meter_per_hour_short">m3/h</string>
-    <string name="cubic_meter_per_minute">Cubic Meter/minute</string>
-    <string name="cubic_meter_per_minute_short">m3/m</string>
-    <string name="cubic_meter_per_second">Cubic Meter/second</string>
-    <string name="cubic_meter_per_second_short">m3/s</string>
-    <string name="cubic_millimeter_per_hour">Cubic Millimeter/hour</string>
-    <string name="cubic_millimeter_per_hour_short">mm3/h</string>
-    <string name="cubic_millimeter_per_minute">Cubic Millimeter/minute</string>
-    <string name="cubic_millimeter_per_minute_short">mm3/m</string>
-    <string name="cubic_millimeter_per_second">Cubic Millimeter/second</string>
-    <string name="cubic_millimeter_per_second_short">mm3/s</string>
-    <string name="cubic_foot_per_hour">Cubic Foot/hour</string>
-    <string name="cubic_foot_per_hour_short">ft3/h</string>
-    <string name="cubic_foot_per_minute">Cubic Foot/minute</string>
-    <string name="cubic_foot_per_minute_short">ft3/m</string>
-    <string name="cubic_foot_per_second">Cubic Foot/second</string>
-    <string name="cubic_foot_per_second_short">ft3/s</string>
-    <string name="gallon_per_hour_us">Gallon/hour (US)</string>
-    <string name="gallon_per_hour_us_short">gal/h</string>
-    <string name="gallon_per_minute_us">Gallon/minute (US)</string>
-    <string name="gallon_per_minute_us_short">gal/m</string>
-    <string name="gallon_per_second_us">Gallon/second (US)</string>
-    <string name="gallon_per_second_us_short">gal/s</string>
-    <string name="gallon_per_hour_imperial">Gallon/hour (Imperial)</string>
-    <string name="gallon_per_hour_imperial_short">gal/h</string>
-    <string name="gallon_per_minute_imperial">Gallon/minute (Imperial)</string>
-    <string name="gallon_per_minute_imperial_short">gal/m</string>
-    <string name="gallon_per_second_imperial">Gallon/second (Imperial)</string>
-    <string name="gallon_per_second_imperial_short">gal/s</string>
-
-    <!-- Luminance -->
-    <string name="candela_per_square_meter">Candela/square meter</string>
-    <string name="candela_per_square_meter_short">cd/m^2</string>
-    <string name="candela_per_square_centimeter">Candela/square centimeter</string>
-    <string name="candela_per_square_centimeter_short">cd/cm^2</string>
-    <string name="candela_per_square_foot">Candela/square foot</string>
-    <string name="candela_per_square_foot_short">cd/ft^2</string>
-    <string name="candela_per_square_inch">Candela/square inch</string>
-    <string name="candela_per_square_inch_short">cd/in^2</string>
-    <string name="kilocandela_per_square_meter">Kilocandela/square meter</string>
-    <string name="kilocandela_per_square_meter_short">kcd</string>
-    <string name="stilb">Stilb</string>
-    <string name="stilb_short">sb</string>
-    <string name="lumen_per_square_meter_per_steradian">Lumen/square meter/steradian</string>
-    <string name="lumen_per_square_meter_per_steradian_short">lm/m^2/sr</string>
-    <string name="lumen_per_square_centimeter_per_steradian">Lumen/square centimeter/steradian</string>
-    <string name="lumen_per_square_centimeter_per_steradian_short">lm/cm^2/sr</string>
-    <string name="lumen_per_square_foot_per_steradian">Lumen/square foot/steradian</string>
-    <string name="lumen_per_square_foot_per_steradian_short">lm/ft^2/sr</string>
-    <string name="watt_per_square_centimeter_per_steradian">Watt/square centimeter/steradian</string>
-    <string name="watt_per_square_centimeter_per_steradian_short">W/cm^2/sr</string>
-    <string name="nit">Nit</string>
-    <string name="nit_short">nt</string>
-    <string name="millinit">Millinit</string>
-    <string name="millinit_short">mnt</string>
-    <string name="lambert">Lambert</string>
-    <string name="lambert_short">L</string>
-    <string name="millilambert">Millilambert</string>
-    <string name="millilambert_short">mL</string>
-    <string name="foot_lambert">Foot-lambert</string>
-    <string name="foot_lambert_short">fL</string>
-    <string name="apostilb">Apostilb</string>
-    <string name="apostilb_short">asb</string>
-    <string name="blondel">Blondel</string>
-    <string name="blondel_short">blondel</string>
-    <string name="bril">Bril</string>
-    <string name="bril_short">bril</string>
-    <string name="skot">Skot</string>
-    <string name="skot_short">sk</string>
-    <string name="electrostatic_capacitance">Capacitance</string>
-    <string name="prefix">Prefix</string>
-    <string name="force">Force</string>
-    <string name="torque">Torque</string>
-    <string name="flow_rate">Flow</string>
-    <string name="luminance">Luminance</string>
-    <string name="format_time">Format time</string>
-    <string name="format_time_support">Example: Show 130 minutes as 2h 10m</string>
-    <string name="units_sorting">Units list sorting</string>
-    <string name="units_sorting_support">Change units order</string>
-
-    <!-- Units list sorting -->
-    <string name="sort_by_usage">Usage</string>
-    <string name="sort_by_alphabetical">Alphabetical</string>
-    <string name="sort_by_scale_desc">Scale (Desc.)</string>
-    <string name="sort_by_scale_asc">Scale (Asc.)</string>
-    <string name="color_theme_support">Pick a theming mode</string>
-    <string name="color_scheme">Color scheme</string>
-    <string name="selected_color">Selected color</string>
-    <string name="monet_mode">Selected style</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/Gj9ZCNPXIfKddDQgccvboVFz.jpg 
-https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
-
-Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
-    <string name="formatting_setting_support">Precision and numbers appearance</string>
-    <string name="divide_by_zero_error">Can\'t divide by 0</string>
-    <string name="date_difference">Date difference</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
-    <string name="select_time">Select time</string>
-    <string name="date_difference_start">Start</string>
-    <string name="date_difference_end">End</string>
-    <string name="date_difference_result">Difference</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_years">Years</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_months">Months</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_days">Days</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_hours">Hours</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_minutes">Minutes</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
 
 Used in this dialog window. Should be short -->
     <string name="next_label">Next</string>
-    <string name="formatting_setting_preview_box_label">Preview (click to switch)</string>
-    <string name="gibibit">Gibibit</string>
-    <string name="gibibit_short">Gib</string>
-    <string name="gibibyte">Gibibyte</string>
-    <string name="gibibyte_short">GiB</string>
-    <string name="gibibit_per_second">Gibibit/second</string>
-    <string name="gibibit_per_second_short">Gib/s</string>
-    <string name="gibibyte_per_second">Gibibyte/second</string>
-    <string name="gibibyte_per_second_short">GiB/s</string>
-    <string name="time_zone_screen">Time zones</string>
-    <string name="try_again_label">Click to try again</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="yesterday">Yesterday</string>
+    <string name="no_results_description">Empty search result</string>
+    <string name="no_results_label">No results found</string>
+    <string name="ok_label" translatable="false">OK</string>
+    <string name="open_menu_description">Open menu</string>
+    <string name="open_settings_description">Open settings</string>
+    <string name="open_settings_label">Open settings</string>
+    <string name="search_button_description">Search button</string>
     <string name="search_text_field_placeholder">Search…</string>
-    <string name="add_time_zone_title">Add time zone</string>
-    <string name="middle_zero_option">Zero in the middle</string>
-    <string name="middle_zero_option_support">Swap zero and decimal buttons</string>
-    <string name="difference">Difference</string>
-    <string name="add">Add</string>
-    <string name="subtract">Subtract</string>
-    <string name="date_calculator">Date calculator</string>
-    <string name="locale_en" translatable="false">English</string>
-    <string name="locale_de" translatable="false">Deutsch</string>
-    <string name="locale_en_rGB" translatable="false">English (UK)</string>
-    <string name="locale_fr" translatable="false">Français</string>
-    <string name="locale_it" translatable="false">Italiano</string>
-    <string name="locale_ru" translatable="false">Русский</string>
-    <string name="language_setting">Language</string>
-    <string name="language_setting_support">Change the app language</string>
-    <string name="system_font_setting">System font</string>
-    <string name="system_font_setting_support">Use system font for texts in app</string>
-    <string name="fuel_consumption">Fuel</string>
-    <string name="km_per_l">Kilometer/liter</string>
-    <string name="km_per_l_short">km/L</string>
-    <string name="l_per_km">Liter/kilometer</string>
-    <string name="l_per_km_short">L/km</string>
-    <string name="l_per_100_km">Liter/100 Kilometer</string>
-    <string name="l_per_100_km_short">L/100 km</string>
-    <string name="mi_per_gallon_uk">Mile/gallon (UK)</string>
-    <string name="mi_per_gallon_uk_short">mpg (UK)</string>
-    <string name="mi_per_gallon_us">Mile/gallon (US)</string>
-    <string name="mi_per_gallon_us_short">mpg (US)</string>
-    <string name="mi_us_per_l">Mile/liter (US)</string>
-    <string name="mi_us_per_l_short">mi/L (US)</string>
-    <string name="gallon_us_per_mile">Gallon/mile (US)</string>
-    <string name="gallon_us_per_mile_short">gal/mi (US)</string>
-    <string name="gallon_uk_per_mile">Gallon/mile (UK)</string>
-    <string name="gallon_uk_per_mile_short">gal/mi (UK)</string>
-    <string name="gallon_us_per_100_mile">Gallon/100 mile (US)</string>
-    <string name="gallon_us_per_100_mile_short">gal/100 mi (US)</string>
-    <string name="gallon_uk_per_100_mile">Gallon/100 mile (UK)</string>
-    <string name="gallon_uk_per_100_mile_short">gal/100 mi (UK)</string>
-    <string name="partial_history_view_setting">Partial history view</string>
-    <string name="partial_history_view_setting_support">Peek latest entrance in history</string>
-    <string name="calculator_settings_support">History view</string>
-    <string name="converter_settings_support">Unit groups, sorting, formatting</string>
-    <string name="display_settings">Display</string>
-    <string name="clear_cache">Clear cache</string>
-    <string name="locale_es" translatable="false">Español</string>
-    <string name="locale_hu" translatable="false">Magyar</string>
-    <string name="locale_in" translatable="false">Indonesia</string>
-    <string name="locale_nl" translatable="false">Dutch</string>
-    <string name="locale_tr" translatable="false">Türkçe</string>
 
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
+    <string name="select_time_label">Select time</string>
+    <string name="settings_about_unitto">About Unitto</string>
+    <string name="settings_about_unitto_support">Learn about the app</string>
+    <string name="settings_additional">Additional</string>
+    <string name="settings_amoled_dark">AMOLED Dark</string>
+    <string name="settings_amoled_dark_support">Use black background for dark themes</string>
+    <string name="settings_auto">Auto</string>
+    <string name="settings_calculator_support">History view</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_color_scheme">Color scheme</string>
+    <string name="settings_color_theme">Color theme</string>
+    <string name="settings_color_theme_support">Pick a theming mode</string>
+    <string name="settings_comma">Comma</string>
+    <string name="settings_converter_support">Unit groups, sorting, formatting</string>
+    <string name="settings_currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
+    <string name="settings_currency_rates_note_title">Wrong currency rates?</string>
+    <string name="settings_dark_mode">Dark</string>
+    <string name="settings_disable_unit_group_description">Disable unit group</string>
+    <string name="settings_display">Display</string>
+
+    <!-- Theme -->
+    <string name="settings_display_support">App look and feel</string>
+    <string name="settings_dynamic_colors">Dynamic colors</string>
+    <string name="settings_dynamic_colors_support">Use colors from your wallpaper</string>
+    <string name="settings_enable_unit_group_description">Enable unit group</string>
+    <string name="settings_exponential_notation">Exponential notation</string>
+
+    <!-- Output format -->
+    <string name="settings_exponential_notation_support">Replace part of the number with E</string>
+    <string name="settings_format_time">Format time</string>
+    <string name="settings_format_time_support">Example: Show 130 minutes as 2h 10m</string>
+    <string name="settings_formatting">Formatting</string>
+    <string name="settings_formatting_preview">Preview (click to switch)</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/Gj9ZCNPXIfKddDQgccvboVFz.jpg 
+https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
+
+Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
+    <string name="settings_formatting_support">Precision and numbers appearance</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_support">Change the app language</string>
+    <string name="settings_light_mode">Light</string>
+    <string name="settings_middle_zero">Zero in the middle</string>
+    <string name="settings_middle_zero_support">Swap zero and decimal buttons</string>
+    <string name="settings_note">Note</string>
+    <string name="settings_partial_history_view">Partial history view</string>
+    <string name="settings_partial_history_view_support">Peek latest entrance in history</string>
+    <string name="settings_period">Period</string>
+    <string name="settings_precision">Precision</string>
+    <string name="settings_precision_info">Converted values may have a precision higher than the preferred one.</string>
+    <string name="settings_precision_max">%1$s (Max)</string>
+
+    <!-- Precision -->
+    <string name="settings_precision_support">Number of decimal places</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_rate_this_app">Rate this app</string>
+    <string name="settings_reorder_unit_group_description">Reorder unit group</string>
+    <string name="settings_selected_color">Selected color</string>
+    <string name="settings_selected_style">Selected style</string>
+    <string name="settings_separator">Separator</string>
+
+    <!-- Separator -->
+    <string name="settings_separator_support">Group separator symbol</string>
+    <string name="settings_sort_by_alphabetical">Alphabetical</string>
+    <string name="settings_sort_by_scale_asc">Scale (Asc.)</string>
+    <string name="settings_sort_by_scale_desc">Scale (Desc.)</string>
+
+    <!-- Units list sorting -->
+    <string name="settings_sort_by_usage">Usage</string>
+    <string name="settings_space">Space</string>
+    <string name="settings_starting_screen">Starting screen</string>
+    <string name="settings_starting_screen_support">Choose which screen is shown when you launch the app</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/r1VikAn70eXQP4da2hrntTGQ.jpg -->
     <!-- Option name to use system default setting -->
-    <string name="system">System</string>
+    <string name="settings_system">System</string>
+    <string name="settings_system_font">System font</string>
+    <string name="settings_system_font_support">Use system font for texts in app</string>
+    <string name="settings_terms_and_conditions">Terms and Conditions</string>
+
+    <!-- Settings items -->
+    <string name="settings_theme_title">Themes</string>
+    <string name="settings_third_party_licenses">Third party licenses</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_translate_app">Translate this app</string>
+    <string name="settings_translate_app_support">Join POEditor project to help</string>
+    <string name="settings_unit_groups_support">Disable and rearrange units</string>
+    <string name="settings_unit_groups_title">Unit groups</string>
+    <string name="settings_units_sorting">Units list sorting</string>
+    <string name="settings_units_sorting_support">Change units order</string>
+    <string name="settings_version_name">Version name</string>
+    <string name="settings_vibrations">Vibrations</string>
+    <string name="settings_vibrations_support">Haptic feedback when clicking keyboard buttons</string>
+    <string name="settings_view_source_code">View source code</string>
+    <string name="time_zone_add_title">Add time zone</string>
+    <string name="time_zone_title">Time zones</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="unit_acre">Acre</string>
+    <string name="unit_acre_short">ac</string>
+    <string name="unit_angle_minute">Minute</string>
+    <string name="unit_angle_minute_short" translatable="false">\'</string>
+
+    <!-- Angle -->
+    <string name="unit_angle_second">Second</string>
+    <string name="unit_angle_second_short" translatable="false">\"</string>
+    <string name="unit_apostilb">Apostilb</string>
+    <string name="unit_apostilb_short">asb</string>
+    <string name="unit_atomic_mass_unit">Dalton</string>
+    <string name="unit_atomic_mass_unit_short">u</string>
+
+    <!-- ELECTROSTATIC CAPACITANCE -->
+    <string name="unit_attofarad">Attofarad</string>
+    <string name="unit_attofarad_short">aF</string>
+    <string name="unit_attojoule">Attojoule</string>
+    <string name="unit_attojoule_short">aJ</string>
+
+    <!-- Volume -->
+    <string name="unit_attoliter">Attoliter</string>
+    <string name="unit_attoliter_short">aL</string>
+
+    <!-- Length -->
+    <string name="unit_attometer">Attometer</string>
+
+    <!-- Acceleration -->
+    <string name="unit_attometer_per_square_second">Attometer/square second</string>
+    <string name="unit_attometer_per_square_second_short">am/s^2</string>
+    <string name="unit_attometer_short">am</string>
+    <string name="unit_attonewton">Attonewton</string>
+    <string name="unit_attonewton_short">aN</string>
+
+    <!-- Pressure -->
+    <string name="unit_attopascal">Attopascal</string>
+    <string name="unit_attopascal_short">aPa</string>
+
+    <!-- Time -->
+    <string name="unit_attosecond">Attosecond</string>
+    <string name="unit_attosecond_short">as</string>
+
+    <!-- Power -->
+    <string name="unit_attowatt">Attowatt</string>
+    <string name="unit_attowatt_short">aW</string>
+    <string name="unit_bar">Bar</string>
+    <string name="unit_bar_short">bar</string>
+
+    <!-- Number base -->
+    <string name="unit_binary">Binary</string>
+    <string name="unit_binary_short">base2</string>
+
+    <!-- File size -->
+    <string name="unit_bit">Bit</string>
+
+    <!-- Data transfer -->
+    <string name="unit_bit_per_second">Bit/second</string>
+    <string name="unit_bit_per_second_short">b/s</string>
+    <string name="unit_bit_short">b</string>
+    <string name="unit_blondel">Blondel</string>
+    <string name="unit_blondel_short">blondel</string>
+    <string name="unit_bril">Bril</string>
+    <string name="unit_bril_short">bril</string>
+    <string name="unit_byte">Byte</string>
+    <string name="unit_byte_per_second">Byte/second</string>
+    <string name="unit_byte_per_second_short">B/s</string>
+    <string name="unit_byte_short">B</string>
+    <string name="unit_calorie_th">Calorie (th)</string>
+    <string name="unit_calorie_th_short">cal</string>
+    <string name="unit_candela_per_square_centimeter">Candela/square centimeter</string>
+    <string name="unit_candela_per_square_centimeter_short">cd/cm^2</string>
+    <string name="unit_candela_per_square_foot">Candela/square foot</string>
+    <string name="unit_candela_per_square_foot_short">cd/ft^2</string>
+    <string name="unit_candela_per_square_inch">Candela/square inch</string>
+    <string name="unit_candela_per_square_inch_short">cd/in^2</string>
+
+    <!-- Luminance -->
+    <string name="unit_candela_per_square_meter">Candela/square meter</string>
+    <string name="unit_candela_per_square_meter_short">cd/m^2</string>
+    <string name="unit_carat">Carat</string>
+    <string name="unit_carat_short">ct</string>
+
+    <!-- Temperature -->
+    <string name="unit_celsius">Celsius</string>
+    <string name="unit_celsius_short" translatable="false">°C</string>
+    <string name="unit_cent">Cent</string>
+    <string name="unit_cent_short">cent</string>
+    <string name="unit_centimeter">Centimeter</string>
+    <string name="unit_centimeter_per_hour">Centimeter/hour</string>
+    <string name="unit_centimeter_per_hour_short">cm/h</string>
+    <string name="unit_centimeter_per_minute">Centimeter/minute</string>
+    <string name="unit_centimeter_per_minute_short">cm/m</string>
+    <string name="unit_centimeter_per_second">Centimeter/second</string>
+    <string name="unit_centimeter_per_second_short">cm/s</string>
+    <string name="unit_centimeter_per_square_second">Centimeter/square second</string>
+    <string name="unit_centimeter_per_square_second_short">cm/s^2</string>
+    <string name="unit_centimeter_short">cm</string>
+    <string name="unit_centipascal">Centipascal</string>
+    <string name="unit_centipascal_short">cPa</string>
+
+    <!-- Tools -->
+    <string name="unit_converter_title">Unit converter</string>
+    <string name="unit_cosmic_velocity_first">First Cosmic Velocity</string>
+    <string name="unit_cosmic_velocity_first_short" translatable="false">v1</string>
+    <string name="unit_cosmic_velocity_second">Second Cosmic Velocity</string>
+    <string name="unit_cosmic_velocity_second_short" translatable="false">v2</string>
+    <string name="unit_cosmic_velocity_third">Third Cosmic Velocity</string>
+    <string name="unit_cosmic_velocity_third_short" translatable="false">v3</string>
+    <string name="unit_cubic_centimeter">Cubic centimeter</string>
+    <string name="unit_cubic_centimeter_short">cm^3</string>
+    <string name="unit_cubic_foot_per_hour">Cubic Foot/hour</string>
+    <string name="unit_cubic_foot_per_hour_short">ft3/h</string>
+    <string name="unit_cubic_foot_per_minute">Cubic Foot/minute</string>
+    <string name="unit_cubic_foot_per_minute_short">ft3/m</string>
+    <string name="unit_cubic_foot_per_second">Cubic Foot/second</string>
+    <string name="unit_cubic_foot_per_second_short">ft3/s</string>
+    <string name="unit_cubic_kilometer">Cubic kilometer</string>
+    <string name="unit_cubic_kilometer_short">km^3</string>
+    <string name="unit_cubic_meter">Cubic meter</string>
+    <string name="unit_cubic_meter_per_hour">Cubic Meter/hour</string>
+    <string name="unit_cubic_meter_per_hour_short">m3/h</string>
+    <string name="unit_cubic_meter_per_minute">Cubic Meter/minute</string>
+    <string name="unit_cubic_meter_per_minute_short">m3/m</string>
+    <string name="unit_cubic_meter_per_second">Cubic Meter/second</string>
+    <string name="unit_cubic_meter_per_second_short">m3/s</string>
+    <string name="unit_cubic_meter_short">m^3</string>
+    <string name="unit_cubic_millimeter">Cubic millimeter</string>
+    <string name="unit_cubic_millimeter_per_hour">Cubic Millimeter/hour</string>
+    <string name="unit_cubic_millimeter_per_hour_short">mm3/h</string>
+    <string name="unit_cubic_millimeter_per_minute">Cubic Millimeter/minute</string>
+    <string name="unit_cubic_millimeter_per_minute_short">mm3/m</string>
+    <string name="unit_cubic_millimeter_per_second">Cubic Millimeter/second</string>
+    <string name="unit_cubic_millimeter_per_second_short">mm3/s</string>
+    <string name="unit_cubic_millimeter_short">mm^3</string>
+
+    <!-- Currency -->
+    <string name="unit_currency_1inch" translatable="false">1inch Network</string>
+    <string name="unit_currency_1inch_short" translatable="false">NCH</string>
+    <string name="unit_currency_ada">Cardano</string>
+    <string name="unit_currency_ada_short" translatable="false">ADA</string>
+    <string name="unit_currency_aed">United Arab Emirates Dirham</string>
+    <string name="unit_currency_aed_short" translatable="false">AED</string>
+    <string name="unit_currency_afn">Afghan afghani</string>
+    <string name="unit_currency_afn_short" translatable="false">AFN</string>
+    <string name="unit_currency_algo" translatable="false">Algorand</string>
+    <string name="unit_currency_algo_short" translatable="false">LGO</string>
+    <string name="unit_currency_all">Albanian lek</string>
+    <string name="unit_currency_all_short" translatable="false">ALL</string>
+    <string name="unit_currency_amd">Armenian dram</string>
+    <string name="unit_currency_amd_short" translatable="false">AMD</string>
+    <string name="unit_currency_ang">Netherlands Antillean Guilder</string>
+    <string name="unit_currency_ang_short" translatable="false">ANG</string>
+    <string name="unit_currency_aoa">Angolan kwanza</string>
+    <string name="unit_currency_aoa_short" translatable="false">AOA</string>
+    <string name="unit_currency_ars">Argentine peso</string>
+    <string name="unit_currency_ars_short" translatable="false">ARS</string>
+    <string name="unit_currency_atom" translatable="false">Atomic Coin</string>
+    <string name="unit_currency_atom_short" translatable="false">TOM</string>
+    <string name="unit_currency_aud">Australian dollar</string>
+    <string name="unit_currency_aud_short" translatable="false">AUD</string>
+    <string name="unit_currency_avax" translatable="false">Avalanche</string>
+    <string name="unit_currency_avax_short" translatable="false">VAX</string>
+    <string name="unit_currency_awg">Aruban florin</string>
+    <string name="unit_currency_awg_short" translatable="false">AWG</string>
+    <string name="unit_currency_azn">Azerbaijani manat</string>
+    <string name="unit_currency_azn_short" translatable="false">AZN</string>
+    <string name="unit_currency_bam">Bosnia-Herzegovina Convertible Mark</string>
+    <string name="unit_currency_bam_short" translatable="false">BAM</string>
+    <string name="unit_currency_bbd">Bajan dollar</string>
+    <string name="unit_currency_bbd_short" translatable="false">BBD</string>
+    <string name="unit_currency_bch" translatable="false">Bitcoin Cash</string>
+    <string name="unit_currency_bch_short" translatable="false">BCH</string>
+    <string name="unit_currency_bdt">Bangladeshi taka</string>
+    <string name="unit_currency_bdt_short" translatable="false">BDT</string>
+    <string name="unit_currency_bgn">Bulgarian lev</string>
+    <string name="unit_currency_bgn_short" translatable="false">BGN</string>
+    <string name="unit_currency_bhd">Bahraini dinar</string>
+    <string name="unit_currency_bhd_short" translatable="false">BHD</string>
+    <string name="unit_currency_bif">Burundian Franc</string>
+    <string name="unit_currency_bif_short" translatable="false">BIF</string>
+    <string name="unit_currency_bmd">Bermudan dollar</string>
+    <string name="unit_currency_bmd_short" translatable="false">BMD</string>
+    <string name="unit_currency_bnb" translatable="false">Binance Coin</string>
+    <string name="unit_currency_bnb_short" translatable="false">BNB</string>
+    <string name="unit_currency_bnd">Brunei dollar</string>
+    <string name="unit_currency_bnd_short" translatable="false">BND</string>
+    <string name="unit_currency_bob">Bolivian boliviano</string>
+    <string name="unit_currency_bob_short" translatable="false">BOB</string>
+    <string name="unit_currency_brl">Brazilian real</string>
+    <string name="unit_currency_brl_short" translatable="false">BRL</string>
+    <string name="unit_currency_bsd">Bahamian dollar</string>
+    <string name="unit_currency_bsd_short" translatable="false">BSD</string>
+    <string name="unit_currency_btc" translatable="false">Bitcoin</string>
+    <string name="unit_currency_btc_short" translatable="false">BTC</string>
+    <string name="unit_currency_btn">Bhutan currency</string>
+    <string name="unit_currency_btn_short" translatable="false">BTN</string>
+    <string name="unit_currency_busd" translatable="false">Binance USD</string>
+    <string name="unit_currency_busd_short" translatable="false">USD</string>
+    <string name="unit_currency_bwp">Botswanan Pula</string>
+    <string name="unit_currency_bwp_short" translatable="false">BWP</string>
+    <string name="unit_currency_byn">New Belarusian Ruble</string>
+    <string name="unit_currency_byn_short" translatable="false">BYN</string>
+    <string name="unit_currency_byr">Belarusian Ruble</string>
+    <string name="unit_currency_byr_short" translatable="false">BYR</string>
+    <string name="unit_currency_bzd">Belize dollar</string>
+    <string name="unit_currency_bzd_short" translatable="false">BZD</string>
+    <string name="unit_currency_cad">Canadian dollar</string>
+    <string name="unit_currency_cad_short" translatable="false">CAD</string>
+    <string name="unit_currency_cdf">Congolese franc</string>
+    <string name="unit_currency_cdf_short" translatable="false">CDF</string>
+    <string name="unit_currency_chf">Swiss franc</string>
+    <string name="unit_currency_chf_short" translatable="false">CHF</string>
+    <string name="unit_currency_chz" translatable="false">Chiliz</string>
+    <string name="unit_currency_chz_short" translatable="false">CHZ</string>
+    <string name="unit_currency_clf">Chilean Unit of Account (UF)</string>
+    <string name="unit_currency_clf_short" translatable="false">CLF</string>
+    <string name="unit_currency_clp">Chilean peso</string>
+    <string name="unit_currency_clp_short" translatable="false">CLP</string>
+    <string name="unit_currency_cny">Chinese Yuan</string>
+    <string name="unit_currency_cny_short" translatable="false">CNY</string>
+    <string name="unit_currency_cop">Colombian peso</string>
+    <string name="unit_currency_cop_short" translatable="false">COP</string>
+    <string name="unit_currency_crc">Costa Rican Colón</string>
+    <string name="unit_currency_crc_short" translatable="false">CRC</string>
+    <string name="unit_currency_cro" translatable="false">Crypto.com Chain Token</string>
+    <string name="unit_currency_cro_short" translatable="false">CRO</string>
+    <string name="unit_currency_cuc">Cuban convertible peso</string>
+    <string name="unit_currency_cuc_short" translatable="false">CUC</string>
+    <string name="unit_currency_cup">Cuban Peso</string>
+    <string name="unit_currency_cup_short" translatable="false">CUP</string>
+    <string name="unit_currency_cve">Cape Verdean escudo</string>
+    <string name="unit_currency_cve_short" translatable="false">CVE</string>
+    <string name="unit_currency_czk">Czech koruna</string>
+    <string name="unit_currency_czk_short" translatable="false">CZK</string>
+    <string name="unit_currency_dai">Dai</string>
+    <string name="unit_currency_dai_short" translatable="false">DAI</string>
+    <string name="unit_currency_djf">Djiboutian franc</string>
+    <string name="unit_currency_djf_short" translatable="false">DJF</string>
+    <string name="unit_currency_dkk">Danish krone</string>
+    <string name="unit_currency_dkk_short" translatable="false">DKK</string>
+    <string name="unit_currency_doge" translatable="false">Dogecoin</string>
+    <string name="unit_currency_doge_short" translatable="false">OGE</string>
+    <string name="unit_currency_dop">Dominican peso</string>
+    <string name="unit_currency_dop_short" translatable="false">DOP</string>
+    <string name="unit_currency_dot" translatable="false">Dotcoin</string>
+    <string name="unit_currency_dot_short" translatable="false">DOT</string>
+    <string name="unit_currency_dzd">Algerian dinar</string>
+    <string name="unit_currency_dzd_short" translatable="false">DZD</string>
+    <string name="unit_currency_egld" translatable="false">Elrond</string>
+    <string name="unit_currency_egld_short" translatable="false">GLD</string>
+    <string name="unit_currency_egp">Egyptian pound</string>
+    <string name="unit_currency_egp_short" translatable="false">EGP</string>
+    <string name="unit_currency_enj" translatable="false">Enjin Coin</string>
+    <string name="unit_currency_enj_short" translatable="false">ENJ</string>
+    <string name="unit_currency_ern">Eritrean nakfa</string>
+    <string name="unit_currency_ern_short" translatable="false">ERN</string>
+    <string name="unit_currency_etb">Ethiopian birr</string>
+    <string name="unit_currency_etb_short" translatable="false">ETB</string>
+    <string name="unit_currency_etc" translatable="false">Ethereum Classic</string>
+    <string name="unit_currency_etc_short" translatable="false">ETC</string>
+    <string name="unit_currency_eth" translatable="false">Ether</string>
+    <string name="unit_currency_eth_short" translatable="false">ETH</string>
+    <string name="unit_currency_eur">Euro</string>
+    <string name="unit_currency_eur_short" translatable="false">EUR</string>
+    <string name="unit_currency_fil" translatable="false">FileCoin</string>
+    <string name="unit_currency_fil_short" translatable="false">FIL</string>
+    <string name="unit_currency_fjd">Fijian dollar</string>
+    <string name="unit_currency_fjd_short" translatable="false">FJD</string>
+    <string name="unit_currency_fkp">Falkland Islands pound</string>
+    <string name="unit_currency_fkp_short" translatable="false">FKP</string>
+    <string name="unit_currency_ftt" translatable="false">FarmaTrust</string>
+    <string name="unit_currency_ftt_short" translatable="false">FTT</string>
+    <string name="unit_currency_gbp">Pound sterling</string>
+    <string name="unit_currency_gbp_short" translatable="false">GBP</string>
+    <string name="unit_currency_gel">Georgian lari</string>
+    <string name="unit_currency_gel_short" translatable="false">GEL</string>
+    <string name="unit_currency_ggp" translatable="false">GGPro</string>
+    <string name="unit_currency_ggp_short" translatable="false">GGP</string>
+    <string name="unit_currency_ghs">Ghanaian cedi</string>
+    <string name="unit_currency_ghs_short" translatable="false">GHS</string>
+    <string name="unit_currency_gip">Gibraltar pound</string>
+    <string name="unit_currency_gip_short" translatable="false">GIP</string>
+    <string name="unit_currency_gmd">Gambian dalasi</string>
+    <string name="unit_currency_gmd_short" translatable="false">GMD</string>
+    <string name="unit_currency_gnf">Guinean franc</string>
+    <string name="unit_currency_gnf_short" translatable="false">GNF</string>
+    <string name="unit_currency_grt" translatable="false">Golden Ratio Token</string>
+    <string name="unit_currency_grt_short" translatable="false">GRT</string>
+    <string name="unit_currency_gtq">Guatemalan quetzal</string>
+    <string name="unit_currency_gtq_short" translatable="false">GTQ</string>
+    <string name="unit_currency_gyd">Guyanaese Dollar</string>
+    <string name="unit_currency_gyd_short" translatable="false">GYD</string>
+    <string name="unit_currency_hkd">Hong Kong dollar</string>
+    <string name="unit_currency_hkd_short" translatable="false">HKD</string>
+    <string name="unit_currency_hnl">Honduran lempira</string>
+    <string name="unit_currency_hnl_short" translatable="false">HNL</string>
+    <string name="unit_currency_hrk">Croatian kuna</string>
+    <string name="unit_currency_hrk_short" translatable="false">HRK</string>
+    <string name="unit_currency_htg">Haitian gourde</string>
+    <string name="unit_currency_htg_short" translatable="false">HTG</string>
+    <string name="unit_currency_huf">Hungarian forint</string>
+    <string name="unit_currency_huf_short" translatable="false">HUF</string>
+    <string name="unit_currency_icp" translatable="false">Internet Computer</string>
+    <string name="unit_currency_icp_short" translatable="false">ICP</string>
+    <string name="unit_currency_idr">Indonesian rupiah</string>
+    <string name="unit_currency_idr_short" translatable="false">IDR</string>
+    <string name="unit_currency_ils">Israeli New Shekel</string>
+    <string name="unit_currency_ils_short" translatable="false">ILS</string>
+    <string name="unit_currency_imp" translatable="false">CoinIMP</string>
+    <string name="unit_currency_imp_short" translatable="false">IMP</string>
+    <string name="unit_currency_inj" translatable="false">Injective</string>
+    <string name="unit_currency_inj_short" translatable="false">INJ</string>
+    <string name="unit_currency_inr">Indian rupee</string>
+    <string name="unit_currency_inr_short" translatable="false">INR</string>
+    <string name="unit_currency_iqd">Iraqi dinar</string>
+    <string name="unit_currency_iqd_short" translatable="false">IQD</string>
+    <string name="unit_currency_irr">Iranian rial</string>
+    <string name="unit_currency_irr_short" translatable="false">IRR</string>
+    <string name="unit_currency_isk">Icelandic króna</string>
+    <string name="unit_currency_isk_short" translatable="false">ISK</string>
+    <string name="unit_currency_jep">Jersey Pound</string>
+    <string name="unit_currency_jep_short" translatable="false">JEP</string>
+    <string name="unit_currency_jmd">Jamaican dollar</string>
+    <string name="unit_currency_jmd_short" translatable="false">JMD</string>
+    <string name="unit_currency_jod">Jordanian dinar</string>
+    <string name="unit_currency_jod_short" translatable="false">JOD</string>
+    <string name="unit_currency_jpy">Japanese yen</string>
+    <string name="unit_currency_jpy_short" translatable="false">JPY</string>
+    <string name="unit_currency_kes">Kenyan shilling</string>
+    <string name="unit_currency_kes_short" translatable="false">KES</string>
+    <string name="unit_currency_kgs">Kyrgystani Som</string>
+    <string name="unit_currency_kgs_short" translatable="false">KGS</string>
+    <string name="unit_currency_khr">Cambodian riel</string>
+    <string name="unit_currency_khr_short" translatable="false">KHR</string>
+    <string name="unit_currency_kmf">Comorian franc</string>
+    <string name="unit_currency_kmf_short" translatable="false">KMF</string>
+    <string name="unit_currency_kpw">North Korean won</string>
+    <string name="unit_currency_kpw_short" translatable="false">KPW</string>
+    <string name="unit_currency_krw">South Korean won</string>
+    <string name="unit_currency_krw_short" translatable="false">KRW</string>
+    <string name="unit_currency_ksm" translatable="false">Kusama</string>
+    <string name="unit_currency_ksm_short" translatable="false">KSM</string>
+    <string name="unit_currency_kwd">Kuwaiti dinar</string>
+    <string name="unit_currency_kwd_short" translatable="false">KWD</string>
+    <string name="unit_currency_kyd">Cayman Islands dollar</string>
+    <string name="unit_currency_kyd_short" translatable="false">KYD</string>
+    <string name="unit_currency_kzt">Kazakhstani tenge</string>
+    <string name="unit_currency_kzt_short" translatable="false">KZT</string>
+    <string name="unit_currency_lak">Laotian Kip</string>
+    <string name="unit_currency_lak_short" translatable="false">LAK</string>
+    <string name="unit_currency_lbp">Lebanese pound</string>
+    <string name="unit_currency_lbp_short" translatable="false">LBP</string>
+    <string name="unit_currency_link" translatable="false">ChainLink</string>
+    <string name="unit_currency_link_short" translatable="false">INK</string>
+    <string name="unit_currency_lkr">Sri Lankan rupee</string>
+    <string name="unit_currency_lkr_short" translatable="false">LKR</string>
+    <string name="unit_currency_lrd">Liberian dollar</string>
+    <string name="unit_currency_lrd_short" translatable="false">LRD</string>
+    <string name="unit_currency_lsl">Lesotho loti</string>
+    <string name="unit_currency_lsl_short" translatable="false">LSL</string>
+    <string name="unit_currency_ltc" translatable="false">Litecoin</string>
+    <string name="unit_currency_ltc_short" translatable="false">LTC</string>
+    <string name="unit_currency_ltl">Lithuanian litas</string>
+    <string name="unit_currency_ltl_short" translatable="false">LTL</string>
+    <string name="unit_currency_luna" translatable="false">Luna Coin</string>
+    <string name="unit_currency_luna_short" translatable="false">UNA</string>
+    <string name="unit_currency_lvl">Latvian lats</string>
+    <string name="unit_currency_lvl_short" translatable="false">LVL</string>
+    <string name="unit_currency_lyd">Libyan dinar</string>
+    <string name="unit_currency_lyd_short" translatable="false">LYD</string>
+    <string name="unit_currency_mad">Moroccan dirham</string>
+    <string name="unit_currency_mad_short" translatable="false">MAD</string>
+    <string name="unit_currency_matic" translatable="false">Polygon</string>
+    <string name="unit_currency_matic_short" translatable="false">TIC</string>
+    <string name="unit_currency_mdl">Moldovan leu</string>
+    <string name="unit_currency_mdl_short" translatable="false">MDL</string>
+    <string name="unit_currency_mga">Malagasy ariary</string>
+    <string name="unit_currency_mga_short" translatable="false">MGA</string>
+    <string name="unit_currency_mkd">Macedonian denar</string>
+    <string name="unit_currency_mkd_short" translatable="false">MKD</string>
+    <string name="unit_currency_mmk">Myanmar Kyat</string>
+    <string name="unit_currency_mmk_short" translatable="false">MMK</string>
+    <string name="unit_currency_mnt">Mongolian tugrik</string>
+    <string name="unit_currency_mnt_short" translatable="false">MNT</string>
+    <string name="unit_currency_mop">Macanese pataca</string>
+    <string name="unit_currency_mop_short" translatable="false">MOP</string>
+    <string name="unit_currency_mro">Mauritanian ouguiya</string>
+    <string name="unit_currency_mro_short" translatable="false">MRO</string>
+    <string name="unit_currency_mur">Mauritian rupee</string>
+    <string name="unit_currency_mur_short" translatable="false">MUR</string>
+    <string name="unit_currency_mvr">Maldivian rufiyaa</string>
+    <string name="unit_currency_mvr_short" translatable="false">MVR</string>
+    <string name="unit_currency_mwk">Malawian kwacha</string>
+    <string name="unit_currency_mwk_short" translatable="false">MWK</string>
+    <string name="unit_currency_mxn">Mexican peso</string>
+    <string name="unit_currency_mxn_short" translatable="false">MXN</string>
+    <string name="unit_currency_myr">Malaysian ringgit</string>
+    <string name="unit_currency_myr_short" translatable="false">MYR</string>
+    <string name="unit_currency_mzn">Mozambican Metical</string>
+    <string name="unit_currency_mzn_short" translatable="false">MZN</string>
+    <string name="unit_currency_nad">Namibian dollar</string>
+    <string name="unit_currency_nad_short" translatable="false">NAD</string>
+    <string name="unit_currency_ngn">Nigerian naira</string>
+    <string name="unit_currency_ngn_short" translatable="false">NGN</string>
+    <string name="unit_currency_nio">Nicaraguan córdoba</string>
+    <string name="unit_currency_nio_short" translatable="false">NIO</string>
+    <string name="unit_currency_nok">Norwegian krone</string>
+    <string name="unit_currency_nok_short" translatable="false">NOK</string>
+    <string name="unit_currency_npr">Nepalese rupee</string>
+    <string name="unit_currency_npr_short" translatable="false">NPR</string>
+    <string name="unit_currency_nzd">New Zealand dollar</string>
+    <string name="unit_currency_nzd_short" translatable="false">NZD</string>
+    <string name="unit_currency_omr">Omani rial</string>
+    <string name="unit_currency_omr_short" translatable="false">OMR</string>
+    <string name="unit_currency_one" translatable="false">Menlo One</string>
+    <string name="unit_currency_one_short" translatable="false">ONE</string>
+    <string name="unit_currency_pab">Panamanian balboa</string>
+    <string name="unit_currency_pab_short" translatable="false">PAB</string>
+    <string name="unit_currency_pen">Sol</string>
+    <string name="unit_currency_pen_short" translatable="false">PEN</string>
+    <string name="unit_currency_pgk">Papua New Guinean kina</string>
+    <string name="unit_currency_pgk_short" translatable="false">PGK</string>
+    <string name="unit_currency_php">Philippine peso</string>
+    <string name="unit_currency_php_short" translatable="false">PHP</string>
+    <string name="unit_currency_pkr">Pakistani rupee</string>
+    <string name="unit_currency_pkr_short" translatable="false">PKR</string>
+    <string name="unit_currency_pln">Poland złoty</string>
+    <string name="unit_currency_pln_short" translatable="false">PLN</string>
+    <string name="unit_currency_pyg">Paraguayan guarani</string>
+    <string name="unit_currency_pyg_short" translatable="false">PYG</string>
+    <string name="unit_currency_qar">Qatari Rial</string>
+    <string name="unit_currency_qar_short" translatable="false">QAR</string>
+    <string name="unit_currency_ron">Romanian leu</string>
+    <string name="unit_currency_ron_short" translatable="false">RON</string>
+    <string name="unit_currency_rsd">Serbian dinar</string>
+    <string name="unit_currency_rsd_short" translatable="false">RSD</string>
+    <string name="unit_currency_rub">Russian ruble</string>
+    <string name="unit_currency_rub_short" translatable="false">RUB</string>
+    <string name="unit_currency_rwf">Rwandan Franc</string>
+    <string name="unit_currency_rwf_short" translatable="false">RWF</string>
+    <string name="unit_currency_sar">Saudi riyal</string>
+    <string name="unit_currency_sar_short" translatable="false">SAR</string>
+    <string name="unit_currency_sbd">Solomon Islands dollar</string>
+    <string name="unit_currency_sbd_short" translatable="false">SBD</string>
+    <string name="unit_currency_scr">Seychellois rupee</string>
+    <string name="unit_currency_scr_short" translatable="false">SCR</string>
+    <string name="unit_currency_sdg">Sudanese pound</string>
+    <string name="unit_currency_sdg_short" translatable="false">SDG</string>
+    <string name="unit_currency_sek">Swedish krona</string>
+    <string name="unit_currency_sek_short" translatable="false">SEK</string>
+    <string name="unit_currency_sgd">Singapore dollar</string>
+    <string name="unit_currency_sgd_short" translatable="false">SGD</string>
+    <string name="unit_currency_shib">Shiba Inu</string>
+    <string name="unit_currency_shib_short" translatable="false">HIB</string>
+    <string name="unit_currency_shp">Saint Helena pound</string>
+    <string name="unit_currency_shp_short" translatable="false">SHP</string>
+    <string name="unit_currency_sll">Sierra Leonean leone</string>
+    <string name="unit_currency_sll_short" translatable="false">SLL</string>
+    <string name="unit_currency_sol" translatable="false">Sola</string>
+    <string name="unit_currency_sol_short" translatable="false">SOL</string>
+    <string name="unit_currency_sos">Somali shilling</string>
+    <string name="unit_currency_sos_short" translatable="false">SOS</string>
+    <string name="unit_currency_srd">Surinamese dollar</string>
+    <string name="unit_currency_srd_short" translatable="false">SRD</string>
+    <string name="unit_currency_std">São Tomé and Príncipe Dobra (pre-2018)</string>
+    <string name="unit_currency_std_short" translatable="false">STD</string>
+    <string name="unit_currency_svc">Salvadoran Colón</string>
+    <string name="unit_currency_svc_short" translatable="false">SVC</string>
+    <string name="unit_currency_syp">Syrian pound</string>
+    <string name="unit_currency_syp_short" translatable="false">SYP</string>
+    <string name="unit_currency_szl">Swazi lilangeni</string>
+    <string name="unit_currency_szl_short" translatable="false">SZL</string>
+    <string name="unit_currency_thb">Thai baht</string>
+    <string name="unit_currency_thb_short" translatable="false">THB</string>
+    <string name="unit_currency_theta">Theta</string>
+    <string name="unit_currency_theta_short" translatable="false">ETA</string>
+    <string name="unit_currency_tjs">Tajikistani somoni</string>
+    <string name="unit_currency_tjs_short" translatable="false">TJS</string>
+    <string name="unit_currency_tmt">Turkmenistani manat</string>
+    <string name="unit_currency_tmt_short" translatable="false">TMT</string>
+    <string name="unit_currency_tnd">Tunisian dinar</string>
+    <string name="unit_currency_tnd_short" translatable="false">TND</string>
+    <string name="unit_currency_top">Tongan Paʻanga</string>
+    <string name="unit_currency_top_short" translatable="false">TOP</string>
+    <string name="unit_currency_trx" translatable="false">TRON</string>
+    <string name="unit_currency_trx_short" translatable="false">TRX</string>
+    <string name="unit_currency_try">Turkish lira</string>
+    <string name="unit_currency_try_short" translatable="false">TRY</string>
+    <string name="unit_currency_ttd">Trinidad &amp; Tobago Dollar</string>
+    <string name="unit_currency_ttd_short" translatable="false">TTD</string>
+    <string name="unit_currency_twd">New Taiwan dollar</string>
+    <string name="unit_currency_twd_short" translatable="false">TWD</string>
+    <string name="unit_currency_tzs">Tanzanian shilling</string>
+    <string name="unit_currency_tzs_short" translatable="false">TZS</string>
+    <string name="unit_currency_uah">Ukrainian hryvnia</string>
+    <string name="unit_currency_uah_short" translatable="false">UAH</string>
+    <string name="unit_currency_ugx">Ugandan shilling</string>
+    <string name="unit_currency_ugx_short" translatable="false">UGX</string>
+    <string name="unit_currency_uni">Universe</string>
+    <string name="unit_currency_uni_short" translatable="false">UNI</string>
+    <string name="unit_currency_usd">United States dollar</string>
+    <string name="unit_currency_usd_short" translatable="false">USD</string>
+    <string name="unit_currency_usdc">USD Coin</string>
+    <string name="unit_currency_usdc_short" translatable="false">SDC</string>
+    <string name="unit_currency_usdt" translatable="false">Tether</string>
+    <string name="unit_currency_usdt_short" translatable="false">SDT</string>
+    <string name="unit_currency_uyu">Uruguayan peso</string>
+    <string name="unit_currency_uyu_short" translatable="false">UYU</string>
+    <string name="unit_currency_uzs">Uzbekistani som</string>
+    <string name="unit_currency_uzs_short" translatable="false">UZS</string>
+    <string name="unit_currency_vef">Sovereign Bolivar</string>
+    <string name="unit_currency_vef_short" translatable="false">VEF</string>
+    <string name="unit_currency_vet" translatable="false">Vechain</string>
+    <string name="unit_currency_vet_short" translatable="false">VET</string>
+    <string name="unit_currency_vnd">Vietnamese dong</string>
+    <string name="unit_currency_vnd_short" translatable="false">VND</string>
+    <string name="unit_currency_vuv">Vanuatu vatu</string>
+    <string name="unit_currency_vuv_short" translatable="false">VUV</string>
+    <string name="unit_currency_wbtc">Wrapped Bitcoin</string>
+    <string name="unit_currency_wbtc_short" translatable="false">BTC</string>
+    <string name="unit_currency_wst">Samoan tala</string>
+    <string name="unit_currency_wst_short" translatable="false">WST</string>
+    <string name="unit_currency_xaf">Central African CFA franc</string>
+    <string name="unit_currency_xaf_short" translatable="false">XAF</string>
+    <string name="unit_currency_xag">Silver Ounce</string>
+    <string name="unit_currency_xag_short" translatable="false">XAG</string>
+    <string name="unit_currency_xau" translatable="false">XauCoin</string>
+    <string name="unit_currency_xau_short" translatable="false">XAU</string>
+    <string name="unit_currency_xcd">East Caribbean dollar</string>
+    <string name="unit_currency_xcd_short" translatable="false">XCD</string>
+    <string name="unit_currency_xdr">Special Drawing Rights</string>
+    <string name="unit_currency_xdr_short" translatable="false">XDR</string>
+    <string name="unit_currency_xlm" translatable="false">Stellar</string>
+    <string name="unit_currency_xlm_short" translatable="false">XLM</string>
+    <string name="unit_currency_xmr" translatable="false">Monero</string>
+    <string name="unit_currency_xmr_short" translatable="false">XMR</string>
+    <string name="unit_currency_xof">West African CFA franc</string>
+    <string name="unit_currency_xof_short" translatable="false">XOF</string>
+    <string name="unit_currency_xpf">CFP franc</string>
+    <string name="unit_currency_xpf_short" translatable="false">XPF</string>
+    <string name="unit_currency_xrp" translatable="false">XRP</string>
+    <string name="unit_currency_xrp_short" translatable="false">XRP</string>
+    <string name="unit_currency_yer">Yemeni rial</string>
+    <string name="unit_currency_yer_short" translatable="false">YER</string>
+    <string name="unit_currency_zar">South African rand</string>
+    <string name="unit_currency_zar_short" translatable="false">ZAR</string>
+    <string name="unit_currency_zmk">Zambian kwacha</string>
+    <string name="unit_currency_zmk_short" translatable="false">ZMK</string>
+    <string name="unit_currency_zmw">Zambian Kwacha</string>
+    <string name="unit_currency_zmw_short" translatable="false">ZMW</string>
+    <string name="unit_currency_zwl">Zimbabwean Dollar</string>
+    <string name="unit_currency_zwl_short" translatable="false">ZWL</string>
+    <string name="unit_day">Day</string>
+    <string name="unit_day_short">d</string>
+    <string name="unit_decimal">Decimal</string>
+    <string name="unit_decimal_short">base10</string>
+    <string name="unit_decimeter">Decimeter</string>
+    <string name="unit_decimeter_per_square_second">Decimeter/square second</string>
+    <string name="unit_decimeter_per_square_second_short">dm/s^2</string>
+    <string name="unit_decimeter_short">dm</string>
+    <string name="unit_decipascal">Decipascal</string>
+    <string name="unit_decipascal_short">dPa</string>
+    <string name="unit_degree">Degree</string>
+    <string name="unit_degree_short" translatable="false">°</string>
+    <string name="unit_dekameter_per_square_second">Dekameter/square second</string>
+    <string name="unit_dekameter_per_square_second_short">dam/s^2</string>
+    <string name="unit_dekapascal">Dekapascal</string>
+    <string name="unit_dekapascal_short">daPa</string>
+    <string name="unit_duodecimal">Duodecimal</string>
+    <string name="unit_duodecimal_short">base12</string>
+    <string name="unit_dyne">Dyne</string>
+    <string name="unit_dyne_centimeter">Dyne centimeter</string>
+    <string name="unit_dyne_centimeter_short">dyn*cm</string>
+    <string name="unit_dyne_meter">Dyne meter</string>
+    <string name="unit_dyne_meter_short">dyn*m</string>
+    <string name="unit_dyne_millimeter">Dyne millimeter</string>
+    <string name="unit_dyne_millimeter_short">dyn*mm</string>
+    <string name="unit_dyne_short">dyn</string>
+    <string name="unit_earth_equatorial_radius">Earth equatorial radius</string>
+    <string name="unit_earth_equatorial_radius_short">Earth R</string>
+    <string name="unit_earth_mass">Earth mass</string>
+    <string name="unit_earth_mass_short">Earth M</string>
+    <string name="unit_earth_surface_gravity">Earth surface gravity</string>
+    <string name="unit_earth_surface_gravity_short">Earth g</string>
+    <string name="unit_earths_orbital_speed">Earth\'s orbital speed</string>
+    <string name="unit_earths_orbital_speed_short" translatable="false">ve</string>
+
+    <!-- Area -->
+    <string name="unit_electron_cross_section">Electron cross section</string>
+    <string name="unit_electron_cross_section_short">ecs</string>
+
+    <!-- Mass -->
+    <string name="unit_electron_mass_rest">Electron mass</string>
+    <string name="unit_electron_mass_rest_short">me</string>
+
+    <!-- Energy -->
+    <string name="unit_electron_volt">Electron volt</string>
+    <string name="unit_electron_volt_short">eV</string>
+    <string name="unit_energy_horse_power_metric">Horse power</string>
+    <string name="unit_energy_horse_power_metric_short">hp</string>
+    <string name="unit_energy_ton">Ton of TNT</string>
+    <string name="unit_energy_ton_short">t</string>
+    <string name="unit_exabit">Exabit</string>
+    <string name="unit_exabit_per_second">Exabit/second</string>
+    <string name="unit_exabit_per_second_short">Eb/s</string>
+    <string name="unit_exabit_short">Eb</string>
+    <string name="unit_exabyte">Exabyte</string>
+    <string name="unit_exabyte_per_second">Exabyte/second</string>
+    <string name="unit_exabyte_per_second_short">EB/s</string>
+    <string name="unit_exabyte_short">EB</string>
+    <string name="unit_exafarad">Exafarad</string>
+    <string name="unit_exafarad_short">EF</string>
+    <string name="unit_exapascal">Exapascal</string>
+    <string name="unit_exapascal_short">EPa</string>
+    <string name="unit_fahrenheit">Fahrenheit</string>
+    <string name="unit_fahrenheit_short" translatable="false">°F</string>
+    <string name="unit_farad">Farad</string>
+    <string name="unit_farad_short">F</string>
+    <string name="unit_femtometer_per_square_second">Femtometer/square second</string>
+    <string name="unit_femtometer_per_square_second_short">fm/s^2</string>
+    <string name="unit_femtopascal">Femtopascal</string>
+    <string name="unit_femtopascal_short">fPa</string>
+    <string name="unit_foot">Foot</string>
+    <string name="unit_foot_lambert">Foot-lambert</string>
+    <string name="unit_foot_lambert_short">fL</string>
+    <string name="unit_foot_per_hour">Foot/hour</string>
+    <string name="unit_foot_per_hour_short">ft/h</string>
+    <string name="unit_foot_per_minute">Foot/minute</string>
+    <string name="unit_foot_per_minute_short">ft/m</string>
+    <string name="unit_foot_per_second">Foot/second</string>
+    <string name="unit_foot_per_second_short">ft/s</string>
+    <string name="unit_foot_short">ft</string>
+    <string name="unit_gal">Gal</string>
+    <string name="unit_gal_short">Gal</string>
+    <string name="unit_gallon_per_hour_imperial">Gallon/hour (Imperial)</string>
+    <string name="unit_gallon_per_hour_imperial_short">gal/h</string>
+    <string name="unit_gallon_per_hour_us">Gallon/hour (US)</string>
+    <string name="unit_gallon_per_hour_us_short">gal/h</string>
+    <string name="unit_gallon_per_minute_imperial">Gallon/minute (Imperial)</string>
+    <string name="unit_gallon_per_minute_imperial_short">gal/m</string>
+    <string name="unit_gallon_per_minute_us">Gallon/minute (US)</string>
+    <string name="unit_gallon_per_minute_us_short">gal/m</string>
+    <string name="unit_gallon_per_second_imperial">Gallon/second (Imperial)</string>
+    <string name="unit_gallon_per_second_imperial_short">gal/s</string>
+    <string name="unit_gallon_per_second_us">Gallon/second (US)</string>
+    <string name="unit_gallon_per_second_us_short">gal/s</string>
+    <string name="unit_gallon_uk_per_100_mile">Gallon/100 mile (UK)</string>
+    <string name="unit_gallon_uk_per_100_mile_short">gal/100 mi (UK)</string>
+    <string name="unit_gallon_uk_per_mile">Gallon/mile (UK)</string>
+    <string name="unit_gallon_uk_per_mile_short">gal/mi (UK)</string>
+    <string name="unit_gallon_us_per_100_mile">Gallon/100 mile (US)</string>
+    <string name="unit_gallon_us_per_100_mile_short">gal/100 mi (US)</string>
+    <string name="unit_gallon_us_per_mile">Gallon/mile (US)</string>
+    <string name="unit_gallon_us_per_mile_short">gal/mi (US)</string>
+    <string name="unit_gibibit">Gibibit</string>
+    <string name="unit_gibibit_per_second">Gibibit/second</string>
+    <string name="unit_gibibit_per_second_short">Gib/s</string>
+    <string name="unit_gibibit_short">Gib</string>
+    <string name="unit_gibibyte">Gibibyte</string>
+    <string name="unit_gibibyte_per_second">Gibibyte/second</string>
+    <string name="unit_gibibyte_per_second_short">GiB/s</string>
+    <string name="unit_gibibyte_short">GiB</string>
+    <string name="unit_gigabit">Gigabit</string>
+    <string name="unit_gigabit_per_second">Gigabit/second</string>
+    <string name="unit_gigabit_per_second_short">Gb/s</string>
+    <string name="unit_gigabit_short">Gb</string>
+    <string name="unit_gigabyte">Gigabyte</string>
+    <string name="unit_gigabyte_per_second">Gigabyte/second</string>
+    <string name="unit_gigabyte_per_second_short">GB/s</string>
+    <string name="unit_gigabyte_short">GB</string>
+    <string name="unit_gigafarad">Gigafarad</string>
+    <string name="unit_gigafarad_short">GF</string>
+    <string name="unit_gigajoule">Megajoule</string>
+    <string name="unit_gigajoule_short">MJ</string>
+    <string name="unit_gigapascal">Gigapascal</string>
+    <string name="unit_gigapascal_short">GPa</string>
+    <string name="unit_gigaton">Gigaton of TNT</string>
+    <string name="unit_gigaton_short">Gt</string>
+    <string name="unit_gigaweber">Gigaweber</string>
+    <string name="unit_gigaweber_short">GWb</string>
+    <string name="unit_gram">Gram</string>
+    <string name="unit_gram_force">Gram-force</string>
+    <string name="unit_gram_force_centimeter">Gram-force centimeter</string>
+    <string name="unit_gram_force_centimeter_short">gf*cm</string>
+    <string name="unit_gram_force_meter">Gram-force meter</string>
+    <string name="unit_gram_force_meter_short">gf*m</string>
+    <string name="unit_gram_force_millimeter">Gram-force millimeter</string>
+    <string name="unit_gram_force_millimeter_short">gf*mm</string>
+    <string name="unit_gram_force_short">gf</string>
+    <string name="unit_gram_short">g</string>
+    <string name="unit_group_acceleration">Acceleration</string>
+    <string name="unit_group_angle">Angle</string>
+    <string name="unit_group_area">Area</string>
+    <string name="unit_group_currency">Currency</string>
+    <string name="unit_group_data">Data</string>
+    <string name="unit_group_data_transfer">Data transfer</string>
+    <string name="unit_group_electrostatic_capacitance">Capacitance</string>
+    <string name="unit_group_energy">Energy</string>
+    <string name="unit_group_flow_rate">Flow</string>
+    <string name="unit_group_flux">Flux</string>
+    <string name="unit_group_force">Force</string>
+    <string name="unit_group_fuel_consumption">Fuel</string>
+
+    <!-- Groups -->
+    <string name="unit_group_length">Length</string>
+    <string name="unit_group_luminance">Luminance</string>
+    <string name="unit_group_mass">Mass</string>
+    <string name="unit_group_number_base">Base</string>
+    <string name="unit_group_power">Power</string>
+    <string name="unit_group_prefix">Prefix</string>
+    <string name="unit_group_pressure">Pressure</string>
+    <string name="unit_group_speed">Speed</string>
+    <string name="unit_group_temperature">Temperature</string>
+    <string name="unit_group_time">Time</string>
+    <string name="unit_group_torque">Torque</string>
+    <string name="unit_group_volume">Volume</string>
+    <string name="unit_hectare">Hectare</string>
+    <string name="unit_hectare_short">ha</string>
+    <string name="unit_hectometer_per_square_second">Hectometer/square second</string>
+    <string name="unit_hectometer_per_square_second_short">hm/s^2</string>
+    <string name="unit_hectopascal">Hectopascal</string>
+    <string name="unit_hectopascal_short">hPa</string>
+    <string name="unit_hexadecimal">Hexadecimal</string>
+    <string name="unit_hexadecimal_short">base16</string>
+    <string name="unit_horse_power_mechanical">Horsepower</string>
+    <string name="unit_horse_power_mechanical_short">hp</string>
+    <string name="unit_hour">Hour</string>
+    <string name="unit_hour_short">h</string>
+    <string name="unit_imperial_cup">Imperial cup</string>
+    <string name="unit_imperial_cup_short">cup (UK)</string>
+    <string name="unit_imperial_fluid_ounce">Imperial fluid ounce</string>
+    <string name="unit_imperial_fluid_ounce_short">fl oz (UK)</string>
+    <string name="unit_imperial_gallon">Imperial gallon</string>
+    <string name="unit_imperial_gallon_short">gal (UK)</string>
+    <string name="unit_imperial_pint">Imperial pint</string>
+    <string name="unit_imperial_pint_short">pt (UK)</string>
+    <string name="unit_imperial_quart">Imperial quart</string>
+    <string name="unit_imperial_quart_short">qt (UK)</string>
+    <string name="unit_imperial_tablespoon">Imperial tablespoon</string>
+    <string name="unit_imperial_tablespoon_short">tablespoon (UK)</string>
+    <string name="unit_imperial_teaspoon">Imperial teaspoon</string>
+    <string name="unit_imperial_teaspoon_short">teaspoon (UK)</string>
+    <string name="unit_imperial_ton">Imperial ton</string>
+    <string name="unit_imperial_ton_short">t (UK)</string>
+    <string name="unit_inch">Inch</string>
+    <string name="unit_inch_short">in</string>
+    <string name="unit_jiffy">Jiffy</string>
+    <string name="unit_jiffy_short">j</string>
+    <string name="unit_joule">Joule</string>
+    <string name="unit_joule_per_centimeter">Joule/centimeter</string>
+    <string name="unit_joule_per_centimeter_short">J/cm</string>
+    <string name="unit_joule_per_meter">Joule/meter</string>
+    <string name="unit_joule_per_meter_short">J/m</string>
+    <string name="unit_joule_short">J</string>
+    <string name="unit_jupiter_equatorial_radius">Jupiter equatorial radius</string>
+    <string name="unit_jupiter_equatorial_radius_short">Jupiter R</string>
+    <string name="unit_jupiter_mass">Jupiter mass</string>
+    <string name="unit_jupiter_mass_short">Jupiter M</string>
+    <string name="unit_jupiter_surface_gravity">Jupiter surface gravity</string>
+    <string name="unit_jupiter_surface_gravity_short">Jupiter g</string>
+    <string name="unit_kelvin">Kelvin</string>
+    <string name="unit_kelvin_short" translatable="false">K</string>
+    <string name="unit_kibibit">Kibibit</string>
+    <string name="unit_kibibit_per_second">Kibibit/second</string>
+    <string name="unit_kibibit_per_second_short">Kib/s</string>
+    <string name="unit_kibibit_short">Kib</string>
+    <string name="unit_kibibyte">Kibibyte</string>
+    <string name="unit_kibibyte_per_second">Kibibyte/second</string>
+    <string name="unit_kibibyte_per_second_short">KiB/s</string>
+    <string name="unit_kibibyte_short">KiB</string>
+    <string name="unit_kilobit">Kilobit</string>
+    <string name="unit_kilobit_per_second">Kilobit/second</string>
+    <string name="unit_kilobit_per_second_short">Kb/s</string>
+    <string name="unit_kilobit_short">Kb</string>
+    <string name="unit_kilobyte">Kilobyte</string>
+    <string name="unit_kilobyte_per_second">Kilobyte/second</string>
+    <string name="unit_kilobyte_per_second_short">KB/s</string>
+    <string name="unit_kilobyte_short">KB</string>
+    <string name="unit_kilocalorie_th">Kilocalorie (th)</string>
+    <string name="unit_kilocalorie_th_short">kcal</string>
+    <string name="unit_kilocandela_per_square_meter">Kilocandela/square meter</string>
+    <string name="unit_kilocandela_per_square_meter_short">kcd</string>
+    <string name="unit_kilofarad">Kilofarad</string>
+    <string name="unit_kilofarad_short">kF</string>
+    <string name="unit_kilogram">Kilogram</string>
+    <string name="unit_kilogram_force">Kilogram-force</string>
+    <string name="unit_kilogram_force_centimeter">Kilogram-force centimeter</string>
+    <string name="unit_kilogram_force_centimeter_short">kgf*cm</string>
+    <string name="unit_kilogram_force_meter">Kilogram-force meter</string>
+    <string name="unit_kilogram_force_meter_short">kgf*m</string>
+    <string name="unit_kilogram_force_millimeter">Kilogram-force millimeter</string>
+    <string name="unit_kilogram_force_millimeter_short">kgf*mm</string>
+    <string name="unit_kilogram_force_short">kgf</string>
+    <string name="unit_kilogram_short">kg</string>
+    <string name="unit_kilojoule">Kilojoule</string>
+    <string name="unit_kilojoule_short">kJ</string>
+    <string name="unit_kilometer">Kilometer</string>
+    <string name="unit_kilometer_per_hour">Kilometer/hour</string>
+    <string name="unit_kilometer_per_hour_short">km/h</string>
+    <string name="unit_kilometer_per_minute">Kilometer/minute</string>
+    <string name="unit_kilometer_per_minute_short">km/m</string>
+    <string name="unit_kilometer_per_second">Kilometer/second</string>
+    <string name="unit_kilometer_per_second_short">km/s</string>
+    <string name="unit_kilometer_per_square_second">Kilometer/square second</string>
+    <string name="unit_kilometer_per_square_second_short">km/s^2</string>
+    <string name="unit_kilometer_short">km</string>
+    <string name="unit_kilonewton">Kilonewton</string>
+    <string name="unit_kilonewton_meter">Kilonewton meter</string>
+    <string name="unit_kilonewton_meter_short">kN*m</string>
+    <string name="unit_kilonewton_short">kN</string>
+    <string name="unit_kiloparsec">Kiloparsec</string>
+    <string name="unit_kiloparsec_short">kpc</string>
+    <string name="unit_kilopascal">Kilopascal</string>
+    <string name="unit_kilopascal_short">kPa</string>
+    <string name="unit_kilopond">Kilopond</string>
+    <string name="unit_kilopond_short">kp</string>
+    <string name="unit_kilopound_force">Kilopound-force</string>
+    <string name="unit_kilopound_force_short">kipf</string>
+    <string name="unit_kiloton">Kiloton of TNT</string>
+    <string name="unit_kiloton_short">kt</string>
+    <string name="unit_kilowatt">Kilowatt</string>
+    <string name="unit_kilowatt_short">kW</string>
+    <string name="unit_kiloweber">Kiloweber</string>
+    <string name="unit_kiloweber_short">kWb</string>
+    <string name="unit_km_per_l">Kilometer/liter</string>
+    <string name="unit_km_per_l_short">km/L</string>
+    <string name="unit_knot">Knot</string>
+    <string name="unit_knot_short">kt</string>
+    <string name="unit_ksi">Kilopound/square inch</string>
+    <string name="unit_ksi_short" translatable="false">ksi</string>
+    <string name="unit_l_per_100_km">Liter/100 Kilometer</string>
+    <string name="unit_l_per_100_km_short">L/100 km</string>
+    <string name="unit_l_per_km">Liter/kilometer</string>
+    <string name="unit_l_per_km_short">L/km</string>
+    <string name="unit_lambert">Lambert</string>
+    <string name="unit_lambert_short">L</string>
+    <string name="unit_light_year">Light year</string>
+    <string name="unit_light_year_short">ly</string>
+    <string name="unit_liter">Liter</string>
+
+    <!-- Flow rate -->
+    <string name="unit_liter_per_hour">Liter/hour</string>
+    <string name="unit_liter_per_hour_short">L/h</string>
+    <string name="unit_liter_per_minute">Liter/minute</string>
+    <string name="unit_liter_per_minute_short">L/m</string>
+    <string name="unit_liter_per_second">Liter/second</string>
+    <string name="unit_liter_per_second_short">L/s</string>
+    <string name="unit_liter_short">L</string>
+    <string name="unit_lumen_per_square_centimeter_per_steradian">Lumen/square centimeter/steradian</string>
+    <string name="unit_lumen_per_square_centimeter_per_steradian_short">lm/cm^2/sr</string>
+    <string name="unit_lumen_per_square_foot_per_steradian">Lumen/square foot/steradian</string>
+    <string name="unit_lumen_per_square_foot_per_steradian_short">lm/ft^2/sr</string>
+    <string name="unit_lumen_per_square_meter_per_steradian">Lumen/square meter/steradian</string>
+    <string name="unit_lumen_per_square_meter_per_steradian_short">lm/m^2/sr</string>
+    <string name="unit_mach">Mach</string>
+    <string name="unit_mach_short" translatable="false">M</string>
+    <string name="unit_mach_si_standard">Mach (SI)</string>
+    <string name="unit_mach_si_standard_short" translatable="false">M</string>
+    <string name="unit_mars_equatorial_radius">Mars equatorial radius</string>
+    <string name="unit_mars_equatorial_radius_short">Mars R</string>
+    <string name="unit_mars_mass">Mars mass</string>
+    <string name="unit_mars_mass_short">Mars M</string>
+    <string name="unit_mars_surface_gravity">Mars surface gravity</string>
+    <string name="unit_mars_surface_gravity_short">Mars g</string>
+
+    <!-- Flux -->
+    <string name="unit_maxwell">Maxwell</string>
+    <string name="unit_maxwell_short">Mx</string>
+    <string name="unit_mebibit">Mebibit</string>
+    <string name="unit_mebibit_per_second">Mebibit/second</string>
+    <string name="unit_mebibit_per_second_short">Mib/s</string>
+    <string name="unit_mebibit_short">Mib</string>
+    <string name="unit_mebibyte">Mebibyte</string>
+    <string name="unit_mebibyte_per_second">Mebibyte/second</string>
+    <string name="unit_mebibyte_per_second_short">MiB/s</string>
+    <string name="unit_mebibyte_short">MiB</string>
+    <string name="unit_megabit">Megabit</string>
+    <string name="unit_megabit_per_second">Megabit/second</string>
+    <string name="unit_megabit_per_second_short">Mb/s</string>
+    <string name="unit_megabit_short">Mb</string>
+    <string name="unit_megabyte">Megabyte</string>
+    <string name="unit_megabyte_per_second">Megabyte/second</string>
+    <string name="unit_megabyte_per_second_short">MB/s</string>
+    <string name="unit_megabyte_short">MB</string>
+    <string name="unit_megafarad">Megafarad</string>
+    <string name="unit_megafarad_short">MF</string>
+    <string name="unit_megajoule">Gigajoule</string>
+    <string name="unit_megajoule_short">GJ</string>
+    <string name="unit_megaparsec">Megaparsec</string>
+    <string name="unit_megaparsec_short">Mpc</string>
+    <string name="unit_megapascal">Megapascal</string>
+    <string name="unit_megapascal_short">MPa</string>
+    <string name="unit_megaton">Megaton of TNT</string>
+    <string name="unit_megaton_short">Mt</string>
+    <string name="unit_megawatt">Megawatt</string>
+    <string name="unit_megawatt_short">MG</string>
+    <string name="unit_megaweber">Megaweber</string>
+    <string name="unit_megaweber_short">MWb</string>
+    <string name="unit_mercury_equatorial_radius">Mercury equatorial radius</string>
+    <string name="unit_mercury_equatorial_radius_short">Mercury R</string>
+    <string name="unit_mercury_mass">Mercury mass</string>
+    <string name="unit_mercury_mass_short">Mercury M</string>
+    <string name="unit_mercury_surface_gravity">Mercury surface gravity</string>
+    <string name="unit_mercury_surface_gravity_short">Mercury g</string>
+    <string name="unit_meter">Meter</string>
+    <string name="unit_meter_per_hour">Meter/hour</string>
+    <string name="unit_meter_per_hour_short">m/h</string>
+    <string name="unit_meter_per_minute">Meter/minute</string>
+    <string name="unit_meter_per_minute_short">m/m</string>
+    <string name="unit_meter_per_second">Meter/second</string>
+    <string name="unit_meter_per_second_short">m/s</string>
+    <string name="unit_meter_per_square_second">Meter/square second</string>
+    <string name="unit_meter_per_square_second_short">m/s^2</string>
+    <string name="unit_meter_short">m</string>
+    <string name="unit_metric_ton">Metric ton</string>
+    <string name="unit_metric_ton_short">t</string>
+    <string name="unit_mi_per_gallon_uk">Mile/gallon (UK)</string>
+    <string name="unit_mi_per_gallon_uk_short">mpg (UK)</string>
+    <string name="unit_mi_per_gallon_us">Mile/gallon (US)</string>
+    <string name="unit_mi_per_gallon_us_short">mpg (US)</string>
+    <string name="unit_mi_us_per_l">Mile/liter (US)</string>
+    <string name="unit_mi_us_per_l_short">mi/L (US)</string>
+    <string name="unit_microfarad">Microfarad</string>
+    <string name="unit_microfarad_short">µF</string>
+    <string name="unit_microgram">Microgram</string>
+    <string name="unit_microgram_short">µg</string>
+    <string name="unit_micrometer">Micrometer</string>
+    <string name="unit_micrometer_per_square_second">Micrometer/square second</string>
+    <string name="unit_micrometer_per_square_second_short">µm/s^2</string>
+    <string name="unit_micrometer_short">μm</string>
+    <string name="unit_micron_of_mercury">Micron of mercury</string>
+    <string name="unit_micron_of_mercury_short">μmHg</string>
+    <string name="unit_micropascal">Micropascal</string>
+    <string name="unit_micropascal_short">µPa</string>
+    <string name="unit_microsecond">Microsecond</string>
+    <string name="unit_microsecond_short">µs</string>
+    <string name="unit_microweber">Microweber</string>
+    <string name="unit_microweber_short">μWb</string>
+    <string name="unit_mile">Mile</string>
+    <string name="unit_mile_per_hour">Mile/hour</string>
+    <string name="unit_mile_per_hour_short">mi/h</string>
+    <string name="unit_mile_per_minute">Mile/minute</string>
+    <string name="unit_mile_per_minute_short">mi/m</string>
+    <string name="unit_mile_per_second">Mile/second</string>
+    <string name="unit_mile_per_second_short">mi/s</string>
+    <string name="unit_mile_short">Mi</string>
+    <string name="unit_millibar">Millibar</string>
+    <string name="unit_millibar_short">mbar</string>
+    <string name="unit_millifarad">Millifarad</string>
+    <string name="unit_millifarad_short">mF</string>
+    <string name="unit_milligram">Milligram</string>
+    <string name="unit_milligram_short">mg</string>
+    <string name="unit_millilambert">Millilambert</string>
+    <string name="unit_millilambert_short">mL</string>
+    <string name="unit_milliliter">Milliliter</string>
+    <string name="unit_milliliter_per_hour">Milliliter/hour</string>
+    <string name="unit_milliliter_per_hour_short">mL/h</string>
+    <string name="unit_milliliter_per_minute">Milliliter/minute</string>
+    <string name="unit_milliliter_per_minute_short">mL/m</string>
+    <string name="unit_milliliter_per_second">Milliliter/second</string>
+    <string name="unit_milliliter_per_second_short">mL/s</string>
+    <string name="unit_milliliter_short">mL</string>
+    <string name="unit_millimeter">Millimeter</string>
+    <string name="unit_millimeter_of_mercury">Millimeter of mercury</string>
+    <string name="unit_millimeter_of_mercury_short">mm Hg</string>
+
+    <!-- Speed -->
+    <string name="unit_millimeter_per_hour">Millimeter/hour</string>
+    <string name="unit_millimeter_per_hour_short">mm/h</string>
+    <string name="unit_millimeter_per_minute">Millimeter/minute</string>
+    <string name="unit_millimeter_per_minute_short">mm/m</string>
+    <string name="unit_millimeter_per_second">Millimeter/second</string>
+    <string name="unit_millimeter_per_second_short">mm/s</string>
+    <string name="unit_millimeter_per_square_second">Millimeter/square second</string>
+    <string name="unit_millimeter_per_square_second_short">mm/s^2</string>
+    <string name="unit_millimeter_short">mm</string>
+    <string name="unit_millinewton">Millinewton</string>
+    <string name="unit_millinewton_short">mN</string>
+    <string name="unit_millinit">Millinit</string>
+    <string name="unit_millinit_short">mnt</string>
+    <string name="unit_millipascal">Millipascal</string>
+    <string name="unit_millipascal_short">mPa</string>
+    <string name="unit_millisecond">Millisecond</string>
+    <string name="unit_millisecond_short">ms</string>
+    <string name="unit_milliweber">Milliweber</string>
+    <string name="unit_milliweber_short">mWb</string>
+    <string name="unit_minute">Minute</string>
+    <string name="unit_minute_short">m</string>
+    <string name="unit_month_short">m</string>
+    <string name="unit_nanofarad">Nanofarad</string>
+    <string name="unit_nanofarad_short">nF</string>
+    <string name="unit_nanometer">Nanometer</string>
+    <string name="unit_nanometer_per_square_second">Nanometer/square second</string>
+    <string name="unit_nanometer_per_square_second_short">nm/s^2</string>
+    <string name="unit_nanometer_short">nm</string>
+    <string name="unit_nanopascal">Nanopascal</string>
+    <string name="unit_nanopascal_short">nPa</string>
+    <string name="unit_nanosecond">Nanosecond</string>
+    <string name="unit_nanosecond_short">ns</string>
+    <string name="unit_nautical_mile">Nautical mile</string>
+    <string name="unit_nautical_mile_short">M</string>
+    <string name="unit_neptune_equatorial_radius">Neptune equatorial radius</string>
+    <string name="unit_neptune_equatorial_radius_short">Neptune R</string>
+    <string name="unit_neptune_mass">Neptune mass</string>
+    <string name="unit_neptune_mass_short">Neptune M</string>
+    <string name="unit_neptune_surface_gravity">Neptune surface gravity</string>
+    <string name="unit_neptune_surface_gravity_short">Neptune g</string>
+
+    <!-- Force -->
+    <string name="unit_newton">Newton</string>
+    <string name="unit_newton_centimeter">Newton centimeter</string>
+    <string name="unit_newton_centimeter_short">N*cm</string>
+
+    <!-- Torque -->
+    <string name="unit_newton_meter">Newton meter</string>
+    <string name="unit_newton_meter_short">N*m</string>
+    <string name="unit_newton_millimeter">Newton millimeter</string>
+    <string name="unit_newton_millimeter_short">N*mm</string>
+    <string name="unit_newton_short">N</string>
+    <string name="unit_nit">Nit</string>
+    <string name="unit_nit_short">nt</string>
+    <string name="unit_nonary">Nonary</string>
+    <string name="unit_nonary_short">base9</string>
+    <string name="unit_octal">Octal</string>
+    <string name="unit_octal_short">base8</string>
+    <string name="unit_ounce">Ounce</string>
+    <string name="unit_ounce_force">Ounce-force</string>
+    <string name="unit_ounce_force_foot">Ounce-force foot</string>
+    <string name="unit_ounce_force_foot_short">ozf*ft</string>
+    <string name="unit_ounce_force_inch">Ounce-force inch</string>
+    <string name="unit_ounce_force_inch_short">ozf*in</string>
+    <string name="unit_ounce_force_short">ozf</string>
+    <string name="unit_ounce_short">oz</string>
+    <string name="unit_parsec">Parsec</string>
+    <string name="unit_parsec_short">pc</string>
+    <string name="unit_pascal">Pascal</string>
+    <string name="unit_pascal_short">Pa</string>
+    <string name="unit_pentadecimal">Pentadecimal</string>
+    <string name="unit_pentadecimal_short">base15</string>
+    <string name="unit_petabit">Petabit</string>
+    <string name="unit_petabit_per_second">Petabit/second</string>
+    <string name="unit_petabit_per_second_short">Pb/s</string>
+    <string name="unit_petabit_short">Pb</string>
+    <string name="unit_petabyte">Petabyte</string>
+    <string name="unit_petabyte_per_second">Petabyte/second</string>
+    <string name="unit_petabyte_per_second_short">PB/s</string>
+    <string name="unit_petabyte_short">PB</string>
+    <string name="unit_petafarad">Petafarad</string>
+    <string name="unit_petafarad_short">PF</string>
+    <string name="unit_petapascal">Petapascal</string>
+    <string name="unit_petapascal_short">PPa</string>
+    <string name="unit_picofarad">Picofarad</string>
+    <string name="unit_picofarad_short">pF</string>
+    <string name="unit_picometer_per_square_second">Picometer/square second</string>
+    <string name="unit_picometer_per_square_second_short">pm/s^2</string>
+    <string name="unit_picopascal">Picopascal</string>
+    <string name="unit_picopascal_short">pPa</string>
+    <string name="unit_pond">Pond</string>
+    <string name="unit_pond_short">p</string>
+    <string name="unit_pound">Pound</string>
+    <string name="unit_pound_force">Pound-force</string>
+    <string name="unit_pound_force_foot">Pound-force foot</string>
+    <string name="unit_pound_force_foot_short">lbf*ft</string>
+    <string name="unit_pound_force_inch">Pound-force inch</string>
+    <string name="unit_pound_force_inch_short">lbf*in</string>
+    <string name="unit_pound_force_short">lbf</string>
+    <string name="unit_pound_short">lbs</string>
+    <string name="unit_prefix_atto">Atto</string>
+    <string name="unit_prefix_atto_short">a</string>
+    <string name="unit_prefix_base">Base</string>
+    <string name="unit_prefix_base_short">Base</string>
+    <string name="unit_prefix_centi">Centi</string>
+    <string name="unit_prefix_centi_short">c</string>
+    <string name="unit_prefix_deca">Deca</string>
+    <string name="unit_prefix_deca_short">da</string>
+    <string name="unit_prefix_deci">Deci</string>
+    <string name="unit_prefix_deci_short">d</string>
+    <string name="unit_prefix_exa">Exa</string>
+    <string name="unit_prefix_exa_short">E</string>
+    <string name="unit_prefix_femto">Femto</string>
+    <string name="unit_prefix_femto_short">f</string>
+    <string name="unit_prefix_giga">Giga</string>
+    <string name="unit_prefix_giga_short">G</string>
+    <string name="unit_prefix_hecto">Hecto</string>
+    <string name="unit_prefix_hecto_short">h</string>
+    <string name="unit_prefix_kilo">Kilo</string>
+    <string name="unit_prefix_kilo_short">k</string>
+    <string name="unit_prefix_mega">Mega</string>
+    <string name="unit_prefix_mega_short">M</string>
+    <string name="unit_prefix_micro">Micro</string>
+    <string name="unit_prefix_micro_short">μ</string>
+    <string name="unit_prefix_milli">Milli</string>
+    <string name="unit_prefix_milli_short">m</string>
+    <string name="unit_prefix_nano">Nano</string>
+    <string name="unit_prefix_nano_short">n</string>
+    <string name="unit_prefix_peta">Peta</string>
+    <string name="unit_prefix_peta_short">P</string>
+    <string name="unit_prefix_pico">Pico</string>
+    <string name="unit_prefix_pico_short">p</string>
+    <string name="unit_prefix_quecto">Quecto</string>
+    <string name="unit_prefix_quecto_short">q</string>
+
+    <!-- Prefixes -->
+    <string name="unit_prefix_quetta">Quetta</string>
+    <string name="unit_prefix_quetta_short">Q</string>
+    <string name="unit_prefix_ronna">Ronna</string>
+    <string name="unit_prefix_ronna_short">R</string>
+    <string name="unit_prefix_ronto">Ronto</string>
+    <string name="unit_prefix_ronto_short">r</string>
+    <string name="unit_prefix_tera">Tera</string>
+    <string name="unit_prefix_tera_short">T</string>
+    <string name="unit_prefix_yocto">Yocto</string>
+    <string name="unit_prefix_yocto_short">y</string>
+    <string name="unit_prefix_yotta">Yotta</string>
+    <string name="unit_prefix_yotta_short">Y</string>
+    <string name="unit_prefix_zepto">Zepto</string>
+    <string name="unit_prefix_zepto_short">z</string>
+    <string name="unit_prefix_zetta">Zetta</string>
+    <string name="unit_prefix_zetta_short">Z</string>
+    <string name="unit_psi">Pound/square inch</string>
+    <string name="unit_psi_short" translatable="false">psi</string>
+    <string name="unit_quaternary">Quaternary</string>
+    <string name="unit_quaternary_short">base4</string>
+    <string name="unit_quinary">Quinary</string>
+    <string name="unit_quinary_short">base5</string>
+    <string name="unit_radian">Radian</string>
+    <string name="unit_radian_short">rad</string>
+    <string name="unit_saturn_equatorial_radius">Saturn equatorial radius</string>
+    <string name="unit_saturn_equatorial_radius_short">Saturn R</string>
+    <string name="unit_saturn_mass">Saturn mass</string>
+    <string name="unit_saturn_mass_short">Saturn M</string>
+    <string name="unit_saturn_surface_gravity">Saturn surface gravity</string>
+    <string name="unit_saturn_surface_gravity_short">Saturn g</string>
+    <string name="unit_second">Second</string>
+    <string name="unit_second_short">s</string>
+    <string name="unit_senary">Senary</string>
+    <string name="unit_senary_short">base6</string>
+    <string name="unit_septenary">Septenary</string>
+    <string name="unit_septenary_short">base7</string>
+    <string name="unit_sextant">Sextant</string>
+    <string name="unit_sextant_short">sxt</string>
+    <string name="unit_skot">Skot</string>
+    <string name="unit_skot_short">sk</string>
+    <string name="unit_square_centimeter">Square centimeter</string>
+    <string name="unit_square_centimeter_short">cm^2</string>
+    <string name="unit_square_decimeter">Square decimeter</string>
+    <string name="unit_square_decimeter_short">dm^2</string>
+    <string name="unit_square_foot">Square foot</string>
+    <string name="unit_square_foot_short">ft^2</string>
+    <string name="unit_square_inch">Square inch</string>
+    <string name="unit_square_inch_short">in^2</string>
+    <string name="unit_square_kilometer">Square kilometer</string>
+    <string name="unit_square_kilometer_short">km^2</string>
+    <string name="unit_square_meter">Square meter</string>
+    <string name="unit_square_meter_short">m^2</string>
+    <string name="unit_square_micrometer">Square micrometer</string>
+    <string name="unit_square_micrometer_short">µm^2</string>
+    <string name="unit_square_mile">Square mile</string>
+    <string name="unit_square_mile_short">mi^2</string>
+    <string name="unit_square_millimeter">Square millimeter</string>
+    <string name="unit_square_millimeter_short">mm^2</string>
+    <string name="unit_square_yard">Square yard</string>
+    <string name="unit_square_yard_short">yd^2</string>
+    <string name="unit_standard_atmosphere">Standard atmosphere</string>
+    <string name="unit_standard_atmosphere_short">atm</string>
+    <string name="unit_statfarad">Statfarad</string>
+    <string name="unit_statfarad_short">stF</string>
+    <string name="unit_stilb">Stilb</string>
+    <string name="unit_stilb_short">sb</string>
+    <string name="unit_sun_equatorial_radius">Sun equatorial radius</string>
+    <string name="unit_sun_equatorial_radius_short">Sun R</string>
+    <string name="unit_sun_mass">Sun mass</string>
+    <string name="unit_sun_mass_short">Sun M</string>
+    <string name="unit_sun_surface_gravity">Sun surface gravity</string>
+    <string name="unit_sun_surface_gravity_short">Sun g</string>
+    <string name="unit_terabit">Terabit</string>
+    <string name="unit_terabit_per_second">Terabit/second</string>
+    <string name="unit_terabit_per_second_short">Tb/s</string>
+    <string name="unit_terabit_short">Tb</string>
+    <string name="unit_terabyte">Terabyte</string>
+    <string name="unit_terabyte_per_second">Terabyte/second</string>
+    <string name="unit_terabyte_per_second_short">TB/s</string>
+    <string name="unit_terabyte_short">TB</string>
+    <string name="unit_terapascal">Terapascal</string>
+    <string name="unit_terapascal_short">TPa</string>
+    <string name="unit_ternary">Ternary</string>
+    <string name="unit_ternary_short">base3</string>
+    <string name="unit_tetradecimal">Tetradecimal</string>
+    <string name="unit_tetradecimal_short">base14</string>
+    <string name="unit_ton_force">Ton-force</string>
+    <string name="unit_ton_force_short">tf</string>
+    <string name="unit_torr">Torr</string>
+    <string name="unit_torr_short">torr</string>
+    <string name="unit_tridecimal">Tridecimal</string>
+    <string name="unit_tridecimal_short">base13</string>
+    <string name="unit_turn">Turn</string>
+    <string name="unit_turn_short">tr</string>
+    <string name="unit_undecimal">Undecimal</string>
+    <string name="unit_undecimal_short">base11</string>
+    <string name="unit_uranus_equatorial_radius">Uranus equatorial radius</string>
+    <string name="unit_uranus_equatorial_radius_short">Uranus R</string>
+    <string name="unit_uranus_mass">Uranus mass</string>
+    <string name="unit_uranus_mass_short">Uranus M</string>
+    <string name="unit_uranus_surface_gravity">Uranus surface gravity</string>
+    <string name="unit_uranus_surface_gravity_short">Uranus g</string>
+    <string name="unit_us_fluid_ounce">US fluid ounce</string>
+    <string name="unit_us_fluid_ounce_short">fl oz (US)</string>
+    <string name="unit_us_legal_cup">US legal cup</string>
+    <string name="unit_us_legal_cup_short">cup (US)</string>
+    <string name="unit_us_liquid_gallon">US liquid gallon</string>
+    <string name="unit_us_liquid_gallon_short">gal (US)</string>
+    <string name="unit_us_liquid_pint">US liquid pint</string>
+    <string name="unit_us_liquid_pint_short">pt (US)</string>
+    <string name="unit_us_liquid_quart">US liquid quart</string>
+    <string name="unit_us_liquid_quart_short">qt (US)</string>
+    <string name="unit_us_tablespoon">US tablespoon</string>
+    <string name="unit_us_tablespoon_short">tablespoon (US)</string>
+    <string name="unit_us_teaspoon">US teaspoon</string>
+    <string name="unit_us_teaspoon_short">teaspoon (US)</string>
+    <string name="unit_velocity_of_light_in_vacuum">Speed of light in vacuum</string>
+    <string name="unit_velocity_of_light_in_vacuum_short" translatable="false">c</string>
+    <string name="unit_venus_equatorial_radius">Venus equatorial radius</string>
+    <string name="unit_venus_equatorial_radius_short">Venus R</string>
+    <string name="unit_venus_mass">Venus mass</string>
+    <string name="unit_venus_mass_short">Venus M</string>
+    <string name="unit_venus_surface_gravity">Venus surface gravity</string>
+    <string name="unit_venus_surface_gravity_short">Venus g</string>
+    <string name="unit_watt">Watt</string>
+    <string name="unit_watt_per_square_centimeter_per_steradian">Watt/square centimeter/steradian</string>
+    <string name="unit_watt_per_square_centimeter_per_steradian_short">W/cm^2/sr</string>
+    <string name="unit_watt_short">W</string>
+    <string name="unit_weber">Weber</string>
+    <string name="unit_weber_short">Wb</string>
+    <string name="unit_week">Week</string>
+    <string name="unit_week_short">w</string>
+    <string name="unit_yard">Yard</string>
+    <string name="unit_yard_per_hour">Yard/hour</string>
+    <string name="unit_yard_per_hour_short">yd/h</string>
+    <string name="unit_yard_per_minute">Yard/minute</string>
+    <string name="unit_yard_per_minute_short">yd/m</string>
+    <string name="unit_yard_per_second">Yard/second</string>
+    <string name="unit_yard_per_second_short">yd/s</string>
+    <string name="unit_yard_short">yd</string>
+
+    <!-- Epoch -->
+    <string name="unit_year_short">y</string>
+    <string name="yesterday">Yesterday</string>
 </resources>

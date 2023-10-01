@@ -6,7 +6,7 @@
     <application
         android:name=".UnittoApplication"
         android:icon="@mipmap/ic_launcher_icon"
-        android:label="@string/calculator"
+        android:label="@string/calculator_title"
         android:supportsRtl="false"
         android:localeConfig="@xml/locales_config"
         android:theme="@style/Theme.Unitto">
@@ -19,7 +19,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:label="@string/calculator">
+            <intent-filter android:label="@string/calculator_title">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

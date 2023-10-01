@@ -66,7 +66,7 @@ private fun StartingScreenScreen(
     val mContext = LocalContext.current
 
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.starting_screen_setting),
+        title = stringResource(R.string.settings_starting_screen),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {

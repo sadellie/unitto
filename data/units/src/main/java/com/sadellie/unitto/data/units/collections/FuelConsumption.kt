@@ -28,15 +28,15 @@ import java.math.BigDecimal
 
 val fuelConsumptionCollection: List<AbstractUnit> by lazy {
     listOf(
-        FuelForward(MyUnitIDS.kilometer_per_liter, BigDecimal.valueOf(1), UnitGroup.FUEL_CONSUMPTION, R.string.km_per_l, R.string.km_per_l_short),
-        FuelBackward(MyUnitIDS.liter_per_kilometer, BigDecimal.valueOf(1), UnitGroup.FUEL_CONSUMPTION, R.string.l_per_km, R.string.l_per_km_short),
-        FuelBackward(MyUnitIDS.liter_per_100_kilometer, BigDecimal.valueOf(100), UnitGroup.FUEL_CONSUMPTION, R.string.l_per_100_km, R.string.l_per_100_km_short),
-        FuelForward(MyUnitIDS.mile_per_gallon_uk, BigDecimal.valueOf(0.35400619), UnitGroup.FUEL_CONSUMPTION, R.string.mi_per_gallon_uk, R.string.mi_per_gallon_uk_short),
-        FuelForward(MyUnitIDS.mile_per_gallon_us, BigDecimal.valueOf(0.4251437075), UnitGroup.FUEL_CONSUMPTION, R.string.mi_per_gallon_us, R.string.mi_per_gallon_us_short),
-        FuelForward(MyUnitIDS.mile_us_per_liter, BigDecimal.valueOf(1.609344), UnitGroup.FUEL_CONSUMPTION, R.string.mi_us_per_l, R.string.mi_us_per_l_short),
-        FuelBackward(MyUnitIDS.gallon_us_per_mile, BigDecimal.valueOf(0.4251437075), UnitGroup.FUEL_CONSUMPTION, R.string.gallon_us_per_mile, R.string.gallon_us_per_mile_short),
-        FuelBackward(MyUnitIDS.gallon_uk_per_mile, BigDecimal.valueOf(0.35400619), UnitGroup.FUEL_CONSUMPTION, R.string.gallon_uk_per_mile, R.string.gallon_uk_per_mile_short),
-        FuelBackward(MyUnitIDS.gallon_us_per_100_mile, BigDecimal.valueOf(42.51437075), UnitGroup.FUEL_CONSUMPTION, R.string.gallon_us_per_100_mile, R.string.gallon_us_per_100_mile_short),
-        FuelBackward(MyUnitIDS.gallon_uk_per_100_mile, BigDecimal.valueOf(35.400618996), UnitGroup.FUEL_CONSUMPTION, R.string.gallon_uk_per_100_mile, R.string.gallon_uk_per_100_mile_short),
+        FuelForward(MyUnitIDS.kilometer_per_liter,      BigDecimal.valueOf(1),              UnitGroup.FUEL_CONSUMPTION, R.string.unit_km_per_l,                 R.string.unit_km_per_l_short),
+        FuelBackward(MyUnitIDS.liter_per_kilometer,     BigDecimal.valueOf(1),              UnitGroup.FUEL_CONSUMPTION, R.string.unit_l_per_km,                 R.string.unit_l_per_km_short),
+        FuelBackward(MyUnitIDS.liter_per_100_kilometer, BigDecimal.valueOf(100),            UnitGroup.FUEL_CONSUMPTION, R.string.unit_l_per_100_km,             R.string.unit_l_per_100_km_short),
+        FuelForward(MyUnitIDS.mile_per_gallon_uk,       BigDecimal.valueOf(0.35400619),     UnitGroup.FUEL_CONSUMPTION, R.string.unit_mi_per_gallon_uk,         R.string.unit_mi_per_gallon_uk_short),
+        FuelForward(MyUnitIDS.mile_per_gallon_us,       BigDecimal.valueOf(0.4251437075),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_mi_per_gallon_us,         R.string.unit_mi_per_gallon_us_short),
+        FuelForward(MyUnitIDS.mile_us_per_liter,        BigDecimal.valueOf(1.609344),       UnitGroup.FUEL_CONSUMPTION, R.string.unit_mi_us_per_l,              R.string.unit_mi_us_per_l_short),
+        FuelBackward(MyUnitIDS.gallon_us_per_mile,      BigDecimal.valueOf(0.4251437075),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_us_per_mile,       R.string.unit_gallon_us_per_mile_short),
+        FuelBackward(MyUnitIDS.gallon_uk_per_mile,      BigDecimal.valueOf(0.35400619),     UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_uk_per_mile,       R.string.unit_gallon_uk_per_mile_short),
+        FuelBackward(MyUnitIDS.gallon_us_per_100_mile,  BigDecimal.valueOf(42.51437075),    UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_us_per_100_mile,   R.string.unit_gallon_us_per_100_mile_short),
+        FuelBackward(MyUnitIDS.gallon_uk_per_100_mile,  BigDecimal.valueOf(35.400618996),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_uk_per_100_mile,   R.string.unit_gallon_uk_per_100_mile_short),
     )
 }

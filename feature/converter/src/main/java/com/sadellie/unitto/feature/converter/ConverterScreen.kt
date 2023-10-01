@@ -126,7 +126,7 @@ private fun ConverterScreen(
     onErrorClick: (AbstractUnit) -> Unit,
 ) {
     UnittoScreenWithTopBar(
-        title = { Text(stringResource(R.string.unit_converter)) },
+        title = { Text(stringResource(R.string.unit_converter_title)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         actions = {
             SettingsButton(navigateToSettings)
@@ -363,7 +363,7 @@ private fun Default(
                 )
                 AnimatedUnitShortName(
                     stringResource(
-                        if (uiState.result is ConverterResult.Error) R.string.try_again_label
+                        if (uiState.result is ConverterResult.Error) R.string.click_to_try_again_label
                         else uiState.unitTo.shortName
                     )
                 )
@@ -511,7 +511,7 @@ private fun UnitSelectionButtons(
             Icon(
                 modifier = Modifier.rotate(swapButtonRotation),
                 imageVector = Icons.Outlined.SwapHoriz,
-                contentDescription = stringResource(R.string.swap_units_description)
+                contentDescription = stringResource(R.string.converter_swap_units_description)
             )
         }
         UnitSelectionButton(

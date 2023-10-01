@@ -90,35 +90,35 @@ internal fun ConverterResult.Time.format(mContext: Context, formatterSymbols: Fo
     val result = mutableListOf<String>()
 
     if (day.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${day.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.day_short)}"
+        result += "${day.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_day_short)}"
     }
 
     if (hour.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${hour.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.hour_short)}"
+        result += "${hour.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_hour_short)}"
     }
 
     if (minute.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${minute.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.minute_short)}"
+        result += "${minute.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_minute_short)}"
     }
 
     if (second.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${second.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.second_short)}"
+        result += "${second.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_second_short)}"
     }
 
     if (millisecond.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${millisecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.millisecond_short)}"
+        result += "${millisecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_millisecond_short)}"
     }
 
     if (microsecond.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${microsecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.microsecond_short)}"
+        result += "${microsecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_microsecond_short)}"
     }
 
     if (nanosecond.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${nanosecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.nanosecond_short)}"
+        result += "${nanosecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_nanosecond_short)}"
     }
 
     if (attosecond.compareTo(BigDecimal.ZERO) == 1) {
-        result += "${attosecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.attosecond_short)}"
+        result += "${attosecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_attosecond_short)}"
     }
 
     return (if (negative) Token.Operator.minus else "") + result.joinToString(" ").ifEmpty { Token.Digit._0 }

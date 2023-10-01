@@ -154,7 +154,7 @@ private fun Ready(
     var showClearHistoryButton by rememberSaveable { mutableStateOf(false) }
 
     UnittoScreenWithTopBar(
-        title = { Text(stringResource(R.string.calculator)) },
+        title = { Text(stringResource(R.string.calculator_title)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
@@ -165,7 +165,7 @@ private fun Ready(
                         content = {
                             Icon(
                                 Icons.Default.Delete,
-                                stringResource(R.string.calculator_clear_history_title)
+                                stringResource(R.string.clear_history_label)
                             )
                         },
                         modifier = Modifier.semantics { testTag = "historyButton" }
@@ -284,10 +284,10 @@ private fun Ready(
     if (showClearHistoryDialog) {
         AlertDialog(
             icon = {
-                Icon(Icons.Default.Delete, stringResource(R.string.calculator_clear_history_title))
+                Icon(Icons.Default.Delete, stringResource(R.string.clear_history_label))
             },
             title = {
-                Text(stringResource(R.string.calculator_clear_history_title))
+                Text(stringResource(R.string.clear_history_label))
             },
             text = {
                 Text(stringResource(R.string.calculator_clear_history_support))
@@ -299,7 +299,7 @@ private fun Ready(
                         showClearHistoryDialog = false
                     }
                 ) {
-                    Text(stringResource(R.string.calculator_clear_history_label))
+                    Text(stringResource(R.string.clear_label))
                 }
             },
             dismissButton = {
@@ -320,7 +320,7 @@ internal fun Loading(
     navigateToSettings: () -> Unit,
 ) {
     UnittoScreenWithTopBar(
-        title = { Text(stringResource(R.string.calculator)) },
+        title = { Text(stringResource(R.string.calculator_title)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = { SettingsButton(navigateToSettings) }

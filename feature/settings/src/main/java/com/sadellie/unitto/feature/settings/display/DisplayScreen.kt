@@ -137,7 +137,7 @@ private fun DisplayScreen(
     navigateToLanguages: () -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.display_settings),
+        title = stringResource(R.string.settings_display),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { paddingValues ->
         Column(
@@ -150,11 +150,11 @@ private fun DisplayScreen(
                 leadingContent = {
                     Icon(
                         Icons.Default.Palette,
-                        stringResource(R.string.color_theme),
+                        stringResource(R.string.settings_color_theme),
                     )
                 },
-                headlineContent = { Text(stringResource(R.string.color_theme)) },
-                supportingContent = { Text(stringResource(R.string.color_theme_support)) },
+                headlineContent = { Text(stringResource(R.string.settings_color_theme)) },
+                supportingContent = { Text(stringResource(R.string.settings_color_theme_support)) },
             )
 
             Row(
@@ -164,19 +164,19 @@ private fun DisplayScreen(
             ) {
                 SegmentedButtonsRow(modifier = Modifier.padding(56.dp, 8.dp, 24.dp, 2.dp)) {
                     SegmentedButton(
-                        label = stringResource(R.string.auto_label),
+                        label = stringResource(R.string.settings_auto),
                         onClick = { onThemeChange(ThemingMode.AUTO) },
                         selected = ThemingMode.AUTO == currentThemingMode,
                         icon = Icons.Outlined.HdrAuto
                     )
                     SegmentedButton(
-                        label = stringResource(R.string.force_light_mode),
+                        label = stringResource(R.string.settings_light_mode),
                         onClick = { onThemeChange(ThemingMode.FORCE_LIGHT) },
                         selected = ThemingMode.FORCE_LIGHT == currentThemingMode,
                         icon = Icons.Outlined.LightMode
                     )
                     SegmentedButton(
-                        label = stringResource(R.string.force_dark_mode),
+                        label = stringResource(R.string.settings_dark_mode),
                         onClick = { onThemeChange(ThemingMode.FORCE_DARK) },
                         selected = ThemingMode.FORCE_DARK == currentThemingMode,
                         icon = Icons.Outlined.DarkMode
@@ -191,9 +191,9 @@ private fun DisplayScreen(
             ) {
                 UnittoListItem(
                     icon = Icons.Default.DarkMode,
-                    iconDescription = stringResource(R.string.force_amoled_mode),
-                    headlineText = stringResource(R.string.force_amoled_mode),
-                    supportingText = stringResource(R.string.force_amoled_mode_support),
+                    iconDescription = stringResource(R.string.settings_amoled_dark),
+                    headlineText = stringResource(R.string.settings_amoled_dark),
+                    supportingText = stringResource(R.string.settings_amoled_dark_support),
                     switchState = isAmoledThemeEnabled,
                     onSwitchChange = onAmoledThemeChange
                 )
@@ -202,9 +202,9 @@ private fun DisplayScreen(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 UnittoListItem(
                     icon = Icons.Default.Colorize,
-                    iconDescription = stringResource(R.string.enable_dynamic_colors),
-                    headlineText = stringResource(R.string.enable_dynamic_colors),
-                    supportingText = stringResource(R.string.enable_dynamic_colors_support),
+                    iconDescription = stringResource(R.string.settings_dynamic_colors),
+                    headlineText = stringResource(R.string.settings_dynamic_colors),
+                    supportingText = stringResource(R.string.settings_dynamic_colors_support),
                     switchState = isDynamicThemeEnabled,
                     onSwitchChange = onDynamicThemeChange
                 )
@@ -215,7 +215,7 @@ private fun DisplayScreen(
                     exit = shrinkVertically() + fadeOut(),
                 ) {
                     UnittoListItem(
-                        headlineContent = { Text(stringResource(R.string.selected_color)) },
+                        headlineContent = { Text(stringResource(R.string.settings_selected_color)) },
                         supportingContent = {
                             ColorSelector(
                                 modifier = Modifier.padding(top = 12.dp),
@@ -235,7 +235,7 @@ private fun DisplayScreen(
                     exit = shrinkVertically() + fadeOut(),
                 ) {
                     UnittoListItem(
-                        headlineContent = { Text(stringResource(R.string.monet_mode)) },
+                        headlineContent = { Text(stringResource(R.string.settings_selected_style)) },
                         supportingContent = {
                             MonetModeSelector(
                                 modifier = Modifier.padding(top = 12.dp),
@@ -251,31 +251,31 @@ private fun DisplayScreen(
                 }
             }
 
-            Header(stringResource(R.string.additional_settings_group))
+            Header(stringResource(R.string.settings_additional))
 
             UnittoListItem(
                 icon = Icons.Default.FontDownload,
-                iconDescription = stringResource(R.string.system_font_setting),
-                headlineText = stringResource(R.string.system_font_setting),
-                supportingText = stringResource(R.string.system_font_setting_support),
+                iconDescription = stringResource(R.string.settings_system_font),
+                headlineText = stringResource(R.string.settings_system_font),
+                supportingText = stringResource(R.string.settings_system_font_support),
                 switchState = systemFont,
                 onSwitchChange = updateSystemFont
             )
 
             UnittoListItem(
                 icon = Icons.Default.ExposureZero,
-                iconDescription = stringResource(R.string.middle_zero_option),
-                headlineText = stringResource(R.string.middle_zero_option),
-                supportingText = stringResource(R.string.middle_zero_option_support),
+                iconDescription = stringResource(R.string.settings_middle_zero),
+                headlineText = stringResource(R.string.settings_middle_zero),
+                supportingText = stringResource(R.string.settings_middle_zero_support),
                 switchState = middleZero,
                 onSwitchChange = updateMiddleZero
             )
 
             UnittoListItem(
                 icon = Icons.Default.Language,
-                iconDescription = stringResource(R.string.language_setting),
-                headlineText = stringResource(R.string.language_setting),
-                supportingText = stringResource(R.string.language_setting_support),
+                iconDescription = stringResource(R.string.settings_language),
+                headlineText = stringResource(R.string.settings_language),
+                supportingText = stringResource(R.string.settings_language_support),
                 modifier = Modifier.clickable { navigateToLanguages() }
             )
         }

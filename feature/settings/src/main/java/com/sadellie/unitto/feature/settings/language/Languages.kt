@@ -22,7 +22,7 @@ import com.sadellie.unitto.core.base.R
 
 internal val languages by lazy {
     mapOf(
-        "" to R.string.system,
+        "" to R.string.settings_system,
         "en" to R.string.locale_en,
         "en-GB" to R.string.locale_en_rGB,
         "de" to R.string.locale_de,

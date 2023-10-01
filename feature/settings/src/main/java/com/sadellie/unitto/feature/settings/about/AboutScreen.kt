@@ -81,7 +81,7 @@ private fun AboutScreen(
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.about_unitto),
+        title = stringResource(R.string.settings_about_unitto),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
@@ -89,8 +89,8 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Help,
-                    iconDescription = stringResource(R.string.currency_rates_note_setting),
-                    headlineText = stringResource(R.string.currency_rates_note_setting),
+                    iconDescription = stringResource(R.string.settings_currency_rates_note_title),
+                    headlineText = stringResource(R.string.settings_currency_rates_note_title),
                     modifier = Modifier.clickable { showDialog = true }
                 )
             }
@@ -99,8 +99,8 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.PrivacyTip,
-                    iconDescription = stringResource(R.string.terms_and_conditions),
-                    headlineText = stringResource(R.string.terms_and_conditions),
+                    iconDescription = stringResource(R.string.settings_terms_and_conditions),
+                    headlineText = stringResource(R.string.settings_terms_and_conditions),
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -114,8 +114,8 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Policy,
-                    iconDescription = stringResource(R.string.privacy_policy),
-                    headlineText = stringResource(R.string.privacy_policy),
+                    iconDescription = stringResource(R.string.settings_privacy_policy),
+                    headlineText = stringResource(R.string.settings_privacy_policy),
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -129,8 +129,8 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Code,
-                    iconDescription = stringResource(R.string.open_source),
-                    headlineText = stringResource(R.string.open_source),
+                    iconDescription = stringResource(R.string.settings_view_source_code),
+                    headlineText = stringResource(R.string.settings_view_source_code),
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
@@ -144,8 +144,8 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Copyright,
-                    iconDescription = stringResource(R.string.third_party_licenses),
-                    headlineText = stringResource(R.string.third_party_licenses),
+                    iconDescription = stringResource(R.string.settings_third_party_licenses),
+                    headlineText = stringResource(R.string.settings_third_party_licenses),
                     modifier = Modifier.clickable { navigateToThirdParty() }
                 )
             }
@@ -154,8 +154,8 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Info,
-                    iconDescription = stringResource(R.string.app_version_name_setting),
-                    headlineText = stringResource(R.string.app_version_name_setting),
+                    iconDescription = stringResource(R.string.settings_version_name),
+                    headlineText = stringResource(R.string.settings_version_name),
                     supportingText = "${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})",
                     modifier = Modifier.combinedClickable {
                         if (prefs.enableToolsExperiment) {
@@ -177,10 +177,10 @@ private fun AboutScreen(
     if (showDialog) {
         AlertDialog(
             title = {
-                Text(stringResource(R.string.currency_rates_note_title))
+                Text(stringResource(R.string.settings_note))
             },
             text = {
-                Text(stringResource(R.string.currency_rates_note_text))
+                Text(stringResource(R.string.settings_currency_rates_note_text))
             },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {

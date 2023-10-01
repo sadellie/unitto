@@ -60,8 +60,8 @@ internal fun DateCalculatorScreen(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
 ) {
-    val addSubtractLabel = "${stringResource(R.string.add)}/${stringResource(R.string.subtract)}"
-    val differenceLabel = stringResource(R.string.difference)
+    val addSubtractLabel = "${stringResource(R.string.date_calculator_add)}/${stringResource(R.string.date_calculator_subtract)}"
+    val differenceLabel = stringResource(R.string.date_calculator_difference)
     val focusManager = LocalFocusManager.current
     var topBarShown by remember { mutableStateOf(true) }
     var showKeyboard by remember { mutableStateOf(false) }
@@ -72,7 +72,7 @@ internal fun DateCalculatorScreen(
 
     UnittoScreenWithTopBar(
         modifier = Modifier,
-        title = { Text(stringResource(R.string.date_calculator)) },
+        title = { Text(stringResource(R.string.date_calculator_title)) },
         navigationIcon = { MenuButton(navigateToMenu) },
         actions = { SettingsButton(navigateToSettings) },
         showTopBar = topBarShown,

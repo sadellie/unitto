@@ -53,16 +53,16 @@ private fun CalculatorSettingsScreen(
     updatePartialHistoryView: (Boolean) -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.calculator),
+        title = stringResource(R.string.calculator_title),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             item("partial history") {
                 UnittoListItem(
-                    headlineText = stringResource(R.string.partial_history_view_setting),
+                    headlineText = stringResource(R.string.settings_partial_history_view),
                     icon = Icons.Default.Timer,
-                    iconDescription = stringResource(R.string.partial_history_view_setting),
-                    supportingText = stringResource(R.string.partial_history_view_setting_support),
+                    iconDescription = stringResource(R.string.settings_partial_history_view),
+                    supportingText = stringResource(R.string.settings_partial_history_view_support),
                     switchState = prefs.partialHistoryView,
                     onSwitchChange = updatePartialHistoryView
                 )

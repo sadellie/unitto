@@ -52,10 +52,10 @@ sealed class TopLevelDestinations(
     data object Converter : TopLevelDestinations(
         graph = CONVERTER_GRAPH,
         start = CONVERTER_START,
-        name = R.string.unit_converter,
+        name = R.string.unit_converter_title,
         shortcut = Shortcut(
-            R.string.unit_converter,
-            R.string.unit_converter,
+            R.string.unit_converter_title,
+            R.string.unit_converter_title,
             R.drawable.unit_converter_shortcut
         )
     )
@@ -63,10 +63,10 @@ sealed class TopLevelDestinations(
     data object Calculator : TopLevelDestinations(
         graph = CALCULATOR_GRAPH,
         start = CALCULATOR_START,
-        name = R.string.calculator,
+        name = R.string.calculator_title,
         shortcut = Shortcut(
-            R.string.calculator,
-            R.string.calculator,
+            R.string.calculator_title,
+            R.string.calculator_title,
             R.drawable.calculator_shortcut
         )
     )
@@ -74,10 +74,10 @@ sealed class TopLevelDestinations(
     data object DateCalculator : TopLevelDestinations(
         graph = DATE_CALCULATOR_GRAPH,
         start = DATE_CALCULATOR_START,
-        name = R.string.date_calculator,
+        name = R.string.date_calculator_title,
         shortcut = Shortcut(
-            R.string.date_calculator,
-            R.string.date_calculator,
+            R.string.date_calculator_title,
+            R.string.date_calculator_title,
             R.drawable.date_calculator_shortcut
         )
     )
@@ -85,10 +85,10 @@ sealed class TopLevelDestinations(
     data object TimeZone : TopLevelDestinations(
         graph = TIME_ZONE_GRAPH,
         start = TIME_ZONE_START,
-        name = R.string.time_zone_screen,
+        name = R.string.time_zone_title,
         shortcut = Shortcut(
-            R.string.time_zone_screen,
-            R.string.time_zone_screen,
+            R.string.time_zone_title,
+            R.string.time_zone_title,
             R.drawable.time_zone_shortcut
         )
     )
@@ -96,7 +96,7 @@ sealed class TopLevelDestinations(
     data object Settings : TopLevelDestinations(
         graph = SETTINGS_GRAPH,
         start = SETTINGS_START,
-        name = R.string.settings_screen
+        name = R.string.settings_title
     )
 }
 

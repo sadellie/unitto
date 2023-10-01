@@ -172,7 +172,7 @@ private fun TimeZoneScreen(
 
     UnittoScreenWithTopBar(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        title = { Text(stringResource(R.string.time_zone_screen)) },
+        title = { Text(stringResource(R.string.time_zone_title)) },
         navigationIcon = { MenuButton(navigateToMenu) },
         actions = { SettingsButton(navigateToSettings) },
         floatingActionButton = {

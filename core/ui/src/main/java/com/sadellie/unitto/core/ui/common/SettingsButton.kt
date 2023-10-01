@@ -29,6 +29,6 @@ import com.sadellie.unitto.core.base.R
 @Composable
 fun SettingsButton(onClick: () -> Unit) {
     IconButton(onClick) {
-        Icon(Icons.Outlined.Settings, stringResource(R.string.open_settings_description))
+        Icon(Icons.Outlined.Settings, stringResource(R.string.open_settings_label))
     }
 }

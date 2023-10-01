@@ -33,8 +33,8 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
             id = MyUnitIDS.celsius,
             basicUnit = BigDecimal.ONE,
             group = UnitGroup.TEMPERATURE,
-            displayName = R.string.celsius,
-            shortName = R.string.celsius_short,
+            displayName = R.string.unit_celsius,
+            shortName = R.string.unit_celsius_short,
             customConvert = { unitTo, value ->
                 when (unitTo.id) {
                     MyUnitIDS.fahrenheit -> {
@@ -58,8 +58,8 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
             id = MyUnitIDS.fahrenheit,
             basicUnit = BigDecimal.ONE,
             group = UnitGroup.TEMPERATURE,
-            displayName = R.string.fahrenheit,
-            shortName = R.string.fahrenheit_short,
+            displayName = R.string.unit_fahrenheit,
+            shortName = R.string.unit_fahrenheit_short,
             customConvert = { unitTo, value ->
                 when (unitTo.id) {
                     MyUnitIDS.celsius -> {
@@ -85,8 +85,8 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
             id = MyUnitIDS.kelvin,
             basicUnit = BigDecimal.ONE,
             group = UnitGroup.TEMPERATURE,
-            displayName = R.string.kelvin,
-            shortName = R.string.kelvin_short,
+            displayName = R.string.unit_kelvin,
+            shortName = R.string.unit_kelvin_short,
             customConvert = { unitTo, value ->
                 when (unitTo.id) {
                     MyUnitIDS.celsius -> {

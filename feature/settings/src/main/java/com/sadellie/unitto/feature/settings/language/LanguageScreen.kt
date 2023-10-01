@@ -80,7 +80,7 @@ private fun LanguageScreen(
     }
 
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.language_setting),
+        title = stringResource(R.string.settings_language),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
@@ -102,7 +102,7 @@ private fun LanguageScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Translate,
-                            contentDescription = stringResource(R.string.translate_app),
+                            contentDescription = stringResource(R.string.settings_translate_app),
                             modifier = Modifier.size(24.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -111,12 +111,12 @@ private fun LanguageScreen(
                                 .weight(1f)
                                 .padding(vertical = 8.dp)) {
                             Text(
-                                text = stringResource(R.string.translate_app),
+                                text = stringResource(R.string.settings_translate_app),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                             )
                             Text(
-                                text = stringResource(R.string.translate_app_support),
+                                text = stringResource(R.string.settings_translate_app_support),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                             )

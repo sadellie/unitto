@@ -177,7 +177,7 @@ private fun AddSubtractView(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth(),
-                        title = stringResource(R.string.date_difference_start),
+                        title = stringResource(R.string.date_calculator_start),
                         dateTime = uiState.start,
                         onLongClick = { updateStart(ZonedDateTime.now()) },
                         onClick = { dialogState = DialogState.FROM },
@@ -189,7 +189,7 @@ private fun AddSubtractView(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth(),
-                        title = stringResource(R.string.date_difference_end),
+                        title = stringResource(R.string.date_calculator_end),
                         dateTime = uiState.result,
                     )
                 }
@@ -204,7 +204,7 @@ private fun AddSubtractView(
                         shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
                         icon = {}
                     ) {
-                        Icon(Icons.Outlined.Add, stringResource(R.string.add))
+                        Icon(Icons.Outlined.Add, stringResource(R.string.date_calculator_add))
                     }
                     SegmentedButton(
                         selected = !uiState.addition,
@@ -212,7 +212,7 @@ private fun AddSubtractView(
                         shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
                         icon = {}
                     ) {
-                        Icon(Icons.Outlined.Remove, stringResource(R.string.subtract))
+                        Icon(Icons.Outlined.Remove, stringResource(R.string.date_calculator_subtract))
                     }
                 }
 
@@ -225,7 +225,7 @@ private fun AddSubtractView(
                     },
                     value = uiState.years,
                     onValueChange = updateYears,
-                    label = stringResource(R.string.date_difference_years),
+                    label = stringResource(R.string.date_calculator_years),
                     formatterSymbols = uiState.formatterSymbols
                 )
 
@@ -238,7 +238,7 @@ private fun AddSubtractView(
                     },
                     value = uiState.months,
                     onValueChange = updateMonths,
-                    label = stringResource(R.string.date_difference_months),
+                    label = stringResource(R.string.date_calculator_months),
                     formatterSymbols = uiState.formatterSymbols
                 )
 
@@ -251,7 +251,7 @@ private fun AddSubtractView(
                     },
                     value = uiState.days,
                     onValueChange = updateDays,
-                    label = stringResource(R.string.date_difference_days),
+                    label = stringResource(R.string.date_calculator_days),
                     formatterSymbols = uiState.formatterSymbols
                 )
 
@@ -264,7 +264,7 @@ private fun AddSubtractView(
                     },
                     value = uiState.hours,
                     onValueChange = updateHours,
-                    label = stringResource(R.string.date_difference_hours),
+                    label = stringResource(R.string.date_calculator_hours),
                     formatterSymbols = uiState.formatterSymbols
                 )
 
@@ -277,7 +277,7 @@ private fun AddSubtractView(
                     },
                     value = uiState.minutes,
                     onValueChange = updateMinutes,
-                    label = stringResource(R.string.date_difference_minutes),
+                    label = stringResource(R.string.date_calculator_minutes),
                     formatterSymbols = uiState.formatterSymbols
                 )
             }

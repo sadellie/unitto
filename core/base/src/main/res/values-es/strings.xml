@@ -1,301 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- Length -->
-    <string name="attometer">Attómetro</string>
-    <string name="attometer_short">am</string>
-    <string name="nanometer">Nanómetro</string>
-    <string name="nanometer_short">nm</string>
-    <string name="micrometer">Micrómetro</string>
-    <string name="micrometer_short">µm</string>
-    <string name="millimeter">Milímetro</string>
-    <string name="millimeter_short">mm</string>
-    <string name="centimeter">Centímetro</string>
-    <string name="centimeter_short">cm</string>
-    <string name="decimeter">Decímetro</string>
-    <string name="decimeter_short">dm</string>
-    <string name="meter">Metro</string>
-    <string name="meter_short">m</string>
-    <string name="kilometer">Kilómetro</string>
-    <string name="kilometer_short">km</string>
-    <string name="mile">Milla</string>
-    <string name="mile_short">mi</string>
-    <string name="yard">Yarda</string>
-    <string name="yard_short">yd</string>
-    <string name="foot">Pies</string>
-    <string name="foot_short">ft</string>
-    <string name="inch">Pulgada</string>
-    <string name="inch_short">in</string>
-    <string name="light_year">Años luz</string>
-    <string name="light_year_short">ly</string>
-    <string name="parsec">Pársec</string>
-    <string name="parsec_short">pc</string>
-    <string name="kiloparsec">Kilopársec</string>
-    <string name="kiloparsec_short">kpc</string>
-    <string name="megaparsec">Megapársec</string>
-    <string name="megaparsec_short">Mpc</string>
-    <string name="mercury_equatorial_radius">Radio ecuatorial de Mercurio</string>
-    <string name="mercury_equatorial_radius_short">Mercury R</string>
-    <string name="venus_equatorial_radius">Radio ecuatorial de Venus</string>
-    <string name="venus_equatorial_radius_short">Venus R</string>
-    <string name="earth_equatorial_radius">Radio ecuatorial terrestre</string>
-    <string name="earth_equatorial_radius_short">Earth R</string>
-    <string name="mars_equatorial_radius">Radio ecuatorial de Marte</string>
-    <string name="mars_equatorial_radius_short">Mars R</string>
-    <string name="jupiter_equatorial_radius">Radio ecuatorial de Júpiter</string>
-    <string name="jupiter_equatorial_radius_short">Jupiter R</string>
-    <string name="saturn_equatorial_radius">Radio ecuatorial de Saturno</string>
-    <string name="saturn_equatorial_radius_short">Saturn R</string>
-    <string name="uranus_equatorial_radius">Radio ecuatorial de Urano</string>
-    <string name="uranus_equatorial_radius_short">Uranus R</string>
-    <string name="neptune_equatorial_radius">Radio ecuatorial de Neptuno</string>
-    <string name="neptune_equatorial_radius_short">Neptune R</string>
-    <string name="sun_equatorial_radius">Radio ecuatorial del sol</string>
-    <string name="sun_equatorial_radius_short">Sun R</string>
-
-    <!-- Mass -->
-    <string name="electron_mass_rest">Masa de electrones</string>
-    <string name="electron_mass_rest_short">me</string>
-    <string name="atomic_mass_unit">Dalton</string>
-    <string name="atomic_mass_unit_short">u</string>
-    <string name="milligram">Miligramo</string>
-    <string name="milligram_short">mg</string>
-    <string name="gram">Gramo</string>
-    <string name="gram_short">g</string>
-    <string name="kilogram">Kilogramo</string>
-    <string name="kilogram_short">kg</string>
-    <string name="metric_ton">Tonelada</string>
-    <string name="metric_ton_short">t</string>
-    <string name="imperial_ton">Tonelada imperial</string>
-    <string name="pound">Libra</string>
-    <string name="pound_short">lbs</string>
-    <string name="ounce">Onza</string>
-    <string name="ounce_short">oz</string>
-    <string name="carat">Quilate</string>
-    <string name="carat_short">ct</string>
-    <string name="mercury_mass">Masa de mercurio</string>
-    <string name="mercury_mass_short">M Mercurio</string>
-    <string name="venus_mass">Masa de venus</string>
-    <string name="venus_mass_short">M Venus</string>
-    <string name="earth_mass">Masa terrestre</string>
-    <string name="earth_mass_short">M Tierra</string>
-    <string name="mars_mass">Masa de venus</string>
-    <string name="mars_mass_short">M Marte</string>
-    <string name="jupiter_mass">Masa de Júpiter</string>
-    <string name="jupiter_mass_short">M Júpiter</string>
-    <string name="saturn_mass">Masa de Saturno</string>
-    <string name="saturn_mass_short">M Saturno</string>
-    <string name="uranus_mass">Masa de Urano</string>
-    <string name="uranus_mass_short">M Urano</string>
-    <string name="neptune_mass">Masa de Neptuno</string>
-    <string name="neptune_mass_short">M Neptuno</string>
-    <string name="sun_mass">Masa solar</string>
-    <string name="sun_mass_short">M Solar</string>
-
-    <!-- Temperature -->
-    <string name="celsius">Celsius</string>
-    <string name="fahrenheit">Fahrenheit</string>
-    <string name="kelvin">Kelvin</string>
-
-    <!-- Speed -->
-    <string name="millimeter_per_hour">Milímetro/hora</string>
-    <string name="millimeter_per_hour_short">mm/h</string>
-    <string name="millimeter_per_minute">Milímetro/minuto</string>
-    <string name="millimeter_per_minute_short">mm/m</string>
-    <string name="millimeter_per_second">Milímetro/segundo</string>
-    <string name="millimeter_per_second_short">mm/s</string>
-    <string name="centimeter_per_hour">Centímetro/hora</string>
-    <string name="centimeter_per_hour_short">cm/h</string>
-    <string name="centimeter_per_minute">Centímetro/minuto</string>
-    <string name="centimeter_per_minute_short">cm/m</string>
-    <string name="centimeter_per_second">Centímetro/segundo</string>
-    <string name="centimeter_per_second_short">cm/s</string>
-    <string name="meter_per_hour">Metro/hora</string>
-    <string name="meter_per_hour_short">m/h</string>
-    <string name="meter_per_minute">Metro/minuto</string>
-    <string name="meter_per_minute_short">m/m</string>
-    <string name="meter_per_second">Metro/segundo</string>
-    <string name="meter_per_second_short">m/s</string>
-    <string name="kilometer_per_hour">Kilómetro/hora</string>
-    <string name="kilometer_per_hour_short">km/h</string>
-    <string name="kilometer_per_minute">Kilómetro/minuto</string>
-    <string name="kilometer_per_minute_short">km/m</string>
-    <string name="kilometer_per_second">Kilómetro/segundo</string>
-    <string name="kilometer_per_second_short">km/s</string>
-    <string name="foot_per_hour">Pie/hora</string>
-    <string name="foot_per_hour_short">ft/h</string>
-    <string name="foot_per_minute">Pie/minuto</string>
-    <string name="foot_per_minute_short">ft/m</string>
-    <string name="foot_per_second">Pie/segundo</string>
-    <string name="foot_per_second_short">ft/s</string>
-    <string name="yard_per_hour">Yarda/hora</string>
-    <string name="yard_per_hour_short">yd/h</string>
-    <string name="yard_per_minute">Yarda/minuto</string>
-    <string name="yard_per_minute_short">yd/m</string>
-    <string name="yard_per_second">Yarda/segundo</string>
-    <string name="yard_per_second_short">yd/s</string>
-    <string name="mile_per_hour">Milla/hora</string>
-    <string name="mile_per_hour_short">mi/h</string>
-    <string name="mile_per_minute">Milla/minuto</string>
-    <string name="mile_per_minute_short">mi/m</string>
-    <string name="mile_per_second">Milla/segundo</string>
-    <string name="mile_per_second_short">mi/s</string>
-    <string name="knot">Nudo</string>
-    <string name="knot_short">kt</string>
-    <string name="velocity_of_light_in_vacuum">Velocidad de la luz en el vacío</string>
-    <string name="cosmic_velocity_first">Primera Velocidad Cósmica</string>
-    <string name="cosmic_velocity_second">Segunda Velocidad Cósmica</string>
-    <string name="cosmic_velocity_third">Tercera Velocidad Cósmica</string>
-    <string name="earths_orbital_speed">Velocidad orbital de la Tierra</string>
-    <string name="mach">Mach</string>
-    <string name="mach_si_standard">Mach (SI)</string>
-
-    <!-- File size -->
-    <string name="bit">Bit</string>
-    <string name="bit_short">b</string>
-    <string name="kibibit">Kibibit</string>
-    <string name="kibibit_short">Kib</string>
-    <string name="kilobit">Kilobit</string>
-    <string name="kilobit_short">Kb</string>
-    <string name="megabit">Megabit</string>
-    <string name="megabit_short">Mb</string>
-    <string name="mebibit">Mebibit</string>
-    <string name="mebibit_short">Mib</string>
-    <string name="gigabit">Gigabit</string>
-    <string name="gigabit_short">Gb</string>
-    <string name="terabit">Terabit</string>
-    <string name="terabit_short">Tb</string>
-    <string name="petabit">Petabit</string>
-    <string name="petabit_short">Pb</string>
-    <string name="exabit">Exabit</string>
-    <string name="exabit_short">Eb</string>
-    <string name="byte_">Byte</string>
-    <string name="byte_short">B</string>
-    <string name="kibibyte">Kibibyte</string>
-    <string name="kibibyte_short">KiB</string>
-    <string name="kilobyte">Kilobyte</string>
-    <string name="kilobyte_short">KB</string>
-    <string name="megabyte">Megabyte</string>
-    <string name="megabyte_short">MB</string>
-    <string name="mebibyte">Mebibyte</string>
-    <string name="mebibyte_short">MiB</string>
-    <string name="gigabyte">Gigabyte</string>
-    <string name="gigabyte_short">GB</string>
-    <string name="terabyte">Terabyte</string>
-    <string name="terabyte_short">TB</string>
-    <string name="petabyte">Petabyte</string>
-    <string name="petabyte_short">PB</string>
-    <string name="exabyte">Exabyte</string>
-    <string name="exabyte_short">EB</string>
-
-    <!-- Data transfer -->
-    <string name="bit_per_second">Bit/segundo</string>
-    <string name="bit_per_second_short">b/s</string>
-    <string name="kibibit_per_second">Kibibit/segundo</string>
-    <string name="kibibit_per_second_short">Kib/s</string>
-    <string name="kilobit_per_second">Kilobit/segundo</string>
-    <string name="kilobit_per_second_short">Kb/s</string>
-    <string name="megabit_per_second">Megabit/segundo</string>
-    <string name="megabit_per_second_short">Mb/s</string>
-    <string name="mebibit_per_second">Mebibit/segundo</string>
-    <string name="mebibit_per_second_short">Mib/s</string>
-    <string name="gigabit_per_second">Gigabit/segundo</string>
-    <string name="gigabit_per_second_short">Gb/s</string>
-    <string name="terabit_per_second">Terabit/segundo</string>
-    <string name="terabit_per_second_short">Tb/s</string>
-    <string name="petabit_per_second">Petabit/segundo</string>
-    <string name="petabit_per_second_short">Pb/s</string>
-    <string name="exabit_per_second">Exabit/segundo</string>
-    <string name="exabit_per_second_short">Eb/s</string>
-    <string name="byte_per_second">Byte/segundo</string>
-    <string name="byte_per_second_short">B/s</string>
-    <string name="kibibyte_per_second">Kibibyte/segundo</string>
-    <string name="kibibyte_per_second_short">KiB/s</string>
-    <string name="kilobyte_per_second">Kilobyte/segundo</string>
-    <string name="kilobyte_per_second_short">KB/s</string>
-    <string name="megabyte_per_second">Megabyte/segundo</string>
-    <string name="megabyte_per_second_short">MB/s</string>
-    <string name="mebibyte_per_second">Mebibyte/segundo</string>
-    <string name="mebibyte_per_second_short">MiB/s</string>
-    <string name="gigabyte_per_second">Gigabyte/segundo</string>
-    <string name="gigabyte_per_second_short">GB/s</string>
-    <string name="terabyte_per_second">Terabyte/segundo</string>
-    <string name="terabyte_per_second_short">TB/s</string>
-    <string name="petabyte_per_second">Petabyte/segundo</string>
-    <string name="petabyte_per_second_short">PB/s</string>
-    <string name="exabyte_per_second">Exabyte/segundo</string>
-    <string name="exabyte_per_second_short">EB/s</string>
-
-    <!-- Volume -->
-    <string name="attoliter">Attolitro</string>
-    <string name="attoliter_short">aL</string>
-    <string name="milliliter">Mililitro</string>
-    <string name="milliliter_short">mL</string>
-    <string name="liter">Litro</string>
-    <string name="liter_short">L</string>
-    <string name="us_liquid_gallon">Galón Líquido US</string>
-    <string name="us_liquid_gallon_short">gal (US)</string>
-    <string name="us_liquid_quart">Cuarto Líquido US</string>
-    <string name="us_liquid_quart_short">qt (US)</string>
-    <string name="us_liquid_pint">Pinta Líquida US</string>
-    <string name="us_liquid_pint_short">pt (US)</string>
-    <string name="us_legal_cup">Copa Legal US</string>
-    <string name="us_legal_cup_short">cup (US)</string>
-    <string name="us_fluid_ounce">Onza de Fluido US</string>
-
-    <!-- Time -->
-    <string name="attosecond">Attosegundo</string>
-    <string name="attosecond_short">as</string>
-    <string name="nanosecond">Nanosegundo</string>
-    <string name="nanosecond_short">ns</string>
-    <string name="microsecond">Microsegundo</string>
-    <string name="microsecond_short">µs</string>
-    <string name="millisecond">Milisegundo</string>
-    <string name="millisecond_short">ms</string>
-    <string name="jiffy">Jiffy</string>
-    <string name="jiffy_short">j</string>
-    <string name="second">Segundo</string>
-    <string name="second_short">s</string>
-    <string name="minute">Minuto</string>
-    <string name="minute_short">m</string>
-    <string name="hour">Hora</string>
-    <string name="hour_short">h</string>
-    <string name="day">Día</string>
-    <string name="day_short">d</string>
-    <string name="week">Semana</string>
-    <string name="week_short">w</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/Gj9ZCNPXIfKddDQgccvboVFz.jpg 
-https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
-
-Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
-    <string name="formatting_setting_support">Precisión y apariencia de números</string>
-    <string name="divide_by_zero_error">No se puede dividir por 0</string>
-    <string name="date_difference">Diferencia de fechas</string>
-
-    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
-    <string name="select_time">Elegir hora</string>
-    <string name="date_difference_start">Inicio</string>
-    <string name="date_difference_end">Fin</string>
-    <string name="date_difference_result">Diferencia</string>
+    <string name="calculator_divide_by_zero_error">No se puede dividir por 0</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_years">Años</string>
+    <string name="date_calculator_days">Días</string>
+    <string name="date_calculator_difference">Diferencia</string>
+    <string name="date_calculator_end">Fin</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_months">Meses</string>
+    <string name="date_calculator_hours">Horas</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_days">Días</string>
+    <string name="date_calculator_minutes">Minutos</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_hours">Horas</string>
+    <string name="date_calculator_months">Meses</string>
+    <string name="date_calculator_start">Inicio</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_difference_minutes">Minutos</string>
+    <string name="date_calculator_years">Años</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
 
 Used in this dialog window. Should be short -->
     <string name="next_label">Siguiente</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
+    <string name="select_time_label">Elegir hora</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/Gj9ZCNPXIfKddDQgccvboVFz.jpg 
+https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
+
+Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
+    <string name="settings_formatting_support">Precisión y apariencia de números</string>
+    <string name="unit_atomic_mass_unit">Dalton</string>
+    <string name="unit_atomic_mass_unit_short">u</string>
+
+    <!-- Volume -->
+    <string name="unit_attoliter">Attolitro</string>
+    <string name="unit_attoliter_short">aL</string>
+
+    <!-- Length -->
+    <string name="unit_attometer">Attómetro</string>
+    <string name="unit_attometer_short">am</string>
+
+    <!-- Time -->
+    <string name="unit_attosecond">Attosegundo</string>
+    <string name="unit_attosecond_short">as</string>
+
+    <!-- File size -->
+    <string name="unit_bit">Bit</string>
+
+    <!-- Data transfer -->
+    <string name="unit_bit_per_second">Bit/segundo</string>
+    <string name="unit_bit_per_second_short">b/s</string>
+    <string name="unit_bit_short">b</string>
+    <string name="unit_byte">Byte</string>
+    <string name="unit_byte_per_second">Byte/segundo</string>
+    <string name="unit_byte_per_second_short">B/s</string>
+    <string name="unit_byte_short">B</string>
+    <string name="unit_carat">Quilate</string>
+    <string name="unit_carat_short">ct</string>
+
+    <!-- Temperature -->
+    <string name="unit_celsius">Celsius</string>
+    <string name="unit_centimeter">Centímetro</string>
+    <string name="unit_centimeter_per_hour">Centímetro/hora</string>
+    <string name="unit_centimeter_per_hour_short">cm/h</string>
+    <string name="unit_centimeter_per_minute">Centímetro/minuto</string>
+    <string name="unit_centimeter_per_minute_short">cm/m</string>
+    <string name="unit_centimeter_per_second">Centímetro/segundo</string>
+    <string name="unit_centimeter_per_second_short">cm/s</string>
+    <string name="unit_centimeter_short">cm</string>
+    <string name="unit_cosmic_velocity_first">Primera Velocidad Cósmica</string>
+    <string name="unit_cosmic_velocity_second">Segunda Velocidad Cósmica</string>
+    <string name="unit_cosmic_velocity_third">Tercera Velocidad Cósmica</string>
+    <string name="unit_day">Día</string>
+    <string name="unit_day_short">d</string>
+    <string name="unit_decimeter">Decímetro</string>
+    <string name="unit_decimeter_short">dm</string>
+    <string name="unit_earth_equatorial_radius">Radio ecuatorial terrestre</string>
+    <string name="unit_earth_equatorial_radius_short">Earth R</string>
+    <string name="unit_earth_mass">Masa terrestre</string>
+    <string name="unit_earth_mass_short">M Tierra</string>
+    <string name="unit_earths_orbital_speed">Velocidad orbital de la Tierra</string>
+
+    <!-- Mass -->
+    <string name="unit_electron_mass_rest">Masa de electrones</string>
+    <string name="unit_electron_mass_rest_short">me</string>
+    <string name="unit_exabit">Exabit</string>
+    <string name="unit_exabit_per_second">Exabit/segundo</string>
+    <string name="unit_exabit_per_second_short">Eb/s</string>
+    <string name="unit_exabit_short">Eb</string>
+    <string name="unit_exabyte">Exabyte</string>
+    <string name="unit_exabyte_per_second">Exabyte/segundo</string>
+    <string name="unit_exabyte_per_second_short">EB/s</string>
+    <string name="unit_exabyte_short">EB</string>
+    <string name="unit_fahrenheit">Fahrenheit</string>
+    <string name="unit_foot">Pies</string>
+    <string name="unit_foot_per_hour">Pie/hora</string>
+    <string name="unit_foot_per_hour_short">ft/h</string>
+    <string name="unit_foot_per_minute">Pie/minuto</string>
+    <string name="unit_foot_per_minute_short">ft/m</string>
+    <string name="unit_foot_per_second">Pie/segundo</string>
+    <string name="unit_foot_per_second_short">ft/s</string>
+    <string name="unit_foot_short">ft</string>
+    <string name="unit_gigabit">Gigabit</string>
+    <string name="unit_gigabit_per_second">Gigabit/segundo</string>
+    <string name="unit_gigabit_per_second_short">Gb/s</string>
+    <string name="unit_gigabit_short">Gb</string>
+    <string name="unit_gigabyte">Gigabyte</string>
+    <string name="unit_gigabyte_per_second">Gigabyte/segundo</string>
+    <string name="unit_gigabyte_per_second_short">GB/s</string>
+    <string name="unit_gigabyte_short">GB</string>
+    <string name="unit_gram">Gramo</string>
+    <string name="unit_gram_short">g</string>
+    <string name="unit_hour">Hora</string>
+    <string name="unit_hour_short">h</string>
+    <string name="unit_imperial_ton">Tonelada imperial</string>
+    <string name="unit_inch">Pulgada</string>
+    <string name="unit_inch_short">in</string>
+    <string name="unit_jiffy">Jiffy</string>
+    <string name="unit_jiffy_short">j</string>
+    <string name="unit_jupiter_equatorial_radius">Radio ecuatorial de Júpiter</string>
+    <string name="unit_jupiter_equatorial_radius_short">Jupiter R</string>
+    <string name="unit_jupiter_mass">Masa de Júpiter</string>
+    <string name="unit_jupiter_mass_short">M Júpiter</string>
+    <string name="unit_kelvin">Kelvin</string>
+    <string name="unit_kibibit">Kibibit</string>
+    <string name="unit_kibibit_per_second">Kibibit/segundo</string>
+    <string name="unit_kibibit_per_second_short">Kib/s</string>
+    <string name="unit_kibibit_short">Kib</string>
+    <string name="unit_kibibyte">Kibibyte</string>
+    <string name="unit_kibibyte_per_second">Kibibyte/segundo</string>
+    <string name="unit_kibibyte_per_second_short">KiB/s</string>
+    <string name="unit_kibibyte_short">KiB</string>
+    <string name="unit_kilobit">Kilobit</string>
+    <string name="unit_kilobit_per_second">Kilobit/segundo</string>
+    <string name="unit_kilobit_per_second_short">Kb/s</string>
+    <string name="unit_kilobit_short">Kb</string>
+    <string name="unit_kilobyte">Kilobyte</string>
+    <string name="unit_kilobyte_per_second">Kilobyte/segundo</string>
+    <string name="unit_kilobyte_per_second_short">KB/s</string>
+    <string name="unit_kilobyte_short">KB</string>
+    <string name="unit_kilogram">Kilogramo</string>
+    <string name="unit_kilogram_short">kg</string>
+    <string name="unit_kilometer">Kilómetro</string>
+    <string name="unit_kilometer_per_hour">Kilómetro/hora</string>
+    <string name="unit_kilometer_per_hour_short">km/h</string>
+    <string name="unit_kilometer_per_minute">Kilómetro/minuto</string>
+    <string name="unit_kilometer_per_minute_short">km/m</string>
+    <string name="unit_kilometer_per_second">Kilómetro/segundo</string>
+    <string name="unit_kilometer_per_second_short">km/s</string>
+    <string name="unit_kilometer_short">km</string>
+    <string name="unit_kiloparsec">Kilopársec</string>
+    <string name="unit_kiloparsec_short">kpc</string>
+    <string name="unit_knot">Nudo</string>
+    <string name="unit_knot_short">kt</string>
+    <string name="unit_light_year">Años luz</string>
+    <string name="unit_light_year_short">ly</string>
+    <string name="unit_liter">Litro</string>
+    <string name="unit_liter_short">L</string>
+    <string name="unit_mach">Mach</string>
+    <string name="unit_mach_si_standard">Mach (SI)</string>
+    <string name="unit_mars_equatorial_radius">Radio ecuatorial de Marte</string>
+    <string name="unit_mars_equatorial_radius_short">Mars R</string>
+    <string name="unit_mars_mass">Masa de venus</string>
+    <string name="unit_mars_mass_short">M Marte</string>
+    <string name="unit_mebibit">Mebibit</string>
+    <string name="unit_mebibit_per_second">Mebibit/segundo</string>
+    <string name="unit_mebibit_per_second_short">Mib/s</string>
+    <string name="unit_mebibit_short">Mib</string>
+    <string name="unit_mebibyte">Mebibyte</string>
+    <string name="unit_mebibyte_per_second">Mebibyte/segundo</string>
+    <string name="unit_mebibyte_per_second_short">MiB/s</string>
+    <string name="unit_mebibyte_short">MiB</string>
+    <string name="unit_megabit">Megabit</string>
+    <string name="unit_megabit_per_second">Megabit/segundo</string>
+    <string name="unit_megabit_per_second_short">Mb/s</string>
+    <string name="unit_megabit_short">Mb</string>
+    <string name="unit_megabyte">Megabyte</string>
+    <string name="unit_megabyte_per_second">Megabyte/segundo</string>
+    <string name="unit_megabyte_per_second_short">MB/s</string>
+    <string name="unit_megabyte_short">MB</string>
+    <string name="unit_megaparsec">Megapársec</string>
+    <string name="unit_megaparsec_short">Mpc</string>
+    <string name="unit_mercury_equatorial_radius">Radio ecuatorial de Mercurio</string>
+    <string name="unit_mercury_equatorial_radius_short">Mercury R</string>
+    <string name="unit_mercury_mass">Masa de mercurio</string>
+    <string name="unit_mercury_mass_short">M Mercurio</string>
+    <string name="unit_meter">Metro</string>
+    <string name="unit_meter_per_hour">Metro/hora</string>
+    <string name="unit_meter_per_hour_short">m/h</string>
+    <string name="unit_meter_per_minute">Metro/minuto</string>
+    <string name="unit_meter_per_minute_short">m/m</string>
+    <string name="unit_meter_per_second">Metro/segundo</string>
+    <string name="unit_meter_per_second_short">m/s</string>
+    <string name="unit_meter_short">m</string>
+    <string name="unit_metric_ton">Tonelada</string>
+    <string name="unit_metric_ton_short">t</string>
+    <string name="unit_micrometer">Micrómetro</string>
+    <string name="unit_micrometer_short">µm</string>
+    <string name="unit_microsecond">Microsegundo</string>
+    <string name="unit_microsecond_short">µs</string>
+    <string name="unit_mile">Milla</string>
+    <string name="unit_mile_per_hour">Milla/hora</string>
+    <string name="unit_mile_per_hour_short">mi/h</string>
+    <string name="unit_mile_per_minute">Milla/minuto</string>
+    <string name="unit_mile_per_minute_short">mi/m</string>
+    <string name="unit_mile_per_second">Milla/segundo</string>
+    <string name="unit_mile_per_second_short">mi/s</string>
+    <string name="unit_mile_short">mi</string>
+    <string name="unit_milligram">Miligramo</string>
+    <string name="unit_milligram_short">mg</string>
+    <string name="unit_milliliter">Mililitro</string>
+    <string name="unit_milliliter_short">mL</string>
+    <string name="unit_millimeter">Milímetro</string>
+
+    <!-- Speed -->
+    <string name="unit_millimeter_per_hour">Milímetro/hora</string>
+    <string name="unit_millimeter_per_hour_short">mm/h</string>
+    <string name="unit_millimeter_per_minute">Milímetro/minuto</string>
+    <string name="unit_millimeter_per_minute_short">mm/m</string>
+    <string name="unit_millimeter_per_second">Milímetro/segundo</string>
+    <string name="unit_millimeter_per_second_short">mm/s</string>
+    <string name="unit_millimeter_short">mm</string>
+    <string name="unit_millisecond">Milisegundo</string>
+    <string name="unit_millisecond_short">ms</string>
+    <string name="unit_minute">Minuto</string>
+    <string name="unit_minute_short">m</string>
+    <string name="unit_nanometer">Nanómetro</string>
+    <string name="unit_nanometer_short">nm</string>
+    <string name="unit_nanosecond">Nanosegundo</string>
+    <string name="unit_nanosecond_short">ns</string>
+    <string name="unit_neptune_equatorial_radius">Radio ecuatorial de Neptuno</string>
+    <string name="unit_neptune_equatorial_radius_short">Neptune R</string>
+    <string name="unit_neptune_mass">Masa de Neptuno</string>
+    <string name="unit_neptune_mass_short">M Neptuno</string>
+    <string name="unit_ounce">Onza</string>
+    <string name="unit_ounce_short">oz</string>
+    <string name="unit_parsec">Pársec</string>
+    <string name="unit_parsec_short">pc</string>
+    <string name="unit_petabit">Petabit</string>
+    <string name="unit_petabit_per_second">Petabit/segundo</string>
+    <string name="unit_petabit_per_second_short">Pb/s</string>
+    <string name="unit_petabit_short">Pb</string>
+    <string name="unit_petabyte">Petabyte</string>
+    <string name="unit_petabyte_per_second">Petabyte/segundo</string>
+    <string name="unit_petabyte_per_second_short">PB/s</string>
+    <string name="unit_petabyte_short">PB</string>
+    <string name="unit_pound">Libra</string>
+    <string name="unit_pound_short">lbs</string>
+    <string name="unit_saturn_equatorial_radius">Radio ecuatorial de Saturno</string>
+    <string name="unit_saturn_equatorial_radius_short">Saturn R</string>
+    <string name="unit_saturn_mass">Masa de Saturno</string>
+    <string name="unit_saturn_mass_short">M Saturno</string>
+    <string name="unit_second">Segundo</string>
+    <string name="unit_second_short">s</string>
+    <string name="unit_sun_equatorial_radius">Radio ecuatorial del sol</string>
+    <string name="unit_sun_equatorial_radius_short">Sun R</string>
+    <string name="unit_sun_mass">Masa solar</string>
+    <string name="unit_sun_mass_short">M Solar</string>
+    <string name="unit_terabit">Terabit</string>
+    <string name="unit_terabit_per_second">Terabit/segundo</string>
+    <string name="unit_terabit_per_second_short">Tb/s</string>
+    <string name="unit_terabit_short">Tb</string>
+    <string name="unit_terabyte">Terabyte</string>
+    <string name="unit_terabyte_per_second">Terabyte/segundo</string>
+    <string name="unit_terabyte_per_second_short">TB/s</string>
+    <string name="unit_terabyte_short">TB</string>
+    <string name="unit_uranus_equatorial_radius">Radio ecuatorial de Urano</string>
+    <string name="unit_uranus_equatorial_radius_short">Uranus R</string>
+    <string name="unit_uranus_mass">Masa de Urano</string>
+    <string name="unit_uranus_mass_short">M Urano</string>
+    <string name="unit_us_fluid_ounce">Onza de Fluido US</string>
+    <string name="unit_us_legal_cup">Copa Legal US</string>
+    <string name="unit_us_legal_cup_short">cup (US)</string>
+    <string name="unit_us_liquid_gallon">Galón Líquido US</string>
+    <string name="unit_us_liquid_gallon_short">gal (US)</string>
+    <string name="unit_us_liquid_pint">Pinta Líquida US</string>
+    <string name="unit_us_liquid_pint_short">pt (US)</string>
+    <string name="unit_us_liquid_quart">Cuarto Líquido US</string>
+    <string name="unit_us_liquid_quart_short">qt (US)</string>
+    <string name="unit_velocity_of_light_in_vacuum">Velocidad de la luz en el vacío</string>
+    <string name="unit_venus_equatorial_radius">Radio ecuatorial de Venus</string>
+    <string name="unit_venus_equatorial_radius_short">Venus R</string>
+    <string name="unit_venus_mass">Masa de venus</string>
+    <string name="unit_venus_mass_short">M Venus</string>
+    <string name="unit_week">Semana</string>
+    <string name="unit_week_short">w</string>
+    <string name="unit_yard">Yarda</string>
+    <string name="unit_yard_per_hour">Yarda/hora</string>
+    <string name="unit_yard_per_hour_short">yd/h</string>
+    <string name="unit_yard_per_minute">Yarda/minuto</string>
+    <string name="unit_yard_per_minute_short">yd/m</string>
+    <string name="unit_yard_per_second">Yarda/segundo</string>
+    <string name="unit_yard_per_second_short">yd/s</string>
+    <string name="unit_yard_short">yd</string>
 </resources>

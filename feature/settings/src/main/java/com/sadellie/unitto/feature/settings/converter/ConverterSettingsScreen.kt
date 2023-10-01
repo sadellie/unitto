@@ -70,16 +70,16 @@ private fun ConverterSettingsScreen(
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.unit_converter),
+        title = stringResource(R.string.unit_converter_title),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             item("unit group") {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Rule,
-                    iconDescription = stringResource(R.string.unit_groups_setting),
-                    headlineText = stringResource(R.string.unit_groups_setting),
-                    supportingText = stringResource(R.string.unit_groups_support),
+                    iconDescription = stringResource(R.string.settings_unit_groups_title),
+                    headlineText = stringResource(R.string.settings_unit_groups_title),
+                    supportingText = stringResource(R.string.settings_unit_groups_support),
                     modifier = Modifier.clickable { navigateToUnitsGroup() }
                 )
             }
@@ -87,9 +87,9 @@ private fun ConverterSettingsScreen(
             item("units sorting") {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Sort,
-                    iconDescription = stringResource(R.string.units_sorting),
-                    headlineText = stringResource(R.string.units_sorting),
-                    supportingText = stringResource(R.string.units_sorting_support),
+                    iconDescription = stringResource(R.string.settings_units_sorting),
+                    headlineText = stringResource(R.string.settings_units_sorting),
+                    supportingText = stringResource(R.string.settings_units_sorting_support),
                     modifier = Modifier.clickable { showDialog = true }
                 )
             }
@@ -97,9 +97,9 @@ private fun ConverterSettingsScreen(
             item("format time") {
                 UnittoListItem(
                     icon = Icons.Default.Timer,
-                    iconDescription = stringResource(R.string.format_time),
-                    headlineText = stringResource(R.string.format_time),
-                    supportingText = stringResource(R.string.format_time_support),
+                    iconDescription = stringResource(R.string.settings_format_time),
+                    headlineText = stringResource(R.string.settings_format_time),
+                    supportingText = stringResource(R.string.settings_format_time_support),
                     switchState = prefs.unitConverterFormatTime,
                     onSwitchChange = updateUnitConverterFormatTime
                 )
@@ -109,12 +109,12 @@ private fun ConverterSettingsScreen(
 
     if (showDialog) {
         AlertDialogWithList(
-            title = stringResource(R.string.units_sorting),
+            title = stringResource(R.string.settings_units_sorting),
             listItems = mapOf(
-                UnitsListSorting.USAGE to R.string.sort_by_usage,
-                UnitsListSorting.ALPHABETICAL to R.string.sort_by_alphabetical,
-                UnitsListSorting.SCALE_DESC to R.string.sort_by_scale_desc,
-                UnitsListSorting.SCALE_ASC to R.string.sort_by_scale_asc,
+                UnitsListSorting.USAGE to R.string.settings_sort_by_usage,
+                UnitsListSorting.ALPHABETICAL to R.string.settings_sort_by_alphabetical,
+                UnitsListSorting.SCALE_DESC to R.string.settings_sort_by_scale_desc,
+                UnitsListSorting.SCALE_ASC to R.string.settings_sort_by_scale_asc,
             ),
             selectedItemIndex = prefs.unitConverterSorting,
             selectAction = updateUnitConverterSorting,

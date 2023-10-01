@@ -93,7 +93,7 @@ fun TimePickerDialog(
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = stringResource(R.string.select_time),
+                    text = stringResource(R.string.select_time_label),
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.align(Alignment.Start)
                 )

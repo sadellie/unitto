@@ -98,7 +98,7 @@ fun FormattingScreen(
         derivedStateOf {
             return@derivedStateOf if (uiState.precision >= precisions.endInclusive) {
                 resources.getString(
-                    R.string.max_precision,
+                    R.string.settings_precision_max,
                     MAX_PRECISION.toString().formatExpression(uiState.formatterSymbols)
                 )
             } else {
@@ -108,7 +108,7 @@ fun FormattingScreen(
     }
 
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.formatting_setting),
+        title = stringResource(R.string.settings_formatting),
         navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { paddingValues ->
         LazyColumn(
@@ -129,7 +129,7 @@ fun FormattingScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.formatting_setting_preview_box_label),
+                        text = stringResource(R.string.settings_formatting_preview),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -149,19 +149,19 @@ fun FormattingScreen(
             item("precision_label") {
                 UnittoListItem(
                     leadingContent = {
-                        Icon(Icons.Default.Architecture, stringResource(R.string.precision_setting))
+                        Icon(Icons.Default.Architecture, stringResource(R.string.settings_precision))
                     },
                     headlineContent = {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(stringResource(R.string.precision_setting))
+                            Text(stringResource(R.string.settings_precision))
                             Text(precisionText)
                         }
                     },
                     supportingContent = {
-                        Text(stringResource(R.string.precision_setting_support))
+                        Text(stringResource(R.string.settings_precision_support))
                     }
                 )
             }
@@ -178,10 +178,10 @@ fun FormattingScreen(
             item("separator_label") {
                 UnittoListItem(
                     leadingContent = {
-                        Icon(Icons.Default._123, stringResource(R.string.precision_setting))
+                        Icon(Icons.Default._123, stringResource(R.string.settings_separator))
                     },
-                    headlineContent = { Text(stringResource(R.string.separator_setting)) },
-                    supportingContent = { Text(stringResource(R.string.separator_setting_support)) },
+                    headlineContent = { Text(stringResource(R.string.settings_separator)) },
+                    supportingContent = { Text(stringResource(R.string.settings_separator_support)) },
                 )
             }
 
@@ -194,17 +194,17 @@ fun FormattingScreen(
                 ) {
                     SegmentedButtonsRow {
                         SegmentedButton(
-                            label = stringResource(R.string.space),
+                            label = stringResource(R.string.settings_space),
                             onClick = { onSeparatorChange(Separator.SPACE) },
                             selected = Separator.SPACE == uiState.separator
                         )
                         SegmentedButton(
-                            label = stringResource(R.string.period),
+                            label = stringResource(R.string.settings_period),
                             onClick = { onSeparatorChange(Separator.PERIOD) },
                             selected = Separator.PERIOD == uiState.separator
                         )
                         SegmentedButton(
-                            label = stringResource(R.string.comma),
+                            label = stringResource(R.string.settings_comma),
                             onClick = { onSeparatorChange(Separator.COMMA) },
                             selected = Separator.COMMA == uiState.separator
                         )
@@ -215,10 +215,10 @@ fun FormattingScreen(
             item("output_format_label") {
                 UnittoListItem(
                     leadingContent = {
-                        Icon(Icons.Default.EMobiledata, stringResource(R.string.precision_setting))
+                        Icon(Icons.Default.EMobiledata, stringResource(R.string.settings_precision))
                     },
-                    headlineContent = { Text(stringResource(R.string.exponential_notation_setting)) },
-                    supportingContent = { Text(stringResource(R.string.exponential_notation_setting_support)) }
+                    headlineContent = { Text(stringResource(R.string.settings_exponential_notation)) },
+                    supportingContent = { Text(stringResource(R.string.settings_exponential_notation_support)) }
                 )
             }
 
@@ -231,7 +231,7 @@ fun FormattingScreen(
                 ) {
                     SegmentedButtonsRow {
                         SegmentedButton(
-                            label = stringResource(R.string.auto_label),
+                            label = stringResource(R.string.settings_auto),
                             onClick = { onOutputFormatChange(OutputFormat.ALLOW_ENGINEERING) },
                             selected = OutputFormat.ALLOW_ENGINEERING == uiState.outputFormat
                         )

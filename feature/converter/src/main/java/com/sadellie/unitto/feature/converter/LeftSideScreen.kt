@@ -132,8 +132,8 @@ private fun LeftSideScreen(
                     query = uiState.query,
                     onQueryChange = onQueryChange,
                     navigateUp = navigateUp,
-                    title = stringResource(R.string.units_screen_from),
-                    placeholder = stringResource(R.string.search_bar_placeholder),
+                    title = stringResource(R.string.converter_left_side_title),
+                    placeholder = stringResource(R.string.converter_search_bar_placeholder),
                     noSearchActions = {
                         FavoritesButton(uiState.favorites) {
                             toggleFavoritesOnly(!uiState.favorites)
@@ -202,13 +202,13 @@ private fun LeftSideScreen(
 private fun LeftSideScreenPreview() {
     val units: Map<UnitGroup, List<AbstractUnit>> = mapOf(
         UnitGroup.LENGTH to listOf(
-            NormalUnit(MyUnitIDS.meter, BigDecimal.valueOf(1.0E+18), UnitGroup.LENGTH, R.string.meter, R.string.meter_short),
-            NormalUnit(MyUnitIDS.kilometer, BigDecimal.valueOf(1.0E+21), UnitGroup.LENGTH, R.string.kilometer, R.string.kilometer_short),
-            NormalUnit(MyUnitIDS.nautical_mile, BigDecimal.valueOf(1.852E+21), UnitGroup.LENGTH, R.string.nautical_mile, R.string.nautical_mile_short),
-            NormalUnit(MyUnitIDS.inch, BigDecimal.valueOf(25_400_000_000_000_000), UnitGroup.LENGTH, R.string.inch, R.string.inch_short),
-            NormalUnit(MyUnitIDS.foot, BigDecimal.valueOf(304_800_000_000_002_200), UnitGroup.LENGTH, R.string.foot, R.string.foot_short),
-            NormalUnit(MyUnitIDS.yard, BigDecimal.valueOf(914_400_000_000_006_400), UnitGroup.LENGTH, R.string.yard, R.string.yard_short),
-            NormalUnit(MyUnitIDS.mile, BigDecimal.valueOf(1_609_344_000_000_010_500_000.0), UnitGroup.LENGTH, R.string.mile, R.string.mile_short),
+            NormalUnit(MyUnitIDS.meter, BigDecimal.valueOf(1.0E+18), UnitGroup.LENGTH, R.string.unit_meter, R.string.unit_meter_short),
+            NormalUnit(MyUnitIDS.kilometer, BigDecimal.valueOf(1.0E+21), UnitGroup.LENGTH, R.string.unit_kilometer, R.string.unit_kilometer_short),
+            NormalUnit(MyUnitIDS.nautical_mile, BigDecimal.valueOf(1.852E+21), UnitGroup.LENGTH, R.string.unit_nautical_mile, R.string.unit_nautical_mile_short),
+            NormalUnit(MyUnitIDS.inch, BigDecimal.valueOf(25_400_000_000_000_000), UnitGroup.LENGTH, R.string.unit_inch, R.string.unit_inch_short),
+            NormalUnit(MyUnitIDS.foot, BigDecimal.valueOf(304_800_000_000_002_200), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
+            NormalUnit(MyUnitIDS.yard, BigDecimal.valueOf(914_400_000_000_006_400), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
+            NormalUnit(MyUnitIDS.mile, BigDecimal.valueOf(1_609_344_000_000_010_500_000.0), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
         )
     )
 

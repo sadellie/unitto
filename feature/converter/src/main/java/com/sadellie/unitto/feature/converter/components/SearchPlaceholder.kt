@@ -49,24 +49,24 @@ internal fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
         // Big icon in the middle
         Icon(
             Icons.Default.SearchOff,
-            contentDescription = stringResource(R.string.empty_search_result_description),
+            contentDescription = stringResource(R.string.no_results_description),
             modifier = Modifier.size(48.dp)
         )
         // Primary text
         Text(
-            text = stringResource(R.string.search_placeholder),
+            text = stringResource(R.string.no_results_label),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge
         )
         // Secondary text with tips
         Text(
-            text = stringResource(R.string.search_placeholder_secondary),
+            text = stringResource(R.string.converter_no_results_support),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall
         )
         // Open settings button
         ElevatedButton(onClick = navigateToSettingsAction) {
-            Text(text = stringResource(R.string.search_placeholder_button_label))
+            Text(text = stringResource(R.string.open_settings_description))
         }
     }
 }

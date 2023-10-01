@@ -56,11 +56,11 @@ internal fun DateTimeResultBlock(
 ) {
     val clipboardManager = LocalClipboardManager.current
 
-    val years = zonedDateTimeDifference.years.formatDateTimeValue(R.string.date_difference_years)
-    val months = zonedDateTimeDifference.months.formatDateTimeValue(R.string.date_difference_months)
-    val days = zonedDateTimeDifference.days.formatDateTimeValue(R.string.date_difference_days)
-    val hours = zonedDateTimeDifference.hours.formatDateTimeValue(R.string.date_difference_hours)
-    val minutes = zonedDateTimeDifference.minutes.formatDateTimeValue(R.string.date_difference_minutes)
+    val years = zonedDateTimeDifference.years.formatDateTimeValue(R.string.date_calculator_years)
+    val months = zonedDateTimeDifference.months.formatDateTimeValue(R.string.date_calculator_months)
+    val days = zonedDateTimeDifference.days.formatDateTimeValue(R.string.date_calculator_days)
+    val hours = zonedDateTimeDifference.hours.formatDateTimeValue(R.string.date_calculator_hours)
+    val minutes = zonedDateTimeDifference.minutes.formatDateTimeValue(R.string.date_calculator_minutes)
 
     val texts = listOf(years, months, days, hours, minutes)
 
@@ -81,7 +81,7 @@ internal fun DateTimeResultBlock(
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                stringResource(R.string.date_difference_result),
+                stringResource(R.string.date_calculator_difference),
                 style = MaterialTheme.typography.labelMedium
             )
             IconButton(

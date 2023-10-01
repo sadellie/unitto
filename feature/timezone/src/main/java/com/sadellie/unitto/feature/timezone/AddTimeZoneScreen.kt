@@ -110,7 +110,7 @@ fun AddTimeZoneScreen(
                 query = uiState.query,
                 onQueryChange = onQueryChange,
                 navigateUp = navigateUp,
-                title = stringResource(R.string.add_time_zone_title),
+                title = stringResource(R.string.time_zone_add_title),
                 placeholder = stringResource(R.string.search_text_field_placeholder),
                 scrollBehavior = scrollBehavior,
                 colors = TopAppBarDefaults.topAppBarColors(

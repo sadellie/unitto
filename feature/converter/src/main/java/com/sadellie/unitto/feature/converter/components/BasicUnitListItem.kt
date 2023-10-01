@@ -120,7 +120,7 @@ internal fun BasicUnitListItem(
             ) {
                 Icon(
                     imageVector = if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                    contentDescription = stringResource(R.string.favorite_button_description),
+                    contentDescription = stringResource(R.string.converter_favorite_button_description),
                     tint = itemColor
                 )
             }

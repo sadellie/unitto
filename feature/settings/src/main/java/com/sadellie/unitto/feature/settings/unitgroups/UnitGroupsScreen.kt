@@ -64,7 +64,7 @@ internal fun UnitGroupsScreen(
     navigateUpAction: () -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
-        title = stringResource(R.string.unit_groups_setting),
+        title = stringResource(R.string.settings_unit_groups_title),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { paddingValues ->
 
@@ -113,7 +113,7 @@ internal fun UnitGroupsScreen(
                         leadingContent = {
                             Icon(
                                 Icons.Default.RemoveCircle,
-                                stringResource(R.string.disable_unit_group_description),
+                                stringResource(R.string.settings_disable_unit_group_description),
                                 tint = MaterialTheme.colorScheme.outline,
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
@@ -125,7 +125,7 @@ internal fun UnitGroupsScreen(
                         trailingContent = {
                             Icon(
                                 Icons.Default.DragHandle,
-                                stringResource(R.string.reorder_unit_group_description),
+                                stringResource(R.string.settings_reorder_unit_group_description),
                                 tint = MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
                                     .clickable(
@@ -158,7 +158,7 @@ internal fun UnitGroupsScreen(
                     trailingContent = {
                         Icon(
                             Icons.Default.AddCircleOutline,
-                            stringResource(R.string.enable_unit_group_description),
+                            stringResource(R.string.settings_enable_unit_group_description),
                             tint = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
