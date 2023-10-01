@@ -17,6 +17,7 @@
  */
 
 plugins {
+    id("com.google.devtools.ksp")
     id("unitto.library")
     id("unitto.library.compose")
     id("unitto.library.feature")
@@ -36,7 +37,7 @@ dependencies {
     testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
     testImplementation(libs.androidx.room.runtime)
     testImplementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     testImplementation(libs.androidx.datastore.datastore.preferences)
 
     implementation(libs.com.squareup.moshi.moshi.kotlin)
