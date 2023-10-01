@@ -52,7 +52,6 @@ android {
     }
 
     buildTypes {
-        // Debug. No Analytics, not minified, debuggable
         debug {
             isDebuggable = true
             isMinifyEnabled = false
@@ -60,8 +59,6 @@ android {
             applicationIdSuffix = ".debug"
             enableUnitTestCoverage = true
         }
-
-        // Release with analytics and minified, not debuggable
         release {
             initWith(getByName("debug"))
             isDebuggable = false
