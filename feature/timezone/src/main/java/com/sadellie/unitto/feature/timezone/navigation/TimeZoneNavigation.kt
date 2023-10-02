@@ -32,8 +32,8 @@ import com.sadellie.unitto.feature.timezone.TimeZoneRoute
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-private val graph = TopLevelDestinations.TimeZone.start
-private val start: String = TopLevelDestinations.TimeZone.graph
+private val graph = TopLevelDestinations.TimeZone.graph
+private val start = TopLevelDestinations.TimeZone.start
 private const val ADD_TIME_ZONE_ROUTE = "ADD_TIME_ZONE_ROUTE"
 private const val USER_TIME_ARG = "USER_TIME_ARG"
 

@@ -106,15 +106,15 @@ val TOP_LEVEL_DESTINATIONS by lazy {
         TopLevelDestinations.Calculator,
         TopLevelDestinations.Converter,
         TopLevelDestinations.DateCalculator,
-        // TopLevelDestinations.TimeZone,
+        TopLevelDestinations.TimeZone,
     )
 }
 
 // Only routes, not graphs!
 val TOP_LEVEL_START_ROUTES by lazy {
     listOf(
-        CONVERTER_START,
         CALCULATOR_START,
+        CONVERTER_START,
         DATE_CALCULATOR_START,
         TIME_ZONE_START,
     )

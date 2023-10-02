@@ -19,62 +19,48 @@
 package com.sadellie.unitto.data.timezone
 
 import com.sadellie.unitto.data.common.lev
+import com.sadellie.unitto.data.database.TimeZoneDao
+import com.sadellie.unitto.data.database.TimeZoneEntity
 import com.sadellie.unitto.data.model.UnittoTimeZone
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TimeZonesRepository @Inject constructor() {
+class TimeZonesRepository @Inject constructor(
+    private val dao: TimeZoneDao
+) {
     private val allTimeZones: HashMap<String, UnittoTimeZone> = hashMapOf(
         "zulu_time_zone" to UnittoTimeZone(id = "zulu_time_zone", nameRes = "Zulu Time Zone", offsetSeconds = 0)
     )
 
-    val favoriteTimeZones: MutableStateFlow<List<UnittoTimeZone>> = MutableStateFlow(emptyList())
+    val favoriteTimeZones: Flow<List<UnittoTimeZone>> = dao
+        .getAll()
+        .map { list ->
+            val favorites = mutableListOf<UnittoTimeZone>()
+            list.forEach { entity ->
+                val foundTimeZone = allTimeZones[entity.id] ?: return@forEach
+                val mapped = foundTimeZone.copy(
+                    position = entity.position
+                )
+                favorites.add(mapped)
+            }
 
-//    UNCOMMENT FOR RELEASE
-//    val favoriteTimeZones: Flow<List<UnittoTimeZone>> = dao
-//        .getAll()
-//        .map { list ->
-//            val favorites = mutableListOf<UnittoTimeZone>()
-//            list.forEach { entity ->
-//                val foundTimeZone = allTimeZones[entity.id] ?: return@forEach
-//                val mapped = foundTimeZone.copy(
-//                    position = entity.position
-//                )
-//                favorites.add(mapped)
-//            }
-//
-//            favorites
-//        }
+            favorites
+        }
 
     suspend fun swapTimeZones(from: String, to: String) = withContext(Dispatchers.IO) {
-//        UNCOMMENT FOR RELEASE
-//        dao.swap(from, to)
-
-        favoriteTimeZones.update {
-            val fromIndex = it.indexOfFirst { it.id == from }
-            val toIndex = it.indexOfFirst { it.id == to }
-
-            it
-                .toMutableList()
-                .apply {
-                    add(toIndex, removeAt(fromIndex))
-                }
-        }
+        dao.swap(from, to)
 
         return@withContext
     }
 
     suspend fun delete(timeZone: UnittoTimeZone) = withContext(Dispatchers.IO) {
-//        UNCOMMENT FOR RELEASE
-//        // Only PrimaryKey is needed
-//        dao.remove(TimeZoneEntity(id = timeZone.id, position = 0))
-
-        favoriteTimeZones.update { it.minus(timeZone) }
+        // Only PrimaryKey is needed
+        dao.remove(TimeZoneEntity(id = timeZone.id, position = 0))
     }
 
     suspend fun filterAllTimeZones(searchQuery: String): List<UnittoTimeZone> =
@@ -118,12 +104,11 @@ class TimeZonesRepository @Inject constructor() {
 
     suspend fun addToFavorites(timeZone: UnittoTimeZone) {
 //        UNCOMMENT FOR RELEASE
-//        dao.insert(
-//            TimeZoneEntity(
-//                id = timeZone.id,
-//                position = System.currentTimeMillis().toInt()
-//            )
-//        )
-        favoriteTimeZones.update { it.plus(timeZone) }
+        dao.insert(
+            TimeZoneEntity(
+                id = timeZone.id,
+                position = System.currentTimeMillis().toInt()
+            )
+        )
     }
 }

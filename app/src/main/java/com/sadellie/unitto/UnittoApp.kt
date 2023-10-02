@@ -47,10 +47,10 @@ import com.sadellie.unitto.core.ui.common.open
 import com.sadellie.unitto.core.ui.common.rememberUnittoDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.pushDynamicShortcut
-import com.sadellie.unitto.core.ui.theme.TypographySystem
-import com.sadellie.unitto.core.ui.theme.TypographyUnitto
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
+import com.sadellie.unitto.core.ui.theme.TypographySystem
+import com.sadellie.unitto.core.ui.theme.TypographyUnitto
 import com.sadellie.unitto.data.userprefs.AppPreferences
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
@@ -79,23 +79,15 @@ internal fun UnittoApp(prefs: AppPreferences) {
 
     val shortcutsScope = rememberCoroutineScope()
 
-    val tabs by remember(prefs.enableToolsExperiment) {
-        derivedStateOf {
-            if (prefs.enableToolsExperiment) {
-                listOf(
-                    DrawerItems.Calculator,
-                    DrawerItems.Converter,
-                    DrawerItems.DateDifference,
-                    DrawerItems.TimeZones,
-                )
-            } else {
-                listOf(
-                    DrawerItems.Calculator,
-                    DrawerItems.Converter,
-                    DrawerItems.DateDifference,
-                )
-            }
-        }
+    val tabs by remember {
+        mutableStateOf(
+            listOf(
+                DrawerItems.Calculator,
+                DrawerItems.Converter,
+                DrawerItems.DateDifference,
+                DrawerItems.TimeZones
+            )
+        )
     }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
