@@ -44,7 +44,7 @@ internal class MainActivity : AppCompatActivity() {
             val prefs = userPrefsRepository.appPrefs
                 .collectAsStateWithLifecycle(null).value
 
-            if (prefs != null) UnittoApp(prefs)
+            UnittoApp(prefs)
         }
     }
 

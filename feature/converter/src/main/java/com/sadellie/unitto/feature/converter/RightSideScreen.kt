@@ -19,7 +19,6 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
@@ -62,7 +62,7 @@ internal fun RightSideRoute(
     when (
         val uiState = viewModel.rightSideUIState.collectAsStateWithLifecycle().value
     ) {
-        is RightSideUIState.Loading -> Box(Modifier.fillMaxSize())
+        is RightSideUIState.Loading -> UnittoEmptyScreen()
         is RightSideUIState.Ready ->
             RightSideScreen(
                 uiState = uiState,

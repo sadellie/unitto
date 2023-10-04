@@ -54,6 +54,7 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
@@ -72,17 +73,22 @@ internal fun SettingsRoute(
     navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
 ) {
-    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle()
+    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle().value
     val cachePercentage = viewModel.cachePercentage.collectAsStateWithLifecycle()
 
-    SettingsScreen(
-        userPrefs = userPrefs.value,
-        navigateUp = navigateUp,
-        navControllerAction = navControllerAction,
-        updateVibrations = viewModel::updateVibrations,
-        cachePercentage = cachePercentage.value,
-        clearCache = viewModel::clearCache,
-    )
+    when (userPrefs) {
+        null -> UnittoEmptyScreen()
+        else -> {
+            SettingsScreen(
+                userPrefs = userPrefs,
+                navigateUp = navigateUp,
+                navControllerAction = navControllerAction,
+                updateVibrations = viewModel::updateVibrations,
+                cachePercentage = cachePercentage.value,
+                clearCache = viewModel::clearCache,
+            )
+        }
+    }
 }
 
 @Composable
@@ -197,7 +203,9 @@ private fun PreviewSettingsScreen() {
     var cacheSize by remember { mutableFloatStateOf(0.9f) }
 
     SettingsScreen(
-        userPrefs = GeneralPreferences(),
+        userPrefs = GeneralPreferences(
+            enableVibrations = true
+        ),
         navigateUp = {},
         navControllerAction = {},
         updateVibrations = {},

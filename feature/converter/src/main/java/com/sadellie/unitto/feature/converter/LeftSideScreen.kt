@@ -23,7 +23,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -48,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
@@ -71,9 +71,7 @@ internal fun LeftSideRoute(
     when (
         val uiState = viewModel.leftSideUIState.collectAsStateWithLifecycle().value
     ) {
-        is LeftSideUIState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize())
-        }
+        is LeftSideUIState.Loading -> UnittoEmptyScreen()
         is LeftSideUIState.Ready -> LeftSideScreen(
             uiState = uiState,
             onQueryChange = viewModel::queryChangeLeft,

@@ -16,24 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.about
+package com.sadellie.unitto.core.ui.common
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
-@HiltViewModel
-internal class AboutViewModel @Inject constructor(
-    private val userPrefsRepository: UserPreferencesRepository,
-) : ViewModel() {
-    val prefs = userPrefsRepository.aboutPrefs
-        .stateIn(viewModelScope, null)
-
-    fun enableToolsExperiment() = viewModelScope.launch {
-        userPrefsRepository.updateToolsExperiment(true)
-    }
+@Composable
+fun UnittoEmptyScreen() {
+    Spacer(modifier = Modifier.fillMaxSize())
 }

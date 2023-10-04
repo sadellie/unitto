@@ -31,7 +31,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,7 +64,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
@@ -74,6 +73,7 @@ import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.core.ui.common.SettingsButton
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
@@ -125,89 +125,64 @@ private fun ConverterScreen(
     onCursorChange: (TextRange) -> Unit,
     onErrorClick: (AbstractUnit) -> Unit,
 ) {
+    when (uiState) {
+        UnitConverterUIState.Loading -> UnittoEmptyScreen()
+
+        is UnitConverterUIState.NumberBase -> {
+            UnitConverterTopBar(
+                navigateToMenu = navigateToMenu,
+                navigateToSettings = navigateToSettings
+            ) {
+                NumberBase(
+                    modifier = Modifier.padding(it),
+                    uiState = uiState,
+                    onCursorChange = onCursorChange,
+                    processInput = processInput,
+                    deleteDigit = deleteDigit,
+                    navigateToLeftScreen = navigateToLeftScreen,
+                    swapUnits = swapUnits,
+                    navigateToRightScreen = navigateToRightScreen,
+                    clearInput = clearInput
+                )
+            }
+        }
+
+        is UnitConverterUIState.Default -> {
+            UnitConverterTopBar(
+                navigateToMenu = navigateToMenu,
+                navigateToSettings = navigateToSettings
+            ) {
+                Default(
+                    modifier = Modifier.padding(it),
+                    uiState = uiState,
+                    onCursorChange = onCursorChange,
+                    processInput = processInput,
+                    deleteDigit = deleteDigit,
+                    navigateToLeftScreen = navigateToLeftScreen,
+                    swapUnits = swapUnits,
+                    navigateToRightScreen = navigateToRightScreen,
+                    clearInput = clearInput,
+                    refreshCurrencyRates = onErrorClick
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun UnitConverterTopBar(
+    navigateToMenu: () -> Unit,
+    navigateToSettings: () -> Unit,
+    content: @Composable (PaddingValues) -> Unit
+) {
     UnittoScreenWithTopBar(
         title = { Text(stringResource(R.string.unit_converter_title)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         actions = {
             SettingsButton(navigateToSettings)
         },
-        colors = TopAppBarDefaults
-            .centerAlignedTopAppBarColors(containerColor = Color.Transparent),
-        content = { padding ->
-            when (uiState) {
-                is UnitConverterUIState.Loading -> {
-                    ConverterLoading(modifier = Modifier.padding(padding))
-                }
-
-                is UnitConverterUIState.NumberBase -> {
-                    NumberBase(
-                        modifier = Modifier.padding(padding),
-                        uiState = uiState,
-                        onCursorChange = onCursorChange,
-                        processInput = processInput,
-                        deleteDigit = deleteDigit,
-                        navigateToLeftScreen = navigateToLeftScreen,
-                        swapUnits = swapUnits,
-                        navigateToRightScreen = navigateToRightScreen,
-                        clearInput = clearInput
-                    )
-                }
-
-                is UnitConverterUIState.Default -> {
-                    Default(
-                        modifier = Modifier.padding(padding),
-                        uiState = uiState,
-                        onCursorChange = onCursorChange,
-                        processInput = processInput,
-                        deleteDigit = deleteDigit,
-                        navigateToLeftScreen = navigateToLeftScreen,
-                        swapUnits = swapUnits,
-                        navigateToRightScreen = navigateToRightScreen,
-                        clearInput = clearInput,
-                        refreshCurrencyRates = onErrorClick
-                    )
-                }
-            }
-        }
-    )
-}
-
-@Composable
-private fun ConverterLoading(modifier: Modifier) {
-    PortraitLandscape(
-        modifier = modifier.fillMaxSize(),
-        content1 = { contentModifier ->
-            ColumnWithConstraints(modifier = contentModifier) {
-                val textFieldModifier = Modifier.weight(2f)
-
-                UnformattedTextField(
-                    modifier = textFieldModifier,
-                    value = TextFieldValue(stringResource(R.string.loading_label)),
-                    onCursorChange = {},
-                    minRatio = 0.7f,
-                    readOnly = true
-                )
-                AnimatedUnitShortName()
-
-                ConverterResultTextField(
-                    modifier = textFieldModifier,
-                    result = ConverterResult.Loading
-                )
-                AnimatedUnitShortName()
-
-                Spacer(modifier = Modifier.height(it.maxHeight * 0.03f))
-
-                UnitSelectionButtons()
-            }
-        },
-        content2 = {
-            Box(
-                modifier = it
-                    .clip(RoundedCornerShape(32.dp))
-                    .background(MaterialTheme.colorScheme.inverseOnSurface)
-                    .fillMaxSize()
-            )
-        }
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
+        content = { content(it) }
     )
 }
 

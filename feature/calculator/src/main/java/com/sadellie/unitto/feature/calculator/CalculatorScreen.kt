@@ -18,24 +18,17 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
@@ -53,9 +46,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -70,11 +61,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
-import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboardLoading
 import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
 import com.sadellie.unitto.feature.calculator.components.HistoryList
 import com.sadellie.unitto.feature.calculator.components.TextBox
@@ -117,10 +107,7 @@ internal fun CalculatorScreen(
     clearHistory: () -> Unit
 ) {
     when (uiState) {
-        is CalculatorUIState.Loading -> Loading(
-            navigateToMenu = navigateToMenu,
-            navigateToSettings = navigateToSettings,
-        )
+        is CalculatorUIState.Loading -> UnittoEmptyScreen()
         is CalculatorUIState.Ready -> Ready(
             uiState = uiState,
             navigateToMenu = navigateToMenu,
@@ -311,81 +298,6 @@ private fun Ready(
             },
             onDismissRequest = { showClearHistoryDialog = false }
         )
-    }
-}
-
-@Composable
-internal fun Loading(
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
-) {
-    UnittoScreenWithTopBar(
-        title = { Text(stringResource(R.string.calculator_title)) },
-        navigationIcon = { MenuButton { navigateToMenu() } },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
-        actions = { SettingsButton(navigateToSettings) }
-    ) { paddingValues ->
-        BoxWithConstraints(
-            modifier = Modifier.padding(paddingValues),
-        ) {
-            // Input
-            Column(
-                Modifier
-                    .height(maxHeight * 0.25f)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        RoundedCornerShape(
-                            topStartPercent = 0, topEndPercent = 0,
-                            bottomStartPercent = 20, bottomEndPercent = 20
-                        )
-                    )
-                    .padding(top = 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                UnformattedTextField(
-                    modifier = Modifier
-                        .weight(2f)
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    value = TextFieldValue(),
-                    minRatio = 0.5f,
-                    onCursorChange = {},
-                )
-                if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    UnformattedTextField(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
-                        value = TextFieldValue(),
-                        minRatio = 1f,
-                        onCursorChange = {},
-                        readOnly = true,
-                    )
-                }
-                // Handle
-                Box(
-                    Modifier
-                        .padding(8.dp)
-                        .background(
-                            MaterialTheme.colorScheme.onSurfaceVariant,
-                            RoundedCornerShape(100)
-                        )
-                        .sizeIn(24.dp, 4.dp)
-                )
-            }
-
-            // Keyboard
-            CalculatorKeyboardLoading(
-                modifier = Modifier
-                    .semantics { testTag = "loading" }
-                    .offset(y = maxHeight * 0.25f)
-                    .height(maxHeight * 0.75f)
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-            )
-        }
     }
 }
 

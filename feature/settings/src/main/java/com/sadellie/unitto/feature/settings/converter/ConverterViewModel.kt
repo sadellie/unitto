@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.userprefs.ConverterPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -33,7 +32,7 @@ internal class ConverterViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
     val prefs = userPrefsRepository.converterPrefs
-        .stateIn(viewModelScope, ConverterPreferences())
+        .stateIn(viewModelScope, null)
 
     fun updateUnitConverterFormatTime(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateUnitConverterFormatTime(enabled)

@@ -34,10 +34,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.userprefs.ConverterPreferences
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
@@ -48,15 +52,18 @@ internal fun ConverterSettingsRoute(
     navigateUpAction: () -> Unit,
     navigateToUnitsGroup: () -> Unit,
 ) {
-    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
-
-    ConverterSettingsScreen(
-        prefs = prefs.value,
-        navigateUpAction = navigateUpAction,
-        navigateToUnitsGroup = navigateToUnitsGroup,
-        updateUnitConverterFormatTime = viewModel::updateUnitConverterFormatTime,
-        updateUnitConverterSorting = viewModel::updateUnitConverterSorting
-    )
+    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+        null -> UnittoEmptyScreen()
+        else -> {
+            ConverterSettingsScreen(
+                prefs = prefs,
+                navigateUpAction = navigateUpAction,
+                navigateToUnitsGroup = navigateToUnitsGroup,
+                updateUnitConverterFormatTime = viewModel::updateUnitConverterFormatTime,
+                updateUnitConverterSorting = viewModel::updateUnitConverterSorting
+            )
+        }
+    }
 }
 
 @Composable
@@ -127,7 +134,20 @@ private fun ConverterSettingsScreen(
 @Composable
 private fun PreviewConverterSettingsScreen() {
     ConverterSettingsScreen(
-        prefs = ConverterPreferences(),
+        prefs = ConverterPreferences(
+            enableVibrations = true,
+            separator = Separator.SPACE,
+            middleZero = false,
+            precision = 3,
+            outputFormat = OutputFormat.PLAIN,
+            unitConverterFormatTime = false,
+            unitConverterSorting = UnitsListSorting.USAGE,
+            shownUnitGroups = ALL_UNIT_GROUPS,
+            unitConverterFavoritesOnly = false,
+            enableToolsExperiment = false,
+            latestLeftSideUnit = "kilometer",
+            latestRightSideUnit = "mile",
+        ),
         navigateUpAction = {},
         navigateToUnitsGroup = {},
         updateUnitConverterFormatTime = {},

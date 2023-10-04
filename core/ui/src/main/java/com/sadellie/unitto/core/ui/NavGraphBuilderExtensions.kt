@@ -22,9 +22,14 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
@@ -40,16 +45,16 @@ fun NavGraphBuilder.unittoComposable(
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     enterTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = { fadeIn() },
+    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = { unittoFadeIn() },
     exitTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = { fadeOut() },
+    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = { unittoFadeOut() },
     popEnterTransition: (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
         enterTransition,
     popExitTransition: (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         exitTransition,
-    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ): Unit = composable(
     route = route,
     arguments = arguments,
@@ -60,6 +65,40 @@ fun NavGraphBuilder.unittoComposable(
     popExitTransition = popExitTransition,
     content = content,
 )
+
+fun NavGraphBuilder.unittoStackedComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
+) {
+    composable(
+        route = route,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        enterTransition = {
+            slideInHorizontally(
+                animationSpec = unittoEnterTween(),
+                initialOffsetX = { (it * 0.2f).toInt() }) + unittoFadeIn()
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                animationSpec = unittoExitTween(),
+                targetOffsetX = { -(it * 0.2f).toInt() }) + unittoFadeOut()
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                animationSpec = unittoEnterTween(),
+                initialOffsetX = { -(it * 0.2f).toInt() }) + unittoFadeIn()
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                animationSpec = unittoExitTween(),
+                targetOffsetX = { (it * 0.2f).toInt() }) + unittoFadeOut()
+        },
+        content = content,
+    )
+}
 
 /**
  * @see NavGraphBuilder.navigation
@@ -79,7 +118,7 @@ fun NavGraphBuilder.unittoNavigation(
     popExitTransition: (
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
     )? = exitTransition,
-    builder: NavGraphBuilder.() -> Unit
+    builder: NavGraphBuilder.() -> Unit,
 ): Unit = navigation(
     startDestination = startDestination,
     route = route,
@@ -91,3 +130,11 @@ fun NavGraphBuilder.unittoNavigation(
     popExitTransition = popExitTransition,
     builder = builder
 )
+
+private const val ENTER_DURATION = 350
+private const val EXIT_DURATION = 200
+
+private fun unittoFadeIn(): EnterTransition = fadeIn(tween(ENTER_DURATION))
+private fun unittoFadeOut(): ExitTransition = fadeOut(tween(EXIT_DURATION))
+private fun unittoEnterTween(): FiniteAnimationSpec<IntOffset> = tween(ENTER_DURATION)
+private fun unittoExitTween(): FiniteAnimationSpec<IntOffset> = tween(EXIT_DURATION)

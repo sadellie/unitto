@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.settings.startingscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.userprefs.StartingScreenPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ internal class StartingScreenViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
     val prefs = userPrefsRepository.startingScreenPrefs
-        .stateIn(viewModelScope, StartingScreenPreferences())
+        .stateIn(viewModelScope, null)
 
     fun updateStartingScreen(startingScreen: String) = viewModelScope.launch {
         userPrefsRepository.updateStartingScreen(startingScreen)

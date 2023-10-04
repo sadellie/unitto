@@ -40,6 +40,7 @@ import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.addShortcut
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 
@@ -48,13 +49,16 @@ internal fun StartingScreenRoute(
     viewModel: StartingScreenViewModel = hiltViewModel(),
     navigateUp: () -> Unit
 ) {
-    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
-
-    StartingScreenScreen(
-        startingScreen = prefs.value.startingScreen,
-        updateStartingScreen = viewModel::updateStartingScreen,
-        navigateUp = navigateUp
-    )
+    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+        null -> UnittoEmptyScreen()
+        else -> {
+            StartingScreenScreen(
+                startingScreen = prefs.startingScreen,
+                updateStartingScreen = viewModel::updateStartingScreen,
+                navigateUp = navigateUp
+            )
+        }
+    }
 }
 
 @Composable

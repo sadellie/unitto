@@ -61,7 +61,7 @@ class FormattingViewModel @Inject constructor(
             formatterSymbols = formatterSymbols
         )
     }
-        .stateIn(viewModelScope, FormattingUIState())
+        .stateIn(viewModelScope, null)
 
     fun togglePreview() = _fractional.update { !it }
 

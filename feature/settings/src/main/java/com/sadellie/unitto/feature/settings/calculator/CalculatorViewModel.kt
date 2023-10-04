@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.settings.calculator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.userprefs.CalculatorPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ class CalculatorViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
     val prefs = userPrefsRepository.calculatorPrefs
-        .stateIn(viewModelScope, CalculatorPreferences())
+        .stateIn(viewModelScope, null)
 
     fun updatePartialHistoryView(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updatePartialHistoryView(enabled)

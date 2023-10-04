@@ -53,23 +53,14 @@ import com.sadellie.unitto.core.ui.theme.TypographySystem
 import com.sadellie.unitto.core.ui.theme.TypographyUnitto
 import com.sadellie.unitto.data.userprefs.AppPreferences
 import io.github.sadellie.themmo.Themmo
-import io.github.sadellie.themmo.rememberThemmoController
+import io.github.sadellie.themmo.ThemmoController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun UnittoApp(prefs: AppPreferences) {
+internal fun UnittoApp(prefs: AppPreferences?) {
 
     val mContext = LocalContext.current
-    val themmoController = rememberThemmoController(
-        lightColorScheme = LightThemeColors,
-        darkColorScheme = DarkThemeColors,
-        themingMode = prefs.themingMode,
-        dynamicThemeEnabled = prefs.enableDynamicTheme,
-        amoledThemeEnabled = prefs.enableAmoledTheme,
-        customColor = prefs.customColor,
-        monetMode = prefs.monetMode
-    )
     val navController = rememberNavController()
     val sysUiController = rememberSystemUiController()
 
@@ -97,66 +88,80 @@ internal fun UnittoApp(prefs: AppPreferences) {
         }
     }
 
-    Themmo(
-        themmoController = themmoController,
-        typography = if (prefs.systemFont) TypographySystem else TypographyUnitto,
-        animationSpec = tween(250)
-    ) {
-        val backgroundColor = MaterialTheme.colorScheme.background
-        val useDarkIcons by remember(backgroundColor) {
-            mutableStateOf(backgroundColor.luminance() > 0.5f)
+    if (prefs != null) {
+        val themmoController = remember(prefs) {
+            ThemmoController(
+                lightColorScheme = LightThemeColors,
+                darkColorScheme = DarkThemeColors,
+                themingMode = prefs.themingMode,
+                dynamicThemeEnabled = prefs.enableDynamicTheme,
+                amoledThemeEnabled = prefs.enableAmoledTheme,
+                customColor = prefs.customColor,
+                monetMode = prefs.monetMode
+            )
         }
 
-        UnittoModalNavigationDrawer(
-            drawer = {
-                UnittoDrawerSheet(
-                    modifier = Modifier,
-                    tabs = tabs,
-                    currentDestination = navBackStackEntry?.destination?.route
-                ) { destination ->
-                    drawerScope.launch { drawerState.close() }
-
-                    navController.navigate(destination.graph) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-
-                    shortcutsScope.launch {
-                        destination.shortcut?.let { shortcut: Shortcut ->
-                            mContext.pushDynamicShortcut(
-                                destination.graph,
-                                shortcut.shortcutShortLabel,
-                                shortcut.shortcutLongLabel,
-                                shortcut.shortcutDrawable
-                            )
-                        }
-                    }
-                }
-            },
-            modifier = Modifier,
-            state = drawerState,
-            gesturesEnabled = gesturesEnabled,
-            scope = drawerScope,
-            content = {
-                UnittoNavigation(
-                    navController = navController,
-                    themmoController = it,
-                    startDestination = prefs.startingScreen,
-                    openDrawer = { drawerScope.launch { drawerState.open() } }
-                )
+        Themmo(
+            themmoController = themmoController,
+            typography = if (prefs.systemFont) TypographySystem else TypographyUnitto,
+            animationSpec = tween(250)
+        ) {
+            val backgroundColor = MaterialTheme.colorScheme.background
+            val useDarkIcons by remember(backgroundColor) {
+                mutableStateOf(backgroundColor.luminance() > 0.5f)
             }
-        )
 
-        BackHandler(drawerState.isOpen) {
-            drawerScope.launch { drawerState.close() }
-        }
+            UnittoModalNavigationDrawer(
+                drawer = {
+                    UnittoDrawerSheet(
+                        modifier = Modifier,
+                        tabs = tabs,
+                        currentDestination = navBackStackEntry?.destination?.route
+                    ) { destination ->
+                        drawerScope.launch { drawerState.close() }
 
-        LaunchedEffect(useDarkIcons) {
-            sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
-            sysUiController.setStatusBarColor(Color.Transparent, useDarkIcons)
+                        navController.navigate(destination.graph) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+
+                        shortcutsScope.launch {
+                            destination.shortcut?.let { shortcut: Shortcut ->
+                                mContext.pushDynamicShortcut(
+                                    destination.graph,
+                                    shortcut.shortcutShortLabel,
+                                    shortcut.shortcutLongLabel,
+                                    shortcut.shortcutDrawable
+                                )
+                            }
+                        }
+                    }
+                },
+                modifier = Modifier,
+                state = drawerState,
+                gesturesEnabled = gesturesEnabled,
+                scope = drawerScope,
+                content = {
+                    UnittoNavigation(
+                        navController = navController,
+                        themmoController = it,
+                        startDestination = prefs.startingScreen,
+                        openDrawer = { drawerScope.launch { drawerState.open() } }
+                    )
+                }
+            )
+
+            LaunchedEffect(useDarkIcons) {
+                sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
+                sysUiController.setStatusBarColor(Color.Transparent, useDarkIcons)
+            }
         }
+    }
+
+    BackHandler(drawerState.isOpen) {
+        drawerScope.launch { drawerState.close() }
     }
 }

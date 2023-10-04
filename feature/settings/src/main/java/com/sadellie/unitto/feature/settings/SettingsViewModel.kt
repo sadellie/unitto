@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.database.CurrencyRatesDao
-import com.sadellie.unitto.data.userprefs.GeneralPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +35,7 @@ internal class SettingsViewModel @Inject constructor(
     private val currencyRatesDao: CurrencyRatesDao,
 ) : ViewModel() {
     val userPrefs = userPrefsRepository.generalPrefs
-        .stateIn(viewModelScope, GeneralPreferences())
+        .stateIn(viewModelScope, null)
 
     val cachePercentage = currencyRatesDao.size()
         .map {

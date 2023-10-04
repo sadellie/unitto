@@ -47,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
@@ -59,14 +60,17 @@ internal fun AboutRoute(
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
 ) {
-    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
-
-    AboutScreen(
-        prefs = prefs.value,
-        navigateUpAction = navigateUpAction,
-        navigateToThirdParty = navigateToThirdParty,
-        enableToolsExperiment = viewModel::enableToolsExperiment
-    )
+    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+        null -> UnittoEmptyScreen()
+        else -> {
+            AboutScreen(
+                prefs = prefs,
+                navigateUpAction = navigateUpAction,
+                navigateToThirdParty = navigateToThirdParty,
+                enableToolsExperiment = viewModel::enableToolsExperiment
+            )
+        }
+    }
 }
 
 @Composable
@@ -196,7 +200,9 @@ private fun AboutScreen(
 @Composable
 fun PreviewAboutScreen() {
     AboutScreen(
-        prefs = AboutPreferences(),
+        prefs = AboutPreferences(
+            enableToolsExperiment = false
+        ),
         navigateUpAction = {},
         navigateToThirdParty = {},
         enableToolsExperiment = {}

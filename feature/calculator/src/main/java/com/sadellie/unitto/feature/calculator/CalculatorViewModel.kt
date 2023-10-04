@@ -22,6 +22,8 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.base.OutputFormat
+import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
@@ -58,7 +60,15 @@ internal class CalculatorViewModel @Inject constructor(
         userPrefsRepository.calculatorPrefs.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            CalculatorPreferences()
+            CalculatorPreferences(
+                radianMode = false,
+                enableVibrations = false,
+                separator = Separator.SPACE,
+                middleZero = false,
+                partialHistoryView = true,
+                precision = 3,
+                outputFormat = OutputFormat.PLAIN
+            )
         )
 
     private val _input: MutableStateFlow<TextFieldValue> = MutableStateFlow(TextFieldValue())
@@ -79,7 +89,8 @@ internal class CalculatorViewModel @Inject constructor(
             middleZero = userPrefs.middleZero,
             partialHistoryView = userPrefs.partialHistoryView,
         )
-    }.stateIn(
+    }
+        .stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState.Loading
     )
 

@@ -59,6 +59,7 @@ import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.feature.settings.components.ColorSelector
@@ -75,46 +76,49 @@ internal fun DisplayRoute(
     themmoController: ThemmoController,
     navigateToLanguages: () -> Unit,
 ) {
-    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
-
-    DisplayScreen(
-        navigateUp = navigateUp,
-        currentThemingMode = themmoController.currentThemingMode,
-        onThemeChange = {
-            themmoController.setThemingMode(it)
-            viewModel.updateThemingMode(it)
-        },
-        isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
-        onDynamicThemeChange = {
-            // Prevent old devices from using other monet modes when dynamic theming is on
-            if (it) {
-                themmoController.setMonetMode(MonetMode.TonalSpot)
-                viewModel.updateMonetMode(MonetMode.TonalSpot)
-            }
-            themmoController.enableDynamicTheme(it)
-            viewModel.updateDynamicTheme(it)
-        },
-        isAmoledThemeEnabled = themmoController.isAmoledThemeEnabled,
-        onAmoledThemeChange = {
-            themmoController.enableAmoledTheme(it)
-            viewModel.updateAmoledTheme(it)
-        },
-        selectedColor = themmoController.currentCustomColor,
-        onColorChange = {
-            themmoController.setCustomColor(it)
-            viewModel.updateCustomColor(it)
-        },
-        monetMode = themmoController.currentMonetMode,
-        onMonetModeChange = {
-            themmoController.setMonetMode(it)
-            viewModel.updateMonetMode(it)
-        },
-        systemFont = prefs.value.systemFont,
-        updateSystemFont = viewModel::updateSystemFont,
-        middleZero = prefs.value.middleZero,
-        updateMiddleZero = viewModel::updateMiddleZero,
-        navigateToLanguages = navigateToLanguages
-    )
+    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+        null -> UnittoEmptyScreen()
+        else -> {
+            DisplayScreen(
+                navigateUp = navigateUp,
+                currentThemingMode = themmoController.currentThemingMode,
+                onThemeChange = { newValue ->
+                    themmoController.setThemingMode(newValue)
+                    viewModel.updateThemingMode(newValue)
+                },
+                isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
+                onDynamicThemeChange = { newValue ->
+                    // Prevent old devices from using other monet modes when dynamic theming is on
+                    if (newValue) {
+                        themmoController.setMonetMode(MonetMode.TonalSpot)
+                        viewModel.updateMonetMode(MonetMode.TonalSpot)
+                    }
+                    themmoController.enableDynamicTheme(newValue)
+                    viewModel.updateDynamicTheme(newValue)
+                },
+                isAmoledThemeEnabled = themmoController.isAmoledThemeEnabled,
+                onAmoledThemeChange = { newValue ->
+                    themmoController.enableAmoledTheme(newValue)
+                    viewModel.updateAmoledTheme(newValue)
+                },
+                selectedColor = themmoController.currentCustomColor,
+                onColorChange = { newValue ->
+                    themmoController.setCustomColor(newValue)
+                    viewModel.updateCustomColor(newValue)
+                },
+                monetMode = themmoController.currentMonetMode,
+                onMonetModeChange = { newValue ->
+                    themmoController.setMonetMode(newValue)
+                    viewModel.updateMonetMode(newValue)
+                },
+                systemFont = prefs.systemFont,
+                updateSystemFont = viewModel::updateSystemFont,
+                middleZero = prefs.middleZero,
+                updateMiddleZero = viewModel::updateMiddleZero,
+                navigateToLanguages = navigateToLanguages
+            )
+        }
+    }
 }
 
 @Composable

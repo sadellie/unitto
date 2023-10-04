@@ -57,6 +57,7 @@ import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoSlider
@@ -70,16 +71,19 @@ fun FormattingRoute(
     viewModel: FormattingViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    FormattingScreen(
-        navigateUpAction = navigateUpAction,
-        uiState = uiState.value,
-        onPrecisionChange = viewModel::updatePrecision,
-        onSeparatorChange = viewModel::updateSeparator,
-        onOutputFormatChange = viewModel::updateOutputFormat,
-        togglePreview = viewModel::togglePreview
-    )
+    when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+        null -> UnittoEmptyScreen()
+        else -> {
+            FormattingScreen(
+                navigateUpAction = navigateUpAction,
+                uiState = uiState,
+                onPrecisionChange = viewModel::updatePrecision,
+                onSeparatorChange = viewModel::updateSeparator,
+                onOutputFormatChange = viewModel::updateOutputFormat,
+                togglePreview = viewModel::togglePreview
+            )
+        }
+    }
 }
 
 @Composable

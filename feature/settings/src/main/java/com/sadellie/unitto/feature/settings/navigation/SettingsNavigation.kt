@@ -23,8 +23,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
+import com.sadellie.unitto.core.ui.unittoStackedComposable
 import com.sadellie.unitto.feature.settings.SettingsRoute
 import com.sadellie.unitto.feature.settings.about.AboutRoute
 import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsRoute
@@ -68,14 +68,14 @@ fun NavGraphBuilder.settingGraph(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
         )
     ) {
-        unittoComposable(start) {
+        unittoStackedComposable(start) {
             SettingsRoute(
                 navigateUp = navController::navigateUp,
                 navControllerAction = navController::navigate
             )
         }
 
-        unittoComposable(displayRoute) {
+        unittoStackedComposable(displayRoute) {
             DisplayRoute(
                 navigateUp = navController::navigateUp,
                 themmoController = themmoController,
@@ -83,51 +83,51 @@ fun NavGraphBuilder.settingGraph(
             )
         }
 
-        unittoComposable(languageRoute) {
+        unittoStackedComposable(languageRoute) {
             LanguageRoute(
                 navigateUp = navController::navigateUp,
             )
         }
 
-        unittoComposable(startingScreenRoute) {
+        unittoStackedComposable(startingScreenRoute) {
             StartingScreenRoute(
                 navigateUp = navController::navigateUp,
             )
         }
 
-        unittoComposable(formattingRoute) {
+        unittoStackedComposable(formattingRoute) {
             FormattingRoute(
                 navigateUpAction = navController::navigateUp
             )
         }
 
-        unittoComposable(calculatorSettingsRoute) {
+        unittoStackedComposable(calculatorSettingsRoute) {
             CalculatorSettingsRoute(
                 navigateUpAction = navController::navigateUp,
             )
         }
 
-        unittoComposable(converterSettingsRoute) {
+        unittoStackedComposable(converterSettingsRoute) {
             ConverterSettingsRoute(
                 navigateUpAction = navController::navigateUp,
                 navigateToUnitsGroup = { navController.navigate(unitsGroupRoute) }
             )
         }
 
-        unittoComposable(unitsGroupRoute) {
+        unittoStackedComposable(unitsGroupRoute) {
             UnitGroupsScreen(
                 navigateUpAction = navController::navigateUp,
             )
         }
 
-        unittoComposable(aboutRoute) {
+        unittoStackedComposable(aboutRoute) {
             AboutRoute(
                 navigateUpAction = navController::navigateUp,
                 navigateToThirdParty = { navController.navigate(thirdPartyRoute) }
             )
         }
 
-        unittoComposable(thirdPartyRoute) {
+        unittoStackedComposable(thirdPartyRoute) {
             ThirdPartyLicensesScreen(
                 navigateUpAction = navController::navigateUp,
             )

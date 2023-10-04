@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.userprefs.DisplayPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.MonetMode
@@ -36,7 +35,7 @@ class DisplayViewModel @Inject constructor(
 ) : ViewModel() {
 
     val prefs = userPrefsRepository.displayPrefs
-        .stateIn(viewModelScope, DisplayPreferences())
+        .stateIn(viewModelScope, null)
 
     /**
      * @see UserPreferencesRepository.updateThemingMode

@@ -26,8 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.data.userprefs.CalculatorPreferences
@@ -37,13 +40,16 @@ internal fun CalculatorSettingsRoute(
     viewModel: CalculatorViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
 ) {
-    val prefs = viewModel.prefs.collectAsStateWithLifecycle()
-
-    CalculatorSettingsScreen(
-        prefs = prefs.value,
-        navigateUpAction = navigateUpAction,
-        updatePartialHistoryView = viewModel::updatePartialHistoryView
-    )
+    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+        null -> UnittoEmptyScreen()
+        else -> {
+            CalculatorSettingsScreen(
+                prefs = prefs,
+                navigateUpAction = navigateUpAction,
+                updatePartialHistoryView = viewModel::updatePartialHistoryView
+            )
+        }
+    }
 }
 
 @Composable
@@ -75,7 +81,15 @@ private fun CalculatorSettingsScreen(
 @Composable
 private fun PreviewCalculatorSettingsScreen() {
     CalculatorSettingsScreen(
-        prefs = CalculatorPreferences(),
+        prefs = CalculatorPreferences(
+            radianMode = false,
+            enableVibrations = false,
+            separator = Separator.SPACE,
+            middleZero = false,
+            partialHistoryView = true,
+            precision = 3,
+            outputFormat = OutputFormat.PLAIN
+        ),
         navigateUpAction = {},
         updatePartialHistoryView = {}
     )
