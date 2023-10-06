@@ -35,43 +35,23 @@ import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.base.R
 
 // This text style is used for text field
-val Typography.numbersDisplayLarge by lazy {
+val Typography.numberDisplayLarge by lazy {
     TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.W400,
+        fontWeight = FontWeight.Normal,
         fontSize = 57.sp,
-        lineHeight = (1.4).em,
+        lineHeight = (1.25).em,
         letterSpacing = (-0.25).sp,
     )
 }
 
 // This text style is used for secondary text field
-val Typography.numbersDisplayMedium by lazy {
+val Typography.numberDisplayMedium by lazy {
     TextStyle(
         fontFamily = latoFamily,
         fontWeight = FontWeight.W400,
         fontSize = 38.sp,
         lineHeight = 42.sp,
-        letterSpacing = (-0.25).sp,
-    )
-}
-
-val Typography.numberBodyLarge: TextStyle by lazy {
-    TextStyle(
-        fontFamily = latoFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 1.5.em,
-        letterSpacing = 0.5.sp,
-    )
-}
-
-val Typography.numberDisplayLarge: TextStyle by lazy {
-    TextStyle(
-        fontFamily = latoFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 57.sp,
-        lineHeight = 1.25.em,
         letterSpacing = (-0.25).sp,
     )
 }
@@ -83,6 +63,16 @@ val Typography.numberHeadlineSmall: TextStyle by lazy {
         fontSize = 24.sp,
         lineHeight = 1.25.em,
         letterSpacing = 0.sp,
+    )
+}
+
+val Typography.numberBodyLarge: TextStyle by lazy {
+    TextStyle(
+        fontFamily = latoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 1.5.em,
+        letterSpacing = 0.5.sp,
     )
 }
 

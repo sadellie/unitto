@@ -63,7 +63,7 @@ import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoSlider
 import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
-import com.sadellie.unitto.core.ui.theme.numbersDisplayMedium
+import com.sadellie.unitto.core.ui.theme.numberDisplayMedium
 import kotlin.math.roundToInt
 
 @Composable
@@ -139,7 +139,7 @@ fun FormattingScreen(
                     )
                     Text(
                         text = uiState.preview,
-                        style = MaterialTheme.typography.numbersDisplayMedium,
+                        style = MaterialTheme.typography.numberDisplayMedium,
                         maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
