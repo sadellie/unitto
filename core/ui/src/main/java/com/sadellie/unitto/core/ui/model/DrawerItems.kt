@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.model
 
+import android.os.Build
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Event
@@ -58,4 +59,23 @@ sealed class DrawerItems(
         selectedIcon = Icons.Filled.Schedule,
         defaultIcon = Icons.Outlined.Schedule
     )
+
+    companion object {
+        val ALL by lazy {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                listOf(
+                    Calculator,
+                    Converter,
+                    DateDifference,
+                    TimeZones
+                )
+            } else {
+                listOf(
+                    Calculator,
+                    Converter,
+                    DateDifference,
+                )
+            }
+        }
+    }
 }

@@ -18,66 +18,52 @@
 
 package com.sadellie.unitto.feature.timezone
 
+import android.icu.util.TimeZone
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.data.model.UnittoTimeZone
+import com.sadellie.unitto.data.common.stateIn
+import com.sadellie.unitto.data.model.timezone.SearchResultZone
 import com.sadellie.unitto.data.timezone.TimeZonesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.N)
 @HiltViewModel
 class AddTimeZoneViewModel @Inject constructor(
     private val timezonesRepository: TimeZonesRepository,
 ) : ViewModel() {
-
-    private val _userTime = MutableStateFlow<ZonedDateTime?>(ZonedDateTime.now())
     private val _query = MutableStateFlow(TextFieldValue())
+    private val _result = MutableStateFlow(emptyList<SearchResultZone>())
 
-    private val _filteredTimeZones = MutableStateFlow(emptyList<UnittoTimeZone>())
-    val addTimeZoneUIState = combine(
+    val uiState = combine(
         _query,
-        _filteredTimeZones,
-        _userTime,
-    ) { query, filteredTimeZone, userTime ->
-        return@combine AddTimeZoneUIState(
+        _result,
+        timezonesRepository.favoriteTimeZones,
+    ) { query, result, _  ->
+        return@combine AddTimeZoneUIState.Ready(
             query = query,
-            list = filteredTimeZone,
-            userTime = userTime,
+            list = result,
         )
-    }.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000), AddTimeZoneUIState()
-    )
-
-    fun onQueryChange(query: TextFieldValue) {
-        _query.update { query }
-        filterTimeZones(query.text)
     }
-
-    private fun filterTimeZones(query: String = "") = viewModelScope.launch {
-        _filteredTimeZones.update {
-            timezonesRepository.filterAllTimeZones(query)
+        .mapLatest { ui ->
+            viewModelScope.launch {
+                _result.update { timezonesRepository.filterAllTimeZones(ui.query.text) }
+            }
+            ui
         }
-    }
+        .stateIn(viewModelScope, AddTimeZoneUIState.Loading)
 
-    fun addToFavorites(timeZone: UnittoTimeZone) = viewModelScope.launch(Dispatchers.IO) {
+    fun onQueryChange(textFieldValue: TextFieldValue) = _query.update { textFieldValue }
+
+    fun addToFavorites(timeZone: TimeZone) = viewModelScope.launch {
         timezonesRepository.addToFavorites(timeZone)
-    }
-
-    fun setTime(time: ZonedDateTime) = viewModelScope.launch(Dispatchers.Default) {
-            _userTime.update { time }
-        }
-
-    init {
-        // TODO Maybe only when actually needed?
-        filterTimeZones()
     }
 }

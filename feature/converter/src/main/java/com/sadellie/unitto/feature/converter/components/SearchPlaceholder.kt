@@ -66,7 +66,7 @@ internal fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
         )
         // Open settings button
         ElevatedButton(onClick = navigateToSettingsAction) {
-            Text(text = stringResource(R.string.open_settings_description))
+            Text(text = stringResource(R.string.open_settings_label))
         }
     }
 }

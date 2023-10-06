@@ -106,7 +106,7 @@ internal fun ChipsRow(
             AssistChip(
                 onClick = navigateToSettingsAction,
                 imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(R.string.open_settings_description)
+                contentDescription = stringResource(R.string.open_settings_label)
             )
         }
     }
@@ -159,7 +159,7 @@ fun ChipsFlexRow(
             AssistChip(
                 onClick = navigateToSettingsAction,
                 imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(R.string.open_settings_description)
+                contentDescription = stringResource(R.string.open_settings_label)
             )
         }
 

@@ -68,7 +68,7 @@ fun UnittoSearchBar(
     title: String,
     searchActions: @Composable (RowScope.() -> Unit) = {},
     noSearchActions: @Composable (RowScope.() -> Unit) = {},
-    placeholder: String,
+    placeholder: String = stringResource(R.string.search_text_field_placeholder),
     scrollBehavior: TopAppBarScrollBehavior? = null,
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors()
 ) {

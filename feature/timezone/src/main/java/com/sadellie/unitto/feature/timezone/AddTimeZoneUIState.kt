@@ -19,11 +19,13 @@
 package com.sadellie.unitto.feature.timezone
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.data.model.UnittoTimeZone
-import java.time.ZonedDateTime
+import com.sadellie.unitto.data.model.timezone.SearchResultZone
 
-data class AddTimeZoneUIState(
-    val query: TextFieldValue = TextFieldValue(),
-    val list: List<UnittoTimeZone> = emptyList(),
-    val userTime: ZonedDateTime? = null,
-)
+sealed class AddTimeZoneUIState {
+    data object Loading: AddTimeZoneUIState()
+
+    data class Ready(
+        val query: TextFieldValue,
+        val list: List<SearchResultZone>,
+    ): AddTimeZoneUIState()
+}

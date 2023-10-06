@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.database
+package com.sadellie.unitto.data.model.timezone
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.icu.util.TimeZone
+import android.os.Build
+import androidx.annotation.RequiresApi
 
-@Entity(tableName = "time_zones")
-class TimeZoneEntity(
-    @PrimaryKey val id: String,
-    @ColumnInfo(name = "position") val position: Int,
-    @ColumnInfo(name = "label") val label: String = "",
+@RequiresApi(Build.VERSION_CODES.N)
+data class FavoriteZone(
+    val timeZone: TimeZone,
+    val position: Int,
+    val label: String
 )

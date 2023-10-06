@@ -19,23 +19,59 @@
 package com.sadellie.unitto.data.database
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TimeZoneDao {
-    @Query("SELECT * FROM time_zones ORDER BY position ASC")
-    fun getAll(): Flow<List<TimeZoneEntity>>
+
+    @Query("SELECT * FROM time_zones WHERE position > 0 ORDER BY position ASC")
+    fun getFavorites(): Flow<List<TimeZoneEntity>>
+
+    @Query("SELECT MAX(position) FROM time_zones")
+    fun getMaxPosition(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg timeZoneEntity: TimeZoneEntity)
 
-    @Query("UPDATE time_zones SET position = ( SELECT SUM(position) FROM time_zones WHERE id IN (:fromId, :toId) ) - position WHERE id IN (:fromId, :toId)")
-    suspend fun swap(fromId: String, toId: String)
+    @Transaction
+    suspend fun addToFavorites(id: String) {
+        insert(
+            TimeZoneEntity(
+                id = id,
+                position = getMaxPosition() + 1,
+            )
+        )
+    }
 
-    @Delete
-    suspend fun remove(timeZoneEntity: TimeZoneEntity)
+    @Query("UPDATE time_zones SET position = -1 WHERE id = :id")
+    suspend fun removeFromFavorites(id: String)
+
+    @Query("UPDATE time_zones SET label = :label WHERE id = :id")
+    suspend fun updateLabel(id: String, label: String)
+
+    @Query("UPDATE time_zones SET position = :newPosition WHERE position = :oldPosition AND id = :id")
+    suspend fun updateDragged(id: String, oldPosition: Int, newPosition: Int)
+
+    @Query("UPDATE time_zones SET position = (position - 1) WHERE position > :currentPosition and position <= :targetPosition")
+    suspend fun moveDown(currentPosition: Int, targetPosition: Int)
+
+    @Query("UPDATE time_zones SET position = (position + 1) WHERE position >= :targetPosition AND position < :currentPosition")
+    suspend fun moveUp(currentPosition: Int, targetPosition: Int)
+
+    @Transaction
+    suspend fun moveMove(id: String, currentPosition: Int, targetPosition: Int) {
+        // Very good explanation
+        // https://www.c-sharpcorner.com/article/updating-display-order-in-database-with-drag-drop5/
+        updateDragged(id, currentPosition, 0)
+        if (targetPosition > currentPosition) {
+            moveDown(currentPosition, targetPosition)
+        } else {
+            moveUp(currentPosition, targetPosition)
+        }
+        updateDragged(id, 0, targetPosition)
+    }
 }

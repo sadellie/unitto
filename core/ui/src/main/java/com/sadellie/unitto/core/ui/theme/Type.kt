@@ -56,6 +56,46 @@ val Typography.numbersDisplayMedium by lazy {
     )
 }
 
+val Typography.numberBodyLarge: TextStyle by lazy {
+    TextStyle(
+        fontFamily = latoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 1.5.em,
+        letterSpacing = 0.5.sp,
+    )
+}
+
+val Typography.numberDisplayLarge: TextStyle by lazy {
+    TextStyle(
+        fontFamily = latoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 57.sp,
+        lineHeight = 1.25.em,
+        letterSpacing = (-0.25).sp,
+    )
+}
+
+val Typography.numberHeadlineSmall: TextStyle by lazy {
+    TextStyle(
+        fontFamily = latoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp,
+        lineHeight = 1.25.em,
+        letterSpacing = 0.sp,
+    )
+}
+
+val Typography.numberHeadlineMedium: TextStyle by lazy {
+    TextStyle(
+        fontFamily = latoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 28.sp,
+        lineHeight = 1.25.em,
+        letterSpacing = 0.sp,
+    )
+}
+
 val TypographyUnitto by lazy {
     Typography(
         displayLarge = TextStyle(

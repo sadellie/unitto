@@ -19,34 +19,15 @@
 package com.sadellie.unitto.feature.timezone
 
 import android.icu.util.TimeZone
-import com.sadellie.unitto.data.model.timezone.FavoriteZone
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.ZoneId
 import java.time.ZonedDateTime
 
-internal sealed class TimeZoneUIState {
-    data object Loading : TimeZoneUIState()
+val TimeZone.offsetSeconds
+    @RequiresApi(Build.VERSION_CODES.N)
+    get() = this.rawOffset / 1000L
 
-    data class Ready(
-        val favorites: List<FavoriteZone>,
-        val customUserTime: ZonedDateTime?,
-        val userTimeZone: TimeZone,
-        val selectedTimeZone: FavoriteZone?,
-        val dialogState: TimeZoneDialogState,
-    ) : TimeZoneUIState()
-}
 
-internal sealed class TimeZoneDialogState {
-    data object Nothing : TimeZoneDialogState()
-
-    data class UserTimePicker(
-        val time: ZonedDateTime,
-    ) : TimeZoneDialogState()
-
-    data class FavoriteTimePicker(
-        val timeZone: FavoriteZone,
-        val time: ZonedDateTime,
-    ) : TimeZoneDialogState()
-
-    data class LabelEditPicker(
-        val timeZone: FavoriteZone,
-    ) : TimeZoneDialogState()
-}
+@RequiresApi(Build.VERSION_CODES.N)
+fun TimeZone.timeNow(): ZonedDateTime = ZonedDateTime.now(ZoneId.of(this.id, ZoneId.SHORT_IDS))

@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.base
 
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
@@ -102,12 +103,20 @@ sealed class TopLevelDestinations(
 
 // Shown in settings
 val TOP_LEVEL_DESTINATIONS by lazy {
-    listOf(
-        TopLevelDestinations.Calculator,
-        TopLevelDestinations.Converter,
-        TopLevelDestinations.DateCalculator,
-        TopLevelDestinations.TimeZone,
-    )
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        listOf(
+            TopLevelDestinations.Calculator,
+            TopLevelDestinations.Converter,
+            TopLevelDestinations.DateCalculator,
+            TopLevelDestinations.TimeZone,
+        )
+    } else {
+        listOf(
+            TopLevelDestinations.Calculator,
+            TopLevelDestinations.Converter,
+            TopLevelDestinations.DateCalculator,
+        )
+    }
 }
 
 // Only routes, not graphs!

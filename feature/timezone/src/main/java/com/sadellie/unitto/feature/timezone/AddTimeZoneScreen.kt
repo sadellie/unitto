@@ -18,138 +18,130 @@
 
 package com.sadellie.unitto.feature.timezone
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
+import android.icu.util.TimeZone
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
+import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
-import com.sadellie.unitto.data.model.UnittoTimeZone
-import com.sadellie.unitto.feature.timezone.components.SelectableTimeZone
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
+import com.sadellie.unitto.core.ui.datetime.formatLocal
+import com.sadellie.unitto.core.ui.theme.numberHeadlineSmall
+import com.sadellie.unitto.data.common.offset
+import com.sadellie.unitto.data.common.region
+import com.sadellie.unitto.data.model.timezone.SearchResultZone
 import java.time.ZonedDateTime
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun AddTimeZoneRoute(
     viewModel: AddTimeZoneViewModel = hiltViewModel(),
     navigateUp: () -> Unit,
-    userTime: ZonedDateTime? = null
+    userTime: ZonedDateTime,
 ) {
-    val uiState = viewModel.addTimeZoneUIState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        if (userTime == null) {
-            while (isActive) {
-                viewModel.setTime(ZonedDateTime.now())
-                delay(1000)
-            }
-        } else {
-            viewModel.setTime(userTime)
-        }
+    when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+        AddTimeZoneUIState.Loading -> UnittoEmptyScreen()
+        is AddTimeZoneUIState.Ready -> AddTimeZoneScreen(
+            uiState = uiState,
+            navigateUp = navigateUp,
+            onQueryChange = viewModel::onQueryChange,
+            addToFavorites = viewModel::addToFavorites,
+            userTime = userTime
+        )
     }
-
-    AddTimeZoneScreen(
-        uiState = uiState.value,
-        navigateUp = navigateUp,
-        onQueryChange = viewModel::onQueryChange,
-        addToFavorites = viewModel::addToFavorites,
-    )
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun AddTimeZoneScreen(
-    uiState: AddTimeZoneUIState,
+    uiState: AddTimeZoneUIState.Ready,
     navigateUp: () -> Unit,
     onQueryChange: (TextFieldValue) -> Unit,
-    addToFavorites: (UnittoTimeZone) -> Unit,
+    addToFavorites: (TimeZone) -> Unit,
+    userTime: ZonedDateTime,
 ) {
-    val listState = rememberLazyListState()
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
-        rememberTopAppBarState()
-    )
-    val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
-    val needToTint by remember {
-        derivedStateOf { scrollBehavior.state.overlappedFraction > 0.01f }
-    }
-
-    val searchBarBackground = animateColorAsState(
-        targetValue = if (needToTint) elevatedColor else MaterialTheme.colorScheme.surface,
-        animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
-        label = "Search bar background"
-    )
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             UnittoSearchBar(
-                modifier = Modifier,
                 query = uiState.query,
                 onQueryChange = onQueryChange,
                 navigateUp = navigateUp,
                 title = stringResource(R.string.time_zone_add_title),
-                placeholder = stringResource(R.string.search_text_field_placeholder),
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = searchBarBackground.value
-                )
+                scrollBehavior = scrollBehavior
             )
         },
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues),
-            state = listState
-        ) {
-            items(uiState.list) {
-                SelectableTimeZone(
-                    timeZone = it,
-                    modifier = Modifier
-                        .clickable { addToFavorites(it); navigateUp() }
-                        .fillMaxWidth(),
-                    currentTime = uiState.userTime
-                )
+        Crossfade(targetState = uiState.list.isEmpty()) { empty ->
+            if (empty) {
+                UnittoEmptyScreen()
+            } else {
+                LazyColumn(contentPadding = paddingValues) {
+                    items(uiState.list, { it.timeZone.id }) {
+                        UnittoListItem(
+                            modifier = Modifier
+                                .animateItemPlacement()
+                                .clickable {
+                                    addToFavorites(it.timeZone)
+                                    navigateUp()
+                                },
+                            headlineContent = { Text(it.timeZone.displayName) },
+                            supportingContent = { Text(it.formattedLabel) },
+                            trailingContent = {
+                                Text(
+                                    text = it.timeZone.offset(userTime).formatLocal(),
+                                    style = MaterialTheme.typography.numberHeadlineSmall
+                                )
+                            }
+                        )
+                    }
+                }
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Preview
 @Composable
 fun PreviewAddTimeZoneScreen() {
     AddTimeZoneScreen(
-        navigateUp = {},
-        uiState = AddTimeZoneUIState(
-            list = List(50) {
-                UnittoTimeZone(
-                    id = "timezone $it",
-                    nameRes = "Time zone $it",
+        uiState = AddTimeZoneUIState.Ready(
+            query = TextFieldValue(),
+            list = listOf(
+                "UTC",
+                "Africa/Addis_Ababa",
+                "ACT"
+            ).map {
+                val zone = TimeZone.getTimeZone(it)
+                SearchResultZone(
+                    timeZone = zone,
+                    formattedLabel = zone.region
                 )
             }
         ),
+        navigateUp = {},
         onQueryChange = {},
         addToFavorites = {},
+        userTime = ZonedDateTime.now()
     )
 }

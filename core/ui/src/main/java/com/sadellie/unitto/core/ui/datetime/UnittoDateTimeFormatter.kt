@@ -37,6 +37,26 @@ data object UnittoDateTimeFormatter {
     val time12Formatter1: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("hh:mm") }
 
     /**
+     * 23
+     */
+    val time24OnlyHoursFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("HH") }
+
+    /**
+     * 23
+     */
+    val time12OnlyHoursFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("hh") }
+
+    /**
+     * 59
+     */
+    val timeOnlyMinutesFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("mm") }
+
+    /**
+     * 59
+     */
+    val timeOnlySecondsFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("ss") }
+
+    /**
      * AM
      */
     val time12Formatter2: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("a") }

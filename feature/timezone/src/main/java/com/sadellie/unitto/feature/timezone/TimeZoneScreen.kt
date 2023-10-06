@@ -18,61 +18,52 @@
 
 package com.sadellie.unitto.feature.timezone
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.animateColor
+import android.icu.util.TimeZone
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.animateInt
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.AnchoredDraggableState
-import androidx.compose.foundation.gestures.DraggableAnchors
-import androidx.compose.foundation.gestures.animateTo
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.History
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,102 +72,112 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.TimePickerDialog
+import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
-import com.sadellie.unitto.core.ui.common.squashable
-import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
-import com.sadellie.unitto.core.ui.datetime.formatLocal
-import com.sadellie.unitto.core.ui.theme.TypographyUnitto
-import com.sadellie.unitto.core.ui.theme.DarkThemeColors
-import com.sadellie.unitto.core.ui.theme.LightThemeColors
-import com.sadellie.unitto.data.model.UnittoTimeZone
-import com.sadellie.unitto.feature.timezone.components.TimeZoneListItem
-import io.github.sadellie.themmo.Themmo
-import io.github.sadellie.themmo.rememberThemmoController
+import com.sadellie.unitto.data.model.timezone.FavoriteZone
+import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
+import com.sadellie.unitto.feature.timezone.components.UserTimeZone
+import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
 import java.time.ZonedDateTime
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun TimeZoneRoute(
     viewModel: TimeZoneViewModel = hiltViewModel(),
-    navigateToMenu: () -> Unit,
+    openMenu: () -> Unit,
     navigateToSettings: () -> Unit,
-    navigateToAddTimeZone: (ZonedDateTime?) -> Unit,
+    navigateToAddTimeZone: (ZonedDateTime) -> Unit,
 ) {
-    val uiState = viewModel.timeZoneUIState.collectAsStateWithLifecycle()
-
-    TimeZoneScreen(
-        uiState = uiState.value,
-        navigateToMenu = navigateToMenu,
-        navigateToSettings = navigateToSettings,
-        navigateToAddTimeZone = {
-            navigateToAddTimeZone(
-                if (uiState.value.updateTime) null
-                else uiState.value.userTime
+    when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+        TimeZoneUIState.Loading -> UnittoEmptyScreen()
+        is TimeZoneUIState.Ready -> {
+            TimeZoneScreen(
+                uiState = uiState,
+                openMenu = openMenu,
+                navigateToSettings = navigateToSettings,
+                navigateToAddTimeZone = navigateToAddTimeZone,
+                setCurrentTime = viewModel::setCurrentTime,
+                setSelectedTime = viewModel::setSelectedTime,
+                onDragEnd = viewModel::onDragEnd,
+                delete = viewModel::delete,
+                updateLabel = viewModel::updateLabel,
+                selectTimeZone = viewModel::selectTimeZone,
+                setDialogState = viewModel::setDialogState
             )
-        },
-        onDragEnd = viewModel::onDragEnd,
-        onDelete = viewModel::onDelete,
-        setSelectedTime = viewModel::setCustomTime,
-        setCurrentTime = viewModel::setCurrentTime,
-        resetTime = viewModel::resetTime,
-    )
+        }
+    }
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 private fun TimeZoneScreen(
-    uiState: TimeZoneUIState,
-    navigateToMenu: () -> Unit,
+    uiState: TimeZoneUIState.Ready,
+    openMenu: () -> Unit,
     navigateToSettings: () -> Unit,
-    navigateToAddTimeZone: () -> Unit,
-    onDragEnd: (String, String) -> Unit,
-    onDelete: (UnittoTimeZone) -> Unit,
-    setSelectedTime: (ZonedDateTime) -> Unit,
+    navigateToAddTimeZone: (ZonedDateTime) -> Unit,
     setCurrentTime: () -> Unit,
-    resetTime: () -> Unit,
+    setSelectedTime: (ZonedDateTime) -> Unit,
+    onDragEnd: (id: FavoriteZone, target: Int) -> Unit,
+    delete: (FavoriteZone) -> Unit,
+    updateLabel: (FavoriteZone, String) -> Unit,
+    selectTimeZone: (FavoriteZone?) -> Unit,
+    setDialogState: (TimeZoneDialogState) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    var currentUserTime by remember(uiState.customUserTime) {
+        mutableStateOf(
+            uiState.customUserTime ?: uiState.userTimeZone.timeNow()
+        )
+    }
+    val focusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(uiState.updateTime) {
-        while (uiState.updateTime and isActive) {
-            setCurrentTime()
+    LaunchedEffect(uiState.customUserTime) {
+        while ((uiState.customUserTime == null) and isActive) {
+            currentUserTime = uiState.userTimeZone.timeNow()
             delay(1000)
         }
     }
 
-    val copiedList = rememberUpdatedState(newValue = uiState.list) as MutableState
+    val copiedList = rememberUpdatedState(newValue = uiState.favorites) as MutableState
     val state = rememberReorderableLazyListState(
-        onMove = onMove@{ from, to ->
+        onMove = { from, to ->
             // -1 because we use fake item. It fixes animation for the first item in list
             copiedList.value = copiedList.value
                 .toMutableList()
                 .apply {
                     add(to.index - 1, removeAt(from.index - 1))
                 }
-            onDragEnd(from.key as String, to.key as String)
         },
         canDragOver = { draggedOver, _ ->
             // Don't allow dragging over fake item
             draggedOver.index > 0
+        },
+        onDragEnd = onDragEnd@{ from, to ->
+            if (from == to) return@onDragEnd
+            // There is some logic going on. I have no idea what I did here but it works
+            val tz = copiedList.value.getOrNull(to - 1) ?: return@onDragEnd
+            val targetInOldTz = uiState.favorites.getOrNull(to - 1) ?: return@onDragEnd
+
+            onDragEnd(tz, targetInOldTz.position)
         }
     )
-    // TODO Unswipe on dragging
-    var swiped by remember<MutableState<UnittoTimeZone?>> { mutableStateOf(null) }
-    var showTimeSelector by rememberSaveable { mutableStateOf(false) }
-    val maxDrag = -with(LocalDensity.current) { 80.dp.toPx() }
 
     UnittoScreenWithTopBar(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         title = { Text(stringResource(R.string.time_zone_title)) },
-        navigationIcon = { MenuButton(navigateToMenu) },
+        navigationIcon = { MenuButton(openMenu) },
         actions = { SettingsButton(navigateToSettings) },
         floatingActionButton = {
-            LargeFloatingActionButton(navigateToAddTimeZone) {
+            LargeFloatingActionButton(
+                onClick = {
+                    navigateToAddTimeZone(currentUserTime)
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = null,
@@ -186,194 +187,183 @@ private fun TimeZoneScreen(
         },
         floatingActionButtonPosition = FabPosition.Center,
         scrollBehavior = scrollBehavior,
-
-        ) { paddingValues ->
-
+    ) { padding ->
         LazyColumn(
             state = state.listState,
             modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxHeight()
-                .reorderable(state)
-                .detectReorderAfterLongPress(state),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(bottom = 124.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .reorderable(state),
+            contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 124.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // This is a fake item. First item in list can not animated, so we do this magic fuckery
-            item {
+            item("user time") {
                 UserTimeZone(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                    userTime = uiState.userTime,
-                    onClick = { showTimeSelector = true },
-                    onResetClick = resetTime,
-                    showReset = !uiState.updateTime,
+                        .padding(8.dp),
+                    userTime = currentUserTime,
+                    onClick = { setDialogState(TimeZoneDialogState.UserTimePicker(currentUserTime)) },
+                    onResetClick = setCurrentTime,
+                    showReset = uiState.customUserTime != null
                 )
             }
-            items(copiedList.value, { it.id }) { item ->
-                ReorderableItem(state, key = item.id) { isDragging ->
+
+            items(copiedList.value, { it.timeZone.id }) { item ->
+                ReorderableItem(
+                    reorderableState = state,
+                    key = item.timeZone.id,
+                ) { isDragging ->
+                    val isSelected = uiState.selectedTimeZone == item
+
                     val transition = updateTransition(isDragging, label = "draggedTransition")
-                    val background by transition.animateColor(label = "background") {
-                        if (it) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer
-                    }
+
                     val itemPadding by transition.animateDp(label = "itemPadding") {
-                        if (it) 32.dp else 16.dp
+                        if (it) 8.dp else 0.dp
                     }
 
-                    val scope = rememberCoroutineScope()
-                    val draggableState = rememberDraggableTimeZone(maxDrag) { swiped = item }
-
-                    LaunchedEffect(swiped) {
-                        if (swiped != item) scope.launch {
-                            draggableState.animateTo(false)
-                        }
+                    val elevation by transition.animateDp(label = "elevation") {
+                        if (it) 8.dp else 2.dp
                     }
 
-                    TimeZoneListItem(
+                    val cornerRadius by transition.animateInt(label = "cornerRadius") {
+                        if (it) 25 else 15
+                    }
+
+                    FavoriteTimeZoneItem(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = itemPadding),
-                        timeZone = item,
-                        currentTime = uiState.userTime,
-                        onDelete = onDelete,
-                        color = background,
-                        onSwipe = {},
-                        draggableState = draggableState,
+                            .padding(itemPadding)
+                            .clip(RoundedCornerShape(cornerRadius))
+                            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation))
+                            .detectReorderAfterLongPress(state),
+                        item = item,
+                        fromTime = currentUserTime,
+                        expanded = isSelected,
+                        onClick = {
+                            selectTimeZone(if (isSelected) null else item)
+                        },
+                        onDelete = { delete(item) },
+                        onLabelClick = { setDialogState(TimeZoneDialogState.LabelEditPicker(item)) },
+                        onPrimaryClick = { offsetTime ->
+                            setDialogState(TimeZoneDialogState.FavoriteTimePicker(item, offsetTime))
+                        },
+                        isDragging = isDragging
                     )
                 }
             }
         }
     }
 
-    if (showTimeSelector) {
-        TimePickerDialog(
-            hour = uiState.userTime.hour,
-            minute = uiState.userTime.minute,
-            onConfirm = { hour, minute ->
-                setSelectedTime(
-                    uiState.userTime
-                        .withHour(hour)
-                        .withMinute(minute)
+    when (uiState.dialogState) {
+        is TimeZoneDialogState.UserTimePicker -> {
+            TimePickerDialog(
+                hour = currentUserTime.hour,
+                minute = currentUserTime.minute,
+                onConfirm = { hour, minute ->
+                    setSelectedTime(
+                        currentUserTime
+                            .withHour(hour)
+                            .withMinute(minute)
+                    )
+                    setDialogState(TimeZoneDialogState.Nothing)
+                },
+                onDismiss = { setDialogState(TimeZoneDialogState.Nothing) }
+            )
+        }
+
+        is TimeZoneDialogState.FavoriteTimePicker -> {
+            TimePickerDialog(
+                hour = uiState.dialogState.time.hour,
+                minute = uiState.dialogState.time.minute,
+                onConfirm = { hour, minute ->
+                    setSelectedTime(
+                        uiState.dialogState.time
+                            .withHour(hour)
+                            .withMinute(minute)
+                            .minusSeconds(uiState.dialogState.timeZone.timeZone.offsetSeconds)
+                            .plusSeconds(uiState.userTimeZone.offsetSeconds)
+
+                    )
+                    setDialogState(TimeZoneDialogState.Nothing)
+                },
+                onDismiss = { setDialogState(TimeZoneDialogState.Nothing) }
+            )
+        }
+
+        is TimeZoneDialogState.LabelEditPicker -> {
+            var tfv by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+                mutableStateOf(
+                    TextFieldValue(
+                        text = uiState.dialogState.timeZone.label,
+                        selection = TextRange(uiState.dialogState.timeZone.label.length)
+                    )
                 )
-                showTimeSelector = false
-            },
-            onDismiss = { showTimeSelector = false }
-        )
+            }
+            AlertDialog(
+                title = { Text(text = stringResource(R.string.label_label)) },
+                text = {
+                    OutlinedTextField(
+                        value = tfv,
+                        onValueChange = { tfv = it },
+                        modifier = Modifier.focusRequester(focusRequester)
+                    )
+                    LaunchedEffect(Unit) {
+                        awaitFrame()
+                        focusRequester.requestFocus()
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            setDialogState(TimeZoneDialogState.Nothing)
+                            updateLabel(uiState.dialogState.timeZone, tfv.text)
+                        },
+                        content = { Text(text = stringResource(R.string.ok_label)) }
+                    )
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { setDialogState(TimeZoneDialogState.Nothing) },
+                        content = { Text(text = stringResource(R.string.cancel_label)) }
+                    )
+                },
+                onDismissRequest = { setDialogState(TimeZoneDialogState.Nothing) },
+            )
+        }
+
+        TimeZoneDialogState.Nothing -> Unit
     }
 }
 
-@Composable
-private fun UserTimeZone(
-    modifier: Modifier,
-    userTime: ZonedDateTime,
-    onClick: () -> Unit,
-    onResetClick: () -> Unit,
-    showReset: Boolean,
-) {
-
-    Row(
-        modifier = modifier
-            .squashable(
-                onClick = onClick,
-                onLongClick = onResetClick,
-                cornerRadiusRange = 8.dp..32.dp,
-                interactionSource = remember { MutableInteractionSource() }
-            )
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(
-                text = userTime.format(UnittoDateTimeFormatter.zoneFormatPattern),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onTertiaryContainer
-            )
-            AnimatedContent(
-                targetState = userTime.formatLocal(),
-                label = "user time change",
-                transitionSpec = {
-                    slideInVertically { height -> height } + fadeIn() togetherWith
-                            slideOutVertically { height -> -height } + fadeOut() using
-                            SizeTransform()
-                }
-            ) { time ->
-                Text(
-                    text = time,
-                    style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                )
-            }
-            Text(
-                text = userTime.format(UnittoDateTimeFormatter.dayMonthYear),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onTertiaryContainer
-            )
-        }
-        AnimatedVisibility(
-            visible = showReset,
-            enter = scaleIn() + fadeIn(),
-            exit = scaleOut() + fadeOut(),
-        ) {
-            IconButton(onResetClick) {
-                Icon(
-                    imageVector = Icons.Outlined.History,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun rememberDraggableTimeZone(
-    maxDrag: Float,
-    onSwipe: () -> Unit,
-) = remember {
-    AnchoredDraggableState(
-        initialValue = false,
-        anchors = DraggableAnchors {
-            false at 0f
-            true at maxDrag
-        },
-        positionalThreshold = { it * 0.5f },
-        velocityThreshold = { maxDrag },
-        animationSpec = tween(),
-        confirmValueChange = {
-            onSwipe()
-            true
-        }
-    )
-}
-
+@RequiresApi(Build.VERSION_CODES.N)
 @Preview
 @Composable
 fun PreviewTimeZoneScreen() {
-    Themmo(
-        themmoController = rememberThemmoController(
-            lightColorScheme = LightThemeColors,
-            darkColorScheme = DarkThemeColors,
-        ),
-        typography = TypographyUnitto,
-    ) {
-        TimeZoneScreen(
-            uiState = TimeZoneUIState(
-                list = List(50) {
-                    UnittoTimeZone(
-                        id = "timezone $it",
-                        nameRes = "Time zone $it",
+    TimeZoneScreen(
+        uiState = TimeZoneUIState.Ready(
+            favorites = TimeZone
+                .getAvailableIDs()
+                .mapIndexed { index, tz ->
+                    FavoriteZone(
+                        timeZone = TimeZone.getTimeZone(tz),
+                        position = index,
+                        label = if (tz == "ACT") "label text" else ""
                     )
-                }
-            ),
-            navigateToMenu = {},
-            navigateToSettings = {},
-            navigateToAddTimeZone = {},
-            onDragEnd = { _, _ -> },
-            onDelete = {},
-            setSelectedTime = {},
-            setCurrentTime = {},
-            resetTime = {},
-        )
-    }
+                },
+            customUserTime = null,
+            userTimeZone = TimeZone.getTimeZone("Africa/Addis_Ababa"),
+            selectedTimeZone = null,
+            dialogState = TimeZoneDialogState.Nothing
+        ),
+        openMenu = {},
+        navigateToSettings = {},
+        navigateToAddTimeZone = {},
+        setCurrentTime = {},
+        setSelectedTime = {},
+        onDragEnd = { _, _ -> },
+        delete = {},
+        updateLabel = { _, _ -> },
+        selectTimeZone = {},
+        setDialogState = {}
+    )
 }

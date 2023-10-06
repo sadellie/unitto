@@ -16,15 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.database
+package com.sadellie.unitto.data.common
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.icu.util.TimeZone
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.ZonedDateTime
 
-@Entity(tableName = "time_zones")
-class TimeZoneEntity(
-    @PrimaryKey val id: String,
-    @ColumnInfo(name = "position") val position: Int,
-    @ColumnInfo(name = "label") val label: String = "",
-)
+@RequiresApi(Build.VERSION_CODES.N)
+fun TimeZone.offset(currentTime: ZonedDateTime): ZonedDateTime {
+    val offsetSeconds = currentTime.offset.totalSeconds.toLong()
+    val currentTimeWithoutOffset = currentTime.minusSeconds(offsetSeconds)
+
+    return currentTimeWithoutOffset.plusSeconds(this.rawOffset / 1000L)
+}
+
+val TimeZone.region: String
+    @RequiresApi(Build.VERSION_CODES.N)
+    get() = id
+        .replace("_", " ")
+        .split("/")
+        .reversed()
+        .joinToString()

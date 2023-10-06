@@ -27,10 +27,40 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.math.absoluteValue
 
+/**
+ * Formats date time into something like:
+ *
+ * 23:59 or 11:59 AM
+ *
+ * Depends on system preferences
+ *
+ * @return Formatted string
+ */
 @Composable
 fun ZonedDateTime.formatLocal(): String {
     return if (DateFormat.is24HourFormat(LocalContext.current)) format(UnittoDateTimeFormatter.time24Formatter)
     else format(UnittoDateTimeFormatter.time12FormatterFull)
+}
+
+@Composable
+fun ZonedDateTime.formatOnlyHours(): String {
+    return if (DateFormat.is24HourFormat(LocalContext.current)) format(UnittoDateTimeFormatter.time24OnlyHoursFormatter)
+    else format(UnittoDateTimeFormatter.time12OnlyHoursFormatter)
+}
+
+@Composable
+fun ZonedDateTime.formatOnlyMinutes(): String {
+    return format(UnittoDateTimeFormatter.timeOnlyMinutesFormatter)
+}
+
+@Composable
+fun ZonedDateTime.formatOnlySeconds(): String {
+    return format(UnittoDateTimeFormatter.timeOnlySecondsFormatter)
+}
+
+@Composable
+fun ZonedDateTime.formatOnlyAmPm(): String {
+    return format(UnittoDateTimeFormatter.time12Formatter2)
 }
 
 /**
@@ -74,7 +104,7 @@ fun ZonedDateTime.formatOffset(
         resultBuffer += "${hour}${stringResource(R.string.unit_hour_short)}"
     }
 
-    // TODO Very ugly
+    // TODO Very ugly. Replace with formatTime option from unit converter
     if (minute != 0L) {
         if (hour != 0L) resultBuffer += " "
         resultBuffer += "${minute}${stringResource(R.string.unit_minute_short)}"

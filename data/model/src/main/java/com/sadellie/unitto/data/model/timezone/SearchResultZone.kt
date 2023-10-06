@@ -16,22 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model
+package com.sadellie.unitto.data.model.timezone
 
-import java.time.ZonedDateTime
+import android.icu.util.TimeZone
 
-data class UnittoTimeZone(
-    val id: String,
-    // For beta only, will change to StringRes later
-    val nameRes: String,
-    val position: Int = 0,
-    val offsetSeconds: Long = 0,
-    val code: String = "CODE",
-) {
-    fun offsetFrom(currentTime: ZonedDateTime): ZonedDateTime {
-        val offsetSeconds = currentTime.offset.totalSeconds.toLong()
-        val currentTimeWithoutOffset = currentTime.minusSeconds(offsetSeconds)
-
-        return currentTimeWithoutOffset.plusSeconds(this.offsetSeconds)
-    }
-}
+/**
+ * Don't get 'region' from [timeZone]. Use [formattedLabel] (same but cached)
+ */
+data class SearchResultZone(
+    val timeZone: TimeZone,
+    val formattedLabel: String
+)

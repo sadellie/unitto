@@ -70,17 +70,6 @@ internal fun UnittoApp(prefs: AppPreferences?) {
 
     val shortcutsScope = rememberCoroutineScope()
 
-    val tabs by remember {
-        mutableStateOf(
-            listOf(
-                DrawerItems.Calculator,
-                DrawerItems.Converter,
-                DrawerItems.DateDifference,
-                DrawerItems.TimeZones
-            )
-        )
-    }
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val gesturesEnabled: Boolean by remember(navBackStackEntry?.destination) {
         derivedStateOf {
@@ -115,7 +104,7 @@ internal fun UnittoApp(prefs: AppPreferences?) {
                 drawer = {
                     UnittoDrawerSheet(
                         modifier = Modifier,
-                        tabs = tabs,
+                        tabs = DrawerItems.ALL,
                         currentDestination = navBackStackEntry?.destination?.route
                     ) { destination ->
                         drawerScope.launch { drawerState.close() }

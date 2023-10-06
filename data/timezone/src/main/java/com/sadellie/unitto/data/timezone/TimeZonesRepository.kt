@@ -18,97 +18,143 @@
 
 package com.sadellie.unitto.data.timezone
 
+import android.icu.util.TimeZone
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.sadellie.unitto.data.common.lev
+import com.sadellie.unitto.data.common.region
 import com.sadellie.unitto.data.database.TimeZoneDao
-import com.sadellie.unitto.data.database.TimeZoneEntity
-import com.sadellie.unitto.data.model.UnittoTimeZone
+import com.sadellie.unitto.data.model.timezone.FavoriteZone
+import com.sadellie.unitto.data.model.timezone.SearchResultZone
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Singleton
 class TimeZonesRepository @Inject constructor(
     private val dao: TimeZoneDao
 ) {
-    private val allTimeZones: HashMap<String, UnittoTimeZone> = hashMapOf(
-        "zulu_time_zone" to UnittoTimeZone(id = "zulu_time_zone", nameRes = "Zulu Time Zone", offsetSeconds = 0)
-    )
+//    Not implemented because it will take me too much time to map 600+ TimeZones and codes
+//    private val codeToTimeZoneId: HashMap<String, String> by lazy {
+//        hashMapOf()
+//    }
 
-    val favoriteTimeZones: Flow<List<UnittoTimeZone>> = dao
-        .getAll()
+    val favoriteTimeZones: Flow<List<FavoriteZone>> = dao
+        .getFavorites()
         .map { list ->
-            val favorites = mutableListOf<UnittoTimeZone>()
+            val favorites = mutableListOf<FavoriteZone>()
             list.forEach { entity ->
-                val foundTimeZone = allTimeZones[entity.id] ?: return@forEach
-                val mapped = foundTimeZone.copy(
-                    position = entity.position
+                favorites.add(
+                    FavoriteZone(
+                        timeZone = TimeZone.getTimeZone(entity.id),
+                        position = entity.position,
+                        label = entity.label
+                    )
                 )
-                favorites.add(mapped)
             }
 
             favorites
         }
 
-    suspend fun swapTimeZones(from: String, to: String) = withContext(Dispatchers.IO) {
-        dao.swap(from, to)
-
-        return@withContext
+    suspend fun moveTimeZone(
+        timeZone: FavoriteZone,
+        targetPosition: Int
+    ) = withContext(Dispatchers.IO) {
+        dao.moveMove(timeZone.timeZone.id, timeZone.position, targetPosition)
     }
 
-    suspend fun delete(timeZone: UnittoTimeZone) = withContext(Dispatchers.IO) {
-        // Only PrimaryKey is needed
-        dao.remove(TimeZoneEntity(id = timeZone.id, position = 0))
-    }
-
-    suspend fun filterAllTimeZones(searchQuery: String): List<UnittoTimeZone> =
+    suspend fun addToFavorites(
+        timeZone: TimeZone
+    ) {
         withContext(Dispatchers.IO) {
+            dao.addToFavorites(timeZone.id)
+        }
+    }
+
+    suspend fun removeFromFavorites(
+        timeZone: FavoriteZone
+    ) = withContext(Dispatchers.IO) {
+        dao.removeFromFavorites(timeZone.timeZone.id)
+    }
+
+    suspend fun updateLabel(
+        timeZone: FavoriteZone,
+        label: String
+    ) = withContext(Dispatchers.IO) {
+        dao.updateLabel(timeZone.timeZone.id, label)
+    }
+
+    suspend fun filterAllTimeZones(
+        searchQuery: String
+    ): List<SearchResultZone> =
+        withContext(Dispatchers.IO) {
+            val favorites = dao.getFavorites().first().map { it.id }
+
             val query = searchQuery.trim().lowercase()
             val threshold: Int = query.length / 2
-            val timeZonesWithDist = mutableListOf<Pair<UnittoTimeZone, Int>>()
+            val timeZonesWithDist = mutableListOf<Pair<SearchResultZone, Int>>()
 
-            allTimeZones.values.forEach { timeZone ->
-                val timeZoneName = timeZone.nameRes
+            TimeZone.getAvailableIDs().forEach { timeZoneId ->
+                if (timeZoneId in favorites) return@forEach
 
-                if (timeZone.code.lowercase() == query) {
-                    timeZonesWithDist.add(timeZone to 1)
+                val timeZone = TimeZone.getTimeZone(timeZoneId)
+                val name = timeZone.displayName
+                val id = timeZone.region
+
+//                // CODE Match
+//                if (codeToTimeZoneId[timeZone.id]?.lowercase() == query) {
+//                    timeZonesWithDist.add(SearchResultZone(timeZone, id) to 1)
+//                    return@forEach
+//                }
+
+                // Display name match
+                when {
+                    // not zero, so that lev can have that
+                    name.startsWith(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 1)
+                        return@forEach
+                    }
+
+                    name.contains(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 2)
+                        return@forEach
+                    }
+                }
+                val nameLevDist = name
+                    .substring(0, minOf(query.length, name.length))
+                    .lev(query)
+                if (nameLevDist < threshold) {
+                    timeZonesWithDist.add(SearchResultZone(timeZone, id) to nameLevDist)
                     return@forEach
                 }
 
+                // ID Match
                 when {
                     // not zero, so that lev can have that
-                    timeZoneName.startsWith(query) -> {
-                        timeZonesWithDist.add(timeZone to 1)
+                    id.startsWith(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 1)
                         return@forEach
                     }
 
-                    timeZoneName.contains(query) -> {
-                        timeZonesWithDist.add(timeZone to 2)
+                    id.contains(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 2)
                         return@forEach
                     }
                 }
-
-                val levDist = timeZoneName
-                    .substring(0, minOf(query.length, timeZoneName.length))
+                val idLevDist = id
+                    .substring(0, minOf(query.length, id.length))
                     .lev(query)
-
-                if (levDist < threshold) {
-                    timeZonesWithDist.add(timeZone to levDist)
+                if (idLevDist < threshold) {
+                    timeZonesWithDist.add(SearchResultZone(timeZone, id) to idLevDist)
+                    return@forEach
                 }
             }
 
             return@withContext timeZonesWithDist.sortedBy { it.second }.map { it.first }
         }
-
-    suspend fun addToFavorites(timeZone: UnittoTimeZone) {
-//        UNCOMMENT FOR RELEASE
-        dao.insert(
-            TimeZoneEntity(
-                id = timeZone.id,
-                position = System.currentTimeMillis().toInt()
-            )
-        )
-    }
 }

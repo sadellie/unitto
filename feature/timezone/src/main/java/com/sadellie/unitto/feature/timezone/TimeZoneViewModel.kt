@@ -18,61 +18,72 @@
 
 package com.sadellie.unitto.feature.timezone
 
+import android.icu.util.TimeZone
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.data.model.UnittoTimeZone
+import com.sadellie.unitto.data.common.stateIn
+import com.sadellie.unitto.data.model.timezone.FavoriteZone
 import com.sadellie.unitto.data.timezone.TimeZonesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.N)
 @HiltViewModel
-class TimeZoneViewModel @Inject constructor(
+internal class TimeZoneViewModel @Inject constructor(
     private val timezonesRepository: TimeZonesRepository
 ): ViewModel() {
+    private val _userTimeZone = MutableStateFlow(TimeZone.getDefault())
+    private val _customUserTime = MutableStateFlow<ZonedDateTime?>(null)
+    private val _selectedTimeZone = MutableStateFlow<FavoriteZone?>(null)
+    private val _dialogState = MutableStateFlow<TimeZoneDialogState>(TimeZoneDialogState.Nothing)
 
-    private val _userTime = MutableStateFlow(ZonedDateTime.now())
-    private val _updateTime = MutableStateFlow(true)
-
-    val timeZoneUIState = combine(
-        _userTime,
-        _updateTime,
-        timezonesRepository.favoriteTimeZones
-    ) { userTime, updateTime, favorites ->
-        return@combine TimeZoneUIState(
-            list = favorites,
-            userTime = userTime,
-            updateTime = updateTime
+    val uiState = combine(
+        _customUserTime,
+        _userTimeZone,
+        _selectedTimeZone,
+        _dialogState,
+        timezonesRepository.favoriteTimeZones,
+    ) { customUserTime, userTimeZone, selectedTimeZone, dialogState, favoriteTimeZones ->
+        return@combine TimeZoneUIState.Ready(
+            favorites = favoriteTimeZones,
+            customUserTime = customUserTime,
+            userTimeZone = userTimeZone,
+            selectedTimeZone = selectedTimeZone,
+            dialogState = dialogState
         )
-    }.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000), TimeZoneUIState()
-    )
+    }
+        .stateIn(viewModelScope, TimeZoneUIState.Loading)
 
-    fun onDragEnd(from: String, to: String) = viewModelScope.launch {
-        timezonesRepository.swapTimeZones(from, to)
+    fun setCurrentTime() = _customUserTime.update { null }
+
+    fun setSelectedTime(time: ZonedDateTime) = _customUserTime.update { time }
+
+    fun setDialogState(state: TimeZoneDialogState) = _dialogState.update { state }
+
+    fun onDragEnd(
+        tz: FavoriteZone,
+        targetPosition: Int
+    ) = viewModelScope.launch {
+        timezonesRepository.moveTimeZone(tz, targetPosition)
     }
 
-    fun onDelete(timeZone: UnittoTimeZone) = viewModelScope.launch {
-        timezonesRepository.delete(timeZone)
+    fun delete(timeZone: FavoriteZone) = viewModelScope.launch {
+        timezonesRepository.removeFromFavorites(timeZone)
     }
 
-    fun setCustomTime(time: ZonedDateTime) = viewModelScope.launch(Dispatchers.Default) {
-        _updateTime.update { false }
-        _userTime.update { time }
-    }
+    fun selectTimeZone(timeZone: FavoriteZone?) = _selectedTimeZone.update { timeZone }
 
-    fun resetTime() = viewModelScope.launch(Dispatchers.Default) {
-        _updateTime.update { true }
-    }
-
-    fun setCurrentTime() = viewModelScope.launch(Dispatchers.Default) {
-        _userTime.update { ZonedDateTime.now() }
+    fun updateLabel(
+        timeZone: FavoriteZone,
+        label: String
+    ) = viewModelScope.launch {
+        timezonesRepository.updateLabel(timeZone = timeZone, label = label)
     }
 }
