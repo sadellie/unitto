@@ -18,9 +18,13 @@
 
 package com.sadellie.unitto.feature.timezone
 
+import android.icu.text.LocaleDisplayNames
+import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
+import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateInt
 import androidx.compose.animation.core.updateTransition
@@ -137,6 +141,11 @@ private fun TimeZoneScreen(
     }
     val focusRequester = remember { FocusRequester() }
 
+    val locale = ULocale.forLanguageTag(AppCompatDelegate.getApplicationLocales().toLanguageTags())
+
+    val timeZoneNames = remember(locale) { TimeZoneNames.getInstance(locale) }
+    val localeDisplayNames = remember(locale) { LocaleDisplayNames.getInstance(locale) }
+
     LaunchedEffect(uiState.customUserTime) {
         while ((uiState.customUserTime == null) and isActive) {
             currentUserTime = uiState.userTimeZone.timeNow()
@@ -247,7 +256,9 @@ private fun TimeZoneScreen(
                         onPrimaryClick = { offsetTime ->
                             setDialogState(TimeZoneDialogState.FavoriteTimePicker(item, offsetTime))
                         },
-                        isDragging = isDragging
+                        isDragging = isDragging,
+                        timeZoneNames = timeZoneNames,
+                        localeDisplayNames = localeDisplayNames,
                     )
                 }
             }

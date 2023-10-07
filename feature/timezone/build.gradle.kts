@@ -35,6 +35,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(libs.com.github.sadellie.themmo)
     implementation(libs.org.burnoutcrew.composereorderable.reorderable)
+    implementation(libs.androidx.appcompat.appcompat)
 
     implementation(project(":data:common"))
     implementation(project(":data:userprefs"))

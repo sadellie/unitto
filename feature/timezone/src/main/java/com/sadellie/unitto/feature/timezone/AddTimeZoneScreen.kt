@@ -18,9 +18,13 @@
 
 package com.sadellie.unitto.feature.timezone
 
+import android.icu.text.LocaleDisplayNames
+import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
+import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,7 +49,7 @@ import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.datetime.formatLocal
 import com.sadellie.unitto.core.ui.theme.numberHeadlineSmall
 import com.sadellie.unitto.data.common.offset
-import com.sadellie.unitto.data.common.region
+import com.sadellie.unitto.data.common.regionName
 import com.sadellie.unitto.data.model.timezone.SearchResultZone
 import java.time.ZonedDateTime
 
@@ -78,6 +82,7 @@ fun AddTimeZoneScreen(
     userTime: ZonedDateTime,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val locale = ULocale.forLanguageTag(AppCompatDelegate.getApplicationLocales().toLanguageTags())
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -104,7 +109,7 @@ fun AddTimeZoneScreen(
                                     addToFavorites(it.timeZone)
                                     navigateUp()
                                 },
-                            headlineContent = { Text(it.timeZone.displayName) },
+                            headlineContent = { Text(it.timeZone.getDisplayName(locale)) },
                             supportingContent = { Text(it.formattedLabel) },
                             trailingContent = {
                                 Text(
@@ -124,6 +129,7 @@ fun AddTimeZoneScreen(
 @Preview
 @Composable
 fun PreviewAddTimeZoneScreen() {
+    val locale = ULocale.getDefault()
     AddTimeZoneScreen(
         uiState = AddTimeZoneUIState.Ready(
             query = TextFieldValue(),
@@ -135,7 +141,10 @@ fun PreviewAddTimeZoneScreen() {
                 val zone = TimeZone.getTimeZone(it)
                 SearchResultZone(
                     timeZone = zone,
-                    formattedLabel = zone.region
+                    formattedLabel = zone.regionName(
+                        timeZoneNames = TimeZoneNames.getInstance(locale),
+                        localeDisplayNames = LocaleDisplayNames.getInstance(locale)
+                    )
                 )
             }
         ),

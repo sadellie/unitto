@@ -18,7 +18,10 @@
 
 package com.sadellie.unitto.feature.timezone.components
 
+import android.icu.text.LocaleDisplayNames
+import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
+import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
@@ -65,6 +68,7 @@ import com.sadellie.unitto.core.ui.datetime.formatLocal
 import com.sadellie.unitto.core.ui.datetime.formatOffset
 import com.sadellie.unitto.core.ui.theme.numberHeadlineMedium
 import com.sadellie.unitto.data.common.offset
+import com.sadellie.unitto.data.common.regionName
 import com.sadellie.unitto.data.model.timezone.FavoriteZone
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -81,6 +85,8 @@ internal fun FavoriteTimeZoneItem(
     onDelete: () -> Unit,
     onLabelClick: () -> Unit,
     onPrimaryClick: (ZonedDateTime) -> Unit,
+    timeZoneNames: TimeZoneNames,
+    localeDisplayNames: LocaleDisplayNames,
 ) {
     var deleteAnimationRunning by remember { mutableStateOf(false) }
     val animatedAlpha by animateFloatAsState(
@@ -88,6 +94,10 @@ internal fun FavoriteTimeZoneItem(
         targetValue = if (deleteAnimationRunning) 0f else 1f,
         finishedListener = { if (it == 0f) onDelete() }
     )
+
+    val regionName = remember(timeZoneNames, localeDisplayNames) {
+        item.timeZone.regionName(timeZoneNames, localeDisplayNames)
+    }
 
     val offsetTime by remember(fromTime) { mutableStateOf(item.timeZone.offset(fromTime)) }
     val offsetTimeFormatted = offsetTime.formatOffset(fromTime)
@@ -118,7 +128,7 @@ internal fun FavoriteTimeZoneItem(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Text(
-                    text = item.timeZone.displayName,
+                    text = regionName,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -298,6 +308,9 @@ private fun PreviewFavoriteTimeZones(
     @PreviewParameter(FavoriteTimeZoneItemParameterProvider::class) tz: FavoriteTimeZoneItemParameter,
 ) {
     var expanded by remember { mutableStateOf(tz.expanded) }
+    val locale = ULocale.getDefault()
+    val timeZoneNames = remember(locale) { TimeZoneNames.getInstance(locale) }
+    val localeDisplayNames = remember(locale) { LocaleDisplayNames.getInstance(locale) }
 
     FavoriteTimeZoneItem(
         modifier = Modifier
@@ -312,6 +325,8 @@ private fun PreviewFavoriteTimeZones(
         onDelete = {},
         onPrimaryClick = {},
         onLabelClick = {},
-        isDragging = false
+        isDragging = false,
+        timeZoneNames = timeZoneNames,
+        localeDisplayNames = localeDisplayNames
     )
 }

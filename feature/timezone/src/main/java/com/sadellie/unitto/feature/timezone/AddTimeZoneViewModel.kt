@@ -19,8 +19,10 @@
 package com.sadellie.unitto.feature.timezone
 
 import android.icu.util.TimeZone
+import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -55,7 +57,14 @@ class AddTimeZoneViewModel @Inject constructor(
     }
         .mapLatest { ui ->
             viewModelScope.launch {
-                _result.update { timezonesRepository.filterAllTimeZones(ui.query.text) }
+                _result.update {
+                    timezonesRepository.filterAllTimeZones(
+                        searchQuery = ui.query.text,
+                        locale = ULocale.forLanguageTag(
+                            AppCompatDelegate.getApplicationLocales().toLanguageTags()
+                        )
+                    )
+                }
             }
             ui
         }

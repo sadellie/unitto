@@ -18,11 +18,14 @@
 
 package com.sadellie.unitto.data.timezone
 
+import android.icu.text.LocaleDisplayNames
+import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
+import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.sadellie.unitto.data.common.lev
-import com.sadellie.unitto.data.common.region
+import com.sadellie.unitto.data.common.regionName
 import com.sadellie.unitto.data.database.TimeZoneDao
 import com.sadellie.unitto.data.model.timezone.FavoriteZone
 import com.sadellie.unitto.data.model.timezone.SearchResultZone
@@ -90,10 +93,13 @@ class TimeZonesRepository @Inject constructor(
     }
 
     suspend fun filterAllTimeZones(
-        searchQuery: String
+        searchQuery: String,
+        locale: ULocale,
     ): List<SearchResultZone> =
         withContext(Dispatchers.IO) {
             val favorites = dao.getFavorites().first().map { it.id }
+            val timeZoneNames = TimeZoneNames.getInstance(locale)
+            val localeDisplayNames = LocaleDisplayNames.getInstance(locale)
 
             val query = searchQuery.trim().lowercase()
             val threshold: Int = query.length / 2
@@ -103,8 +109,8 @@ class TimeZonesRepository @Inject constructor(
                 if (timeZoneId in favorites) return@forEach
 
                 val timeZone = TimeZone.getTimeZone(timeZoneId)
-                val name = timeZone.displayName
-                val id = timeZone.region
+                val displayName = timeZone.displayName
+                val regionName = timeZone.regionName(timeZoneNames, localeDisplayNames)
 
 //                // CODE Match
 //                if (codeToTimeZoneId[timeZone.id]?.lowercase() == query) {
@@ -115,42 +121,42 @@ class TimeZonesRepository @Inject constructor(
                 // Display name match
                 when {
                     // not zero, so that lev can have that
-                    name.startsWith(query) -> {
-                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 1)
+                    displayName.startsWith(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, regionName) to 1)
                         return@forEach
                     }
 
-                    name.contains(query) -> {
-                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 2)
+                    displayName.contains(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, regionName) to 2)
                         return@forEach
                     }
                 }
-                val nameLevDist = name
-                    .substring(0, minOf(query.length, name.length))
+                val displayNameLevDist = displayName
+                    .substring(0, minOf(query.length, displayName.length))
                     .lev(query)
-                if (nameLevDist < threshold) {
-                    timeZonesWithDist.add(SearchResultZone(timeZone, id) to nameLevDist)
+                if (displayNameLevDist < threshold) {
+                    timeZonesWithDist.add(SearchResultZone(timeZone, regionName) to displayNameLevDist)
                     return@forEach
                 }
 
                 // ID Match
                 when {
                     // not zero, so that lev can have that
-                    id.startsWith(query) -> {
-                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 1)
+                    regionName.startsWith(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, regionName) to 1)
                         return@forEach
                     }
 
-                    id.contains(query) -> {
-                        timeZonesWithDist.add(SearchResultZone(timeZone, id) to 2)
+                    regionName.contains(query) -> {
+                        timeZonesWithDist.add(SearchResultZone(timeZone, regionName) to 2)
                         return@forEach
                     }
                 }
-                val idLevDist = id
-                    .substring(0, minOf(query.length, id.length))
+                val regionNameLevDist = regionName
+                    .substring(0, minOf(query.length, regionName.length))
                     .lev(query)
-                if (idLevDist < threshold) {
-                    timeZonesWithDist.add(SearchResultZone(timeZone, id) to idLevDist)
+                if (regionNameLevDist < threshold) {
+                    timeZonesWithDist.add(SearchResultZone(timeZone, regionName) to regionNameLevDist)
                     return@forEach
                 }
             }

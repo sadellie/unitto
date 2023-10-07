@@ -18,6 +18,8 @@
 
 package com.sadellie.unitto.data.common
 
+import android.icu.text.LocaleDisplayNames
+import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -31,7 +33,18 @@ fun TimeZone.offset(currentTime: ZonedDateTime): ZonedDateTime {
     return currentTimeWithoutOffset.plusSeconds(this.rawOffset / 1000L)
 }
 
-val TimeZone.region: String
+@RequiresApi(Build.VERSION_CODES.N)
+fun TimeZone.regionName(
+    timeZoneNames: TimeZoneNames,
+    localeDisplayNames: LocaleDisplayNames
+): String {
+    val location = timeZoneNames.getExemplarLocationName(this.id) ?: return fallbackRegion
+    val region = localeDisplayNames.regionDisplayName(TimeZone.getRegion(id)) ?: return fallbackRegion
+
+    return "$location, $region"
+}
+
+private val TimeZone.fallbackRegion: String
     @RequiresApi(Build.VERSION_CODES.N)
     get() = id
         .replace("_", " ")

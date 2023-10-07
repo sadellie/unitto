@@ -18,10 +18,14 @@
 
 package com.sadellie.unitto.feature.timezone.components
 
+import android.icu.text.LocaleDisplayNames
+import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
+import android.icu.util.ULocale
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -38,6 +42,10 @@ class FavoriteTimeZonesTest {
     @Test
     fun convertTime(): Unit = with(composeTestRule) {
         setContent {
+            val locale = ULocale.getDefault()
+            val timeZoneNames = remember(locale) { TimeZoneNames.getInstance(locale) }
+            val localeDisplayNames = remember(locale) { LocaleDisplayNames.getInstance(locale) }
+
             FavoriteTimeZoneItem(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.secondaryContainer),
@@ -55,7 +63,9 @@ class FavoriteTimeZonesTest {
                 onDelete = {},
                 onPrimaryClick = {},
                 onLabelClick = {},
-                isDragging = false
+                isDragging = false,
+                timeZoneNames = timeZoneNames,
+                localeDisplayNames = localeDisplayNames
             )
         }
 
