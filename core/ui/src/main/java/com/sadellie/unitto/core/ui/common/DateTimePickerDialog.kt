@@ -18,29 +18,43 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import android.content.res.Configuration
 import android.text.format.DateFormat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Keyboard
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
@@ -48,9 +62,12 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.zIndex
 import com.sadellie.unitto.core.base.R
 import java.time.Instant
 import java.time.LocalDateTime
@@ -58,66 +75,100 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.math.max
 
+// https://cs.android.com/androidx/platform/tools/dokka-devsite-plugin/+/master:testData/compose/samples/material3/samples/TimePickerSamples.kt
 @Composable
 fun TimePickerDialog(
-    modifier: Modifier = Modifier,
     hour: Int,
     minute: Int,
-    confirmLabel: String = stringResource(R.string.ok_label),
-    dismissLabel: String = stringResource(R.string.cancel_label),
-    onDismiss: () -> Unit = {},
+    onCancel: () -> Unit,
     onConfirm: (hour: Int, minute: Int) -> Unit,
+    confirmLabel: String = stringResource(R.string.ok_label),
 ) {
-    val isVertical = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
-
     val pickerState = rememberTimePickerState(
         initialHour = hour,
         initialMinute = minute,
         is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     )
+    val configuration = LocalConfiguration.current
+    val showingPicker = rememberSaveable { mutableStateOf(true) }
 
     AlertDialog(
-        onDismissRequest = onDismiss,
-        modifier = modifier.wrapContentHeight(),
-        properties = DialogProperties(usePlatformDefaultWidth = isVertical)
+        onDismissRequest = onCancel,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        ),
     ) {
         Surface(
-            modifier = modifier,
             shape = MaterialTheme.shapes.extraLarge,
-            color = MaterialTheme.colorScheme.surface,
             tonalElevation = 6.dp,
+            modifier = Modifier
+                .width(IntrinsicSize.Min)
+                .height(IntrinsicSize.Min)
+                .background(
+                    shape = MaterialTheme.shapes.extraLarge,
+                    color = MaterialTheme.colorScheme.surface
+                ),
         ) {
+            if (configuration.screenHeightDp > 400) {
+                // Make this take the entire viewport. This will guarantee that Screen readers
+                // focus the toggle first.
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .semantics {
+                            isTraversalGroup = true
+                        }
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            // This is a workaround so that the Icon comes up first
+                            // in the talkback traversal order. So that users of a11y
+                            // services can use the text input. When talkback traversal
+                            // order is customizable we can remove this.
+                            .size(64.dp, 72.dp)
+                            .align(Alignment.BottomStart)
+                            .zIndex(5f),
+                        onClick = { showingPicker.value = !showingPicker.value }) {
+                        val icon = if (showingPicker.value) {
+                            Icons.Outlined.Keyboard
+                        } else {
+                            Icons.Outlined.Schedule
+                        }
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = stringResource(R.string.select_time_label)
+                        )
+                    }
+                }
+            }
             Column(
                 modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp),
                     text = stringResource(R.string.select_time_label),
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.align(Alignment.Start)
+                    style = MaterialTheme.typography.labelMedium
                 )
-
-                TimePicker(
-                    state = pickerState,
-                    modifier = Modifier.padding(top = 20.dp),
-                    layoutType = if (isVertical) TimePickerLayoutType.Vertical else TimePickerLayoutType.Horizontal
-                )
-
+                if (showingPicker.value && configuration.screenHeightDp > 400) {
+                    TimePicker(state = pickerState)
+                } else {
+                    TimeInput(state = pickerState)
+                }
                 Row(
-                    modifier = Modifier.align(Alignment.End),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    modifier = Modifier
+                        .height(40.dp)
+                        .fillMaxWidth()
                 ) {
+                    Spacer(modifier = Modifier.weight(1f))
                     TextButton(
-                        onClick = onDismiss
-                    ) {
-                        Text(text = dismissLabel)
-                    }
+                        onClick = onCancel
+                    ) { Text(stringResource(R.string.cancel_label)) }
                     TextButton(
                         onClick = { onConfirm(pickerState.hour, pickerState.minute) }
-                    ) {
-                        Text(text = confirmLabel)
-                    }
+                    ) { Text(confirmLabel) }
                 }
             }
         }

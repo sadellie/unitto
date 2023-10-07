@@ -267,7 +267,7 @@ private fun TimeZoneScreen(
                     )
                     setDialogState(TimeZoneDialogState.Nothing)
                 },
-                onDismiss = { setDialogState(TimeZoneDialogState.Nothing) }
+                onCancel = { setDialogState(TimeZoneDialogState.Nothing) }
             )
         }
 
@@ -286,7 +286,7 @@ private fun TimeZoneScreen(
                     )
                     setDialogState(TimeZoneDialogState.Nothing)
                 },
-                onDismiss = { setDialogState(TimeZoneDialogState.Nothing) }
+                onCancel = { setDialogState(TimeZoneDialogState.Nothing) }
             )
         }
 

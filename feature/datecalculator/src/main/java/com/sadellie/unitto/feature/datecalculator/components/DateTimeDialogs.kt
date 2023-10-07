@@ -40,7 +40,7 @@ internal fun DateTimeDialogs(
             TimePickerDialog(
                 hour = date.hour,
                 minute = date.minute,
-                onDismiss = { updateDialogState(DialogState.NONE) },
+                onCancel = { updateDialogState(DialogState.NONE) },
                 onConfirm = { hour, minute ->
                     updateDate(date.withHour(hour).withMinute(minute))
                     updateDialogState(dateState)
@@ -53,7 +53,7 @@ internal fun DateTimeDialogs(
             TimePickerDialog(
                 hour = date.hour,
                 minute = date.minute,
-                onDismiss = { updateDialogState(DialogState.NONE) },
+                onCancel = { updateDialogState(DialogState.NONE) },
                 onConfirm = { hour, minute ->
                     updateDate(date.withHour(hour).withMinute(minute))
                     updateDialogState(DialogState.NONE)
