@@ -21,6 +21,7 @@ package com.sadellie.unitto.data.common
 import android.icu.text.LocaleDisplayNames
 import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
+import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.ZonedDateTime
@@ -42,6 +43,13 @@ fun TimeZone.regionName(
     val region = localeDisplayNames.regionDisplayName(TimeZone.getRegion(id)) ?: return fallbackRegion
 
     return "$location, $region"
+}
+
+@RequiresApi(Build.VERSION_CODES.N)
+fun TimeZone.displayName(
+    locale: ULocale,
+): String {
+    return this.getDisplayName(locale) ?: id
 }
 
 private val TimeZone.fallbackRegion: String

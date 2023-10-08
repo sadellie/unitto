@@ -58,7 +58,7 @@ class AddTimeZoneViewModel @Inject constructor(
         .mapLatest { ui ->
             viewModelScope.launch {
                 _result.update {
-                    timezonesRepository.filterAllTimeZones(
+                    timezonesRepository.filter(
                         searchQuery = ui.query.text,
                         locale = ULocale.forLanguageTag(
                             AppCompatDelegate.getApplicationLocales().toLanguageTags()

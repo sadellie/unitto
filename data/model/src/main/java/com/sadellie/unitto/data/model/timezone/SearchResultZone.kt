@@ -21,9 +21,16 @@ package com.sadellie.unitto.data.model.timezone
 import android.icu.util.TimeZone
 
 /**
- * Don't get 'region' from [timeZone]. Use [formattedLabel] (same but cached)
+ * Use cached name and region properties!
+ *
+ * @property timeZone Same as [TimeZone]
+ * @property name Cached localized [TimeZone.getDisplayName]
+ * @property region Cached localized [TimeZone.getRegion]
+ * @property rank Higher is better, closer to the search query
  */
 data class SearchResultZone(
     val timeZone: TimeZone,
-    val formattedLabel: String
+    val name: String,
+    val region: String,
+    val rank: Int,
 )
