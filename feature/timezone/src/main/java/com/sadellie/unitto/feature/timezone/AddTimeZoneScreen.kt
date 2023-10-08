@@ -23,6 +23,7 @@ import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
 import android.os.Build
+import android.text.format.DateFormat.is24HourFormat
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
@@ -37,16 +38,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
-import com.sadellie.unitto.core.ui.datetime.formatLocal
+import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.theme.numberHeadlineSmall
 import com.sadellie.unitto.data.common.displayName
 import com.sadellie.unitto.data.common.offset
@@ -83,6 +86,8 @@ fun AddTimeZoneScreen(
     userTime: ZonedDateTime,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val locale = LocalLocale.current
+    val is24Hour = is24HourFormat(LocalContext.current)
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -113,7 +118,9 @@ fun AddTimeZoneScreen(
                             supportingContent = { Text(it.region) },
                             trailingContent = {
                                 Text(
-                                    text = it.timeZone.offset(userTime).formatLocal(),
+                                    text = it.timeZone
+                                        .offset(userTime)
+                                        .formatTime(locale, is24Hour),
                                     style = MaterialTheme.typography.numberHeadlineSmall
                                 )
                             }

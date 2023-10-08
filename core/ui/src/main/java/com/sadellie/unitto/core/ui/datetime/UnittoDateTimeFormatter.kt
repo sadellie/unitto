@@ -19,60 +19,56 @@
 package com.sadellie.unitto.core.ui.datetime
 
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-data object UnittoDateTimeFormatter {
+internal data object UnittoDateTimeFormatter {
     /**
      * 23:59
      */
-    val time24Formatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("HH:mm") }
+    fun time24(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm", locale)
 
     /**
      * 11:59 AM
      */
-    val time12FormatterFull: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("hh:mm a") }
+    fun time12Full(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a", locale)
 
     /**
-     * 11:59
+     * 11:59 (no AM/PM)
      */
-    val time12Formatter1: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("hh:mm") }
-
-    /**
-     * 23
-     */
-    val time24OnlyHoursFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("HH") }
+    fun time12Short(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm", locale)
 
     /**
      * 23
      */
-    val time12OnlyHoursFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("hh") }
+    fun time24Hours(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("HH", locale)
+
+    /**
+     * 23
+     */
+    fun time12Hours(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("hh", locale)
 
     /**
      * 59
      */
-    val timeOnlyMinutesFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("mm") }
-
-    /**
-     * 59
-     */
-    val timeOnlySecondsFormatter: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("ss") }
+    fun timeMinutes(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("mm", locale)
 
     /**
      * AM
      */
-    val time12Formatter2: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("a") }
+    fun time12AmPm(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("a", locale)
 
     /**
      * 31 Dec 2077
      */
-    val dayMonthYear: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("d MMM y") }
+    fun dateDayMonthYear(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("d MMM y", locale)
 
     /**
      * Mon, 31 Dec, 2077
      */
-    val weekDayMonthYear: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEE, MMM d, y") }
+    fun dateWeekDayMonthYear(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d, y", locale)
 
     /**
      * GMT+3
      */
-    val zoneFormatPattern: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("O") }
+    fun zone(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("O", locale)
 }

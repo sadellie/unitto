@@ -18,13 +18,13 @@
 
 package com.sadellie.unitto.core.ui.datetime
 
-import android.text.format.DateFormat
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.base.R
+import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 /**
@@ -35,44 +35,105 @@ import kotlin.math.absoluteValue
  * Depends on system preferences
  *
  * @return Formatted string
+ * @see UnittoDateTimeFormatter.time24
+ * @see UnittoDateTimeFormatter.time12Full
  */
-@Composable
-fun ZonedDateTime.formatLocal(): String {
-    return if (DateFormat.is24HourFormat(LocalContext.current)) format(UnittoDateTimeFormatter.time24Formatter)
-    else format(UnittoDateTimeFormatter.time12FormatterFull)
-}
+fun ZonedDateTime.formatTime(
+    locale: Locale,
+    is24Hour: Boolean,
+): String =
+    if (is24Hour) {
+        format(UnittoDateTimeFormatter.time24(locale))
+    } else {
+        format(UnittoDateTimeFormatter.time12Full(locale))
+    }
 
-@Composable
-fun ZonedDateTime.formatOnlyHours(): String {
-    return if (DateFormat.is24HourFormat(LocalContext.current)) format(UnittoDateTimeFormatter.time24OnlyHoursFormatter)
-    else format(UnittoDateTimeFormatter.time12OnlyHoursFormatter)
-}
+/**
+ * @see UnittoDateTimeFormatter.time12Short
+ */
+fun ZonedDateTime.formatTime12Short(
+    locale: Locale,
+): String =
+    format(UnittoDateTimeFormatter.time12Short(locale))
 
-@Composable
-fun ZonedDateTime.formatOnlyMinutes(): String {
-    return format(UnittoDateTimeFormatter.timeOnlyMinutesFormatter)
-}
+/**
+ * Formats date time into something like:
+ *
+ * 23 or 11
+ *
+ * Depends on system preferences
+ *
+ * @return Formatted string
+ * @see UnittoDateTimeFormatter.time24Hours
+ * @see UnittoDateTimeFormatter.time12Hours
+ */
+fun ZonedDateTime.formatTimeHours(
+    locale: Locale,
+    is24Hour: Boolean,
+): String =
+    if (is24Hour)
+        format(UnittoDateTimeFormatter.time24Hours(locale))
+    else
+        format(UnittoDateTimeFormatter.time12Hours(locale))
 
-@Composable
-fun ZonedDateTime.formatOnlySeconds(): String {
-    return format(UnittoDateTimeFormatter.timeOnlySecondsFormatter)
-}
+/**
+ * @see UnittoDateTimeFormatter.timeMinutes
+ */
+fun ZonedDateTime.formatTimeMinutes(
+    locale: Locale,
+): String =
+    format(UnittoDateTimeFormatter.timeMinutes(locale))
 
-@Composable
-fun ZonedDateTime.formatOnlyAmPm(): String {
-    return format(UnittoDateTimeFormatter.time12Formatter2)
-}
+/**
+ * @see UnittoDateTimeFormatter.time12AmPm
+ */
+fun ZonedDateTime.formatTimeAmPm(
+    locale: Locale,
+): String =
+    format(UnittoDateTimeFormatter.time12AmPm(locale))
+
+/**
+ * @see UnittoDateTimeFormatter.dateWeekDayMonthYear
+ */
+fun ZonedDateTime.formatDateWeekDayMonthYear(
+    locale: Locale,
+): String =
+    format(UnittoDateTimeFormatter.dateWeekDayMonthYear(locale))
+
+/**
+ * @see UnittoDateTimeFormatter.zone
+ */
+fun ZonedDateTime.formatZone(
+    locale: Locale,
+): String =
+    format(UnittoDateTimeFormatter.zone(locale))
+
+/**
+ * @see UnittoDateTimeFormatter.dateDayMonthYear
+ */
+fun ZonedDateTime.formatDateDayMonthYear(
+    locale: Locale,
+): String =
+    format(UnittoDateTimeFormatter.dateDayMonthYear(locale))
+
+/**
+ * @see UnittoDateTimeFormatter.dateWeekDayMonthYear
+ */
+fun LocalDate.formatDateWeekDayMonthYear(
+    locale: Locale
+): String =
+    format(UnittoDateTimeFormatter.dateWeekDayMonthYear(locale))
 
 /**
  * Format offset string. Examples:
  *
- * 0
+ * 0h
  *
- * +8
+ * +8h
  *
- * +8, tomorrow
+ * +8h, tomorrow
  *
- * -8, yesterday
+ * -8h 30m, yesterday
  *
  * @receiver [ZonedDateTime] Time with offset.
  * @param currentTime Time without offset.
@@ -80,7 +141,7 @@ fun ZonedDateTime.formatOnlyAmPm(): String {
  */
 @Composable
 fun ZonedDateTime.formatOffset(
-    currentTime: ZonedDateTime
+    currentTime: ZonedDateTime,
 ): String? {
 
     val offsetFixed = ChronoUnit.SECONDS.between(currentTime, this)

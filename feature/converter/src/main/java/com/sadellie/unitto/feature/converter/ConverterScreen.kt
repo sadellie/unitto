@@ -69,6 +69,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
@@ -78,13 +79,14 @@ import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
-import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
+import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
+import java.util.Locale
 
 @Composable
 internal fun ConverterRoute(
@@ -257,6 +259,7 @@ private fun Default(
     clearInput: () -> Unit,
     refreshCurrencyRates: (AbstractUnit) -> Unit,
 ) {
+    val locale: Locale = LocalLocale.current
     var calculation by remember(uiState.calculation) {
         mutableStateOf(
             TextFieldValue(uiState.calculation?.format(uiState.scale, uiState.outputFormat) ?: "")
@@ -266,7 +269,7 @@ private fun Default(
     val lastUpdate by remember(uiState) {
         derivedStateOf {
             if (uiState.currencyRateUpdateState !is CurrencyRateUpdateState.Ready) return@derivedStateOf null
-            uiState.currencyRateUpdateState.date.format(UnittoDateTimeFormatter.weekDayMonthYear)
+            uiState.currencyRateUpdateState.date.formatDateWeekDayMonthYear(locale)
         }
     }
 

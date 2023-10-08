@@ -23,6 +23,7 @@ import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
 import android.os.Build
+import android.text.format.DateFormat
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -57,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,8 +66,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.datetime.formatLocal
+import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.datetime.formatOffset
+import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.theme.numberHeadlineMedium
 import com.sadellie.unitto.data.common.offset
 import com.sadellie.unitto.data.common.regionName
@@ -88,6 +91,8 @@ internal fun FavoriteTimeZoneItem(
     timeZoneNames: TimeZoneNames,
     localeDisplayNames: LocaleDisplayNames,
 ) {
+    val locale = LocalLocale.current
+    val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     var deleteAnimationRunning by remember { mutableStateOf(false) }
     val animatedAlpha by animateFloatAsState(
         label = "delete animation",
@@ -146,7 +151,7 @@ internal fun FavoriteTimeZoneItem(
                 }
             }
             AnimatedContent(
-                targetState = offsetTime.formatLocal(),
+                targetState = offsetTime.formatTime(locale, is24Hour),
                 label = "Time change",
                 transitionSpec = {
                     fadeIn() togetherWith fadeOut() using (SizeTransform(clip = false))

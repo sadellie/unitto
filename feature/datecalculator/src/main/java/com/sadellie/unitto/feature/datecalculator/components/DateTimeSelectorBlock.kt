@@ -42,8 +42,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.squashable
-import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
+import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
+import com.sadellie.unitto.core.ui.datetime.formatTime
+import com.sadellie.unitto.core.ui.datetime.formatTime12Short
+import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
 import java.time.ZonedDateTime
 
 @Composable
@@ -56,6 +60,8 @@ internal fun DateTimeSelectorBlock(
     onDateClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
+    val locale = LocalLocale.current
+
     Column(
         modifier = modifier
             .squashable(
@@ -72,7 +78,7 @@ internal fun DateTimeSelectorBlock(
 
         if (DateFormat.is24HourFormat(LocalContext.current)) {
             AnimatedContent(
-                targetState = dateTime.format(UnittoDateTimeFormatter.time24Formatter),
+                targetState = dateTime,
                 transitionSpec = {
                     slideInVertically { height -> height } + fadeIn() togetherWith
                             slideOutVertically { height -> -height } + fadeOut() using
@@ -86,7 +92,7 @@ internal fun DateTimeSelectorBlock(
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = onTimeClick
                     ),
-                    text = time,
+                    text = time.formatTime(locale, true),
                     style = MaterialTheme.typography.displaySmall,
                     maxLines = 1
                 )
@@ -109,7 +115,7 @@ internal fun DateTimeSelectorBlock(
                     label = "Animated 12 hour",
                 ) { time ->
                     Text(
-                        text = time.format(UnittoDateTimeFormatter.time12Formatter1),
+                        text = time.formatTime12Short(locale),
                         style = MaterialTheme.typography.displaySmall,
                         maxLines = 1
                     )
@@ -125,7 +131,7 @@ internal fun DateTimeSelectorBlock(
                     label = "Animated am/pm",
                 ) { time ->
                     Text(
-                        text = time.format(UnittoDateTimeFormatter.time12Formatter2),
+                        text = time.formatTimeAmPm(locale),
                         style = MaterialTheme.typography.bodyLarge,
                         maxLines = 1
                     )
@@ -148,7 +154,7 @@ internal fun DateTimeSelectorBlock(
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = onDateClick
                 ),
-                text = date.format(UnittoDateTimeFormatter.weekDayMonthYear),
+                text = date.formatDateWeekDayMonthYear(locale),
                 style = MaterialTheme.typography.bodySmall
             )
         }

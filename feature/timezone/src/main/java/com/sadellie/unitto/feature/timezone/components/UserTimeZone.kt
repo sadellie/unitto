@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.timezone.components
 
+import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
@@ -43,14 +44,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.squashable
-import com.sadellie.unitto.core.ui.datetime.UnittoDateTimeFormatter
-import com.sadellie.unitto.core.ui.datetime.formatOnlyHours
-import com.sadellie.unitto.core.ui.datetime.formatOnlyMinutes
+import com.sadellie.unitto.core.ui.datetime.formatDateDayMonthYear
+import com.sadellie.unitto.core.ui.datetime.formatTimeHours
+import com.sadellie.unitto.core.ui.datetime.formatTimeMinutes
+import com.sadellie.unitto.core.ui.datetime.formatZone
 import com.sadellie.unitto.core.ui.theme.numberBodyLarge
 import com.sadellie.unitto.core.ui.theme.numberDisplayLarge
 import java.time.ZonedDateTime
@@ -63,6 +67,8 @@ internal fun UserTimeZone(
     onResetClick: () -> Unit,
     showReset: Boolean,
 ) {
+    val locale = LocalLocale.current
+    val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
 
     Row(
         modifier = modifier
@@ -77,7 +83,7 @@ internal fun UserTimeZone(
     ) {
         Column(Modifier.weight(1f)) {
             Text(
-                text = userTime.format(UnittoDateTimeFormatter.zoneFormatPattern),
+                text = userTime.formatZone(locale),
                 style = MaterialTheme.typography.numberBodyLarge,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )
@@ -85,13 +91,13 @@ internal fun UserTimeZone(
             Row(
                 verticalAlignment = Alignment.Bottom
             ) {
-                SlidingText(text = userTime.formatOnlyHours())
+                SlidingText(text = userTime.formatTimeHours(locale, is24Hour))
                 TimeSeparator()
-                SlidingText(text = userTime.formatOnlyMinutes())
+                SlidingText(text = userTime.formatTimeMinutes(locale))
             }
 
             Text(
-                text = userTime.format(UnittoDateTimeFormatter.dayMonthYear),
+                text = userTime.formatDateDayMonthYear(locale),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )

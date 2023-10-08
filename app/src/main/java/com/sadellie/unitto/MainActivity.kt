@@ -25,10 +25,16 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,8 +49,16 @@ internal class MainActivity : AppCompatActivity() {
         setContent {
             val prefs = userPrefsRepository.appPrefs
                 .collectAsStateWithLifecycle(null).value
+            val locale = remember(LocalConfiguration.current) {
+                val tag: String = AppCompatDelegate
+                    .getApplicationLocales()
+                    .toLanguageTags()
+                if (tag.isEmpty()) Locale.getDefault() else Locale.forLanguageTag(tag)
+            }
 
-            UnittoApp(prefs)
+            CompositionLocalProvider(LocalLocale provides locale) {
+                UnittoApp(prefs)
+            }
         }
     }
 
