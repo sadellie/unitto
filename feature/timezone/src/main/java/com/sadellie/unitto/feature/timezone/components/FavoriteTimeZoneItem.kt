@@ -231,7 +231,8 @@ private fun TimeZoneLabel(
                     )
                     Text(
                         text = stringResource(R.string.add_label),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 }
             }
@@ -249,7 +250,8 @@ private fun TimeZoneLabel(
                 }
                 Text(
                     text = label,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.headlineMedium
                 )
             }
         }
