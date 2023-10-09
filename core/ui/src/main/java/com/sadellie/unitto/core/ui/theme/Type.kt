@@ -40,6 +40,7 @@ import com.sadellie.unitto.core.base.R
 data class NumberTypography(
     val displayLarge: TextStyle,
     val displayMedium: TextStyle,
+    val displaySmall: TextStyle,
     val headlineMedium: TextStyle,
     val headlineSmall: TextStyle,
     val bodyLarge: TextStyle,
@@ -166,10 +167,17 @@ val NumberTypographyUnitto by lazy {
         ),
         displayMedium = TextStyle(
             fontFamily = latoFamily,
-            fontWeight = FontWeight.W400,
+            fontWeight = FontWeight.Normal,
             fontSize = 38.sp,
             lineHeight = 42.sp,
             letterSpacing = (-0.25).sp,
+        ),
+        displaySmall = TextStyle(
+            fontFamily = latoFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 36.sp,
+            lineHeight = 44.sp,
+            letterSpacing = 0.sp,
         ),
         headlineMedium = TextStyle(
             fontFamily = latoFamily,
@@ -201,6 +209,7 @@ val NumberTypographySystem by lazy {
     NumberTypography(
         displayLarge = TypographySystem.displayLarge,
         displayMedium = TypographySystem.displayMedium,
+        displaySmall = TypographySystem.displaySmall,
         headlineMedium = TypographySystem.headlineMedium,
         headlineSmall = TypographySystem.headlineSmall,
         bodyLarge = TypographySystem.bodyLarge
