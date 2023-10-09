@@ -55,8 +55,7 @@ import com.sadellie.unitto.core.ui.datetime.formatDateDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTimeHours
 import com.sadellie.unitto.core.ui.datetime.formatTimeMinutes
 import com.sadellie.unitto.core.ui.datetime.formatZone
-import com.sadellie.unitto.core.ui.theme.numberBodyLarge
-import com.sadellie.unitto.core.ui.theme.numberDisplayLarge
+import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import java.time.ZonedDateTime
 
 @Composable
@@ -84,7 +83,7 @@ internal fun UserTimeZone(
         Column(Modifier.weight(1f)) {
             Text(
                 text = userTime.formatZone(locale),
-                style = MaterialTheme.typography.numberBodyLarge,
+                style = LocalNumberTypography.current.bodyLarge,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )
 
@@ -121,7 +120,7 @@ internal fun UserTimeZone(
 @Composable
 private fun SlidingText(
     text: String,
-    style: TextStyle = MaterialTheme.typography.numberDisplayLarge
+    style: TextStyle = LocalNumberTypography.current.displayLarge
 ) {
     AnimatedContent(
         targetState = text,
@@ -145,7 +144,7 @@ private fun SlidingText(
 @Composable
 private fun TimeSeparator(
     text: String = ":",
-    style: TextStyle = MaterialTheme.typography.numberDisplayLarge
+    style: TextStyle = LocalNumberTypography.current.displayLarge
 ) {
     Text(
         text = text,

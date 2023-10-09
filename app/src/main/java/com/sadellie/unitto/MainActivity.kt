@@ -32,6 +32,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.LocalLocale
+import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
+import com.sadellie.unitto.core.ui.theme.NumberTypographySystem
+import com.sadellie.unitto.core.ui.theme.NumberTypographyUnitto
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -56,7 +59,14 @@ internal class MainActivity : AppCompatActivity() {
                 if (tag.isEmpty()) Locale.getDefault() else Locale.forLanguageTag(tag)
             }
 
-            CompositionLocalProvider(LocalLocale provides locale) {
+            val numbersTypography = remember(prefs?.systemFont) {
+                if (prefs?.systemFont == true) NumberTypographySystem else NumberTypographyUnitto
+            }
+
+            CompositionLocalProvider(
+                LocalLocale provides locale,
+                LocalNumberTypography provides numbersTypography
+            ) {
                 UnittoApp(prefs)
             }
         }

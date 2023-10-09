@@ -24,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -34,57 +36,14 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.base.R
 
-// This text style is used for text field
-val Typography.numberDisplayLarge by lazy {
-    TextStyle(
-        fontFamily = latoFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 57.sp,
-        lineHeight = (1.25).em,
-        letterSpacing = (-0.25).sp,
-    )
-}
-
-// This text style is used for secondary text field
-val Typography.numberDisplayMedium by lazy {
-    TextStyle(
-        fontFamily = latoFamily,
-        fontWeight = FontWeight.W400,
-        fontSize = 38.sp,
-        lineHeight = 42.sp,
-        letterSpacing = (-0.25).sp,
-    )
-}
-
-val Typography.numberHeadlineSmall: TextStyle by lazy {
-    TextStyle(
-        fontFamily = latoFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
-        lineHeight = 1.25.em,
-        letterSpacing = 0.sp,
-    )
-}
-
-val Typography.numberBodyLarge: TextStyle by lazy {
-    TextStyle(
-        fontFamily = latoFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 1.5.em,
-        letterSpacing = 0.5.sp,
-    )
-}
-
-val Typography.numberHeadlineMedium: TextStyle by lazy {
-    TextStyle(
-        fontFamily = latoFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 28.sp,
-        lineHeight = 1.25.em,
-        letterSpacing = 0.sp,
-    )
-}
+@Immutable
+data class NumberTypography(
+    val displayLarge: TextStyle,
+    val displayMedium: TextStyle,
+    val headlineMedium: TextStyle,
+    val headlineSmall: TextStyle,
+    val bodyLarge: TextStyle,
+)
 
 val TypographyUnitto by lazy {
     Typography(
@@ -196,7 +155,59 @@ val TypographyUnitto by lazy {
     )
 }
 
+val NumberTypographyUnitto by lazy {
+    NumberTypography(
+        displayLarge = TextStyle(
+            fontFamily = latoFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 57.sp,
+            lineHeight = (1.25).em,
+            letterSpacing = (-0.25).sp,
+        ),
+        displayMedium = TextStyle(
+            fontFamily = latoFamily,
+            fontWeight = FontWeight.W400,
+            fontSize = 38.sp,
+            lineHeight = 42.sp,
+            letterSpacing = (-0.25).sp,
+        ),
+        headlineMedium = TextStyle(
+            fontFamily = latoFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 28.sp,
+            lineHeight = 1.25.em,
+            letterSpacing = 0.sp,
+        ),
+        headlineSmall = TextStyle(
+            fontFamily = latoFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 24.sp,
+            lineHeight = 1.25.em,
+            letterSpacing = 0.sp,
+        ),
+        bodyLarge = TextStyle(
+            fontFamily = latoFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            lineHeight = 1.5.em,
+            letterSpacing = 0.5.sp,
+        )
+    )
+}
+
 val TypographySystem by lazy { Typography() }
+
+val NumberTypographySystem by lazy {
+    NumberTypography(
+        displayLarge = TypographySystem.displayLarge,
+        displayMedium = TypographySystem.displayMedium,
+        headlineMedium = TypographySystem.headlineMedium,
+        headlineSmall = TypographySystem.headlineSmall,
+        bodyLarge = TypographySystem.bodyLarge
+    )
+}
+
+val LocalNumberTypography = staticCompositionLocalOf { NumberTypographySystem }
 
 private val montserratFamily by lazy {
     FontFamily(
@@ -239,7 +250,11 @@ private fun PreviewTypography() {
 
             textStyles.forEach { (label, style) ->
                 item {
-                    Text("$label 123", style = style, color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        text = "$label 123",
+                        style = style,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
             }
         }
