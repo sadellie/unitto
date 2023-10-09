@@ -25,10 +25,10 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.core.os.ConfigurationCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.LocalLocale
@@ -50,13 +50,12 @@ internal class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val configuration = LocalConfiguration.current
             val prefs = userPrefsRepository.appPrefs
                 .collectAsStateWithLifecycle(null).value
-            val locale = remember(LocalConfiguration.current) {
-                val tag: String = AppCompatDelegate
-                    .getApplicationLocales()
-                    .toLanguageTags()
-                if (tag.isEmpty()) Locale.getDefault() else Locale.forLanguageTag(tag)
+
+            val locale = remember(configuration) {
+                ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
             }
 
             val numbersTypography = remember(prefs?.systemFont) {
