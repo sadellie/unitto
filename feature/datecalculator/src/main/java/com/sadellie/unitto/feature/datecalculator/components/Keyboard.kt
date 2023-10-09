@@ -118,7 +118,11 @@ internal fun AddSubtractKeyboard(
         }
 
         Column(weightModifier) {
-            Crossfade(targetState = imeAction, modifier = mainButtonModifier) {
+            Crossfade(
+                targetState = imeAction,
+                modifier = mainButtonModifier,
+                label = "Primary button animation"
+            ) {
                 when (it) {
                     ImeAction.Next -> KeyboardButtonFilled(
                         Modifier.fillMaxSize(),

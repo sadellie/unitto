@@ -100,7 +100,10 @@ fun AddTimeZoneScreen(
             )
         },
     ) { paddingValues ->
-        Crossfade(targetState = uiState.list.isEmpty()) { empty ->
+        Crossfade(
+            targetState = uiState.list.isEmpty(),
+            label = "Placeholder"
+        ) { empty ->
             if (empty) {
                 UnittoEmptyScreen()
             } else {

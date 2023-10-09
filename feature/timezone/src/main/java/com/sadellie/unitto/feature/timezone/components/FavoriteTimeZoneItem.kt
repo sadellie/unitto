@@ -220,6 +220,7 @@ private fun TimeZoneLabel(
     onLabelClick: () -> Unit,
 ) {
     AnimatedContent(
+        label = "Expand animation",
         targetState = label.isBlank(),
         modifier = if (expanded) Modifier.clickable { onLabelClick() } else Modifier,
     ) { blank ->
