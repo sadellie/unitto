@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -96,9 +95,7 @@ internal fun UnittoApp(prefs: AppPreferences?) {
             animationSpec = tween(250)
         ) {
             val backgroundColor = MaterialTheme.colorScheme.background
-            val useDarkIcons by remember(backgroundColor) {
-                mutableStateOf(backgroundColor.luminance() > 0.5f)
-            }
+            val useDarkIcons = remember(backgroundColor) { backgroundColor.luminance() > 0.5f }
 
             UnittoModalNavigationDrawer(
                 drawer = {

@@ -73,8 +73,8 @@ internal fun DefaultKeyboard(
 ) {
     ColumnWithConstraints(modifier) {
         val fractionalIcon = remember { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
-        val mainButtonHorizontalPadding by remember {
-            derivedStateOf { (it.maxWidth * 0.01f) }
+        val mainButtonHorizontalPadding by remember(it.maxWidth) {
+            derivedStateOf { it.maxWidth * 0.01f }
         }
 
         // Button modifier
@@ -131,8 +131,8 @@ internal fun NumberBaseKeyboard(
     allowVibration: Boolean
 ) {
     ColumnWithConstraints(modifier) {
-        val mainButtonHorizontalPadding by remember {
-            derivedStateOf { (it.maxWidth * 0.01f) }
+        val mainButtonHorizontalPadding by remember(it.maxWidth) {
+            derivedStateOf { it.maxWidth * 0.01f }
         }
 
         // Button modifier

@@ -66,7 +66,7 @@ internal fun DateCalculatorScreen(
     var topBarShown by remember { mutableStateOf(true) }
     var showKeyboard by remember { mutableStateOf(false) }
 
-    val allTabs = remember { mutableListOf(addSubtractLabel, differenceLabel) }
+    val allTabs = remember { listOf(addSubtractLabel, differenceLabel) }
     val pagerState = rememberPagerState { allTabs.size }
     val coroutineScope = rememberCoroutineScope()
 

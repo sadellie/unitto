@@ -53,8 +53,10 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
@@ -90,7 +92,7 @@ fun TimePickerDialog(
         is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     )
     val configuration = LocalConfiguration.current
-    val showingPicker = rememberSaveable { mutableStateOf(true) }
+    var showingPicker by rememberSaveable { mutableStateOf(true) }
 
     AlertDialog(
         onDismissRequest = onCancel,
@@ -128,8 +130,8 @@ fun TimePickerDialog(
                             .size(64.dp, 72.dp)
                             .align(Alignment.BottomStart)
                             .zIndex(5f),
-                        onClick = { showingPicker.value = !showingPicker.value }) {
-                        val icon = if (showingPicker.value) {
+                        onClick = { showingPicker = !showingPicker }) {
+                        val icon = if (showingPicker) {
                             Icons.Outlined.Keyboard
                         } else {
                             Icons.Outlined.Schedule
@@ -152,7 +154,7 @@ fun TimePickerDialog(
                     text = stringResource(R.string.select_time_label),
                     style = MaterialTheme.typography.labelMedium
                 )
-                if (showingPicker.value && configuration.screenHeightDp > 400) {
+                if (showingPicker && configuration.screenHeightDp > 400) {
                     TimePicker(state = pickerState)
                 } else {
                     TimeInput(state = pickerState)

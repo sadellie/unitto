@@ -166,20 +166,20 @@ private fun PortraitKeyboard(
     ColumnWithConstraints(
         modifier = modifier
     ) { constraints ->
-        val mainButtonHorizontalPadding by remember {
-            derivedStateOf { (constraints.maxWidth * 0.01f) }
+        val mainButtonHorizontalPadding by remember(constraints.maxHeight) {
+            derivedStateOf { constraints.maxHeight * 0.007f }
         }
 
-        val additionalButtonHeight by remember {
-            mutableStateOf(constraints.maxHeight * 0.09f)
+        val additionalButtonHeight = remember {
+            constraints.maxHeight * 0.09f
         }
 
-        val spacerHeight by remember {
-            mutableStateOf(constraints.maxHeight * 0.025f)
+        val spacerHeight = remember {
+            constraints.maxHeight * 0.025f
         }
 
-        val additionalRowSpacedBy by remember {
-            mutableStateOf(constraints.maxWidth * 0.03f)
+        val additionalRowSpacedBy = remember {
+            constraints.maxWidth * 0.03f
         }
 
         val weightModifier = Modifier.weight(1f)

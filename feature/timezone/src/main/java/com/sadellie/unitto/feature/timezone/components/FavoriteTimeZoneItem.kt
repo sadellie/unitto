@@ -104,7 +104,7 @@ internal fun FavoriteTimeZoneItem(
         item.timeZone.regionName(timeZoneNames, localeDisplayNames)
     }
 
-    val offsetTime by remember(fromTime) { mutableStateOf(item.timeZone.offset(fromTime)) }
+    val offsetTime = remember(fromTime) { item.timeZone.offset(fromTime) }
     val offsetTimeFormatted = offsetTime.formatOffset(fromTime)
 
     Column(

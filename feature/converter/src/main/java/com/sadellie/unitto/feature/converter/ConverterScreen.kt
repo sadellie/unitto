@@ -266,7 +266,7 @@ private fun Default(
         )
     }
     val connection by connectivityState()
-    val lastUpdate by remember(uiState) {
+    val lastUpdate by remember(uiState.currencyRateUpdateState) {
         derivedStateOf {
             if (uiState.currencyRateUpdateState !is CurrencyRateUpdateState.Ready) return@derivedStateOf null
             uiState.currencyRateUpdateState.date.formatDateWeekDayMonthYear(locale)
