@@ -21,8 +21,8 @@ package com.sadellie.unitto.feature.datecalculator.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.DatePickerDialog
-import com.sadellie.unitto.core.ui.common.TimePickerDialog
+import com.sadellie.unitto.core.ui.common.datetimepicker.DatePickerDialog
+import com.sadellie.unitto.core.ui.common.datetimepicker.TimePickerDialog
 import java.time.ZonedDateTime
 
 @Composable
