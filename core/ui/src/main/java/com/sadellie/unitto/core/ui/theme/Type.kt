@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.base.R
 
@@ -41,165 +40,31 @@ data class NumberTypography(
     val displayLarge: TextStyle,
     val displayMedium: TextStyle,
     val displaySmall: TextStyle,
-    val headlineMedium: TextStyle,
-    val headlineSmall: TextStyle,
-    val bodyLarge: TextStyle,
 )
-
-val TypographyUnitto by lazy {
-    Typography(
-        displayLarge = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 57.sp,
-            lineHeight = 64.sp,
-            letterSpacing = (-0.25).sp,
-        ),
-        displayMedium = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 45.sp,
-            lineHeight = 52.sp,
-            letterSpacing = 0.sp,
-        ),
-        displaySmall = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 36.sp,
-            lineHeight = 44.sp,
-            letterSpacing = 0.sp,
-        ),
-        headlineLarge = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 32.sp,
-            lineHeight = 40.sp,
-            letterSpacing = 0.sp,
-        ),
-        headlineMedium = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 28.sp,
-            lineHeight = 36.sp,
-            letterSpacing = 0.sp,
-        ),
-        headlineSmall = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 24.sp,
-            lineHeight = 32.sp,
-            letterSpacing = 0.sp,
-        ),
-        titleLarge = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 22.sp,
-            lineHeight = 28.sp,
-            letterSpacing = 0.sp,
-        ),
-        titleMedium = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp,
-            lineHeight = 24.sp,
-            letterSpacing = 0.1.sp,
-        ),
-        titleSmall = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
-            lineHeight = 20.sp,
-            letterSpacing = 0.1.sp,
-        ),
-        bodyLarge = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
-            letterSpacing = 0.5.sp,
-        ),
-        bodyMedium = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp,
-            lineHeight = 20.sp,
-            letterSpacing = 0.25.sp,
-        ),
-        bodySmall = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 12.sp,
-            lineHeight = 16.sp,
-            letterSpacing = 0.4.sp,
-        ),
-        labelLarge = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
-            lineHeight = 20.sp,
-            letterSpacing = (-0.4).sp,
-        ),
-        labelMedium = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 12.sp,
-            lineHeight = 16.sp,
-            letterSpacing = (-0.3).sp,
-        ),
-        labelSmall = TextStyle(
-            fontFamily = montserratFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 10.sp,
-            lineHeight = 16.sp,
-            letterSpacing = (-0.3).sp,
-        ),
-    )
-}
 
 val NumberTypographyUnitto by lazy {
     NumberTypography(
         displayLarge = TextStyle(
-            fontFamily = latoFamily,
+            fontFamily = FontFamily.lato,
             fontWeight = FontWeight.Normal,
             fontSize = 57.sp,
-            lineHeight = (1.25).em,
-            letterSpacing = (-0.25).sp,
+            lineHeight = 64.0.sp,
+            letterSpacing = (-0.2).sp,
         ),
         displayMedium = TextStyle(
-            fontFamily = latoFamily,
+            fontFamily = FontFamily.lato,
             fontWeight = FontWeight.Normal,
-            fontSize = 38.sp,
-            lineHeight = 42.sp,
-            letterSpacing = (-0.25).sp,
+            fontSize = 45.sp,
+            lineHeight = 52.0.sp,
+            letterSpacing = 0.0.sp,
         ),
         displaySmall = TextStyle(
-            fontFamily = latoFamily,
+            fontFamily = FontFamily.lato,
             fontWeight = FontWeight.Normal,
             fontSize = 36.sp,
-            lineHeight = 44.sp,
-            letterSpacing = 0.sp,
+            lineHeight = 44.0.sp,
+            letterSpacing = 0.0.sp,
         ),
-        headlineMedium = TextStyle(
-            fontFamily = latoFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 28.sp,
-            lineHeight = 1.25.em,
-            letterSpacing = 0.sp,
-        ),
-        headlineSmall = TextStyle(
-            fontFamily = latoFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 24.sp,
-            lineHeight = 1.25.em,
-            letterSpacing = 0.sp,
-        ),
-        bodyLarge = TextStyle(
-            fontFamily = latoFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
-            lineHeight = 1.5.em,
-            letterSpacing = 0.5.sp,
-        )
     )
 }
 
@@ -210,32 +75,21 @@ val NumberTypographySystem by lazy {
         displayLarge = TypographySystem.displayLarge,
         displayMedium = TypographySystem.displayMedium,
         displaySmall = TypographySystem.displaySmall,
-        headlineMedium = TypographySystem.headlineMedium,
-        headlineSmall = TypographySystem.headlineSmall,
-        bodyLarge = TypographySystem.bodyLarge
     )
 }
 
 val LocalNumberTypography = staticCompositionLocalOf { NumberTypographySystem }
 
-private val montserratFamily by lazy {
-    FontFamily(
-        Font(R.font.montserrat_light, weight = FontWeight.Light),
-        Font(R.font.montserrat_regular, weight = FontWeight.Normal),
-        Font(R.font.montserrat_medium, weight = FontWeight.Medium),
-        Font(R.font.montserrat_semibold, weight = FontWeight.SemiBold),
+private val FontFamily.Companion.lato: FontFamily
+    get() = FontFamily(
+        Font(R.font.lato_regular, weight = FontWeight.Normal)
     )
-}
-
-private val latoFamily by lazy {
-    FontFamily(Font(R.font.lato_regular))
-}
 
 @Preview(widthDp = 480)
 @Composable
 private fun PreviewTypography() {
     MaterialTheme(
-        typography = TypographyUnitto
+        typography = TypographySystem
     ) {
         val textStyles = mapOf(
             "displayLarge" to MaterialTheme.typography.displayLarge,

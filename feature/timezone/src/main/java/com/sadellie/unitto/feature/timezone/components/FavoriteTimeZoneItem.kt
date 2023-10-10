@@ -69,7 +69,6 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.datetime.formatOffset
 import com.sadellie.unitto.core.ui.datetime.formatTime
-import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import com.sadellie.unitto.data.common.offset
 import com.sadellie.unitto.data.common.regionName
 import com.sadellie.unitto.data.model.timezone.FavoriteZone
@@ -160,7 +159,7 @@ internal fun FavoriteTimeZoneItem(
                 // TODO Add AM PM as dots (apply to 12 and 24 hour systems)
                 Text(
                     text = time,
-                    style = LocalNumberTypography.current.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }

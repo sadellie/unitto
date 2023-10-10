@@ -48,7 +48,6 @@ import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.datetime.formatTime12Short
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
-import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import java.time.ZonedDateTime
 
 @Composable
@@ -94,7 +93,7 @@ internal fun DateTimeSelectorBlock(
                         onClick = onTimeClick
                     ),
                     text = time.formatTime(locale, true),
-                    style = LocalNumberTypography.current.displaySmall,
+                    style = MaterialTheme.typography.displaySmall,
                     maxLines = 1
                 )
             }

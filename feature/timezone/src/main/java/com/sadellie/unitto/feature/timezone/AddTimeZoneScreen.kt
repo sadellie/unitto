@@ -29,6 +29,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -49,7 +50,6 @@ import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.datetime.formatTime
-import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import com.sadellie.unitto.data.common.displayName
 import com.sadellie.unitto.data.common.offset
 import com.sadellie.unitto.data.common.regionName
@@ -123,7 +123,7 @@ fun AddTimeZoneScreen(
                                     text = it.timeZone
                                         .offset(userTime)
                                         .formatTime(locale, is24Hour),
-                                    style = LocalNumberTypography.current.headlineSmall
+                                    style = MaterialTheme.typography.headlineSmall
                                 )
                             }
                         )
