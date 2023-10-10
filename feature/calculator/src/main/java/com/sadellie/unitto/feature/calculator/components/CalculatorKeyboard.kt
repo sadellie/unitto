@@ -69,8 +69,7 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Divide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Dot
 import com.sadellie.unitto.core.ui.common.key.unittoicons.E
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Equal
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Exp
-import com.sadellie.unitto.core.ui.common.key.unittoicons.ExponentWide
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Ex
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Factorial
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Inv
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key0
@@ -93,10 +92,11 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Percent
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Pi
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Power10
+import com.sadellie.unitto.core.ui.common.key.unittoicons.PowerWide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Rad
 import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
+import com.sadellie.unitto.core.ui.common.key.unittoicons.RootWide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Sin
-import com.sadellie.unitto.core.ui.common.key.unittoicons.SquareRootWide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Tan
 
 @Composable
@@ -290,9 +290,9 @@ private fun AdditionalButtonsPortrait(
 ) {
     Column {
         Row {
-            KeyboardButtonAdditional(modifier, UnittoIcons.SquareRootWide, allowVibration) { addSymbol(Token.Operator.sqrt) }
+            KeyboardButtonAdditional(modifier, UnittoIcons.RootWide, allowVibration) { addSymbol(Token.Operator.sqrt) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.Const.pi) }
-            KeyboardButtonAdditional(modifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.Operator.power) }
+            KeyboardButtonAdditional(modifier, UnittoIcons.PowerWide, allowVibration) { addSymbol(Token.Operator.power) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Factorial, allowVibration) { addSymbol(Token.Operator.factorial) }
         }
         AnimatedVisibility(showAdditional) {
@@ -328,7 +328,7 @@ private fun AdditionalButtonsPortraitInverse(
         Row {
             KeyboardButtonAdditional(modifier, UnittoIcons.Modulo, allowVibration) { addSymbol(Token.Operator.modulo) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Pi, allowVibration) { addSymbol(Token.Const.pi) }
-            KeyboardButtonAdditional(modifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.Operator.power) }
+            KeyboardButtonAdditional(modifier, UnittoIcons.PowerWide, allowVibration) { addSymbol(Token.Operator.power) }
             KeyboardButtonAdditional(modifier, UnittoIcons.Factorial, allowVibration) { addSymbol(Token.Operator.factorial) }
         }
         AnimatedVisibility(showAdditional) {
@@ -342,7 +342,7 @@ private fun AdditionalButtonsPortraitInverse(
                 Row {
                     KeyboardButtonAdditional(modifier, UnittoIcons.Inv, allowVibration) { toggleInvMode() }
                     KeyboardButtonAdditional(modifier, UnittoIcons.E, allowVibration) { addSymbol(Token.Const.e) }
-                    KeyboardButtonAdditional(modifier, UnittoIcons.Exp, allowVibration) { addSymbol(Token.Func.expBracket) }
+                    KeyboardButtonAdditional(modifier, UnittoIcons.Ex, allowVibration) { addSymbol(Token.Func.expBracket) }
                     KeyboardButtonAdditional(modifier, UnittoIcons.Power10, allowVibration) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                 }
             }
@@ -458,8 +458,8 @@ private fun AdditionalButtonsLandscape(
     }
 
     Column(modifier) {
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.SquareRootWide, allowVibration) { addSymbol(Token.Operator.sqrt) }
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.Operator.power) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.RootWide, allowVibration) { addSymbol(Token.Operator.sqrt) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.PowerWide, allowVibration) { addSymbol(Token.Operator.power) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Cos, allowVibration) { addSymbol(Token.Func.cosBracket) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ln, allowVibration) { addSymbol(Token.Func.lnBracket) }
     }
@@ -491,9 +491,9 @@ private fun AdditionalButtonsLandscapeInverse(
 
     Column(modifier) {
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.Modulo, allowVibration) { addSymbol(Token.Operator.modulo) }
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.ExponentWide, allowVibration) { addSymbol(Token.Operator.power) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.PowerWide, allowVibration) { addSymbol(Token.Operator.power) }
         KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArCos, allowVibration) { addSymbol(Token.Func.arcosBracket) }
-        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Exp, allowVibration) { addSymbol(Token.Func.expBracket) }
+        KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ex, allowVibration) { addSymbol(Token.Func.expBracket) }
     }
 
     Column(modifier) {

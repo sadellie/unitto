@@ -83,7 +83,7 @@ fun KeyboardButtonLight(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
-    contentHeight: Float = if (isPortrait()) 0.51f else 0.7f,
+    contentHeight: Float = if (isPortrait()) 0.578f else 0.793f,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -104,7 +104,7 @@ fun KeyboardButtonFilled(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
-    contentHeight: Float = if (isPortrait()) 0.51f else 0.7f,
+    contentHeight: Float = if (isPortrait()) 0.578f else 0.793f,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -125,7 +125,7 @@ fun KeyboardButtonAdditional(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
-    contentHeight: Float = 0.8f,
+    contentHeight: Float = 0.906f,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {

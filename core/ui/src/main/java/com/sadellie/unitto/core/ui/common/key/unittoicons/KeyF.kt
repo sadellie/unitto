@@ -17,22 +17,22 @@ val UnittoIcons.KeyF: ImageVector
         if (_keyf != null) {
             return _keyf!!
         }
-        _keyf = Builder(name = "KeyF", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
-                viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
+        _keyf = Builder(name = "KeyF", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+                viewportWidth = 170.0f, viewportHeight = 170.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(62.94f, 43.4f)
-                verticalLineTo(75.464f)
-                horizontalLineTo(100.637f)
-                verticalLineTo(85.576f)
-                horizontalLineTo(62.94f)
-                verticalLineTo(125.0f)
-                horizontalLineTo(50.525f)
-                verticalLineTo(33.288f)
-                horizontalLineTo(107.037f)
-                verticalLineTo(43.4f)
-                horizontalLineTo(62.94f)
+                moveTo(72.564f, 48.85f)
+                verticalLineTo(81.916f)
+                horizontalLineTo(111.438f)
+                verticalLineTo(92.344f)
+                horizontalLineTo(72.564f)
+                verticalLineTo(133.0f)
+                horizontalLineTo(59.76f)
+                verticalLineTo(38.422f)
+                horizontalLineTo(118.038f)
+                verticalLineTo(48.85f)
+                horizontalLineTo(72.564f)
                 close()
             }
         }

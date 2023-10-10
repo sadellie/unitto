@@ -36,7 +36,6 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Comma
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Divide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Dot
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Exponent
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key0
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key1
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key2
@@ -57,8 +56,9 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.LeftBracket
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Minus
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Multiply
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Power
 import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
-import com.sadellie.unitto.core.ui.common.key.unittoicons.SquareRoot
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Root
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 
 @Composable
@@ -87,8 +87,8 @@ internal fun DefaultKeyboard(
         Row(cModifier) {
             KeyboardButtonFilled(bModifier, UnittoIcons.LeftBracket, allowVibration) { addDigit(Token.Operator.leftBracket) }
             KeyboardButtonFilled(bModifier, UnittoIcons.RightBracket, allowVibration) { addDigit(Token.Operator.rightBracket) }
-            KeyboardButtonFilled(bModifier, UnittoIcons.Exponent, allowVibration) { addDigit(Token.Operator.power) }
-            KeyboardButtonFilled(bModifier, UnittoIcons.SquareRoot, allowVibration) { addDigit(Token.Operator.sqrt) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Power, allowVibration) { addDigit(Token.Operator.power) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Root, allowVibration) { addDigit(Token.Operator.sqrt) }
         }
         Row(cModifier) {
             KeyboardButtonLight(bModifier, UnittoIcons.Key7, allowVibration) { addDigit(Token.Digit._7) }

@@ -17,34 +17,34 @@ val UnittoIcons.RightBracket: ImageVector
         if (_rightbracket != null) {
             return _rightbracket!!
         }
-        _rightbracket = Builder(name = "Rightbracket", defaultWidth = 124.0.dp, defaultHeight =
-                124.0.dp, viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
+        _rightbracket = Builder(name = "RightBracket", defaultWidth = 170.0.dp, defaultHeight =
+                170.0.dp, viewportWidth = 170.0f, viewportHeight = 170.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(62.193f, 62.0f)
-                curveTo(62.193f, 56.004f, 61.451f, 50.137f, 59.966f, 44.398f)
-                curveTo(58.482f, 38.688f, 56.326f, 33.306f, 53.5f, 28.253f)
-                curveTo(53.243f, 27.739f, 53.086f, 27.282f, 53.029f, 26.882f)
-                curveTo(52.971f, 26.483f, 53.0f, 26.14f, 53.114f, 25.854f)
-                curveTo(53.228f, 25.54f, 53.4f, 25.283f, 53.628f, 25.083f)
-                curveTo(53.828f, 24.884f, 54.056f, 24.698f, 54.313f, 24.527f)
-                lineTo(58.382f, 22.0f)
-                curveTo(60.523f, 25.283f, 62.336f, 28.552f, 63.821f, 31.807f)
-                curveTo(65.305f, 35.034f, 66.519f, 38.288f, 67.461f, 41.572f)
-                curveTo(68.403f, 44.884f, 69.089f, 48.224f, 69.517f, 51.593f)
-                curveTo(69.945f, 54.991f, 70.159f, 58.46f, 70.159f, 62.0f)
-                curveTo(70.159f, 65.512f, 69.945f, 68.952f, 69.517f, 72.321f)
-                curveTo(69.089f, 75.719f, 68.403f, 79.059f, 67.461f, 82.343f)
-                curveTo(66.519f, 85.655f, 65.305f, 88.938f, 63.821f, 92.193f)
-                curveTo(62.336f, 95.448f, 60.523f, 98.717f, 58.382f, 102.0f)
-                lineTo(54.313f, 99.473f)
-                curveTo(54.056f, 99.302f, 53.828f, 99.116f, 53.628f, 98.916f)
-                curveTo(53.4f, 98.717f, 53.228f, 98.46f, 53.114f, 98.146f)
-                curveTo(53.0f, 97.86f, 52.971f, 97.518f, 53.029f, 97.118f)
-                curveTo(53.086f, 96.718f, 53.243f, 96.261f, 53.5f, 95.747f)
-                curveTo(56.326f, 90.665f, 58.482f, 85.269f, 59.966f, 79.559f)
-                curveTo(61.451f, 73.849f, 62.193f, 67.996f, 62.193f, 62.0f)
+                moveTo(86.111f, 85.345f)
+                curveTo(86.111f, 92.592f, 85.214f, 99.683f, 83.419f, 106.619f)
+                curveTo(81.625f, 113.52f, 79.019f, 120.025f, 75.603f, 126.133f)
+                curveTo(75.293f, 126.754f, 75.103f, 127.306f, 75.034f, 127.789f)
+                curveTo(74.965f, 128.272f, 74.999f, 128.686f, 75.137f, 129.031f)
+                curveTo(75.275f, 129.411f, 75.482f, 129.722f, 75.758f, 129.963f)
+                curveTo(76.0f, 130.205f, 76.276f, 130.429f, 76.587f, 130.636f)
+                lineTo(81.504f, 133.69f)
+                curveTo(84.092f, 129.722f, 86.283f, 125.771f, 88.078f, 121.837f)
+                curveTo(89.872f, 117.937f, 91.339f, 114.003f, 92.477f, 110.035f)
+                curveTo(93.616f, 106.032f, 94.444f, 101.995f, 94.962f, 97.923f)
+                curveTo(95.479f, 93.817f, 95.738f, 89.624f, 95.738f, 85.345f)
+                curveTo(95.738f, 81.101f, 95.479f, 76.942f, 94.962f, 72.87f)
+                curveTo(94.444f, 68.764f, 93.616f, 64.727f, 92.477f, 60.758f)
+                curveTo(91.339f, 56.756f, 89.872f, 52.787f, 88.078f, 48.853f)
+                curveTo(86.283f, 44.919f, 84.092f, 40.968f, 81.504f, 37.0f)
+                lineTo(76.587f, 40.054f)
+                curveTo(76.276f, 40.261f, 76.0f, 40.485f, 75.758f, 40.727f)
+                curveTo(75.482f, 40.968f, 75.275f, 41.279f, 75.137f, 41.659f)
+                curveTo(74.999f, 42.004f, 74.965f, 42.418f, 75.034f, 42.901f)
+                curveTo(75.103f, 43.384f, 75.293f, 43.936f, 75.603f, 44.557f)
+                curveTo(79.019f, 50.7f, 81.625f, 57.221f, 83.419f, 64.123f)
+                curveTo(85.214f, 71.024f, 86.111f, 78.098f, 86.111f, 85.345f)
                 close()
             }
         }

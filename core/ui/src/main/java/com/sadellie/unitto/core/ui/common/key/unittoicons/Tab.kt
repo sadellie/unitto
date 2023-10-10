@@ -35,31 +35,35 @@ val UnittoIcons.Tab: ImageVector
         if (_tab != null) {
             return _tab!!
         }
-        _tab = Builder(name = "Tab", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
-                viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
-                moveTo(125.0f, 112.5f)
-                verticalLineTo(37.5f)
-                horizontalLineTo(137.5f)
-                verticalLineTo(112.5f)
-                horizontalLineTo(125.0f)
+        _tab = Builder(
+            name = "Tab", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+            viewportWidth = 170.0f, viewportHeight = 170.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF1C1B1F)), stroke = null, strokeLineWidth = 0.0f,
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
+                moveTo(141.667f, 127.5f)
+                verticalLineTo(42.5f)
+                horizontalLineTo(155.834f)
+                verticalLineTo(127.5f)
+                horizontalLineTo(141.667f)
                 close()
-                moveTo(75.0f, 112.5f)
-                lineTo(66.094f, 103.75f)
-                lineTo(88.594f, 81.25f)
-                horizontalLineTo(12.5f)
-                verticalLineTo(68.75f)
-                horizontalLineTo(88.594f)
-                lineTo(66.25f, 46.25f)
-                lineTo(75.0f, 37.5f)
-                lineTo(112.5f, 75.0f)
-                lineTo(75.0f, 112.5f)
+                moveTo(85.0f, 127.5f)
+                lineTo(74.907f, 117.583f)
+                lineTo(100.407f, 92.083f)
+                horizontalLineTo(14.167f)
+                verticalLineTo(77.917f)
+                horizontalLineTo(100.407f)
+                lineTo(75.084f, 52.417f)
+                lineTo(85.0f, 42.5f)
+                lineTo(127.5f, 85.0f)
+                lineTo(85.0f, 127.5f)
                 close()
             }
         }
-        .build()
+            .build()
         return _tab!!
     }
 

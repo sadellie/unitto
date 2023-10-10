@@ -17,43 +17,47 @@ val UnittoIcons.Backspace: ImageVector
         if (_backspace != null) {
             return _backspace!!
         }
-        _backspace = Builder(name = "Backspace", defaultWidth = 124.0.dp, defaultHeight = 124.0.dp,
-                viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
-                moveTo(59.333f, 79.889f)
-                lineTo(70.889f, 68.333f)
-                lineTo(82.445f, 79.889f)
-                lineTo(88.667f, 73.667f)
-                lineTo(77.111f, 62.111f)
-                lineTo(88.667f, 50.556f)
-                lineTo(82.445f, 44.333f)
-                lineTo(70.889f, 55.889f)
-                lineTo(59.333f, 44.333f)
-                lineTo(53.111f, 50.556f)
-                lineTo(64.667f, 62.111f)
-                lineTo(53.111f, 73.667f)
-                lineTo(59.333f, 79.889f)
+        _backspace = Builder(
+            name = "Backspace", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+            viewportWidth = 170.0f, viewportHeight = 170.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
+                moveTo(81.344f, 109.525f)
+                lineTo(97.186f, 93.683f)
+                lineTo(113.029f, 109.525f)
+                lineTo(121.559f, 100.995f)
+                lineTo(105.717f, 85.152f)
+                lineTo(121.559f, 69.31f)
+                lineTo(113.029f, 60.78f)
+                lineTo(97.186f, 76.622f)
+                lineTo(81.344f, 60.78f)
+                lineTo(72.813f, 69.31f)
+                lineTo(88.656f, 85.152f)
+                lineTo(72.813f, 100.995f)
+                lineTo(81.344f, 109.525f)
                 close()
-                moveTo(22.0f, 62.111f)
-                lineTo(41.333f, 34.778f)
-                curveTo(42.148f, 33.593f, 43.204f, 32.667f, 44.5f, 32.0f)
-                curveTo(45.796f, 31.333f, 47.185f, 31.0f, 48.667f, 31.0f)
-                horizontalLineTo(93.111f)
-                curveTo(95.556f, 31.0f, 97.648f, 31.87f, 99.389f, 33.611f)
-                curveTo(101.13f, 35.352f, 102.0f, 37.444f, 102.0f, 39.889f)
-                verticalLineTo(84.333f)
-                curveTo(102.0f, 86.778f, 101.13f, 88.87f, 99.389f, 90.611f)
-                curveTo(97.648f, 92.352f, 95.556f, 93.222f, 93.111f, 93.222f)
-                horizontalLineTo(48.667f)
-                curveTo(47.185f, 93.222f, 45.796f, 92.889f, 44.5f, 92.222f)
-                curveTo(43.204f, 91.556f, 42.148f, 90.63f, 41.333f, 89.444f)
-                lineTo(22.0f, 62.111f)
+                moveTo(30.161f, 85.152f)
+                lineTo(56.667f, 47.679f)
+                curveTo(57.784f, 46.054f, 59.231f, 44.785f, 61.008f, 43.871f)
+                curveTo(62.785f, 42.957f, 64.689f, 42.5f, 66.72f, 42.5f)
+                horizontalLineTo(127.652f)
+                curveTo(131.003f, 42.5f, 133.872f, 43.693f, 136.259f, 46.08f)
+                curveTo(138.645f, 48.466f, 139.839f, 51.335f, 139.839f, 54.686f)
+                verticalLineTo(115.618f)
+                curveTo(139.839f, 118.97f, 138.645f, 121.838f, 136.259f, 124.225f)
+                curveTo(133.872f, 126.611f, 131.003f, 127.805f, 127.652f, 127.805f)
+                horizontalLineTo(66.72f)
+                curveTo(64.689f, 127.805f, 62.785f, 127.348f, 61.008f, 126.434f)
+                curveTo(59.231f, 125.52f, 57.784f, 124.25f, 56.667f, 122.625f)
+                lineTo(30.161f, 85.152f)
                 close()
             }
         }
-        .build()
+            .build()
         return _backspace!!
     }
 

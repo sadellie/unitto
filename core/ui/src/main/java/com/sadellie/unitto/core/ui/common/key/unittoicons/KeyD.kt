@@ -17,36 +17,36 @@ val UnittoIcons.KeyD: ImageVector
         if (_keyd != null) {
             return _keyd!!
         }
-        _keyd = Builder(name = "KeyD", defaultWidth = 150.0.dp, defaultHeight = 150.0.dp,
-                viewportWidth = 150.0f, viewportHeight = 150.0f).apply {
+        _keyd = Builder(name = "KeyD", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+                viewportWidth = 170.0f, viewportHeight = 170.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(117.513f, 79.176f)
-                curveTo(117.513f, 86.045f, 116.425f, 92.296f, 114.249f, 97.928f)
-                curveTo(112.073f, 103.56f, 109.001f, 108.381f, 105.033f, 112.392f)
-                curveTo(101.065f, 116.403f, 96.286f, 119.517f, 90.697f, 121.736f)
-                curveTo(85.15f, 123.912f, 79.006f, 125.0f, 72.265f, 125.0f)
-                horizontalLineTo(38.025f)
-                verticalLineTo(33.288f)
-                horizontalLineTo(72.265f)
-                curveTo(79.006f, 33.288f, 85.15f, 34.397f, 90.697f, 36.616f)
-                curveTo(96.286f, 38.792f, 101.065f, 41.907f, 105.033f, 45.96f)
-                curveTo(109.001f, 49.971f, 112.073f, 54.792f, 114.249f, 60.424f)
-                curveTo(116.425f, 66.056f, 117.513f, 72.307f, 117.513f, 79.176f)
+                moveTo(128.841f, 85.744f)
+                curveTo(128.841f, 92.828f, 127.719f, 99.274f, 125.475f, 105.082f)
+                curveTo(123.231f, 110.89f, 120.063f, 115.862f, 115.971f, 119.998f)
+                curveTo(111.879f, 124.134f, 106.951f, 127.346f, 101.187f, 129.634f)
+                curveTo(95.467f, 131.878f, 89.131f, 133.0f, 82.179f, 133.0f)
+                horizontalLineTo(46.869f)
+                verticalLineTo(38.422f)
+                horizontalLineTo(82.179f)
+                curveTo(89.131f, 38.422f, 95.467f, 39.566f, 101.187f, 41.854f)
+                curveTo(106.951f, 44.098f, 111.879f, 47.31f, 115.971f, 51.49f)
+                curveTo(120.063f, 55.626f, 123.231f, 60.598f, 125.475f, 66.406f)
+                curveTo(127.719f, 72.214f, 128.841f, 78.66f, 128.841f, 85.744f)
                 close()
-                moveTo(104.777f, 79.176f)
-                curveTo(104.777f, 73.544f, 104.009f, 68.509f, 102.473f, 64.072f)
-                curveTo(100.937f, 59.635f, 98.76f, 55.88f, 95.945f, 52.808f)
-                curveTo(93.129f, 49.736f, 89.715f, 47.389f, 85.704f, 45.768f)
-                curveTo(81.694f, 44.147f, 77.214f, 43.336f, 72.265f, 43.336f)
-                horizontalLineTo(50.44f)
-                verticalLineTo(114.952f)
-                horizontalLineTo(72.265f)
-                curveTo(77.214f, 114.952f, 81.694f, 114.141f, 85.704f, 112.52f)
-                curveTo(89.715f, 110.899f, 93.129f, 108.573f, 95.945f, 105.544f)
-                curveTo(98.76f, 102.472f, 100.937f, 98.717f, 102.473f, 94.28f)
-                curveTo(104.009f, 89.843f, 104.777f, 84.808f, 104.777f, 79.176f)
+                moveTo(115.707f, 85.744f)
+                curveTo(115.707f, 79.936f, 114.915f, 74.744f, 113.331f, 70.168f)
+                curveTo(111.747f, 65.592f, 109.503f, 61.72f, 106.599f, 58.552f)
+                curveTo(103.695f, 55.384f, 100.175f, 52.964f, 96.039f, 51.292f)
+                curveTo(91.903f, 49.62f, 87.283f, 48.784f, 82.179f, 48.784f)
+                horizontalLineTo(59.673f)
+                verticalLineTo(122.638f)
+                horizontalLineTo(82.179f)
+                curveTo(87.283f, 122.638f, 91.903f, 121.802f, 96.039f, 120.13f)
+                curveTo(100.175f, 118.458f, 103.695f, 116.06f, 106.599f, 112.936f)
+                curveTo(109.503f, 109.768f, 111.747f, 105.896f, 113.331f, 101.32f)
+                curveTo(114.915f, 96.744f, 115.707f, 91.552f, 115.707f, 85.744f)
                 close()
             }
         }

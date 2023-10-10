@@ -17,26 +17,26 @@ val UnittoIcons.Plus: ImageVector
         if (_plus != null) {
             return _plus!!
         }
-        _plus = Builder(name = "Plus", defaultWidth = 124.0.dp, defaultHeight = 124.0.dp,
-                viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
+        _plus = Builder(name = "Plus", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+                viewportWidth = 170.0f, viewportHeight = 170.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(22.0f, 57.0f)
-                horizontalLineTo(102.0f)
-                verticalLineTo(67.5f)
-                horizontalLineTo(22.0f)
-                verticalLineTo(57.0f)
+                moveTo(37.0f, 79.302f)
+                horizontalLineTo(133.69f)
+                verticalLineTo(91.992f)
+                horizontalLineTo(37.0f)
+                verticalLineTo(79.302f)
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(68.0f, 22.0f)
-                lineTo(68.0f, 102.0f)
-                horizontalLineTo(57.5f)
-                lineTo(57.5f, 22.0f)
-                lineTo(68.0f, 22.0f)
+                moveTo(92.597f, 37.0f)
+                lineTo(92.597f, 133.69f)
+                horizontalLineTo(79.906f)
+                lineTo(79.906f, 37.0f)
+                lineTo(92.597f, 37.0f)
                 close()
             }
         }

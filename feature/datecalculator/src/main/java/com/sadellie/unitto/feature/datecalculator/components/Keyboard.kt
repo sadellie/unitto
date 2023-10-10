@@ -66,7 +66,7 @@ internal fun AddSubtractKeyboard(
             .fillMaxSize()
             .weight(1f)
             .padding(4.dp)
-        val actionIconHeight = if (isPortrait()) 0.35f else 0.6f
+        val actionIconHeight = if (isPortrait()) 0.396f else 0.68f
 
         fun keyboardAction() {
             when (imeAction) {

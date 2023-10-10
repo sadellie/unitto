@@ -17,26 +17,26 @@ val UnittoIcons.Multiply: ImageVector
         if (_multiply != null) {
             return _multiply!!
         }
-        _multiply = Builder(name = "Multiply", defaultWidth = 124.0.dp, defaultHeight = 124.0.dp,
-                viewportWidth = 124.0f, viewportHeight = 124.0f).apply {
+        _multiply = Builder(name = "Multiply", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+                viewportWidth = 170.0f, viewportHeight = 170.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(23.0f, 93.357f)
-                lineTo(93.357f, 23.0f)
-                lineTo(100.782f, 30.425f)
-                lineTo(30.425f, 100.782f)
-                lineTo(23.0f, 93.357f)
+                moveTo(37.0f, 124.46f)
+                lineTo(124.46f, 37.0f)
+                lineTo(133.69f, 46.229f)
+                lineTo(46.229f, 133.69f)
+                lineTo(37.0f, 124.46f)
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(30.425f, 23.0f)
-                lineTo(100.782f, 93.357f)
-                lineTo(93.357f, 100.782f)
-                lineTo(23.0f, 30.425f)
-                lineTo(30.425f, 23.0f)
+                moveTo(46.229f, 37.0f)
+                lineTo(133.69f, 124.461f)
+                lineTo(124.461f, 133.69f)
+                lineTo(37.0f, 46.229f)
+                lineTo(46.229f, 37.0f)
                 close()
             }
         }
