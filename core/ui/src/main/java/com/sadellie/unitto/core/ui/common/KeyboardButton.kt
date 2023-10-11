@@ -140,3 +140,24 @@ fun KeyboardButtonAdditional(
         allowVibration = allowVibration,
     )
 }
+
+@Composable
+fun KeyboardButtonTertiary(
+    modifier: Modifier,
+    icon: ImageVector,
+    allowVibration: Boolean,
+    contentHeight: Float = if (isPortrait()) 0.578f else 0.793f,
+    onLongClick: (() -> Unit)? = null,
+    onClick: () -> Unit,
+) {
+    BasicKeyboardButton(
+        modifier = modifier,
+        contentHeight = contentHeight,
+        onClick = onClick,
+        onLongClick = onLongClick,
+        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        icon = icon,
+        iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        allowVibration = allowVibration,
+    )
+}

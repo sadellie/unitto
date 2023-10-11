@@ -21,6 +21,7 @@ package com.sadellie.unitto.core.ui
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -260,12 +261,69 @@ class TextFieldValueExtensionsTest {
         assertEquals(tf("123+45.[]78"), tf("123+45[6.]78").addTokens(Token.Digit.dot))
     }
 
+    @Test
+    fun auto() {
+        // Open on empty in front
+        assertEquals(tf("([]"), tf("[]").addBracket())
+        assertEquals(tf("([]123("), tf("[]123(").addBracket())
+        assertEquals(tf("([]("), tf("[123](").addBracket())
+        assertEquals(tf("([]"), tf("[123(]").addBracket())
+
+        // Close before multiply
+        assertEquals(tf("123)[]*456"), tf("123[]*456").addBracket())
+        assertEquals(tf("(123)[]*456"), tf("(123[]*456").addBracket())
+        assertEquals(tf(")123)[]*456"), tf(")123[]*456").addBracket())
+        // Close before divide
+        assertEquals(tf("123)[]/456"), tf("123[]/456").addBracket())
+        assertEquals(tf("(123)[]/456"), tf("(123[]/456").addBracket())
+        assertEquals(tf(")123)[]/456"), tf(")123[]/456").addBracket())
+        // Close before plus
+        assertEquals(tf("123)[]+456"), tf("123[]+456").addBracket())
+        assertEquals(tf("(123)[]+456"), tf("(123[]+456").addBracket())
+        assertEquals(tf(")123)[]+456"), tf(")123[]+456").addBracket())
+        // Close before minus
+        assertEquals(tf("123)[]-456"), tf("123[]-456").addBracket())
+        assertEquals(tf("(123)[]-456"), tf("(123[]-456").addBracket())
+        assertEquals(tf(")123)[]-456"), tf(")123[]-456").addBracket())
+        // Close before power
+        assertEquals(tf("123)[]^456"), tf("123[]^456").addBracket())
+        assertEquals(tf("(123)[]^456"), tf("(123[]^456").addBracket())
+        assertEquals(tf(")123)[]^456"), tf(")123[]^456").addBracket())
+
+        // Open on balanced in front
+        assertEquals(tf("123([]"), tf("123[]").addBracket())
+        assertEquals(tf("123([](((("), tf("123[]((((").addBracket())
+
+        // Open after multiply
+        assertEquals(tf("123*([]456"), tf("123*[]456").addBracket())
+        assertEquals(tf("123*([]"), tf("123*[456]").addBracket())
+        // Open after divide
+        assertEquals(tf("123/([]456"), tf("123/[]456").addBracket())
+        assertEquals(tf("123/([]"), tf("123/[456]").addBracket())
+        // Open after plus
+        assertEquals(tf("123+([]456"), tf("123+[]456").addBracket())
+        assertEquals(tf("123+([]"), tf("123+[456]").addBracket())
+        // Open after minus
+        assertEquals(tf("123-([]456"), tf("123-[]456").addBracket())
+        assertEquals(tf("123-([]"), tf("123-[456]").addBracket())
+        // Open after power
+        assertEquals(tf("123^([]456"), tf("123^[]456").addBracket())
+        assertEquals(tf("123^([]"), tf("123^[456]").addBracket())
+
+        // Default
+        assertEquals(tf("123([]"), tf("123[]").addBracket())
+        assertEquals(tf("123(456+789)[]"), tf("123(456+789[]").addBracket())
+    }
+
     // Use [] for selection
     private fun tf(
         text: String = "",
     ): TextFieldValue {
         val selectionStart = text.indexOf("[")
         val selectionEnd = text.indexOf("]") - 1
+
+        if (selectionStart < 0) throw Exception("forgot selectionStart")
+        if (selectionEnd < 0) throw Exception("forgot selectionEnd")
 
         return TextFieldValue(
             text = text

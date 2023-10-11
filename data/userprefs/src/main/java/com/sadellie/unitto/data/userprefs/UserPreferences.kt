@@ -75,7 +75,8 @@ class UserPreferencesRepository @Inject constructor(
                 middleZero = preferences.getMiddleZero(),
                 partialHistoryView = preferences.getPartialHistoryView(),
                 precision = preferences.getDigitsPrecision(),
-                outputFormat = preferences.getOutputFormat()
+                outputFormat = preferences.getOutputFormat(),
+                acButton = preferences.getAcButton(),
             )
         }
 
@@ -94,6 +95,7 @@ class UserPreferencesRepository @Inject constructor(
                 enableToolsExperiment = preferences.getEnableToolsExperiment(),
                 latestLeftSideUnit = preferences.getLatestLeftSide(),
                 latestRightSideUnit = preferences.getLatestRightSide(),
+                acButton = preferences.getAcButton(),
             )
         }
 
@@ -102,6 +104,7 @@ class UserPreferencesRepository @Inject constructor(
             DisplayPreferences(
                 systemFont = preferences.getSystemFont(),
                 middleZero = preferences.getMiddleZero(),
+                acButton = preferences.getAcButton(),
             )
         }
 
@@ -263,6 +266,12 @@ class UserPreferencesRepository @Inject constructor(
             preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] = enabled
         }
     }
+
+    suspend fun updateAcButton(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.AC_BUTTON] = enabled
+        }
+    }
 }
 
 private fun Preferences.getEnableDynamicTheme(): Boolean {
@@ -357,6 +366,10 @@ private fun Preferences.getLatestLeftSide(): String {
 
 private fun Preferences.getLatestRightSide(): String {
     return this[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
+}
+
+private fun Preferences.getAcButton(): Boolean {
+    return this[PrefsKeys.AC_BUTTON] ?: false
 }
 
 private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {

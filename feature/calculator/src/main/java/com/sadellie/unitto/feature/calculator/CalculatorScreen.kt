@@ -89,7 +89,8 @@ internal fun CalculatorRoute(
         onCursorChange = viewModel::onCursorChange,
         toggleCalculatorMode = viewModel::toggleCalculatorMode,
         evaluate = viewModel::evaluate,
-        clearHistory = viewModel::clearHistory
+        clearHistory = viewModel::clearHistory,
+        addBracket = viewModel::addBracket
     )
 }
 
@@ -99,6 +100,7 @@ internal fun CalculatorScreen(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
     addTokens: (String) -> Unit,
+    addBracket: () -> Unit,
     clearInput: () -> Unit,
     deleteTokens: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
@@ -118,7 +120,8 @@ internal fun CalculatorScreen(
             onCursorChange = onCursorChange,
             toggleAngleMode = toggleCalculatorMode,
             evaluate = evaluate,
-            clearHistory = clearHistory
+            clearHistory = clearHistory,
+            addBracket = addBracket
         )
     }
 }
@@ -129,6 +132,7 @@ private fun Ready(
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
     addSymbol: (String) -> Unit,
+    addBracket: () -> Unit,
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
@@ -264,6 +268,8 @@ private fun Ready(
                 toggleAngleMode = toggleAngleMode,
                 evaluate = evaluate,
                 middleZero = uiState.middleZero,
+                acButton = uiState.acButton,
+                addBracket = addBracket
             )
         }
     }
@@ -343,6 +349,7 @@ private fun PreviewCalculatorScreen() {
         onCursorChange = {},
         toggleCalculatorMode = {},
         evaluate = {},
-        clearHistory = {}
+        clearHistory = {},
+        addBracket = {}
     )
 }

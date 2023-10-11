@@ -26,6 +26,7 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.data.calculator.CalculatorHistoryRepository
@@ -67,7 +68,8 @@ internal class CalculatorViewModel @Inject constructor(
                 middleZero = false,
                 partialHistoryView = true,
                 precision = 3,
-                outputFormat = OutputFormat.PLAIN
+                outputFormat = OutputFormat.PLAIN,
+                acButton = false,
             )
         )
 
@@ -87,6 +89,7 @@ internal class CalculatorViewModel @Inject constructor(
             allowVibration = userPrefs.enableVibrations,
             formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
             middleZero = userPrefs.middleZero,
+            acButton = userPrefs.acButton,
             partialHistoryView = userPrefs.partialHistoryView,
         )
     }
@@ -95,6 +98,7 @@ internal class CalculatorViewModel @Inject constructor(
     )
 
     fun addTokens(tokens: String) = _input.update { it.addTokens(tokens) }
+    fun addBracket() = _input.update { it.addBracket() }
     fun deleteTokens() = _input.update { it.deleteTokens() }
     fun clearInput() = _input.update { TextFieldValue() }
     fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }

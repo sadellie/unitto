@@ -45,6 +45,7 @@ data class CalculatorPreferences(
     val enableVibrations: Boolean,
     val separator: Int,
     val middleZero: Boolean,
+    val acButton: Boolean,
     val partialHistoryView: Boolean,
     val precision: Int,
     val outputFormat: Int,
@@ -54,6 +55,7 @@ data class ConverterPreferences(
     val enableVibrations: Boolean,
     val separator: Int,
     val middleZero: Boolean,
+    val acButton: Boolean,
     val precision: Int,
     val outputFormat: Int,
     val unitConverterFormatTime: Boolean,
@@ -68,6 +70,7 @@ data class ConverterPreferences(
 data class DisplayPreferences(
     val systemFont: Boolean,
     val middleZero: Boolean,
+    val acButton: Boolean,
 )
 
 data class FormattingPreferences(

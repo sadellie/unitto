@@ -53,15 +53,52 @@ fun TextFieldValue.addTokens(tokens: String): TextFieldValue {
     )
 }
 
-/**
- * <b>!!! Recursive !!!</b> (one wrong step and you are dead 💀)
- */
-private fun TextFieldValue.deleteAheadAndAdd(tokens: String): TextFieldValue {
-    var newValue = this
-    if (!selection.collapsed) newValue = this.deleteTokens()
-    return newValue
-        .deleteTokens()
-        .addTokens(tokens)
+fun TextFieldValue.addBracket(): TextFieldValue {
+    val subStringBeforeCursor = text.substring(0..<selection.start)
+
+    // Always open when empty in front
+    if (subStringBeforeCursor.isEmpty()) {
+        return addTokens(Token.Operator.leftBracket)
+    }
+
+    // Always close before operator
+    val operators = listOf(
+        Token.Operator.multiply,
+        Token.Operator.divide,
+        Token.Operator.plus,
+        Token.Operator.minus,
+        Token.Operator.power,
+    )
+    if (text.tokenAfter(selection.start) in operators) {
+        return addTokens(Token.Operator.rightBracket)
+    }
+
+    // Always open when balanced in front
+    val leftBracketChar: Char = Token.Operator.leftBracket.first()
+    val rightBracketChar: Char = Token.Operator.rightBracket.first()
+    var balance = 0
+    subStringBeforeCursor.forEach {
+        if (it == leftBracketChar) balance += 1
+        if (it == rightBracketChar) balance -= 1
+    }
+    if (balance == 0) {
+        return addTokens(Token.Operator.leftBracket)
+    }
+
+    // Always open after operator
+    val operators2 = listOf(
+        Token.Operator.multiply,
+        Token.Operator.divide,
+        Token.Operator.plus,
+        Token.Operator.minus,
+        Token.Operator.power,
+        Token.Operator.leftBracket
+    )
+    if (text.tokenAhead(selection.start) in operators2) {
+        return addTokens(Token.Operator.leftBracket)
+    }
+
+    return addTokens(Token.Operator.rightBracket)
 }
 
 fun TextFieldValue.deleteTokens(): TextFieldValue {
@@ -92,4 +129,15 @@ fun TextFieldValue.deleteTokens(): TextFieldValue {
         text = newText,
         selection = TextRange((newText.length - distanceFromEnd).coerceAtLeast(0))
     )
+}
+
+/**
+ * <b>!!! Recursive !!!</b> (one wrong step and you are dead 💀)
+ */
+private fun TextFieldValue.deleteAheadAndAdd(tokens: String): TextFieldValue {
+    var newValue = this
+    if (!selection.collapsed) newValue = this.deleteTokens()
+    return newValue
+        .deleteTokens()
+        .addTokens(tokens)
 }

@@ -147,6 +147,7 @@ private fun PreviewConverterSettingsScreen() {
             enableToolsExperiment = false,
             latestLeftSideUnit = "kilometer",
             latestRightSideUnit = "mile",
+            acButton = true,
         ),
         navigateUpAction = {},
         navigateToUnitsGroup = {},

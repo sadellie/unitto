@@ -110,6 +110,7 @@ internal fun ConverterRoute(
         clearInput = viewModel::clearInput,
         onCursorChange = viewModel::onCursorChange,
         onErrorClick = viewModel::updateCurrencyRates,
+        addBracket = viewModel::addBracket
     )
 }
 
@@ -126,6 +127,7 @@ private fun ConverterScreen(
     clearInput: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
     onErrorClick: (AbstractUnit) -> Unit,
+    addBracket: () -> Unit,
 ) {
     when (uiState) {
         UnitConverterUIState.Loading -> UnittoEmptyScreen()
@@ -164,7 +166,8 @@ private fun ConverterScreen(
                     swapUnits = swapUnits,
                     navigateToRightScreen = navigateToRightScreen,
                     clearInput = clearInput,
-                    refreshCurrencyRates = onErrorClick
+                    refreshCurrencyRates = onErrorClick,
+                    addBracket = addBracket,
                 )
             }
         }
@@ -258,6 +261,7 @@ private fun Default(
     navigateToRightScreen: () -> Unit,
     clearInput: () -> Unit,
     refreshCurrencyRates: (AbstractUnit) -> Unit,
+    addBracket: () -> Unit,
 ) {
     val locale: Locale = LocalLocale.current
     var calculation by remember(uiState.calculation) {
@@ -365,7 +369,9 @@ private fun Default(
                 clearInput = clearInput,
                 allowVibration = uiState.enableHaptic,
                 fractional = uiState.formatterSymbols.fractional,
-                middleZero = uiState.middleZero
+                middleZero = uiState.middleZero,
+                acButton = uiState.acButton,
+                addBracket = addBracket
             )
         }
     )
@@ -522,5 +528,6 @@ private fun PreviewConverterScreen() {
         clearInput = {},
         onCursorChange = {},
         onErrorClick = {},
+        addBracket = {}
     )
 }

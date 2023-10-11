@@ -56,12 +56,15 @@ import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
+import com.sadellie.unitto.core.ui.common.KeyboardButtonTertiary
 import com.sadellie.unitto.core.ui.common.RowWithConstraints
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 import com.sadellie.unitto.core.ui.common.key.unittoicons.AcTan
 import com.sadellie.unitto.core.ui.common.key.unittoicons.ArCos
 import com.sadellie.unitto.core.ui.common.key.unittoicons.ArSin
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Brackets
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Clear
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Comma
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Cos
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Deg
@@ -106,7 +109,9 @@ internal fun CalculatorKeyboard(
     fractional: String,
     allowVibration: Boolean,
     middleZero: Boolean,
+    acButton: Boolean,
     addSymbol: (String) -> Unit,
+    addBracket: () -> Unit,
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
     toggleAngleMode: () -> Unit,
@@ -123,7 +128,9 @@ internal fun CalculatorKeyboard(
             toggleAngleMode = toggleAngleMode,
             deleteSymbol = deleteSymbol,
             clearSymbols = clearSymbols,
-            evaluate = evaluate
+            evaluate = evaluate,
+            acButton = acButton,
+            addBracket = addBracket,
         )
     } else {
         LandscapeKeyboard(
@@ -136,7 +143,9 @@ internal fun CalculatorKeyboard(
             toggleAngleMode = toggleAngleMode,
             deleteSymbol = deleteSymbol,
             clearSymbols = clearSymbols,
-            evaluate = evaluate
+            evaluate = evaluate,
+            acButton = acButton,
+            addBracket = addBracket,
         )
     }
 }
@@ -152,7 +161,9 @@ private fun PortraitKeyboard(
     toggleAngleMode: () -> Unit,
     deleteSymbol: () -> Unit,
     clearSymbols: () -> Unit,
-    evaluate: () -> Unit
+    evaluate: () -> Unit,
+    acButton: Boolean,
+    addBracket: () -> Unit,
 ) {
     val fractionalIcon = remember { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
     var showAdditional: Boolean by remember { mutableStateOf(false) }
@@ -239,8 +250,13 @@ private fun PortraitKeyboard(
         Spacer(modifier = Modifier.height(spacerHeight))
 
         Row(weightModifier) {
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.LeftBracket, allowVibration) { addSymbol(Token.Operator.leftBracket) }
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.RightBracket, allowVibration) { addSymbol(Token.Operator.rightBracket) }
+            if (acButton) {
+                KeyboardButtonTertiary(mainButtonModifier, UnittoIcons.Clear, allowVibration) { clearSymbols() }
+                KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Brackets, allowVibration) { addBracket() }
+            } else {
+                KeyboardButtonFilled(mainButtonModifier, UnittoIcons.LeftBracket, allowVibration) { addSymbol(Token.Operator.leftBracket) }
+                KeyboardButtonFilled(mainButtonModifier, UnittoIcons.RightBracket, allowVibration) { addSymbol(Token.Operator.rightBracket) }
+            }
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Percent, allowVibration) { addSymbol(Token.Operator.percent) }
             KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Divide, allowVibration) { addSymbol(Token.Operator.divide) }
         }
@@ -361,7 +377,9 @@ private fun LandscapeKeyboard(
     toggleAngleMode: () -> Unit,
     deleteSymbol: () -> Unit,
     clearSymbols: () -> Unit,
-    evaluate: () -> Unit
+    evaluate: () -> Unit,
+    acButton: Boolean,
+    addBracket: () -> Unit,
 ) {
     val fractionalIcon = remember { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
     var invMode: Boolean by remember { mutableStateOf(false) }
@@ -426,13 +444,21 @@ private fun LandscapeKeyboard(
         }
 
         Column(Modifier.weight(1f)) {
-            KeyboardButtonFilled(buttonModifier, UnittoIcons.LeftBracket, allowVibration) { addSymbol(Token.Operator.leftBracket) }
+            if (acButton) {
+                KeyboardButtonTertiary(buttonModifier, UnittoIcons.Clear, allowVibration) { clearSymbols() }
+            } else {
+                KeyboardButtonFilled(buttonModifier, UnittoIcons.LeftBracket, allowVibration) { addSymbol(Token.Operator.leftBracket) }
+            }
             KeyboardButtonFilled(buttonModifier, UnittoIcons.Multiply, allowVibration) { addSymbol(Token.Operator.multiply) }
             KeyboardButtonFilled(buttonModifier, UnittoIcons.Minus, allowVibration) { addSymbol(Token.Operator.minus) }
             KeyboardButtonFilled(buttonModifier, UnittoIcons.Plus, allowVibration) { addSymbol(Token.Operator.plus) }
         }
         Column(Modifier.weight(1f)) {
-            KeyboardButtonFilled(buttonModifier, UnittoIcons.RightBracket, allowVibration) { addSymbol(Token.Operator.rightBracket) }
+            if (acButton) {
+                KeyboardButtonTertiary(buttonModifier, UnittoIcons.Brackets, allowVibration) { addBracket() }
+            } else {
+                KeyboardButtonFilled(buttonModifier, UnittoIcons.RightBracket, allowVibration) { addSymbol(Token.Operator.rightBracket) }
+            }
             KeyboardButtonFilled(buttonModifier, UnittoIcons.Divide, allowVibration) { addSymbol(Token.Operator.divide) }
             KeyboardButtonFilled(buttonModifier, UnittoIcons.Percent, allowVibration) { addSymbol(Token.Operator.percent) }
             KeyboardButtonFilled(buttonModifier, UnittoIcons.Equal, allowVibration) { evaluate() }
@@ -518,5 +544,7 @@ private fun PreviewCalculatorKeyboard() {
         evaluate = {},
         allowVibration = false,
         middleZero = false,
+        acButton = true,
+        addBracket = {}
     )
 }

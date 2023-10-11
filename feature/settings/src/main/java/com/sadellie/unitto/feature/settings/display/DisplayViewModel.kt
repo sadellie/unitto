@@ -37,57 +37,45 @@ class DisplayViewModel @Inject constructor(
     val prefs = userPrefsRepository.displayPrefs
         .stateIn(viewModelScope, null)
 
-    /**
-     * @see UserPreferencesRepository.updateThemingMode
-     */
     fun updateThemingMode(themingMode: ThemingMode) {
         viewModelScope.launch {
             userPrefsRepository.updateThemingMode(themingMode)
         }
     }
 
-    /**
-     * @see UserPreferencesRepository.updateDynamicTheme
-     */
     fun updateDynamicTheme(enabled: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateDynamicTheme(enabled)
         }
     }
 
-    /**
-     * @see UserPreferencesRepository.updateAmoledTheme
-     */
     fun updateAmoledTheme(enabled: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateAmoledTheme(enabled)
         }
     }
 
-    /**
-     * @see UserPreferencesRepository.updateCustomColor
-     */
     fun updateCustomColor(color: Color) {
         viewModelScope.launch {
             userPrefsRepository.updateCustomColor(color)
         }
     }
 
-    /**
-     * @see UserPreferencesRepository.updateMonetMode
-     */
     fun updateMonetMode(monetMode: MonetMode) {
         viewModelScope.launch {
             userPrefsRepository.updateMonetMode(monetMode)
         }
     }
 
-    /**
-     * @see UserPreferencesRepository.updateSystemFont
-     */
     fun updateSystemFont(enabled: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateSystemFont(enabled)
+        }
+    }
+
+    fun updateAcButton(enabled: Boolean) {
+        viewModelScope.launch {
+            userPrefsRepository.updateAcButton(enabled)
         }
     }
 

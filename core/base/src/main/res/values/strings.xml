@@ -81,6 +81,12 @@ Used in this dialog window. Should be short -->
     <string name="select_time_label">Select time</string>
     <string name="settings_about_unitto">About Unitto</string>
     <string name="settings_about_unitto_support">Learn about the app</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button">AC button</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button_support">Show separate clear button</string>
     <string name="settings_additional">Additional</string>
     <string name="settings_amoled_dark">AMOLED Dark</string>
     <string name="settings_amoled_dark_support">Use black background for dark themes</string>

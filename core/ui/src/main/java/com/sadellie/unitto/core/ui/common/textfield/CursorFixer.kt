@@ -85,14 +85,14 @@ private fun Int.isAfterToken(str: String, token: String): Boolean {
 }
 
 
-// This can make [TextFieldValue.addTokens] better by checking tokens both ways. Needs more tests
-//fun String.tokenAfter(pos: Int): String {
-//    Token.Func.allWithOpeningBracket.forEach {
-//        if (pos.isBeforeToken(this, it)) return it
-//    }
-//
-//    return substring(pos, (pos + 1).coerceAtMost(this.length))
-//}
+// This can also make [TextFieldValue.addTokens] better by checking tokens both ways. Needs more tests
+fun String.tokenAfter(pos: Int): String {
+    Token.Func.allWithOpeningBracket.forEach {
+        if (pos.isBeforeToken(this, it)) return it
+    }
+
+    return substring(pos, (pos + 1).coerceAtMost(this.length))
+}
 
 //private fun String.numberNearby(cursor: Int): String {
 //    val text = this
@@ -111,8 +111,8 @@ private fun Int.isAfterToken(str: String, token: String): Boolean {
 //    return text.substring(aheadCursor, afterCursor)
 //}
 
-//private fun Int.isBeforeToken(str: String, token: String): Boolean {
-//    return str
-//        .substring(this, (this + token.length).coerceAtMost(str.length))
-//        .contains(token)
-//}
+private fun Int.isBeforeToken(str: String, token: String): Boolean {
+    return str
+        .substring(this, (this + token.length).coerceAtMost(str.length))
+        .contains(token)
+}

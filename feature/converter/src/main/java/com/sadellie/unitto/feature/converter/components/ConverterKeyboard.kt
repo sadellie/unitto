@@ -31,8 +31,11 @@ import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
+import com.sadellie.unitto.core.ui.common.KeyboardButtonTertiary
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Brackets
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Clear
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Comma
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Divide
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Dot
@@ -70,6 +73,8 @@ internal fun DefaultKeyboard(
     allowVibration: Boolean,
     fractional: String,
     middleZero: Boolean,
+    acButton: Boolean,
+    addBracket: () -> Unit,
 ) {
     ColumnWithConstraints(modifier) {
         val fractionalIcon = remember { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
@@ -85,8 +90,13 @@ internal fun DefaultKeyboard(
         // Column modifier
         val cModifier = Modifier.weight(1f)
         Row(cModifier) {
-            KeyboardButtonFilled(bModifier, UnittoIcons.LeftBracket, allowVibration) { addDigit(Token.Operator.leftBracket) }
-            KeyboardButtonFilled(bModifier, UnittoIcons.RightBracket, allowVibration) { addDigit(Token.Operator.rightBracket) }
+            if (acButton) {
+                KeyboardButtonTertiary(bModifier, UnittoIcons.Clear, allowVibration) { clearInput() }
+                KeyboardButtonFilled(bModifier, UnittoIcons.Brackets, allowVibration) { addBracket() }
+            } else {
+                KeyboardButtonFilled(bModifier, UnittoIcons.LeftBracket, allowVibration) { addDigit(Token.Operator.leftBracket) }
+                KeyboardButtonFilled(bModifier, UnittoIcons.RightBracket, allowVibration) { addDigit(Token.Operator.rightBracket) }
+            }
             KeyboardButtonFilled(bModifier, UnittoIcons.Power, allowVibration) { addDigit(Token.Operator.power) }
             KeyboardButtonFilled(bModifier, UnittoIcons.Root, allowVibration) { addDigit(Token.Operator.sqrt) }
         }
@@ -188,7 +198,9 @@ private fun PreviewConverterKeyboard() {
         deleteDigit = {},
         allowVibration = false,
         fractional = FormatterSymbols.Spaces.fractional,
-        middleZero = false
+        middleZero = false,
+        acButton = true,
+        addBracket = {}
     )
 }
 

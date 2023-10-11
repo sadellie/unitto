@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.data.common.combine
@@ -105,7 +106,8 @@ internal class ConverterViewModel @Inject constructor(
                     scale = prefs.precision,
                     outputFormat = prefs.outputFormat,
                     formatTime = prefs.unitConverterFormatTime,
-                    currencyRateUpdateState = currenciesState
+                    currencyRateUpdateState = currenciesState,
+                    acButton = prefs.acButton,
                 )
             }
             (unitFrom is NumberBaseUnit) and (unitTo is NumberBaseUnit) -> {
@@ -252,6 +254,12 @@ internal class ConverterViewModel @Inject constructor(
 
     fun addTokens(tokens: String) = _input.update {
         val newValue = it.addTokens(tokens)
+        savedStateHandle[converterInputKey] = newValue.text
+        newValue
+    }
+
+    fun addBracket() = _input.update {
+        val newValue = it.addBracket()
         savedStateHandle[converterInputKey] = newValue.text
         newValue
     }

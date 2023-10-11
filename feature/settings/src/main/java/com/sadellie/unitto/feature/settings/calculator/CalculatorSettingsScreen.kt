@@ -88,7 +88,8 @@ private fun PreviewCalculatorSettingsScreen() {
             middleZero = false,
             partialHistoryView = true,
             precision = 3,
-            outputFormat = OutputFormat.PLAIN
+            outputFormat = OutputFormat.PLAIN,
+            acButton = true,
         ),
         navigateUpAction = {},
         updatePartialHistoryView = {}

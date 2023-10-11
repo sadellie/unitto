@@ -62,6 +62,8 @@ import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.key.UnittoIcons
+import com.sadellie.unitto.core.ui.common.key.unittoicons.Clear
 import com.sadellie.unitto.feature.settings.components.ColorSelector
 import com.sadellie.unitto.feature.settings.components.MonetModeSelector
 import io.github.sadellie.themmo.MonetMode
@@ -113,6 +115,8 @@ internal fun DisplayRoute(
                 },
                 systemFont = prefs.systemFont,
                 updateSystemFont = viewModel::updateSystemFont,
+                acButton = prefs.acButton,
+                updateAcButton = viewModel::updateAcButton,
                 middleZero = prefs.middleZero,
                 updateMiddleZero = viewModel::updateMiddleZero,
                 navigateToLanguages = navigateToLanguages
@@ -136,6 +140,8 @@ private fun DisplayScreen(
     onMonetModeChange: (MonetMode) -> Unit,
     systemFont: Boolean,
     updateSystemFont: (Boolean) -> Unit,
+    acButton: Boolean,
+    updateAcButton: (Boolean) -> Unit,
     middleZero: Boolean,
     updateMiddleZero: (Boolean) -> Unit,
     navigateToLanguages: () -> Unit,
@@ -267,6 +273,15 @@ private fun DisplayScreen(
             )
 
             UnittoListItem(
+                icon = UnittoIcons.Clear,
+                iconDescription = stringResource(R.string.settings_middle_zero),
+                headlineText = stringResource(R.string.settings_ac_button),
+                supportingText = stringResource(R.string.settings_ac_button_support),
+                switchState = acButton,
+                onSwitchChange = updateAcButton
+            )
+
+            UnittoListItem(
                 icon = Icons.Default.ExposureZero,
                 iconDescription = stringResource(R.string.settings_middle_zero),
                 headlineText = stringResource(R.string.settings_middle_zero),
@@ -304,6 +319,8 @@ private fun Preview() {
             onMonetModeChange = themmoController::setMonetMode,
             systemFont = false,
             updateSystemFont = {},
+            acButton = false,
+            updateAcButton = {},
             middleZero = false,
             updateMiddleZero = {},
             navigateToLanguages = {}
