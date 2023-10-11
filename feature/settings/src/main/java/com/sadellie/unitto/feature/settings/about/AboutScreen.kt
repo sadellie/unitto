@@ -93,7 +93,6 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Help,
-                    iconDescription = stringResource(R.string.settings_currency_rates_note_title),
                     headlineText = stringResource(R.string.settings_currency_rates_note_title),
                     modifier = Modifier.clickable { showDialog = true }
                 )
@@ -103,7 +102,6 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.PrivacyTip,
-                    iconDescription = stringResource(R.string.settings_terms_and_conditions),
                     headlineText = stringResource(R.string.settings_terms_and_conditions),
                     modifier = Modifier.clickable {
                         openLink(
@@ -118,7 +116,6 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Policy,
-                    iconDescription = stringResource(R.string.settings_privacy_policy),
                     headlineText = stringResource(R.string.settings_privacy_policy),
                     modifier = Modifier.clickable {
                         openLink(
@@ -133,7 +130,6 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Code,
-                    iconDescription = stringResource(R.string.settings_view_source_code),
                     headlineText = stringResource(R.string.settings_view_source_code),
                     modifier = Modifier.clickable {
                         openLink(
@@ -148,7 +144,6 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Copyright,
-                    iconDescription = stringResource(R.string.settings_third_party_licenses),
                     headlineText = stringResource(R.string.settings_third_party_licenses),
                     modifier = Modifier.clickable { navigateToThirdParty() }
                 )
@@ -158,7 +153,6 @@ private fun AboutScreen(
             item {
                 UnittoListItem(
                     icon = Icons.Default.Info,
-                    iconDescription = stringResource(R.string.settings_version_name),
                     headlineText = stringResource(R.string.settings_version_name),
                     supportingText = "${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})",
                     modifier = Modifier.combinedClickable {

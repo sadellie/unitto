@@ -84,7 +84,6 @@ private fun ConverterSettingsScreen(
             item("unit group") {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Rule,
-                    iconDescription = stringResource(R.string.settings_unit_groups_title),
                     headlineText = stringResource(R.string.settings_unit_groups_title),
                     supportingText = stringResource(R.string.settings_unit_groups_support),
                     modifier = Modifier.clickable { navigateToUnitsGroup() }
@@ -94,7 +93,6 @@ private fun ConverterSettingsScreen(
             item("units sorting") {
                 UnittoListItem(
                     icon = Icons.AutoMirrored.Filled.Sort,
-                    iconDescription = stringResource(R.string.settings_units_sorting),
                     headlineText = stringResource(R.string.settings_units_sorting),
                     supportingText = stringResource(R.string.settings_units_sorting_support),
                     modifier = Modifier.clickable { showDialog = true }
@@ -104,7 +102,6 @@ private fun ConverterSettingsScreen(
             item("format time") {
                 UnittoListItem(
                     icon = Icons.Default.Timer,
-                    iconDescription = stringResource(R.string.settings_format_time),
                     headlineText = stringResource(R.string.settings_format_time),
                     supportingText = stringResource(R.string.settings_format_time_support),
                     switchState = prefs.unitConverterFormatTime,

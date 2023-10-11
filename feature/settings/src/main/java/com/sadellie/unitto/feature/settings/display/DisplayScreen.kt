@@ -201,7 +201,6 @@ private fun DisplayScreen(
             ) {
                 UnittoListItem(
                     icon = Icons.Default.DarkMode,
-                    iconDescription = stringResource(R.string.settings_amoled_dark),
                     headlineText = stringResource(R.string.settings_amoled_dark),
                     supportingText = stringResource(R.string.settings_amoled_dark_support),
                     switchState = isAmoledThemeEnabled,
@@ -212,7 +211,6 @@ private fun DisplayScreen(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 UnittoListItem(
                     icon = Icons.Default.Colorize,
-                    iconDescription = stringResource(R.string.settings_dynamic_colors),
                     headlineText = stringResource(R.string.settings_dynamic_colors),
                     supportingText = stringResource(R.string.settings_dynamic_colors_support),
                     switchState = isDynamicThemeEnabled,
@@ -265,7 +263,6 @@ private fun DisplayScreen(
 
             UnittoListItem(
                 icon = Icons.Default.FontDownload,
-                iconDescription = stringResource(R.string.settings_system_font),
                 headlineText = stringResource(R.string.settings_system_font),
                 supportingText = stringResource(R.string.settings_system_font_support),
                 switchState = systemFont,
@@ -274,7 +271,6 @@ private fun DisplayScreen(
 
             UnittoListItem(
                 icon = UnittoIcons.Clear,
-                iconDescription = stringResource(R.string.settings_middle_zero),
                 headlineText = stringResource(R.string.settings_ac_button),
                 supportingText = stringResource(R.string.settings_ac_button_support),
                 switchState = acButton,
@@ -283,7 +279,6 @@ private fun DisplayScreen(
 
             UnittoListItem(
                 icon = Icons.Default.ExposureZero,
-                iconDescription = stringResource(R.string.settings_middle_zero),
                 headlineText = stringResource(R.string.settings_middle_zero),
                 supportingText = stringResource(R.string.settings_middle_zero_support),
                 switchState = middleZero,
@@ -292,7 +287,6 @@ private fun DisplayScreen(
 
             UnittoListItem(
                 icon = Icons.Default.Language,
-                iconDescription = stringResource(R.string.settings_language),
                 headlineText = stringResource(R.string.settings_language),
                 supportingText = stringResource(R.string.settings_language_support),
                 modifier = Modifier.clickable { navigateToLanguages() }

@@ -114,7 +114,6 @@ private fun SettingsScreen(
         ) {
             UnittoListItem(
                 icon = Icons.Default.Palette,
-                iconDescription = stringResource(R.string.settings_display),
                 headlineText = stringResource(R.string.settings_display),
                 supportingText = stringResource(R.string.settings_display_support),
                 modifier = Modifier.clickable { navControllerAction(displayRoute) }
@@ -122,7 +121,6 @@ private fun SettingsScreen(
 
             UnittoListItem(
                 icon = Icons.Default.Home,
-                iconDescription = stringResource(R.string.settings_starting_screen),
                 headlineText = stringResource(R.string.settings_starting_screen),
                 supportingText = stringResource(R.string.settings_starting_screen_support),
                 modifier = Modifier.clickable { navControllerAction(startingScreenRoute) }
@@ -130,7 +128,6 @@ private fun SettingsScreen(
 
             UnittoListItem(
                 icon = Icons.Default._123,
-                iconDescription = stringResource(R.string.settings_formatting),
                 headlineText = stringResource(R.string.settings_formatting),
                 supportingText = stringResource(R.string.settings_formatting_support),
                 modifier = Modifier.clickable { navControllerAction(formattingRoute) }
@@ -138,7 +135,6 @@ private fun SettingsScreen(
 
             UnittoListItem(
                 icon = Icons.Default.Calculate,
-                iconDescription = stringResource(R.string.calculator_title),
                 headlineText = stringResource(R.string.calculator_title),
                 supportingText = stringResource(R.string.settings_calculator_support),
                 modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
@@ -146,7 +142,6 @@ private fun SettingsScreen(
 
             UnittoListItem(
                 icon = Icons.Default.SwapHoriz,
-                iconDescription = stringResource(R.string.unit_converter_title),
                 headlineText = stringResource(R.string.unit_converter_title),
                 supportingText = stringResource(R.string.settings_converter_support),
                 modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) }
@@ -156,7 +151,6 @@ private fun SettingsScreen(
 
             UnittoListItem(
                 icon = Icons.Default.Vibration,
-                iconDescription = stringResource(R.string.settings_vibrations),
                 headlineText = stringResource(R.string.settings_vibrations),
                 supportingText = stringResource(R.string.settings_vibrations_support),
                 modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
@@ -172,7 +166,6 @@ private fun SettingsScreen(
                 UnittoListItem(
                     headlineText = stringResource(R.string.settings_clear_cache),
                     icon = Icons.Default.Cached,
-                    iconDescription = stringResource(R.string.settings_clear_cache),
                     modifier = Modifier.clickable { clearCache(); showToast(mContext, "👌") },
                 )
             }
@@ -180,7 +173,6 @@ private fun SettingsScreen(
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
                 UnittoListItem(
                     icon = Icons.Default.RateReview,
-                    iconDescription = stringResource(R.string.settings_rate_this_app),
                     headlineText = stringResource(R.string.settings_rate_this_app),
                     modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                 )
@@ -188,7 +180,6 @@ private fun SettingsScreen(
 
             UnittoListItem(
                 icon = Icons.Default.Info,
-                iconDescription = stringResource(R.string.settings_about_unitto),
                 headlineText = stringResource(R.string.settings_about_unitto),
                 supportingText = stringResource(R.string.settings_about_unitto_support),
                 modifier = Modifier.clickable { navControllerAction(aboutRoute) }

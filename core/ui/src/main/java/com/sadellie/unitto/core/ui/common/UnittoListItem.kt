@@ -100,7 +100,7 @@ fun UnittoListItem(
     headlineText: String,
     supportingText: String? = null,
     icon: ImageVector,
-    iconDescription: String,
+    iconDescription: String = headlineText,
     trailing: @Composable (() -> Unit)? = null,
 ) = UnittoListItem(
     modifier = modifier,
@@ -122,7 +122,7 @@ fun UnittoListItem(
     modifier: Modifier = Modifier,
     headlineText: String,
     icon: ImageVector,
-    iconDescription: String,
+    iconDescription: String = headlineText,
     supportingText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
@@ -201,7 +201,6 @@ fun PreviewUnittoListItem1() {
             supportingText = "Support text support text support text support text",
             modifier = Modifier,
             onSwitchChange = {},
-            iconDescription = "",
             switchState = true,
         )
     }

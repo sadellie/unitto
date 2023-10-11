@@ -67,7 +67,6 @@ private fun CalculatorSettingsScreen(
                 UnittoListItem(
                     headlineText = stringResource(R.string.settings_partial_history_view),
                     icon = Icons.Default.Timer,
-                    iconDescription = stringResource(R.string.settings_partial_history_view),
                     supportingText = stringResource(R.string.settings_partial_history_view_support),
                     switchState = prefs.partialHistoryView,
                     onSwitchChange = updatePartialHistoryView
