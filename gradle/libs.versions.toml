@@ -1,6 +1,6 @@
 [versions]
-appCode = "26"
-appName = "Nadeshiko Pink"
+appCode = "27"
+appName = "Olive Green"
 
 androidGradlePlugin = "8.1.2"
 androidxAppCompatAppCompat = "1.6.1"

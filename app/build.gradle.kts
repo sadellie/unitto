@@ -34,8 +34,8 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 34
-        versionCode = 26
-        versionName = "Nadeshiko Pink"
+        versionCode = 27
+        versionName = "Olive Green"
         resourceConfigurations += setOf(
             "en",
             "en-rGB",
