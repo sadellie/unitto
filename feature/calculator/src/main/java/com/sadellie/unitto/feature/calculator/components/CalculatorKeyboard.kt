@@ -455,7 +455,7 @@ private fun LandscapeKeyboard(
         }
         Column(Modifier.weight(1f)) {
             if (acButton) {
-                KeyboardButtonTertiary(buttonModifier, UnittoIcons.Brackets, allowVibration) { addBracket() }
+                KeyboardButtonFilled(buttonModifier, UnittoIcons.Brackets, allowVibration) { addBracket() }
             } else {
                 KeyboardButtonFilled(buttonModifier, UnittoIcons.RightBracket, allowVibration) { addSymbol(Token.Operator.rightBracket) }
             }
