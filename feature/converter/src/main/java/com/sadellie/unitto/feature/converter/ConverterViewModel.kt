@@ -52,6 +52,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -293,12 +294,12 @@ internal class ConverterViewModel @Inject constructor(
         }
     }
 
-    fun updateUnitFrom(unit: AbstractUnit) {
+    fun updateUnitFrom(unit: AbstractUnit) = viewModelScope.launch {
         val pair = unitsRepo.getById(
             unit.pairId ?: unitsRepo.getCollection(unit.group).first().id
         )
 
-        viewModelScope.launch(Dispatchers.Default) {
+        withContext(Dispatchers.Default) {
             unitsRepo.incrementCounter(unit)
             userPrefsRepository.updateLatestPairOfUnits(unitFrom = unit, unitTo = pair)
         }

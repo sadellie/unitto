@@ -56,11 +56,11 @@ import com.sadellie.unitto.data.units.collections.volumeCollection
 import com.sadellie.unitto.data.units.remote.CurrencyApi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
@@ -99,37 +99,28 @@ class UnitsRepository @Inject constructor(
                 fuelConsumptionCollection
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val allUnits = combine(
+    val allUnits: Flow<List<AbstractUnit>> = combine(
         unitsDao.getAllFlow(),
         myUnits
-    ) { based, _ ->
-        based
-    }
-        .mapLatest { basedList ->
-            basedList.forEach { based ->
-                // Have to use a copy so that composable can detect changes
-                val updatedUnit = getById(based.unitId)
-                    .clone(
-                        isFavorite = based.isFavorite,
-                        counter = based.frequency,
-                        pairId = based.pairedUnitId
-                    )
-
-                myUnits.update { units ->
-                    units.replace(updatedUnit) { it.id == updatedUnit.id }
-                }
-            }
-            myUnits
+    ) { basedList, inMemoryList ->
+        return@combine inMemoryList.map { inMemoryUnit ->
+            val inBaseUnit = basedList.find { it.unitId == inMemoryUnit.id }
+                ?: return@map inMemoryUnit
+            inMemoryUnit.clone(
+                isFavorite = inBaseUnit.isFavorite,
+                counter = inBaseUnit.frequency,
+                pairId = inBaseUnit.pairedUnitId
+            )
         }
+    }
         .flowOn(Dispatchers.IO)
 
-    fun getById(id: String): AbstractUnit {
-        return myUnits.value.first { it.id == id }
+    suspend fun getById(id: String): AbstractUnit {
+        return allUnits.first().first { it.id == id }
     }
 
-    fun getCollection(group: UnitGroup): List<AbstractUnit> {
-        return myUnits.value.filter { it.group == group }
+    suspend fun getCollection(group: UnitGroup): List<AbstractUnit> {
+        return allUnits.first().filter { it.group == group }
     }
 
     suspend fun favorite(unit: AbstractUnit) = withContext(Dispatchers.IO) {
@@ -244,7 +235,7 @@ class UnitsRepository @Inject constructor(
             ?.let { LocalDate.ofEpochDay(it) }
     }
 
-    fun filterUnits(
+    suspend fun filterUnits(
         query: String,
         unitGroup: UnitGroup?,
         favoritesOnly: Boolean,
@@ -254,7 +245,7 @@ class UnitsRepository @Inject constructor(
     ): Map<UnitGroup, List<AbstractUnit>> {
         // Leave only shown unit groups
         var units: Sequence<AbstractUnit> = if (unitGroup == null) {
-            myUnits.value.filter { it.group in shownUnitGroups }
+            allUnits.first().filter { it.group in shownUnitGroups }
         } else {
             getCollection(unitGroup)
         }.asSequence()
@@ -281,11 +272,5 @@ class UnitsRepository @Inject constructor(
             units.filterByLev(query, mContext)
         }
         return units.groupBy { it.group }
-    }
-
-    private fun <T> List<T>.replace(newValue: T, block: (T) -> Boolean): List<T> {
-        return map {
-            if (block(it)) newValue else it
-        }
     }
 }

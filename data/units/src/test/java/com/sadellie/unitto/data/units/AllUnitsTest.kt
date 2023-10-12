@@ -27,6 +27,7 @@ import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
 import com.sadellie.unitto.data.model.unit.ReverseUnit
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -541,8 +542,9 @@ class AllUnitsTest {
     }
 
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
-        val unitFrom = allUnitsRepository.getById(this)
-        val unitTo = allUnitsRepository.getById(checkingId)
+        val str = this
+        val unitFrom = runBlocking { allUnitsRepository.getById(str) }
+        val unitTo = runBlocking { allUnitsRepository.getById(checkingId) }
 
         val actual = when (unitFrom.group) {
             UnitGroup.NUMBER_BASE -> (unitFrom as NumberBaseUnit).convert((unitTo as NumberBaseUnit), value)
@@ -564,7 +566,7 @@ class AllUnitsTest {
     }
 
     @After
-    fun after() {
+    fun after() = runBlocking {
         val unitGroup = history.keys.first()
         // GROUP : testedCount / totalCount
         println("${unitGroup.name} : ${history[unitGroup]?.size} / ${allUnitsRepository.getCollection(unitGroup).size}")
