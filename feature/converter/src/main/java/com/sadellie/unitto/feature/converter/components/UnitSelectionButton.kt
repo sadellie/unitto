@@ -26,15 +26,18 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.common.UnittoButton
+import com.sadellie.unitto.core.ui.common.squashable
 
 /**
  * Button to select a unit
@@ -51,22 +54,30 @@ internal fun UnitSelectionButton(
     label: String,
     enabled: Boolean = true
 ) {
-    UnittoButton(
-        modifier = modifier,
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Button(
+        modifier = modifier.squashable(
+            onClick = onClick,
+            onLongClick = null,
+            interactionSource = interactionSource,
+            cornerRadiusRange = 30..50,
+            enabled = enabled
+        ),
         onClick = onClick,
         enabled = enabled,
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         AnimatedContent(
             targetState = label,
             transitionSpec = {
                 if (targetState > initialState) {
                     (slideInVertically { height -> height } + fadeIn()) togetherWith
-                        slideOutVertically { height -> -height } + fadeOut()
+                            slideOutVertically { height -> -height } + fadeOut()
                 } else {
                     (slideInVertically { height -> -height } + fadeIn()) togetherWith
-                        slideOutVertically { height -> height } + fadeOut()
+                            slideOutVertically { height -> height } + fadeOut()
                 }.using(
                     SizeTransform(clip = false)
                 )
