@@ -111,7 +111,7 @@ fun TextBox(
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = TextFieldValue(label),
-                        minRatio = 1f,
+                        minRatio = 0.8f,
                         onCursorChange = {},
                         textColor = MaterialTheme.colorScheme.error,
                         readOnly = true,

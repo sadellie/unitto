@@ -288,7 +288,7 @@ private fun Default(
         modifier = modifier.fillMaxSize(),
         content1 = { contentModifier ->
             ColumnWithConstraints(modifier = contentModifier) {
-                val textFieldModifier = Modifier.weight(2f)
+                val textFieldModifier = Modifier.fillMaxWidth().weight(2f)
 
                 AnimatedVisibility(
                     visible = lastUpdate != null,
