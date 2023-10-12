@@ -67,6 +67,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalLocale
+import com.sadellie.unitto.core.ui.common.ProvideColor
+import com.sadellie.unitto.core.ui.common.ProvideStyle
 import com.sadellie.unitto.core.ui.datetime.formatOffset
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.data.common.offset
@@ -190,7 +192,7 @@ private fun TimeZoneOption(
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
-) {
+) = ProvideColor(MaterialTheme.colorScheme.onSurfaceVariant){
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(4.dp))
@@ -203,11 +205,9 @@ private fun TimeZoneOption(
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -217,6 +217,9 @@ private fun TimeZoneLabel(
     label: String,
     expanded: Boolean,
     onLabelClick: () -> Unit,
+) = ProvideStyle(
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
+    textStyle = MaterialTheme.typography.bodyMedium
 ) {
     AnimatedContent(
         label = "Expand animation",
@@ -232,12 +235,9 @@ private fun TimeZoneLabel(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null,
                         modifier = Modifier.padding(end = 8.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = stringResource(R.string.add_label),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.headlineMedium
                     )
                 }
             }
@@ -250,13 +250,10 @@ private fun TimeZoneLabel(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null,
                         modifier = Modifier.padding(end = 8.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Text(
                     text = label,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.headlineMedium
                 )
             }
         }

@@ -133,7 +133,6 @@ private fun HistoryListContent(
         modifier = modifier,
         state = state,
         reverseLayout = true,
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom)
     ) {
         items(historyItems, { it.id }) { historyItem ->
             HistoryListItem(
@@ -198,7 +197,7 @@ private fun HistoryListItem(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                textStyle = LocalNumberTypography.current.displayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.End),
+                textStyle = LocalNumberTypography.current.displaySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.End),
                 readOnly = true,
                 visualTransformation = ExpressionTransformer(formatterSymbols),
                 interactionSource = expressionInteractionSource
@@ -223,7 +222,7 @@ private fun HistoryListItem(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
                     .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                textStyle = LocalNumberTypography.current.displayMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), textAlign = TextAlign.End),
+                textStyle = LocalNumberTypography.current.displaySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), textAlign = TextAlign.End),
                 readOnly = true,
                 visualTransformation = ExpressionTransformer(formatterSymbols),
                 interactionSource = resultInteractionSource

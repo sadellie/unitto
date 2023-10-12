@@ -31,20 +31,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -72,13 +67,13 @@ fun UnittoListItem(
         }
 
         Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
-            ProvideTextStyle(
+            ProvideStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 textStyle = MaterialTheme.typography.bodyLarge,
                 content = headlineContent
             )
             supportingContent?.let {
-                ProvideTextStyle(
+                ProvideStyle(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textStyle = MaterialTheme.typography.bodyMedium,
                     content = it
@@ -144,23 +139,6 @@ fun UnittoListItem(
         )
     }
 )
-
-@Composable
-private fun ProvideTextStyle(
-    color: Color,
-    textStyle: TextStyle,
-    content: @Composable () -> Unit,
-) = CompositionLocalProvider(LocalContentColor provides color) {
-    ProvideTextStyle(textStyle, content)
-}
-
-@Composable
-private fun ProvideColor(
-    color: Color,
-    content: @Composable () -> Unit,
-) = CompositionLocalProvider(LocalContentColor provides color) {
-    content()
-}
 
 @Preview
 @Composable
