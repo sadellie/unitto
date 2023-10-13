@@ -229,7 +229,7 @@ private fun DisplayScreen(
                                 modifier = Modifier.padding(top = 12.dp),
                                 selected = selectedColor,
                                 onItemClick = onColorChange,
-                                colorSchemes = colorSchemes,
+                                colors = colorSchemes,
                                 defaultColor = Color(0xFF186c31)
                             )
                         },

@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -42,6 +43,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,11 +56,19 @@ internal fun ColorSelector(
     modifier: Modifier = Modifier,
     selected: Color,
     onItemClick: (Color) -> Unit,
-    colorSchemes: List<Color>,
-    defaultColor: Color
+    colors: List<Color>,
+    defaultColor: Color,
 ) {
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        val index = colors.indexOf(selected)
+        if (index >= 0) listState.scrollToItem(index)
+    }
+
     LazyRow(
         modifier = modifier,
+        state = listState,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Default, Unitto colors
@@ -70,7 +80,7 @@ internal fun ColorSelector(
             )
         }
 
-        colorSchemes.forEach {
+        colors.forEach {
             item(it.value.toLong()) {
                 ColorCheckbox(
                     color = it,
@@ -103,7 +113,7 @@ private fun ColorCheckbox(
                 .padding(8.dp)
                 .clip(CircleShape)
                 .background(color)
-                .border(1.dp, Color.Black.copy(0.5f), CircleShape),
+                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
         )
         AnimatedVisibility(
             visible = selected,

@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -47,6 +48,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,8 +69,16 @@ internal fun MonetModeSelector(
     customColor: Color,
     themingMode: ThemingMode,
 ) {
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        val index = monetModes.indexOf(selected)
+        if (index >= 0) listState.scrollToItem(index)
+    }
+
     LazyRow(
         modifier = modifier,
+        state = listState,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(monetModes) { monetMode ->
@@ -114,7 +124,8 @@ private fun MonetModeCheckbox(
                 .padding(8.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.secondary)
-                .border(1.dp, Color.Black.copy(0.5f), CircleShape),
+                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+            contentAlignment = Alignment.BottomStart
         ) {
             // Is this bad? Yes. Does it work? Also yes.
             Box(modifier = Modifier
