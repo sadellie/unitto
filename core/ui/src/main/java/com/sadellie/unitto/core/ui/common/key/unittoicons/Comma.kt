@@ -17,39 +17,43 @@ val UnittoIcons.Comma: ImageVector
         if (_comma != null) {
             return _comma!!
         }
-        _comma = Builder(name = "Comma", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
-                viewportWidth = 170.0f, viewportHeight = 170.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
-                moveTo(78.518f, 108.548f)
-                curveTo(78.166f, 108.24f, 77.924f, 107.954f, 77.792f, 107.69f)
-                curveTo(77.66f, 107.426f, 77.594f, 107.096f, 77.594f, 106.7f)
-                curveTo(77.594f, 106.392f, 77.682f, 106.084f, 77.858f, 105.776f)
-                curveTo(78.078f, 105.468f, 78.32f, 105.182f, 78.584f, 104.918f)
-                curveTo(79.024f, 104.434f, 79.574f, 103.796f, 80.234f, 103.004f)
-                curveTo(80.938f, 102.212f, 81.642f, 101.266f, 82.346f, 100.166f)
-                curveTo(83.05f, 99.11f, 83.688f, 97.922f, 84.26f, 96.602f)
-                curveTo(84.876f, 95.326f, 85.316f, 93.962f, 85.58f, 92.51f)
-                curveTo(85.448f, 92.554f, 85.294f, 92.576f, 85.118f, 92.576f)
-                curveTo(84.986f, 92.576f, 84.854f, 92.576f, 84.722f, 92.576f)
-                curveTo(82.434f, 92.576f, 80.564f, 91.828f, 79.112f, 90.332f)
-                curveTo(77.704f, 88.792f, 77.0f, 86.834f, 77.0f, 84.458f)
-                curveTo(77.0f, 82.39f, 77.704f, 80.63f, 79.112f, 79.178f)
-                curveTo(80.564f, 77.726f, 82.478f, 77.0f, 84.854f, 77.0f)
-                curveTo(86.174f, 77.0f, 87.34f, 77.242f, 88.352f, 77.726f)
-                curveTo(89.364f, 78.21f, 90.2f, 78.892f, 90.86f, 79.772f)
-                curveTo(91.564f, 80.608f, 92.092f, 81.598f, 92.444f, 82.742f)
-                curveTo(92.796f, 83.842f, 92.972f, 85.052f, 92.972f, 86.372f)
-                curveTo(92.972f, 88.352f, 92.686f, 90.42f, 92.114f, 92.576f)
-                curveTo(91.586f, 94.688f, 90.772f, 96.778f, 89.672f, 98.846f)
-                curveTo(88.616f, 100.958f, 87.318f, 103.004f, 85.778f, 104.984f)
-                curveTo(84.238f, 106.964f, 82.478f, 108.79f, 80.498f, 110.462f)
-                lineTo(78.518f, 108.548f)
+        _comma = Builder(
+            name = "Comma", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+            viewportWidth = 170.0f, viewportHeight = 170.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
+                moveTo(77.654f, 101.375f)
+                curveTo(77.271f, 101.039f, 77.007f, 100.727f, 76.863f, 100.44f)
+                curveTo(76.719f, 100.152f, 76.647f, 99.792f, 76.647f, 99.361f)
+                curveTo(76.647f, 99.025f, 76.743f, 98.69f, 76.935f, 98.354f)
+                curveTo(77.175f, 98.019f, 77.438f, 97.707f, 77.726f, 97.419f)
+                curveTo(78.205f, 96.892f, 78.805f, 96.197f, 79.524f, 95.334f)
+                curveTo(80.291f, 94.471f, 81.058f, 93.44f, 81.825f, 92.242f)
+                curveTo(82.592f, 91.091f, 83.287f, 89.797f, 83.91f, 88.358f)
+                curveTo(84.582f, 86.968f, 85.061f, 85.482f, 85.349f, 83.9f)
+                curveTo(85.205f, 83.948f, 85.037f, 83.971f, 84.845f, 83.971f)
+                curveTo(84.701f, 83.971f, 84.558f, 83.971f, 84.414f, 83.971f)
+                curveTo(81.921f, 83.971f, 79.883f, 83.157f, 78.301f, 81.526f)
+                curveTo(76.767f, 79.849f, 76.0f, 77.715f, 76.0f, 75.126f)
+                curveTo(76.0f, 72.873f, 76.767f, 70.955f, 78.301f, 69.373f)
+                curveTo(79.883f, 67.791f, 81.969f, 67.0f, 84.558f, 67.0f)
+                curveTo(85.996f, 67.0f, 87.266f, 67.264f, 88.369f, 67.791f)
+                curveTo(89.472f, 68.318f, 90.383f, 69.062f, 91.102f, 70.02f)
+                curveTo(91.869f, 70.931f, 92.444f, 72.01f, 92.828f, 73.257f)
+                curveTo(93.211f, 74.455f, 93.403f, 75.773f, 93.403f, 77.212f)
+                curveTo(93.403f, 79.369f, 93.091f, 81.622f, 92.468f, 83.971f)
+                curveTo(91.893f, 86.273f, 91.006f, 88.55f, 89.807f, 90.803f)
+                curveTo(88.657f, 93.104f, 87.242f, 95.334f, 85.564f, 97.491f)
+                curveTo(83.886f, 99.649f, 81.969f, 101.638f, 79.811f, 103.46f)
+                lineTo(77.654f, 101.375f)
                 close()
             }
         }
-        .build()
+            .build()
         return _comma!!
     }
 

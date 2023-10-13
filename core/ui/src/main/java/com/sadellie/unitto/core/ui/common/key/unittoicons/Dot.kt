@@ -17,32 +17,36 @@ val UnittoIcons.Dot: ImageVector
         if (_dot != null) {
             return _dot!!
         }
-        _dot = Builder(name = "Dot", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
-                viewportWidth = 170.0f, viewportHeight = 170.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
-                moveTo(77.0f, 85.316f)
-                curveTo(77.0f, 84.172f, 77.198f, 83.094f, 77.594f, 82.082f)
-                curveTo(78.034f, 81.07f, 78.606f, 80.19f, 79.31f, 79.442f)
-                curveTo(80.058f, 78.694f, 80.938f, 78.1f, 81.95f, 77.66f)
-                curveTo(82.962f, 77.22f, 84.04f, 77.0f, 85.184f, 77.0f)
-                curveTo(86.328f, 77.0f, 87.406f, 77.22f, 88.418f, 77.66f)
-                curveTo(89.43f, 78.1f, 90.31f, 78.694f, 91.058f, 79.442f)
-                curveTo(91.806f, 80.19f, 92.4f, 81.07f, 92.84f, 82.082f)
-                curveTo(93.28f, 83.094f, 93.5f, 84.172f, 93.5f, 85.316f)
-                curveTo(93.5f, 86.504f, 93.28f, 87.604f, 92.84f, 88.616f)
-                curveTo(92.4f, 89.584f, 91.806f, 90.442f, 91.058f, 91.19f)
-                curveTo(90.31f, 91.938f, 89.43f, 92.51f, 88.418f, 92.906f)
-                curveTo(87.406f, 93.346f, 86.328f, 93.566f, 85.184f, 93.566f)
-                curveTo(84.04f, 93.566f, 82.962f, 93.346f, 81.95f, 92.906f)
-                curveTo(80.938f, 92.51f, 80.058f, 91.938f, 79.31f, 91.19f)
-                curveTo(78.606f, 90.442f, 78.034f, 89.584f, 77.594f, 88.616f)
-                curveTo(77.198f, 87.604f, 77.0f, 86.504f, 77.0f, 85.316f)
+        _dot = Builder(
+            name = "Dot", defaultWidth = 170.0.dp, defaultHeight = 170.0.dp,
+            viewportWidth = 170.0f, viewportHeight = 170.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
+                moveTo(75.0f, 84.824f)
+                curveTo(75.0f, 83.473f, 75.234f, 82.199f, 75.702f, 81.004f)
+                curveTo(76.221f, 79.808f, 76.897f, 78.769f, 77.729f, 77.885f)
+                curveTo(78.613f, 77.001f, 79.652f, 76.299f, 80.848f, 75.78f)
+                curveTo(82.043f, 75.26f, 83.317f, 75.0f, 84.668f, 75.0f)
+                curveTo(86.02f, 75.0f, 87.293f, 75.26f, 88.489f, 75.78f)
+                curveTo(89.684f, 76.299f, 90.724f, 77.001f, 91.607f, 77.885f)
+                curveTo(92.491f, 78.769f, 93.193f, 79.808f, 93.712f, 81.004f)
+                curveTo(94.232f, 82.199f, 94.492f, 83.473f, 94.492f, 84.824f)
+                curveTo(94.492f, 86.227f, 94.232f, 87.527f, 93.712f, 88.722f)
+                curveTo(93.193f, 89.866f, 92.491f, 90.88f, 91.607f, 91.763f)
+                curveTo(90.724f, 92.647f, 89.684f, 93.323f, 88.489f, 93.79f)
+                curveTo(87.293f, 94.31f, 86.02f, 94.57f, 84.668f, 94.57f)
+                curveTo(83.317f, 94.57f, 82.043f, 94.31f, 80.848f, 93.79f)
+                curveTo(79.652f, 93.323f, 78.613f, 92.647f, 77.729f, 91.763f)
+                curveTo(76.897f, 90.88f, 76.221f, 89.866f, 75.702f, 88.722f)
+                curveTo(75.234f, 87.527f, 75.0f, 86.227f, 75.0f, 84.824f)
                 close()
             }
         }
-        .build()
+            .build()
         return _dot!!
     }
 
