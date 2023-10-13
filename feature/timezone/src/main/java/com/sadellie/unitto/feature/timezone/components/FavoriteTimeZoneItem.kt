@@ -38,6 +38,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -229,6 +230,7 @@ private fun TimeZoneLabel(
         if (blank) {
             AnimatedVisibility(expanded) {
                 Row(
+                    modifier = Modifier.height(24.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -243,6 +245,7 @@ private fun TimeZoneLabel(
             }
         } else {
             Row(
+                modifier = Modifier.height(24.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AnimatedVisibility(visible = expanded) {
