@@ -19,7 +19,7 @@
 package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.MenuOpen
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -35,7 +35,7 @@ import com.sadellie.unitto.core.base.R
 fun MenuButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(
-            Icons.AutoMirrored.Outlined.MenuOpen,
+            Icons.Outlined.Menu,
             contentDescription = stringResource(R.string.open_menu_description)
         )
     }
