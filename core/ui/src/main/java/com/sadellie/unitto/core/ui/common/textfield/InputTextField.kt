@@ -44,19 +44,23 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Paragraph
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 @Composable
@@ -110,7 +114,6 @@ fun ExpressionTextField(
         visualTransformation = ExpressionTransformer(formatterSymbols),
         placeholder = placeholder,
         textToolbar = textToolbar,
-        stepGranularityTextSize = 1.sp
     )
 }
 
@@ -165,49 +168,77 @@ fun UnformattedTextField(
     )
 }
 
-// https://gist.github.com/inidamleader/b594d35362ebcf3cedf81055df519300
 @Composable
-fun AutoSizableTextField(
+private fun AutoSizableTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
     formattedValue: String = value.text,
     textStyle: TextStyle = TextStyle(),
+    scaleFactor: Float = 0.95f,
+    minRatio: Float = 1f,
     onValueChange: (TextFieldValue) -> Unit,
     readOnly: Boolean = false,
     showToolbar: (rect: Rect) -> Unit = {},
     hideToolbar: () -> Unit = {},
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    placeholder: String = "",
-    textToolbar: UnittoTextToolbar,
-    minRatio: Float = 1f,
-    stepGranularityTextSize: TextUnit = 1.sp,
-    suggestedFontSizes: List<TextUnit> = emptyList(),
+    placeholder: String? = null,
+    textToolbar: UnittoTextToolbar
 ) {
-    val localDensity = LocalDensity.current
-    val density = localDensity.density
     val focusRequester = remember { FocusRequester() }
+    val density = LocalDensity.current
 
-    var offset by remember { mutableStateOf(Offset.Zero) }
+    val textValue = value.copy(value.text.take(2000))
+    var nFontSize: TextUnit by remember { mutableStateOf(0.sp) }
+    var minFontSize: TextUnit
 
-    val displayValue = value.copy(text = value.text.take(2000))
-    // Change font scale to 1
-    CompositionLocalProvider(
-        LocalDensity provides Density(density = density, fontScale = 1F),
-        LocalTextInputService provides null,
-        LocalTextToolbar provides textToolbar
+    BoxWithConstraints(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomStart
     ) {
-        BoxWithConstraints(
-            modifier = modifier,
-            contentAlignment = Alignment.BottomStart,
-        ) {
-            val resizeableTextStyle = resizeableTextStyle(
-                text = formattedValue.ifEmpty { placeholder },
-                textStyle = textStyle,
-                minRatio = minRatio
-            )
+        with(density) {
+            // Cursor handle is not visible without this, 0.836f is the minimum required factor here
+            nFontSize = maxHeight.toSp() * 0.83f
+            minFontSize = nFontSize * minRatio
+        }
 
+        // Modified: https://blog.canopas.com/autosizing-textfield-in-jetpack-compose-7a80f0270853
+        val calculateParagraph = @Composable {
+            Paragraph(
+                text = formattedValue,
+                style = textStyle.copy(fontSize = nFontSize),
+                constraints = Constraints(
+                    maxWidth = ceil(with(density) { maxWidth.toPx() }).toInt()
+                ),
+                density = density,
+                fontFamilyResolver = createFontFamilyResolver(LocalContext.current),
+                spanStyles = listOf(),
+                placeholders = listOf(),
+                maxLines = 1,
+                ellipsis = false
+            )
+        }
+
+        var intrinsics = calculateParagraph()
+        with(density) {
+            while ((intrinsics.maxIntrinsicWidth > maxWidth.toPx()) && nFontSize >= minFontSize) {
+                nFontSize *= scaleFactor
+                intrinsics = calculateParagraph()
+            }
+        }
+
+        val nTextStyle = textStyle.copy(
+            // https://issuetracker.google.com/issues/266470454
+            // textAlign = TextAlign.End,
+            fontSize = nFontSize
+        )
+        var offset = Offset.Zero
+
+        CompositionLocalProvider(
+            LocalTextInputService provides null,
+            LocalTextToolbar provides textToolbar
+        ) {
             BasicTextField(
-                value = displayValue,
+                value = textValue,
                 onValueChange = {
                     showToolbar(Rect(offset, 0f))
                     hideToolbar()
@@ -225,38 +256,43 @@ fun AutoSizableTextField(
                             showToolbar(Rect(offset, 0f))
                         }
                     )
-                    .widthIn(max = with(localDensity) { resizeableTextStyle.layoutResult.multiParagraph.width.toDp() })
+                    .widthIn(max = with(density) { intrinsics.width.toDp() })
                     .layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints)
                         // TextField size is changed with a delay (text jumps). Here we correct it.
                         layout(placeable.width, placeable.height) {
                             placeable.place(
-                                x = (resizeableTextStyle.layoutResult.multiParagraph.width - resizeableTextStyle.layoutResult.multiParagraph.maxIntrinsicWidth)
+                                x = (intrinsics.width - intrinsics.maxIntrinsicWidth)
                                     .coerceAtLeast(0f)
                                     .roundToInt(),
-                                y = (placeable.height - resizeableTextStyle.layoutResult.multiParagraph.height).roundToInt()
+                                y = (placeable.height - intrinsics.height).roundToInt()
                             )
                         }
                     }
-
                     .onGloballyPositioned { layoutCoords ->
                         offset = layoutCoords.positionInWindow()
                     },
-                readOnly = readOnly,
-                textStyle = resizeableTextStyle.textStyle,
-                singleLine = true,
-                visualTransformation = visualTransformation,
-                onTextLayout = {},
-                interactionSource = remember { MutableInteractionSource() },
+                textStyle = nTextStyle,
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+                singleLine = true,
+                readOnly = readOnly,
+                visualTransformation = visualTransformation,
                 decorationBox = { innerTextField ->
-                    if (displayValue.text.isEmpty()) {
+                    if (textValue.text.isEmpty() and !placeholder.isNullOrEmpty()) {
                         Text(
-                            text = placeholder,
-                            style = resizeableTextStyle.textStyle,
+                            text = placeholder!!, // It's not null, i swear
+                            style = nTextStyle,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                            modifier = Modifier.layout { measurable, constraints ->
+                                val placeable = measurable.measure(constraints)
+
+                                layout(placeable.width, placeable.height) {
+                                    placeable.place(x = -placeable.width, y = 0)
+                                }
+                            }
                         )
                     }
+
                     innerTextField()
                 }
             )
