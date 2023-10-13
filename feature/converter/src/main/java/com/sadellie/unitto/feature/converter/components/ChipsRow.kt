@@ -119,7 +119,6 @@ fun ChipsFlexRow(
     chosenUnitGroup: UnitGroup?,
     selectAction: (UnitGroup?) -> Unit,
     navigateToSettingsAction: () -> Unit,
-    lazyListState: LazyListState
 ) {
     var expanded by remember { mutableStateOf(false) }
     val transition = updateTransition(expanded, label = "Expanded transition")
@@ -210,6 +209,5 @@ fun PreviewChipsFlowRow() {
         chosenUnitGroup = selected,
         selectAction = { selectAction(it) },
         navigateToSettingsAction = {},
-        lazyListState = rememberLazyListState()
     )
 }

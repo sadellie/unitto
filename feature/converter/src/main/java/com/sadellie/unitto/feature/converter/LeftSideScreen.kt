@@ -144,7 +144,6 @@ private fun LeftSideScreen(
                         chosenUnitGroup = uiState.unitGroup,
                         items = uiState.shownUnitGroups,
                         selectAction = updateUnitGroup,
-                        lazyListState = chipsRowLazyListState,
                         navigateToSettingsAction = navigateToUnitGroups
                     )
                 } else {
