@@ -45,9 +45,8 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
-import com.sadellie.unitto.core.ui.datetime.formatTime
-import com.sadellie.unitto.core.ui.datetime.formatTime12Short
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
+import com.sadellie.unitto.core.ui.datetime.formatTimeShort
 import java.time.ZonedDateTime
 
 @Composable
@@ -61,6 +60,7 @@ internal fun DateTimeSelectorBlock(
     onLongClick: () -> Unit = {},
 ) {
     val locale = LocalLocale.current
+    val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
 
     Column(
         modifier = modifier
@@ -76,7 +76,13 @@ internal fun DateTimeSelectorBlock(
     ) {
         Text(title, style = MaterialTheme.typography.labelMedium)
 
-        if (DateFormat.is24HourFormat(LocalContext.current)) {
+        Column(
+            modifier = Modifier.clickable(
+                indication = rememberRipple(),
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onTimeClick
+            )
+        ) {
             AnimatedContent(
                 targetState = dateTime,
                 transitionSpec = {
@@ -84,58 +90,29 @@ internal fun DateTimeSelectorBlock(
                             slideOutVertically { height -> -height } + fadeOut() using
                             SizeTransform()
                 },
-                label = "Animated 24 hour",
+                label = "Animated time",
             ) { time ->
                 Text(
-                    modifier = Modifier.clickable(
-                        indication = rememberRipple(),
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = onTimeClick
-                    ),
-                    text = time.formatTime(locale, true),
+                    text = time.formatTimeShort(locale, is24Hour),
                     style = MaterialTheme.typography.displaySmall,
                     maxLines = 1
                 )
             }
-        } else {
-            Column(
-                modifier = Modifier.clickable(
-                    indication = rememberRipple(),
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = onTimeClick
-                )
-            ) {
-                AnimatedContent(
-                    targetState = dateTime,
-                    transitionSpec = {
-                        slideInVertically { height -> height } + fadeIn() togetherWith
-                                slideOutVertically { height -> -height } + fadeOut() using
-                                SizeTransform()
-                    },
-                    label = "Animated 12 hour",
-                ) { time ->
-                    Text(
-                        text = time.formatTime12Short(locale),
-                        style = MaterialTheme.typography.displaySmall,
-                        maxLines = 1
-                    )
-                }
 
-                AnimatedContent(
-                    targetState = dateTime,
-                    transitionSpec = {
-                        slideInVertically { height -> height } + fadeIn() togetherWith
-                                slideOutVertically { height -> -height } + fadeOut() using
-                                SizeTransform()
-                    },
-                    label = "Animated am/pm",
-                ) { time ->
-                    Text(
-                        text = time.formatTimeAmPm(locale),
-                        style = MaterialTheme.typography.bodyLarge,
-                        maxLines = 1
-                    )
-                }
+            AnimatedContent(
+                targetState = dateTime,
+                transitionSpec = {
+                    slideInVertically { height -> height } + fadeIn() togetherWith
+                            slideOutVertically { height -> -height } + fadeOut() using
+                            SizeTransform()
+                },
+                label = "Animated am/pm",
+            ) { time ->
+                Text(
+                    text = time.formatTimeAmPm(locale),
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1
+                )
             }
         }
 

@@ -33,6 +33,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.History
@@ -45,13 +46,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.datetime.formatDateDayMonthYear
+import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
 import com.sadellie.unitto.core.ui.datetime.formatTimeHours
 import com.sadellie.unitto.core.ui.datetime.formatTimeMinutes
 import com.sadellie.unitto.core.ui.datetime.formatZone
@@ -89,9 +90,13 @@ internal fun UserTimeZone(
             Row(
                 verticalAlignment = Alignment.Bottom
             ) {
-                SlidingText(text = userTime.formatTimeHours(locale, is24Hour))
+                SlidingText(userTime.formatTimeHours(locale, is24Hour))
                 TimeSeparator()
-                SlidingText(text = userTime.formatTimeMinutes(locale))
+                SlidingText(userTime.formatTimeMinutes(locale))
+                Spacer(Modifier.padding(4.dp))
+                if (!is24Hour) {
+                    SlidingText(userTime.formatTimeAmPm(locale))
+                }
             }
 
             Text(
@@ -119,7 +124,6 @@ internal fun UserTimeZone(
 @Composable
 private fun SlidingText(
     text: String,
-    style: TextStyle = MaterialTheme.typography.displayLarge
 ) {
     AnimatedContent(
         targetState = text,
@@ -132,7 +136,7 @@ private fun SlidingText(
     ) { target ->
         Text(
             text = target,
-            style = style,
+            style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.onTertiaryContainer,
             overflow = TextOverflow.Visible,
             maxLines = 1
@@ -141,14 +145,13 @@ private fun SlidingText(
 }
 
 @Composable
-private fun TimeSeparator(
-    text: String = ":",
-    style: TextStyle = MaterialTheme.typography.displayLarge
-) {
+private fun TimeSeparator() {
     Text(
-        text = text,
-        style = style,
-        color = MaterialTheme.colorScheme.onTertiaryContainer
+        text = ":",
+        style = MaterialTheme.typography.displayLarge,
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
+        overflow = TextOverflow.Visible,
+        maxLines = 1
     )
 }
 
