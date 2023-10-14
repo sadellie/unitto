@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -86,7 +85,7 @@ private fun RightSideScreen(
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -95,9 +94,7 @@ private fun RightSideScreen(
                 query = uiState.query,
                 onQueryChange = onQueryChange,
                 navigateUp = navigateUp,
-                title = stringResource(R.string.converter_right_side_title),
-                placeholder = stringResource(R.string.converter_search_bar_placeholder),
-                noSearchActions = {
+                trailingIcon = {
                     FavoritesButton(uiState.favorites) {
                         toggleFavoritesOnly(!uiState.favorites)
                     }
@@ -229,4 +226,3 @@ private fun RightSideScreenPreview() {
         navigateToUnitGroups = {}
     )
 }
-

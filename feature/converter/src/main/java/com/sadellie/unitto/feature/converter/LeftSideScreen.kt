@@ -19,9 +19,6 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,19 +29,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
@@ -96,16 +87,7 @@ private fun LeftSideScreen(
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
-    val needToTint by remember {
-        derivedStateOf { scrollBehavior.state.overlappedFraction > 0.01f }
-    }
-    val chipsBackground = animateColorAsState(
-        targetValue = if (needToTint) elevatedColor else MaterialTheme.colorScheme.surface,
-        animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
-        label = "Chips background",
-    )
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     val chipsRowLazyListState = rememberLazyListState()
 
@@ -124,19 +106,18 @@ private fun LeftSideScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             Column(
-                Modifier.background(chipsBackground.value)
+                Modifier.background(MaterialTheme.colorScheme.surface)
             ) {
                 UnittoSearchBar(
                     query = uiState.query,
                     onQueryChange = onQueryChange,
                     navigateUp = navigateUp,
-                    title = stringResource(R.string.converter_left_side_title),
-                    placeholder = stringResource(R.string.converter_search_bar_placeholder),
-                    noSearchActions = {
+                    trailingIcon = {
                         FavoritesButton(uiState.favorites) {
                             toggleFavoritesOnly(!uiState.favorites)
                         }
-                    }
+                    },
+                    scrollBehavior = scrollBehavior
                 )
 
                 if (uiState.verticalList) {
@@ -213,7 +194,7 @@ private fun LeftSideScreenPreview() {
         uiState = LeftSideUIState.Ready(
             unitFrom = units.values.first().first(),
             units = units,
-            query = TextFieldValue(),
+            query = TextFieldValue("test"),
             favorites = false,
             shownUnitGroups = listOf(UnitGroup.LENGTH, UnitGroup.TEMPERATURE, UnitGroup.CURRENCY),
             unitGroup = units.keys.toList().first(),

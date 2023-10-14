@@ -20,44 +20,60 @@ package com.sadellie.unitto.core.ui.common
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
+import kotlin.math.roundToInt
 
 @Composable
 fun UnittoSearchBar(
@@ -65,73 +81,67 @@ fun UnittoSearchBar(
     query: TextFieldValue,
     onQueryChange: (TextFieldValue) -> Unit,
     navigateUp: () -> Unit,
-    title: String,
-    searchActions: @Composable (RowScope.() -> Unit) = {},
-    noSearchActions: @Composable (RowScope.() -> Unit) = {},
-    placeholder: String = stringResource(R.string.search_text_field_placeholder),
-    scrollBehavior: TopAppBarScrollBehavior? = null,
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors()
+    focusManager: FocusManager = LocalFocusManager.current,
+    onSearch: KeyboardActionScope.() -> Unit = { focusManager.clearFocus() },
+    focusRequester: FocusRequester = remember { FocusRequester() },
+    trailingIcon: @Composable () -> Unit = { SearchButton { focusManager.clearFocus() } },
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
-    var showSearchInput by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
+    val notEmpty = remember(query) { query.text.isNotEmpty() }
+    fun clear() = onQueryChange(TextFieldValue())
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+    LaunchedEffect(scrollBehavior.state.overlappedFraction) {
+        if (scrollBehavior.state.collapsedFraction > 0.5f) focusManager.clearFocus()
+    }
+    BackHandler(notEmpty, ::clear)
 
-     LaunchedEffect(showSearchInput) {
-         if (showSearchInput) focusRequester.requestFocus() else onQueryChange(TextFieldValue())
-     }
+    val heightOffsetLimit = with(LocalDensity.current) { -(UnittoSearchBarTokens.UnittoSearchBarFullHeight).toPx() }
+    SideEffect {
+        if (scrollBehavior.state.heightOffsetLimit != heightOffsetLimit) {
+            scrollBehavior.state.heightOffsetLimit = heightOffsetLimit
+        }
+    }
+    val height = LocalDensity.current.run {
+        UnittoSearchBarTokens.UnittoSearchBarFullHeight + scrollBehavior.state.heightOffset.toDp()
+    }
 
-    BackHandler(showSearchInput) { showSearchInput = false }
+    Box(
+        modifier = modifier
+            .statusBarsPadding()
+            .height(height),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .offset { IntOffset(x = 0, y = scrollBehavior.state.heightOffset.roundToInt()) }
+                .padding(horizontal = UnittoSearchBarTokens.UnittoSearchBarPadding)
+                .requiredHeight(UnittoSearchBarTokens.UnittoSearchBarHeight)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp))
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ProvideColor(MaterialTheme.colorScheme.onSurface) {
 
-    Crossfade(
-        modifier = modifier,
-        targetState = showSearchInput,
-        label = "Search input"
-    ) { showSearch ->
-        if (showSearch) {
-            TopAppBar(
-                title = {
-                    SearchTextField(
-                        modifier = Modifier
-                            .focusRequester(focusRequester)
-                            .fillMaxWidth(),
-                        value = query,
-                        placeholder = placeholder,
-                        onValueChange = onQueryChange,
-                        onSearch = {}
-                    )
-                },
-                navigationIcon = {
-                    NavigateUpButton { showSearchInput = false }
-                },
-                actions = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        ClearButton(visible = query.text.isNotEmpty()) { onQueryChange(TextFieldValue()) }
-                        searchActions()
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-                colors = colors,
-            )
-        } else {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = title,
-                        modifier = Modifier.fillMaxWidth(),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    NavigateUpButton { navigateUp() }
-                },
-                actions = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        SearchButton { showSearchInput = true }
-                        noSearchActions()
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-                colors = colors,
-            )
+                NavigateButton { if (notEmpty) clear() else navigateUp() }
+
+                SearchTextField(
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .fillMaxWidth()
+                        .weight(1f),
+                    value = query,
+                    placeholder = stringResource(R.string.search_text_field_placeholder),
+                    onValueChange = onQueryChange,
+                    onSearch = onSearch
+                )
+
+                ClearButton(notEmpty, ::clear)
+
+                trailingIcon()
+            }
         }
     }
 }
@@ -149,7 +159,7 @@ private fun SearchTextField(
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
-        textStyle = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = onSearch),
@@ -160,7 +170,7 @@ private fun SearchTextField(
                 Text(
                     modifier = Modifier.alpha(0.7f),
                     text = placeholder,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -172,10 +182,22 @@ private fun SearchTextField(
 private fun SearchButton(
     onClick: () -> Unit
 ) {
-    IconButton(onClick) {
+    SearchBarIconButton(onClick) {
         Icon(
-            Icons.Default.Search,
+            imageVector = Icons.Default.Search,
             contentDescription = stringResource(R.string.search_button_description)
+        )
+    }
+}
+
+@Composable
+private fun NavigateButton(
+    onClick: () -> Unit
+) {
+    SearchBarIconButton(onClick) {
+        Icon(
+            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+            contentDescription = stringResource(R.string.navigate_up_description)
         )
     }
 }
@@ -185,18 +207,48 @@ private fun ClearButton(
     visible: Boolean,
     onClick: () -> Unit
 ) {
-    IconButton(onClick = onClick) {
-        AnimatedVisibility(
-            visible = visible,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        SearchBarIconButton(onClick) {
             Icon(
                 imageVector = Icons.Outlined.Clear,
                 contentDescription = stringResource(R.string.clear_input_description)
             )
         }
     }
+}
+
+@Composable
+fun SearchBarIconButton(
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(24.dp)
+            .clickable(
+                onClick = onClick,
+                enabled = true,
+                role = Role.Button,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(
+                    bounded = false,
+                    radius = 20.dp
+                )
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        content()
+    }
+}
+
+private object UnittoSearchBarTokens {
+    val UnittoSearchBarHeight = 56.dp
+    val UnittoSearchBarPadding = 8.dp
+    val UnittoSearchBarFullHeight = UnittoSearchBarHeight + UnittoSearchBarPadding * 2
 }
 
 @Preview
@@ -206,7 +258,6 @@ fun UnittoSearchBarPreview() {
         query = TextFieldValue("test"),
         onQueryChange = {},
         navigateUp = {},
-        title = "Title",
-        placeholder = "placeholder"
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     )
 }

@@ -27,17 +27,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.SearchBarIconButton
 
 @Composable
 internal fun FavoritesButton(
     state: Boolean,
     onClick: () -> Unit
 ) {
-    IconButton(onClick = onClick) {
+    SearchBarIconButton(onClick = onClick) {
         AnimatedContent(
             targetState = state,
             transitionSpec = {

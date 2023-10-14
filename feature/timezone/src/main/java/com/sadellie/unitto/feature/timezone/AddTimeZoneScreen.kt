@@ -27,24 +27,23 @@ import android.text.format.DateFormat.is24HourFormat
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
@@ -84,7 +83,7 @@ fun AddTimeZoneScreen(
     addToFavorites: (TimeZone) -> Unit,
     userTime: ZonedDateTime,
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val locale = LocalLocale.current
     val is24Hour = is24HourFormat(LocalContext.current)
 
@@ -95,19 +94,19 @@ fun AddTimeZoneScreen(
                 query = uiState.query,
                 onQueryChange = onQueryChange,
                 navigateUp = navigateUp,
-                title = stringResource(R.string.time_zone_add_title),
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { paddingValues ->
         Crossfade(
+            modifier = Modifier.padding(paddingValues),
             targetState = uiState.list.isEmpty(),
             label = "Placeholder"
         ) { empty ->
             if (empty) {
                 UnittoEmptyScreen()
             } else {
-                LazyColumn(contentPadding = paddingValues) {
+                LazyColumn(Modifier.fillMaxSize()) {
                     items(uiState.list, { it.timeZone.id }) {
                         UnittoListItem(
                             modifier = Modifier
