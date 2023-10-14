@@ -1,5 +1,5 @@
 [versions]
-appCode = "27"
+appCode = "28"
 appName = "Olive Green"
 
 androidGradlePlugin = "8.1.2"
