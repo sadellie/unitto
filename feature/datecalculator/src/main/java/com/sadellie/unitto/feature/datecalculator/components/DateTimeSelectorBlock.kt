@@ -99,20 +99,22 @@ internal fun DateTimeSelectorBlock(
                 )
             }
 
-            AnimatedContent(
-                targetState = dateTime,
-                transitionSpec = {
-                    slideInVertically { height -> height } + fadeIn() togetherWith
-                            slideOutVertically { height -> -height } + fadeOut() using
-                            SizeTransform()
-                },
-                label = "Animated am/pm",
-            ) { time ->
-                Text(
-                    text = time.formatTimeAmPm(locale),
-                    style = MaterialTheme.typography.bodyLarge,
-                    maxLines = 1
-                )
+            if (is24Hour) {
+                AnimatedContent(
+                    targetState = dateTime,
+                    transitionSpec = {
+                        slideInVertically { height -> height } + fadeIn() togetherWith
+                                slideOutVertically { height -> -height } + fadeOut() using
+                                SizeTransform()
+                    },
+                    label = "Animated am/pm",
+                ) { time ->
+                    Text(
+                        text = time.formatTimeAmPm(locale),
+                        style = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1
+                    )
+                }
             }
         }
 
