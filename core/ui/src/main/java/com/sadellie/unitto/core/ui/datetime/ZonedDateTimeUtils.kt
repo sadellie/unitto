@@ -177,7 +177,6 @@ fun ZonedDateTime.formatOffset(
         resultBuffer += "${hour}${stringResource(R.string.unit_hour_short)}"
     }
 
-    // TODO Very ugly. Replace with formatTime option from unit converter
     if (minute != 0L) {
         if (hour != 0L) resultBuffer += " "
         resultBuffer += "${minute}${stringResource(R.string.unit_minute_short)}"
