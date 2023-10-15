@@ -77,6 +77,7 @@ internal class CalculatorViewModel @Inject constructor(
     private val _output: MutableStateFlow<CalculationResult> =
         MutableStateFlow(CalculationResult.Default())
     private val _history = calculatorHistoryRepository.historyFlow
+    private val _equalClicked = MutableStateFlow(false)
 
     val uiState = combine(
         _input, _output, _history, _prefs
@@ -97,9 +98,30 @@ internal class CalculatorViewModel @Inject constructor(
         viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState.Loading
     )
 
-    fun addTokens(tokens: String) = _input.update { it.addTokens(tokens) }
-    fun addBracket() = _input.update { it.addBracket() }
-    fun deleteTokens() = _input.update { it.deleteTokens() }
+    fun addTokens(tokens: String) = _input.update {
+        if (_equalClicked.value) {
+            _equalClicked.update { false }
+            TextFieldValue().addTokens(tokens)
+        } else {
+            it.addTokens(tokens)
+        }
+    }
+    fun addBracket() = _input.update {
+        if (_equalClicked.value) {
+            _equalClicked.update { false }
+            TextFieldValue().addBracket()
+        } else {
+            it.addBracket()
+        }
+    }
+    fun deleteTokens() = _input.update {
+        if (_equalClicked.value) {
+            _equalClicked.update { false }
+            TextFieldValue().deleteTokens()
+        } else {
+            it.deleteTokens()
+        }
+    }
     fun clearInput() = _input.update { TextFieldValue() }
     fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
 
@@ -120,6 +142,7 @@ internal class CalculatorViewModel @Inject constructor(
                     TextFieldValue(calculationText, TextRange(calculationText.length))
                 }
                 _output.update { CalculationResult.Default() }
+                _equalClicked.update { true }
             }
             // Show the error
             else -> _output.update { calculationResult }
