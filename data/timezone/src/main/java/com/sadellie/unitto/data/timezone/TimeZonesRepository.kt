@@ -53,9 +53,11 @@ class TimeZonesRepository @Inject constructor(
         .map { list ->
             val favorites = mutableListOf<FavoriteZone>()
             list.forEach { entity ->
+                val tz = TimeZone.getTimeZone(entity.id)
+                if (tz.id == "Etc/Unknown") return@forEach
                 favorites.add(
                     FavoriteZone(
-                        timeZone = TimeZone.getTimeZone(entity.id),
+                        timeZone = tz,
                         position = entity.position,
                         label = entity.label
                     )
