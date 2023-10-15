@@ -3,44 +3,26 @@
     <string name="unit_acre">Acre</string>
     <string name="unit_acre_short">ac</string>
     <string name="unit_angle_minute">Szögperc</string>
-
-    <!-- Angle -->
     <string name="unit_angle_second">Szögmásodperc</string>
     <string name="unit_atomic_mass_unit">Dalton</string>
     <string name="unit_atomic_mass_unit_short">u</string>
     <string name="unit_attojoule">Attojoule</string>
     <string name="unit_attojoule_short">aJ</string>
-
-    <!-- Volume -->
     <string name="unit_attoliter">Attoliter</string>
     <string name="unit_attoliter_short">aL</string>
-
-    <!-- Length -->
     <string name="unit_attometer">Attométer</string>
-
-    <!-- Acceleration -->
     <string name="unit_attometer_per_square_second">Attométer/négyzetszögmásodperc</string>
-    <string name="unit_attometer_per_square_second_short">am/s^2</string>
+    <string name="unit_attometer_per_square_second_short">am/s²</string>
     <string name="unit_attometer_short">am</string>
-
-    <!-- Pressure -->
     <string name="unit_attopascal">Attopascal</string>
     <string name="unit_attopascal_short">aPa</string>
-
-    <!-- Time -->
     <string name="unit_attosecond">Attomásodperc</string>
     <string name="unit_attosecond_short">as</string>
-
-    <!-- Power -->
     <string name="unit_attowatt">Attowatt</string>
     <string name="unit_attowatt_short">aW</string>
     <string name="unit_bar">Bar</string>
     <string name="unit_bar_short">bar</string>
-
-    <!-- File size -->
     <string name="unit_bit">Bit</string>
-
-    <!-- Data transfer -->
     <string name="unit_bit_per_second">Bit/másodperc</string>
     <string name="unit_bit_per_second_short">b/s</string>
     <string name="unit_bit_short">b</string>
@@ -52,8 +34,6 @@
     <string name="unit_calorie_th_short">cal</string>
     <string name="unit_carat">Karát</string>
     <string name="unit_carat_short">ct</string>
-
-    <!-- Temperature -->
     <string name="unit_celsius">Celsius</string>
     <string name="unit_centimeter">Centiméter</string>
     <string name="unit_centimeter_per_hour">Centiméter/óra</string>
@@ -63,7 +43,7 @@
     <string name="unit_centimeter_per_second">Centiméter/másodperc</string>
     <string name="unit_centimeter_per_second_short">cm/s</string>
     <string name="unit_centimeter_per_square_second">Centiméter/négyzetszögmásodperc</string>
-    <string name="unit_centimeter_per_square_second_short">cm/s^2</string>
+    <string name="unit_centimeter_per_square_second_short">cm/s²</string>
     <string name="unit_centimeter_short">cm</string>
     <string name="unit_centipascal">Centipascal</string>
     <string name="unit_centipascal_short">cPa</string>
@@ -192,13 +172,13 @@
     <string name="unit_day_short">d</string>
     <string name="unit_decimeter">Deciméter</string>
     <string name="unit_decimeter_per_square_second">Deciméter/négyzetszögmásodperc</string>
-    <string name="unit_decimeter_per_square_second_short">dm/s^2</string>
+    <string name="unit_decimeter_per_square_second_short">dm/s²</string>
     <string name="unit_decimeter_short">dm</string>
     <string name="unit_decipascal">Decipascal</string>
     <string name="unit_decipascal_short">dPa</string>
     <string name="unit_degree">Fok</string>
     <string name="unit_dekameter_per_square_second">Dekaméter/négyzetszögmásodperc</string>
-    <string name="unit_dekameter_per_square_second_short">dam/s^2</string>
+    <string name="unit_dekameter_per_square_second_short">dam/s²</string>
     <string name="unit_dekapascal">Dekapascal</string>
     <string name="unit_dekapascal_short">daPa</string>
     <string name="unit_earth_equatorial_radius">Föld egyenlítői sugara</string>
@@ -208,16 +188,10 @@
     <string name="unit_earth_surface_gravity">A Föld felszíni gravitációja</string>
     <string name="unit_earth_surface_gravity_short">Föld g</string>
     <string name="unit_earths_orbital_speed">Föld keringési sebessége</string>
-
-    <!-- Area -->
     <string name="unit_electron_cross_section">Elektron-keresztmetszet</string>
     <string name="unit_electron_cross_section_short">ecs</string>
-
-    <!-- Mass -->
     <string name="unit_electron_mass_rest">Elektrontömeg</string>
     <string name="unit_electron_mass_rest_short">me</string>
-
-    <!-- Energy -->
     <string name="unit_electron_volt">Elektronvolt</string>
     <string name="unit_electron_volt_short">eV</string>
     <string name="unit_energy_horse_power_metric">Lóerő</string>
@@ -236,7 +210,7 @@
     <string name="unit_exapascal_short">EPa</string>
     <string name="unit_fahrenheit">Fahrenheit</string>
     <string name="unit_femtometer_per_square_second">Femtométer/négyzetszögmásodperc</string>
-    <string name="unit_femtometer_per_square_second_short">fm/s^2</string>
+    <string name="unit_femtometer_per_square_second_short">fm/s²</string>
     <string name="unit_femtopascal">Femtopascal</string>
     <string name="unit_femtopascal_short">fPa</string>
     <string name="unit_foot">Láb</string>
@@ -268,7 +242,7 @@
     <string name="unit_hectare">Hektár</string>
     <string name="unit_hectare_short">ha</string>
     <string name="unit_hectometer_per_square_second">Hektométer/négyzetszögmásodperc</string>
-    <string name="unit_hectometer_per_square_second_short">hm/s^2</string>
+    <string name="unit_hectometer_per_square_second_short">hm/s²</string>
     <string name="unit_hectopascal">Hektopascal</string>
     <string name="unit_hectopascal_short">hPa</string>
     <string name="unit_horse_power_mechanical">Lóerő</string>
@@ -334,7 +308,7 @@
     <string name="unit_kilometer_per_second">Kilóméter/másodperc</string>
     <string name="unit_kilometer_per_second_short">km/s</string>
     <string name="unit_kilometer_per_square_second">Kilóméter/négyzetszögmásodperc</string>
-    <string name="unit_kilometer_per_square_second_short">km/s^2</string>
+    <string name="unit_kilometer_per_square_second_short">km/s²</string>
     <string name="unit_kilometer_short">km</string>
     <string name="unit_kiloparsec">Kilóparsec</string>
     <string name="unit_kiloparsec_short">kpc</string>
@@ -397,13 +371,13 @@
     <string name="unit_meter_per_second">Méter/másodperc</string>
     <string name="unit_meter_per_second_short">m/s</string>
     <string name="unit_meter_per_square_second">Méter/négyzetszögmásodperc</string>
-    <string name="unit_meter_per_square_second_short">m/s^2</string>
+    <string name="unit_meter_per_square_second_short">m/s²</string>
     <string name="unit_meter_short">m</string>
     <string name="unit_metric_ton">Metrikus tonna</string>
     <string name="unit_metric_ton_short">t</string>
     <string name="unit_micrometer">Mikrométer</string>
     <string name="unit_micrometer_per_square_second">Mikrométer/négyzetszögmásodperc</string>
-    <string name="unit_micrometer_per_square_second_short">µm/s^2</string>
+    <string name="unit_micrometer_per_square_second_short">µm/s²</string>
     <string name="unit_micrometer_short">μm</string>
     <string name="unit_micropascal">Mikropascal</string>
     <string name="unit_micropascal_short">µPa</string>
@@ -424,8 +398,6 @@
     <string name="unit_millimeter">Milliméter</string>
     <string name="unit_millimeter_of_mercury">Higanymilliméter</string>
     <string name="unit_millimeter_of_mercury_short">mm Hg</string>
-
-    <!-- Speed -->
     <string name="unit_millimeter_per_hour">Milliméter/óra</string>
     <string name="unit_millimeter_per_hour_short">mm/h</string>
     <string name="unit_millimeter_per_minute">Milliméter/perc</string>
@@ -433,7 +405,7 @@
     <string name="unit_millimeter_per_second">Milliméter/másodperc</string>
     <string name="unit_millimeter_per_second_short">mm/s</string>
     <string name="unit_millimeter_per_square_second">Milliméter/négyzetszögmásodperc</string>
-    <string name="unit_millimeter_per_square_second_short">mm/s^2</string>
+    <string name="unit_millimeter_per_square_second_short">mm/s²</string>
     <string name="unit_millimeter_short">mm</string>
     <string name="unit_millipascal">Millipascal</string>
     <string name="unit_millipascal_short">mPa</string>
@@ -443,7 +415,7 @@
     <string name="unit_minute_short">m</string>
     <string name="unit_nanometer">Nanométer</string>
     <string name="unit_nanometer_per_square_second">Nanométer/négyzetszögmásodperc</string>
-    <string name="unit_nanometer_per_square_second_short">nm/s^2</string>
+    <string name="unit_nanometer_per_square_second_short">nm/s²</string>
     <string name="unit_nanometer_short">nm</string>
     <string name="unit_nanopascal">Nanopascal</string>
     <string name="unit_nanopascal_short">nPa</string>
@@ -472,7 +444,7 @@
     <string name="unit_petapascal">Petapascal</string>
     <string name="unit_petapascal_short">PPa</string>
     <string name="unit_picometer_per_square_second">Pikométer/négyzetszögmásodperc</string>
-    <string name="unit_picometer_per_square_second_short">pm/s^2</string>
+    <string name="unit_picometer_per_square_second_short">pm/s²</string>
     <string name="unit_picopascal">Picopascal</string>
     <string name="unit_picopascal_short">pPa</string>
     <string name="unit_pound">Font</string>
@@ -491,25 +463,25 @@
     <string name="unit_sextant">Szextáns</string>
     <string name="unit_sextant_short">sxt</string>
     <string name="unit_square_centimeter">Négyzetcentiméter</string>
-    <string name="unit_square_centimeter_short">cm^2</string>
+    <string name="unit_square_centimeter_short">cm²</string>
     <string name="unit_square_decimeter">Négyzetdeciméter</string>
-    <string name="unit_square_decimeter_short">dm^2</string>
+    <string name="unit_square_decimeter_short">dm²</string>
     <string name="unit_square_foot">Négyzetláb</string>
-    <string name="unit_square_foot_short">ft^2</string>
+    <string name="unit_square_foot_short">ft²</string>
     <string name="unit_square_inch">Négyzethüvelyk</string>
-    <string name="unit_square_inch_short">in^2</string>
+    <string name="unit_square_inch_short">in²</string>
     <string name="unit_square_kilometer">Négyzetkilóméter</string>
-    <string name="unit_square_kilometer_short">km^2</string>
+    <string name="unit_square_kilometer_short">km²</string>
     <string name="unit_square_meter">Négyzetméter</string>
-    <string name="unit_square_meter_short">m^2</string>
+    <string name="unit_square_meter_short">m²</string>
     <string name="unit_square_micrometer">Négyzetmikrométer</string>
-    <string name="unit_square_micrometer_short">µm^2</string>
+    <string name="unit_square_micrometer_short">µm²</string>
     <string name="unit_square_mile">Négyzetmérföld</string>
-    <string name="unit_square_mile_short">mi^2</string>
+    <string name="unit_square_mile_short">mi²</string>
     <string name="unit_square_millimeter">Négyzetmilliméter</string>
-    <string name="unit_square_millimeter_short">mm^2</string>
+    <string name="unit_square_millimeter_short">mm²</string>
     <string name="unit_square_yard">Négyzetyard</string>
-    <string name="unit_square_yard_short">yd^2</string>
+    <string name="unit_square_yard_short">yd²</string>
     <string name="unit_standard_atmosphere">Szabványos légkör</string>
     <string name="unit_standard_atmosphere_short">atm</string>
     <string name="unit_sun_equatorial_radius">Nap egyenlítői sugara</string>

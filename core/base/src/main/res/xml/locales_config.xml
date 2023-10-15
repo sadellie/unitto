@@ -18,7 +18,7 @@
 
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
     <locale android:name="en"/>
-    <locale android:name="en-rGB"/>
+    <locale android:name="en-GB"/>
     <locale android:name="de"/>
     <locale android:name="es"/>
     <locale android:name="fr"/>
@@ -26,6 +26,7 @@
     <locale android:name="in"/>
     <locale android:name="it"/>
     <locale android:name="nl"/>
+    <locale android:name="pt-BR"/>
     <locale android:name="ru"/>
     <locale android:name="tr"/>
 </locale-config>

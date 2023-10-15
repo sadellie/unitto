@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="add_label">Добавить</string>
     <string name="calculator_clear_history_support">Все выражения из истории будут удалены навсегда. Это действие нельзя отменить!</string>
     <string name="calculator_divide_by_zero_error">Нельзя делить на 0</string>
     <string name="calculator_no_history">Нет истории</string>
-
-    <!-- Calculator -->
     <string name="calculator_title">Калькулятор</string>
     <string name="cancel_label">Отмена</string>
     <string name="checked_filter_description">Выбранный фильтр</string>
@@ -13,8 +12,6 @@
     <string name="clear_label">Очистить</string>
     <string name="click_to_try_again_label">Нажмите для повторной попытки</string>
     <string name="converter_favorite_button_description">Добавить или убрать величину из избранных</string>
-
-    <!-- Screen names -->
     <string name="converter_left_side_title">Перевести из</string>
     <string name="converter_no_results_support">Убедитесь в отсутствии опечаток, попробуйте другие фильтры или проверьте отключенные величины.</string>
     <string name="converter_right_side_title">Перевести в</string>
@@ -42,19 +39,13 @@
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_years">Лет</string>
+    <string name="delete_label">Удалить</string>
     <string name="disabled_label">Отключено</string>
     <string name="drop_down_description">Открыть или закрыть меню</string>
     <string name="enabled_label">Включено</string>
-
-    <!-- Tools -->
-    <string name="epoch_converter_title">Перевод эпох</string>
     <string name="error_label">Ошибка</string>
     <string name="hello_label">Привет!</string>
-
-    <!-- MISC. -->
     <string name="loading_label">Загрузка…</string>
-
-    <!-- Content descriptions -->
     <string name="navigate_up_description">Навигация наверх</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
@@ -64,7 +55,6 @@ Used in this dialog window. Should be short -->
     <string name="no_results_description">Пустой результат поиска</string>
     <string name="no_results_label">Не найдено</string>
     <string name="open_menu_description">Открыть меню</string>
-    <string name="open_settings_description">Открыть настройки</string>
     <string name="open_settings_label">Открыть настройки</string>
     <string name="search_button_description">Кнопка поиска</string>
     <string name="search_text_field_placeholder">Поиск…</string>
@@ -89,15 +79,11 @@ Used in this dialog window. Should be short -->
     <string name="settings_dark_mode">Тёмная</string>
     <string name="settings_disable_unit_group_description">Отключить группу величин</string>
     <string name="settings_display">Внешний вид</string>
-
-    <!-- Theme -->
     <string name="settings_display_support">Внешний вид приложения</string>
     <string name="settings_dynamic_colors">Динамичные цвета</string>
     <string name="settings_dynamic_colors_support">Использовать цвета обоев</string>
     <string name="settings_enable_unit_group_description">Включить группу величин</string>
     <string name="settings_exponential_notation">Экспоненциальная нотация</string>
-
-    <!-- Output format -->
     <string name="settings_exponential_notation_support">Замените часть числа на E</string>
     <string name="settings_format_time">Форматирование времени</string>
     <string name="settings_format_time_support">Пример: Показывать 130 минут как 2ч 10м</string>
@@ -121,8 +107,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_precision">Точность</string>
     <string name="settings_precision_info">Переводимые значения могут иметь точность выше предпочтительной.</string>
     <string name="settings_precision_max">%1$s (Максимум)</string>
-
-    <!-- Precision -->
     <string name="settings_precision_support">Количество десятичных знаков</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_rate_this_app">Оценить приложение</string>
@@ -130,14 +114,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_selected_color">Выбранный цвет</string>
     <string name="settings_selected_style">Выбранный стиль</string>
     <string name="settings_separator">Разделитель</string>
-
-    <!-- Separator -->
     <string name="settings_separator_support">Символ разделителя</string>
     <string name="settings_sort_by_alphabetical">Алфавит</string>
     <string name="settings_sort_by_scale_asc">Величина (Возр.)</string>
     <string name="settings_sort_by_scale_desc">Величина (Убыв.)</string>
-
-    <!-- Units list sorting -->
     <string name="settings_sort_by_usage">Использование</string>
     <string name="settings_space">Пробел</string>
     <string name="settings_starting_screen">Начальный экран</string>
@@ -149,9 +129,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_system_font">Системный шрифт</string>
     <string name="settings_system_font_support">Использовать системный шрифт для текстов в приложении</string>
     <string name="settings_terms_and_conditions">Условия и положения</string>
-
-    <!-- Settings items -->
-    <string name="settings_theme_title">Темы</string>
     <string name="settings_third_party_licenses">Лицензии третьих лиц</string>
     <string name="settings_title">Настройки</string>
     <string name="settings_translate_app">Перевести приложение</string>
@@ -168,56 +145,34 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_acre">Акр</string>
     <string name="unit_acre_short">акр</string>
     <string name="unit_angle_minute">Минута</string>
-
-    <!-- Angle -->
     <string name="unit_angle_second">Секунда</string>
     <string name="unit_apostilb">Апостильб</string>
     <string name="unit_apostilb_short">асб</string>
     <string name="unit_atomic_mass_unit">Дальтон</string>
     <string name="unit_atomic_mass_unit_short">Да</string>
-
-    <!-- ELECTROSTATIC CAPACITANCE -->
     <string name="unit_attofarad">Аттофарад</string>
     <string name="unit_attofarad_short">аФ</string>
     <string name="unit_attojoule">Аттоджоуль</string>
     <string name="unit_attojoule_short">аДж</string>
-
-    <!-- Volume -->
     <string name="unit_attoliter">Аттолитр</string>
     <string name="unit_attoliter_short">ал</string>
-
-    <!-- Length -->
     <string name="unit_attometer">Аттометр</string>
-
-    <!-- Acceleration -->
     <string name="unit_attometer_per_square_second">Аттометр/секунда в квадрате</string>
-    <string name="unit_attometer_per_square_second_short">ам/с^2</string>
+    <string name="unit_attometer_per_square_second_short">ам/с²</string>
     <string name="unit_attometer_short">ам</string>
     <string name="unit_attonewton">Аттоньютон</string>
     <string name="unit_attonewton_short">аН</string>
-
-    <!-- Pressure -->
     <string name="unit_attopascal">Аттопаскаль</string>
     <string name="unit_attopascal_short">аПа</string>
-
-    <!-- Time -->
     <string name="unit_attosecond">Аттосекунда</string>
     <string name="unit_attosecond_short">ас</string>
-
-    <!-- Power -->
     <string name="unit_attowatt">Аттоватт</string>
     <string name="unit_attowatt_short">аВт</string>
     <string name="unit_bar">Бар</string>
     <string name="unit_bar_short">бар</string>
-
-    <!-- Number base -->
     <string name="unit_binary">Двоичная</string>
     <string name="unit_binary_short">base2</string>
-
-    <!-- File size -->
     <string name="unit_bit">Бит</string>
-
-    <!-- Data transfer -->
     <string name="unit_bit_per_second">Бит/секунда</string>
     <string name="unit_bit_per_second_short">б/с</string>
     <string name="unit_bit_short">б</string>
@@ -232,19 +187,15 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_calorie_th">Калория</string>
     <string name="unit_calorie_th_short">кал</string>
     <string name="unit_candela_per_square_centimeter">Кандела/квадратный сантиметр</string>
-    <string name="unit_candela_per_square_centimeter_short">кд/см^2</string>
+    <string name="unit_candela_per_square_centimeter_short">кд/см²</string>
     <string name="unit_candela_per_square_foot">Кандела/квадратный фут</string>
-    <string name="unit_candela_per_square_foot_short">кд/фт^2</string>
+    <string name="unit_candela_per_square_foot_short">кд/фт²</string>
     <string name="unit_candela_per_square_inch">Кандела/квадратный дюйм</string>
-    <string name="unit_candela_per_square_inch_short">кд/дюйм^2</string>
-
-    <!-- Luminance -->
+    <string name="unit_candela_per_square_inch_short">кд/дюйм²</string>
     <string name="unit_candela_per_square_meter">Кандела/квадратный метр</string>
-    <string name="unit_candela_per_square_meter_short">кд/м^2</string>
+    <string name="unit_candela_per_square_meter_short">кд/м²</string>
     <string name="unit_carat">Карат</string>
     <string name="unit_carat_short">кар</string>
-
-    <!-- Temperature -->
     <string name="unit_celsius">Цельсий</string>
     <string name="unit_cent">Цент</string>
     <string name="unit_cent_short">цент</string>
@@ -256,12 +207,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_centimeter_per_second">Сантиметр/секунда</string>
     <string name="unit_centimeter_per_second_short">см/с</string>
     <string name="unit_centimeter_per_square_second">Сантиметр/секунда в квадрате</string>
-    <string name="unit_centimeter_per_square_second_short">см/с^2</string>
+    <string name="unit_centimeter_per_square_second_short">см/с²</string>
     <string name="unit_centimeter_short">см</string>
     <string name="unit_centipascal">Сантипаскаль</string>
     <string name="unit_centipascal_short">сПа</string>
-
-    <!-- Tools -->
     <string name="unit_converter_title">Перевод величин</string>
     <string name="unit_cosmic_velocity_first">Первая космическая скорость</string>
     <string name="unit_cosmic_velocity_second">Вторая космическая скорость</string>
@@ -469,13 +418,13 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_decimal_short">base10</string>
     <string name="unit_decimeter">Дециметр</string>
     <string name="unit_decimeter_per_square_second">Дециметр/секунда в квадрате</string>
-    <string name="unit_decimeter_per_square_second_short">дм/с^2</string>
+    <string name="unit_decimeter_per_square_second_short">дм/с²</string>
     <string name="unit_decimeter_short">дм</string>
     <string name="unit_decipascal">Деципаскаль</string>
     <string name="unit_decipascal_short">дПа</string>
     <string name="unit_degree">Градус</string>
     <string name="unit_dekameter_per_square_second">Декаметр/секунда в квадрате</string>
-    <string name="unit_dekameter_per_square_second_short">дам/с^2</string>
+    <string name="unit_dekameter_per_square_second_short">дам/с²</string>
     <string name="unit_dekapascal">Декапаскаль</string>
     <string name="unit_dekapascal_short">даПа</string>
     <string name="unit_duodecimal">Двенадцатеричная</string>
@@ -495,16 +444,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_earth_surface_gravity">Поверхностная гравитация Земля</string>
     <string name="unit_earth_surface_gravity_short">Земля g</string>
     <string name="unit_earths_orbital_speed">Орбитальная скорость земли</string>
-
-    <!-- Area -->
     <string name="unit_electron_cross_section">Эффективное сечение электрона</string>
     <string name="unit_electron_cross_section_short">э. с. э.</string>
-
-    <!-- Mass -->
     <string name="unit_electron_mass_rest">Масса электрона</string>
     <string name="unit_electron_mass_rest_short">м. э.</string>
-
-    <!-- Energy -->
     <string name="unit_electron_volt">Вольт</string>
     <string name="unit_electron_volt_short">В</string>
     <string name="unit_energy_horse_power_metric">Лошадиная сила</string>
@@ -527,7 +470,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_farad">Фарад</string>
     <string name="unit_farad_short">Ф</string>
     <string name="unit_femtometer_per_square_second">Фемтометр/секунда в квадрате</string>
-    <string name="unit_femtometer_per_square_second_short">фм/с^2</string>
+    <string name="unit_femtometer_per_square_second_short">фм/с²</string>
     <string name="unit_femtopascal">Фемтопаскаль</string>
     <string name="unit_femtopascal_short">фПа</string>
     <string name="unit_foot">Фут</string>
@@ -610,8 +553,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_group_flux">Поток</string>
     <string name="unit_group_force">Сила</string>
     <string name="unit_group_fuel_consumption">Топливо</string>
-
-    <!-- Groups -->
     <string name="unit_group_length">Длина</string>
     <string name="unit_group_luminance">Яркость</string>
     <string name="unit_group_mass">Масса</string>
@@ -627,7 +568,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_hectare">Гектар</string>
     <string name="unit_hectare_short">га</string>
     <string name="unit_hectometer_per_square_second">Гектометр/секунда в квадрате</string>
-    <string name="unit_hectometer_per_square_second_short">гм/с^2</string>
+    <string name="unit_hectometer_per_square_second_short">гм/с²</string>
     <string name="unit_hectopascal">Гектопаскаль</string>
     <string name="unit_hectopascal_short">гПа</string>
     <string name="unit_hexadecimal">Шестнадцатеричная</string>
@@ -688,7 +629,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilocalorie_th">Килокалория</string>
     <string name="unit_kilocalorie_th_short">ккал</string>
     <string name="unit_kilocandela_per_square_meter">Килокандела/квадратный метр</string>
-    <string name="unit_kilocandela_per_square_meter_short">ккд/м^2</string>
+    <string name="unit_kilocandela_per_square_meter_short">ккд/м²</string>
     <string name="unit_kilofarad">Килофарад</string>
     <string name="unit_kilofarad_short">кФ</string>
     <string name="unit_kilogram">Килограмм</string>
@@ -711,7 +652,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilometer_per_second">Километр/секунда</string>
     <string name="unit_kilometer_per_second_short">км/с</string>
     <string name="unit_kilometer_per_square_second">Километр/секунда в квадрате</string>
-    <string name="unit_kilometer_per_square_second_short">км/с^2</string>
+    <string name="unit_kilometer_per_square_second_short">км/с²</string>
     <string name="unit_kilometer_short">км</string>
     <string name="unit_kilonewton">Килоньютон</string>
     <string name="unit_kilonewton_meter">Килоньютон метр</string>
@@ -745,8 +686,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_light_year">Световой год</string>
     <string name="unit_light_year_short">св. год</string>
     <string name="unit_liter">Литр</string>
-
-    <!-- Flow rate -->
     <string name="unit_liter_per_hour">Литр/час</string>
     <string name="unit_liter_per_hour_short">л/ч</string>
     <string name="unit_liter_per_minute">Литр/минута</string>
@@ -755,11 +694,11 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_liter_per_second_short">л/с</string>
     <string name="unit_liter_short">л</string>
     <string name="unit_lumen_per_square_centimeter_per_steradian">Люмен/квадратный сантиметр/стерадиан</string>
-    <string name="unit_lumen_per_square_centimeter_per_steradian_short">лм/см^2/ср</string>
+    <string name="unit_lumen_per_square_centimeter_per_steradian_short">лм/см²/ср</string>
     <string name="unit_lumen_per_square_foot_per_steradian">Люмен/квадратный фут/стерадиан</string>
-    <string name="unit_lumen_per_square_foot_per_steradian_short">лм/фт^2/ср</string>
+    <string name="unit_lumen_per_square_foot_per_steradian_short">лм/фт²/ср</string>
     <string name="unit_lumen_per_square_meter_per_steradian">Люмен/квадратный метр/стерадиан</string>
-    <string name="unit_lumen_per_square_meter_per_steradian_short">лм/м^2/ср</string>
+    <string name="unit_lumen_per_square_meter_per_steradian_short">лм/м²/ср</string>
     <string name="unit_mach">Мах</string>
     <string name="unit_mach_si_standard">Мах (SI)</string>
     <string name="unit_mars_equatorial_radius">Экваториальный радиус Марса</string>
@@ -768,8 +707,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_mars_mass_short">Марс M</string>
     <string name="unit_mars_surface_gravity">Поверхностная гравитация Марса</string>
     <string name="unit_mars_surface_gravity_short">Марс g</string>
-
-    <!-- Flux -->
     <string name="unit_maxwell">Максвелл</string>
     <string name="unit_maxwell_short">Мкс</string>
     <string name="unit_mebibit">Мебибит</string>
@@ -816,7 +753,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_meter_per_second">Метр/секунда</string>
     <string name="unit_meter_per_second_short">м/с</string>
     <string name="unit_meter_per_square_second">Метр/секунда в квадрате</string>
-    <string name="unit_meter_per_square_second_short">м/с^2</string>
+    <string name="unit_meter_per_square_second_short">м/с²</string>
     <string name="unit_meter_short">м</string>
     <string name="unit_metric_ton">Метрическая тонна</string>
     <string name="unit_metric_ton_short">т</string>
@@ -832,7 +769,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_microgram_short">мкг</string>
     <string name="unit_micrometer">Микрометр</string>
     <string name="unit_micrometer_per_square_second">Микрометр/секунда в квадрате</string>
-    <string name="unit_micrometer_per_square_second_short">мкм/с^2</string>
+    <string name="unit_micrometer_per_square_second_short">мкм/с²</string>
     <string name="unit_micrometer_short">мкм</string>
     <string name="unit_micron_of_mercury">Микрон ртутного столба</string>
     <string name="unit_micron_of_mercury_short">мк рт.ст.</string>
@@ -869,8 +806,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_millimeter">Миллиметр</string>
     <string name="unit_millimeter_of_mercury">Миллиметр ртутного столба</string>
     <string name="unit_millimeter_of_mercury_short">мм рт.ст.</string>
-
-    <!-- Speed -->
     <string name="unit_millimeter_per_hour">Миллиметр/час</string>
     <string name="unit_millimeter_per_hour_short">мм/ч</string>
     <string name="unit_millimeter_per_minute">Миллиметр/минута</string>
@@ -878,7 +813,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_millimeter_per_second">Миллиметр/секунда</string>
     <string name="unit_millimeter_per_second_short">мм/с</string>
     <string name="unit_millimeter_per_square_second">Миллиметр/секунда в квадрате</string>
-    <string name="unit_millimeter_per_square_second_short">мм/с^2</string>
+    <string name="unit_millimeter_per_square_second_short">мм/с²</string>
     <string name="unit_millimeter_short">мм</string>
     <string name="unit_millinewton">Миллиньютон</string>
     <string name="unit_millinewton_short">мН</string>
@@ -897,7 +832,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_nanofarad_short">нФ</string>
     <string name="unit_nanometer">Нанометр</string>
     <string name="unit_nanometer_per_square_second">Нанометр/секунда в квадрате</string>
-    <string name="unit_nanometer_per_square_second_short">нм/с^2</string>
+    <string name="unit_nanometer_per_square_second_short">нм/с²</string>
     <string name="unit_nanometer_short">нм</string>
     <string name="unit_nanopascal">Нанопаскаль</string>
     <string name="unit_nanopascal_short">нПа</string>
@@ -911,13 +846,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_neptune_mass_short">Нептун M</string>
     <string name="unit_neptune_surface_gravity">Поверхностная гравитация Нептуна</string>
     <string name="unit_neptune_surface_gravity_short">Нептун g</string>
-
-    <!-- Force -->
     <string name="unit_newton">Ньютон</string>
     <string name="unit_newton_centimeter">Ньютон сантиметр</string>
     <string name="unit_newton_centimeter_short">Н*см</string>
-
-    <!-- Torque -->
     <string name="unit_newton_meter">Ньютон метр</string>
     <string name="unit_newton_meter_short">Н*м</string>
     <string name="unit_newton_millimeter">Ньютон миллиметр</string>
@@ -958,7 +889,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_picofarad">Пикофарад</string>
     <string name="unit_picofarad_short">пФ</string>
     <string name="unit_picometer_per_square_second">Пикометр/секунда в квадрате</string>
-    <string name="unit_picometer_per_square_second_short">пм/с^2</string>
+    <string name="unit_picometer_per_square_second_short">пм/с²</string>
     <string name="unit_picopascal">Пикопаскаль</string>
     <string name="unit_picopascal_short">пПа</string>
     <string name="unit_pond">Понд</string>
@@ -1005,8 +936,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_prefix_pico_short">п</string>
     <string name="unit_prefix_quecto">Квекто</string>
     <string name="unit_prefix_quecto_short">кв</string>
-
-    <!-- Prefixes -->
     <string name="unit_prefix_quetta">Кветта</string>
     <string name="unit_prefix_quetta_short">кв</string>
     <string name="unit_prefix_ronna">Ронна</string>
@@ -1047,25 +976,25 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_skot">Скот</string>
     <string name="unit_skot_short">ск</string>
     <string name="unit_square_centimeter">Квадратный сантиметр</string>
-    <string name="unit_square_centimeter_short">см^2</string>
+    <string name="unit_square_centimeter_short">см²</string>
     <string name="unit_square_decimeter">Квадратный дециметр</string>
-    <string name="unit_square_decimeter_short">дм^2</string>
+    <string name="unit_square_decimeter_short">дм²</string>
     <string name="unit_square_foot">Квадратный фут</string>
-    <string name="unit_square_foot_short">фут^2</string>
+    <string name="unit_square_foot_short">фут²</string>
     <string name="unit_square_inch">Квадратный дюйм</string>
-    <string name="unit_square_inch_short">дюйм^2</string>
+    <string name="unit_square_inch_short">дюйм²</string>
     <string name="unit_square_kilometer">Квадратный километр</string>
-    <string name="unit_square_kilometer_short">км^2</string>
+    <string name="unit_square_kilometer_short">км²</string>
     <string name="unit_square_meter">Квадратный метр</string>
-    <string name="unit_square_meter_short">м^2</string>
+    <string name="unit_square_meter_short">м²</string>
     <string name="unit_square_micrometer">Квадратный микрометр</string>
-    <string name="unit_square_micrometer_short">мкм^2</string>
+    <string name="unit_square_micrometer_short">мкм²</string>
     <string name="unit_square_mile">Квадратная миля</string>
-    <string name="unit_square_mile_short">миля^2</string>
+    <string name="unit_square_mile_short">миля²</string>
     <string name="unit_square_millimeter">Квадратный миллиметр</string>
-    <string name="unit_square_millimeter_short">мм^2</string>
+    <string name="unit_square_millimeter_short">мм²</string>
     <string name="unit_square_yard">Квадратный ярд</string>
-    <string name="unit_square_yard_short">ярд^2</string>
+    <string name="unit_square_yard_short">ярд²</string>
     <string name="unit_standard_atmosphere">Физическая атмосфера</string>
     <string name="unit_standard_atmosphere_short">атм</string>
     <string name="unit_statfarad">Статфарад</string>
@@ -1131,7 +1060,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_venus_surface_gravity_short">Венера g</string>
     <string name="unit_watt">Ватт</string>
     <string name="unit_watt_per_square_centimeter_per_steradian">Ватт/квадратный сантиметр/стерадиан</string>
-    <string name="unit_watt_per_square_centimeter_per_steradian_short">Вт/см^2/ср</string>
+    <string name="unit_watt_per_square_centimeter_per_steradian_short">Вт/см²/ср</string>
     <string name="unit_watt_short">Вт</string>
     <string name="unit_weber">Вебер</string>
     <string name="unit_weber_short">Вб</string>
@@ -1145,8 +1074,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_yard_per_second">Ярд/секунда</string>
     <string name="unit_yard_per_second_short">ярд/с</string>
     <string name="unit_yard_short">ярд</string>
-
-    <!-- Epoch -->
     <string name="unit_year_short">г</string>
     <string name="yesterday">Вчера</string>
 </resources>

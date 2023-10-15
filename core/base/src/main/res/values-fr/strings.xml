@@ -3,23 +3,21 @@
     <string name="calculator_clear_history_support">Toutes les expressions de l\'historique seront supprimées pour toujours. Cette action ne peux pas être annulée !</string>
     <string name="calculator_divide_by_zero_error">Impossible de diviser par 0</string>
     <string name="calculator_no_history">Pas d\'historique</string>
-
-    <!-- Calculator -->
     <string name="calculator_title">Calculatrice</string>
     <string name="cancel_label">Annuler</string>
     <string name="checked_filter_description">Filtre vérifié</string>
     <string name="clear_history_label">Vider l\'historique</string>
     <string name="clear_input_description">Effacer l\'entrée</string>
     <string name="clear_label">Clear</string>
+    <string name="click_to_try_again_label">Cliquez pour réessayer</string>
     <string name="converter_favorite_button_description">Ajouter ou supprimer une unité des favoris</string>
-
-    <!-- Screen names -->
     <string name="converter_left_side_title">Convertir de</string>
     <string name="converter_no_results_support">Assurez-vous qu\'il n\'y a pas de fautes de frappe, essayez différents filtres ou vérifiez si des groupes d\'unités sont désactivés.</string>
     <string name="converter_right_side_title">Convertir en</string>
     <string name="converter_search_bar_placeholder">Rechercher des unités</string>
     <string name="converter_swap_units_description">Échanger les unités</string>
     <string name="copied_label">%1$s! copié</string>
+    <string name="date_calculator_add">Ajouter</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_days">Jours</string>
@@ -35,22 +33,17 @@
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_months">Mois</string>
     <string name="date_calculator_start">Début</string>
+    <string name="date_calculator_subtract">Soustraire</string>
+    <string name="date_calculator_title">Calculateur de date</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_years">Années</string>
     <string name="disabled_label">Désactivé</string>
     <string name="drop_down_description">Ouvrir ou fermer le menu déroulant</string>
     <string name="enabled_label">Activé</string>
-
-    <!-- Tools -->
-    <string name="epoch_converter_title">Convertisseur d\'Epoch</string>
     <string name="error_label">Erreur</string>
     <string name="hello_label">Bonjour!</string>
-
-    <!-- MISC. -->
     <string name="loading_label">Chargement…</string>
-
-    <!-- Content descriptions -->
     <string name="navigate_up_description">Naviguer vers le haut</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
@@ -60,9 +53,9 @@ Used in this dialog window. Should be short -->
     <string name="no_results_description">Résultat de recherche vide</string>
     <string name="no_results_label">Aucun résultat trouvé</string>
     <string name="open_menu_description">Ouvrir le menu</string>
-    <string name="open_settings_description">Ouvrir les paramètres</string>
     <string name="open_settings_label">Ouvrir les paramètres</string>
     <string name="search_button_description">Bouton de recherche</string>
+    <string name="search_text_field_placeholder">Recherche...</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
     <string name="select_time_label">Choisir le temps</string>
@@ -72,23 +65,23 @@ Used in this dialog window. Should be short -->
     <string name="settings_amoled_dark">AMOLED Noir</string>
     <string name="settings_amoled_dark_support">Utiliser un fond noir pour les thèmes sombres</string>
     <string name="settings_auto">Auto</string>
+    <string name="settings_calculator_support">Vue historique</string>
+    <string name="settings_clear_cache">Effacer le cache</string>
     <string name="settings_color_scheme">Palette de couleurs</string>
     <string name="settings_color_theme">Thème couleur</string>
     <string name="settings_color_theme_support">Choisir un mode de thème</string>
     <string name="settings_comma">Virgule</string>
+    <string name="settings_converter_support">Groupes d\'unités, tri, formatage</string>
     <string name="settings_currency_rates_note_text">Les taux de change sont mis à jour quotidiennement. L\'application ne permet pas de suivre le marché en temps réel.</string>
     <string name="settings_currency_rates_note_title">Taux de conversion faux ?</string>
     <string name="settings_dark_mode">Sombre</string>
     <string name="settings_disable_unit_group_description">Désactiver le groupe d\'unités</string>
-
-    <!-- Theme -->
-    <string name="settings_display_support">Look and Feel de l\'App</string>
+    <string name="settings_display">Affichage</string>
+    <string name="settings_display_support">Apparence de l\'Application</string>
     <string name="settings_dynamic_colors">Couleurs dynamiques</string>
     <string name="settings_dynamic_colors_support">Utilisez les couleurs de votre fond d\'écran</string>
     <string name="settings_enable_unit_group_description">Activer le groupe d\'unités</string>
     <string name="settings_exponential_notation">Notation exponentielle</string>
-
-    <!-- Output format -->
     <string name="settings_exponential_notation_support">Remplacer une partie du nombre par E</string>
     <string name="settings_format_time">Formatter l\'heure</string>
     <string name="settings_format_time_support">Exemple : Afficher 130 minutes comme 2h 10m</string>
@@ -100,14 +93,17 @@ https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png
 
 Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
     <string name="settings_formatting_support">Précision et format des nombres</string>
+    <string name="settings_language">Langue</string>
     <string name="settings_light_mode">Clair</string>
+    <string name="settings_middle_zero">Zéro au milieu</string>
+    <string name="settings_middle_zero_support">Intervertir les boutons zéro et décimal</string>
     <string name="settings_note">Note</string>
+    <string name="settings_partial_history_view">Vue partielle de l\'historique</string>
+    <string name="settings_partial_history_view_support">Coup d\'œil sur la dernière entrée dans l\'historique</string>
     <string name="settings_period">Période</string>
     <string name="settings_precision">Précision</string>
     <string name="settings_precision_info">Les valeurs converties peuvent avoir une précision supérieure à la précision préférée.</string>
     <string name="settings_precision_max">%1$s (Max)</string>
-
-    <!-- Precision -->
     <string name="settings_precision_support">Nombre de décimales</string>
     <string name="settings_privacy_policy">Politique de confidentialité</string>
     <string name="settings_rate_this_app">Évaluer l\'application</string>
@@ -115,22 +111,19 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_selected_color">Couleur sélectionnée</string>
     <string name="settings_selected_style">Style sélectionné</string>
     <string name="settings_separator">Séparateur</string>
-
-    <!-- Separator -->
     <string name="settings_separator_support">Symbole de séparation de groupe</string>
     <string name="settings_sort_by_alphabetical">Alphabétique</string>
     <string name="settings_sort_by_scale_asc">Échelle (Asc.)</string>
     <string name="settings_sort_by_scale_desc">Échelle (Desc.)</string>
-
-    <!-- Units list sorting -->
     <string name="settings_sort_by_usage">Utilisation</string>
     <string name="settings_space">Espaces</string>
     <string name="settings_starting_screen">Écran de départ</string>
     <string name="settings_starting_screen_support">Choisissez quel écran est affiché lors du démarrage de l\'app</string>
-    <string name="settings_terms_and_conditions">Termes et conditions</string>
 
-    <!-- Settings items -->
-    <string name="settings_theme_title">Thèmes</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/r1VikAn70eXQP4da2hrntTGQ.jpg -->
+    <!-- Option name to use system default setting -->
+    <string name="settings_system">Système</string>
+    <string name="settings_terms_and_conditions">Termes et conditions</string>
     <string name="settings_third_party_licenses">Licences tierces</string>
     <string name="settings_title">Paramètres</string>
     <string name="settings_translate_app">Traduire cette app</string>
@@ -143,59 +136,40 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_vibrations">Vibrations</string>
     <string name="settings_vibrations_support">Retour haptique lors du click sur les boutons du clavier</string>
     <string name="settings_view_source_code">Voir le code source</string>
+    <string name="time_zone_add_title">Ajouter un fuseau horaire</string>
+    <string name="time_zone_title">Fuseaux horaires</string>
+    <string name="tomorrow">Demain</string>
     <string name="unit_acre">Acre</string>
     <string name="unit_acre_short">ac</string>
     <string name="unit_angle_minute">Minute</string>
-
-    <!-- Angle -->
     <string name="unit_angle_second">Seconde</string>
     <string name="unit_apostilb">Apostilb</string>
     <string name="unit_apostilb_short">asb</string>
     <string name="unit_atomic_mass_unit">Dalton</string>
     <string name="unit_atomic_mass_unit_short">u</string>
-
-    <!-- ELECTROSTATIC CAPACITANCE -->
     <string name="unit_attofarad">Attofarad</string>
     <string name="unit_attofarad_short">aF</string>
     <string name="unit_attojoule">Attojoule</string>
     <string name="unit_attojoule_short">aJ</string>
-
-    <!-- Volume -->
     <string name="unit_attoliter">Attolitre</string>
     <string name="unit_attoliter_short">aL</string>
-
-    <!-- Length -->
     <string name="unit_attometer">Attomètre</string>
-
-    <!-- Acceleration -->
     <string name="unit_attometer_per_square_second">Attomètre/seconde carrée</string>
-    <string name="unit_attometer_per_square_second_short">am/s^2</string>
+    <string name="unit_attometer_per_square_second_short">am/s²</string>
     <string name="unit_attometer_short">am</string>
     <string name="unit_attonewton">Attonewton</string>
     <string name="unit_attonewton_short">aN</string>
-
-    <!-- Pressure -->
     <string name="unit_attopascal">Attopascal</string>
     <string name="unit_attopascal_short">aPa</string>
-
-    <!-- Time -->
     <string name="unit_attosecond">Attoseconde</string>
     <string name="unit_attosecond_short">as</string>
-
-    <!-- Power -->
     <string name="unit_attowatt">Attowatt</string>
     <string name="unit_attowatt_short">aW</string>
     <string name="unit_bar">Bar</string>
     <string name="unit_bar_short">bar</string>
-
-    <!-- Number base -->
     <string name="unit_binary">Binaire</string>
     <string name="unit_binary_short">base2</string>
-
-    <!-- File size -->
     <string name="unit_bit">Bit</string>
-
-    <!-- Data transfer -->
     <string name="unit_bit_per_second">Bit/second</string>
     <string name="unit_bit_per_second_short">b/s</string>
     <string name="unit_bit_short">b</string>
@@ -215,14 +189,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_candela_per_square_foot_short">cd/ft²</string>
     <string name="unit_candela_per_square_inch">Candela/pouce carré</string>
     <string name="unit_candela_per_square_inch_short">cd/in²</string>
-
-    <!-- Luminance -->
     <string name="unit_candela_per_square_meter">Candela/mètre carré</string>
     <string name="unit_candela_per_square_meter_short">cd/m²</string>
     <string name="unit_carat">Carat</string>
     <string name="unit_carat_short">ct</string>
-
-    <!-- Temperature -->
     <string name="unit_celsius">Celsius</string>
     <string name="unit_cent">cent</string>
     <string name="unit_cent_short">cent</string>
@@ -234,12 +204,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_centimeter_per_second">Centimètre/seconde</string>
     <string name="unit_centimeter_per_second_short">cm/s</string>
     <string name="unit_centimeter_per_square_second">Centimètre par seconde carrée</string>
-    <string name="unit_centimeter_per_square_second_short">cm/s^2</string>
+    <string name="unit_centimeter_per_square_second_short">cm/s²</string>
     <string name="unit_centimeter_short">cm</string>
     <string name="unit_centipascal">Centipascal</string>
     <string name="unit_centipascal_short">cPa</string>
-
-    <!-- Tools -->
     <string name="unit_converter_title">Convertisseur d\'unités</string>
     <string name="unit_cosmic_velocity_first">Vitesse de satellisation minimale</string>
     <string name="unit_cosmic_velocity_second">Vitesse de libération</string>
@@ -447,13 +415,13 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_decimal_short">base10</string>
     <string name="unit_decimeter">Decimètre</string>
     <string name="unit_decimeter_per_square_second">Décimètre par seconde carrée</string>
-    <string name="unit_decimeter_per_square_second_short">dm/s^2</string>
+    <string name="unit_decimeter_per_square_second_short">dm/s²</string>
     <string name="unit_decimeter_short">dm</string>
     <string name="unit_decipascal">Décipascal</string>
     <string name="unit_decipascal_short">dPa</string>
     <string name="unit_degree">Degré</string>
     <string name="unit_dekameter_per_square_second">Décamètre/seconde carrée</string>
-    <string name="unit_dekameter_per_square_second_short">dam/s^2</string>
+    <string name="unit_dekameter_per_square_second_short">dam/s²</string>
     <string name="unit_dekapascal">Décapascal</string>
     <string name="unit_dekapascal_short">daPa</string>
     <string name="unit_duodecimal">Duodécimal</string>
@@ -473,16 +441,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_earth_surface_gravity">Gravité de surface de la Terre</string>
     <string name="unit_earth_surface_gravity_short">G Terre</string>
     <string name="unit_earths_orbital_speed">Vitesse orbitale de la Terre</string>
-
-    <!-- Area -->
     <string name="unit_electron_cross_section">Electron cross section</string>
     <string name="unit_electron_cross_section_short">ecs</string>
-
-    <!-- Mass -->
     <string name="unit_electron_mass_rest">Masse électronique</string>
     <string name="unit_electron_mass_rest_short">me</string>
-
-    <!-- Energy -->
     <string name="unit_electron_volt">Électron volt</string>
     <string name="unit_electron_volt_short">eV</string>
     <string name="unit_energy_horse_power_metric">Cheval-vapeur</string>
@@ -505,7 +467,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_farad">Farad</string>
     <string name="unit_farad_short">F</string>
     <string name="unit_femtometer_per_square_second">Femtomètre/seconde carrée</string>
-    <string name="unit_femtometer_per_square_second_short">fm/s^2</string>
+    <string name="unit_femtometer_per_square_second_short">fm/s²</string>
     <string name="unit_femtopascal">Femtopascal</string>
     <string name="unit_femtopascal_short">fPa</string>
     <string name="unit_foot">Pied</string>
@@ -571,8 +533,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_group_flow_rate">Flux</string>
     <string name="unit_group_flux">Flux</string>
     <string name="unit_group_force">Force</string>
-
-    <!-- Groups -->
     <string name="unit_group_length">Longueur</string>
     <string name="unit_group_luminance">Luminance</string>
     <string name="unit_group_mass">Masse</string>
@@ -588,7 +548,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_hectare">Hectare</string>
     <string name="unit_hectare_short">ha</string>
     <string name="unit_hectometer_per_square_second">Hectomètre/seconde carrée</string>
-    <string name="unit_hectometer_per_square_second_short">hm/s^2</string>
+    <string name="unit_hectometer_per_square_second_short">hm/s²</string>
     <string name="unit_hectopascal">Hectopascal</string>
     <string name="unit_hectopascal_short">hPa</string>
     <string name="unit_hexadecimal">Hexadécimal</string>
@@ -672,7 +632,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilometer_per_second">Kilomètre/seconde</string>
     <string name="unit_kilometer_per_second_short">km/s</string>
     <string name="unit_kilometer_per_square_second">Kilomètre/seconde carrée</string>
-    <string name="unit_kilometer_per_square_second_short">km/s^2</string>
+    <string name="unit_kilometer_per_square_second_short">km/s²</string>
     <string name="unit_kilometer_short">km</string>
     <string name="unit_kilonewton">Kilonewton</string>
     <string name="unit_kilonewton_meter">Kilonewton mètre</string>
@@ -700,8 +660,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_light_year">Année-lumière</string>
     <string name="unit_light_year_short">al</string>
     <string name="unit_liter">Litre</string>
-
-    <!-- Flow rate -->
     <string name="unit_liter_per_hour">Litre/heure</string>
     <string name="unit_liter_per_hour_short">L/h</string>
     <string name="unit_liter_per_minute">Litre/minute</string>
@@ -723,8 +681,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_mars_mass_short">M Mars</string>
     <string name="unit_mars_surface_gravity">Gravité de surface de Mars</string>
     <string name="unit_mars_surface_gravity_short">G Mars</string>
-
-    <!-- Flux -->
     <string name="unit_maxwell">Maxwell</string>
     <string name="unit_maxwell_short">Mx</string>
     <string name="unit_mebibit">Mébibit</string>
@@ -771,7 +727,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_meter_per_second">Mètre/seconde</string>
     <string name="unit_meter_per_second_short">m/s</string>
     <string name="unit_meter_per_square_second">Mètre/seconde carrée</string>
-    <string name="unit_meter_per_square_second_short">m/s^2</string>
+    <string name="unit_meter_per_square_second_short">m/s²</string>
     <string name="unit_meter_short">m</string>
     <string name="unit_metric_ton">Tonne métrique</string>
     <string name="unit_metric_ton_short">t</string>
@@ -781,7 +737,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_microgram_short">µg</string>
     <string name="unit_micrometer">Micromètre</string>
     <string name="unit_micrometer_per_square_second">Micromètre/seconde carrée</string>
-    <string name="unit_micrometer_per_square_second_short">µm/s^2</string>
+    <string name="unit_micrometer_per_square_second_short">µm/s²</string>
     <string name="unit_micrometer_short">μm</string>
     <string name="unit_micron_of_mercury">Micron de mercure</string>
     <string name="unit_micron_of_mercury_short">μmHg</string>
@@ -818,8 +774,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_millimeter">Millimètre</string>
     <string name="unit_millimeter_of_mercury">Millimeter of mercury</string>
     <string name="unit_millimeter_of_mercury_short">mm Hg</string>
-
-    <!-- Speed -->
     <string name="unit_millimeter_per_hour">Millimètre/heure</string>
     <string name="unit_millimeter_per_hour_short">mm/h</string>
     <string name="unit_millimeter_per_minute">Millimètre/minute</string>
@@ -827,7 +781,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_millimeter_per_second">Millimètre/seconde</string>
     <string name="unit_millimeter_per_second_short">mm/s</string>
     <string name="unit_millimeter_per_square_second">Millimètre par seconde carrée</string>
-    <string name="unit_millimeter_per_square_second_short">mm/s^2</string>
+    <string name="unit_millimeter_per_square_second_short">mm/s²</string>
     <string name="unit_millimeter_short">mm</string>
     <string name="unit_millinewton">Millinewton</string>
     <string name="unit_millinewton_short">mN</string>
@@ -846,7 +800,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_nanofarad_short">nF</string>
     <string name="unit_nanometer">Nanomètre</string>
     <string name="unit_nanometer_per_square_second">Nanomètre/seconde carrée</string>
-    <string name="unit_nanometer_per_square_second_short">nm/s^2</string>
+    <string name="unit_nanometer_per_square_second_short">nm/s²</string>
     <string name="unit_nanometer_short">nm</string>
     <string name="unit_nanopascal">Nanopascal</string>
     <string name="unit_nanopascal_short">nPa</string>
@@ -860,13 +814,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_neptune_mass_short">M Neptune</string>
     <string name="unit_neptune_surface_gravity">Gravité de surface de Neptune</string>
     <string name="unit_neptune_surface_gravity_short">G Neptune</string>
-
-    <!-- Force -->
     <string name="unit_newton">Newton</string>
     <string name="unit_newton_centimeter">Newton centimètre</string>
     <string name="unit_newton_centimeter_short">N*cm</string>
-
-    <!-- Torque -->
     <string name="unit_newton_meter">Newton mètre</string>
     <string name="unit_newton_meter_short">N*m</string>
     <string name="unit_newton_millimeter">Newton millimètre</string>
@@ -907,7 +857,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_picofarad">Picofarad</string>
     <string name="unit_picofarad_short">pF</string>
     <string name="unit_picometer_per_square_second">Picomètre/seconde carrée</string>
-    <string name="unit_picometer_per_square_second_short">pm/s^2</string>
+    <string name="unit_picometer_per_square_second_short">pm/s²</string>
     <string name="unit_picopascal">Picopascal</string>
     <string name="unit_picopascal_short">pPa</string>
     <string name="unit_pond">Pond</string>
@@ -954,8 +904,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_prefix_pico_short">p</string>
     <string name="unit_prefix_quecto">Quecto</string>
     <string name="unit_prefix_quecto_short">q</string>
-
-    <!-- Prefixes -->
     <string name="unit_prefix_quetta">Quetta</string>
     <string name="unit_prefix_quetta_short">Q</string>
     <string name="unit_prefix_ronna">Ronna</string>
@@ -996,25 +944,25 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_skot">Skot</string>
     <string name="unit_skot_short">sk</string>
     <string name="unit_square_centimeter">Centimètre carré</string>
-    <string name="unit_square_centimeter_short">cm^2</string>
+    <string name="unit_square_centimeter_short">cm²</string>
     <string name="unit_square_decimeter">Décimètre carré</string>
-    <string name="unit_square_decimeter_short">dm^2</string>
+    <string name="unit_square_decimeter_short">dm²</string>
     <string name="unit_square_foot">Pied carré</string>
-    <string name="unit_square_foot_short">ft^2</string>
+    <string name="unit_square_foot_short">ft²</string>
     <string name="unit_square_inch">Pouce carré</string>
-    <string name="unit_square_inch_short">in^2</string>
+    <string name="unit_square_inch_short">in²</string>
     <string name="unit_square_kilometer">Kilomètre carré</string>
-    <string name="unit_square_kilometer_short">km^2</string>
+    <string name="unit_square_kilometer_short">km²</string>
     <string name="unit_square_meter">Mètre carré</string>
-    <string name="unit_square_meter_short">m^2</string>
+    <string name="unit_square_meter_short">m²</string>
     <string name="unit_square_micrometer">Micromètre carré</string>
-    <string name="unit_square_micrometer_short">µm^2</string>
+    <string name="unit_square_micrometer_short">µm²</string>
     <string name="unit_square_mile">Mile carré</string>
-    <string name="unit_square_mile_short">mi^2</string>
+    <string name="unit_square_mile_short">mi²</string>
     <string name="unit_square_millimeter">Millimètre carré</string>
-    <string name="unit_square_millimeter_short">mm^2</string>
+    <string name="unit_square_millimeter_short">mm²</string>
     <string name="unit_square_yard">Yard carré</string>
-    <string name="unit_square_yard_short">yd^2</string>
+    <string name="unit_square_yard_short">yd²</string>
     <string name="unit_standard_atmosphere">Atmosphère standard</string>
     <string name="unit_standard_atmosphere_short">atm</string>
     <string name="unit_statfarad">Statfarad</string>
@@ -1094,7 +1042,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_yard_per_second">Yard/seconde</string>
     <string name="unit_yard_per_second_short">yd/s</string>
     <string name="unit_yard_short">yd</string>
-
-    <!-- Epoch -->
     <string name="unit_year_short">y</string>
+    <string name="yesterday">Hier</string>
 </resources>

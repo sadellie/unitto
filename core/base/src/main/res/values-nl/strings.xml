@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="add_label">Voeg toe</string>
     <string name="calculator_clear_history_support">Alle berekeningen worden uit de geschiedenis verwijderd. Deze actie kan niet ongedaan worden gemaakt!</string>
     <string name="calculator_divide_by_zero_error">Kan niet door 0 delen</string>
     <string name="calculator_no_history">Geen geschiedenis</string>
-
-    <!-- Calculator -->
     <string name="calculator_title">Rekenmachine</string>
     <string name="cancel_label">Annuleren</string>
     <string name="checked_filter_description">Geselecteerde filters</string>
@@ -13,8 +12,6 @@
     <string name="clear_label">Wis</string>
     <string name="click_to_try_again_label">Klik om opnieuw te proberen</string>
     <string name="converter_favorite_button_description">Eenheid toevoegen aan of verwijderen uit favorieten</string>
-
-    <!-- Screen names -->
     <string name="converter_left_side_title">Omzetten van</string>
     <string name="converter_no_results_support">Zorg ervoor dat er geen typefouten zijn, probeer verschillende filters of controleer op uitgeschakelde eenheidsgroepen.</string>
     <string name="converter_right_side_title">Omzetten naar</string>
@@ -29,7 +26,7 @@
     <string name="date_calculator_end">Eind</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
-    <string name="date_calculator_hours">Uur</string>
+    <string name="date_calculator_hours">Uren</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_minutes">Minuten</string>
@@ -42,19 +39,16 @@
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_years">Jaren</string>
+    <string name="delete_label">Verwijder</string>
     <string name="disabled_label">Uitgeschakeld</string>
     <string name="drop_down_description">Open of sluit keuzemenu</string>
     <string name="enabled_label">ingeschakeld</string>
-
-    <!-- Tools -->
-    <string name="epoch_converter_title">Epochconversie</string>
     <string name="error_label">Fout</string>
     <string name="hello_label">Hallo!</string>
 
-    <!-- MISC. -->
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/iqEp9rZZ9XqtJ3CKVpy33lre.png -->
+    <string name="label_label">Label</string>
     <string name="loading_label">Laden…</string>
-
-    <!-- Content descriptions -->
     <string name="navigate_up_description">Navigeer omhoog</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
@@ -64,7 +58,6 @@ Used in this dialog window. Should be short -->
     <string name="no_results_description">Wis zoekresultaat</string>
     <string name="no_results_label">Geen resultaten gevonden</string>
     <string name="open_menu_description">Menu openen</string>
-    <string name="open_settings_description">Open instellingen</string>
     <string name="open_settings_label">Open instellingen</string>
     <string name="search_button_description">Zoekknop</string>
     <string name="search_text_field_placeholder">Zoek…</string>
@@ -73,27 +66,33 @@ Used in this dialog window. Should be short -->
     <string name="select_time_label">Tijd selecteren</string>
     <string name="settings_about_unitto">Over Unitto</string>
     <string name="settings_about_unitto_support">Leer meer over de app</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button">AC knop</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button_support">Toon aparte verwijderknop</string>
     <string name="settings_additional">Overig</string>
     <string name="settings_amoled_dark">AMOLED-donker</string>
     <string name="settings_amoled_dark_support">Gebruik een zwarte achtergrond voor donkere thema\'s</string>
     <string name="settings_auto">Automatisch</string>
+    <string name="settings_calculator_support">Geschiedenisweergave</string>
+    <string name="settings_clear_cache">Verwijder cache</string>
     <string name="settings_color_scheme">Kleurenschema</string>
     <string name="settings_color_theme">Kleurthema</string>
     <string name="settings_color_theme_support">Selecteer kleurthema</string>
     <string name="settings_comma">Komma</string>
+    <string name="settings_converter_support">Eenheidsgroepen, sorteren, indeling</string>
     <string name="settings_currency_rates_note_text">Wisselkoersen worden dagelijks bijgewerkt. De app houdt niet constant de markt bij.</string>
     <string name="settings_currency_rates_note_title">Verkeerde wisselkoersen?</string>
     <string name="settings_dark_mode">Donker</string>
     <string name="settings_disable_unit_group_description">Schakel eenheidsgroep uit</string>
-
-    <!-- Theme -->
+    <string name="settings_display">Weergave</string>
     <string name="settings_display_support">Uiterlijk van de app</string>
     <string name="settings_dynamic_colors">Dynamische kleuren</string>
     <string name="settings_dynamic_colors_support">Gebruik kleuren uit je achtergrond</string>
     <string name="settings_enable_unit_group_description">Schakel eenheidsgroep in</string>
     <string name="settings_exponential_notation">Wetenschappelijke notatie</string>
-
-    <!-- Output format -->
     <string name="settings_exponential_notation_support">Vervang een deel van het nummer door E</string>
     <string name="settings_format_time">Tijdsindeling</string>
     <string name="settings_format_time_support">Voorbeeld: Toon 130 minuten als 2u 10m</string>
@@ -104,19 +103,19 @@ Used in this dialog window. Should be short -->
 https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png 
 
 Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
-    <string name="settings_formatting_support">Nauwkeurigheid en cijferuiterlijk</string>
+    <string name="settings_formatting_support">Nauwkeurigheid en cijferindeling</string>
     <string name="settings_language">Taal</string>
     <string name="settings_language_support">Verander de taal van de app</string>
     <string name="settings_light_mode">Licht</string>
     <string name="settings_middle_zero">Nul in het midden</string>
     <string name="settings_middle_zero_support">Verwissel de nul en decimale knoppen</string>
     <string name="settings_note">Kennisgeving</string>
+    <string name="settings_partial_history_view">Gedeeltelijke geschiedenis</string>
+    <string name="settings_partial_history_view_support">Bekijk laatste invoer in geschiedenis</string>
     <string name="settings_period">Punt</string>
     <string name="settings_precision">Nauwkeurigheid</string>
     <string name="settings_precision_info">Geconverteerde waarden kunnen een hogere nauwkeurigheid hebben dan de voorkeurswaarde.</string>
     <string name="settings_precision_max">%1$s (Maximum)</string>
-
-    <!-- Precision -->
     <string name="settings_precision_support">Aantal decimalen</string>
     <string name="settings_privacy_policy">Privacybeleid</string>
     <string name="settings_rate_this_app">Beoordeel deze app</string>
@@ -124,24 +123,21 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_selected_color">Geselecteerde kleur</string>
     <string name="settings_selected_style">Geselecteerde stijl</string>
     <string name="settings_separator">Scheidingsteken</string>
-
-    <!-- Separator -->
     <string name="settings_separator_support">Scheidingsteken voor groepen</string>
     <string name="settings_sort_by_alphabetical">Alfabetisch</string>
     <string name="settings_sort_by_scale_asc">Schaal (opl.)</string>
     <string name="settings_sort_by_scale_desc">Schaal (afl.)</string>
-
-    <!-- Units list sorting -->
     <string name="settings_sort_by_usage">Gebruik</string>
     <string name="settings_space">Spatie</string>
     <string name="settings_starting_screen">Startscherm</string>
     <string name="settings_starting_screen_support">Kies welk scherm wordt weergegeven wanneer de app start</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/r1VikAn70eXQP4da2hrntTGQ.jpg -->
+    <!-- Option name to use system default setting -->
+    <string name="settings_system">Systeem</string>
     <string name="settings_system_font">Systeemlettertype</string>
     <string name="settings_system_font_support">Gebruik systeemlettertype voor tekst in de app</string>
     <string name="settings_terms_and_conditions">Voorwaarden</string>
-
-    <!-- Settings items -->
-    <string name="settings_theme_title">Thema\'s</string>
     <string name="settings_third_party_licenses">Licenties van derden</string>
     <string name="settings_title">Instellingen</string>
     <string name="settings_translate_app">Vertaal deze app</string>
@@ -160,56 +156,34 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_acre">Acre</string>
     <string name="unit_acre_short">ac</string>
     <string name="unit_angle_minute">Minuut</string>
-
-    <!-- Angle -->
     <string name="unit_angle_second">Seconde</string>
     <string name="unit_apostilb">Apostilb</string>
     <string name="unit_apostilb_short">asb</string>
     <string name="unit_atomic_mass_unit">Dalton</string>
     <string name="unit_atomic_mass_unit_short">u</string>
-
-    <!-- ELECTROSTATIC CAPACITANCE -->
     <string name="unit_attofarad">Attofarad</string>
     <string name="unit_attofarad_short">aF</string>
     <string name="unit_attojoule">Attojoule</string>
     <string name="unit_attojoule_short">aJ</string>
-
-    <!-- Volume -->
     <string name="unit_attoliter">Attoliter</string>
     <string name="unit_attoliter_short">al</string>
-
-    <!-- Length -->
     <string name="unit_attometer">Attometer</string>
-
-    <!-- Acceleration -->
     <string name="unit_attometer_per_square_second">Attometer/vierkante seconde</string>
     <string name="unit_attometer_per_square_second_short">am/s²</string>
     <string name="unit_attometer_short">am</string>
     <string name="unit_attonewton">Attonewton</string>
     <string name="unit_attonewton_short">aN</string>
-
-    <!-- Pressure -->
     <string name="unit_attopascal">Attopascal</string>
     <string name="unit_attopascal_short">aPa</string>
-
-    <!-- Time -->
     <string name="unit_attosecond">Attoseconde</string>
     <string name="unit_attosecond_short">as</string>
-
-    <!-- Power -->
     <string name="unit_attowatt">Attowatt</string>
     <string name="unit_attowatt_short">aW</string>
     <string name="unit_bar">Bar</string>
     <string name="unit_bar_short">bar</string>
-
-    <!-- Number base -->
     <string name="unit_binary">Binair</string>
     <string name="unit_binary_short">base2</string>
-
-    <!-- File size -->
     <string name="unit_bit">Bit</string>
-
-    <!-- Data transfer -->
     <string name="unit_bit_per_second">Bit/seconde</string>
     <string name="unit_bit_per_second_short">b/s</string>
     <string name="unit_bit_short">b</string>
@@ -229,14 +203,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_candela_per_square_foot_short">cd/ft²</string>
     <string name="unit_candela_per_square_inch">Candela/vierkante inch</string>
     <string name="unit_candela_per_square_inch_short">cd/in²</string>
-
-    <!-- Luminance -->
     <string name="unit_candela_per_square_meter">Candela/vierkante meter</string>
     <string name="unit_candela_per_square_meter_short">cd/m²</string>
     <string name="unit_carat">Karaat</string>
     <string name="unit_carat_short">cd</string>
-
-    <!-- Temperature -->
     <string name="unit_celsius">Celsius</string>
     <string name="unit_cent">Cent</string>
     <string name="unit_cent_short">cent</string>
@@ -252,8 +222,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_centimeter_short">cm</string>
     <string name="unit_centipascal">Centipascal</string>
     <string name="unit_centipascal_short">cPa</string>
-
-    <!-- Tools -->
     <string name="unit_converter_title">Eenheidsconversie</string>
     <string name="unit_cosmic_velocity_first">Eerste kosmische snelheid</string>
     <string name="unit_cosmic_velocity_second">Tweede kosmische snelheid</string>
@@ -487,16 +455,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_earth_surface_gravity">Aarde zwaartekracht</string>
     <string name="unit_earth_surface_gravity_short">Aarde g</string>
     <string name="unit_earths_orbital_speed">Omloopsnelheid aarde</string>
-
-    <!-- Area -->
     <string name="unit_electron_cross_section">Werkzame doorsnede</string>
     <string name="unit_electron_cross_section_short">ecs</string>
-
-    <!-- Mass -->
     <string name="unit_electron_mass_rest">Elektronmassa</string>
     <string name="unit_electron_mass_rest_short">me</string>
-
-    <!-- Energy -->
     <string name="unit_electron_volt">Elektronvolt</string>
     <string name="unit_electron_volt_short">eV</string>
     <string name="unit_energy_horse_power_metric">Paardenkracht</string>
@@ -546,6 +508,14 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gallon_per_second_imperial_short">gal/s</string>
     <string name="unit_gallon_per_second_us">Gallon/seconde (US)</string>
     <string name="unit_gallon_per_second_us_short">gal/s</string>
+    <string name="unit_gallon_uk_per_100_mile">Gallon/100 mijl (UK)</string>
+    <string name="unit_gallon_uk_per_100_mile_short">gal/100 mi (UK)</string>
+    <string name="unit_gallon_uk_per_mile">Gallon/mijl (UK)</string>
+    <string name="unit_gallon_uk_per_mile_short">gal/mi (UK)</string>
+    <string name="unit_gallon_us_per_100_mile">Gallon/100 mijl (US)</string>
+    <string name="unit_gallon_us_per_100_mile_short">gal/100 mi (US)</string>
+    <string name="unit_gallon_us_per_mile">Gallon/mijl (US)</string>
+    <string name="unit_gallon_us_per_mile_short">gal/mi (US)</string>
     <string name="unit_gibibit">Gibibit</string>
     <string name="unit_gibibit_per_second">Gibibit/seconde</string>
     <string name="unit_gibibit_per_second_short">Gib/s</string>
@@ -594,8 +564,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_group_flux">Flux</string>
     <string name="unit_group_force">Kracht</string>
     <string name="unit_group_fuel_consumption">Brandstof</string>
-
-    <!-- Groups -->
     <string name="unit_group_length">Lengte</string>
     <string name="unit_group_luminance">Luminantie</string>
     <string name="unit_group_mass">Massa</string>
@@ -672,7 +640,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilocalorie_th">Kilocalorie (th)</string>
     <string name="unit_kilocalorie_th_short">kcal</string>
     <string name="unit_kilocandela_per_square_meter">Kilocandela/vierkante meter</string>
-    <string name="unit_kilocandela_per_square_meter_short">kcd</string>
+    <string name="unit_kilocandela_per_square_meter_short">kcd/m²</string>
     <string name="unit_kilofarad">mF</string>
     <string name="unit_kilofarad_short">kF</string>
     <string name="unit_kilogram">Kilogram</string>
@@ -729,8 +697,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_light_year">Lichtjaar</string>
     <string name="unit_light_year_short">lj</string>
     <string name="unit_liter">Liter</string>
-
-    <!-- Flow rate -->
     <string name="unit_liter_per_hour">Liter/uur</string>
     <string name="unit_liter_per_hour_short">L/h</string>
     <string name="unit_liter_per_minute">Liter/minuut</string>
@@ -752,8 +718,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_mars_mass_short">Mars M</string>
     <string name="unit_mars_surface_gravity">Mars zwaartekracht</string>
     <string name="unit_mars_surface_gravity_short">Mars g</string>
-
-    <!-- Flux -->
     <string name="unit_maxwell">Maxwell</string>
     <string name="unit_maxwell_short">Mx</string>
     <string name="unit_mebibit">Mebibit</string>
@@ -804,6 +768,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_meter_short">m</string>
     <string name="unit_metric_ton">Ton</string>
     <string name="unit_metric_ton_short">t</string>
+    <string name="unit_mi_per_gallon_uk">Mijl/gallon (UK)</string>
+    <string name="unit_mi_per_gallon_uk_short">mpg (UK)</string>
+    <string name="unit_mi_per_gallon_us">Mijl/gallon (US)</string>
+    <string name="unit_mi_per_gallon_us_short">mpg (US)</string>
+    <string name="unit_mi_us_per_l">Mijl/liter (US)</string>
+    <string name="unit_mi_us_per_l_short">mi/L (US)</string>
     <string name="unit_microfarad">Microfarad</string>
     <string name="unit_microfarad_short">µF</string>
     <string name="unit_microgram">Microgram</string>
@@ -847,8 +817,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_millimeter">Millimeter</string>
     <string name="unit_millimeter_of_mercury">Millimeter kwik</string>
     <string name="unit_millimeter_of_mercury_short">mm Hg</string>
-
-    <!-- Speed -->
     <string name="unit_millimeter_per_hour">Millimeter/uur</string>
     <string name="unit_millimeter_per_hour_short">mm/h</string>
     <string name="unit_millimeter_per_minute">Millimeter/minuut</string>
@@ -889,13 +857,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_neptune_mass_short">Neptunus M</string>
     <string name="unit_neptune_surface_gravity">Neptunus zwaartekracht</string>
     <string name="unit_neptune_surface_gravity_short">Neptunus g</string>
-
-    <!-- Force -->
     <string name="unit_newton">Newton</string>
     <string name="unit_newton_centimeter">Newtoncentimeter</string>
     <string name="unit_newton_centimeter_short">N*cm</string>
-
-    <!-- Torque -->
     <string name="unit_newton_meter">Newtonmeter</string>
     <string name="unit_newton_meter_short">N*m</string>
     <string name="unit_newton_millimeter">Newtonmillimeter</string>
@@ -983,8 +947,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_prefix_pico_short">p</string>
     <string name="unit_prefix_quecto">Quecto</string>
     <string name="unit_prefix_quecto_short">q</string>
-
-    <!-- Prefixes -->
     <string name="unit_prefix_quetta">Quetta</string>
     <string name="unit_prefix_quetta_short">Q</string>
     <string name="unit_prefix_ronna">Ronna</string>
@@ -1123,8 +1085,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_yard_per_second">Yard/seconde</string>
     <string name="unit_yard_per_second_short">yd/s</string>
     <string name="unit_yard_short">yd</string>
-
-    <!-- Epoch -->
     <string name="unit_year_short">y</string>
     <string name="yesterday">Gisteren</string>
 </resources>

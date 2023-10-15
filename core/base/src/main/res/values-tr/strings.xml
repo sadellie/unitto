@@ -3,8 +3,6 @@
     <string name="calculator_clear_history_support">Geçmişteki tüm ifadeler tamamen silinecek. Bu işlem geri alınamaz!</string>
     <string name="calculator_divide_by_zero_error">0\'a bölünemez</string>
     <string name="calculator_no_history">Geçmiş yok</string>
-
-    <!-- Calculator -->
     <string name="calculator_title">Hesap Makinesi</string>
     <string name="cancel_label">İptal</string>
     <string name="checked_filter_description">İşaretli filtre</string>
@@ -12,14 +10,13 @@
     <string name="clear_input_description">Girdiyi temizle</string>
     <string name="clear_label">Temizle</string>
     <string name="converter_favorite_button_description">Birimi favorilere ekleyin veya favorilerden çıkarın</string>
-
-    <!-- Screen names -->
     <string name="converter_left_side_title">Şundan çevir</string>
     <string name="converter_no_results_support">Yazım hatası olmadığından emin olun, farklı filtreler deneyin veya devre dışı bırakılan birim gruplarını kontrol edin.</string>
     <string name="converter_right_side_title">Şuna çevir</string>
     <string name="converter_search_bar_placeholder">Birim ara</string>
     <string name="converter_swap_units_description">Birimleri değiştir</string>
     <string name="copied_label">%1$s kopyalandı!</string>
+    <string name="date_calculator_add">Ekle</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_days">Gün</string>
@@ -35,6 +32,8 @@
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_months">Ay</string>
     <string name="date_calculator_start">Başlangıç</string>
+    <string name="date_calculator_subtract">Çıkar</string>
+    <string name="date_calculator_title">Tarih hesaplayıcı</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_years">Yıl</string>
@@ -44,10 +43,9 @@
     <string name="error_label">Hata</string>
     <string name="hello_label">Merhaba!</string>
 
-    <!-- MISC. -->
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/iqEp9rZZ9XqtJ3CKVpy33lre.png -->
+    <string name="label_label">Etiket</string>
     <string name="loading_label">Yükleniyor…</string>
-
-    <!-- Content descriptions -->
     <string name="navigate_up_description">Yukarı git</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
@@ -57,7 +55,6 @@ Used in this dialog window. Should be short -->
     <string name="no_results_description">Arama sonucunu temizle</string>
     <string name="no_results_label">Sonuç bulunamadı</string>
     <string name="open_menu_description">Menüyü aç</string>
-    <string name="open_settings_description">Ayarları aç</string>
     <string name="open_settings_label">Ayarları aç</string>
     <string name="search_button_description">Arama düğmesi</string>
 
@@ -65,27 +62,33 @@ Used in this dialog window. Should be short -->
     <string name="select_time_label">Zaman seçin</string>
     <string name="settings_about_unitto">Unitto hakkında</string>
     <string name="settings_about_unitto_support">Uygulama hakkında bilgi edinin</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button">AC düğmesi</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button_support">Ayrı bir temizle düğmesi göster</string>
     <string name="settings_additional">Diğer ayarlar</string>
     <string name="settings_amoled_dark">AMOLED Koyu</string>
     <string name="settings_amoled_dark_support">Koyu temalarda siyah arkaplan rengi kullan</string>
     <string name="settings_auto">Oto.</string>
+    <string name="settings_calculator_support">Geçmiş görünümü</string>
+    <string name="settings_clear_cache">Önbelleği temizle</string>
     <string name="settings_color_scheme">Renk şeması</string>
     <string name="settings_color_theme">Renk teması</string>
     <string name="settings_color_theme_support">Bir tema modu seçin</string>
     <string name="settings_comma">Virgül</string>
+    <string name="settings_converter_support">Birim grupları, sıralama, biçimlendirme</string>
     <string name="settings_currency_rates_note_text">Döviz kurları günlük olarak güncellenmektedir. Uygulamada gerçek zamanlı piyasa izleme yoktur</string>
     <string name="settings_currency_rates_note_title">Döviz kurları yanlış mı?</string>
     <string name="settings_dark_mode">Koyu</string>
     <string name="settings_disable_unit_group_description">Birim grubunu devre dışı bırak</string>
-
-    <!-- Theme -->
+    <string name="settings_display">Görünüm</string>
     <string name="settings_display_support">Uygulama görünümü</string>
     <string name="settings_dynamic_colors">Dinamik renkler</string>
     <string name="settings_dynamic_colors_support">Duvar kağıdındaki renkleri kullan</string>
     <string name="settings_enable_unit_group_description">Birim grubunu etkinleştir</string>
     <string name="settings_exponential_notation">Üstel gösterim</string>
-
-    <!-- Output format -->
     <string name="settings_exponential_notation_support">Sayının bir kısmını E ile değiştir</string>
     <string name="settings_format_time">Zaman biçimi</string>
     <string name="settings_format_time_support">Örnek: 130 dakikayı 2sa 10dk olarak göster</string>
@@ -97,14 +100,18 @@ https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png
 
 Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
     <string name="settings_formatting_support">Kesinlik ve sayıların görünümü</string>
+    <string name="settings_language">Dil</string>
+    <string name="settings_language_support">Uygulama dilini değiştir</string>
     <string name="settings_light_mode">Açık</string>
+    <string name="settings_middle_zero">Sıfır ortada</string>
+    <string name="settings_middle_zero_support">Sıfır ve ondalık düğmelerini değiştir</string>
     <string name="settings_note">Not</string>
+    <string name="settings_partial_history_view">Kısmi geçmiş görünümü</string>
+    <string name="settings_partial_history_view_support">Geçmişteki son girişe göz atın</string>
     <string name="settings_period">Nokta</string>
     <string name="settings_precision">Hassasiyet</string>
     <string name="settings_precision_info">Dönüştürülen değerler tercih edilen değerden daha yüksek bir kesinliğe sahip olabilir.</string>
     <string name="settings_precision_max">%1$s (Maks)</string>
-
-    <!-- Precision -->
     <string name="settings_precision_support">Ondalık basamak sayısı</string>
     <string name="settings_privacy_policy">Gizlilik Politikası</string>
     <string name="settings_rate_this_app">Bu uygulamayı oyla</string>
@@ -112,22 +119,21 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_selected_color">Seçilen renk</string>
     <string name="settings_selected_style">Seçilen stil</string>
     <string name="settings_separator">Ayırıcı</string>
-
-    <!-- Separator -->
     <string name="settings_separator_support">Grup ayırıcı sembol</string>
     <string name="settings_sort_by_alphabetical">Alfabetik</string>
     <string name="settings_sort_by_scale_asc">Ölçek (Artan)</string>
     <string name="settings_sort_by_scale_desc">Ölçek (Azalan)</string>
-
-    <!-- Units list sorting -->
     <string name="settings_sort_by_usage">Kullanım</string>
     <string name="settings_space">Boşluk</string>
     <string name="settings_starting_screen">Başlangıç ekranı</string>
     <string name="settings_starting_screen_support">Uygulamayı başlattığınızda hangi ekranın gösterileceğini seçin</string>
-    <string name="settings_terms_and_conditions">Şartlar ve Koşullar</string>
 
-    <!-- Settings items -->
-    <string name="settings_theme_title">Temalar</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/r1VikAn70eXQP4da2hrntTGQ.jpg -->
+    <!-- Option name to use system default setting -->
+    <string name="settings_system">Sistem</string>
+    <string name="settings_system_font">Sistem yazı tipi</string>
+    <string name="settings_system_font_support">Uygulamadaki metinler için sistem yazı tipini kullan</string>
+    <string name="settings_terms_and_conditions">Şartlar ve Koşullar</string>
     <string name="settings_third_party_licenses">Üçüncü taraf lisansları</string>
     <string name="settings_title">Ayarlar</string>
     <string name="settings_translate_app">Bu uygulamayı çevir</string>
@@ -142,47 +148,31 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_view_source_code">Kaynak kodunu görüntüle</string>
     <string name="unit_acre">Dönüm</string>
     <string name="unit_angle_minute">Dakika</string>
-
-    <!-- Angle -->
     <string name="unit_angle_second">Saniye</string>
     <string name="unit_atomic_mass_unit">Dalton</string>
     <string name="unit_atomic_mass_unit_short">u</string>
-
-    <!-- Volume -->
     <string name="unit_attoliter">Attolitre</string>
-
-    <!-- Length -->
+    <string name="unit_attoliter_short">aL</string>
     <string name="unit_attometer">Attometre</string>
-
-    <!-- Acceleration -->
     <string name="unit_attometer_per_square_second">Attometre/saniye kare</string>
     <string name="unit_attometer_short">am</string>
-
-    <!-- Pressure -->
     <string name="unit_attopascal">Attopaskal</string>
-
-    <!-- Time -->
     <string name="unit_attosecond">Attosaniye</string>
-
-    <!-- File size -->
     <string name="unit_bit">Bit</string>
-
-    <!-- Data transfer -->
     <string name="unit_bit_per_second">Bit/saniye</string>
+    <string name="unit_bit_per_second_short">b/s</string>
     <string name="unit_bit_short">b</string>
     <string name="unit_byte">Bayt</string>
     <string name="unit_byte_per_second">Bayt/saniye</string>
+    <string name="unit_byte_per_second_short">B/s</string>
+    <string name="unit_byte_short">B</string>
     <string name="unit_calorie_th">Kalori (th)</string>
     <string name="unit_candela_per_square_centimeter">Kandela/santimetrekare</string>
     <string name="unit_candela_per_square_foot">Kandela/fitkare</string>
     <string name="unit_candela_per_square_inch">Kandela/inçkare</string>
-
-    <!-- Luminance -->
     <string name="unit_candela_per_square_meter">Kandela/metrekare</string>
     <string name="unit_carat">Karat</string>
     <string name="unit_carat_short">ct</string>
-
-    <!-- Temperature -->
     <string name="unit_celsius">Celsius</string>
     <string name="unit_centimeter">Santimetre</string>
     <string name="unit_centimeter_per_hour">Santimetre/saat</string>
@@ -194,8 +184,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_centimeter_per_square_second">Santimetre/saniye kare</string>
     <string name="unit_centimeter_short">cm</string>
     <string name="unit_centipascal">Santipaskal</string>
-
-    <!-- Tools -->
     <string name="unit_converter_title">Birim dönüştürücü</string>
     <string name="unit_cosmic_velocity_first">İlk Kozmik Hız</string>
     <string name="unit_cosmic_velocity_second">İkinci Kozmik Hız</string>
@@ -290,15 +278,19 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_earth_mass_short">Dünya M</string>
     <string name="unit_earth_surface_gravity">Dünya yüzeyi yerçekimi</string>
     <string name="unit_earths_orbital_speed">Dünyanın yörünge hızı</string>
-
-    <!-- Mass -->
+    <string name="unit_electron_cross_section">Elektron tesir kesiti</string>
     <string name="unit_electron_mass_rest">Elektron kütlesi</string>
     <string name="unit_electron_mass_rest_short">me</string>
+    <string name="unit_electron_volt">Elektronvolt</string>
     <string name="unit_energy_horse_power_metric">Beygir gücü</string>
     <string name="unit_exabit">Eksabit</string>
     <string name="unit_exabit_per_second">Eksabit/saniye</string>
+    <string name="unit_exabit_per_second_short">Eb/s</string>
+    <string name="unit_exabit_short">Eb</string>
     <string name="unit_exabyte">Eksabayt</string>
     <string name="unit_exabyte_per_second">Eksabayt/saniye</string>
+    <string name="unit_exabyte_per_second_short">EB/s</string>
+    <string name="unit_exabyte_short">EB</string>
     <string name="unit_exapascal">Eksapaskal</string>
     <string name="unit_fahrenheit">Fahrenhayt</string>
     <string name="unit_femtometer_per_square_second">Femtometre/saniye kare</string>
@@ -319,8 +311,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gallon_per_second_us">Galon/saniye (ABD)</string>
     <string name="unit_gigabit">Gigabit</string>
     <string name="unit_gigabit_per_second">Gigabit/saniye</string>
+    <string name="unit_gigabit_per_second_short">Gb/s</string>
+    <string name="unit_gigabit_short">Gb</string>
     <string name="unit_gigabyte">Gigabayt</string>
     <string name="unit_gigabyte_per_second">Gigabayt/saniye</string>
+    <string name="unit_gigabyte_per_second_short">GB/s</string>
+    <string name="unit_gigabyte_short">GB</string>
     <string name="unit_gigapascal">Gigapaskal</string>
     <string name="unit_gram">Gram</string>
     <string name="unit_gram_force">Gram-kuvvet</string>
@@ -338,8 +334,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_group_energy">Enerji</string>
     <string name="unit_group_flow_rate">Akış hızı</string>
     <string name="unit_group_force">Kuvvet</string>
-
-    <!-- Groups -->
+    <string name="unit_group_fuel_consumption">Yakıt</string>
     <string name="unit_group_length">Uzunluk</string>
     <string name="unit_group_luminance">Luminans</string>
     <string name="unit_group_mass">Kütle</string>
@@ -371,14 +366,20 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kelvin">Kelvin</string>
     <string name="unit_kibibit">Kibibit</string>
     <string name="unit_kibibit_per_second">Kibibit/saniye</string>
+    <string name="unit_kibibit_per_second_short">KiB/s</string>
     <string name="unit_kibibit_short">Kib</string>
     <string name="unit_kibibyte">Kibibayt</string>
     <string name="unit_kibibyte_per_second">Kibibayt/saniye</string>
+    <string name="unit_kibibyte_per_second_short">KiB/s</string>
+    <string name="unit_kibibyte_short">KiB</string>
     <string name="unit_kilobit">Kilobit</string>
     <string name="unit_kilobit_per_second">Kibibit/saniye</string>
+    <string name="unit_kilobit_per_second_short">Kb/s</string>
     <string name="unit_kilobit_short">Kb</string>
     <string name="unit_kilobyte">Kilobayt</string>
     <string name="unit_kilobyte_per_second">Kilobayt/saniye</string>
+    <string name="unit_kilobyte_per_second_short">KB/s</string>
+    <string name="unit_kilobyte_short">KB</string>
     <string name="unit_kilocalorie_th">Kilokalori (th)</string>
     <string name="unit_kilocandela_per_square_meter">Kilokandela/metrekare</string>
     <string name="unit_kilogram">Kilogram</string>
@@ -401,20 +402,22 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kiloparsec_short">kpc</string>
     <string name="unit_kilopascal">Kilopaskal</string>
     <string name="unit_kilopound_force">Kilopound-kuvvet</string>
+    <string name="unit_km_per_l">Kilometre/litre</string>
     <string name="unit_knot">Knot</string>
     <string name="unit_knot_short">kt</string>
     <string name="unit_ksi">Kilopound/inçkare</string>
+    <string name="unit_l_per_100_km">Litre/100 Kilometre</string>
+    <string name="unit_l_per_km">Litre/kilometre</string>
     <string name="unit_light_year">Işık yılı</string>
     <string name="unit_light_year_short">ly</string>
     <string name="unit_liter">Litre</string>
-
-    <!-- Flow rate -->
     <string name="unit_liter_per_hour">Litre/saat</string>
     <string name="unit_liter_per_hour_short">L/sa</string>
     <string name="unit_liter_per_minute">Litre/dakika</string>
     <string name="unit_liter_per_minute_short">L/dk</string>
     <string name="unit_liter_per_second">Litre/saniye</string>
     <string name="unit_liter_per_second_short">L/sn</string>
+    <string name="unit_liter_short">L</string>
     <string name="unit_lumen_per_square_centimeter_per_steradian">Lümen/santimetrekare/steradyan</string>
     <string name="unit_lumen_per_square_foot_per_steradian">Lümen/fitkare/steradyan</string>
     <string name="unit_lumen_per_square_meter_per_steradian">Lümen/metrekare/steradyan</string>
@@ -427,13 +430,20 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_mars_surface_gravity">Mars yüzey yerçekimi</string>
     <string name="unit_mebibit">Mebibit</string>
     <string name="unit_mebibit_per_second">Mebibit/saniye</string>
+    <string name="unit_mebibit_per_second_short">Mib/s</string>
+    <string name="unit_mebibit_short">Mib</string>
     <string name="unit_mebibyte">Mebibayt</string>
     <string name="unit_mebibyte_per_second">Mebibayt/saniye</string>
+    <string name="unit_mebibyte_per_second_short">MiB/s</string>
+    <string name="unit_mebibyte_short">MiB</string>
     <string name="unit_megabit">Megabit</string>
     <string name="unit_megabit_per_second">Megabit/saniye</string>
+    <string name="unit_megabit_per_second_short">Mb/s</string>
     <string name="unit_megabit_short">Mb</string>
     <string name="unit_megabyte">Megabayt</string>
     <string name="unit_megabyte_per_second">Megabayt/saniye</string>
+    <string name="unit_megabyte_per_second_short">MB/s</string>
+    <string name="unit_megabyte_short">MB</string>
     <string name="unit_megaparsec">Megaparsek</string>
     <string name="unit_megaparsec_short">Mpc</string>
     <string name="unit_megapascal">Megapaskal</string>
@@ -477,10 +487,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_milliliter_per_minute_short">mL/dk</string>
     <string name="unit_milliliter_per_second">Mililitre/saniye</string>
     <string name="unit_milliliter_per_second_short">mL/sn</string>
+    <string name="unit_milliliter_short">mL</string>
     <string name="unit_millimeter">Milimetre</string>
     <string name="unit_millimeter_of_mercury">Milimetre cıva</string>
-
-    <!-- Speed -->
     <string name="unit_millimeter_per_hour">Milimetre/saat</string>
     <string name="unit_millimeter_per_hour_short">mm/sa</string>
     <string name="unit_millimeter_per_minute">Milimetre/dakika</string>
@@ -505,8 +514,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_neptune_mass_short">Neptün M</string>
     <string name="unit_neptune_surface_gravity">Neptün yüzey yerçekimi</string>
     <string name="unit_newton_centimeter">Newton santimetre</string>
-
-    <!-- Torque -->
     <string name="unit_newton_meter">Newton metre</string>
     <string name="unit_newton_millimeter">Newton milimetre</string>
     <string name="unit_ounce">Ons</string>
@@ -519,8 +526,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_pascal">Paskal</string>
     <string name="unit_petabit">Petabit</string>
     <string name="unit_petabit_per_second">Petabit/saniye</string>
+    <string name="unit_petabit_per_second_short">Pb/s</string>
+    <string name="unit_petabit_short">Pb</string>
     <string name="unit_petabyte">Petabayt</string>
     <string name="unit_petabyte_per_second">Petabayt/saniye</string>
+    <string name="unit_petabyte_per_second_short">PB/s</string>
+    <string name="unit_petabyte_short">PB</string>
     <string name="unit_petapascal">Petapaskal</string>
     <string name="unit_picofarad">Pikofarad</string>
     <string name="unit_picometer_per_square_second">Pikometre/saniye kare</string>
@@ -565,8 +576,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_sun_surface_gravity">Güneş yüzeyi yerçekimi</string>
     <string name="unit_terabit">Terabit</string>
     <string name="unit_terabit_per_second">Terabit/saniye</string>
+    <string name="unit_terabit_per_second_short">Tb/s</string>
+    <string name="unit_terabit_short">Tb</string>
     <string name="unit_terabyte">Terabayt</string>
     <string name="unit_terabyte_per_second">Terabayt/saniye</string>
+    <string name="unit_terabyte_per_second_short">TB/s</string>
+    <string name="unit_terabyte_short">TB</string>
     <string name="unit_terapascal">Terapaskal</string>
     <string name="unit_ton_force">Ton-kuvvet</string>
     <string name="unit_turn">Tur</string>
@@ -575,6 +590,20 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_uranus_mass">Uranüs kütlesi</string>
     <string name="unit_uranus_mass_short">Uranüs M</string>
     <string name="unit_uranus_surface_gravity">Uranüs yüzey yerçekimi</string>
+    <string name="unit_us_fluid_ounce">ABD sıvı onsu</string>
+    <string name="unit_us_fluid_ounce_short">fl oz (ABD)</string>
+    <string name="unit_us_legal_cup">ABD yasal kupası</string>
+    <string name="unit_us_legal_cup_short">cup (ABD)</string>
+    <string name="unit_us_liquid_gallon">ABD sıvı galonu</string>
+    <string name="unit_us_liquid_gallon_short">gal (ABD)</string>
+    <string name="unit_us_liquid_pint">ABD sıvı pint</string>
+    <string name="unit_us_liquid_pint_short">pt (ABD)</string>
+    <string name="unit_us_liquid_quart">ABD sıvı quart</string>
+    <string name="unit_us_liquid_quart_short">qt (ABD)</string>
+    <string name="unit_us_tablespoon">ABD yemek kaşığı</string>
+    <string name="unit_us_tablespoon_short">yemek kaşığı (ABD)</string>
+    <string name="unit_us_teaspoon">ABD çay kaşığı</string>
+    <string name="unit_us_teaspoon_short">çay kaşığı (ABD)</string>
     <string name="unit_velocity_of_light_in_vacuum">Işığın boşluktaki hızı</string>
     <string name="unit_venus_equatorial_radius">Venüs ekvator yarıçapı</string>
     <string name="unit_venus_equatorial_radius_short">Venüs R</string>

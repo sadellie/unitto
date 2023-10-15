@@ -3,8 +3,6 @@
     <string name="calculator_clear_history_support">Semua ekspresi dari riwayat akan dihapus selamanya. Tindakan ini tidak bisa diurungkan!</string>
     <string name="calculator_divide_by_zero_error">Tidak bisa dibagi dengan 0</string>
     <string name="calculator_no_history">Tidak ada riwayat</string>
-
-    <!-- Calculator -->
     <string name="calculator_title">Kalkulator</string>
     <string name="cancel_label">Batal</string>
     <string name="checked_filter_description">Filter yang dipilih</string>
@@ -13,9 +11,8 @@
     <string name="clear_label">Hapus</string>
     <string name="click_to_try_again_label">Klik untuk mencoba lagi</string>
     <string name="converter_favorite_button_description">Tambah atau hapus unit dari favorit</string>
-
-    <!-- Screen names -->
     <string name="converter_left_side_title">Ubah dari</string>
+    <string name="converter_no_results_support">Pastikan tidak ada kesalahan pengetikan, coba filter yang berbeda atau periksa grup unit yang dinonaktifkan.</string>
     <string name="converter_right_side_title">Ubah ke</string>
     <string name="converter_search_bar_placeholder">Cari unit</string>
     <string name="converter_swap_units_description">Tukar unit</string>
@@ -46,9 +43,8 @@
     <string name="enabled_label">Aktif</string>
     <string name="error_label">Galat</string>
     <string name="hello_label">Halo!</string>
-
-    <!-- MISC. -->
     <string name="loading_label">Memuat…</string>
+    <string name="navigate_up_description">Pindah ke atas</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
 
@@ -57,7 +53,6 @@ Used in this dialog window. Should be short -->
     <string name="no_results_description">Hapus hasil pencarian</string>
     <string name="no_results_label">Hasil tidak ditemukan</string>
     <string name="open_menu_description">Buka menu</string>
-    <string name="open_settings_description">Buka pengaturan</string>
     <string name="open_settings_label">Buka pengaturan</string>
     <string name="search_button_description">Tombol cari</string>
     <string name="search_text_field_placeholder">Cari…</string>
@@ -69,22 +64,23 @@ Used in this dialog window. Should be short -->
     <string name="settings_amoled_dark">Gelap AMOLED</string>
     <string name="settings_amoled_dark_support">Gunakan latar hitam untuk tema gelap</string>
     <string name="settings_auto">Otomatis</string>
+    <string name="settings_calculator_support">Tampilan riwayat</string>
+    <string name="settings_clear_cache">Hapus cache</string>
     <string name="settings_color_scheme">Skema warna</string>
     <string name="settings_color_theme">Tema warna</string>
     <string name="settings_color_theme_support">Pilih mode tema</string>
     <string name="settings_comma">Koma</string>
+    <string name="settings_converter_support">Grup unit, urutan, format</string>
+    <string name="settings_currency_rates_note_text">Nilai tukar mata uang diperbarui sehari sekali. Tidak ada sistem pembaruan instan di dalam aplikasi</string>
     <string name="settings_currency_rates_note_title">Nilai tukar mata uang salah?</string>
     <string name="settings_dark_mode">Gelap</string>
     <string name="settings_disable_unit_group_description">Nonaktifkan grup unit</string>
-
-    <!-- Theme -->
+    <string name="settings_display">Penampilan</string>
     <string name="settings_display_support">Penampilan aplikasi</string>
     <string name="settings_dynamic_colors">Warna dinamis</string>
     <string name="settings_dynamic_colors_support">Gunakan warna dari wallpaper Anda</string>
     <string name="settings_enable_unit_group_description">Aktifkan grup unit</string>
     <string name="settings_exponential_notation">Notasi eksponensial</string>
-
-    <!-- Output format -->
     <string name="settings_exponential_notation_support">Ganti sebagian angka dengan E</string>
     <string name="settings_format_time">Format waktu</string>
     <string name="settings_format_time_support">Contoh: Tampilkan 130 menit sebagagai 2j 10m</string>
@@ -96,30 +92,40 @@ https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png
 
 Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
     <string name="settings_formatting_support">Tampilan angka dan kepresisian</string>
+    <string name="settings_language">Bahasa</string>
+    <string name="settings_language_support">Ubah bahasa aplikasi</string>
     <string name="settings_light_mode">Terang</string>
     <string name="settings_middle_zero">Nol di tengah</string>
     <string name="settings_middle_zero_support">Tukar tombol desimal dan nol</string>
+    <string name="settings_note">Catatan</string>
+    <string name="settings_partial_history_view">Tampilan sebagian riwayat</string>
+    <string name="settings_partial_history_view_support">Lihat masukan terbaru dalam riwayat</string>
     <string name="settings_period">Titik</string>
+    <string name="settings_precision">Presisi</string>
+    <string name="settings_precision_info">Hasil konversi mungkin memiliki nilai ketepatan lebih tinggi dari yang diinginkan.</string>
     <string name="settings_precision_max">%1$s (Maks)</string>
+    <string name="settings_precision_support">Jumlah bilangan desimal</string>
     <string name="settings_privacy_policy">Kebijakan Privasi</string>
     <string name="settings_rate_this_app">Nilai aplikasi ini</string>
     <string name="settings_reorder_unit_group_description">Urutkan grup unit</string>
     <string name="settings_selected_color">Warna terpilih</string>
     <string name="settings_selected_style">Gaya terpilih</string>
     <string name="settings_separator">Pemisah</string>
-
-    <!-- Separator -->
     <string name="settings_separator_support">Simbol pemisah grup</string>
     <string name="settings_sort_by_alphabetical">Abjad</string>
     <string name="settings_sort_by_scale_asc">Skala (Naik)</string>
     <string name="settings_sort_by_scale_desc">Skala (Turun)</string>
+    <string name="settings_sort_by_usage">Sering digunakan</string>
     <string name="settings_space">Spasi</string>
     <string name="settings_starting_screen">Layar mulai</string>
     <string name="settings_starting_screen_support">Pilih yang ditampilkan saat Anda membuka aplikasi</string>
-    <string name="settings_terms_and_conditions">Syarat dan Ketentuan</string>
 
-    <!-- Settings items -->
-    <string name="settings_theme_title">Tema</string>
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/r1VikAn70eXQP4da2hrntTGQ.jpg -->
+    <!-- Option name to use system default setting -->
+    <string name="settings_system">Sistem</string>
+    <string name="settings_system_font">Fon sistem</string>
+    <string name="settings_system_font_support">Gunakan fon sistem untuk teks aplikasi</string>
+    <string name="settings_terms_and_conditions">Syarat dan Ketentuan</string>
     <string name="settings_third_party_licenses">Lisensi pihak ketiga</string>
     <string name="settings_title">Pengaturan</string>
     <string name="settings_translate_app">Terjemahkan apl ini</string>
@@ -130,6 +136,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_units_sorting_support">Ubah urutan unit</string>
     <string name="settings_version_name">Nama versi</string>
     <string name="settings_vibrations">Getaran</string>
+    <string name="settings_vibrations_support">Umpanbalik haptik saat menekan tombol papan ketik</string>
     <string name="settings_view_source_code">Lihat kode sumber</string>
     <string name="time_zone_add_title">Tambah zona waktu</string>
     <string name="time_zone_title">Zona waktu</string>
@@ -137,55 +144,33 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_acre">Are</string>
     <string name="unit_acre_short">ac</string>
     <string name="unit_angle_minute">Menit</string>
-
-    <!-- Angle -->
     <string name="unit_angle_second">Detik</string>
     <string name="unit_apostilb">Apostilb</string>
     <string name="unit_apostilb_short">asb</string>
     <string name="unit_atomic_mass_unit">Dalton</string>
     <string name="unit_atomic_mass_unit_short">u</string>
-
-    <!-- ELECTROSTATIC CAPACITANCE -->
     <string name="unit_attofarad">Atofarad</string>
     <string name="unit_attofarad_short">aF</string>
     <string name="unit_attojoule">Atojoule</string>
     <string name="unit_attojoule_short">aJ</string>
-
-    <!-- Volume -->
     <string name="unit_attoliter">Atoliter</string>
     <string name="unit_attoliter_short">aL</string>
-
-    <!-- Length -->
     <string name="unit_attometer">Atometer</string>
-
-    <!-- Acceleration -->
     <string name="unit_attometer_per_square_second">Atometer/detik persegi</string>
-    <string name="unit_attometer_per_square_second_short">am/d^2</string>
+    <string name="unit_attometer_per_square_second_short">am/d²</string>
     <string name="unit_attometer_short">am</string>
     <string name="unit_attonewton">Atonewton</string>
     <string name="unit_attonewton_short">aN</string>
-
-    <!-- Pressure -->
     <string name="unit_attopascal">Atopascal</string>
     <string name="unit_attopascal_short">aPa</string>
-
-    <!-- Time -->
     <string name="unit_attosecond">Atodetik</string>
     <string name="unit_attosecond_short">ad</string>
-
-    <!-- Power -->
     <string name="unit_attowatt">Atowatt</string>
     <string name="unit_attowatt_short">aW</string>
     <string name="unit_bar">Bar</string>
     <string name="unit_bar_short">bar</string>
-
-    <!-- Number base -->
     <string name="unit_binary">Biner</string>
-
-    <!-- File size -->
     <string name="unit_bit">Bit</string>
-
-    <!-- Data transfer -->
     <string name="unit_bit_per_second">Bit/detik</string>
     <string name="unit_bit_per_second_short">b/d</string>
     <string name="unit_bit_short">b</string>
@@ -199,14 +184,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_byte_short">B</string>
     <string name="unit_calorie_th">Kalori (th)</string>
     <string name="unit_calorie_th_short">kal</string>
-    <string name="unit_candela_per_square_centimeter_short">cd/cm^2</string>
-    <string name="unit_candela_per_square_foot_short">cd/ft^2</string>
-    <string name="unit_candela_per_square_inch_short">cd/in^2</string>
-    <string name="unit_candela_per_square_meter_short">cd/m^2</string>
+    <string name="unit_candela_per_square_centimeter_short">cd/cm²</string>
+    <string name="unit_candela_per_square_foot_short">cd/ft²</string>
+    <string name="unit_candela_per_square_inch_short">cd/in²</string>
+    <string name="unit_candela_per_square_meter_short">cd/m²</string>
     <string name="unit_carat">Karat</string>
     <string name="unit_carat_short">ct</string>
-
-    <!-- Temperature -->
     <string name="unit_celsius">Celcius</string>
     <string name="unit_cent">Sen</string>
     <string name="unit_cent_short">sen</string>
@@ -218,12 +201,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_centimeter_per_second">Sentimeter/detik</string>
     <string name="unit_centimeter_per_second_short">cm/d</string>
     <string name="unit_centimeter_per_square_second">Sentimeter/detik persegi</string>
-    <string name="unit_centimeter_per_square_second_short">cm/d^2</string>
+    <string name="unit_centimeter_per_square_second_short">cm/d²</string>
     <string name="unit_centimeter_short">cm</string>
     <string name="unit_centipascal">Sentipascal</string>
     <string name="unit_centipascal_short">cPa</string>
-
-    <!-- Tools -->
     <string name="unit_converter_title">Konverter unit</string>
     <string name="unit_cosmic_velocity_first">Percepatan kosmik pertama</string>
     <string name="unit_cosmic_velocity_second">Percepatan kosmik kedua</string>
@@ -269,6 +250,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_currency_cny">Yuan Cina</string>
     <string name="unit_currency_cop">Peso Kolombia</string>
     <string name="unit_currency_cup">Peso Kuba</string>
+    <string name="unit_currency_dai">Dai</string>
     <string name="unit_currency_dop">Peso Dominika</string>
     <string name="unit_currency_dzd">Dinar Algeria</string>
     <string name="unit_currency_egp">Pound Mesir</string>
@@ -321,6 +303,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_currency_twd">Dolar Taiwan Baru</string>
     <string name="unit_currency_uni">Universe</string>
     <string name="unit_currency_usd">Dolar Amerika Serikat</string>
+    <string name="unit_currency_usdc">USD Coin</string>
     <string name="unit_currency_uyu">Peso Uruguay</string>
     <string name="unit_currency_vnd">Dong Vietnam</string>
     <string name="unit_currency_xcd">Dolar Karibia Timur</string>
@@ -331,13 +314,13 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_decimal">Desimal</string>
     <string name="unit_decimeter">Desimeter</string>
     <string name="unit_decimeter_per_square_second">Desimeter/detik persegi</string>
-    <string name="unit_decimeter_per_square_second_short">dm/d^2</string>
+    <string name="unit_decimeter_per_square_second_short">dm/d²</string>
     <string name="unit_decimeter_short">dm</string>
     <string name="unit_decipascal">Desipascal</string>
     <string name="unit_decipascal_short">dPa</string>
     <string name="unit_degree">Derajat</string>
     <string name="unit_dekameter_per_square_second">Dekameter/detik persegi</string>
-    <string name="unit_dekameter_per_square_second_short">dam/d^2</string>
+    <string name="unit_dekameter_per_square_second_short">dam/d²</string>
     <string name="unit_dekapascal">Dekapascal</string>
     <string name="unit_dekapascal_short">daPa</string>
     <string name="unit_dyne_centimeter_short">dyn*cm</string>
@@ -351,12 +334,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_earth_surface_gravity_short">G Bumi</string>
     <string name="unit_earths_orbital_speed">Kecepatan rotasi bumi</string>
     <string name="unit_electron_cross_section_short">ecs</string>
-
-    <!-- Mass -->
     <string name="unit_electron_mass_rest">Massa elektron</string>
     <string name="unit_electron_mass_rest_short">me</string>
-
-    <!-- Energy -->
     <string name="unit_electron_volt">Volt elektron</string>
     <string name="unit_electron_volt_short">eV</string>
     <string name="unit_energy_horse_power_metric">Tenaga kuda</string>
@@ -379,7 +358,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_farad">Farad</string>
     <string name="unit_farad_short">F</string>
     <string name="unit_femtometer_per_square_second">Femtometer/detik persegi</string>
-    <string name="unit_femtometer_per_square_second_short">fm/d^2</string>
+    <string name="unit_femtometer_per_square_second_short">fm/d²</string>
     <string name="unit_femtopascal">Femtopascal</string>
     <string name="unit_femtopascal_short">fPa</string>
     <string name="unit_foot">Kaki</string>
@@ -443,8 +422,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_group_flow_rate">Arus</string>
     <string name="unit_group_flux">Flux</string>
     <string name="unit_group_force">Gaya</string>
-
-    <!-- Groups -->
+    <string name="unit_group_fuel_consumption">Bahan bakar</string>
     <string name="unit_group_length">Panjang</string>
     <string name="unit_group_luminance">Kekuatan cahaya</string>
     <string name="unit_group_mass">Massa</string>
@@ -459,7 +437,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_hectare">Hektare</string>
     <string name="unit_hectare_short">ha</string>
     <string name="unit_hectometer_per_square_second">Hektometer/detik persegi</string>
-    <string name="unit_hectometer_per_square_second_short">hm/d^2</string>
+    <string name="unit_hectometer_per_square_second_short">hm/d²</string>
     <string name="unit_hectopascal">Hektopascal</string>
     <string name="unit_hectopascal_short">hPa</string>
     <string name="unit_hexadecimal">Heksadesimal</string>
@@ -503,7 +481,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilobyte_short">KB</string>
     <string name="unit_kilocalorie_th">Kilokalori</string>
     <string name="unit_kilocalorie_th_short">kkal</string>
-    <string name="unit_kilocandela_per_square_meter_short">kcd</string>
+    <string name="unit_kilocandela_per_square_meter_short">kcd/m²</string>
     <string name="unit_kilofarad">Kilofarad</string>
     <string name="unit_kilofarad_short">kF</string>
     <string name="unit_kilogram">Kilogram</string>
@@ -522,7 +500,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilometer_per_second">Kilometer/detik</string>
     <string name="unit_kilometer_per_second_short">km/d</string>
     <string name="unit_kilometer_per_square_second">Kilometer/detik persegi</string>
-    <string name="unit_kilometer_per_square_second_short">km/d^2</string>
+    <string name="unit_kilometer_per_square_second_short">km/d²</string>
     <string name="unit_kilometer_short">km</string>
     <string name="unit_kilonewton">Kilonewton</string>
     <string name="unit_kilonewton_meter">Meter kilonewton</string>
@@ -540,16 +518,20 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilowatt_short">kW</string>
     <string name="unit_kiloweber">Kiloweber</string>
     <string name="unit_kiloweber_short">kWb</string>
+    <string name="unit_km_per_l">Kilometer/liter</string>
+    <string name="unit_km_per_l_short">km/L</string>
     <string name="unit_knot">Knot</string>
     <string name="unit_knot_short">kt</string>
     <string name="unit_ksi">Kilopon/inci persegi</string>
+    <string name="unit_l_per_100_km">Liter/100 kilometer</string>
+    <string name="unit_l_per_100_km_short">L/100 km</string>
+    <string name="unit_l_per_km">Liter/kilometer</string>
+    <string name="unit_l_per_km_short">L/km</string>
     <string name="unit_lambert">Lambert</string>
     <string name="unit_lambert_short">L</string>
     <string name="unit_light_year">Tahun cahaya</string>
     <string name="unit_light_year_short">tc</string>
     <string name="unit_liter">Liter</string>
-
-    <!-- Flow rate -->
     <string name="unit_liter_per_hour">Liter/jam</string>
     <string name="unit_liter_per_hour_short">L/j</string>
     <string name="unit_liter_per_minute">Liter/menit</string>
@@ -557,9 +539,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_liter_per_second">Liter/detik</string>
     <string name="unit_liter_per_second_short">L/d</string>
     <string name="unit_liter_short">L</string>
-    <string name="unit_lumen_per_square_centimeter_per_steradian_short">lm/cm^2/sr</string>
-    <string name="unit_lumen_per_square_foot_per_steradian_short">lm/ft^2/sr</string>
-    <string name="unit_lumen_per_square_meter_per_steradian_short">lm/m^2/sr</string>
+    <string name="unit_lumen_per_square_centimeter_per_steradian_short">lm/cm²/sr</string>
+    <string name="unit_lumen_per_square_foot_per_steradian_short">lm/ft²/sr</string>
+    <string name="unit_lumen_per_square_meter_per_steradian_short">lm/m²/sr</string>
     <string name="unit_mach">Mach</string>
     <string name="unit_mach_si_standard">Mach (SI)</string>
     <string name="unit_mars_equatorial_radius">Radius mars</string>
@@ -568,8 +550,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_mars_mass_short">M Mars</string>
     <string name="unit_mars_surface_gravity">Gravitasi mars</string>
     <string name="unit_mars_surface_gravity_short">G Mars</string>
-
-    <!-- Flux -->
     <string name="unit_maxwell">Maxwell</string>
     <string name="unit_maxwell_short">Mx</string>
     <string name="unit_mebibit">Mebibit</string>
@@ -616,7 +596,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_meter_per_second">Meter/detik</string>
     <string name="unit_meter_per_second_short">m/d</string>
     <string name="unit_meter_per_square_second">Meter/detik persegi</string>
-    <string name="unit_meter_per_square_second_short">m/d^2</string>
+    <string name="unit_meter_per_square_second_short">m/d²</string>
     <string name="unit_meter_short">m</string>
     <string name="unit_metric_ton">Ton metrik</string>
     <string name="unit_metric_ton_short">t</string>
@@ -626,7 +606,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_microgram_short">µg</string>
     <string name="unit_micrometer">Mikrometer</string>
     <string name="unit_micrometer_per_square_second">Mikrometer/detik persegi</string>
-    <string name="unit_micrometer_per_square_second_short">µm/d^2</string>
+    <string name="unit_micrometer_per_square_second_short">µm/d²</string>
     <string name="unit_micrometer_short">μm</string>
     <string name="unit_micron_of_mercury_short">μmHg</string>
     <string name="unit_micropascal">Mikropascal</string>
@@ -661,8 +641,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_milliliter_short">mL</string>
     <string name="unit_millimeter">Milimeter</string>
     <string name="unit_millimeter_of_mercury_short">mm Hg</string>
-
-    <!-- Speed -->
     <string name="unit_millimeter_per_hour">Milimeter/jam</string>
     <string name="unit_millimeter_per_hour_short">mm/j</string>
     <string name="unit_millimeter_per_minute">Milimeter/menit</string>
@@ -670,7 +648,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_millimeter_per_second">Milimeter/detik</string>
     <string name="unit_millimeter_per_second_short">mm/d</string>
     <string name="unit_millimeter_per_square_second">Milimeter/detik persegi</string>
-    <string name="unit_millimeter_per_square_second_short">mm/d^2</string>
+    <string name="unit_millimeter_per_square_second_short">mm/d²</string>
     <string name="unit_millimeter_short">mm</string>
     <string name="unit_millinewton">Milinewton</string>
     <string name="unit_millinewton_short">mN</string>
@@ -689,7 +667,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_nanofarad_short">nF</string>
     <string name="unit_nanometer">Nanometer</string>
     <string name="unit_nanometer_per_square_second">Nanometer/detik persegi</string>
-    <string name="unit_nanometer_per_square_second_short">nm/d^2</string>
+    <string name="unit_nanometer_per_square_second_short">nm/d²</string>
     <string name="unit_nanometer_short">nm</string>
     <string name="unit_nanopascal">Nanopascal</string>
     <string name="unit_nanopascal_short">nPa</string>
@@ -703,13 +681,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_neptune_mass_short">M Neptunus</string>
     <string name="unit_neptune_surface_gravity">Gravitasi neptunus</string>
     <string name="unit_neptune_surface_gravity_short">G Neptunus</string>
-
-    <!-- Force -->
     <string name="unit_newton">Newton</string>
     <string name="unit_newton_centimeter">Sentimeter newton</string>
     <string name="unit_newton_centimeter_short">N*cm</string>
-
-    <!-- Torque -->
     <string name="unit_newton_meter">Meter newton</string>
     <string name="unit_newton_meter_short">N*m</string>
     <string name="unit_newton_millimeter">Milimeter newton</string>
@@ -742,7 +716,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_picofarad">Pikofarad</string>
     <string name="unit_picofarad_short">pF</string>
     <string name="unit_picometer_per_square_second">Pikometer/detik persegi</string>
-    <string name="unit_picometer_per_square_second_short">pm/d^2</string>
+    <string name="unit_picometer_per_square_second_short">pm/d²</string>
     <string name="unit_picopascal">Pikopascal</string>
     <string name="unit_picopascal_short">pPa</string>
     <string name="unit_pond_short">p</string>
@@ -805,25 +779,25 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_skot">Skot</string>
     <string name="unit_skot_short">sk</string>
     <string name="unit_square_centimeter">Sentimeter persegi</string>
-    <string name="unit_square_centimeter_short">cm^2</string>
+    <string name="unit_square_centimeter_short">cm²</string>
     <string name="unit_square_decimeter">Desimeter persegi</string>
-    <string name="unit_square_decimeter_short">dm^2</string>
+    <string name="unit_square_decimeter_short">dm²</string>
     <string name="unit_square_foot">Kaki persegi</string>
-    <string name="unit_square_foot_short">ft^2</string>
+    <string name="unit_square_foot_short">ft²</string>
     <string name="unit_square_inch">Inci persegi</string>
-    <string name="unit_square_inch_short">in^2</string>
+    <string name="unit_square_inch_short">in²</string>
     <string name="unit_square_kilometer">Kilometer persegi</string>
-    <string name="unit_square_kilometer_short">km^2</string>
+    <string name="unit_square_kilometer_short">km²</string>
     <string name="unit_square_meter">Meter persegi</string>
-    <string name="unit_square_meter_short">m^2</string>
+    <string name="unit_square_meter_short">m²</string>
     <string name="unit_square_micrometer">Mikrometer persegi</string>
-    <string name="unit_square_micrometer_short">µm^2</string>
+    <string name="unit_square_micrometer_short">µm²</string>
     <string name="unit_square_mile">Mil persegi</string>
-    <string name="unit_square_mile_short">mi^2</string>
+    <string name="unit_square_mile_short">mi²</string>
     <string name="unit_square_millimeter">Milimeter persegi</string>
-    <string name="unit_square_millimeter_short">mm^2</string>
+    <string name="unit_square_millimeter_short">mm²</string>
     <string name="unit_square_yard">Yard persegi</string>
-    <string name="unit_square_yard_short">yd^2</string>
+    <string name="unit_square_yard_short">yd²</string>
     <string name="unit_statfarad">Statfarad</string>
     <string name="unit_statfarad_short">stF</string>
     <string name="unit_stilb">Stilb</string>
@@ -862,7 +836,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_venus_surface_gravity">Gravitasi venus</string>
     <string name="unit_venus_surface_gravity_short">G Venus</string>
     <string name="unit_watt">Watt</string>
-    <string name="unit_watt_per_square_centimeter_per_steradian_short">W/cm^2/sr</string>
+    <string name="unit_watt_per_square_centimeter_per_steradian_short">W/cm²/sr</string>
     <string name="unit_watt_short">W</string>
     <string name="unit_weber">Weber</string>
     <string name="unit_weber_short">Wb</string>
@@ -876,8 +850,6 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_yard_per_second">Yard/detik</string>
     <string name="unit_yard_per_second_short">yd/d</string>
     <string name="unit_yard_short">yd</string>
-
-    <!-- Epoch -->
     <string name="unit_year_short">t</string>
     <string name="yesterday">Kemarin</string>
 </resources>

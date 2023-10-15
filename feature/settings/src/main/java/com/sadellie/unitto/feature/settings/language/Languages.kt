@@ -32,6 +32,7 @@ internal val languages by lazy {
         "id" to R.string.locale_in,
         "it" to R.string.locale_it,
         "nl" to R.string.locale_nl,
+        "pt-BR" to R.string.locale_pt_rBR,
         "ru" to R.string.locale_ru,
         "tr" to R.string.locale_tr,
     )

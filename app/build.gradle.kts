@@ -46,6 +46,7 @@ android {
             "in",
             "it",
             "nl",
+            "pt-rBR",
             "ru",
             "tr",
         )
