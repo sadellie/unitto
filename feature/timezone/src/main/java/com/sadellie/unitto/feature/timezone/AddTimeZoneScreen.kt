@@ -40,15 +40,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalLocale
+import com.sadellie.unitto.core.ui.common.SearchPlaceholder
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.datetime.formatTime
+import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.common.displayName
 import com.sadellie.unitto.data.common.offset
 import com.sadellie.unitto.data.common.regionName
@@ -83,6 +87,7 @@ fun AddTimeZoneScreen(
     addToFavorites: (TimeZone) -> Unit,
     userTime: ZonedDateTime,
 ) {
+    val mContext = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val locale = LocalLocale.current
     val is24Hour = is24HourFormat(LocalContext.current)
@@ -100,11 +105,15 @@ fun AddTimeZoneScreen(
     ) { paddingValues ->
         Crossfade(
             modifier = Modifier.padding(paddingValues),
-            targetState = uiState.list.isEmpty(),
+            targetState = uiState.list.isEmpty() and uiState.query.text.isNotEmpty(),
             label = "Placeholder"
         ) { empty ->
             if (empty) {
-                UnittoEmptyScreen()
+                SearchPlaceholder(
+                    onButtonClick = { openLink(mContext, "https://github.com/sadellie/unitto/wiki/Adding-more-time-zones") },
+                    supportText = stringResource(R.string.time_zone_no_results_support),
+                    buttonLabel = stringResource(R.string.time_zone_no_results_button),
+                )
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(uiState.list, { it.timeZone.id }) {

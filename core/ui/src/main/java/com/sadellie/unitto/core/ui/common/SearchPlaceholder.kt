@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.converter.components
+package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +38,11 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 
 @Composable
-internal fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
+fun SearchPlaceholder(
+    onButtonClick: () -> Unit,
+    supportText: String,
+    buttonLabel: String
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,27 +50,23 @@ internal fun SearchPlaceholder(navigateToSettingsAction: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Big icon in the middle
         Icon(
-            Icons.Default.SearchOff,
+            imageVector = Icons.Default.SearchOff,
             contentDescription = stringResource(R.string.no_results_description),
             modifier = Modifier.size(48.dp)
         )
-        // Primary text
         Text(
             text = stringResource(R.string.no_results_label),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge
         )
-        // Secondary text with tips
         Text(
-            text = stringResource(R.string.converter_no_results_support),
+            text = supportText,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall
         )
-        // Open settings button
-        ElevatedButton(onClick = navigateToSettingsAction) {
-            Text(text = stringResource(R.string.open_settings_label))
+        ElevatedButton(onClick = onButtonClick) {
+            Text(text = buttonLabel)
         }
     }
 }

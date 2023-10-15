@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.SearchPlaceholder
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
@@ -48,7 +49,6 @@ import com.sadellie.unitto.data.model.unit.NumberBaseUnit
 import com.sadellie.unitto.data.units.MyUnitIDS
 import com.sadellie.unitto.feature.converter.components.BasicUnitListItem
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
-import com.sadellie.unitto.feature.converter.components.SearchPlaceholder
 import com.sadellie.unitto.feature.converter.components.UnitGroupHeader
 import java.math.BigDecimal
 
@@ -142,7 +142,11 @@ private fun RightSideScreen(
                     }
                 }
 
-                false -> SearchPlaceholder(navigateToSettingsAction = navigateToUnitGroups)
+                false -> SearchPlaceholder(
+                    onButtonClick = navigateToUnitGroups,
+                    supportText = stringResource(R.string.converter_no_results_support),
+                    buttonLabel = stringResource(R.string.open_settings_label)
+                )
             }
         }
     }
