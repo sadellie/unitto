@@ -114,7 +114,7 @@ fun UnittoSearchBar(
         Row(
             modifier = Modifier
                 .offset { IntOffset(x = 0, y = scrollBehavior.state.heightOffset.roundToInt()) }
-                .padding(horizontal = UnittoSearchBarTokens.UnittoSearchBarPadding)
+                .padding(horizontal = UnittoSearchBarTokens.UnittoSearchBarHorizontalPadding)
                 .requiredHeight(UnittoSearchBarTokens.UnittoSearchBarHeight)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp))
@@ -247,8 +247,9 @@ fun SearchBarIconButton(
 
 private object UnittoSearchBarTokens {
     val UnittoSearchBarHeight = 56.dp
-    val UnittoSearchBarPadding = 8.dp
-    val UnittoSearchBarFullHeight = UnittoSearchBarHeight + UnittoSearchBarPadding * 2
+    val UnittoSearchBarHorizontalPadding = 16.dp
+    val UnittoSearchBarVerticalPadding = 8.dp
+    val UnittoSearchBarFullHeight = UnittoSearchBarHeight + UnittoSearchBarVerticalPadding * 2
 }
 
 @Preview
