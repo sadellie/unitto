@@ -72,7 +72,7 @@ fun UnittoDrawerSheet(
             )
         ) { hello ->
             Text(
-                text = if (hello) stringResource(R.string.hello_label) else stringResource(R.string.app_name).uppercase(),
+                text = if (hello) stringResource(R.string.hello_label) else stringResource(R.string.app_name),
                 modifier = Modifier.padding(horizontal = 28.dp, vertical = 24.dp),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.primary
