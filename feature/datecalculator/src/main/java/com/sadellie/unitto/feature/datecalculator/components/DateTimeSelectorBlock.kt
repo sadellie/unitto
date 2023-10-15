@@ -99,7 +99,7 @@ internal fun DateTimeSelectorBlock(
                 )
             }
 
-            if (is24Hour) {
+            if (!is24Hour) {
                 AnimatedContent(
                     targetState = dateTime,
                     transitionSpec = {
