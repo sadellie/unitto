@@ -59,7 +59,10 @@ fun DatePickerDialog(
     onDismiss: () -> Unit = {},
     onConfirm: (ZonedDateTime) -> Unit,
 ) {
-    val pickerState = rememberDatePickerState(localDateTime.toEpochSecond() * 1000)
+    val pickerState = rememberDatePickerState(
+        initialSelectedDateMillis = localDateTime.toEpochSecond() * 1000,
+        yearRange = 0..9999,
+    )
 
     AlertDialog(
         onDismissRequest = onDismiss,
