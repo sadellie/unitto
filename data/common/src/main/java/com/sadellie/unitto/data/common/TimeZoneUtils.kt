@@ -25,19 +25,21 @@ import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.ZonedDateTime
+import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.N)
 fun TimeZone.offset(currentTime: ZonedDateTime): ZonedDateTime {
     val offsetSeconds = currentTime.offset.totalSeconds.toLong()
     val currentTimeWithoutOffset = currentTime.minusSeconds(offsetSeconds)
+    val dstOffset: Long = if (inDaylightTime(Date.from(currentTime.toInstant()))) (dstSavings / 1000L) else 0L
 
-    return currentTimeWithoutOffset.plusSeconds(this.rawOffset / 1000L)
+    return currentTimeWithoutOffset.plusSeconds(this.rawOffset / 1000L).plusSeconds(dstOffset)
 }
 
 @RequiresApi(Build.VERSION_CODES.N)
 fun TimeZone.regionName(
     timeZoneNames: TimeZoneNames,
-    localeDisplayNames: LocaleDisplayNames
+    localeDisplayNames: LocaleDisplayNames,
 ): String {
     val location = timeZoneNames.getExemplarLocationName(this.id) ?: return fallbackRegion
     val region = localeDisplayNames.regionDisplayName(TimeZone.getRegion(id)) ?: return fallbackRegion
