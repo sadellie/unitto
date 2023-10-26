@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Unitto is a unit converter for Android
   ~ Copyright (c) 2023 Elshan Agaev
   ~
@@ -15,20 +15,23 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="48dp"
-    android:height="48dp"
-    android:viewportWidth="48"
-    android:viewportHeight="48">
-  <path
-      android:pathData="M24,24m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0"
-      android:fillColor="#F5F5F5"/>
-  <group>
-    <clip-path
-        android:pathData="M12,12.268h24v24h-24z"/>
-    <path
-        android:pathData="M19,32.268L14,27.268L19,22.268L20.4,23.693L17.825,26.268H25V28.268H17.825L20.4,30.843L19,32.268ZM29,26.268L27.6,24.843L30.175,22.268H23V20.268H30.175L27.6,17.693L29,16.268L34,21.268L29,26.268Z"
-        android:fillColor="#378648"/>
-  </group>
-</vector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="2.0dip"
+        android:left="2.0dip"
+        android:right="2.0dip"
+        android:top="2.0dip">
+        <shape android:shape="oval">
+            <size
+                android:width="44.0dip"
+                android:height="44.0dip" />
+            <solid android:color="@color/ic_shortcut_background" />
+        </shape>
+    </item>
+    <item
+        android:bottom="12.0dip"
+        android:drawable="@drawable/ic_date_calculator_foreground"
+        android:left="12.0dip"
+        android:right="12.0dip"
+        android:top="12.0dip" />
+</layer-list>

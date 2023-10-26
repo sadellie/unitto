@@ -15,10 +15,23 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
-<resources>
-    <color name="ic_launcher_icon_background">#FCFCF7</color>
-    <color name="window_background">#FFFFFF</color>
-    <color name="unitto_primary">#378648</color>
-    <color name="ic_shortcut_background">#F5F5F5</color>
-</resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="2.0dip"
+        android:left="2.0dip"
+        android:right="2.0dip"
+        android:top="2.0dip">
+        <shape android:shape="oval">
+            <size
+                android:width="44.0dip"
+                android:height="44.0dip" />
+            <solid android:color="@color/ic_shortcut_background" />
+        </shape>
+    </item>
+    <item
+        android:bottom="12.0dip"
+        android:drawable="@drawable/ic_calculator_foreground"
+        android:left="12.0dip"
+        android:right="12.0dip"
+        android:top="12.0dip" />
+</layer-list>

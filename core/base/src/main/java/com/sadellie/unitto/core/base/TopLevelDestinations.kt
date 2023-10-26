@@ -57,7 +57,7 @@ sealed class TopLevelDestinations(
         shortcut = Shortcut(
             R.string.unit_converter_title,
             R.string.unit_converter_title,
-            R.drawable.unit_converter_shortcut
+            R.drawable.ic_shortcut_unit_converter
         )
     )
 
@@ -68,7 +68,7 @@ sealed class TopLevelDestinations(
         shortcut = Shortcut(
             R.string.calculator_title,
             R.string.calculator_title,
-            R.drawable.calculator_shortcut
+            R.drawable.ic_shortcut_calculator
         )
     )
 
@@ -79,7 +79,7 @@ sealed class TopLevelDestinations(
         shortcut = Shortcut(
             R.string.date_calculator_title,
             R.string.date_calculator_title,
-            R.drawable.date_calculator_shortcut
+            R.drawable.ic_shortcut_date_calculator
         )
     )
 
@@ -90,7 +90,7 @@ sealed class TopLevelDestinations(
         shortcut = Shortcut(
             R.string.time_zone_title,
             R.string.time_zone_title,
-            R.drawable.time_zone_shortcut
+            R.drawable.ic_shortcut_time_zone
         )
     )
 

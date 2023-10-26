@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~ Unitto is a unit converter for Android
   ~ Copyright (c) 2023 Elshan Agaev
   ~
@@ -15,10 +15,15 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
-<resources>
-    <color name="ic_launcher_icon_background">#FCFCF7</color>
-    <color name="window_background">#FFFFFF</color>
-    <color name="unitto_primary">#378648</color>
-    <color name="ic_shortcut_background">#F5F5F5</color>
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <group>
+        <clip-path android:pathData="M0,0h24v24h-24z" />
+        <path
+            android:fillColor="@color/unitto_primary"
+            android:pathData="M7,20L2,15L7,10L8.4,11.425L5.825,14H13V16H5.825L8.4,18.575L7,20ZM17,14L15.6,12.575L18.175,10H11V8H18.175L15.6,5.425L17,4L22,9L17,14Z" />
+    </group>
+</vector>
