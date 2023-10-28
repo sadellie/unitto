@@ -45,6 +45,9 @@
     <string name="enabled_label">Включено</string>
     <string name="error_label">Ошибка</string>
     <string name="hello_label">Привет!</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/iqEp9rZZ9XqtJ3CKVpy33lre.png -->
+    <string name="label_label">Подпись</string>
     <string name="loading_label">Загрузка…</string>
     <string name="navigate_up_description">Навигация наверх</string>
 
@@ -63,6 +66,12 @@ Used in this dialog window. Should be short -->
     <string name="select_time_label">Выберите время</string>
     <string name="settings_about_unitto">О Unitto</string>
     <string name="settings_about_unitto_support">Узнайте больше о приложении</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button">Кнопка AC</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/p3aY3IWUI5m9Vjs6vZP3EXAo.png -->
+    <string name="settings_ac_button_support">Показывать отдельную кнопку очистки</string>
     <string name="settings_additional">Дополнительное</string>
     <string name="settings_amoled_dark">Чёрная AMOLED</string>
     <string name="settings_amoled_dark_support">Использовать чёрный фон в тёмной теме</string>
@@ -141,6 +150,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_vibrations">Вибрации</string>
     <string name="settings_vibrations_support">Тактильный отклик при использовании клавиатуры</string>
     <string name="settings_view_source_code">Посмотреть исходный код</string>
+    <string name="time_zone_add_title">Добавить часовой пояс</string>
+    <string name="time_zone_no_results_button">Прочитать статью</string>
+    <string name="time_zone_no_results_support">Нужно больше часовых поясов?</string>
+    <string name="time_zone_title">Часовые пояса</string>
     <string name="tomorrow">Завтра</string>
     <string name="unit_acre">Акр</string>
     <string name="unit_acre_short">акр</string>

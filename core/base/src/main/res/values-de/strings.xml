@@ -60,7 +60,7 @@ Used in this dialog window. Should be short -->
     <string name="open_menu_description">Menü öffnen</string>
     <string name="open_settings_label">Einstellungen öffnen</string>
     <string name="search_button_description">Suchknopf</string>
-    <string name="search_text_field_placeholder">Suche...</string>
+    <string name="search_text_field_placeholder">Suche…</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
     <string name="select_time_label">Zeit auswählen</string>
@@ -151,6 +151,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_vibrations_support">Haptisches Feedback für Tastaturtasten</string>
     <string name="settings_view_source_code">Quellcode anzeigen</string>
     <string name="time_zone_add_title">Zeitzone hinzufügen</string>
+    <string name="time_zone_no_results_button">Artikel lesen</string>
+    <string name="time_zone_no_results_support">Mehr Zeitzonen nötig?</string>
     <string name="time_zone_title">Zeitzonen</string>
     <string name="tomorrow">Morgen</string>
     <string name="unit_acre">Acre</string>
