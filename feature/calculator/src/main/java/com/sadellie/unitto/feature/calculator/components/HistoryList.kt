@@ -49,7 +49,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
@@ -119,13 +118,6 @@ private fun HistoryListContent(
     formatterSymbols: FormatterSymbols,
 ) {
     val state = rememberLazyListState()
-    val focusManager = LocalFocusManager.current
-
-    // Very bad workaround for https://issuetracker.google.com/issues/295745063
-    // Will remove once the fix is released
-    LaunchedEffect(state.isScrollInProgress) {
-        focusManager.clearFocus(true)
-    }
 
     LaunchedEffect(historyItems) { state.scrollToItem(0) }
 
