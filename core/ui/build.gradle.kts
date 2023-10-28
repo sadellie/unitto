@@ -37,6 +37,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(libs.androidx.navigation.navigation.compose)
+    implementation(libs.androidx.browser.browser)
 
     implementation(project(":core:base"))
 }

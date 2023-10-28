@@ -20,10 +20,10 @@ package com.sadellie.unitto.core.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import com.sadellie.unitto.core.base.R
@@ -33,7 +33,7 @@ import com.sadellie.unitto.core.base.R
  */
 fun openLink(mContext: Context, url: String) {
     try {
-        mContext.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+        CustomTabsIntent.Builder().build().launchUrl(mContext, Uri.parse(url))
     } catch (e: ActivityNotFoundException) {
         showToast(mContext, mContext.getString(R.string.error_label))
     }
@@ -42,7 +42,7 @@ fun openLink(mContext: Context, url: String) {
 fun showToast(
     mContext: Context,
     text: String,
-    duration: Int = Toast.LENGTH_SHORT
+    duration: Int = Toast.LENGTH_SHORT,
 ) {
     Toast.makeText(mContext, text, duration).show()
 }
