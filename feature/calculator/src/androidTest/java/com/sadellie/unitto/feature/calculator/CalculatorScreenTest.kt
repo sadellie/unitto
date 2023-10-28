@@ -46,7 +46,8 @@ class CalculatorScreenTest {
                 onCursorChange = {},
                 toggleCalculatorMode = {},
                 evaluate = {},
-                clearHistory = {}
+                clearHistory = {},
+                addBracket = {}
             )
         }
 
@@ -66,7 +67,8 @@ class CalculatorScreenTest {
                 onCursorChange = {},
                 toggleCalculatorMode = {},
                 evaluate = {},
-                clearHistory = {}
+                clearHistory = {},
+                addBracket = {}
             )
         }
 
@@ -87,7 +89,8 @@ class CalculatorScreenTest {
                 onCursorChange = {},
                 toggleCalculatorMode = {},
                 evaluate = {},
-                clearHistory = {}
+                clearHistory = {},
+                addBracket = {}
             )
         }
 
