@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.data.licenses
 
-data class AppLibrary(
+data class ThirdParty(
     val name: String,
     val dev: String?,
     val website: String?,
@@ -26,86 +26,93 @@ data class AppLibrary(
     val description: String?
 )
 
-val ALL_LIBRARIES by lazy {
+val ALL_THIRD_PARTY by lazy {
     listOf(
-        AppLibrary(
+        ThirdParty(
             name = "currency-api",
             dev = "Fawaz Ahmed (fawazahmed0)",
             website = "https://github.com/fawazahmed0/currency-api",
             license = "The Unlicense",
             description = "Free Currency Rates API"
         ),
-        AppLibrary(
+        ThirdParty(
+            name = "Lato",
+            dev = "Łukasz Dziedzic",
+            website = "https://fonts.google.com/specimen/Lato/about",
+            license = "Open Font License",
+            description = "Lato is a sans serif typeface family started in the summer of 2010 by Warsaw-based designer Łukasz Dziedzic (“Lato” means “Summer” in Polish). In December 2010 the Lato family was published under the Open Font License by his foundry tyPoland, with support from Google."
+        ),
+        ThirdParty(
             name = "Core Kotlin Extensions",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/core",
             license = "Apache-2.0",
             description = "Kotlin extensions for 'core' artifact"
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Material Components for Android",
             dev = "The Android Open Source Project",
             website = "https://github.com/material-components/material-components-android",
             license = "Apache-2.0",
             description = "Material Components for Android is a static library that you can add to your Android application in order to use APIs that provide implementations of the Material Design specification. Compatible on devices running API 14 or later."
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Compose UI primitives",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/compose-ui",
             license = "Apache-2.0",
             description = "Compose UI primitives. This library contains the primitives that form the Compose UI Toolkit, such as drawing, measurement and layout."
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Compose Navigation",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/navigation",
             license = "Apache-2.0",
             description = "Compose integration with Navigation"
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Compose Material3 Components",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/compose-material3",
             license = "Apache-2.0",
             description = "Compose Material You Design Components library"
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Navigation Compose Hilt Integration",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/hilt",
             license = "Apache-2.0",
             description = "Navigation Compose Hilt Integration"
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Hilt Android",
             dev = "The Android Open Source Project",
             website = "https://github.com/google/dagger",
             license = "Apache-2.0",
             description = "A fast dependency injector for Android and Java."
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Compose Material Icons Extended",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/compose-material",
             license = "Apache-2.0",
             description = "Compose Material Design extended icons. This module contains all Material icons. It is a very large dependency and should not be included directly."
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Android Preferences DataStore",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/datastore",
             license = "Apache-2.0",
             description = "Android Preferences DataStore"
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Accompanist System UI Controller library",
             dev = "Google",
             website = "https://github.com/google/accompanist/",
             license = "Apache-2.0",
             description = "Utilities for Jetpack Compose"
         ),
-        AppLibrary(
+        ThirdParty(
             name = "Compose Tooling API",
             dev = "The Android Open Source Project",
             website = "https://developer.android.com/jetpack/androidx/releases/compose-ui",

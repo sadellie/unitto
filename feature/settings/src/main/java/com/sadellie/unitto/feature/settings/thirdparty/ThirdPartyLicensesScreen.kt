@@ -40,7 +40,7 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.data.licenses.ALL_LIBRARIES
+import com.sadellie.unitto.data.licenses.ALL_THIRD_PARTY
 
 /**
  * Screen with used third party libraries
@@ -67,7 +67,7 @@ internal fun ThirdPartyLicensesScreen(
                 bottom = 24.dp
             )
         ) {
-            items(ALL_LIBRARIES) {
+            items(ALL_THIRD_PARTY) {
                 OutlinedCard(
                     Modifier.clickable { it.website?.let { url -> openLink(mContext, url) } }
                 ) {
