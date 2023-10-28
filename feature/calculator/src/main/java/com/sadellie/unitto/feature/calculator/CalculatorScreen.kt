@@ -18,12 +18,14 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,6 +46,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -68,6 +71,7 @@ import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
 import com.sadellie.unitto.feature.calculator.components.HistoryList
 import com.sadellie.unitto.feature.calculator.components.TextBox
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -171,6 +175,7 @@ private fun Ready(
             modifier = Modifier.padding(paddingValues),
         ) {
             val density = LocalDensity.current
+            val coroutineScope = rememberCoroutineScope()
 
             val textBoxHeight = maxHeight * 0.25f
 
@@ -223,6 +228,12 @@ private fun Ready(
 
             LaunchedEffect(dragState.currentValue) {
                 showClearHistoryButton = dragState.currentValue == DragState.OPEN
+            }
+
+            BackHandler(dragState.currentValue != DragState.CLOSED) {
+                coroutineScope.launch {
+                    dragState.animateTo(DragState.CLOSED)
+                }
             }
 
             HistoryList(
