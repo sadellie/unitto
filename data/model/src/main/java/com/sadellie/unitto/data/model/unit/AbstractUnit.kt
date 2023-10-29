@@ -71,12 +71,12 @@ fun Sequence<AbstractUnit>.filterByLev(stringA: String, context: Context): Seque
         when {
             // It's the second best possible match if it start with
             unitFullName.startsWith(stringToCompare) -> {
-                unitsWithDist.add(Pair(unit, 1))
+                unitsWithDist.add(Pair(unit, 0))
                 return@forEach
             }
             // It's a little bit worse when it just contains part of the query
             unitFullName.contains(stringToCompare) -> {
-                unitsWithDist.add(Pair(unit, 2))
+                unitsWithDist.add(Pair(unit, 1))
                 return@forEach
             }
         }

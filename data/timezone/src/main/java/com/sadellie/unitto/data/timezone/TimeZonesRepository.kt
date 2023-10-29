@@ -174,9 +174,9 @@ class TimeZonesRepository @Inject constructor(
         query: String,
         levThreshold: Int,
     ): Int? {
-        if (prop.startsWith(query, true)) return 1
+        if (prop.startsWith(query, true)) return 0
 
-        if (prop.contains(query, true)) return 2
+        if (prop.contains(query, true)) return 1
 
         val levDist = prop
             .substring(0, minOf(query.length, prop.length))
