@@ -28,13 +28,13 @@ import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
-import com.sadellie.unitto.data.calculator.CalculatorHistoryRepository
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
+import com.sadellie.unitto.data.model.repository.CalculatorHistoryRepository
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException

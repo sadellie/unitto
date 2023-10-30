@@ -49,7 +49,9 @@ import com.sadellie.unitto.core.ui.pushDynamicShortcut
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
 import com.sadellie.unitto.core.ui.theme.TypographySystem
-import com.sadellie.unitto.data.userprefs.AppPreferences
+import com.sadellie.unitto.data.model.userprefs.AppPreferences
+import io.github.sadellie.themmo.MonetMode
+import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import kotlinx.coroutines.launch
@@ -80,11 +82,11 @@ internal fun UnittoApp(prefs: AppPreferences?) {
             ThemmoController(
                 lightColorScheme = LightThemeColors,
                 darkColorScheme = DarkThemeColors,
-                themingMode = prefs.themingMode,
+                themingMode = prefs.themingMode.toThemingMode(),
                 dynamicThemeEnabled = prefs.enableDynamicTheme,
                 amoledThemeEnabled = prefs.enableAmoledTheme,
-                customColor = prefs.customColor,
-                monetMode = prefs.monetMode
+                customColor = prefs.customColor.toColor(),
+                monetMode = prefs.monetMode.toMonetMode()
             )
         }
 
@@ -149,4 +151,22 @@ internal fun UnittoApp(prefs: AppPreferences?) {
     BackHandler(drawerState.isOpen) {
         drawerScope.launch { drawerState.close() }
     }
+}
+
+private fun String.toThemingMode(): ThemingMode = try {
+    ThemingMode.valueOf(this)
+} catch (e: Exception) {
+    ThemingMode.AUTO
+}
+
+private fun String.toMonetMode(): MonetMode = try {
+    MonetMode.valueOf(this)
+} catch (e: Exception) {
+    MonetMode.TonalSpot
+}
+
+private fun Long.toColor(): Color = try {
+    Color(this.toULong())
+} catch (e: Exception) {
+    Color.Unspecified
 }

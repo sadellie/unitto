@@ -33,11 +33,11 @@ import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.repository.UnitsRepository
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
-import com.sadellie.unitto.data.units.UnitsRepository
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException

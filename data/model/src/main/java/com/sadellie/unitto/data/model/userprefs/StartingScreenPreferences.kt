@@ -16,21 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+package com.sadellie.unitto.data.model.userprefs
 
-android {
-    namespace = "com.sadellie.unitto.feature.datecalculator"
-}
-
-dependencies {
-    testImplementation(libs.junit.junit)
-
-    implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
+interface StartingScreenPreferences{
+    val startingScreen: String
 }

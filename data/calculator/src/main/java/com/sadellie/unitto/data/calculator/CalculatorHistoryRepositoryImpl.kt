@@ -21,25 +21,26 @@ package com.sadellie.unitto.data.calculator
 import com.sadellie.unitto.data.database.CalculatorHistoryDao
 import com.sadellie.unitto.data.database.CalculatorHistoryEntity
 import com.sadellie.unitto.data.model.HistoryItem
+import com.sadellie.unitto.data.model.repository.CalculatorHistoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
-class CalculatorHistoryRepository @Inject constructor(
+class CalculatorHistoryRepositoryImpl @Inject constructor(
     private val calculatorHistoryDao: CalculatorHistoryDao
-) {
+) : CalculatorHistoryRepository {
     /**
      * Calculator history sorted by [CalculatorHistoryEntity.timestamp] from new to old (DESC).
      */
-    val historyFlow: Flow<List<HistoryItem>> = calculatorHistoryDao
+    override val historyFlow: Flow<List<HistoryItem>> = calculatorHistoryDao
         .getAllDescending()
         .map { it.toHistoryItemList() }
         .flowOn(Dispatchers.IO)
 
-    suspend fun add(
+    override suspend fun add(
         expression: String,
         result: String
     ) {
@@ -52,7 +53,7 @@ class CalculatorHistoryRepository @Inject constructor(
         )
     }
 
-    suspend fun clear() {
+    override suspend fun clear() {
         calculatorHistoryDao.clear()
     }
 

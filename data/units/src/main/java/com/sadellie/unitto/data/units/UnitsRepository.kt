@@ -26,6 +26,7 @@ import com.sadellie.unitto.data.database.UnitsDao
 import com.sadellie.unitto.data.database.UnitsEntity
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.repository.UnitsRepository
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.ReverseUnit
 import com.sadellie.unitto.data.model.unit.filterByLev
@@ -67,11 +68,11 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import javax.inject.Inject
 
-class UnitsRepository @Inject constructor(
+class UnitsRepositoryImpl @Inject constructor(
     private val unitsDao: UnitsDao,
     private val currencyRatesDao: CurrencyRatesDao,
     @ApplicationContext private val mContext: Context,
-) {
+) : UnitsRepository {
     private val myUnits = MutableStateFlow(
         lengthCollection +
                 currencyCollection +
@@ -99,7 +100,7 @@ class UnitsRepository @Inject constructor(
                 fuelConsumptionCollection
     )
 
-    val allUnits: Flow<List<AbstractUnit>> = combine(
+    override val allUnits: Flow<List<AbstractUnit>> = combine(
         unitsDao.getAllFlow(),
         myUnits
     ) { basedList, inMemoryList ->
@@ -115,15 +116,15 @@ class UnitsRepository @Inject constructor(
     }
         .flowOn(Dispatchers.IO)
 
-    suspend fun getById(id: String): AbstractUnit {
+    override suspend fun getById(id: String): AbstractUnit {
         return allUnits.first().first { it.id == id }
     }
 
-    suspend fun getCollection(group: UnitGroup): List<AbstractUnit> {
+    override suspend fun getCollection(group: UnitGroup): List<AbstractUnit> {
         return allUnits.first().filter { it.group == group }
     }
 
-    suspend fun favorite(unit: AbstractUnit) = withContext(Dispatchers.IO) {
+    override suspend fun favorite(unit: AbstractUnit) = withContext(Dispatchers.IO) {
         val basedUnit = unitsDao.getById(unit.id)
 
         if (basedUnit == null) {
@@ -145,7 +146,7 @@ class UnitsRepository @Inject constructor(
         }
     }
 
-    suspend fun incrementCounter(unit: AbstractUnit) = withContext(Dispatchers.IO) {
+    override suspend fun incrementCounter(unit: AbstractUnit) = withContext(Dispatchers.IO) {
         val basedUnit = unitsDao.getById(unit.id)
 
         if (basedUnit == null) {
@@ -167,7 +168,7 @@ class UnitsRepository @Inject constructor(
         }
     }
 
-    suspend fun setPair(unit: AbstractUnit, pair: AbstractUnit) = withContext(Dispatchers.IO) {
+    override suspend fun setPair(unit: AbstractUnit, pair: AbstractUnit) = withContext(Dispatchers.IO) {
         val basedUnit = unitsDao.getById(unit.id)
 
         if (basedUnit == null) {
@@ -189,7 +190,7 @@ class UnitsRepository @Inject constructor(
         }
     }
 
-    suspend fun updateRates(unit: AbstractUnit): LocalDate? = withContext(Dispatchers.IO) {
+    override suspend fun updateRates(unit: AbstractUnit): LocalDate? = withContext(Dispatchers.IO) {
         var basedConversions = currencyRatesDao.getLatestRates(baseId = unit.id)
         val epochDay = LocalDate.now().toEpochDay()
 
@@ -235,13 +236,13 @@ class UnitsRepository @Inject constructor(
             ?.let { LocalDate.ofEpochDay(it) }
     }
 
-    suspend fun filterUnits(
+    override suspend fun filterUnits(
         query: String,
         unitGroup: UnitGroup?,
         favoritesOnly: Boolean,
         hideBrokenUnits: Boolean,
         sorting: UnitsListSorting,
-        shownUnitGroups: List<UnitGroup> = emptyList(),
+        shownUnitGroups: List<UnitGroup>,
     ): Map<UnitGroup, List<AbstractUnit>> {
         // Leave only shown unit groups
         var units: Sequence<AbstractUnit> = if (unitGroup == null) {

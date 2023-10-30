@@ -16,21 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+package com.sadellie.unitto.data.model.repository
 
-android {
-    namespace = "com.sadellie.unitto.feature.datecalculator"
-}
+import com.sadellie.unitto.data.model.HistoryItem
+import kotlinx.coroutines.flow.Flow
 
-dependencies {
-    testImplementation(libs.junit.junit)
+interface CalculatorHistoryRepository {
+    val historyFlow: Flow<List<HistoryItem>>
 
-    implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
+    suspend fun add(
+        expression: String,
+        result: String
+    )
+
+    suspend fun clear()
 }

@@ -35,7 +35,7 @@ import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import com.sadellie.unitto.core.ui.theme.NumberTypographySystem
 import com.sadellie.unitto.core.ui.theme.NumberTypographyUnitto
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject

@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.themmo.MonetMode
 import io.github.sadellie.themmo.ThemingMode
@@ -39,7 +39,7 @@ class DisplayViewModel @Inject constructor(
 
     fun updateThemingMode(themingMode: ThemingMode) {
         viewModelScope.launch {
-            userPrefsRepository.updateThemingMode(themingMode)
+            userPrefsRepository.updateThemingMode(themingMode.name)
         }
     }
 
@@ -57,13 +57,13 @@ class DisplayViewModel @Inject constructor(
 
     fun updateCustomColor(color: Color) {
         viewModelScope.launch {
-            userPrefsRepository.updateCustomColor(color)
+            userPrefsRepository.updateCustomColor(color.value.toLong())
         }
     }
 
     fun updateMonetMode(monetMode: MonetMode) {
         viewModelScope.launch {
-            userPrefsRepository.updateMonetMode(monetMode)
+            userPrefsRepository.updateMonetMode(monetMode.name)
         }
     }
 

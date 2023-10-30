@@ -25,6 +25,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,5 +55,10 @@ class DataStoreModule {
             corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
             produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) }
         )
+    }
+
+    @Provides
+    fun provideUserPreferencesRepository(dataStore: DataStore<Preferences>): UserPreferencesRepository {
+        return UserPreferencesRepositoryImpl(dataStore)
     }
 }

@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.calculator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

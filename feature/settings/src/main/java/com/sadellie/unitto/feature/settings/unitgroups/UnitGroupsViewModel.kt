@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.unitgroups
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

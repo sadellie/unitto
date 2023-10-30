@@ -43,7 +43,8 @@ import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.userprefs.ConverterPreferences
+import com.sadellie.unitto.data.model.userprefs.ConverterPreferences
+import com.sadellie.unitto.data.userprefs.ConverterPreferencesImpl
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable
@@ -131,7 +132,7 @@ private fun ConverterSettingsScreen(
 @Composable
 private fun PreviewConverterSettingsScreen() {
     ConverterSettingsScreen(
-        prefs = ConverterPreferences(
+        prefs = ConverterPreferencesImpl(
             enableVibrations = true,
             separator = Separator.SPACE,
             middleZero = false,

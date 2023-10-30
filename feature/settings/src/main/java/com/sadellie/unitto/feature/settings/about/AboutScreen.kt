@@ -52,7 +52,8 @@ import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
-import com.sadellie.unitto.data.userprefs.AboutPreferences
+import com.sadellie.unitto.data.model.userprefs.AboutPreferences
+import com.sadellie.unitto.data.userprefs.AboutPreferencesImpl
 
 @Composable
 internal fun AboutRoute(
@@ -194,7 +195,7 @@ private fun AboutScreen(
 @Composable
 fun PreviewAboutScreen() {
     AboutScreen(
-        prefs = AboutPreferences(
+        prefs = AboutPreferencesImpl(
             enableToolsExperiment = false
         ),
         navigateUpAction = {},

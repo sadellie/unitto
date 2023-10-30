@@ -18,80 +18,88 @@
 
 package com.sadellie.unitto.data.userprefs
 
-import androidx.compose.ui.graphics.Color
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
-import io.github.sadellie.themmo.MonetMode
-import io.github.sadellie.themmo.ThemingMode
+import com.sadellie.unitto.data.model.userprefs.AboutPreferences
+import com.sadellie.unitto.data.model.userprefs.AddSubtractPreferences
+import com.sadellie.unitto.data.model.userprefs.AppPreferences
+import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
+import com.sadellie.unitto.data.model.userprefs.ConverterPreferences
+import com.sadellie.unitto.data.model.userprefs.DisplayPreferences
+import com.sadellie.unitto.data.model.userprefs.FormattingPreferences
+import com.sadellie.unitto.data.model.userprefs.GeneralPreferences
+import com.sadellie.unitto.data.model.userprefs.StartingScreenPreferences
+import com.sadellie.unitto.data.model.userprefs.UnitGroupsPreferences
 
-data class AppPreferences(
-    val themingMode: ThemingMode,
-    val enableDynamicTheme: Boolean,
-    val enableAmoledTheme: Boolean,
-    val customColor: Color,
-    val monetMode: MonetMode,
-    val startingScreen: String,
-    val enableToolsExperiment: Boolean,
-    val systemFont: Boolean,
-)
+data class AppPreferencesImpl(
+    override val themingMode: String,
+    override val enableDynamicTheme: Boolean,
+    override val enableAmoledTheme: Boolean,
+    override val customColor: Long,
+    override val monetMode: String,
+    override val startingScreen: String,
+    override val enableToolsExperiment: Boolean,
+    override val systemFont: Boolean,
+) : AppPreferences
 
-data class GeneralPreferences(
-    val enableVibrations: Boolean,
-)
 
-data class CalculatorPreferences(
-    val radianMode: Boolean,
-    val enableVibrations: Boolean,
-    val separator: Int,
-    val middleZero: Boolean,
-    val acButton: Boolean,
-    val partialHistoryView: Boolean,
-    val precision: Int,
-    val outputFormat: Int,
-)
+data class GeneralPreferencesImpl(
+    override val enableVibrations: Boolean,
+) : GeneralPreferences
 
-data class ConverterPreferences(
-    val enableVibrations: Boolean,
-    val separator: Int,
-    val middleZero: Boolean,
-    val acButton: Boolean,
-    val precision: Int,
-    val outputFormat: Int,
-    val unitConverterFormatTime: Boolean,
-    val unitConverterSorting: UnitsListSorting,
-    val shownUnitGroups: List<UnitGroup>,
-    val unitConverterFavoritesOnly: Boolean,
-    val enableToolsExperiment: Boolean,
-    val latestLeftSideUnit: String,
-    val latestRightSideUnit: String,
-)
+data class CalculatorPreferencesImpl(
+    override val radianMode: Boolean,
+    override val enableVibrations: Boolean,
+    override val separator: Int,
+    override val middleZero: Boolean,
+    override val acButton: Boolean,
+    override val partialHistoryView: Boolean,
+    override val precision: Int,
+    override val outputFormat: Int,
+) : CalculatorPreferences
 
-data class DisplayPreferences(
-    val systemFont: Boolean,
-    val middleZero: Boolean,
-    val acButton: Boolean,
-)
+data class ConverterPreferencesImpl(
+    override val enableVibrations: Boolean,
+    override val separator: Int,
+    override val middleZero: Boolean,
+    override val acButton: Boolean,
+    override val precision: Int,
+    override val outputFormat: Int,
+    override val unitConverterFormatTime: Boolean,
+    override val unitConverterSorting: UnitsListSorting,
+    override val shownUnitGroups: List<UnitGroup>,
+    override val unitConverterFavoritesOnly: Boolean,
+    override val enableToolsExperiment: Boolean,
+    override val latestLeftSideUnit: String,
+    override val latestRightSideUnit: String,
+) : ConverterPreferences
 
-data class FormattingPreferences(
-    val digitsPrecision: Int,
-    val separator: Int,
-    val outputFormat: Int,
-)
+data class DisplayPreferencesImpl(
+    override val systemFont: Boolean,
+    override val middleZero: Boolean,
+    override val acButton: Boolean,
+) : DisplayPreferences
 
-data class UnitGroupsPreferences(
-    val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
-)
+data class FormattingPreferencesImpl(
+    override val digitsPrecision: Int,
+    override val separator: Int,
+    override val outputFormat: Int,
+) : FormattingPreferences
 
-data class AddSubtractPreferences(
-    val separator: Int,
-    val enableVibrations: Boolean,
-)
+data class UnitGroupsPreferencesImpl(
+    override val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
+) : UnitGroupsPreferences
 
-data class AboutPreferences(
-    val enableToolsExperiment: Boolean,
-)
+data class AddSubtractPreferencesImpl(
+    override val separator: Int,
+    override val enableVibrations: Boolean,
+) : AddSubtractPreferences
 
-data class StartingScreenPreferences(
-    val startingScreen: String,
-)
+data class AboutPreferencesImpl(
+    override val enableToolsExperiment: Boolean,
+) : AboutPreferences
+
+data class StartingScreenPreferencesImpl(
+    override val startingScreen: String,
+) : StartingScreenPreferences

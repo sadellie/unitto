@@ -33,7 +33,8 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
-import com.sadellie.unitto.data.userprefs.CalculatorPreferences
+import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
+import com.sadellie.unitto.data.userprefs.CalculatorPreferencesImpl
 
 @Composable
 internal fun CalculatorSettingsRoute(
@@ -80,7 +81,7 @@ private fun CalculatorSettingsScreen(
 @Composable
 private fun PreviewCalculatorSettingsScreen() {
     CalculatorSettingsScreen(
-        prefs = CalculatorPreferences(
+        prefs = CalculatorPreferencesImpl(
             radianMode = false,
             enableVibrations = false,
             separator = Separator.SPACE,

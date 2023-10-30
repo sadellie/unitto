@@ -59,7 +59,8 @@ import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
-import com.sadellie.unitto.data.userprefs.GeneralPreferences
+import com.sadellie.unitto.data.model.userprefs.GeneralPreferences
+import com.sadellie.unitto.data.userprefs.GeneralPreferencesImpl
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
@@ -194,7 +195,7 @@ private fun PreviewSettingsScreen() {
     var cacheSize by remember { mutableFloatStateOf(0.9f) }
 
     SettingsScreen(
-        userPrefs = GeneralPreferences(
+        userPrefs = GeneralPreferencesImpl(
             enableVibrations = true
         ),
         navigateUp = {},

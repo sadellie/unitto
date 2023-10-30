@@ -28,7 +28,7 @@ import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
-import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine

@@ -16,21 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+package com.sadellie.unitto.data.calculator
 
-android {
-    namespace = "com.sadellie.unitto.feature.datecalculator"
-}
+import com.sadellie.unitto.data.database.CalculatorHistoryDao
+import com.sadellie.unitto.data.model.repository.CalculatorHistoryRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-dependencies {
-    testImplementation(libs.junit.junit)
-
-    implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
+@Module
+@InstallIn(SingletonComponent::class)
+class DataStoreModule {
+    @Provides
+    fun provideCalculatorHistoryRepository(calculatorHistoryDao: CalculatorHistoryDao): CalculatorHistoryRepository {
+        return CalculatorHistoryRepositoryImpl(calculatorHistoryDao)
+    }
 }

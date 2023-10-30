@@ -16,21 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+package com.sadellie.unitto.data.model.userprefs
 
-android {
-    namespace = "com.sadellie.unitto.feature.datecalculator"
-}
+import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.UnitsListSorting
 
-dependencies {
-    testImplementation(libs.junit.junit)
-
-    implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
+interface ConverterPreferences {
+    val enableVibrations: Boolean
+    val separator: Int
+    val middleZero: Boolean
+    val acButton: Boolean
+    val precision: Int
+    val outputFormat: Int
+    val unitConverterFormatTime: Boolean
+    val unitConverterSorting: UnitsListSorting
+    val shownUnitGroups: List<UnitGroup>
+    val unitConverterFavoritesOnly: Boolean
+    val enableToolsExperiment: Boolean
+    val latestLeftSideUnit: String
+    val latestRightSideUnit: String
 }
