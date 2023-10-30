@@ -25,7 +25,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
+import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import org.junit.Rule
 import org.junit.Test
 
@@ -58,7 +61,19 @@ class CalculatorScreenTest {
     fun ready_showRealKeyboard(): Unit = with(composeTestRule) {
         setContent {
             CalculatorScreen(
-                uiState = CalculatorUIState.Ready(),
+                uiState = CalculatorUIState.Ready(
+                    input = TextFieldValue(),
+                    output = CalculationResult.Default(),
+                    radianMode = false,
+                    precision = 3,
+                    outputFormat = OutputFormat.PLAIN,
+                    formatterSymbols = FormatterSymbols.Spaces,
+                    history = emptyList(),
+                    allowVibration = false,
+                    middleZero = false,
+                    acButton = true,
+                    partialHistoryView = true
+                ),
                 navigateToMenu = {},
                 navigateToSettings = {},
                 addTokens = {},
@@ -80,7 +95,19 @@ class CalculatorScreenTest {
     fun ready_swipeForHistory(): Unit = with(composeTestRule) {
         setContent {
             CalculatorScreen(
-                uiState = CalculatorUIState.Ready(),
+                uiState = CalculatorUIState.Ready(
+                    input = TextFieldValue(),
+                    output = CalculationResult.Default(),
+                    radianMode = false,
+                    precision = 3,
+                    outputFormat = OutputFormat.PLAIN,
+                    formatterSymbols = FormatterSymbols.Spaces,
+                    history = emptyList(),
+                    allowVibration = false,
+                    middleZero = false,
+                    acButton = true,
+                    partialHistoryView = true
+                ),
                 navigateToMenu = {},
                 navigateToSettings = {},
                 addTokens = {},

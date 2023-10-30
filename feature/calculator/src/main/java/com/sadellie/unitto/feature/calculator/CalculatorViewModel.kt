@@ -20,10 +20,9 @@ package com.sadellie.unitto.feature.calculator
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.base.OutputFormat
-import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addBracket
@@ -32,21 +31,18 @@ import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.data.calculator.CalculatorHistoryRepository
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
+import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.common.toStringWith
 import com.sadellie.unitto.data.common.trimZeros
-import com.sadellie.unitto.data.userprefs.CalculatorPreferences
 import com.sadellie.unitto.data.userprefs.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -56,139 +52,146 @@ import javax.inject.Inject
 internal class CalculatorViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val calculatorHistoryRepository: CalculatorHistoryRepository,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _prefs: StateFlow<CalculatorPreferences> =
-        userPrefsRepository.calculatorPrefs.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            CalculatorPreferences(
-                radianMode = false,
-                enableVibrations = false,
-                separator = Separator.SPACE,
-                middleZero = false,
-                partialHistoryView = true,
-                precision = 3,
-                outputFormat = OutputFormat.PLAIN,
-                acButton = false,
-            )
-        )
-
-    private val _input: MutableStateFlow<TextFieldValue> = MutableStateFlow(TextFieldValue())
-    private val _output: MutableStateFlow<CalculationResult> =
-        MutableStateFlow(CalculationResult.Default())
-    private val _history = calculatorHistoryRepository.historyFlow
+    private val _inputKey = "CALCULATOR_INPUT"
+    private val _input = MutableStateFlow(
+        with(savedStateHandle[_inputKey] ?: "") {
+            TextFieldValue(this, TextRange(this.length))
+        }
+    )
+    private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Default())
     private val _equalClicked = MutableStateFlow(false)
 
-    val uiState = combine(
-        _input, _output, _history, _prefs
-    ) { input, output, history, userPrefs ->
+    val uiState: StateFlow<CalculatorUIState> = combine(
+        _input,
+        _result,
+        userPrefsRepository.calculatorPrefs,
+        calculatorHistoryRepository.historyFlow,
+        _equalClicked,
+    ) { input, result, prefs, history, showError ->
         return@combine CalculatorUIState.Ready(
             input = input,
-            output = output,
-            radianMode = userPrefs.radianMode,
+            output = if (!showError and (result !is CalculationResult.Default)) CalculationResult.Default() else result,
+            radianMode = prefs.radianMode,
+            precision = prefs.precision,
+            outputFormat = prefs.outputFormat,
+            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
             history = history,
-            allowVibration = userPrefs.enableVibrations,
-            formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
-            middleZero = userPrefs.middleZero,
-            acButton = userPrefs.acButton,
-            partialHistoryView = userPrefs.partialHistoryView,
+            allowVibration = prefs.enableVibrations,
+            middleZero = prefs.middleZero,
+            acButton = prefs.acButton,
+            partialHistoryView = prefs.partialHistoryView,
         )
     }
-        .stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000L), CalculatorUIState.Loading
-    )
+        .mapLatest { ui ->
+            calculate(
+                input = ui.input.text,
+                radianMode = ui.radianMode,
+                outputFormat = ui.outputFormat,
+                precision = ui.precision
+            )
+
+            ui
+        }
+        .stateIn(viewModelScope, CalculatorUIState.Loading)
 
     fun addTokens(tokens: String) = _input.update {
-        if (_equalClicked.value) {
+        val newValue = if (_equalClicked.value) {
             _equalClicked.update { false }
             TextFieldValue().addTokens(tokens)
         } else {
             it.addTokens(tokens)
         }
+        savedStateHandle[_inputKey] = newValue.text
+        newValue
     }
+
     fun addBracket() = _input.update {
-        if (_equalClicked.value) {
+        val newValue = if (_equalClicked.value) {
             _equalClicked.update { false }
             TextFieldValue().addBracket()
         } else {
             it.addBracket()
         }
+        savedStateHandle[_inputKey] = newValue.text
+        newValue
     }
+
     fun deleteTokens() = _input.update {
-        if (_equalClicked.value) {
+        val newValue = if (_equalClicked.value) {
             _equalClicked.update { false }
             TextFieldValue().deleteTokens()
         } else {
             it.deleteTokens()
         }
+        savedStateHandle[_inputKey] = newValue.text
+        newValue
     }
-    fun clearInput() = _input.update { TextFieldValue() }
+
+    fun clearInput() = _input.update {
+        savedStateHandle[_inputKey] = ""
+        TextFieldValue()
+    }
     fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
 
-    // Called when user clicks "=" on a keyboard
-    fun evaluate() = viewModelScope.launch(Dispatchers.IO) {
-        when (val calculationResult = calculateInput()) {
-            is CalculationResult.Default -> {
-                if (calculationResult.text.isEmpty()) return@launch
-
-                // We can get negative number and they use ugly minus symbol
-                val calculationText = calculationResult.text.replace("-", Token.Operator.minus)
-
-                calculatorHistoryRepository.add(
-                    expression = _input.value.text,
-                    result = calculationText
-                )
-                _input.update {
-                    TextFieldValue(calculationText, TextRange(calculationText.length))
-                }
-                _output.update { CalculationResult.Default() }
-                _equalClicked.update { true }
-            }
-            // Show the error
-            else -> _output.update { calculationResult }
-        }
-    }
-
-    fun toggleCalculatorMode() = viewModelScope.launch {
-        userPrefsRepository.updateRadianMode(!_prefs.value.radianMode)
+    fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateRadianMode(newValue)
     }
 
     fun clearHistory() = viewModelScope.launch(Dispatchers.IO) {
         calculatorHistoryRepository.clear()
     }
 
-    private fun calculateInput(): CalculationResult {
-        val currentInput = _input.value.text
-        // Input is empty or not an expression, don't calculate
-        if (!currentInput.isExpression()) return CalculationResult.Default()
+    fun evaluate() = viewModelScope.launch(Dispatchers.IO) {
+        when (val result = _result.value) {
+            is CalculationResult.Default -> {
+                calculatorHistoryRepository.add(
+                    expression = _input.value.text.replace("-", Token.Operator.minus),
+                    result = result.text
+                )
+                _input.update { TextFieldValue(result.text, TextRange(result.text.length)) }
+                _result.update { CalculationResult.Default() }
+                _equalClicked.update { true }
+            }
 
-        return try {
-            CalculationResult.Default(
-                Expression(currentInput, radianMode = _prefs.value.radianMode)
-                    .calculate()
-                    .also {
-                        if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
-                    }
-                    .setMinimumRequiredScale(_prefs.value.precision)
-                    .trimZeros()
-                    .toStringWith(_prefs.value.outputFormat)
-            )
-        } catch (e: ExpressionException.DivideByZero) {
-            CalculationResult.DivideByZeroError
-        } catch (e: Exception) {
-            CalculationResult.Error
+            is CalculationResult.DivideByZeroError -> {
+                _equalClicked.update { true }
+            }
+
+            is CalculationResult.Error -> {
+                // skip for generic error (bad expression and stuff
+            }
         }
     }
 
-    init {
-        // Observe and invoke calculation without UI lag.
-        viewModelScope.launch(Dispatchers.Default) {
-            merge(_prefs, _input).collectLatest {
-                val calculated = calculateInput()
-                _output.update {
-                    // Don't show error when simply entering stuff
-                    if (calculated !is CalculationResult.Default) CalculationResult.Default() else calculated
-                }
+    private fun calculate(
+        input: String,
+        radianMode: Boolean,
+        outputFormat: Int,
+        precision: Int,
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        if (!input.isExpression()) {
+            _result.update { CalculationResult.Default() }
+            return@launch
+        }
+
+        _result.update {
+            try {
+                CalculationResult.Default(
+                    Expression(input, radianMode = radianMode)
+                        .calculate()
+                        .also {
+                            if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
+                        }
+                        .setMinimumRequiredScale(precision)
+                        .trimZeros()
+                        .toStringWith(outputFormat)
+                )
+            } catch (e: ExpressionException.DivideByZero) {
+                CalculationResult.DivideByZeroError
+            } catch (e: Exception) {
+                CalculationResult.Error
             }
         }
     }

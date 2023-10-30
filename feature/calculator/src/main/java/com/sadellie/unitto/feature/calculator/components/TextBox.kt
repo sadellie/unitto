@@ -102,15 +102,27 @@ fun TextBox(
                     )
                 }
 
-                else -> {
-                    val label = output.label?.let { stringResource(it) } ?: ""
-
+                is CalculationResult.DivideByZeroError -> {
                     UnformattedTextField(
                         modifier = Modifier
                             .weight(2f)
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
-                        value = TextFieldValue(label),
+                        value = TextFieldValue(stringResource(output.label)),
+                        minRatio = 0.8f,
+                        onCursorChange = {},
+                        textColor = MaterialTheme.colorScheme.error,
+                        readOnly = true,
+                    )
+                }
+
+                is CalculationResult.Error -> {
+                    UnformattedTextField(
+                        modifier = Modifier
+                            .weight(2f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        value = TextFieldValue(stringResource(output.label)),
                         minRatio = 0.8f,
                         onCursorChange = {},
                         textColor = MaterialTheme.colorScheme.error,

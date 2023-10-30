@@ -28,20 +28,30 @@ internal sealed class CalculatorUIState {
     data object Loading : CalculatorUIState()
 
     data class Ready(
-        val input: TextFieldValue = TextFieldValue(),
-        val output: CalculationResult = CalculationResult.Default(),
-        val radianMode: Boolean = true,
-        val history: List<HistoryItem> = emptyList(),
-        val allowVibration: Boolean = false,
-        val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
-        val middleZero: Boolean = false,
-        val acButton: Boolean = false,
-        val partialHistoryView: Boolean = true,
+        val input: TextFieldValue,
+        val output: CalculationResult,
+        val radianMode: Boolean,
+        val precision: Int,
+        val outputFormat: Int,
+        val formatterSymbols: FormatterSymbols,
+        val history: List<HistoryItem>,
+        val allowVibration: Boolean,
+        val middleZero: Boolean,
+        val acButton: Boolean,
+        val partialHistoryView: Boolean,
     ) : CalculatorUIState()
 }
 
-sealed class CalculationResult(@StringRes val label: Int? = null) {
+sealed class CalculationResult {
     data class Default(val text: String = "") : CalculationResult()
-    data object DivideByZeroError : CalculationResult(R.string.calculator_divide_by_zero_error)
-    data object Error : CalculationResult(R.string.error_label)
+
+    data object DivideByZeroError : CalculationResult() {
+        @StringRes
+        val label: Int = R.string.calculator_divide_by_zero_error
+    }
+
+    data object Error : CalculationResult() {
+        @StringRes
+        val label: Int = R.string.error_label
+    }
 }

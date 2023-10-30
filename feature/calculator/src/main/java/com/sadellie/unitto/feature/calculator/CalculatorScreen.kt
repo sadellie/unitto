@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.calculator
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
@@ -61,11 +62,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
@@ -91,7 +94,7 @@ internal fun CalculatorRoute(
         clearInput = viewModel::clearInput,
         deleteTokens = viewModel::deleteTokens,
         onCursorChange = viewModel::onCursorChange,
-        toggleCalculatorMode = viewModel::toggleCalculatorMode,
+        toggleCalculatorMode = viewModel::updateRadianMode,
         evaluate = viewModel::evaluate,
         clearHistory = viewModel::clearHistory,
         addBracket = viewModel::addBracket
@@ -108,7 +111,7 @@ internal fun CalculatorScreen(
     clearInput: () -> Unit,
     deleteTokens: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
-    toggleCalculatorMode: () -> Unit,
+    toggleCalculatorMode: (Boolean) -> Unit,
     evaluate: () -> Unit,
     clearHistory: () -> Unit
 ) {
@@ -122,7 +125,7 @@ internal fun CalculatorScreen(
             clearSymbols = clearInput,
             deleteSymbol = deleteTokens,
             onCursorChange = onCursorChange,
-            toggleAngleMode = toggleCalculatorMode,
+            toggleAngleMode = { toggleCalculatorMode(!uiState.radianMode) },
             evaluate = evaluate,
             clearHistory = clearHistory,
             addBracket = addBracket
@@ -238,6 +241,7 @@ private fun Ready(
 
             HistoryList(
                 modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                     .fillMaxWidth()
                     .height(historyListHeight),
                 historyItems = uiState.history,
@@ -350,7 +354,15 @@ private fun PreviewCalculatorScreen() {
         uiState = CalculatorUIState.Ready(
             input = TextFieldValue("1.2345"),
             output = CalculationResult.Default("1234"),
-            history = historyItems
+            radianMode = false,
+            precision = 3,
+            outputFormat = OutputFormat.PLAIN,
+            formatterSymbols = FormatterSymbols.Spaces,
+            history = historyItems,
+            allowVibration = false,
+            middleZero = false,
+            acButton = true,
+            partialHistoryView = true
         ),
         navigateToMenu = {},
         navigateToSettings = {},
