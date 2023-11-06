@@ -76,8 +76,8 @@ class Tokenizer(private val streamOfTokens: String) {
             .missingClosingBrackets()
             .missingMultiply()
             .unpackAlPercents()
-            // input like 80%80% should be treated as 80%-80%.
-            // After unpacking we get (80/100)(80/100), the multiply is missing
+            // input like 80%80% should be treated as 80%*80%.
+            // After unpacking we get (80/100)(80/100), the multiply is missing (!!!)
             // No, we can't unpack before fixing missing multiply.
             // Ideally we we need to add missing multiply for 80%80%
             // In that case unpackAlPercents gets input with all operators 80%*80% in this case
@@ -100,37 +100,39 @@ class Tokenizer(private val streamOfTokens: String) {
     }
 
     private fun List<String>.missingMultiply(): List<String> {
-        val results = this.toMutableList()
-        val insertIndexes = mutableListOf<Int>()
+        val result = this.toMutableList()
+        val original = this
+        var offset = 0
 
-        // Records the index if it needs a multiply symbol
-        fun needsMultiply(index: Int) {
-            val tokenInFront = results.getOrNull(index - 1) ?: return
+        fun addTokenAfter(index: Int) {
+            result.add(index + 1 + offset, Token.Operator.multiply)
+            offset += 1
+        }
 
+        original.forEachIndexed { index, token ->
             when {
-                tokenInFront.first().toString() in Token.Digit.allWithDot ||
-                tokenInFront == Token.Operator.rightBracket ||
-                tokenInFront in Token.Const.all -> {
-                    // Can't add token now, it will modify tokens list (we are looping over it)
-                    insertIndexes.add(index + insertIndexes.size)
+                // This will not insert multiply between digits because they are grouped into a
+                // single token. It's not possible to get separate digit tokens near each other
+                // Things like ["123", "456"] are impossible, will be ["123456"]
+                token.isDigitToken() ||
+                token in Token.Const.all ||
+                token == Token.Operator.rightBracket -> {
+                    val tokenInFront = original.tokenInFront(index) ?: return@forEachIndexed
+
+                    when {
+                        tokenInFront == Token.Operator.leftBracket ||
+                        tokenInFront in Token.Func.all ||
+                        tokenInFront in Token.Const.all ||
+                        tokenInFront == Token.Operator.sqrt ||
+                        tokenInFront.isDigitToken() -> {
+                            addTokenAfter(index)
+                        }
+                    }
                 }
             }
         }
 
-        results.forEachIndexed { index, s ->
-            when (s) {
-                Token.Operator.leftBracket,
-                Token.Operator.sqrt,
-                in Token.Const.all,
-                in Token.Func.all -> needsMultiply(index)
-            }
-        }
-
-        insertIndexes.forEach {
-            results.add(it, Token.Operator.multiply)
-        }
-
-        return results
+        return result
     }
 
     private fun List<String>.unpackAlPercents(): List<String> {
@@ -241,4 +243,8 @@ class Tokenizer(private val streamOfTokens: String) {
 
         return this.subList(cursor, pos)
     }
+
+    private fun String.isDigitToken(): Boolean = first().toString() in Token.Digit.allWithDot
+
+    private fun List<String>.tokenInFront(index: Int): String? = getOrNull(index + 1)
 }

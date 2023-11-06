@@ -48,6 +48,10 @@ class FixLexiconTest {
         assertLex(
             "e×e+π", "ee+π"
         )
+
+        assertLex(
+            "(69)×420", "(69)420"
+        )
     }
 
     @Test
@@ -61,7 +65,7 @@ class FixLexiconTest {
         )
 
         assertLex(
-            "123)))12+4", "123)))12+4"
+            "123)))×12+4", "123)))12+4"
         )
 
         assertLex(
