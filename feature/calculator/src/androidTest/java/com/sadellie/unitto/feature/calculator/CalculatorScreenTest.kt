@@ -63,7 +63,7 @@ class CalculatorScreenTest {
             CalculatorScreen(
                 uiState = CalculatorUIState.Ready(
                     input = TextFieldValue(),
-                    output = CalculationResult.Default(),
+                    output = CalculationResult.Empty,
                     radianMode = false,
                     precision = 3,
                     outputFormat = OutputFormat.PLAIN,
@@ -97,7 +97,7 @@ class CalculatorScreenTest {
             CalculatorScreen(
                 uiState = CalculatorUIState.Ready(
                     input = TextFieldValue(),
-                    output = CalculationResult.Default(),
+                    output = CalculationResult.Empty,
                     radianMode = false,
                     precision = 3,
                     outputFormat = OutputFormat.PLAIN,

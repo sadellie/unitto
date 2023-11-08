@@ -28,6 +28,7 @@ import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
+import com.sadellie.unitto.core.ui.common.textfield.getTextField
 import com.sadellie.unitto.data.common.combine
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.stateIn
@@ -64,11 +65,7 @@ internal class ConverterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val converterInputKey = "CONVERTER_INPUT"
-    private val _input = MutableStateFlow(
-        with(savedStateHandle[converterInputKey] ?: "") {
-            TextFieldValue(this, TextRange(this.length))
-        }
-    )
+    private val _input = MutableStateFlow(savedStateHandle.getTextField(converterInputKey))
     private val _calculation = MutableStateFlow<BigDecimal?>(null)
     private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
     private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)

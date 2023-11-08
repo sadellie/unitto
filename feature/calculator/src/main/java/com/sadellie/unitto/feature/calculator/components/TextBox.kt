@@ -22,6 +22,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -83,6 +84,15 @@ fun TextBox(
         )
         if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
             when (output) {
+                is CalculationResult.Empty -> {
+                    Spacer(
+                        modifier = Modifier
+                            .weight(2f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    )
+                }
+
                 is CalculationResult.Default -> {
                     var outputTF by remember(output) {
                         mutableStateOf(TextFieldValue(output.text))

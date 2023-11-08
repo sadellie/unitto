@@ -20,6 +20,7 @@ package com.sadellie.unitto.core.ui.common.textfield
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.lifecycle.SavedStateHandle
 import com.sadellie.unitto.core.base.Token
 
 fun TextFieldValue.addTokens(tokens: String): TextFieldValue {
@@ -130,6 +131,18 @@ fun TextFieldValue.deleteTokens(): TextFieldValue {
         selection = TextRange((newText.length - distanceFromEnd).coerceAtLeast(0))
     )
 }
+
+/**
+ * Tries to get a [TextFieldValue]. Places cursor at the end.
+ *
+ * @receiver [SavedStateHandle] Where to look for.
+ * @param key Key to find
+ * @return [TextFieldValue] with cursor at the end.
+ */
+fun SavedStateHandle.getTextField(key: String): TextFieldValue =
+    with(get(key) ?: "") {
+        TextFieldValue(this, TextRange(this.length))
+    }
 
 /**
  * <b>!!! Recursive !!!</b> (one wrong step and you are dead 💀)

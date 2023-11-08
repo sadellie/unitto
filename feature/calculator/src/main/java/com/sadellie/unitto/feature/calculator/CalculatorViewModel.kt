@@ -28,6 +28,7 @@ import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
+import com.sadellie.unitto.core.ui.common.textfield.getTextField
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.stateIn
@@ -45,6 +46,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -55,24 +57,23 @@ internal class CalculatorViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _inputKey = "CALCULATOR_INPUT"
-    private val _input = MutableStateFlow(
-        with(savedStateHandle[_inputKey] ?: "") {
-            TextFieldValue(this, TextRange(this.length))
-        }
-    )
-    private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Default())
+    private val _input = MutableStateFlow(savedStateHandle.getTextField(_inputKey))
+    private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
     private val _equalClicked = MutableStateFlow(false)
+    private val _prefs = userPrefsRepository.calculatorPrefs
+        .stateIn(viewModelScope, null)
 
     val uiState: StateFlow<CalculatorUIState> = combine(
         _input,
         _result,
-        userPrefsRepository.calculatorPrefs,
+        _prefs,
         calculatorHistoryRepository.historyFlow,
-        _equalClicked,
-    ) { input, result, prefs, history, showError ->
+    ) { input, result, prefs, history ->
+        prefs ?: return@combine CalculatorUIState.Loading
+
         return@combine CalculatorUIState.Ready(
             input = input,
-            output = if (!showError and (result !is CalculationResult.Default)) CalculationResult.Default() else result,
+            output = result,
             radianMode = prefs.radianMode,
             precision = prefs.precision,
             outputFormat = prefs.outputFormat,
@@ -85,12 +86,31 @@ internal class CalculatorViewModel @Inject constructor(
         )
     }
         .mapLatest { ui ->
-            calculate(
-                input = ui.input.text,
-                radianMode = ui.radianMode,
-                outputFormat = ui.outputFormat,
-                precision = ui.precision
-            )
+            if (ui !is CalculatorUIState.Ready) return@mapLatest ui
+            if (_equalClicked.value) return@mapLatest ui
+
+            if (!ui.input.text.isExpression()) {
+                _result.update { CalculationResult.Empty }
+                return@mapLatest ui
+            }
+
+            _result.update {
+                try {
+                    CalculationResult.Default(
+                        calculate(
+                            input = ui.input.text,
+                            radianMode = ui.radianMode,
+                        )
+                            .setMinimumRequiredScale(ui.precision)
+                            .trimZeros()
+                            .toStringWith(ui.outputFormat)
+                    )
+                } catch (e: ExpressionException.DivideByZero) {
+                    CalculationResult.Empty
+                } catch (e: Exception) {
+                    CalculationResult.Empty
+                }
+            }
 
             ui
         }
@@ -130,9 +150,11 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun clearInput() = _input.update {
+        _equalClicked.update { false }
         savedStateHandle[_inputKey] = ""
         TextFieldValue()
     }
+
     fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
 
     fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {
@@ -143,56 +165,47 @@ internal class CalculatorViewModel @Inject constructor(
         calculatorHistoryRepository.clear()
     }
 
-    fun evaluate() = viewModelScope.launch(Dispatchers.IO) {
-        when (val result = _result.value) {
-            is CalculationResult.Default -> {
-                calculatorHistoryRepository.add(
-                    expression = _input.value.text.replace("-", Token.Operator.minus),
-                    result = result.text
-                )
-                _input.update { TextFieldValue(result.text, TextRange(result.text.length)) }
-                _result.update { CalculationResult.Default() }
-                _equalClicked.update { true }
-            }
+    fun evaluate() = viewModelScope.launch {
+        val prefs = _prefs.value ?: return@launch
+        if (_equalClicked.value) return@launch
+        if (!_input.value.text.isExpression()) return@launch
 
-            is CalculationResult.DivideByZeroError -> {
-                _equalClicked.update { true }
-            }
-
-            is CalculationResult.Error -> {
-                // skip for generic error (bad expression and stuff
-            }
-        }
-    }
-
-    private fun calculate(
-        input: String,
-        radianMode: Boolean,
-        outputFormat: Int,
-        precision: Int,
-    ) = viewModelScope.launch(Dispatchers.Default) {
-        if (!input.isExpression()) {
-            _result.update { CalculationResult.Default() }
+        val result = try {
+            calculate(_input.value.text, prefs.radianMode)
+        } catch (e: ExpressionException.DivideByZero) {
+            _equalClicked.update { true }
+            _result.update { CalculationResult.DivideByZeroError }
+            return@launch
+        } catch (e: ExpressionException.FactorialCalculation) {
+            _equalClicked.update { true }
+            _result.update { CalculationResult.Error }
+            return@launch
+        } catch (e: Exception) {
+            _equalClicked.update { true }
+            _result.update { CalculationResult.Error }
             return@launch
         }
+            .setMinimumRequiredScale(prefs.precision)
+            .trimZeros()
+            .toStringWith(prefs.outputFormat)
 
-        _result.update {
-            try {
-                CalculationResult.Default(
-                    Expression(input, radianMode = radianMode)
-                        .calculate()
-                        .also {
-                            if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
-                        }
-                        .setMinimumRequiredScale(precision)
-                        .trimZeros()
-                        .toStringWith(outputFormat)
-                )
-            } catch (e: ExpressionException.DivideByZero) {
-                CalculationResult.DivideByZeroError
-            } catch (e: Exception) {
-                CalculationResult.Error
+        calculatorHistoryRepository.add(
+            expression = _input.value.text.replace("-", Token.Operator.minus),
+            result = result
+        )
+
+        _input.update { TextFieldValue(result, TextRange(result.length)) }
+        _result.update { CalculationResult.Empty }
+    }
+
+    private suspend fun calculate(
+        input: String,
+        radianMode: Boolean,
+    ): BigDecimal = withContext(Dispatchers.Default) {
+        Expression(input, radianMode)
+            .calculate()
+            .also {
+                if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
             }
-        }
     }
 }

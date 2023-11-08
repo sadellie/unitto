@@ -45,6 +45,8 @@ internal sealed class CalculatorUIState {
 sealed class CalculationResult {
     data class Default(val text: String = "") : CalculationResult()
 
+    data object Empty: CalculationResult()
+
     data object DivideByZeroError : CalculationResult() {
         @StringRes
         val label: Int = R.string.calculator_divide_by_zero_error
