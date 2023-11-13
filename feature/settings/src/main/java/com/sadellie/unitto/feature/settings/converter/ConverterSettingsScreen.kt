@@ -49,7 +49,7 @@ import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
 
 @Composable
 internal fun ConverterSettingsRoute(
-    viewModel: ConverterViewModel = hiltViewModel(),
+    viewModel: ConverterSettingsViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
     navigateToUnitsGroup: () -> Unit,
 ) {

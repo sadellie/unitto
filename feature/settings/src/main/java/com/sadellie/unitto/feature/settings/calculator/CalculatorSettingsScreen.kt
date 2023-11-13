@@ -39,7 +39,7 @@ import com.sadellie.unitto.data.userprefs.CalculatorPreferencesImpl
 
 @Composable
 internal fun CalculatorSettingsRoute(
-    viewModel: CalculatorViewModel = hiltViewModel(),
+    viewModel: CalculatorSettingsViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
 ) {
     when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
