@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
@@ -87,7 +88,7 @@ private val FontFamily.Companion.lato: FontFamily
 
 @Preview(widthDp = 480)
 @Composable
-private fun PreviewTypography() {
+private fun PreviewSystemTypography() {
     MaterialTheme(
         typography = TypographySystem
     ) {
@@ -115,6 +116,33 @@ private fun PreviewTypography() {
                 item {
                     Text(
                         text = "$label 123",
+                        style = style,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(widthDp = 480)
+@Composable
+private fun PreviewNumberTypography() {
+    CompositionLocalProvider(
+        LocalNumberTypography provides NumberTypographyUnitto
+    ) {
+        val textStyles = mapOf(
+            "displayLarge" to LocalNumberTypography.current.displayLarge,
+            "displayMedium" to LocalNumberTypography.current.displayMedium,
+            "displaySmall" to LocalNumberTypography.current.displaySmall,
+        )
+
+        LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
+
+            textStyles.forEach { (label, style) ->
+                item {
+                    Text(
+                        text = "$label 123 Error 7 1⁄2",
                         style = style,
                         color = MaterialTheme.colorScheme.onBackground
                     )

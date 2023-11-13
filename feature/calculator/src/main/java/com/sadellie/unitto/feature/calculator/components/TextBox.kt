@@ -112,6 +112,23 @@ fun TextBox(
                     )
                 }
 
+                is CalculationResult.Fraction -> {
+                    var outputTF by remember(output) {
+                        mutableStateOf(TextFieldValue(output.text))
+                    }
+                    UnformattedTextField(
+                        modifier = Modifier
+                            .weight(2f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        value = outputTF,
+                        minRatio = 1f,
+                        onCursorChange = { outputTF = outputTF.copy(selection = it) },
+                        textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
+                        readOnly = true,
+                    )
+                }
+
                 is CalculationResult.DivideByZeroError -> {
                     UnformattedTextField(
                         modifier = Modifier

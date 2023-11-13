@@ -40,6 +40,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -48,6 +49,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,6 +64,7 @@ internal class CalculatorViewModel @Inject constructor(
     private val _equalClicked = MutableStateFlow(false)
     private val _prefs = userPrefsRepository.calculatorPrefs
         .stateIn(viewModelScope, null)
+    private var _fractionJob: Job? = null
 
     val uiState: StateFlow<CalculatorUIState> = combine(
         _input,
@@ -123,6 +126,7 @@ internal class CalculatorViewModel @Inject constructor(
         } else {
             it.addTokens(tokens)
         }
+        _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
         newValue
     }
@@ -134,6 +138,7 @@ internal class CalculatorViewModel @Inject constructor(
         } else {
             it.addBracket()
         }
+        _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
         newValue
     }
@@ -145,12 +150,14 @@ internal class CalculatorViewModel @Inject constructor(
         } else {
             it.deleteTokens()
         }
+        _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
         newValue
     }
 
     fun clearInput() = _input.update {
         _equalClicked.update { false }
+        _fractionJob?.cancel()
         savedStateHandle[_inputKey] = ""
         TextFieldValue()
     }
@@ -171,7 +178,7 @@ internal class CalculatorViewModel @Inject constructor(
         if (!_input.value.text.isExpression()) return@launch
 
         val result = try {
-            calculate(_input.value.text, prefs.radianMode)
+            calculate(_input.value.text, prefs.radianMode, RoundingMode.DOWN)
         } catch (e: ExpressionException.DivideByZero) {
             _equalClicked.update { true }
             _result.update { CalculationResult.DivideByZeroError }
@@ -185,24 +192,36 @@ internal class CalculatorViewModel @Inject constructor(
             _result.update { CalculationResult.Error }
             return@launch
         }
+
+        _equalClicked.update { true }
+
+        val resultFormatted = result
             .setMinimumRequiredScale(prefs.precision)
             .trimZeros()
             .toStringWith(prefs.outputFormat)
 
-        calculatorHistoryRepository.add(
-            expression = _input.value.text.replace("-", Token.Operator.minus),
-            result = result
-        )
+        withContext(Dispatchers.IO) {
+            calculatorHistoryRepository.add(
+                expression = _input.value.text.replace("-", Token.Operator.minus),
+                result = resultFormatted
+            )
+        }
 
-        _input.update { TextFieldValue(result, TextRange(result.length)) }
-        _result.update { CalculationResult.Empty }
+        _fractionJob?.cancel()
+        _fractionJob = launch(Dispatchers.Default) {
+            val fraction = result.toFractionalString()
+
+            _input.update { TextFieldValue(resultFormatted, TextRange(resultFormatted.length)) }
+            _result.update { CalculationResult.Fraction(fraction) }
+        }
     }
 
     private suspend fun calculate(
         input: String,
         radianMode: Boolean,
+        roundingMode: RoundingMode = RoundingMode.HALF_EVEN,
     ): BigDecimal = withContext(Dispatchers.Default) {
-        Expression(input, radianMode)
+        Expression(input, radianMode, roundingMode)
             .calculate()
             .also {
                 if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()

@@ -43,7 +43,11 @@ sealed class ExpressionException(override val message: String): Exception(messag
     class TooBig : ExpressionException("Value is too big")
 }
 
-class Expression(input: String, private val radianMode: Boolean = true) {
+class Expression(
+    input: String,
+    private val radianMode: Boolean = true,
+    private val roundingMode: RoundingMode = RoundingMode.HALF_EVEN
+) {
     private val tokens = Tokenizer(input).tokenize()
     private var cursorPosition = 0
 
@@ -104,7 +108,7 @@ class Expression(input: String, private val radianMode: Boolean = true) {
                     val divisor = parseFactor()
                     if (divisor.compareTo(BigDecimal.ZERO) == 0) throw ExpressionException.DivideByZero()
 
-                    expression = expression.divide(divisor, RoundingMode.HALF_EVEN)
+                    expression = expression.divide(divisor, roundingMode)
                 }
             }
         }

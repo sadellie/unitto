@@ -43,9 +43,11 @@ internal sealed class CalculatorUIState {
 }
 
 sealed class CalculationResult {
-    data class Default(val text: String = "") : CalculationResult()
+    data class Default(val text: String) : CalculationResult()
 
-    data object Empty: CalculationResult()
+    data class Fraction(val text: String) : CalculationResult()
+
+    data object Empty : CalculationResult()
 
     data object DivideByZeroError : CalculationResult() {
         @StringRes
