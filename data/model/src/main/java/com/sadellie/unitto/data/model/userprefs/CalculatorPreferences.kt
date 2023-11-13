@@ -27,4 +27,5 @@ interface CalculatorPreferences {
     val partialHistoryView: Boolean
     val precision: Int
     val outputFormat: Int
+    val clearInputAfterEquals: Boolean
 }

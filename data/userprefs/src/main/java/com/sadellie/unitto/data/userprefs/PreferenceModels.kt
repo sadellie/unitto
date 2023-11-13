@@ -43,7 +43,6 @@ data class AppPreferencesImpl(
     override val systemFont: Boolean,
 ) : AppPreferences
 
-
 data class GeneralPreferencesImpl(
     override val enableVibrations: Boolean,
 ) : GeneralPreferences
@@ -57,6 +56,7 @@ data class CalculatorPreferencesImpl(
     override val partialHistoryView: Boolean,
     override val precision: Int,
     override val outputFormat: Int,
+    override val clearInputAfterEquals: Boolean,
 ) : CalculatorPreferences
 
 data class ConverterPreferencesImpl(

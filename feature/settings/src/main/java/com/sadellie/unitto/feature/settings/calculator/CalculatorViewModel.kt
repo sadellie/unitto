@@ -36,4 +36,8 @@ class CalculatorViewModel @Inject constructor(
     fun updatePartialHistoryView(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updatePartialHistoryView(enabled)
     }
+
+    fun updateClearInputAfterEquals(enabled: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateClearInputAfterEquals(enabled)
+    }
 }

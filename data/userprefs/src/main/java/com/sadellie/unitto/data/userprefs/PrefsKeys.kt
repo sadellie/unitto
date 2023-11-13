@@ -47,4 +47,5 @@ internal object PrefsKeys {
     val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
     val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
     val AC_BUTTON = booleanPreferencesKey("AC_BUTTON_PREF_KEY")
+    val CLEAR_INPUT_AFTER_EQUALS = booleanPreferencesKey("CLEAR_INPUT_AFTER_EQUALS_PREF_KEY")
 }

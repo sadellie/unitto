@@ -20,6 +20,7 @@ package com.sadellie.unitto.feature.settings.calculator
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -47,7 +48,8 @@ internal fun CalculatorSettingsRoute(
             CalculatorSettingsScreen(
                 prefs = prefs,
                 navigateUpAction = navigateUpAction,
-                updatePartialHistoryView = viewModel::updatePartialHistoryView
+                updatePartialHistoryView = viewModel::updatePartialHistoryView,
+                updateClearInputAfterEquals = viewModel::updateClearInputAfterEquals,
             )
         }
     }
@@ -58,6 +60,7 @@ private fun CalculatorSettingsScreen(
     prefs: CalculatorPreferences,
     navigateUpAction: () -> Unit,
     updatePartialHistoryView: (Boolean) -> Unit,
+    updateClearInputAfterEquals: (Boolean) -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.calculator_title),
@@ -71,6 +74,16 @@ private fun CalculatorSettingsScreen(
                     supportingText = stringResource(R.string.settings_partial_history_view_support),
                     switchState = prefs.partialHistoryView,
                     onSwitchChange = updatePartialHistoryView
+                )
+            }
+
+            item("clear input") {
+                UnittoListItem(
+                    headlineText = stringResource(R.string.settings_clear_input),
+                    icon = Icons.AutoMirrored.Filled.Backspace,
+                    supportingText = stringResource(R.string.settings_clear_input_support),
+                    switchState = prefs.clearInputAfterEquals,
+                    onSwitchChange = updateClearInputAfterEquals
                 )
             }
         }
@@ -90,8 +103,10 @@ private fun PreviewCalculatorSettingsScreen() {
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
             acButton = true,
+            clearInputAfterEquals = true,
         ),
         navigateUpAction = {},
-        updatePartialHistoryView = {}
+        updatePartialHistoryView = {},
+        updateClearInputAfterEquals = {},
     )
 }

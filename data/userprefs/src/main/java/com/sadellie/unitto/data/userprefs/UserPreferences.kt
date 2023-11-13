@@ -85,6 +85,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 precision = preferences.getDigitsPrecision(),
                 outputFormat = preferences.getOutputFormat(),
                 acButton = preferences.getAcButton(),
+                clearInputAfterEquals = preferences.getClearInputAfterEquals()
             )
         }
 
@@ -280,6 +281,12 @@ class UserPreferencesRepositoryImpl @Inject constructor(
             preferences[PrefsKeys.AC_BUTTON] = enabled
         }
     }
+
+    override suspend fun updateClearInputAfterEquals(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] = enabled
+        }
+    }
 }
 
 private fun Preferences.getEnableDynamicTheme(): Boolean {
@@ -374,6 +381,10 @@ private fun Preferences.getLatestRightSide(): String {
 
 private fun Preferences.getAcButton(): Boolean {
     return this[PrefsKeys.AC_BUTTON] ?: false
+}
+
+private fun Preferences.getClearInputAfterEquals(): Boolean {
+    return this[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] ?: true
 }
 
 private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {

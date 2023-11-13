@@ -120,36 +120,39 @@ internal class CalculatorViewModel @Inject constructor(
         .stateIn(viewModelScope, CalculatorUIState.Loading)
 
     fun addTokens(tokens: String) = _input.update {
-        val newValue = if (_equalClicked.value) {
-            _equalClicked.update { false }
+        val clearInputAfterEquals = _prefs.value?.clearInputAfterEquals ?: true
+        val newValue = if (_equalClicked.value and clearInputAfterEquals) {
             TextFieldValue().addTokens(tokens)
         } else {
             it.addTokens(tokens)
         }
+        _equalClicked.update { false }
         _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
         newValue
     }
 
     fun addBracket() = _input.update {
-        val newValue = if (_equalClicked.value) {
-            _equalClicked.update { false }
+        val clearInputAfterEquals = _prefs.value?.clearInputAfterEquals ?: true
+        val newValue = if (_equalClicked.value and clearInputAfterEquals) {
             TextFieldValue().addBracket()
         } else {
             it.addBracket()
         }
+        _equalClicked.update { false }
         _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
         newValue
     }
 
     fun deleteTokens() = _input.update {
-        val newValue = if (_equalClicked.value) {
-            _equalClicked.update { false }
+        val clearInputAfterEquals = _prefs.value?.clearInputAfterEquals ?: true
+        val newValue = if (_equalClicked.value and clearInputAfterEquals) {
             TextFieldValue().deleteTokens()
         } else {
             it.deleteTokens()
         }
+        _equalClicked.update { false }
         _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
         newValue

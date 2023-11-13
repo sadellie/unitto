@@ -94,6 +94,8 @@ Used in this dialog window. Should be short -->
     <string name="settings_auto">Auto</string>
     <string name="settings_calculator_support">History view</string>
     <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_input">Clear input</string>
+    <string name="settings_clear_input_support">Start new expression when clicking \"=\" and clicking any button</string>
     <string name="settings_color_scheme">Color scheme</string>
     <string name="settings_color_theme">Color theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
