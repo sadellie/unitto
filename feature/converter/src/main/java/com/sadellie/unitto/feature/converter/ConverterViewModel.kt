@@ -282,8 +282,8 @@ internal class ConverterViewModel @Inject constructor(
                 val updateDate = unitsRepo.updateRates(unit) ?: throw Exception("Empty cache")
 
                 // Set to fresh objects with updated basic unit values
-                _unitFrom.update { unitsRepo.getById(it!!.id) }
-                _unitTo.update { unitsRepo.getById(it!!.id) }
+                _unitFrom.update { unitFrom -> unitFrom?.id?.let { unitsRepo.getById(it) } }
+                _unitTo.update { unitTo -> unitTo?.id?.let { unitsRepo.getById(it) } }
                 _currenciesState.update { CurrencyRateUpdateState.Ready(updateDate) }
             } catch (e: Exception) {
                 _currenciesState.update { CurrencyRateUpdateState.Error }
