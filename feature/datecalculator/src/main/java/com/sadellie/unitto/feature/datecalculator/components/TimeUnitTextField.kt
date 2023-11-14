@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.datecalculator.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Icon
@@ -46,7 +45,7 @@ internal fun TimeUnitTextField(
     formatterSymbols: FormatterSymbols
 ) = CompositionLocalProvider(LocalTextInputService provides null) {
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         value = value,
         onValueChange = { newValue ->
             onValueChange(newValue.copy(newValue.text.filter { it.isDigit() }))

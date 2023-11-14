@@ -25,20 +25,23 @@ import android.content.Intent
 import android.provider.CalendarContract
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
@@ -47,6 +50,7 @@ import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -142,6 +146,16 @@ private fun AddSubtractView(
         focusedTextFieldValue = null
     }
 
+    val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
+    val inputWidth = animateFloatAsState(
+        targetValue = if (showResult) 0.5f else 1f,
+        label = "inputWidth"
+    )
+    val resultWidth = animateFloatAsState(
+        targetValue = if (showResult) 1f else 0f,
+        label = "resultWidth"
+    )
+
     Column(Modifier.fillMaxSize()) {
         Scaffold(
             modifier = Modifier
@@ -159,24 +173,23 @@ private fun AddSubtractView(
                     )
                 }
             },
-            contentWindowInsets = WindowInsets(0,0,0,0)
+            contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) {
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                FlowRow(
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    maxItemsInEachRow = 2,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     DateTimeSelectorBlock(
                         modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
+                            .fillMaxWidth(inputWidth.value),
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
                         title = stringResource(R.string.date_calculator_start),
                         dateTime = uiState.start,
                         onLongClick = { updateStart(ZonedDateTime.now()) },
@@ -187,8 +200,8 @@ private fun AddSubtractView(
 
                     DateTimeSelectorBlock(
                         modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
+                            .fillMaxWidth(resultWidth.value),
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         title = stringResource(R.string.date_calculator_end),
                         dateTime = uiState.result,
                     )
@@ -212,74 +225,110 @@ private fun AddSubtractView(
                         shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
                         icon = {}
                     ) {
-                        Icon(Icons.Outlined.Remove, stringResource(R.string.date_calculator_subtract))
+                        Icon(
+                            Icons.Outlined.Remove,
+                            stringResource(R.string.date_calculator_subtract)
+                        )
                     }
                 }
 
-                TimeUnitTextField(
-                    modifier = Modifier.onFocusEvent {
-                        if (it.hasFocus) {
-                            addSymbol = updateYears
-                            focusedTextFieldValue = uiState.years
-                        }
-                    },
-                    value = uiState.years,
-                    onValueChange = updateYears,
-                    label = stringResource(R.string.date_calculator_years),
-                    formatterSymbols = uiState.formatterSymbols
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            MaterialTheme.colorScheme.secondaryContainer,
+                            RoundedCornerShape(32.dp)
+                        )
+                        .padding(16.dp, 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    TimeUnitTextField(
+                        modifier = Modifier
+                            .onFocusEvent {
+                                if (it.hasFocus) {
+                                    addSymbol = updateYears
+                                    focusedTextFieldValue = uiState.years
+                                }
+                            }
+                            .fillMaxWidth(),
+                        value = uiState.years,
+                        onValueChange = updateYears,
+                        label = stringResource(R.string.date_calculator_years),
+                        formatterSymbols = uiState.formatterSymbols
+                    )
 
-                TimeUnitTextField(
-                    modifier = Modifier.onFocusEvent {
-                        if (it.hasFocus) {
-                            addSymbol = updateMonths
-                            focusedTextFieldValue = uiState.months
-                        }
-                    },
-                    value = uiState.months,
-                    onValueChange = updateMonths,
-                    label = stringResource(R.string.date_calculator_months),
-                    formatterSymbols = uiState.formatterSymbols
-                )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        TimeUnitTextField(
+                            modifier = Modifier
+                                .onFocusEvent {
+                                    if (it.hasFocus) {
+                                        addSymbol = updateMonths
+                                        focusedTextFieldValue = uiState.months
+                                    }
+                                }
+                                .weight(1f),
+                            value = uiState.months,
+                            onValueChange = updateMonths,
+                            label = stringResource(R.string.date_calculator_months),
+                            formatterSymbols = uiState.formatterSymbols
+                        )
 
-                TimeUnitTextField(
-                    modifier = Modifier.onFocusEvent {
-                        if (it.hasFocus) {
-                            addSymbol = updateDays
-                            focusedTextFieldValue = uiState.days
-                        }
-                    },
-                    value = uiState.days,
-                    onValueChange = updateDays,
-                    label = stringResource(R.string.date_calculator_days),
-                    formatterSymbols = uiState.formatterSymbols
-                )
+                        TimeUnitTextField(
+                            modifier = Modifier
+                                .onFocusEvent {
+                                    if (it.hasFocus) {
+                                        addSymbol = updateDays
+                                        focusedTextFieldValue = uiState.days
+                                    }
+                                }
+                                .weight(1f),
+                            value = uiState.days,
+                            onValueChange = updateDays,
+                            label = stringResource(R.string.date_calculator_days),
+                            formatterSymbols = uiState.formatterSymbols
+                        )
+                    }
 
-                TimeUnitTextField(
-                    modifier = Modifier.onFocusEvent {
-                        if (it.hasFocus) {
-                            addSymbol = updateHours
-                            focusedTextFieldValue = uiState.hours
-                        }
-                    },
-                    value = uiState.hours,
-                    onValueChange = updateHours,
-                    label = stringResource(R.string.date_calculator_hours),
-                    formatterSymbols = uiState.formatterSymbols
-                )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        TimeUnitTextField(
+                            modifier = Modifier
+                                .onFocusEvent {
+                                    if (it.hasFocus) {
+                                        addSymbol = updateHours
+                                        focusedTextFieldValue = uiState.hours
+                                    }
+                                }
+                                .weight(1f),
+                            value = uiState.hours,
+                            onValueChange = updateHours,
+                            label = stringResource(R.string.date_calculator_hours),
+                            formatterSymbols = uiState.formatterSymbols
+                        )
 
-                TimeUnitTextField(
-                    modifier = Modifier.onFocusEvent {
-                        if (it.hasFocus) {
-                            addSymbol = updateMinutes
-                            focusedTextFieldValue = uiState.minutes
-                        }
-                    },
-                    value = uiState.minutes,
-                    onValueChange = updateMinutes,
-                    label = stringResource(R.string.date_calculator_minutes),
-                    formatterSymbols = uiState.formatterSymbols
-                )
+                        TimeUnitTextField(
+                            modifier = Modifier
+                                .onFocusEvent {
+                                    if (it.hasFocus) {
+                                        addSymbol = updateMinutes
+                                        focusedTextFieldValue = uiState.minutes
+                                    }
+                                }
+                                .weight(1f),
+                            value = uiState.minutes,
+                            onValueChange = updateMinutes,
+                            label = stringResource(R.string.date_calculator_minutes),
+                            formatterSymbols = uiState.formatterSymbols
+                        )
+                    }
+                }
             }
         }
         AnimatedVisibility(

@@ -21,12 +21,14 @@ package com.sadellie.unitto.feature.datecalculator.difference
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -72,11 +74,12 @@ private fun DateDifferenceView(
             .fillMaxSize()
             .padding(16.dp),
         maxItemsInEachRow = 2,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         DateTimeSelectorBlock(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.secondaryContainer)
                 .weight(1f)
                 .fillMaxWidth(),
             title = stringResource(R.string.date_calculator_start),
@@ -85,10 +88,12 @@ private fun DateDifferenceView(
             onLongClick = { setStartDate(ZonedDateTime.now()) },
             onTimeClick = { dialogState = DialogState.FROM_TIME },
             onDateClick = { dialogState = DialogState.FROM_DATE },
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
 
         DateTimeSelectorBlock(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.secondaryContainer)
                 .weight(1f)
                 .fillMaxWidth(),
             title = stringResource(R.string.date_calculator_end),
@@ -97,6 +102,7 @@ private fun DateDifferenceView(
             onLongClick = { setStartDate(ZonedDateTime.now()) },
             onTimeClick = { dialogState = DialogState.TO_TIME },
             onDateClick = { dialogState = DialogState.TO_DATE },
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
 
         AnimatedVisibility(
