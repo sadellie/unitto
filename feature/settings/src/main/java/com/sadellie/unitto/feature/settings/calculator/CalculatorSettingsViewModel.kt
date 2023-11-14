@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CalculatorSettingsViewModel @Inject constructor(
+internal class CalculatorSettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
     val prefs = userPrefsRepository.calculatorPrefs
