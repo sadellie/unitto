@@ -292,9 +292,13 @@ internal class ConverterViewModel @Inject constructor(
     }
 
     fun updateUnitFrom(unit: AbstractUnit) = viewModelScope.launch {
-        val pair = unitsRepo.getById(
-            unit.pairId ?: unitsRepo.getCollection(unit.group).first().id
-        )
+        val pairId = unit.pairId
+        val pair: AbstractUnit = if (pairId == null) {
+            val collection = unitsRepo.getCollection(unit.group).sortedByDescending { it.counter }
+            collection.firstOrNull { it.isFavorite } ?: collection.first()
+        } else {
+            unitsRepo.getById(pairId)
+        }
 
         withContext(Dispatchers.Default) {
             unitsRepo.incrementCounter(unit)
