@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.calculator
 
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.data.common.isEqualTo
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -101,5 +102,4 @@ private fun BigDecimal.repeatingDecimals(): String? {
     return null
 }
 
-private fun BigDecimal.isEqualTo(bd: BigDecimal): Boolean = compareTo(bd) == 0
 private val maxDenominator by lazy { BigInteger("1000000000") }

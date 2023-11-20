@@ -16,16 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.userprefs
+package com.sadellie.unitto.feature.calculator
 
-interface AppPreferences {
-    val themingMode: String
-    val enableDynamicTheme: Boolean
-    val enableAmoledTheme: Boolean
-    val customColor: Long
-    val monetMode: String
-    val startingScreen: String
-    val enableToolsExperiment: Boolean
-    val systemFont: Boolean
-    val rpnMode: Boolean
+sealed class RPNInputEdit {
+    data class Digit(val value: String) : RPNInputEdit()
+    data object Delete : RPNInputEdit()
+    data object Dot : RPNInputEdit()
 }

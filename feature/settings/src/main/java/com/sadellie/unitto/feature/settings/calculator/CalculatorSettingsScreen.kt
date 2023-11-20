@@ -18,73 +18,111 @@
 
 package com.sadellie.unitto.feature.settings.calculator
 
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
-import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
-import com.sadellie.unitto.data.userprefs.CalculatorPreferencesImpl
 
 @Composable
 internal fun CalculatorSettingsRoute(
     viewModel: CalculatorSettingsViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
 ) {
-    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
-        null -> UnittoEmptyScreen()
+    when (val prefs = viewModel.uiState.collectAsStateWithLifecycle().value) {
+        CalculatorSettingsUIState.Loading -> UnittoEmptyScreen()
         else -> {
             CalculatorSettingsScreen(
-                prefs = prefs,
+                uiState = prefs,
                 navigateUpAction = navigateUpAction,
                 updatePartialHistoryView = viewModel::updatePartialHistoryView,
                 updateClearInputAfterEquals = viewModel::updateClearInputAfterEquals,
+                updateRpnMode = viewModel::updateRpnMode,
             )
         }
     }
 }
 
+// TODO Translate
 @Composable
 private fun CalculatorSettingsScreen(
-    prefs: CalculatorPreferences,
+    uiState: CalculatorSettingsUIState,
     navigateUpAction: () -> Unit,
     updatePartialHistoryView: (Boolean) -> Unit,
     updateClearInputAfterEquals: (Boolean) -> Unit,
+    updateRpnMode: (Boolean) -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.calculator_title),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
-        LazyColumn(contentPadding = padding) {
-            item("partial history") {
-                UnittoListItem(
-                    headlineText = stringResource(R.string.settings_partial_history_view),
-                    icon = Icons.Default.Timer,
-                    supportingText = stringResource(R.string.settings_partial_history_view_support),
-                    switchState = prefs.partialHistoryView,
-                    onSwitchChange = updatePartialHistoryView
-                )
+        Column(Modifier.padding(padding)) {
+            SingleChoiceSegmentedButtonRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                SegmentedButton(
+                    selected = uiState is CalculatorSettingsUIState.Standard,
+                    onClick = { updateRpnMode(false) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                ) {
+                    Text("Standard")
+                }
+                SegmentedButton(
+                    selected = uiState == CalculatorSettingsUIState.RPN,
+                    onClick = { updateRpnMode(true) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                ) {
+                    Text("RPN")
+                }
             }
 
-            item("clear input") {
-                UnittoListItem(
-                    headlineText = stringResource(R.string.settings_clear_input),
-                    icon = Icons.AutoMirrored.Filled.Backspace,
-                    supportingText = stringResource(R.string.settings_clear_input_support),
-                    switchState = prefs.clearInputAfterEquals,
-                    onSwitchChange = updateClearInputAfterEquals
-                )
+            Crossfade(
+                targetState = uiState,
+                label = "Mode switch"
+            ) { state ->
+                when (state) {
+                    is CalculatorSettingsUIState.Standard -> {
+                        Column {
+                            UnittoListItem(
+                                headlineText = stringResource(R.string.settings_partial_history_view),
+                                icon = Icons.Default.Timer,
+                                supportingText = stringResource(R.string.settings_partial_history_view_support),
+                                switchState = state.partialHistoryView,
+                                onSwitchChange = updatePartialHistoryView
+                            )
+
+                            UnittoListItem(
+                                headlineText = stringResource(R.string.settings_clear_input),
+                                icon = Icons.AutoMirrored.Filled.Backspace,
+                                supportingText = stringResource(R.string.settings_clear_input_support),
+                                switchState = state.clearInputAfterEquals,
+                                onSwitchChange = updateClearInputAfterEquals
+                            )
+                        }
+                    }
+
+                    else -> Unit
+                }
             }
         }
     }
@@ -92,21 +130,27 @@ private fun CalculatorSettingsScreen(
 
 @Preview
 @Composable
-private fun PreviewCalculatorSettingsScreen() {
+private fun PreviewCalculatorSettingsScreenStandard() {
     CalculatorSettingsScreen(
-        prefs = CalculatorPreferencesImpl(
-            radianMode = false,
-            enableVibrations = false,
-            separator = Separator.SPACE,
-            middleZero = false,
+        uiState = CalculatorSettingsUIState.Standard(
             partialHistoryView = true,
-            precision = 3,
-            outputFormat = OutputFormat.PLAIN,
-            acButton = true,
-            clearInputAfterEquals = true,
+            clearInputAfterEquals = false
         ),
         navigateUpAction = {},
         updatePartialHistoryView = {},
         updateClearInputAfterEquals = {},
+        updateRpnMode = {}
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewCalculatorSettingsScreenRPN() {
+    CalculatorSettingsScreen(
+        uiState = CalculatorSettingsUIState.RPN,
+        navigateUpAction = {},
+        updatePartialHistoryView = {},
+        updateClearInputAfterEquals = {},
+        updateRpnMode = {}
     )
 }

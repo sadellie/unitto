@@ -63,7 +63,8 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 monetMode = preferences.getMonetMode(),
                 startingScreen = preferences.getStartingScreen(),
                 enableToolsExperiment = preferences.getEnableToolsExperiment(),
-                systemFont = preferences.getSystemFont()
+                systemFont = preferences.getSystemFont(),
+                rpnMode = preferences.getRpnMode(),
             )
         }
 
@@ -287,6 +288,12 @@ class UserPreferencesRepositoryImpl @Inject constructor(
             preferences[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] = enabled
         }
     }
+
+    override suspend fun updateRpnMode(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.RPN_MODE] = enabled
+        }
+    }
 }
 
 private fun Preferences.getEnableDynamicTheme(): Boolean {
@@ -385,6 +392,10 @@ private fun Preferences.getAcButton(): Boolean {
 
 private fun Preferences.getClearInputAfterEquals(): Boolean {
     return this[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] ?: true
+}
+
+private fun Preferences.getRpnMode(): Boolean {
+    return this[PrefsKeys.RPN_MODE] ?: false
 }
 
 private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {

@@ -16,16 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.userprefs
+package com.sadellie.unitto.feature.calculator
 
-interface AppPreferences {
-    val themingMode: String
-    val enableDynamicTheme: Boolean
-    val enableAmoledTheme: Boolean
-    val customColor: Long
-    val monetMode: String
-    val startingScreen: String
-    val enableToolsExperiment: Boolean
-    val systemFont: Boolean
-    val rpnMode: Boolean
+import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import java.math.BigDecimal
+
+internal sealed class RPNCalculatorUIState {
+    data object Loading : RPNCalculatorUIState()
+
+    data class Ready(
+        val input: TextFieldValue,
+        val stack: List<BigDecimal>,
+        val precision: Int,
+        val outputFormat: Int,
+        val formatterSymbols: FormatterSymbols,
+        val allowVibration: Boolean,
+        val middleZero: Boolean,
+    ) : RPNCalculatorUIState()
 }

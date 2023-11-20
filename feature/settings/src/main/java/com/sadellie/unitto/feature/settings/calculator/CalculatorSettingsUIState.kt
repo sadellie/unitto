@@ -16,16 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.userprefs
+package com.sadellie.unitto.feature.settings.calculator
 
-interface AppPreferences {
-    val themingMode: String
-    val enableDynamicTheme: Boolean
-    val enableAmoledTheme: Boolean
-    val customColor: Long
-    val monetMode: String
-    val startingScreen: String
-    val enableToolsExperiment: Boolean
-    val systemFont: Boolean
-    val rpnMode: Boolean
+internal sealed class CalculatorSettingsUIState {
+    data object Loading : CalculatorSettingsUIState()
+
+    data object RPN : CalculatorSettingsUIState()
+
+    data class Standard(
+        val partialHistoryView: Boolean,
+        val clearInputAfterEquals: Boolean,
+    ) : CalculatorSettingsUIState()
 }

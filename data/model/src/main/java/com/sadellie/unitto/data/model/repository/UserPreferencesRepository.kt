@@ -88,4 +88,6 @@ interface UserPreferencesRepository {
     suspend fun updateAcButton(enabled: Boolean)
 
     suspend fun updateClearInputAfterEquals(enabled: Boolean)
+
+    suspend fun updateRpnMode(enabled: Boolean)
 }

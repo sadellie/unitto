@@ -24,6 +24,7 @@ import java.math.RoundingMode
 import kotlin.math.floor
 import kotlin.math.log10
 
+// TODO Use everywhere
 fun BigDecimal.format(
     scale: Int,
     outputFormat: Int
@@ -34,6 +35,7 @@ fun BigDecimal.format(
         .toStringWith(outputFormat)
 }
 
+// TODO Move tests and mark as internal
 /**
  * Shorthand function to use correct `toString` method according to [outputFormat].
  */
@@ -76,5 +78,7 @@ fun BigDecimal.setMinimumRequiredScale(prefScale: Int): BigDecimal {
  * Removes all trailing zeroes.
  */
 fun BigDecimal.trimZeros(): BigDecimal {
-    return if (this.compareTo(BigDecimal.ZERO) == 0) BigDecimal.ZERO else this.stripTrailingZeros()
+    return if (this.isEqualTo(BigDecimal.ZERO)) BigDecimal.ZERO else this.stripTrailingZeros()
 }
+
+fun BigDecimal.isEqualTo(bd: BigDecimal): Boolean = compareTo(bd) == 0

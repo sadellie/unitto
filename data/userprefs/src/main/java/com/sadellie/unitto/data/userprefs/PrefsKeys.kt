@@ -24,28 +24,35 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 internal object PrefsKeys {
+    // COMMON
     val THEMING_MODE = stringPreferencesKey("THEMING_MODE_PREF_KEY")
     val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")
     val ENABLE_AMOLED_THEME = booleanPreferencesKey("ENABLE_AMOLED_THEME_PREF_KEY")
     val CUSTOM_COLOR = longPreferencesKey("CUSTOM_COLOR_PREF_KEY")
     val MONET_MODE = stringPreferencesKey("MONET_MODE_PREF_KEY")
+    val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
+    val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
+    val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
+    val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
+    val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
+    val AC_BUTTON = booleanPreferencesKey("AC_BUTTON_PREF_KEY")
+    val RPN_MODE = booleanPreferencesKey("RPN_MODE_PREF_KEY")
+
+    // FORMATTER
     val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
     val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
     val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
+
+    // CALCULATOR
+    val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
+    val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
+    val CLEAR_INPUT_AFTER_EQUALS = booleanPreferencesKey("CLEAR_INPUT_AFTER_EQUALS_PREF_KEY")
+
+    // UNIT CONVERTER
     val LATEST_LEFT_SIDE = stringPreferencesKey("LATEST_LEFT_SIDE_PREF_KEY")
     val LATEST_RIGHT_SIDE = stringPreferencesKey("LATEST_RIGHT_SIDE_PREF_KEY")
     val SHOWN_UNIT_GROUPS = stringPreferencesKey("SHOWN_UNIT_GROUPS_PREF_KEY")
-    val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
-    val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
-    val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
-    val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
-    val UNIT_CONVERTER_FAVORITES_ONLY =
-        booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
+    val UNIT_CONVERTER_FAVORITES_ONLY = booleanPreferencesKey("UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY")
     val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey("UNIT_CONVERTER_FORMAT_TIME_PREF_KEY")
     val UNIT_CONVERTER_SORTING = stringPreferencesKey("UNIT_CONVERTER_SORTING_PREF_KEY")
-    val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
-    val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
-    val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
-    val AC_BUTTON = booleanPreferencesKey("AC_BUTTON_PREF_KEY")
-    val CLEAR_INPUT_AFTER_EQUALS = booleanPreferencesKey("CLEAR_INPUT_AFTER_EQUALS_PREF_KEY")
 }

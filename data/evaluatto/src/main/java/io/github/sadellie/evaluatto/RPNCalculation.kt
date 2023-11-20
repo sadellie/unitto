@@ -16,16 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.userprefs
+package io.github.sadellie.evaluatto
 
-interface AppPreferences {
-    val themingMode: String
-    val enableDynamicTheme: Boolean
-    val enableAmoledTheme: Boolean
-    val customColor: Long
-    val monetMode: String
-    val startingScreen: String
-    val enableToolsExperiment: Boolean
-    val systemFont: Boolean
-    val rpnMode: Boolean
+sealed class RPNCalculation {
+    data object Negate : RPNCalculation()
+
+    data object Clear : RPNCalculation()
+    data object Enter : RPNCalculation()
+    data object RotateUp : RPNCalculation()
+    data object RotateDown : RPNCalculation()
+    data object Swap : RPNCalculation()
+    data object Pop : RPNCalculation()
+
+    data object Plus : RPNCalculation()
+    data object Minus : RPNCalculation()
+    data object Multiply : RPNCalculation()
+    data object Divide : RPNCalculation()
+    data object Percent : RPNCalculation()
+    data object Power : RPNCalculation() // unused
 }

@@ -21,20 +21,7 @@ package io.github.sadellie.evaluatto
 import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.base.Token
 import java.math.BigDecimal
-import java.math.MathContext
 import java.math.RoundingMode
-import kotlin.math.acos
-import kotlin.math.asin
-import kotlin.math.atan
-import kotlin.math.cos
-import kotlin.math.exp
-import kotlin.math.ln
-import kotlin.math.log
-import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.tan
-
-private val maxFactorial by lazy { BigDecimal("9999") }
 
 sealed class ExpressionException(override val message: String): Exception(message) {
     class DivideByZero : ExpressionException("Can't divide by zero")
@@ -239,78 +226,4 @@ class Expression(
 
         return expr
     }
-}
-
-private fun BigDecimal.sin(radianMode: Boolean): BigDecimal {
-    val angle: Double = if (radianMode) this.toDouble() else Math.toRadians(this.toDouble())
-    return sin(angle).toBigDecimal()
-}
-
-private fun BigDecimal.arsin(radianMode: Boolean): BigDecimal {
-    val angle: Double = asin(this.toDouble())
-    return (if (radianMode) angle else Math.toDegrees(angle)).toBigDecimal()
-}
-
-private fun BigDecimal.cos(radianMode: Boolean): BigDecimal {
-    val angle: Double = if (radianMode) this.toDouble() else Math.toRadians(this.toDouble())
-    return cos(angle).toBigDecimal()
-}
-
-private fun BigDecimal.arcos(radianMode: Boolean): BigDecimal {
-    val angle: Double = acos(this.toDouble())
-    return (if (radianMode) angle else Math.toDegrees(angle)).toBigDecimal()
-}
-
-private fun BigDecimal.tan(radianMode: Boolean): BigDecimal {
-    val angle: Double = if (radianMode) this.toDouble() else Math.toRadians(this.toDouble())
-    return tan(angle).toBigDecimal()
-}
-
-private fun BigDecimal.artan(radianMode: Boolean): BigDecimal {
-    val angle: Double = atan(this.toDouble())
-    return (if (radianMode) angle else Math.toDegrees(angle)).toBigDecimal()
-}
-
-private fun BigDecimal.ln(): BigDecimal {
-    return ln(this.toDouble()).toBigDecimal()
-}
-
-private fun BigDecimal.log(): BigDecimal {
-    return log(this.toDouble(), 10.0).toBigDecimal()
-}
-
-private fun BigDecimal.exp(): BigDecimal {
-    return exp(this.toDouble()).toBigDecimal()
-}
-
-private fun BigDecimal.pow(n: BigDecimal): BigDecimal {
-    val mathContext: MathContext = MathContext.DECIMAL64
-
-    var right = n
-    val signOfRight = right.signum()
-    right = right.multiply(signOfRight.toBigDecimal())
-    val remainderOfRight = right.remainder(BigDecimal.ONE)
-    val n2IntPart = right.subtract(remainderOfRight)
-    val intPow = pow(n2IntPart.intValueExact(), mathContext)
-    val doublePow = BigDecimal(
-        toDouble().pow(remainderOfRight.toDouble())
-    )
-
-    var result = intPow.multiply(doublePow, mathContext)
-    if (signOfRight == -1) result =
-        BigDecimal.ONE.divide(result, mathContext.precision, RoundingMode.HALF_UP)
-
-    return result
-}
-
-private fun BigDecimal.factorial(): BigDecimal {
-    if (this.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) != 0) throw ExpressionException.FactorialCalculation()
-    if (this < BigDecimal.ZERO) throw ExpressionException.FactorialCalculation()
-    if (this > maxFactorial) throw ExpressionException.TooBig()
-
-    var expr = this
-    for (i in 1 until this.toInt()) {
-        expr *= BigDecimal(i)
-    }
-    return expr
 }

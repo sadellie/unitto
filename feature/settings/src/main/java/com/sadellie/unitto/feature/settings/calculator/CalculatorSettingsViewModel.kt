@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,8 +31,20 @@ import javax.inject.Inject
 internal class CalculatorSettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
-    val prefs = userPrefsRepository.calculatorPrefs
-        .stateIn(viewModelScope, null)
+    val uiState = combine(
+        userPrefsRepository.appPrefs,
+        userPrefsRepository.calculatorPrefs,
+    ) { app, calc ->
+        if (app.rpnMode) {
+            CalculatorSettingsUIState.RPN
+        } else {
+            CalculatorSettingsUIState.Standard(
+                partialHistoryView = calc.partialHistoryView,
+                clearInputAfterEquals = calc.clearInputAfterEquals
+            )
+        }
+    }
+        .stateIn(viewModelScope, CalculatorSettingsUIState.Loading)
 
     fun updatePartialHistoryView(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updatePartialHistoryView(enabled)
@@ -39,5 +52,9 @@ internal class CalculatorSettingsViewModel @Inject constructor(
 
     fun updateClearInputAfterEquals(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateClearInputAfterEquals(enabled)
+    }
+
+    fun updateRpnMode(enabled: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateRpnMode(enabled)
     }
 }

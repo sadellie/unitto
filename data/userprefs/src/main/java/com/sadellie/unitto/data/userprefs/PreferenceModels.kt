@@ -41,6 +41,7 @@ data class AppPreferencesImpl(
     override val startingScreen: String,
     override val enableToolsExperiment: Boolean,
     override val systemFont: Boolean,
+    override val rpnMode: Boolean,
 ) : AppPreferences
 
 data class GeneralPreferencesImpl(
