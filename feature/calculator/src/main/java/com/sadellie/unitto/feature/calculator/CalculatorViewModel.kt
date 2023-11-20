@@ -29,11 +29,9 @@ import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.core.ui.common.textfield.getTextField
+import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.isExpression
-import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.common.toStringWith
-import com.sadellie.unitto.data.common.trimZeros
 import com.sadellie.unitto.data.model.repository.CalculatorHistoryRepository
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -104,9 +102,7 @@ internal class CalculatorViewModel @Inject constructor(
                             input = ui.input.text,
                             radianMode = ui.radianMode,
                         )
-                            .setMinimumRequiredScale(ui.precision)
-                            .trimZeros()
-                            .toStringWith(ui.outputFormat)
+                            .format(ui.precision, ui.outputFormat)
                     )
                 } catch (e: ExpressionException.DivideByZero) {
                     CalculationResult.Empty
@@ -198,10 +194,7 @@ internal class CalculatorViewModel @Inject constructor(
 
         _equalClicked.update { true }
 
-        val resultFormatted = result
-            .setMinimumRequiredScale(prefs.precision)
-            .trimZeros()
-            .toStringWith(prefs.outputFormat)
+        val resultFormatted = result.format(prefs.precision, prefs.outputFormat)
 
         withContext(Dispatchers.IO) {
             calculatorHistoryRepository.add(

@@ -24,10 +24,8 @@ import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
-import com.sadellie.unitto.data.common.setMinimumRequiredScale
+import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.common.toStringWith
-import com.sadellie.unitto.data.common.trimZeros
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,9 +76,7 @@ class FormattingViewModel @Inject constructor(
         }
 
         return BigDecimal(bigD)
-            .setMinimumRequiredScale(precision)
-            .trimZeros()
-            .toStringWith(outputFormat)
+            .format(precision, outputFormat)
             .formatExpression(formatterSymbols)
     }
 

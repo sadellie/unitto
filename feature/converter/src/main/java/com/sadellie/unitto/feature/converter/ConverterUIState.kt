@@ -24,6 +24,9 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
+import com.sadellie.unitto.data.common.isEqualTo
+import com.sadellie.unitto.data.common.isGreaterThan
+import com.sadellie.unitto.data.common.isLessThan
 import com.sadellie.unitto.data.common.trimZeros
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
@@ -62,7 +65,7 @@ internal sealed class ConverterResult {
     data class Default(val value: BigDecimal) : ConverterResult() {
         override fun equals(other: Any?): Boolean {
             if (other !is Default) return false
-            return this.value.compareTo(other.value) == 0
+            return this.value.isEqualTo(other.value)
         }
 
         override fun hashCode(): Int = value.hashCode()
@@ -90,35 +93,35 @@ internal sealed class ConverterResult {
 internal fun ConverterResult.Time.format(mContext: Context, formatterSymbols: FormatterSymbols): String {
     val result = mutableListOf<String>()
 
-    if (day.compareTo(BigDecimal.ZERO) == 1) {
+    if (day.isGreaterThan(BigDecimal.ZERO)) {
         result += "${day.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_day_short)}"
     }
 
-    if (hour.compareTo(BigDecimal.ZERO) == 1) {
+    if (hour.isGreaterThan(BigDecimal.ZERO)) {
         result += "${hour.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_hour_short)}"
     }
 
-    if (minute.compareTo(BigDecimal.ZERO) == 1) {
+    if (minute.isGreaterThan(BigDecimal.ZERO)) {
         result += "${minute.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_minute_short)}"
     }
 
-    if (second.compareTo(BigDecimal.ZERO) == 1) {
+    if (second.isGreaterThan(BigDecimal.ZERO)) {
         result += "${second.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_second_short)}"
     }
 
-    if (millisecond.compareTo(BigDecimal.ZERO) == 1) {
+    if (millisecond.isGreaterThan(BigDecimal.ZERO)) {
         result += "${millisecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_millisecond_short)}"
     }
 
-    if (microsecond.compareTo(BigDecimal.ZERO) == 1) {
+    if (microsecond.isGreaterThan(BigDecimal.ZERO)) {
         result += "${microsecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_microsecond_short)}"
     }
 
-    if (nanosecond.compareTo(BigDecimal.ZERO) == 1) {
+    if (nanosecond.isGreaterThan(BigDecimal.ZERO)) {
         result += "${nanosecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_nanosecond_short)}"
     }
 
-    if (attosecond.compareTo(BigDecimal.ZERO) == 1) {
+    if (attosecond.isGreaterThan(BigDecimal.ZERO)) {
         result += "${attosecond.toPlainString().formatExpression(formatterSymbols)}${mContext.getString(R.string.unit_attosecond_short)}"
     }
 
@@ -131,7 +134,7 @@ internal fun formatTime(
     val negative = input < BigDecimal.ZERO
     val inputAbs = input.abs()
 
-    if (inputAbs.compareTo(attosecondBasicUnit) == -1) return ConverterResult.Time(
+    if (inputAbs.isLessThan(attosecondBasicUnit)) return ConverterResult.Time(
         negative = negative,
         day = BigDecimal.ZERO,
         hour = BigDecimal.ZERO,
@@ -143,7 +146,7 @@ internal fun formatTime(
         attosecond = inputAbs
     )
 
-    if (inputAbs.compareTo(nanosecondBasicUnit) == -1) return ConverterResult.Time(
+    if (inputAbs.isLessThan(nanosecondBasicUnit)) return ConverterResult.Time(
         negative = negative,
         day = BigDecimal.ZERO,
         hour = BigDecimal.ZERO,

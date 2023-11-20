@@ -19,6 +19,7 @@
 package com.sadellie.unitto.data.model.unit
 
 import com.sadellie.unitto.core.base.MAX_PRECISION
+import com.sadellie.unitto.data.common.isEqualTo
 import com.sadellie.unitto.data.model.UnitGroup
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -35,7 +36,7 @@ data class FuelBackward(
 ) : DefaultUnit {
     override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
         // Avoid division by zero
-        if (unitTo.basicUnit.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ZERO
+        if (unitTo.basicUnit.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
 
         return when (unitTo) {
             is FuelForward -> this

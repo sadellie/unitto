@@ -16,9 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.units
+package com.sadellie.unitto.data.common
 
-import com.sadellie.unitto.data.common.setMinimumRequiredScale
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigDecimal

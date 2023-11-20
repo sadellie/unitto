@@ -20,8 +20,8 @@ package com.sadellie.unitto.data.units
 
 import android.content.Context
 import androidx.room.Room
-import com.sadellie.unitto.data.common.setMinimumRequiredScale
-import com.sadellie.unitto.data.common.trimZeros
+import com.sadellie.unitto.core.base.OutputFormat
+import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.database.UnittoDatabase
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.DefaultUnit
@@ -42,7 +42,7 @@ class AllUnitsTest {
     private var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
     private val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
     private val database = Room.inMemoryDatabaseBuilder(mContext, UnittoDatabase::class.java).build()
-    private val allUnitsRepository = UnitsRepository(
+    private val allUnitsRepository = UnitsRepositoryImpl(
         unitsDao = database.unitsDao(),
         currencyRatesDao = database.currencyRatesDao(),
         mContext = mContext
@@ -550,14 +550,10 @@ class AllUnitsTest {
             UnitGroup.NUMBER_BASE -> (unitFrom as NumberBaseUnit).convert((unitTo as NumberBaseUnit), value)
             UnitGroup.FLOW_RATE -> (unitFrom as ReverseUnit)
                 .convert((unitTo as DefaultUnit), BigDecimal(value))
-                .setMinimumRequiredScale(5)
-                .trimZeros()
-                .toPlainString()
+                .format(5, OutputFormat.PLAIN)
             else -> (unitFrom as DefaultUnit)
                 .convert((unitTo as DefaultUnit), BigDecimal(value))
-                .setMinimumRequiredScale(5)
-                .trimZeros()
-                .toPlainString()
+                .format(5, OutputFormat.PLAIN)
         }
         assertEquals("Failed at $this to $checkingId", expected, actual)
         println("PASSED: $this -> $expected == $actual")
