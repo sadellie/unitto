@@ -116,8 +116,8 @@ private fun RPNCalculatorKeyboardPortrait(
             columns = 4
         ) { width, height ->
             val aModifier = Modifier
-                .fillMaxHeight(height)
                 .fillMaxWidth(width)
+                .fillMaxHeight(height)
 
             KeyboardButtonAdditional(aModifier, UnittoIcons.Swap, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.Swap) }
             KeyboardButtonAdditional(aModifier, UnittoIcons.Up, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.RotateUp) }
@@ -131,8 +131,8 @@ private fun RPNCalculatorKeyboardPortrait(
             columns = 4
         ) { width, height ->
             val bModifier = Modifier
-                .fillMaxHeight(height)
                 .fillMaxWidth(width)
+                .fillMaxHeight(height)
 
             KeyboardButtonTertiary(bModifier, UnittoIcons.Clear, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Clear) }
             KeyboardButtonFilled(bModifier, UnittoIcons.Unary, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Negate) }

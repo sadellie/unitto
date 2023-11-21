@@ -39,14 +39,16 @@ import androidx.compose.ui.Modifier
  * @param content Content, usually some buttons. Use `width` and `height` in [fillMaxWidth]
  * and [fillMaxHeight] to build a [Modifier]. Passed [Composable]s are equally distributed, occupy
  * entire height and width.
+ *
+ * _Note_: Do not use provided `width` if [horizontalPadding] is 0. Use `weight` modifier.
  */
 @Composable
 fun KeypadFlow(
     modifier: Modifier,
     rows: Int,
     columns: Int,
-    @IntRange(0, 100) verticalPadding: Int = 10,
     @IntRange(0, 100) horizontalPadding: Int = 10,
+    @IntRange(0, 100) verticalPadding: Int = 10,
     content: @Composable FlowRowScope.(width: Float, height: Float) -> Unit
 ) {
     val height: Float = remember { (1f - verticalPadding / 100f) / rows }

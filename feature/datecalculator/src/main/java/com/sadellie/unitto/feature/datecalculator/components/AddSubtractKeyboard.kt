@@ -71,26 +71,26 @@ internal fun AddSubtractKeyboard(
                 .weight(3f),
             rows = 4,
             columns = 3
-        ) { width, height ->  
-            val mainButtonModifier = Modifier
+        ) { width, height ->
+            val buttonModifier = Modifier
                 .fillMaxWidth(width)
                 .fillMaxHeight(height)
 
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._7) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._8) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._9) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._7) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._8) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._9) }
 
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._4) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._5) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._6) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._4) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._5) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._6) }
 
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._1) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._2) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._3) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._1) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._2) }
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._3) }
 
-            Spacer(mainButtonModifier)
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
-            Spacer(mainButtonModifier)
+            Spacer(buttonModifier)
+            KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
+            Spacer(buttonModifier)
         }
 
         KeypadFlow(

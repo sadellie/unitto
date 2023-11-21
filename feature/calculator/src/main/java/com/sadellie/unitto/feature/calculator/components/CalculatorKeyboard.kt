@@ -210,6 +210,7 @@ private fun PortraitKeyboard(
             ) { inverse ->
                 if (inverse) {
                     AdditionalPortrait(
+                        modifier = Modifier.fillMaxWidth(),
                         showAdditional = showAdditional,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
@@ -232,6 +233,7 @@ private fun PortraitKeyboard(
                     )
                 } else {
                     AdditionalPortrait(
+                        modifier = Modifier.fillMaxWidth(),
                         showAdditional = showAdditional,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
@@ -335,6 +337,7 @@ private fun PortraitKeyboard(
  */
 @Composable
 private fun AdditionalPortrait(
+    modifier: Modifier,
     showAdditional: Boolean,
     buttonHeight: Dp,
     content1: @Composable (buttonModifier: Modifier) -> Unit,
@@ -342,7 +345,7 @@ private fun AdditionalPortrait(
 ) {
     AnimatedContent(
         targetState = showAdditional,
-        modifier = Modifier,
+        modifier = modifier,
         transitionSpec = {
             expandVertically(expandFrom = Alignment.Top) togetherWith
                     shrinkVertically(shrinkTowards = Alignment.Top) using (SizeTransform())
@@ -355,12 +358,14 @@ private fun AdditionalPortrait(
                     .fillMaxWidth(),
                 rows = 3,
                 columns = 4,
-                verticalPadding = 0,
                 horizontalPadding = 0,
-            ) { width, height ->
+                verticalPadding = 0,
+            ) { _, _ ->
+                // Can't use provided width and height due to rounding errors. It's ok since weight
+                // achieves same result (no padding and equally distributed).
                 val buttonModifier = Modifier
-                    .fillMaxWidth(width)
-                    .fillMaxHeight(height)
+                    .weight(1f)
+                    .height(buttonHeight)
 
                 content1(buttonModifier)
                 content2(buttonModifier)
@@ -372,12 +377,12 @@ private fun AdditionalPortrait(
                     .fillMaxWidth(),
                 rows = 1,
                 columns = 4,
-                verticalPadding = 0,
                 horizontalPadding = 0,
-            ) { width, height ->
+                verticalPadding = 0,
+            ) { _, _ ->
                 val buttonModifier = Modifier
-                    .fillMaxWidth(width)
-                    .fillMaxHeight(height)
+                    .weight(1f)
+                    .height(buttonHeight)
 
                 content1(buttonModifier)
             }
@@ -527,7 +532,7 @@ private fun LandscapeKeyboard(
 @Composable
 private fun PreviewCalculatorKeyboard() {
     CalculatorKeyboard(
-        modifier = Modifier,
+        modifier = Modifier.fillMaxHeight(0.75f),
         radianMode = true,
         fractional = ".",
         addSymbol = {},
