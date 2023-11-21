@@ -85,6 +85,7 @@ internal class RPNCalculatorViewModel @Inject constructor(
             RPNInputEdit.Delete -> input.deleteTokens()
         }
 
+        _input.update { newInput }
         savedStateHandle[_inputKey] = newInput.text
     }
 
