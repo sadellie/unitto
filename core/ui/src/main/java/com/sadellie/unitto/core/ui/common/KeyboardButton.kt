@@ -33,7 +33,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
-import com.sadellie.unitto.core.ui.isPortrait
 import kotlinx.coroutines.launch
 
 @Composable
@@ -83,7 +82,7 @@ fun KeyboardButtonLight(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
-    contentHeight: Float = if (isPortrait()) 0.578f else 0.793f,
+    contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -104,7 +103,7 @@ fun KeyboardButtonFilled(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
-    contentHeight: Float = if (isPortrait()) 0.578f else 0.793f,
+    contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -125,7 +124,7 @@ fun KeyboardButtonAdditional(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
-    contentHeight: Float = 0.906f,
+    contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -146,7 +145,7 @@ fun KeyboardButtonTertiary(
     modifier: Modifier,
     icon: ImageVector,
     allowVibration: Boolean,
-    contentHeight: Float = if (isPortrait()) 0.578f else 0.793f,
+    contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -161,3 +160,18 @@ fun KeyboardButtonTertiary(
         allowVibration = allowVibration,
     )
 }
+
+/**
+ * Mostly for main button in portrait mode. Changes icon size inside.
+ */
+const val KeyboardButtonContentHeightTall = 0.578f
+
+/**
+ * Mostly for main button in landscape mode. Changes icon size inside.
+ */
+const val KeyboardButtonContentHeightShort = 0.793f
+
+/**
+ * Mostly for additional buttons. Changes icon size inside.
+ */
+const val KeyboardButtonContentHeightWide = 0.906f

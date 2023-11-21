@@ -18,21 +18,26 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
+import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightShort
+import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightTall
+import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightWide
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
 import com.sadellie.unitto.core.ui.common.KeyboardButtonTertiary
+import com.sadellie.unitto.core.ui.common.KeypadFlow
 import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Clear
@@ -61,7 +66,6 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Unary
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Up
 import io.github.sadellie.evaluatto.RPNCalculation
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun RPNCalculatorKeyboard(
     modifier: Modifier,
@@ -73,69 +77,151 @@ internal fun RPNCalculatorKeyboard(
 ) {
     val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
 
-    val columns = 4
-    val mainButtonRows = 5f
-    val additionalButtonRows = 1f
-    val additionalButtonRowFactor = 0.7f // How much smaller are the additional buttons than the main buttons
-    val additionalButtonIconHeight = 0.65f
-    val fillFactor = 0.92f
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        RPNCalculatorKeyboardPortrait(
+            modifier = modifier,
+            fractionalIcon = fractionalIcon,
+            middleZero = middleZero,
+            allowVibration = allowVibration,
+            onCalculationClick = onCalculationClick,
+            onInputEditClick = onInputEditClick
+        )
+    } else {
+        RPNCalculatorKeyboardLandscape(
+            modifier = modifier,
+            fractionalIcon = fractionalIcon,
+            middleZero = middleZero,
+            allowVibration = allowVibration,
+            onCalculationClick = onCalculationClick,
+            onInputEditClick = onInputEditClick
+        )
+    }
+}
 
-    val rows = remember { mainButtonRows + additionalButtonRows * additionalButtonRowFactor }
-    val height = remember { fillFactor / rows }
-    val width = remember { fillFactor / columns }
-
-    FlowRow(
-        maxItemsInEachRow = columns,
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalArrangement = Arrangement.SpaceAround
+@Composable
+private fun RPNCalculatorKeyboardPortrait(
+    modifier: Modifier,
+    fractionalIcon: ImageVector,
+    middleZero: Boolean,
+    allowVibration: Boolean,
+    onCalculationClick: (RPNCalculation) -> Unit,
+    onInputEditClick: (RPNInputEdit) -> Unit,
+) {
+    Column(
+        modifier = modifier
     ) {
-        val aModifier = Modifier
-            .fillMaxHeight(height * additionalButtonRowFactor)
-            .fillMaxWidth(width)
+        KeypadFlow(
+            modifier = Modifier.fillMaxHeight(0.1f).fillMaxWidth(),
+            rows = 1,
+            columns = 4
+        ) { width, height ->
+            val aModifier = Modifier
+                .fillMaxHeight(height)
+                .fillMaxWidth(width)
 
+            KeyboardButtonAdditional(aModifier, UnittoIcons.Swap, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.Swap) }
+            KeyboardButtonAdditional(aModifier, UnittoIcons.Up, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.RotateUp) }
+            KeyboardButtonAdditional(aModifier, UnittoIcons.Down, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.RotateDown) }
+            KeyboardButtonAdditional(aModifier, UnittoIcons.Pop, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.Pop) }
+        }
+
+        KeypadFlow(
+            modifier = Modifier.weight(1f).fillMaxSize(),
+            rows = 5,
+            columns = 4
+        ) { width, height ->
+            val bModifier = Modifier
+                .fillMaxHeight(height)
+                .fillMaxWidth(width)
+
+            KeyboardButtonTertiary(bModifier, UnittoIcons.Clear, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Clear) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Unary, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Negate) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Percent, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Percent) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Divide, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Divide) }
+
+            KeyboardButtonLight(bModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._7)) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._8)) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._9)) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Multiply, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Multiply) }
+
+            KeyboardButtonLight(bModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._4)) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._5)) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._6)) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Minus, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Minus) }
+
+            KeyboardButtonLight(bModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._1)) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._2)) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._3)) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Plus, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Plus) }
+
+            if (middleZero) {
+                KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Dot) }
+                KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+            } else {
+                KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+                KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Dot) }
+            }
+            KeyboardButtonLight(bModifier, UnittoIcons.Backspace, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Delete) }
+            KeyboardButtonFilled(bModifier, UnittoIcons.Enter, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Enter) }
+        }
+    }
+}
+
+@Composable
+private fun RPNCalculatorKeyboardLandscape(
+    modifier: Modifier,
+    fractionalIcon: ImageVector,
+    middleZero: Boolean,
+    allowVibration: Boolean,
+    onCalculationClick: (RPNCalculation) -> Unit,
+    onInputEditClick: (RPNInputEdit) -> Unit,
+) {
+    KeypadFlow(
+        modifier = modifier,
+        rows = 4,
+        columns = 6
+    ) { width, height ->
         val bModifier = Modifier
             .fillMaxHeight(height)
             .fillMaxWidth(width)
 
-        KeyboardButtonAdditional(modifier = aModifier, icon = UnittoIcons.Swap, allowVibration = allowVibration, contentHeight = additionalButtonIconHeight) { onCalculationClick(RPNCalculation.Swap) }
-        KeyboardButtonAdditional(modifier = aModifier, icon = UnittoIcons.Up, allowVibration = allowVibration, contentHeight = additionalButtonIconHeight) { onCalculationClick(RPNCalculation.RotateUp) }
-        KeyboardButtonAdditional(modifier = aModifier, icon = UnittoIcons.Down, allowVibration = allowVibration, contentHeight = additionalButtonIconHeight) { onCalculationClick(RPNCalculation.RotateDown) }
-        KeyboardButtonAdditional(modifier = aModifier, icon = UnittoIcons.Pop, allowVibration = allowVibration, contentHeight = additionalButtonIconHeight) { onCalculationClick(RPNCalculation.Pop) }
+        KeyboardButtonAdditional(bModifier, UnittoIcons.Swap, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.Swap) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._7)) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._8)) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._9)) }
+        KeyboardButtonTertiary(bModifier, UnittoIcons.Clear, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Clear) }
+        KeyboardButtonFilled(bModifier, UnittoIcons.Unary, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Negate) }
 
-        KeyboardButtonTertiary(modifier = bModifier, icon = UnittoIcons.Clear, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Clear) }
-        KeyboardButtonFilled(modifier = bModifier, icon = UnittoIcons.Unary, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Negate) }
-        KeyboardButtonFilled(modifier = bModifier, icon = UnittoIcons.Percent, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Percent) }
-        KeyboardButtonFilled(modifier = bModifier, icon = UnittoIcons.Divide, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Divide) }
+        KeyboardButtonAdditional(bModifier, UnittoIcons.Up, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.RotateUp) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._4)) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._5)) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._6)) }
+        KeyboardButtonFilled(bModifier, UnittoIcons.Multiply, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Multiply) }
+        KeyboardButtonFilled(bModifier, UnittoIcons.Divide, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Divide) }
 
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key7, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._7)) }
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key8, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._8)) }
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key9, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._9)) }
-        KeyboardButtonFilled(modifier = bModifier, icon = UnittoIcons.Multiply, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Multiply) }
+        KeyboardButtonAdditional(bModifier, UnittoIcons.Down, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.RotateDown) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._1)) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._2)) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._3)) }
+        KeyboardButtonFilled(bModifier, UnittoIcons.Plus, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Plus) }
+        KeyboardButtonFilled(bModifier, UnittoIcons.Minus, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Minus) }
 
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key4, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._4)) }
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key5, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._5)) }
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key6, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._6)) }
-        KeyboardButtonFilled(modifier = bModifier, icon = UnittoIcons.Minus, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Minus) }
-
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key1, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._1)) }
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key2, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._2)) }
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key3, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._3)) }
-        KeyboardButtonFilled(modifier = bModifier, icon = UnittoIcons.Plus, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Plus) }
-
+        KeyboardButtonAdditional(bModifier, UnittoIcons.Pop, allowVibration, KeyboardButtonContentHeightWide) { onCalculationClick(RPNCalculation.Pop) }
         if (middleZero) {
-            KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key0, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
-            KeyboardButtonLight(modifier = bModifier, icon = fractionalIcon, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Dot) }
+            KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Dot) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
         } else {
-            KeyboardButtonLight(modifier = bModifier, icon = fractionalIcon, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Dot) }
-            KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Key0, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+            KeyboardButtonLight(bModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+            KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Dot) }
         }
-        KeyboardButtonLight(modifier = bModifier, icon = UnittoIcons.Backspace, allowVibration = allowVibration) { onInputEditClick(RPNInputEdit.Delete) }
-        KeyboardButtonFilled(modifier = bModifier, icon = UnittoIcons.Enter, allowVibration = allowVibration) { onCalculationClick(RPNCalculation.Enter) }
+        KeyboardButtonLight(bModifier, UnittoIcons.Backspace, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Delete) }
+        KeyboardButtonFilled(bModifier, UnittoIcons.Percent, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Percent) }
+        KeyboardButtonFilled(bModifier, UnittoIcons.Enter, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Enter) }
     }
 }
 
-@Preview
+@Preview(device = "spec:parent=pixel_5,orientation=portrait")
+@Preview(device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
 private fun PreviewKeyboard() {
     RPNCalculatorKeyboard(

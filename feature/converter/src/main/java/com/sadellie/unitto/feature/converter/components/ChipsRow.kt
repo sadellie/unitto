@@ -23,7 +23,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -112,7 +111,6 @@ internal fun ChipsRow(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChipsFlexRow(
     items: List<UnitGroup> = ALL_UNIT_GROUPS,

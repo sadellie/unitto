@@ -23,7 +23,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -61,7 +60,6 @@ internal fun DateDifferencePage(
 }
 
 @Composable
-@OptIn(ExperimentalLayoutApi::class)
 private fun DateDifferenceView(
     uiState: DifferenceUIState,
     setStartDate: (ZonedDateTime) -> Unit,
