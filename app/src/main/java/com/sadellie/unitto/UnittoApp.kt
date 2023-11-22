@@ -40,10 +40,7 @@ import com.sadellie.unitto.core.base.Shortcut
 import com.sadellie.unitto.core.base.TOP_LEVEL_START_ROUTES
 import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
 import com.sadellie.unitto.core.ui.common.UnittoModalNavigationDrawer
-import com.sadellie.unitto.core.ui.common.close
-import com.sadellie.unitto.core.ui.common.isOpen
-import com.sadellie.unitto.core.ui.common.open
-import com.sadellie.unitto.core.ui.common.rememberUnittoDrawerState
+import com.sadellie.unitto.core.ui.common.rememberDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.pushDynamicShortcut
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
@@ -65,8 +62,8 @@ internal fun UnittoApp(prefs: AppPreferences?) {
     val sysUiController = rememberSystemUiController()
 
     // Navigation drawer stuff
-    val drawerState = rememberUnittoDrawerState()
     val drawerScope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState()
 
     val shortcutsScope = rememberCoroutineScope()
 
@@ -99,6 +96,9 @@ internal fun UnittoApp(prefs: AppPreferences?) {
             val useDarkIcons = remember(backgroundColor) { backgroundColor.luminance() > 0.5f }
 
             UnittoModalNavigationDrawer(
+                modifier = Modifier,
+                state = drawerState,
+                gesturesEnabled = gesturesEnabled,
                 drawer = {
                     UnittoDrawerSheet(
                         modifier = Modifier,
@@ -127,10 +127,6 @@ internal fun UnittoApp(prefs: AppPreferences?) {
                         }
                     }
                 },
-                modifier = Modifier,
-                state = drawerState,
-                gesturesEnabled = gesturesEnabled,
-                scope = drawerScope,
                 content = {
                     UnittoNavigation(
                         navController = navController,

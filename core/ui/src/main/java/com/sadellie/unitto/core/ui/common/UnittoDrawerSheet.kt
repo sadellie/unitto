@@ -21,7 +21,10 @@ package com.sadellie.unitto.core.ui.common
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -62,6 +65,8 @@ fun UnittoDrawerSheet(
 
     ModalDrawerSheet(
         modifier = modifier
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
     ) {
         AnimatedContent(
             targetState = showHello,

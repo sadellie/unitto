@@ -28,68 +28,152 @@ import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.model.DrawerItems
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-// Why do I have to do it myself?
+enum class DrawerValue { Open, Closed }
+
+class DrawerState(
+    initialValue: DrawerValue = DrawerValue.Closed,
+) {
+    internal val anchoredDraggableState = AnchoredDraggableState(
+        initialValue = initialValue,
+        positionalThreshold = { distance -> distance * 0.5f },
+        velocityThreshold = { with(requireNotNull(density)) { 400.dp.toPx() } },
+        animationSpec = tween()
+    )
+
+    val isOpen: Boolean
+        get() = currentValue == DrawerValue.Open
+
+    internal var density: Density? by mutableStateOf(null)
+
+    private val currentValue: DrawerValue
+        get() = anchoredDraggableState.currentValue
+
+    suspend fun open() = anchoredDraggableState.animateTo(DrawerValue.Open)
+
+    suspend fun close() = anchoredDraggableState.animateTo(DrawerValue.Closed)
+
+    companion object {
+        internal fun Saver() =
+            Saver<DrawerState, DrawerValue>(
+                save = { it.currentValue },
+                restore = { DrawerState(it) }
+            )
+    }
+}
+
+@Composable
+fun rememberDrawerState(
+    initialValue: DrawerValue = DrawerValue.Closed,
+): DrawerState {
+    return rememberSaveable(saver = DrawerState.Saver()) {
+        DrawerState(initialValue)
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UnittoModalNavigationDrawer(
     drawer: @Composable () -> Unit,
     modifier: Modifier,
-    state: AnchoredDraggableState<UnittoDrawerState>,
     gesturesEnabled: Boolean,
-    scope: CoroutineScope,
+    state: DrawerState = rememberDrawerState(),
     content: @Composable () -> Unit,
 ) {
-    Box(modifier.fillMaxSize()) {
+    val density = LocalDensity.current
+    val drawerScope = rememberCoroutineScope()
+
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
+        val drawerWidth = 360.dp
+        val drawerWidthPx = with(density) { drawerWidth.toPx() }
+        val minValue = -drawerWidthPx
+        val maxValue = 0f
+
+        SideEffect {
+            state.density = density
+            state.anchoredDraggableState.updateAnchors(
+                DraggableAnchors {
+                    DrawerValue.Closed at minValue
+                    DrawerValue.Open at maxValue
+                }
+            )
+        }
+
         content()
+
+        // Drag handle
+        Box(
+            modifier
+                .width(18.dp)
+                .fillMaxHeight()
+                .pointerInteropFilter { false } // Do not consume
+                .anchoredDraggable(
+                    state = state.anchoredDraggableState,
+                    orientation = Orientation.Horizontal,
+                    enabled = gesturesEnabled or state.isOpen,
+                )
+        )
 
         Scrim(
             open = state.isOpen,
-            onClose = { if (gesturesEnabled) scope.launch { state.close() } },
+            onClose = { if (gesturesEnabled) drawerScope.launch { state.close() } },
             fraction = {
-                fraction(state.anchors.minAnchor(), state.anchors.maxAnchor(), state.offset)
+                fraction(
+                    minValue, maxValue, state.anchoredDraggableState.requireOffset()
+                )
             },
-            color = DrawerDefaults.scrimColor
         )
 
-        // Drawer
-        Box(Modifier
-            .offset {
-                IntOffset(
-                    x = state
-                        .requireOffset()
-                        .roundToInt(), y = 0
+        // Drawer box
+        Box(
+            modifier = Modifier
+                .offset {
+                    IntOffset(
+                        x = state
+                            .anchoredDraggableState
+                            .requireOffset()
+                            .roundToInt(),
+                        y = 0
+                    )
+                }
+                .anchoredDraggable(
+                    state = state.anchoredDraggableState,
+                    orientation = Orientation.Horizontal,
+                    enabled = gesturesEnabled or state.isOpen,
                 )
-            }
-            .anchoredDraggable(
-                state = state,
-                orientation = Orientation.Horizontal,
-                enabled = gesturesEnabled or state.isOpen,
-            )
-            .padding(end = if (state.isOpen) 0.dp else 18.dp) // Draggable when closed
         ) {
             drawer()
         }
-
     }
 }
 
@@ -98,7 +182,7 @@ private fun Scrim(
     open: Boolean,
     onClose: () -> Unit,
     fraction: () -> Float,
-    color: Color,
+    color: Color = DrawerDefaults.scrimColor,
 ) {
     val dismissDrawer = if (open) {
         Modifier.pointerInput(onClose) { detectTapGestures { onClose() } }
@@ -115,59 +199,29 @@ private fun Scrim(
     }
 }
 
-enum class UnittoDrawerState { OPEN, CLOSED }
-
-@Composable
-fun rememberUnittoDrawerState(
-    initialValue: UnittoDrawerState = UnittoDrawerState.CLOSED,
-): AnchoredDraggableState<UnittoDrawerState> {
-    val minValue = -with(LocalDensity.current) { 360.dp.toPx() }
-    val positionalThreshold = -minValue * 0.5f
-    val velocityThreshold = with(LocalDensity.current) { 400.dp.toPx() }
-
-    return remember {
-        AnchoredDraggableState(
-            initialValue = initialValue,
-            anchors = DraggableAnchors {
-                UnittoDrawerState.OPEN at 0F
-                UnittoDrawerState.CLOSED at minValue
-            },
-            positionalThreshold = { positionalThreshold },
-            velocityThreshold = { velocityThreshold },
-            animationSpec = tween()
-        )
-    }
-}
-
-val AnchoredDraggableState<UnittoDrawerState>.isOpen
-    get() = this.currentValue == UnittoDrawerState.OPEN
-
-suspend fun AnchoredDraggableState<UnittoDrawerState>.close() {
-    this.animateTo(UnittoDrawerState.CLOSED)
-}
-
-suspend fun AnchoredDraggableState<UnittoDrawerState>.open() {
-    this.animateTo(UnittoDrawerState.OPEN)
-}
-
 private fun fraction(a: Float, b: Float, pos: Float) =
     ((pos - a) / (b - a)).coerceIn(0f, 1f)
 
-@Preview(backgroundColor = 0xFFC8F7D4, showBackground = true, showSystemUi = true)
+@Preview(
+    backgroundColor = 0xFFC8F7D4,
+    showBackground = true,
+    device = "spec:width=320dp,height=500dp,dpi=320"
+)
+@Preview(
+    backgroundColor = 0xFFC8F7D4,
+    showBackground = true,
+    device = "spec:width=440dp,height=500dp,dpi=440"
+)
 @Composable
-private fun PreviewUnittoModalNavigationDrawer() {
-    val drawerState = rememberUnittoDrawerState(initialValue = UnittoDrawerState.OPEN)
+private fun PreviewUnittoModalNavigationDrawerClose() {
     val corScope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(DrawerValue.Open)
 
     UnittoModalNavigationDrawer(
         drawer = {
             UnittoDrawerSheet(
                 modifier = Modifier,
-                tabs = listOf(
-                    DrawerItems.Calculator,
-                    DrawerItems.Calculator,
-                    DrawerItems.Calculator,
-                ),
+                tabs = DrawerItems.ALL,
                 currentDestination = DrawerItems.Calculator.destination.start,
                 onItemClick = {}
             )
@@ -175,7 +229,6 @@ private fun PreviewUnittoModalNavigationDrawer() {
         modifier = Modifier,
         state = drawerState,
         gesturesEnabled = true,
-        scope = corScope,
         content = {
             Column {
                 Text(text = "Content")
