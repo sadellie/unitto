@@ -26,6 +26,5 @@ interface AppPreferences {
     val monetMode: String
     val startingScreen: String
     val enableToolsExperiment: Boolean
-    val systemFont: Boolean
     val rpnMode: Boolean
 }

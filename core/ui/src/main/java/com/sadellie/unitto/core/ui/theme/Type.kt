@@ -24,9 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -71,16 +69,6 @@ val NumberTypographyUnitto by lazy {
 
 val TypographySystem by lazy { Typography() }
 
-val NumberTypographySystem by lazy {
-    NumberTypography(
-        displayLarge = TypographySystem.displayLarge,
-        displayMedium = TypographySystem.displayMedium,
-        displaySmall = TypographySystem.displaySmall,
-    )
-}
-
-val LocalNumberTypography = staticCompositionLocalOf { NumberTypographySystem }
-
 private val FontFamily.Companion.lato: FontFamily
     get() = FontFamily(
         Font(R.font.lato_regular, weight = FontWeight.Normal)
@@ -89,37 +77,32 @@ private val FontFamily.Companion.lato: FontFamily
 @Preview(widthDp = 480)
 @Composable
 private fun PreviewSystemTypography() {
-    MaterialTheme(
-        typography = TypographySystem
-    ) {
-        val textStyles = mapOf(
-            "displayLarge" to MaterialTheme.typography.displayLarge,
-            "displayMedium" to MaterialTheme.typography.displayMedium,
-            "displaySmall" to MaterialTheme.typography.displaySmall,
-            "headlineLarge" to MaterialTheme.typography.headlineLarge,
-            "headlineMedium" to MaterialTheme.typography.headlineMedium,
-            "headlineSmall" to MaterialTheme.typography.headlineSmall,
-            "titleLarge" to MaterialTheme.typography.titleLarge,
-            "titleMedium" to MaterialTheme.typography.titleMedium,
-            "titleSmall" to MaterialTheme.typography.titleSmall,
-            "bodyLarge" to MaterialTheme.typography.bodyLarge,
-            "bodyMedium" to MaterialTheme.typography.bodyMedium,
-            "bodySmall" to MaterialTheme.typography.bodySmall,
-            "labelLarge" to MaterialTheme.typography.labelLarge,
-            "labelMedium" to MaterialTheme.typography.labelMedium,
-            "labelSmall" to MaterialTheme.typography.labelSmall,
-        )
+    val textStyles = mapOf(
+        "displayLarge" to MaterialTheme.typography.displayLarge,
+        "displayMedium" to MaterialTheme.typography.displayMedium,
+        "displaySmall" to MaterialTheme.typography.displaySmall,
+        "headlineLarge" to MaterialTheme.typography.headlineLarge,
+        "headlineMedium" to MaterialTheme.typography.headlineMedium,
+        "headlineSmall" to MaterialTheme.typography.headlineSmall,
+        "titleLarge" to MaterialTheme.typography.titleLarge,
+        "titleMedium" to MaterialTheme.typography.titleMedium,
+        "titleSmall" to MaterialTheme.typography.titleSmall,
+        "bodyLarge" to MaterialTheme.typography.bodyLarge,
+        "bodyMedium" to MaterialTheme.typography.bodyMedium,
+        "bodySmall" to MaterialTheme.typography.bodySmall,
+        "labelLarge" to MaterialTheme.typography.labelLarge,
+        "labelMedium" to MaterialTheme.typography.labelMedium,
+        "labelSmall" to MaterialTheme.typography.labelSmall,
+    )
 
-        LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
-
-            textStyles.forEach { (label, style) ->
-                item {
-                    Text(
-                        text = "$label 123",
-                        style = style,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
+    LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
+        textStyles.forEach { (label, style) ->
+            item {
+                Text(
+                    text = "$label 123",
+                    style = style,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
         }
     }
@@ -128,25 +111,20 @@ private fun PreviewSystemTypography() {
 @Preview(widthDp = 480)
 @Composable
 private fun PreviewNumberTypography() {
-    CompositionLocalProvider(
-        LocalNumberTypography provides NumberTypographyUnitto
-    ) {
-        val textStyles = mapOf(
-            "displayLarge" to LocalNumberTypography.current.displayLarge,
-            "displayMedium" to LocalNumberTypography.current.displayMedium,
-            "displaySmall" to LocalNumberTypography.current.displaySmall,
-        )
+    val textStyles = mapOf(
+        "displayLarge" to NumberTypographyUnitto.displayLarge,
+        "displayMedium" to NumberTypographyUnitto.displayMedium,
+        "displaySmall" to NumberTypographyUnitto.displaySmall,
+    )
 
-        LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
-
-            textStyles.forEach { (label, style) ->
-                item {
-                    Text(
-                        text = "$label 123 Error 7 1⁄2",
-                        style = style,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
+    LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
+        textStyles.forEach { (label, style) ->
+            item {
+                Text(
+                    text = "$label 123 Error 7 1⁄2",
+                    style = style,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
         }
     }

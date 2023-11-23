@@ -42,7 +42,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
+import com.sadellie.unitto.core.ui.theme.NumberTypographyUnitto
 
 @Composable
 fun FixedInputTextField(
@@ -83,7 +83,7 @@ fun FixedInputTextField(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
                 .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-            textStyle = LocalNumberTypography.current.displaySmall.copy(color = textColor, textAlign = TextAlign.End),
+            textStyle = NumberTypographyUnitto.displaySmall.copy(color = textColor, textAlign = TextAlign.End),
             readOnly = true,
             visualTransformation = ExpressionTransformer(formatterSymbols),
             interactionSource = expressionInteractionSource

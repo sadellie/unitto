@@ -67,12 +67,6 @@ class DisplayViewModel @Inject constructor(
         }
     }
 
-    fun updateSystemFont(enabled: Boolean) {
-        viewModelScope.launch {
-            userPrefsRepository.updateSystemFont(enabled)
-        }
-    }
-
     fun updateAcButton(enabled: Boolean) {
         viewModelScope.launch {
             userPrefsRepository.updateAcButton(enabled)

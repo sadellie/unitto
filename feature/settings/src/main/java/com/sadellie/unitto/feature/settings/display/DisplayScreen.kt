@@ -37,7 +37,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.ExposureZero
-import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.outlined.DarkMode
@@ -113,8 +112,6 @@ internal fun DisplayRoute(
                     themmoController.setMonetMode(newValue)
                     viewModel.updateMonetMode(newValue)
                 },
-                systemFont = prefs.systemFont,
-                updateSystemFont = viewModel::updateSystemFont,
                 acButton = prefs.acButton,
                 updateAcButton = viewModel::updateAcButton,
                 middleZero = prefs.middleZero,
@@ -138,8 +135,6 @@ private fun DisplayScreen(
     onColorChange: (Color) -> Unit,
     monetMode: MonetMode,
     onMonetModeChange: (MonetMode) -> Unit,
-    systemFont: Boolean,
-    updateSystemFont: (Boolean) -> Unit,
     acButton: Boolean,
     updateAcButton: (Boolean) -> Unit,
     middleZero: Boolean,
@@ -262,14 +257,6 @@ private fun DisplayScreen(
             Header(stringResource(R.string.settings_additional))
 
             UnittoListItem(
-                icon = Icons.Default.FontDownload,
-                headlineText = stringResource(R.string.settings_system_font),
-                supportingText = stringResource(R.string.settings_system_font_support),
-                switchState = systemFont,
-                onSwitchChange = updateSystemFont
-            )
-
-            UnittoListItem(
                 icon = UnittoIcons.Clear,
                 headlineText = stringResource(R.string.settings_ac_button),
                 supportingText = stringResource(R.string.settings_ac_button_support),
@@ -311,8 +298,6 @@ private fun Preview() {
             onColorChange = themmoController::setCustomColor,
             monetMode = themmoController.currentMonetMode,
             onMonetModeChange = themmoController::setMonetMode,
-            systemFont = false,
-            updateSystemFont = {},
             acButton = false,
             updateAcButton = {},
             middleZero = false,

@@ -40,7 +40,6 @@ data class AppPreferencesImpl(
     override val monetMode: String,
     override val startingScreen: String,
     override val enableToolsExperiment: Boolean,
-    override val systemFont: Boolean,
     override val rpnMode: Boolean,
 ) : AppPreferences
 
@@ -77,7 +76,6 @@ data class ConverterPreferencesImpl(
 ) : ConverterPreferences
 
 data class DisplayPreferencesImpl(
-    override val systemFont: Boolean,
     override val middleZero: Boolean,
     override val acButton: Boolean,
 ) : DisplayPreferences

@@ -20,7 +20,6 @@ package com.sadellie.unitto
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,7 +52,6 @@ import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun UnittoApp(prefs: AppPreferences?) {
 

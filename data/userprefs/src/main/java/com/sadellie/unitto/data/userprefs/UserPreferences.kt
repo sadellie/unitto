@@ -63,7 +63,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 monetMode = preferences.getMonetMode(),
                 startingScreen = preferences.getStartingScreen(),
                 enableToolsExperiment = preferences.getEnableToolsExperiment(),
-                systemFont = preferences.getSystemFont(),
                 rpnMode = preferences.getRpnMode(),
             )
         }
@@ -112,7 +111,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val displayPrefs: Flow<DisplayPreferences> = data
         .map { preferences ->
             DisplayPreferencesImpl(
-                systemFont = preferences.getSystemFont(),
                 middleZero = preferences.getMiddleZero(),
                 acButton = preferences.getAcButton(),
             )
@@ -265,12 +263,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateSystemFont(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PrefsKeys.SYSTEM_FONT] = enabled
-        }
-    }
-
     override suspend fun updatePartialHistoryView(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] = enabled
@@ -323,10 +315,6 @@ private fun Preferences.getStartingScreen(): String {
 
 private fun Preferences.getEnableToolsExperiment(): Boolean {
     return this[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
-}
-
-private fun Preferences.getSystemFont(): Boolean {
-    return this[PrefsKeys.SYSTEM_FONT] ?: false
 }
 
 private fun Preferences.getEnableVibrations(): Boolean {
