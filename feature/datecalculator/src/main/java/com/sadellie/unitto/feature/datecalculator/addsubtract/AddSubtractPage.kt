@@ -24,15 +24,18 @@ import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -61,6 +64,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -145,14 +149,6 @@ private fun AddSubtractView(
     }
 
     val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
-    val inputWidth = animateFloatAsState(
-        targetValue = if (showResult) 0.5f else 1f,
-        label = "inputWidth"
-    )
-    val resultWidth = animateFloatAsState(
-        targetValue = if (showResult) 1f else 0f,
-        label = "resultWidth"
-    )
 
     Column(Modifier.fillMaxSize()) {
         Scaffold(
@@ -179,30 +175,40 @@ private fun AddSubtractView(
                     .padding(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    DateTimeSelectorBlock(
-                        modifier = Modifier
-                            .fillMaxWidth(inputWidth.value),
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        title = stringResource(R.string.date_calculator_start),
-                        dateTime = uiState.start,
-                        onLongClick = { updateStart(ZonedDateTime.now()) },
-                        onClick = { dialogState = DialogState.FROM },
-                        onTimeClick = { dialogState = DialogState.FROM_TIME },
-                        onDateClick = { dialogState = DialogState.FROM_DATE },
-                    )
 
-                    DateTimeSelectorBlock(
-                        modifier = Modifier
-                            .fillMaxWidth(resultWidth.value),
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        title = stringResource(R.string.date_calculator_end),
-                        dateTime = uiState.result,
-                    )
+                AnimatedContent(
+                    targetState = showResult,
+                    label = "Reveal result",
+                    transitionSpec = { fadeIn() togetherWith fadeOut() using SizeTransform() },
+                    modifier = Modifier.clip(RoundedCornerShape(32.dp))
+                ) { show ->
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        DateTimeSelectorBlock(
+                            modifier = Modifier
+                                .weight(1f),
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            title = stringResource(R.string.date_calculator_start),
+                            dateTime = uiState.start,
+                            onLongClick = { updateStart(ZonedDateTime.now()) },
+                            onClick = { dialogState = DialogState.FROM },
+                            onTimeClick = { dialogState = DialogState.FROM_TIME },
+                            onDateClick = { dialogState = DialogState.FROM_DATE },
+                        )
+
+                        if (show) {
+                            DateTimeSelectorBlock(
+                                modifier = Modifier
+                                    .weight(1f),
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                title = stringResource(R.string.date_calculator_end),
+                                dateTime = uiState.result,
+                            )
+                        }
+                    }
                 }
 
                 SingleChoiceSegmentedButtonRow(
@@ -383,7 +389,6 @@ private fun Context.addEvent(start: ZonedDateTime, end: ZonedDateTime) {
         .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
         .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
-
     try {
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {
@@ -396,7 +401,9 @@ private fun Context.addEvent(start: ZonedDateTime, end: ZonedDateTime) {
 fun AddSubtractViewPreview() {
     AddSubtractView(
         uiState = AddSubtractState(
-            years = TextFieldValue("12")
+            years = TextFieldValue("12"),
+            start = ZonedDateTime.now(),
+            result = ZonedDateTime.now().plusSeconds(1)
         ),
         toggleTopBar = {},
         showKeyboard = false,
