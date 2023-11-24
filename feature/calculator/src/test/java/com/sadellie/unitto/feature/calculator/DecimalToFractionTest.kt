@@ -26,13 +26,13 @@ class DecimalToFractionTest {
     @Test
     fun testNoDecimal1() {
         val bd = BigDecimal("100")
-        assertFractional("100", bd.toFractionalString())
+        assertFractional("", bd.toFractionalString())
     }
 
     @Test
     fun testNoDecimal2() {
         val bd = BigDecimal("100.000000000")
-        assertFractional("100", bd.toFractionalString())
+        assertFractional("", bd.toFractionalString())
     }
 
     @Test

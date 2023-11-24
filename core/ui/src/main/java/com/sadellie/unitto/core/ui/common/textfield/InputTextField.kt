@@ -76,29 +76,34 @@ fun ExpressionTextField(
     readOnly: Boolean = false,
     placeholder: String = "",
 ) {
+    val localView = LocalView.current
     val clipboardManager = LocalClipboardManager.current
+    val expressionTransformer = remember(formatterSymbols) { ExpressionTransformer(formatterSymbols) }
+
     fun copyCallback() {
         clipboardManager.copyWithoutGrouping(value, formatterSymbols)
         onCursorChange(TextRange(value.selection.end))
     }
 
-    val textToolbar: UnittoTextToolbar = if (readOnly) {
-        UnittoTextToolbar(
-            view = LocalView.current,
-            copyCallback = ::copyCallback,
-        )
-    } else {
-        UnittoTextToolbar(
-            view = LocalView.current,
-            copyCallback = ::copyCallback,
-            pasteCallback = {
-                pasteCallback(clipboardManager.getText()?.text?.clearAndFilterExpression(formatterSymbols) ?: "")
-            },
-            cutCallback = {
-                clipboardManager.copyWithoutGrouping(value, formatterSymbols)
-                cutCallback()
-            }
-        )
+    val textToolbar: UnittoTextToolbar = remember(readOnly) {
+        if (readOnly) {
+            UnittoTextToolbar(
+                view = localView,
+                copyCallback = ::copyCallback,
+            )
+        } else {
+            UnittoTextToolbar(
+                view = localView,
+                copyCallback = ::copyCallback,
+                pasteCallback = {
+                    pasteCallback(clipboardManager.getText()?.text?.clearAndFilterExpression(formatterSymbols) ?: "")
+                },
+                cutCallback = {
+                    clipboardManager.copyWithoutGrouping(value, formatterSymbols)
+                    cutCallback()
+                }
+            )
+        }
     }
 
     AutoSizableTextField(
@@ -111,7 +116,7 @@ fun ExpressionTextField(
         readOnly = readOnly,
         showToolbar = textToolbar::showMenu,
         hideToolbar = textToolbar::hide,
-        visualTransformation = ExpressionTransformer(formatterSymbols),
+        visualTransformation = expressionTransformer,
         placeholder = placeholder,
         textToolbar = textToolbar,
     )
@@ -129,29 +134,32 @@ fun UnformattedTextField(
     readOnly: Boolean = false,
     placeholder: String = "",
 ) {
+    val localView = LocalView.current
     val clipboardManager = LocalClipboardManager.current
     fun copyCallback() {
         clipboardManager.copy(value)
         onCursorChange(TextRange(value.selection.end))
     }
 
-    val textToolbar: UnittoTextToolbar = if (readOnly) {
-        UnittoTextToolbar(
-            view = LocalView.current,
-            copyCallback = ::copyCallback,
-        )
-    } else {
-        UnittoTextToolbar(
-            view = LocalView.current,
-            copyCallback = ::copyCallback,
-            pasteCallback = {
-                pasteCallback(clipboardManager.getText()?.text?.clearAndFilterNumberBase() ?: "")
-            },
-            cutCallback = {
-                clipboardManager.copy(value)
-                cutCallback()
-            }
-        )
+    val textToolbar: UnittoTextToolbar = remember(readOnly) {
+        if (readOnly) {
+            UnittoTextToolbar(
+                view = localView,
+                copyCallback = ::copyCallback,
+            )
+        } else {
+            UnittoTextToolbar(
+                view = localView,
+                copyCallback = ::copyCallback,
+                pasteCallback = {
+                    pasteCallback(clipboardManager.getText()?.text?.clearAndFilterNumberBase() ?: "")
+                },
+                cutCallback = {
+                    clipboardManager.copy(value)
+                    cutCallback()
+                }
+            )
+        }
     }
 
     AutoSizableTextField(

@@ -27,42 +27,46 @@ class ExpressionTransformerTest {
 
     private val expr = ExpressionTransformer(FormatterSymbols.Comma)
 
-    private fun origToTrans(orig: String, trans: String, offset: Int): Int =
-        expr.ExpressionMapping(orig, trans).originalToTransformed(offset)
+    // Use "|" for cursor
+    private fun origToTrans(orig: String, trans: String) {
+        val transformed = trans.replace("|", "")
+        val original = orig.replace("|", "")
 
-    private fun transToOrig(trans: String, orig: String, offset: Int): Int =
-        expr.ExpressionMapping(orig, trans).transformedToOriginal(offset)
+        val offsetInTrans = trans.indexOf("|")
+        val offsetInOrig = orig.indexOf("|")
 
-    @Test
-    fun `test 1234`() {
-        // at the start
-        assertEquals(0, origToTrans("1,234", "1234", 0))
-        assertEquals(0, transToOrig("1,234", "1234", 0))
+        val expressionMapping = expr.ExpressionMapping(original, transformed)
 
-        // somewhere in inside, no offset needed
-        assertEquals(1, origToTrans("1234", "1,234", 1))
-        assertEquals(1, transToOrig("1,234", "1234", 1))
+        assertEquals(offsetInTrans, expressionMapping.originalToTransformed(offsetInOrig))
+    }
 
-        // somewhere in inside, offset needed
-        assertEquals(1, transToOrig("1,234", "1234", 2))
+    private fun transToOrig(trans: String, orig: String) {
+        val transformed = trans.replace("|", "")
+        val original = orig.replace("|", "")
 
-        // at the end
-        assertEquals(5, origToTrans("1234", "1,234", 4))
-        assertEquals(4, transToOrig("1,234", "1234", 5))
+        val offsetInTrans = trans.indexOf("|")
+        val offsetInOrig = orig.indexOf("|")
+
+        val expressionMapping = expr.ExpressionMapping(original, transformed)
+
+        assertEquals(offsetInOrig, expressionMapping.transformedToOriginal(offsetInTrans))
     }
 
     @Test
-    fun `test 123`() {
-        // at the start
-        assertEquals(0, origToTrans("123", "123", 0))
-        assertEquals(0, transToOrig("123", "123", 0))
+    fun `test 1234`() {
+        transToOrig("|123", "|123")
+        origToTrans("12|3", "12|3")
 
-        // somewhere in inside
-        assertEquals(1, origToTrans("123", "123", 1))
-        assertEquals(1, transToOrig("123", "123", 1))
+        transToOrig("|1,234", "|1234")
+        origToTrans("|1234", "|1,234")
 
-        // at the end
-        assertEquals(3, origToTrans("123", "123", 3))
-        assertEquals(3, transToOrig("123", "123", 3))
+        transToOrig("1,234|", "1234|")
+        origToTrans("1234|", "1,234|")
+
+        transToOrig("|cos(1)+1,234", "|cos(1)+1234")
+        origToTrans("co|s(1)+1234", "|cos(1)+1,234")
+
+        transToOrig("cos|(1)+1,234", "cos(|1)+1234")
+        origToTrans("cos|(1)+1234", "cos(|1)+1,234")
     }
 }

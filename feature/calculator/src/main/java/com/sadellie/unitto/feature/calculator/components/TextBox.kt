@@ -116,7 +116,7 @@ fun TextBox(
                     var outputTF by remember(output) {
                         mutableStateOf(TextFieldValue(output.text))
                     }
-                    UnformattedTextField(
+                    ExpressionTextField(
                         modifier = Modifier
                             .weight(2f)
                             .fillMaxWidth()
@@ -124,6 +124,7 @@ fun TextBox(
                         value = outputTF,
                         minRatio = 1f,
                         onCursorChange = { outputTF = outputTF.copy(selection = it) },
+                        formatterSymbols = formatterSymbols,
                         textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
                         readOnly = true,
                     )

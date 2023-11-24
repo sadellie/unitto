@@ -24,13 +24,25 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 
+/**
+ * Tries to convert [BigDecimal] into fractional string.
+ *
+ * 0.5 -> `1⁄2`
+ *
+ * 123.5 -> `123 1⁄2`
+ *
+ * 123 -> `Empty string`
+ *
+ * @receiver [BigDecimal]. Scale doesn't matter, but should be `MAX_PRECISION`
+ * @return
+ */
 fun BigDecimal.toFractionalString(): String {
     // https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-1
     // https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-2
     val (integral, fractional) = this.divideAndRemainder(BigDecimal.ONE)
     val integralBI = integral.toBigInteger()
 
-    if (fractional.isEqualTo(BigDecimal.ZERO)) return integralBI.toString()
+    if (fractional.isEqualTo(BigDecimal.ZERO)) return ""
 
     val res: String = if (integral.isEqualTo(BigDecimal.ZERO)) "" else "$integralBI "
 

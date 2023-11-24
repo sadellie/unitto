@@ -54,7 +54,7 @@ object Token {
 
     object Operator {
         const val plus = "+"
-        const val minus = "−"
+        const val minus = "−" // MINUS SIGN, not a regular minus (HYPHEN-MINUS)
         const val multiply = "×"
         const val divide = "÷"
         const val leftBracket = "("
@@ -122,6 +122,7 @@ object Token {
         const val comma = ","
         const val engineeringE = "E"
         const val minus = "−"
+        const val fraction = "⁄"
     }
 
     val expressionTokens by lazy {

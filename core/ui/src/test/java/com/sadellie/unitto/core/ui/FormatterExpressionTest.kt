@@ -32,8 +32,9 @@ private const val INCOMPLETE_EXPR = "50+123456÷8×0.8-12+"
 private const val COMPLETE_EXPR = "50+123456÷8×0.8-12+0-√9×4^9+2×(9+8×7)"
 private const val LONG_HALF_COMPLETE_EXPR = "50+123456÷89078..9×0.8-12+0-√9×4^9+2×(9+8×7)×sin(13sin123cos"
 private const val SOME_BRACKETS = "(((((((("
+private const val FRACTION_VALUE = "1600 1234⁄56789"
 
-class FormatterTest {
+class FormatterExpressionTest {
 
     @Test
     fun setSeparatorSpaces() {
@@ -47,6 +48,7 @@ class FormatterTest {
         assertEquals("50+123 456÷8×0.8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
         assertEquals("50+123 456÷89 078..9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos", LONG_HALF_COMPLETE_EXPR.format())
         assertEquals("((((((((", SOME_BRACKETS.format())
+        assertEquals("1 600 1234⁄56789", FRACTION_VALUE.format())
     }
 
     @Test
@@ -61,6 +63,7 @@ class FormatterTest {
         assertEquals("50+123,456÷8×0.8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
         assertEquals("50+123,456÷89,078..9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos", LONG_HALF_COMPLETE_EXPR.format())
         assertEquals("((((((((", SOME_BRACKETS.format())
+        assertEquals("1,600 1234⁄56789", FRACTION_VALUE.format())
     }
 
     @Test
@@ -75,5 +78,6 @@ class FormatterTest {
         assertEquals("50+123.456÷8×0,8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
         assertEquals("50+123.456÷89.078,,9×0,8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos", LONG_HALF_COMPLETE_EXPR.format())
         assertEquals("((((((((", SOME_BRACKETS.format())
+        assertEquals("1.600 1234⁄56789", FRACTION_VALUE.format())
     }
 }

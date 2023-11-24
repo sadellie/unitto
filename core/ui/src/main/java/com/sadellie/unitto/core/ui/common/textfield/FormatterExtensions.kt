@@ -22,11 +22,19 @@ import com.sadellie.unitto.core.base.Token
 
 private val numbersRegex by lazy { Regex("[\\d.]+") }
 
+/**
+ * Removes formatting from expression. Reverse of [formatExpression]. Ugly symbols (for example,
+ * minus) will be replaced with a [Token.Operator.minus] from [Token.sexyToUgly].
+ *
+ * @param formatterSymbols [FormatterSymbols] that were used in [formatExpression].
+ * @return Clean expression. 123,456.789 -> 123456.789
+ */
 fun String.clearAndFilterExpression(formatterSymbols: FormatterSymbols): String {
     var clean = this
         .replace(formatterSymbols.grouping, "")
         .replace(formatterSymbols.fractional, Token.Digit.dot)
-        .replace(" ", "")
+        .replace(" ", Token.Operator.plus)
+        .replace(Token.DisplayOnly.fraction, Token.Operator.divide)
 
     Token.sexyToUgly.forEach { (token, ugliness) ->
         ugliness.forEach {
@@ -34,20 +42,27 @@ fun String.clearAndFilterExpression(formatterSymbols: FormatterSymbols): String 
         }
     }
 
-    return clean.cleanIt(Token.expressionTokens)
+    return clean.leaveLegalTokensOnly(Token.expressionTokens)
 }
 
 internal fun String.clearAndFilterNumberBase(): String {
-    return uppercase().cleanIt(Token.numberBaseTokens)
+    return uppercase().leaveLegalTokensOnly(Token.numberBaseTokens)
 }
 
 fun String.formatExpression(
     formatterSymbols: FormatterSymbols
 ): String {
     var input = this
+
     // Don't do anything to engineering string.
     if (input.contains(Token.DisplayOnly.engineeringE)) {
         return input.replace(Token.Digit.dot, formatterSymbols.fractional)
+    }
+
+    // Only format integral part
+    if (input.contains(Token.DisplayOnly.fraction)) {
+        val (integral, fraction) = input.split(" ")
+        return "${integral.formatNumber(formatterSymbols)} $fraction"
     }
 
     numbersRegex
@@ -89,7 +104,7 @@ private fun String.formatNumber(
     return output.plus(remainingPart.replace(".", formatterSymbols.fractional))
 }
 
-private fun String.cleanIt(legalTokens: List<String>): String {
+private fun String.leaveLegalTokensOnly(legalTokens: List<String>): String {
     val streamOfTokens = this
 
     fun peekTokenAfter(cursor: Int): String? {
