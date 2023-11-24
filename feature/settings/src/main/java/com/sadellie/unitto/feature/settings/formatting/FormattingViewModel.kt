@@ -22,63 +22,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
-import com.sadellie.unitto.core.ui.common.textfield.formatExpression
-import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
 import javax.inject.Inject
-import kotlin.math.ceil
 
 @HiltViewModel
 class FormattingViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private val _prefs = userPreferencesRepository.formattingPrefs
-    private val _fractional = MutableStateFlow(false)
 
-    val uiState = combine(_prefs, _fractional) { mainPrefs, fractional ->
-        val formatterSymbols = AllFormatterSymbols.getById(mainPrefs.separator)
-
-        return@combine FormattingUIState(
-            preview = updatePreview(
-                fractional = fractional,
-                precision = mainPrefs.digitsPrecision,
-                outputFormat = mainPrefs.outputFormat,
-                formatterSymbols = formatterSymbols
-            ),
+    val uiState = _prefs.map { mainPrefs ->
+        FormattingUIState(
             precision = mainPrefs.digitsPrecision,
             separator = mainPrefs.separator,
             outputFormat = mainPrefs.outputFormat,
-            formatterSymbols = formatterSymbols
+            formatterSymbols = AllFormatterSymbols.getById(mainPrefs.separator)
         )
     }
         .stateIn(viewModelScope, null)
-
-    fun togglePreview() = _fractional.update { !it }
-
-    private fun updatePreview(
-        fractional: Boolean,
-        precision: Int,
-        outputFormat: Int,
-        formatterSymbols: FormatterSymbols
-    ): String {
-        val bigD = when {
-            fractional -> "0.${"1".padStart(precision, '0')}"
-            precision > 0 -> "123456.${"789123456".repeat(ceil(precision.toDouble() / 9.0).toInt())}"
-            else -> "123456"
-        }
-
-        return BigDecimal(bigD)
-            .format(precision, outputFormat)
-            .formatExpression(formatterSymbols)
-    }
 
     /**
      * @see UserPreferencesRepository.updateDigitsPrecision

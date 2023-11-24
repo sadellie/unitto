@@ -21,9 +21,8 @@ package com.sadellie.unitto.feature.settings.formatting
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 
 data class FormattingUIState(
-    val preview: String = "",
-    val precision: Int = 0,
-    val separator: Int? = null,
-    val outputFormat: Int? = null,
-    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces
+    val precision: Int,
+    val separator: Int,
+    val outputFormat: Int,
+    val formatterSymbols: FormatterSymbols,
 )

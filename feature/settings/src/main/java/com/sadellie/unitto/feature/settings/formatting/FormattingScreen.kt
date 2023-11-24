@@ -18,11 +18,8 @@
 
 package com.sadellie.unitto.feature.settings.formatting
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -55,15 +52,18 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.PagedIsland
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoSlider
-import com.sadellie.unitto.core.ui.common.squashable
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.core.ui.theme.NumberTypographyUnitto
+import com.sadellie.unitto.data.common.format
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 @Composable
@@ -80,7 +80,6 @@ fun FormattingRoute(
                 onPrecisionChange = viewModel::updatePrecision,
                 onSeparatorChange = viewModel::updateSeparator,
                 onOutputFormatChange = viewModel::updateOutputFormat,
-                togglePreview = viewModel::togglePreview
             )
         }
     }
@@ -93,7 +92,6 @@ fun FormattingScreen(
     onPrecisionChange: (Int) -> Unit,
     onSeparatorChange: (Int) -> Unit,
     onOutputFormatChange: (Int) -> Unit,
-    togglePreview: () -> Unit,
     precisions: ClosedFloatingPointRange<Float> = 0f..16f, // 16th is a MAX_PRECISION (1000)
 ) {
     val resources = LocalContext.current.resources
@@ -120,25 +118,24 @@ fun FormattingScreen(
                 .padding(paddingValues)
         ) {
             item("preview") {
-                Column(
-                    Modifier
-                        .padding(16.dp)
-                        .squashable(
-                            onClick = togglePreview,
-                            cornerRadiusRange = 8.dp..32.dp,
-                            interactionSource = remember { MutableInteractionSource() }
-                        )
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                PagedIsland(
+                    modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
+                        .padding(16.dp),
+                    pagesCount = 2,
+                ) { currentPage ->
+                    val preview = when (currentPage) {
+                        0 -> "123456.${"789123456".repeat(ceil(uiState.precision.toDouble() / 9.0).toInt())}"
+                        1 -> "0.${"1".padStart(uiState.precision, '0')}"
+                        else -> ""
+                    }
+                        .toBigDecimalOrNull()
+                        ?.format(uiState.precision, uiState.outputFormat)
+                        ?.formatExpression(uiState.formatterSymbols)
+                        ?: ""
+
                     Text(
-                        text = stringResource(R.string.settings_formatting_preview),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                    Text(
-                        text = uiState.preview,
+                        text = preview,
                         style = NumberTypographyUnitto.displayMedium,
                         maxLines = 1,
                         modifier = Modifier
@@ -153,7 +150,10 @@ fun FormattingScreen(
             item("precision_label") {
                 UnittoListItem(
                     leadingContent = {
-                        Icon(Icons.Default.Architecture, stringResource(R.string.settings_precision))
+                        Icon(
+                            Icons.Default.Architecture,
+                            stringResource(R.string.settings_precision)
+                        )
                     },
                     headlineContent = {
                         Row(
@@ -265,15 +265,14 @@ private fun PreviewFormattingScreen() {
 
     FormattingScreen(
         uiState = FormattingUIState(
-            preview = "123456.789",
             precision = 16,
             separator = Separator.SPACE,
-            outputFormat = OutputFormat.PLAIN
+            outputFormat = OutputFormat.PLAIN,
+            formatterSymbols = FormatterSymbols.Spaces
         ),
         onPrecisionChange = { currentPrecision = it },
         onSeparatorChange = { currentSeparator = it },
         onOutputFormatChange = { currentOutputFormat = it },
         navigateUpAction = {},
-        togglePreview = {}
     )
 }
