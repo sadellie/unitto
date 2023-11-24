@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -81,7 +83,7 @@ internal fun RPNCalculatorScreen(
             InputBox(
                 modifier = Modifier
                     .padding(8.dp)
-                    .fillMaxHeight(0.3f),
+                    .fillMaxHeight(if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) 0.3f else 0.5f),
                 input = uiState.input,
                 stack = uiState.stack,
                 formatterSymbols = uiState.formatterSymbols,
