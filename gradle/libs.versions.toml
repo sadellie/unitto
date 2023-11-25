@@ -1,6 +1,6 @@
 [versions]
-appCode = "29"
-appName = "Olive Green"
+appCode = "30"
+appName = "Popstar"
 
 androidxBrowserBrowser = "1.6.0"
 androidGradlePlugin = "8.1.2"
