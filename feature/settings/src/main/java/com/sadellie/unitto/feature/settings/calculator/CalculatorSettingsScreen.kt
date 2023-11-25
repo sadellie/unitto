@@ -20,20 +20,14 @@ package com.sadellie.unitto.feature.settings.calculator
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.filled.Timer
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
@@ -75,26 +69,26 @@ private fun CalculatorSettingsScreen(
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         Column(Modifier.padding(padding)) {
-            SingleChoiceSegmentedButtonRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                SegmentedButton(
-                    selected = uiState is CalculatorSettingsUIState.Standard,
-                    onClick = { updateRpnMode(false) },
-                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                ) {
-                    Text("Standard")
-                }
-                SegmentedButton(
-                    selected = uiState == CalculatorSettingsUIState.RPN,
-                    onClick = { updateRpnMode(true) },
-                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                ) {
-                    Text("RPN")
-                }
-            }
+//            SingleChoiceSegmentedButtonRow(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp)
+//            ) {
+//                SegmentedButton(
+//                    selected = uiState is CalculatorSettingsUIState.Standard,
+//                    onClick = { updateRpnMode(false) },
+//                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+//                ) {
+//                    Text("Standard")
+//                }
+//                SegmentedButton(
+//                    selected = uiState == CalculatorSettingsUIState.RPN,
+//                    onClick = { updateRpnMode(true) },
+//                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+//                ) {
+//                    Text("RPN")
+//                }
+//            }
 
             Crossfade(
                 targetState = uiState,
