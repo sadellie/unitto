@@ -20,11 +20,14 @@ package com.sadellie.unitto.feature.datecalculator.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.R
@@ -38,94 +41,112 @@ internal fun DateTimeResultBlock(
     diff: ZonedDateTimeDifference.Default,
     format: (BigDecimal) -> String
 ) {
+    val focusManager = LocalFocusManager.current
+
     PagedIsland(
         modifier = modifier,
-        pagesCount = 6,
+        pagerState = rememberPagerState { 6 },
+        onClick = { focusManager.clearFocus() },
         backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
     ) { currentPage ->
         when(currentPage) {
             0 -> {
-                Text(
-                    text = stringResource(R.string.date_calculator_difference),
-                    style = MaterialTheme.typography.labelMedium
-                )
-                SelectionContainer {
-                    Column {
-                        // Years
-                        if (diff.years > 0) {
-                            DateText(R.string.date_calculator_years, diff.years.toBigDecimal(), format)
-                        }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(R.string.date_calculator_difference),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    SelectionContainer {
+                        Column {
+                            // Years
+                            if (diff.years > 0) {
+                                DateText(R.string.date_calculator_years, diff.years.toBigDecimal(), format)
+                            }
 
-                        // Months
-                        if (diff.months > 0) {
-                            DateText(R.string.date_calculator_months, diff.months.toBigDecimal(), format)
-                        }
+                            // Months
+                            if (diff.months > 0) {
+                                DateText(R.string.date_calculator_months, diff.months.toBigDecimal(), format)
+                            }
 
-                        // Days
-                        if (diff.days > 0) {
-                            DateText(R.string.date_calculator_days, diff.days.toBigDecimal(), format)
-                        }
+                            // Days
+                            if (diff.days > 0) {
+                                DateText(R.string.date_calculator_days, diff.days.toBigDecimal(), format)
+                            }
 
-                        // Hours
-                        if (diff.hours > 0) {
-                            DateText(R.string.date_calculator_hours, diff.hours.toBigDecimal(), format)
-                        }
+                            // Hours
+                            if (diff.hours > 0) {
+                                DateText(R.string.date_calculator_hours, diff.hours.toBigDecimal(), format)
+                            }
 
-                        // Minutes
-                        if (diff.minutes > 0) {
-                            DateText(R.string.date_calculator_minutes, diff.minutes.toBigDecimal(), format)
+                            // Minutes
+                            if (diff.minutes > 0) {
+                                DateText(R.string.date_calculator_minutes, diff.minutes.toBigDecimal(), format)
+                            }
                         }
                     }
                 }
             }
 
             1 -> {
-                Text(
-                    text = stringResource(R.string.date_calculator_years),
-                    style = MaterialTheme.typography.labelMedium
-                )
-                SelectionContainer {
-                    DateText(diff.sumYears, format)
+                Column {
+                    Text(
+                        text = stringResource(R.string.date_calculator_years),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    SelectionContainer {
+                        DateText(diff.sumYears, format)
+                    }
                 }
             }
 
             2 -> {
-                Text(
-                    text = stringResource(R.string.date_calculator_months),
-                    style = MaterialTheme.typography.labelMedium
-                )
-                SelectionContainer {
-                    DateText(diff.sumMonths, format)
+                Column {
+                    Text(
+                        text = stringResource(R.string.date_calculator_months),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    SelectionContainer {
+                        DateText(diff.sumMonths, format)
+                    }
                 }
             }
 
             3 -> {
-                Text(
-                    text = stringResource(R.string.date_calculator_days),
-                    style = MaterialTheme.typography.labelMedium
-                )
-                SelectionContainer {
-                    DateText(diff.sumDays, format)
+                Column {
+                    Text(
+                        text = stringResource(R.string.date_calculator_days),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    SelectionContainer {
+                        DateText(diff.sumDays, format)
+                    }
                 }
             }
 
             4 -> {
-                Text(
-                    text = stringResource(R.string.date_calculator_hours),
-                    style = MaterialTheme.typography.labelMedium
-                )
-                SelectionContainer {
-                    DateText(diff.sumHours, format)
+                Column {
+                    Text(
+                        text = stringResource(R.string.date_calculator_hours),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    SelectionContainer {
+                        DateText(diff.sumHours, format)
+                    }
                 }
             }
 
             5 -> {
-                Text(
-                    text = stringResource(R.string.date_calculator_minutes),
-                    style = MaterialTheme.typography.labelMedium
-                )
-                SelectionContainer {
-                    DateText(diff.sumMinutes, format)
+                Column {
+                    Text(
+                        text = stringResource(R.string.date_calculator_minutes),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    SelectionContainer {
+                        DateText(diff.sumMinutes, format)
+                    }
                 }
             }
         }

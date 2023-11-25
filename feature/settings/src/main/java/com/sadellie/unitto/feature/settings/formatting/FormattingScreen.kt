@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Architecture
@@ -122,7 +123,7 @@ fun FormattingScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    pagesCount = 2,
+                    pagerState = rememberPagerState { 2 },
                 ) { currentPage ->
                     val preview = when (currentPage) {
                         0 -> "123456.${"789123456".repeat(ceil(uiState.precision.toDouble() / 9.0).toInt())}"

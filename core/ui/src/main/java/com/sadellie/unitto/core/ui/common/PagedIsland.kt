@@ -18,76 +18,97 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import androidx.annotation.IntRange
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 
+/**
+ * [HorizontalPager] with a background and a page indicator.
+ *
+ * @param modifier [Modifier] that will be applied to the surround [Column].
+ * @param pagerState [PagerState] that will passed [HorizontalPager].
+ * @param backgroundColor [Color] for background.
+ * @param pageIndicatorAlignment [Alignment.Horizontal] for page indicator.
+ * @param onClick Called on all clicks, even if the page didn't change.
+ * @param pageContent Page content. Use passed `currentPage` value.
+ */
 @Composable
 fun PagedIsland(
     modifier: Modifier = Modifier,
-    @IntRange(from = 1) pagesCount: Int,
-    onPageChange: (currentPage: Int) -> Unit = {},
+    pagerState: PagerState,
     backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer,
-    pageContent: @Composable ColumnScope.(currentPage: Int) -> Unit,
+    pageIndicatorAlignment: Alignment.Horizontal = Alignment.End,
+    onClick: () -> Unit = {},
+    pageContent: @Composable (currentPage: Int) -> Unit,
 ) {
-    var currentPage: Int by remember { mutableIntStateOf(0) }
     val contentColor = MaterialTheme.colorScheme.contentColorFor(backgroundColor)
     val disabledContentColor = contentColor.copy(alpha = 0.5f)
+    val corScope = rememberCoroutineScope()
 
-    AnimatedContent(
-        modifier = modifier
-            .squashable(
-                onClick = {
-                    if (currentPage == pagesCount - 1) currentPage = 0 else currentPage++
-                    onPageChange(currentPage)
-                },
-                cornerRadiusRange = 8.dp..32.dp,
-                interactionSource = remember { MutableInteractionSource() }
-            )
-            .background(backgroundColor),
-        targetState = currentPage
-    ) { state ->
-        ProvideColor(color = contentColor) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    repeat(pagesCount) {
-                        ADot(color = if (it == state) contentColor else disabledContentColor)
+    ProvideColor(color = contentColor) {
+        Column(
+            modifier = modifier
+                .clip(RoundedCornerShape(32.dp))
+                .clickable {
+                    onClick()
+                    if (pagerState.currentPage == (pagerState.pageCount - 1)) return@clickable
+
+                    corScope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }
-                pageContent(state)
+                .background(backgroundColor)
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, pageIndicatorAlignment),
+            ) {
+                repeat(pagerState.pageCount) {
+                    PageDot(if (it == pagerState.currentPage) contentColor else disabledContentColor)
+                }
+            }
+
+            HorizontalPager(
+                modifier = Modifier
+                    .animateContentSize()
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                state = pagerState
+            ) { page ->
+                pageContent(page)
             }
         }
     }
 }
 
 @Composable
-private fun ADot(
+private fun PageDot(
     color: Color,
 ) {
     Canvas(modifier = Modifier.size(4.dp)) {
@@ -98,11 +119,16 @@ private fun ADot(
 @Preview
 @Composable
 private fun PreviewPagedIsland() {
-    PagedIsland(pagesCount = 5) { currentPage ->
-        Text("Current page: $currentPage")
+    PagedIsland(
+        modifier = Modifier.size(400.dp, 250.dp),
+        pagerState = rememberPagerState { 5 }
+    ) { currentPage ->
+        Column {
+            Text("Current page: $currentPage")
 
-        if (currentPage == 3) {
-            Text("Middle in: $currentPage")
+            if (currentPage == 3) {
+                Text("Middle in: $currentPage")
+            }
         }
     }
 }

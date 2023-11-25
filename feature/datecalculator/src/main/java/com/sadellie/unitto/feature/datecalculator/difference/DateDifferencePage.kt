@@ -21,10 +21,13 @@ package com.sadellie.unitto.feature.datecalculator.difference
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +50,7 @@ import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeResultBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeSelectorBlock
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
+import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
@@ -72,50 +76,59 @@ private fun DateDifferenceView(
 ) {
     var dialogState by remember { mutableStateOf(DialogState.NONE) }
 
-    FlowRow(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        maxItemsInEachRow = 2,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        DateTimeSelectorBlock(
+        FlowRow(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .weight(1f)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                 .fillMaxWidth(),
-            title = stringResource(R.string.date_calculator_start),
-            dateTime = uiState.start,
-            onClick = { dialogState = DialogState.FROM },
-            onLongClick = { setStartDate(ZonedDateTimeUtils.nowWithMinutes()) },
-            onTimeClick = { dialogState = DialogState.FROM_TIME },
-            onDateClick = { dialogState = DialogState.FROM_DATE },
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        )
+            maxItemsInEachRow = 2,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            DateTimeSelectorBlock(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .weight(1f)
+                    .fillMaxWidth(),
+                title = stringResource(R.string.date_calculator_start),
+                dateTime = uiState.start,
+                onClick = { dialogState = DialogState.FROM },
+                onLongClick = { setStartDate(ZonedDateTimeUtils.nowWithMinutes()) },
+                onTimeClick = { dialogState = DialogState.FROM_TIME },
+                onDateClick = { dialogState = DialogState.FROM_DATE },
+                containerColor = MaterialTheme.colorScheme.secondaryContainer
+            )
 
-        DateTimeSelectorBlock(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .weight(1f)
-                .fillMaxWidth(),
-            title = stringResource(R.string.date_calculator_end),
-            dateTime = uiState.end,
-            onClick = { dialogState = DialogState.TO },
-            onLongClick = { setEndDate(ZonedDateTimeUtils.nowWithMinutes()) },
-            onTimeClick = { dialogState = DialogState.TO_TIME },
-            onDateClick = { dialogState = DialogState.TO_DATE },
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        )
+            DateTimeSelectorBlock(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .weight(1f)
+                    .fillMaxWidth(),
+                title = stringResource(R.string.date_calculator_end),
+                dateTime = uiState.end,
+                onClick = { dialogState = DialogState.TO },
+                onLongClick = { setEndDate(ZonedDateTimeUtils.nowWithMinutes()) },
+                onTimeClick = { dialogState = DialogState.TO_TIME },
+                onDateClick = { dialogState = DialogState.TO_DATE },
+                containerColor = MaterialTheme.colorScheme.secondaryContainer
+            )
+        }
 
         AnimatedContent(
             targetState = uiState.result,
-            modifier = Modifier.weight(2f)
+            modifier = Modifier.fillMaxWidth()
         ) { result ->
             when (result) {
                 is ZonedDateTimeDifference.Default -> {
                     DateTimeResultBlock(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth(),
                         diff = result,
                         format = {
                             it.format(uiState.precision, uiState.outputFormat)
@@ -157,7 +170,18 @@ fun DateDifferenceViewPreview() {
         uiState = DifferenceUIState.Ready(
             start = ZonedDateTimeUtils.nowWithMinutes(),
             end = ZonedDateTimeUtils.nowWithMinutes().truncatedTo(ChronoUnit.MINUTES),
-            result = ZonedDateTimeDifference.Zero,
+            result = ZonedDateTimeDifference.Default(
+                years = 1,
+                months = 2,
+                days = 3,
+                hours = 4,
+                minutes = 5,
+                sumYears = BigDecimal("0.083"),
+                sumMonths = BigDecimal("1.000"),
+                sumDays = BigDecimal("30.000"),
+                sumHours = BigDecimal("720.000"),
+                sumMinutes = BigDecimal("43200.000"),
+            ),
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
             formatterSymbols = FormatterSymbols.Spaces
