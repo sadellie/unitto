@@ -18,43 +18,65 @@
 
 package com.sadellie.unitto.feature.datecalculator.difference
 
+import com.sadellie.unitto.core.base.MAX_PRECISION
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
-internal sealed class ZonedDateTimeDifference(
-    open val years: Long = 0,
-    open val months: Long = 0,
-    open val days: Long = 0,
-    open val hours: Long = 0,
-    open val minutes: Long = 0,
-) {
+internal sealed class ZonedDateTimeDifference {
     data class Default(
-        override val years: Long = 0,
-        override val months: Long = 0,
-        override val days: Long = 0,
-        override val hours: Long = 0,
-        override val minutes: Long = 0,
-    ) : ZonedDateTimeDifference(
-        years = years,
-        months = months,
-        days = days,
-        hours = hours,
-        minutes = minutes,
-    )
+        val years: Long,
+        val months: Long,
+        val days: Long,
+        val hours: Long,
+        val minutes: Long,
+        val sumYears: BigDecimal,
+        val sumMonths: BigDecimal,
+        val sumDays: BigDecimal,
+        val sumHours: BigDecimal,
+        val sumMinutes: BigDecimal,
+    ) : ZonedDateTimeDifference()
 
     data object Zero : ZonedDateTimeDifference()
 }
 
-// https://stackoverflow.com/a/25760725
-internal infix operator fun ZonedDateTime.minus(localDateTime: ZonedDateTime): ZonedDateTimeDifference {
-    if (this == localDateTime) return ZonedDateTimeDifference.Zero
+/**
+ * Same as other [ZonedDateTime.minus] but `MAX_PRECISION` passed as scale.
+ *
+ * @receiver First [ZonedDateTime].
+ * @param zonedDateTime Second [ZonedDateTime].
+ * @return [ZonedDateTimeDifference.Default] (_always positive_) or [ZonedDateTimeDifference.Zero]
+ */
+internal infix operator fun ZonedDateTime.minus(
+    zonedDateTime: ZonedDateTime
+): ZonedDateTimeDifference = this.minus(zonedDateTime = zonedDateTime, scale = MAX_PRECISION)
+
+/**
+ * Calculate difference between [this] and [zonedDateTime]. Return absolute value, order of operands
+ * doesn't matter.
+ *
+ * @receiver First [ZonedDateTime].
+ * @param zonedDateTime Second [ZonedDateTime].
+ * @param scale Scale that will be used to calculate [ZonedDateTimeDifference.Default.sumDays] and
+ * others summed values.
+ * @return [ZonedDateTimeDifference.Default] (_always positive_) or [ZonedDateTimeDifference.Zero]
+ */
+internal fun ZonedDateTime.minus(
+    zonedDateTime: ZonedDateTime,
+    scale: Int
+): ZonedDateTimeDifference {
+    // https://stackoverflow.com/a/25760725
+
+    if (this == zonedDateTime) return ZonedDateTimeDifference.Zero
 
     var fromDateTime: ZonedDateTime = this
-    var toDateTime: ZonedDateTime = localDateTime
+    var toDateTime: ZonedDateTime = zonedDateTime
+    val epSeconds: BigDecimal = (this.toEpochSecond() - zonedDateTime.toEpochSecond()).toBigDecimal().abs()
 
     // Swap to avoid negative
-    if (this > localDateTime) {
-        fromDateTime = localDateTime
+    if (this > zonedDateTime) {
+        fromDateTime = zonedDateTime
         toDateTime = this
     }
 
@@ -77,6 +99,21 @@ internal infix operator fun ZonedDateTime.minus(localDateTime: ZonedDateTime): Z
     if (listOf(years, months, days, hours, minutes).sum() == 0L) return ZonedDateTimeDifference.Zero
 
     return ZonedDateTimeDifference.Default(
-        years = years, months = months, days = days, hours = hours, minutes = minutes
+        years = years,
+        months = months,
+        days = days,
+        hours = hours,
+        minutes = minutes,
+        sumYears = epSeconds.divide(yearInSeconds, scale, RoundingMode.HALF_EVEN),
+        sumMonths = epSeconds.divide(monthsInSeconds, scale, RoundingMode.HALF_EVEN),
+        sumDays = epSeconds.divide(dayInSeconds, scale, RoundingMode.HALF_EVEN),
+        sumHours = epSeconds.divide(hourInSeconds, scale, RoundingMode.HALF_EVEN),
+        sumMinutes = epSeconds.divide(minuteInSeconds, scale, RoundingMode.HALF_EVEN),
     )
 }
+
+private val yearInSeconds by lazy { BigDecimal("31104000") }
+private val monthsInSeconds by lazy { BigDecimal("2592000") }
+private val dayInSeconds by lazy { BigDecimal("86400") }
+private val hourInSeconds by lazy { BigDecimal("3600") }
+private val minuteInSeconds by lazy { BigDecimal("60") }

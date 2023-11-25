@@ -20,32 +20,70 @@ package com.sadellie.unitto.feature.datecalculator.difference
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
+import com.sadellie.unitto.data.common.stateIn
+import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
+import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-internal class DateDifferenceViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(DifferenceUIState())
+internal class DateDifferenceViewModel @Inject constructor(
+    userPrefsRepository: UserPreferencesRepository,
+) : ViewModel() {
+    private val _start = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
+    private val _end = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
+    private val _result = MutableStateFlow<ZonedDateTimeDifference>(ZonedDateTimeDifference.Zero)
 
-    val uiState = _uiState
-        .onEach { updateResult() }
+    val uiState: StateFlow<DifferenceUIState> = combine(
+        userPrefsRepository.formattingPrefs,
+        _start,
+        _end,
+        _result
+    ) { prefs, start, end, result ->
+            return@combine DifferenceUIState.Ready(
+                start = start,
+                end = end,
+                result = result,
+                precision = prefs.digitsPrecision,
+                outputFormat = prefs.outputFormat,
+                formatterSymbols = AllFormatterSymbols.getById(prefs.separator)
+            )
+        }
+        .mapLatest { ui ->
+            updateResult(
+                start = ui.start,
+                end = ui.end
+            )
+
+            ui
+        }
         .stateIn(
-            viewModelScope, SharingStarted.WhileSubscribed(5000L), DifferenceUIState()
+            viewModelScope, DifferenceUIState.Loading
         )
 
-    fun setStartDate(newValue: ZonedDateTime) = _uiState.update { it.copy(start = newValue) }
+    fun setStartDate(newValue: ZonedDateTime) = _start.update { newValue }
 
-    fun setEndDate(newValue: ZonedDateTime) = _uiState.update { it.copy(end = newValue) }
+    fun setEndDate(newValue: ZonedDateTime) = _end.update { newValue }
 
-    private fun updateResult() = viewModelScope.launch(Dispatchers.Default) {
-        _uiState.update { ui -> ui.copy(result = ui.start - ui.end) }
+    private fun updateResult(
+        start: ZonedDateTime,
+        end: ZonedDateTime
+    ) = viewModelScope.launch(Dispatchers.Default) {
+        _result.update {
+            try {
+                start - end
+            } catch (e: Exception) {
+                ZonedDateTimeDifference.Zero
+            }
+        }
     }
 }

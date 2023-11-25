@@ -50,6 +50,7 @@ import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
 import com.sadellie.unitto.core.ui.datetime.formatTimeShort
+import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
 @Composable
@@ -162,6 +163,6 @@ fun DateTimeSelectorBlockPreview() {
             .width(224.dp),
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         title = "End",
-        dateTime = ZonedDateTime.now(),
+        dateTime = ZonedDateTimeUtils.nowWithMinutes(),
     )
 }

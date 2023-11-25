@@ -18,10 +18,18 @@
 
 package com.sadellie.unitto.feature.datecalculator.difference
 
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import java.time.ZonedDateTime
 
-internal data class DifferenceUIState(
-    val start: ZonedDateTime = ZonedDateTime.now(),
-    val end: ZonedDateTime = ZonedDateTime.now(),
-    val result: ZonedDateTimeDifference = ZonedDateTimeDifference.Zero
-)
+internal sealed class DifferenceUIState {
+    data object Loading : DifferenceUIState()
+
+    data class Ready(
+        val start: ZonedDateTime,
+        val end: ZonedDateTime,
+        val result: ZonedDateTimeDifference,
+        val precision: Int,
+        val outputFormat: Int,
+        val formatterSymbols: FormatterSymbols,
+    ) : DifferenceUIState()
+}

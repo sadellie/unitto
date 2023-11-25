@@ -18,9 +18,7 @@
 
 package com.sadellie.unitto.feature.datecalculator.difference
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
@@ -39,29 +37,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.formatExpression
+import com.sadellie.unitto.data.common.format
+import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeResultBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeSelectorBlock
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 @Composable
 internal fun DateDifferencePage(
     viewModel: DateDifferenceViewModel = hiltViewModel(),
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    DateDifferenceView(
-        uiState = uiState.value,
-        setStartDate = viewModel::setStartDate,
-        setEndDate = viewModel::setEndDate
-    )
+    when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+        DifferenceUIState.Loading -> Unit
+        is DifferenceUIState.Ready -> DateDifferenceView(
+            uiState = uiState,
+            setStartDate = viewModel::setStartDate,
+            setEndDate = viewModel::setEndDate
+        )
+    }
 }
 
 @Composable
 private fun DateDifferenceView(
-    uiState: DifferenceUIState,
+    uiState: DifferenceUIState.Ready,
     setStartDate: (ZonedDateTime) -> Unit,
     setEndDate: (ZonedDateTime) -> Unit,
 ) {
@@ -83,7 +88,7 @@ private fun DateDifferenceView(
             title = stringResource(R.string.date_calculator_start),
             dateTime = uiState.start,
             onClick = { dialogState = DialogState.FROM },
-            onLongClick = { setStartDate(ZonedDateTime.now()) },
+            onLongClick = { setStartDate(ZonedDateTimeUtils.nowWithMinutes()) },
             onTimeClick = { dialogState = DialogState.FROM_TIME },
             onDateClick = { dialogState = DialogState.FROM_DATE },
             containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -97,23 +102,29 @@ private fun DateDifferenceView(
             title = stringResource(R.string.date_calculator_end),
             dateTime = uiState.end,
             onClick = { dialogState = DialogState.TO },
-            onLongClick = { setStartDate(ZonedDateTime.now()) },
+            onLongClick = { setEndDate(ZonedDateTimeUtils.nowWithMinutes()) },
             onTimeClick = { dialogState = DialogState.TO_TIME },
             onDateClick = { dialogState = DialogState.TO_DATE },
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
 
-        AnimatedVisibility(
-            visible = uiState.result is ZonedDateTimeDifference.Default,
-            enter = expandVertically(),
-            exit = shrinkVertically()
-        ) {
-            DateTimeResultBlock(
-                modifier = Modifier
-                    .weight(2f)
-                    .fillMaxWidth(),
-                zonedDateTimeDifference = uiState.result,
-            )
+        AnimatedContent(
+            targetState = uiState.result,
+            modifier = Modifier.weight(2f)
+        ) { result ->
+            when (result) {
+                is ZonedDateTimeDifference.Default -> {
+                    DateTimeResultBlock(
+                        modifier = Modifier.fillMaxWidth(),
+                        diff = result,
+                        format = {
+                            it.format(uiState.precision, uiState.outputFormat)
+                                .formatExpression(uiState.formatterSymbols)
+                        }
+                    )
+                }
+                ZonedDateTimeDifference.Zero -> Unit
+            }
         }
     }
 
@@ -143,7 +154,14 @@ private fun DateDifferenceView(
 @Composable
 fun DateDifferenceViewPreview() {
     DateDifferenceView(
-        uiState = DifferenceUIState(),
+        uiState = DifferenceUIState.Ready(
+            start = ZonedDateTimeUtils.nowWithMinutes(),
+            end = ZonedDateTimeUtils.nowWithMinutes().truncatedTo(ChronoUnit.MINUTES),
+            result = ZonedDateTimeDifference.Zero,
+            precision = 3,
+            outputFormat = OutputFormat.PLAIN,
+            formatterSymbols = FormatterSymbols.Spaces
+        ),
         setStartDate = {},
         setEndDate = {},
     )

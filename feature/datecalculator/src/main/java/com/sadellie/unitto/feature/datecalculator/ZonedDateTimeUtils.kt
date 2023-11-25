@@ -16,22 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
-}
+package com.sadellie.unitto.feature.datecalculator
 
-android {
-    namespace = "com.sadellie.unitto.feature.datecalculator"
-}
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
-dependencies {
-    testImplementation(libs.junit.junit)
-
-    implementation(project(":data:common"))
-    implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
+internal object ZonedDateTimeUtils {
+    /**
+     * Get current [ZonedDateTime] with seconds and nanoseconds set to zero. Used in date calculator
+     * module.
+     *
+     * @return [ZonedDateTime] with units less than minutes zeroed out.
+     */
+    fun nowWithMinutes(): ZonedDateTime = ZonedDateTime.now().truncatedTo(ChronoUnit.MINUTES)
 }

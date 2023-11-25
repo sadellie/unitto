@@ -20,32 +20,128 @@ package com.sadellie.unitto.feature.datecalculator.difference
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class ZonedDateTimeDifferenceKtTest {
     private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
-    private val `may 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-01T12:00+01:00[Europe/Paris]", formatter)
-    private val `may 2 2023`: ZonedDateTime = ZonedDateTime.parse("2023-05-02T12:00+01:00[Europe/Paris]", formatter)
-    private val `june 1 2023`: ZonedDateTime = ZonedDateTime.parse("2023-06-01T12:00+01:00[Europe/Paris]", formatter)
 
     @Test
     fun `same dates`() {
-        assertEquals(ZonedDateTimeDifference.Zero, `may 1 2023` - `may 1 2023`)
+        val date1: ZonedDateTime = ZonedDateTime.parse("2023-05-01T12:00+01:00[Europe/Paris]", formatter)
+
+        assertEquals(ZonedDateTimeDifference.Zero, date1 - date1)
     }
 
     @Test
-    fun `positive difference dates one day`() {
-        assertEquals(ZonedDateTimeDifference.Default(days = 1), `may 1 2023` - `may 2 2023`)
+    fun `positive difference one day`() {
+        val date1: ZonedDateTime = ZonedDateTime.parse("2023-05-01T12:00+01:00[Europe/Paris]", formatter)
+        val date2: ZonedDateTime = ZonedDateTime.parse("2023-05-02T12:00+01:00[Europe/Paris]", formatter)
+
+        assertEquals(
+            ZonedDateTimeDifference.
+            Default(
+                years = 0,
+                months = 0,
+                days = 1,
+                hours = 0,
+                minutes = 0,
+                sumYears = BigDecimal("0.003"),
+                sumMonths = BigDecimal("0.033"),
+                sumDays = BigDecimal("1.000"),
+                sumHours = BigDecimal("24.000"),
+                sumMinutes = BigDecimal("1440.000"),
+            ),
+            date1.minus(date2, 3)
+        )
     }
 
     @Test
-    fun `positive difference dates one minth`() {
-        assertEquals(ZonedDateTimeDifference.Default(months = 1), `may 1 2023` - `june 1 2023`)
+    fun `positive difference one month`() {
+        val date1: ZonedDateTime = ZonedDateTime.parse("2023-05-01T12:00+01:00[Europe/Paris]", formatter)
+        val date2: ZonedDateTime = ZonedDateTime.parse("2023-06-01T12:00+01:00[Europe/Paris]", formatter)
+
+        assertEquals(
+            ZonedDateTimeDifference.Default(
+                years = 0,
+                months = 1,
+                days = 0,
+                hours = 0,
+                minutes = 0,
+                sumYears = BigDecimal("0.086"),
+                sumMonths = BigDecimal("1.033"),
+                sumDays = BigDecimal("31.000"),
+                sumHours = BigDecimal("744.000"),
+                sumMinutes = BigDecimal("44640.000"),
+            ),
+            date1.minus(date2, 3)
+        )
     }
 
     @Test
-    fun `negative difference dates one day`() {
-        assertEquals(ZonedDateTimeDifference.Default(days = 1), `may 2 2023` - `may 1 2023`)
+    fun `negative difference one day`() {
+        val date1: ZonedDateTime = ZonedDateTime.parse("2023-05-02T12:00+01:00[Europe/Paris]", formatter)
+        val date2: ZonedDateTime = ZonedDateTime.parse("2023-05-01T12:00+01:00[Europe/Paris]", formatter)
+
+        assertEquals(
+            ZonedDateTimeDifference.Default(
+                years = 0,
+                months = 0,
+                days = 1,
+                hours = 0,
+                minutes = 0,
+                sumYears = BigDecimal("0.003"),
+                sumMonths = BigDecimal("0.033"),
+                sumDays = BigDecimal("1.000"),
+                sumHours = BigDecimal("24.000"),
+                sumMinutes = BigDecimal("1440.000"),
+            ),
+            date1.minus(date2, 3)
+        )
+    }
+
+    @Test
+    fun `positive big difference`() {
+        val date1: ZonedDateTime = ZonedDateTime.parse("2023-10-25T12:00+01:00[Europe/Paris]", formatter)
+        val date2: ZonedDateTime = ZonedDateTime.parse("2023-11-25T12:00+01:00[Europe/Paris]", formatter)
+
+        assertEquals(
+            ZonedDateTimeDifference.Default(
+                years = 0,
+                months = 0,
+                days = 30,
+                hours = 23,
+                minutes = 0,
+                sumYears = BigDecimal("0.086"),
+                sumMonths = BigDecimal("1.033"),
+                sumDays = BigDecimal("31.000"),
+                sumHours = BigDecimal("744.000"),
+                sumMinutes = BigDecimal("44640.000"),
+            ),
+            date1.minus(date2, 3)
+        )
+    }
+
+    @Test
+    fun `positive big difference 2`() {
+        val date1: ZonedDateTime = ZonedDateTime.parse("2023-11-25T12:00+01:00[Europe/Paris]", formatter)
+        val date2: ZonedDateTime = ZonedDateTime.parse("2023-12-25T12:00+01:00[Europe/Paris]", formatter)
+
+        assertEquals(
+            ZonedDateTimeDifference.Default(
+                years = 0,
+                months = 1,
+                days = 0,
+                hours = 0,
+                minutes = 0,
+                sumYears = BigDecimal("0.083"),
+                sumMonths = BigDecimal("1.000"),
+                sumDays = BigDecimal("30.000"),
+                sumHours = BigDecimal("720.000"),
+                sumMinutes = BigDecimal("43200.000"),
+            ),
+            date1.minus(date2, 3)
+        )
     }
 }

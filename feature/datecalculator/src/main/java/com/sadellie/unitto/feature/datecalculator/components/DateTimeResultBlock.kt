@@ -19,112 +19,155 @@
 package com.sadellie.unitto.feature.datecalculator.components
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.squashable
+import com.sadellie.unitto.core.ui.common.PagedIsland
 import com.sadellie.unitto.feature.datecalculator.difference.ZonedDateTimeDifference
+import java.math.BigDecimal
 
 @Composable
 internal fun DateTimeResultBlock(
     modifier: Modifier = Modifier,
-    zonedDateTimeDifference: ZonedDateTimeDifference
+    diff: ZonedDateTimeDifference.Default,
+    format: (BigDecimal) -> String
 ) {
-    val clipboardManager = LocalClipboardManager.current
+    PagedIsland(
+        modifier = modifier,
+        pagesCount = 6,
+        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+    ) { currentPage ->
+        when(currentPage) {
+            0 -> {
+                Text(
+                    text = stringResource(R.string.date_calculator_difference),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                SelectionContainer {
+                    Column {
+                        // Years
+                        if (diff.years > 0) {
+                            DateText(R.string.date_calculator_years, diff.years.toBigDecimal(), format)
+                        }
 
-    val years = zonedDateTimeDifference.years.formatDateTimeValue(R.string.date_calculator_years)
-    val months = zonedDateTimeDifference.months.formatDateTimeValue(R.string.date_calculator_months)
-    val days = zonedDateTimeDifference.days.formatDateTimeValue(R.string.date_calculator_days)
-    val hours = zonedDateTimeDifference.hours.formatDateTimeValue(R.string.date_calculator_hours)
-    val minutes = zonedDateTimeDifference.minutes.formatDateTimeValue(R.string.date_calculator_minutes)
+                        // Months
+                        if (diff.months > 0) {
+                            DateText(R.string.date_calculator_months, diff.months.toBigDecimal(), format)
+                        }
 
-    val texts = listOf(years, months, days, hours, minutes)
+                        // Days
+                        if (diff.days > 0) {
+                            DateText(R.string.date_calculator_days, diff.days.toBigDecimal(), format)
+                        }
 
-    Column(
-        modifier = modifier
-            .squashable(
-                onClick = {},
-                interactionSource = remember { MutableInteractionSource() },
-                cornerRadiusRange = 8.dp..32.dp,
-            )
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.Start
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Text(
-                stringResource(R.string.date_calculator_difference),
-                style = MaterialTheme.typography.labelMedium
-            )
-            IconButton(
-                onClick = {
-                    clipboardManager.setText(
-                        AnnotatedString(texts.filter { it.isNotEmpty() }.joinToString(" "))
-                    )
+                        // Hours
+                        if (diff.hours > 0) {
+                            DateText(R.string.date_calculator_hours, diff.hours.toBigDecimal(), format)
+                        }
+
+                        // Minutes
+                        if (diff.minutes > 0) {
+                            DateText(R.string.date_calculator_minutes, diff.minutes.toBigDecimal(), format)
+                        }
+                    }
                 }
-            ) {
-                Icon(Icons.Default.ContentCopy, null)
             }
-        }
 
-        texts.forEach {
-            AnimatedVisibility(
-                visible = it.isNotEmpty(),
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                Text(it, style = MaterialTheme.typography.displaySmall)
+            1 -> {
+                Text(
+                    text = stringResource(R.string.date_calculator_years),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                SelectionContainer {
+                    DateText(diff.sumYears, format)
+                }
+            }
+
+            2 -> {
+                Text(
+                    text = stringResource(R.string.date_calculator_months),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                SelectionContainer {
+                    DateText(diff.sumMonths, format)
+                }
+            }
+
+            3 -> {
+                Text(
+                    text = stringResource(R.string.date_calculator_days),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                SelectionContainer {
+                    DateText(diff.sumDays, format)
+                }
+            }
+
+            4 -> {
+                Text(
+                    text = stringResource(R.string.date_calculator_hours),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                SelectionContainer {
+                    DateText(diff.sumHours, format)
+                }
+            }
+
+            5 -> {
+                Text(
+                    text = stringResource(R.string.date_calculator_minutes),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                SelectionContainer {
+                    DateText(diff.sumMinutes, format)
+                }
             }
         }
     }
 }
 
 @Composable
-@ReadOnlyComposable
-private fun Long.formatDateTimeValue(@StringRes id: Int): String {
-    if (this <= 0) return ""
+private fun DateText(
+    @StringRes id: Int,
+    value: BigDecimal,
+    format: (BigDecimal) -> String,
+) = Text(
+    text = "${stringResource(id)}: ${format(value)}",
+    style = MaterialTheme.typography.displaySmall
+)
 
-    return "${stringResource(id)}: $this"
-}
+@Composable
+private fun DateText(
+    value: BigDecimal,
+    format: (BigDecimal) -> String,
+) = Text(
+    text = format(value),
+    style = MaterialTheme.typography.displaySmall
+)
 
 @Preview
 @Composable
 private fun DateTimeResultBlockPreview() {
     DateTimeResultBlock(
         modifier = Modifier,
-        zonedDateTimeDifference = ZonedDateTimeDifference.Default(
+        diff = ZonedDateTimeDifference.Default(
+            years = 0,
             months = 1,
-            days = 2,
-            hours = 3,
-            minutes = 4
-        )
+            days = 1,
+            hours = 0,
+            minutes = 0,
+            sumYears = BigDecimal.ZERO,
+            sumMonths = BigDecimal.ZERO,
+            sumDays = BigDecimal.ZERO,
+            sumHours = BigDecimal.ZERO,
+            sumMinutes = BigDecimal("46080"),
+        ),
+        format = { it.toPlainString() }
     )
 }

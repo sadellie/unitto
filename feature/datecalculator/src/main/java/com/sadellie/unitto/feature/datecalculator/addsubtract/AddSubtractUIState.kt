@@ -20,11 +20,12 @@ package com.sadellie.unitto.feature.datecalculator.addsubtract
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
 internal data class AddSubtractState(
-    val start: ZonedDateTime = ZonedDateTime.now(),
-    val result: ZonedDateTime = ZonedDateTime.now(),
+    val start: ZonedDateTime = ZonedDateTimeUtils.nowWithMinutes(),
+    val result: ZonedDateTime = ZonedDateTimeUtils.nowWithMinutes(),
     val years: TextFieldValue = TextFieldValue(),
     val months: TextFieldValue = TextFieldValue(),
     val days: TextFieldValue = TextFieldValue(),

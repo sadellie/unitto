@@ -80,6 +80,7 @@ import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.core.ui.isPortrait
 import com.sadellie.unitto.core.ui.showToast
+import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.AddSubtractKeyboard
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeSelectorBlock
@@ -193,7 +194,7 @@ private fun AddSubtractView(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer,
                             title = stringResource(R.string.date_calculator_start),
                             dateTime = uiState.start,
-                            onLongClick = { updateStart(ZonedDateTime.now()) },
+                            onLongClick = { updateStart(ZonedDateTimeUtils.nowWithMinutes()) },
                             onClick = { dialogState = DialogState.FROM },
                             onTimeClick = { dialogState = DialogState.FROM_TIME },
                             onDateClick = { dialogState = DialogState.FROM_DATE },
@@ -402,8 +403,8 @@ fun AddSubtractViewPreview() {
     AddSubtractView(
         uiState = AddSubtractState(
             years = TextFieldValue("12"),
-            start = ZonedDateTime.now(),
-            result = ZonedDateTime.now().plusSeconds(1)
+            start = ZonedDateTimeUtils.nowWithMinutes(),
+            result = ZonedDateTimeUtils.nowWithMinutes().plusSeconds(1)
         ),
         toggleTopBar = {},
         showKeyboard = false,
