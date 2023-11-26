@@ -59,10 +59,15 @@ fun String.formatExpression(
         return input.replace(Token.Digit.dot, formatterSymbols.fractional)
     }
 
-    // Only format integral part
+    // Fractional
     if (input.contains(Token.DisplayOnly.fraction)) {
-        val (integral, fraction) = input.split(" ")
-        return "${integral.formatNumber(formatterSymbols)} $fraction"
+        // Only format integral part
+        val splitFractional = input.split(" ")
+        if (splitFractional.size > 1) {
+            return "${splitFractional[0].formatNumber(formatterSymbols)} ${splitFractional[1]}"
+        }
+        // No integral part
+        return input
     }
 
     numbersRegex
