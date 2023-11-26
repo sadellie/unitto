@@ -301,7 +301,7 @@ private fun Preferences.getEnableAmoledTheme(): Boolean {
 }
 
 private fun Preferences.getCustomColor(): Long {
-    return this[PrefsKeys.CUSTOM_COLOR] ?: Long.MIN_VALUE
+    return this[PrefsKeys.CUSTOM_COLOR] ?: 16L // From Color.Unspecified
 }
 
 private fun Preferences.getMonetMode(): String {
@@ -330,7 +330,7 @@ private fun Preferences.getSeparator(): Int {
 }
 
 private fun Preferences.getMiddleZero(): Boolean {
-    return this[PrefsKeys.MIDDLE_ZERO] ?: false
+    return this[PrefsKeys.MIDDLE_ZERO] ?: true
 }
 
 private fun Preferences.getPartialHistoryView(): Boolean {
@@ -375,7 +375,7 @@ private fun Preferences.getLatestRightSide(): String {
 }
 
 private fun Preferences.getAcButton(): Boolean {
-    return this[PrefsKeys.AC_BUTTON] ?: false
+    return this[PrefsKeys.AC_BUTTON] ?: true
 }
 
 private fun Preferences.getClearInputAfterEquals(): Boolean {
