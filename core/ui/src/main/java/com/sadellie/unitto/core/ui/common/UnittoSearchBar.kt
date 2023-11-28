@@ -34,7 +34,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActionScope
@@ -107,7 +107,7 @@ fun UnittoSearchBar(
 
     Box(
         modifier = modifier
-            .statusBarsPadding()
+            .windowInsetsPadding(TopAppBarDefaults.windowInsets)
             .height(height),
         contentAlignment = Alignment.Center
     ) {
