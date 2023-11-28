@@ -121,6 +121,7 @@ private fun DateDifferenceView(
 
         AnimatedContent(
             targetState = uiState.result,
+            label = "Result reveal",
             modifier = Modifier.fillMaxWidth()
         ) { result ->
             when (result) {

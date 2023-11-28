@@ -34,7 +34,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Keyboard
 import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -78,11 +78,11 @@ fun TimePickerDialog(
     val configuration = LocalConfiguration.current
     var showingPicker by rememberSaveable { mutableStateOf(true) }
 
-    AlertDialog(
+    BasicAlertDialog(
         onDismissRequest = onCancel,
         properties = DialogProperties(
             usePlatformDefaultWidth = false
-        ),
+        )
     ) {
         Surface(
             shape = MaterialTheme.shapes.extraLarge,

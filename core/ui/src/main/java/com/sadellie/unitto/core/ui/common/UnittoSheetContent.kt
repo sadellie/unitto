@@ -65,6 +65,7 @@ internal fun ColumnScope.SheetContent(
 
     AnimatedContent(
         targetState = showHello,
+        label = "Hello reveal",
         modifier = Modifier.clickable(
             interactionSource = interactionSource,
             indication = null,

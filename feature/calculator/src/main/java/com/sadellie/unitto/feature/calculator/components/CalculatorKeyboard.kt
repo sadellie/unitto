@@ -42,7 +42,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightShort
@@ -204,6 +204,7 @@ private fun PortraitKeyboard(
         ) {
             Crossfade(
                 targetState = invMode,
+                label = "Inverse switch",
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -346,6 +347,7 @@ private fun AdditionalPortrait(
     AnimatedContent(
         targetState = showAdditional,
         modifier = modifier,
+        label = "Additional buttons reveal",
         transitionSpec = {
             expandVertically(expandFrom = Alignment.Top) togetherWith
                     shrinkVertically(shrinkTowards = Alignment.Top) using (SizeTransform())
@@ -409,6 +411,7 @@ private fun LandscapeKeyboard(
 ) {
     Crossfade(
         targetState = invMode,
+        label = "Inverse switch",
         modifier = modifier
     ) { inverse ->
         if (inverse) {
