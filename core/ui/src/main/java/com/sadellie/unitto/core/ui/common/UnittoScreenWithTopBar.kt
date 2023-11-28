@@ -31,8 +31,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
+import com.sadellie.unitto.core.ui.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.sadellie.unitto.core.ui.LocalWindowSize
 
 /**
  * Template screen. Uses [Scaffold] and [CenterAlignedTopAppBar]
@@ -56,20 +59,19 @@ fun UnittoScreenWithTopBar(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    showTopBar: Boolean = true,
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
             AnimatedVisibility(
-                visible = showTopBar,
+                visible = LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact,
                 enter = slideInVertically() + fadeIn(),
                 exit = slideOutVertically() + fadeOut()
             ) {
                 CenterAlignedTopAppBar(
                     title = title,
-                    navigationIcon = navigationIcon,
+                    navigationIcon = if (LocalWindowSize.current.widthSizeClass != WindowWidthSizeClass.Expanded) navigationIcon else { {} },
                     actions = actions,
                     colors = colors,
                     scrollBehavior = scrollBehavior,

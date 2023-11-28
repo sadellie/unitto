@@ -20,12 +20,9 @@ package com.sadellie.unitto.core.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.res.Configuration
 import android.net.Uri
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalConfiguration
 import com.sadellie.unitto.core.base.R
 
 /**
@@ -46,6 +43,3 @@ fun showToast(
 ) {
     Toast.makeText(mContext, text, duration).show()
 }
-
-@Composable
-fun isPortrait() = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT

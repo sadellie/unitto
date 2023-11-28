@@ -25,6 +25,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
@@ -32,6 +33,8 @@ import androidx.core.os.ConfigurationCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.ui.LocalLocale
+import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.calculateWindowSizeClass
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -43,6 +46,7 @@ internal class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var userPrefsRepository: UserPreferencesRepository
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,7 +60,8 @@ internal class MainActivity : AppCompatActivity() {
             }
 
             CompositionLocalProvider(
-                LocalLocale provides locale
+                LocalLocale provides locale,
+                LocalWindowSize provides calculateWindowSizeClass(this@MainActivity)
             ) {
                 UnittoApp(prefs)
             }

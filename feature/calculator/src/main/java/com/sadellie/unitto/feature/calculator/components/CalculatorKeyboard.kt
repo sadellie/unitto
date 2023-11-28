@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.calculator.components
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.SizeTransform
@@ -43,6 +42,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,10 +52,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightShort
@@ -128,8 +128,8 @@ internal fun CalculatorKeyboard(
     val angleIcon = remember(radianMode) { if (radianMode) UnittoIcons.Rad else UnittoIcons.Deg }
     var invMode: Boolean by remember { mutableStateOf(false) }
 
-    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-        PortraitKeyboard(
+    if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
+        LandscapeKeyboard(
             modifier = modifier,
             angleIcon = angleIcon,
             fractionalIcon = fractionalIcon,
@@ -146,7 +146,7 @@ internal fun CalculatorKeyboard(
             toggleInvMode = { invMode = !invMode },
         )
     } else {
-        LandscapeKeyboard(
+        PortraitKeyboard(
             modifier = modifier,
             angleIcon = angleIcon,
             fractionalIcon = fractionalIcon,
@@ -422,7 +422,7 @@ private fun LandscapeKeyboard(
                     .fillMaxHeight(height)
 
                 KeyboardButtonAdditional(buttonModifier, angleIcon, allowVibration, KeyboardButtonContentHeightShort) { toggleAngleMode() }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Modulo, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.modulo) }
+                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Modulo, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.modulo) }
                 KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.pi) }
                 KeyboardButtonLight(buttonModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._7) }
                 KeyboardButtonLight(buttonModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._8) }
@@ -444,18 +444,18 @@ private fun LandscapeKeyboard(
                 KeyboardButtonFilled(buttonModifier, UnittoIcons.Multiply, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.multiply) }
                 KeyboardButtonFilled(buttonModifier, UnittoIcons.Divide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.divide) }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArSin, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.arsinBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArCos, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.arcosBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.AcTan, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.actanBracket) }
+                KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArSin, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.arsinBracket) }
+                KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArCos, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.arcosBracket) }
+                KeyboardButtonAdditional(buttonModifier, UnittoIcons.AcTan, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.actanBracket) }
                 KeyboardButtonLight(buttonModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1) }
                 KeyboardButtonLight(buttonModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._2) }
                 KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._3) }
                 KeyboardButtonFilled(buttonModifier, UnittoIcons.Minus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
                 KeyboardButtonFilled(buttonModifier, UnittoIcons.Percent, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.e) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ex, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.expBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Power10, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
+                KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.e) }
+                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ex, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.expBracket) }
+                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Power10, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                 if (middleZero) {
                     KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
                     KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
@@ -527,14 +527,13 @@ private fun LandscapeKeyboard(
     }
 }
 
-@Preview(device = "spec:parent=pixel_5,orientation=portrait")
-@Preview(device = "spec:parent=pixel_5,orientation=landscape")
+@Preview(device = "spec:width=400dp,height=600dp,dpi=440")
 @Composable
-private fun PreviewCalculatorKeyboard() {
-    CalculatorKeyboard(
-        modifier = Modifier.fillMaxHeight(0.75f),
-        radianMode = true,
-        fractional = ".",
+private fun PreviewPortraitKeyboard() {
+    PortraitKeyboard(
+        modifier = Modifier.fillMaxHeight(),
+        angleIcon = UnittoIcons.Rad,
+        fractionalIcon = UnittoIcons.Dot,
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},
@@ -543,6 +542,29 @@ private fun PreviewCalculatorKeyboard() {
         allowVibration = false,
         middleZero = false,
         acButton = true,
-        addBracket = {}
+        addBracket = {},
+        invMode = false,
+        toggleInvMode = {}
+    )
+}
+
+@Preview(device = "spec:width=600dp,height=300dp,dpi=440")
+@Composable
+private fun PreviewLandscapeKeyboard() {
+    LandscapeKeyboard(
+        modifier = Modifier.fillMaxHeight(),
+        angleIcon = UnittoIcons.Rad,
+        fractionalIcon = UnittoIcons.Dot,
+        addSymbol = {},
+        clearSymbols = {},
+        deleteSymbol = {},
+        toggleAngleMode = {},
+        evaluate = {},
+        allowVibration = false,
+        middleZero = false,
+        acButton = true,
+        addBracket = {},
+        invMode = false,
+        toggleInvMode = {}
     )
 }

@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -32,6 +33,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightTall
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
@@ -50,7 +52,6 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Key7
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key8
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Key9
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Tab
-import com.sadellie.unitto.core.ui.isPortrait
 
 @Composable
 internal fun AddSubtractKeyboard(
@@ -106,7 +107,7 @@ internal fun AddSubtractKeyboard(
             val mainButtonModifier = Modifier
                 .fillMaxWidth(width)
                 .fillMaxHeight(height)
-            val actionIconHeight = if (isPortrait()) 0.396f else 0.68f
+            val actionIconHeight = if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) 0.396f else 0.68f
 
             Crossfade(
                 targetState = imeAction == ImeAction.Next,

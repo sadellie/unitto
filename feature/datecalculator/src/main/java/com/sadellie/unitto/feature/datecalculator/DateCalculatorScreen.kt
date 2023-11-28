@@ -63,7 +63,6 @@ internal fun DateCalculatorScreen(
     val addSubtractLabel = "${stringResource(R.string.date_calculator_add)}/${stringResource(R.string.date_calculator_subtract)}"
     val differenceLabel = stringResource(R.string.date_calculator_difference)
     val focusManager = LocalFocusManager.current
-    var topBarShown by remember { mutableStateOf(true) }
     var showKeyboard by remember { mutableStateOf(false) }
 
     val allTabs = remember { listOf(addSubtractLabel, differenceLabel) }
@@ -75,7 +74,6 @@ internal fun DateCalculatorScreen(
         title = { Text(stringResource(R.string.date_calculator_title)) },
         navigationIcon = { MenuButton(navigateToMenu) },
         actions = { SettingsButton(navigateToSettings) },
-        showTopBar = topBarShown,
     ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues),
@@ -102,13 +100,11 @@ internal fun DateCalculatorScreen(
             ) { page ->
                 when (page) {
                     0 -> AddSubtractPage(
-                        toggleTopBar = { topBarShown = it },
                         showKeyboard = showKeyboard,
                         toggleKeyboard = {showKeyboard = it }
                     )
                     1 -> {
                         focusManager.clearFocus(true)
-                        topBarShown = true
                         showKeyboard = false
 
                         DateDifferencePage()

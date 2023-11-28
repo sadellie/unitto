@@ -17,6 +17,7 @@ androidxRoom = "2.6.0-rc01"
 androidxTest = "1.5.0"
 androidxTestExtJunitKtx = "1.1.5"
 androidxTestRunner = "1.5.2"
+androidxWindowWindow = "1.2.0"
 comAndroidToolsDesugarJdkLibs = "2.0.3"
 comGithubSadellieThemmo = "1.1.2"
 comGoogleAccompanistAccompanistSystemuicontroller = "0.30.1"
@@ -35,6 +36,7 @@ orgRobolectricRobolectric = "4.10.3"
 androidx-appcompat-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompatAppCompat" }
 androidx-browser-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowserBrowser" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
+androidx-compose-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "androidxComposeMaterial3" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidxCompose" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "androidxCompose" }
@@ -53,6 +55,7 @@ androidx-test-core = { group = "androidx.test", name = "core", version.ref = "an
 androidx-test-ext-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExtJunitKtx" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTest" }
+androidx-window-window = { group = "androidx.window", name = "window", version.ref = "androidxWindowWindow" }
 com-android-tools-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "comAndroidToolsDesugarJdkLibs" }
 com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
 com-google-accompanist-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "comGoogleAccompanistAccompanistSystemuicontroller" }

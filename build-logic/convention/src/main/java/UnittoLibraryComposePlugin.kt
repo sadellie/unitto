@@ -36,6 +36,7 @@ class UnittoLibraryComposePlugin : Plugin<Project> {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
                 "implementation"(libs.findLibrary("androidx.compose.material3").get())
+                "implementation"(libs.findLibrary("androidx.compose.material3.window.size").get())
                 "implementation"(libs.findLibrary("androidx.lifecycle.lifecycle.runtime.compose").get())
                 "implementation"(libs.findLibrary("androidx.compose.material.icons.extended").get())
                 "implementation"(libs.findLibrary("androidx.compose.ui.tooling").get())

@@ -18,15 +18,14 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -36,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
@@ -83,7 +83,7 @@ internal fun RPNCalculatorScreen(
             InputBox(
                 modifier = Modifier
                     .padding(8.dp)
-                    .fillMaxHeight(if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) 0.3f else 0.5f),
+                    .fillMaxHeight(if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) 0.3f else 0.5f),
                 input = uiState.input,
                 stack = uiState.stack,
                 formatterSymbols = uiState.formatterSymbols,

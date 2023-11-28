@@ -57,6 +57,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -76,9 +77,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
-import com.sadellie.unitto.core.ui.isPortrait
 import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.AddSubtractKeyboard
@@ -91,7 +92,6 @@ import java.time.ZonedDateTime
 @Composable
 internal fun AddSubtractPage(
     viewModel: AddSubtractViewModel = hiltViewModel(),
-    toggleTopBar: (Boolean) -> Unit,
     showKeyboard: Boolean,
     toggleKeyboard: (Boolean) -> Unit,
 ) {
@@ -99,7 +99,6 @@ internal fun AddSubtractPage(
 
     AddSubtractView(
         uiState = uiState,
-        toggleTopBar = toggleTopBar,
         showKeyboard = showKeyboard,
         toggleKeyboard = toggleKeyboard,
         updateStart = viewModel::updateStart,
@@ -116,7 +115,6 @@ internal fun AddSubtractPage(
 @Composable
 private fun AddSubtractView(
     uiState: AddSubtractState,
-    toggleTopBar: (Boolean) -> Unit,
     showKeyboard: Boolean,
     toggleKeyboard: (Boolean) -> Unit,
     updateStart: (ZonedDateTime) -> Unit,
@@ -129,15 +127,10 @@ private fun AddSubtractView(
 ) {
     val mContext = LocalContext.current
     val focusManager = LocalFocusManager.current
-    val landscape = !isPortrait()
 
     var dialogState by remember { mutableStateOf(DialogState.NONE) }
     var addSymbol: ((TextFieldValue) -> Unit)? by remember { mutableStateOf(null) }
     var focusedTextFieldValue: TextFieldValue? by remember { mutableStateOf(null) }
-
-    LaunchedEffect(showKeyboard, landscape) {
-        toggleTopBar(!(showKeyboard and landscape))
-    }
 
     LaunchedEffect(addSymbol, focusedTextFieldValue) {
         toggleKeyboard((addSymbol != null) and (focusedTextFieldValue != null))
@@ -346,7 +339,7 @@ private fun AddSubtractView(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .fillMaxHeight(if (isPortrait()) 0.4f else 0.6f)
+                    .fillMaxHeight(if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) 0.4f else 0.6f)
                     .padding(2.dp, 4.dp),
                 addSymbol = {
                     val newValue = focusedTextFieldValue?.addTokens(it)
@@ -406,7 +399,6 @@ fun AddSubtractViewPreview() {
             start = ZonedDateTimeUtils.nowWithMinutes(),
             result = ZonedDateTimeUtils.nowWithMinutes().plusSeconds(1)
         ),
-        toggleTopBar = {},
         showKeyboard = false,
         toggleKeyboard = {},
         updateStart = {},

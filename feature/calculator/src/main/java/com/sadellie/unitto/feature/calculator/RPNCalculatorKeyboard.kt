@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,9 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.KeyboardButtonAdditional
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightShort
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightTall
@@ -77,8 +77,8 @@ internal fun RPNCalculatorKeyboard(
 ) {
     val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
 
-    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-        RPNCalculatorKeyboardPortrait(
+    if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
+        RPNCalculatorKeyboardLandscape(
             modifier = modifier,
             fractionalIcon = fractionalIcon,
             middleZero = middleZero,
@@ -87,7 +87,7 @@ internal fun RPNCalculatorKeyboard(
             onInputEditClick = onInputEditClick
         )
     } else {
-        RPNCalculatorKeyboardLandscape(
+        RPNCalculatorKeyboardPortrait(
             modifier = modifier,
             fractionalIcon = fractionalIcon,
             middleZero = middleZero,

@@ -32,8 +32,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerDefaults
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.PermanentDrawerSheet
+import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -53,6 +58,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowWidthSizeClass
 import com.sadellie.unitto.core.ui.model.DrawerItems
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -99,11 +107,62 @@ fun rememberDrawerState(
     }
 }
 
+@Composable
+fun UnittoNavigationDrawer(
+    modifier: Modifier,
+    gesturesEnabled: Boolean,
+    state: DrawerState = rememberDrawerState(),
+    tabs: List<DrawerItems>,
+    currentDestination: String?,
+    onItemClick: (TopLevelDestinations) -> Unit,
+    content: @Composable () -> Unit,
+) {
+    if (LocalWindowSize.current.widthSizeClass == WindowWidthSizeClass.Expanded) {
+        PermanentNavigationDrawer(
+            modifier = modifier,
+            drawerContent = {
+                PermanentDrawerSheet(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    SheetContent(
+                        tabs = tabs,
+                        currentDestination = currentDestination,
+                        onItemClick = onItemClick
+                    )
+                }
+            },
+            content = content
+        )
+    } else {
+        UnittoModalNavigationDrawer(
+            modifier = modifier,
+            drawerContent = {
+                ModalDrawerSheet(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    SheetContent(
+                        tabs = tabs,
+                        currentDestination = currentDestination,
+                        onItemClick = onItemClick
+                    )
+                }
+            },
+            gesturesEnabled = gesturesEnabled,
+            state = state,
+            content = content
+        )
+    }
+}
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun UnittoModalNavigationDrawer(
-    drawer: @Composable () -> Unit,
+private fun UnittoModalNavigationDrawer(
     modifier: Modifier,
+    drawerContent: @Composable () -> Unit,
     gesturesEnabled: Boolean,
     state: DrawerState = rememberDrawerState(),
     content: @Composable () -> Unit,
@@ -172,7 +231,7 @@ fun UnittoModalNavigationDrawer(
                     enabled = gesturesEnabled or state.isOpen,
                 )
         ) {
-            drawer()
+            drawerContent()
         }
     }
 }
@@ -217,18 +276,13 @@ private fun PreviewUnittoModalNavigationDrawerClose() {
     val corScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Open)
 
-    UnittoModalNavigationDrawer(
-        drawer = {
-            UnittoDrawerSheet(
-                modifier = Modifier,
-                tabs = DrawerItems.ALL,
-                currentDestination = DrawerItems.Calculator.destination.start,
-                onItemClick = {}
-            )
-        },
+    UnittoNavigationDrawer(
         modifier = Modifier,
         state = drawerState,
         gesturesEnabled = true,
+        tabs = DrawerItems.MAIN,
+        currentDestination = DrawerItems.Calculator.destination.start,
+        onItemClick = {},
         content = {
             Column {
                 Text(text = "Content")

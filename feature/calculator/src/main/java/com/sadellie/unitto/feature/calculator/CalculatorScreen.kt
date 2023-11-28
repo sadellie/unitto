@@ -41,6 +41,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -64,6 +65,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
@@ -179,8 +181,9 @@ private fun Ready(
         ) {
             val density = LocalDensity.current
             val coroutineScope = rememberCoroutineScope()
+            val textBoxFill = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) 0.4f else 0.25f
 
-            val textBoxHeight = maxHeight * 0.25f
+            val textBoxHeight = maxHeight * textBoxFill
 
             val dragState = remember {
                 AnchoredDraggableState(
@@ -208,12 +211,12 @@ private fun Ready(
                         DraggableAnchors {
                             DragState.CLOSED at 0f
                             DragState.SMALL at HistoryItemHeight.toPx()
-                            DragState.OPEN at (maxHeight * 0.75f).toPx()
+                            DragState.OPEN at (maxHeight - textBoxHeight).toPx()
                         }
                     } else {
                         DraggableAnchors {
                             DragState.CLOSED at 0f
-                            DragState.OPEN at (maxHeight * 0.75f).toPx()
+                            DragState.OPEN at (maxHeight - textBoxHeight).toPx()
                         }
                     }
                 }
@@ -257,8 +260,7 @@ private fun Ready(
                     .anchoredDraggable(
                         state = dragState,
                         orientation = Orientation.Vertical
-                    )
-                ,
+                    ),
                 formatterSymbols = uiState.formatterSymbols,
                 input = uiState.input,
                 deleteSymbol = deleteSymbol,

@@ -21,11 +21,13 @@ package com.sadellie.unitto.feature.converter.components
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.Token
+import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightShort
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightTall
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
@@ -63,7 +65,6 @@ import com.sadellie.unitto.core.ui.common.key.unittoicons.Power
 import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Root
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
-import com.sadellie.unitto.core.ui.isPortrait
 
 @Composable
 internal fun DefaultKeyboard(
@@ -78,7 +79,7 @@ internal fun DefaultKeyboard(
     addBracket: () -> Unit,
 ) {
     val fractionalIcon = remember { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
-    val contentHeight: Float = if (isPortrait()) KeyboardButtonContentHeightTall else KeyboardButtonContentHeightShort
+    val contentHeight: Float = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) KeyboardButtonContentHeightShort else KeyboardButtonContentHeightTall
 
     KeypadFlow(
         modifier = modifier,
@@ -132,7 +133,7 @@ internal fun NumberBaseKeyboard(
     deleteDigit: () -> Unit,
     allowVibration: Boolean
 ) {
-    val contentHeight: Float = if (isPortrait()) KeyboardButtonContentHeightTall else KeyboardButtonContentHeightShort
+    val contentHeight: Float = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) KeyboardButtonContentHeightShort else KeyboardButtonContentHeightTall
 
     KeypadFlow(
         modifier = modifier,

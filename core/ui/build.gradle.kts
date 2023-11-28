@@ -38,6 +38,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.navigation.compose)
     implementation(libs.androidx.browser.browser)
+    implementation(libs.androidx.window.window)
 
     implementation(project(":core:base"))
 }

@@ -37,8 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.core.base.Shortcut
 import com.sadellie.unitto.core.base.TOP_LEVEL_START_ROUTES
-import com.sadellie.unitto.core.ui.common.UnittoDrawerSheet
-import com.sadellie.unitto.core.ui.common.UnittoModalNavigationDrawer
+import com.sadellie.unitto.core.ui.common.UnittoNavigationDrawer
 import com.sadellie.unitto.core.ui.common.rememberDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItems
 import com.sadellie.unitto.core.ui.pushDynamicShortcut
@@ -93,35 +92,31 @@ internal fun UnittoApp(prefs: AppPreferences?) {
             val backgroundColor = MaterialTheme.colorScheme.background
             val useDarkIcons = remember(backgroundColor) { backgroundColor.luminance() > 0.5f }
 
-            UnittoModalNavigationDrawer(
+            UnittoNavigationDrawer(
                 modifier = Modifier,
                 state = drawerState,
                 gesturesEnabled = gesturesEnabled,
-                drawer = {
-                    UnittoDrawerSheet(
-                        modifier = Modifier,
-                        tabs = DrawerItems.ALL,
-                        currentDestination = navBackStackEntry?.destination?.route
-                    ) { destination ->
-                        drawerScope.launch { drawerState.close() }
+                tabs = DrawerItems.MAIN,
+                currentDestination = navBackStackEntry?.destination?.route,
+                onItemClick = { destination ->
+                    drawerScope.launch { drawerState.close() }
 
-                        navController.navigate(destination.graph) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+                    navController.navigate(destination.graph) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
 
-                        shortcutsScope.launch {
-                            destination.shortcut?.let { shortcut: Shortcut ->
-                                mContext.pushDynamicShortcut(
-                                    destination.graph,
-                                    shortcut.shortcutShortLabel,
-                                    shortcut.shortcutLongLabel,
-                                    shortcut.shortcutDrawable
-                                )
-                            }
+                    shortcutsScope.launch {
+                        destination.shortcut?.let { shortcut: Shortcut ->
+                            mContext.pushDynamicShortcut(
+                                destination.graph,
+                                shortcut.shortcutShortLabel,
+                                shortcut.shortcutLongLabel,
+                                shortcut.shortcutDrawable
+                            )
                         }
                     }
                 },

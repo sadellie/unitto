@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -26,8 +25,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
+import com.sadellie.unitto.core.ui.WindowWidthSizeClass
 
 /**
  * When Portrait mode will place [content1] and [content2] in a [Column].
@@ -40,7 +41,7 @@ fun PortraitLandscape(
     content1: @Composable (Modifier) -> Unit,
     content2: @Composable (Modifier) -> Unit,
 ) {
-    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+    if ((LocalWindowSize.current.widthSizeClass > WindowWidthSizeClass.Expanded) or (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact)) {
         ColumnWithConstraints(modifier) {
             content1(Modifier.fillMaxHeight(0.38f).padding(horizontal = it.maxWidth * 0.03f))
             content2(Modifier.fillMaxSize().padding(it.maxWidth * 0.03f, it.maxHeight * 0.015f))
