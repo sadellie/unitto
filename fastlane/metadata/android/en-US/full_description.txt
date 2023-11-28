@@ -1,20 +1,33 @@
-Calculator, unit converter and more.
+Calculator, converter and more.
 
-<b>Features</b>
+Look for <b>Calculator</b> on your home screen after installing the app.
 
-• Instant expression evaluation
-• Expressions history
-• Copy, paste and cut expression
-• Material You Theme even for old devices
-• More than 500 units and currencies
-• Smart units search
-• Adaptive units sorting algorithm
-• Small app size
-• Bulk convert units
+• Deep customization: themes, number formatter and etc.
+• No ads, in-app purchases or asking for donations
+• Open source
+
+<b>Calculator</b>
+
+• Copy, paste, save and share expression results
+• Trigonometric functions
+• Fractional output
+
+<b>Unit converter</b>
+
+• 570 units
+• Built-in currency converter
 • Favorite units
-• Ability to disable unit groups
-• Customizable number formatter
-• SI Standard
+• Organize unit groups
+• Smart search algorithm
+
+<b>Date calculator</b>
+• Add and subtract dates
+• Calculate difference
+• Create events in calendar
+
+<b>Time converter</b>
+• Add to favorites
+• Add labels to time zones
 
 <b>Permissions</b>
 
