@@ -41,6 +41,9 @@ class UnittoLibraryComposePlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("androidx.compose.material.icons.extended").get())
                 "implementation"(libs.findLibrary("androidx.compose.ui.tooling").get())
                 "implementation"(libs.findLibrary("androidx.compose.ui.tooling.preview").get())
+
+                "androidTestImplementation"(libs.findLibrary("androidx.compose.ui.test.junit4").get())
+                "debugImplementation"(libs.findLibrary("androidx.compose.ui.test.manifest").get())
             }
         }
     }

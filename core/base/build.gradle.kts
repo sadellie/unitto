@@ -57,7 +57,3 @@ fun com.android.build.api.dsl.VariantDimension.storeLink(url: String) {
         "\"${url}\""
     )
 }
-
-dependencies {
-    testImplementation(libs.junit.junit)
-}

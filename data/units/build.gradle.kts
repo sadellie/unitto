@@ -36,7 +36,6 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit.junit)
     testImplementation(libs.org.robolectric.robolectric)
 
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)

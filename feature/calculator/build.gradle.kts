@@ -30,11 +30,8 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit.junit)
     testImplementation(libs.org.robolectric.robolectric)
     testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(project(":data:common"))
     implementation(project(":data:database"))

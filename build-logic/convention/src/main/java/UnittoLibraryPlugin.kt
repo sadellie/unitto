@@ -37,6 +37,7 @@ class UnittoLibraryPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.minSdk = 21
+                defaultConfig.targetSdk = 34 // Android test uses minSdk instead of target sdk for some reason
                 defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 defaultConfig.consumerProguardFiles("consumer-rules.pro")
             }
@@ -44,6 +45,12 @@ class UnittoLibraryPlugin : Plugin<Project> {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
                 "implementation"(libs.findLibrary("androidx.core.core.ktx").get())
+
+                "testImplementation"(libs.findLibrary("junit.junit").get())
+
+                "androidTestImplementation"(libs.findLibrary("androidx.test.core").get())
+                "androidTestImplementation"(libs.findLibrary("androidx.test.ext.junit.ktx").get())
+                "androidTestImplementation"(libs.findLibrary("androidx.test.runner").get())
             }
         }
     }

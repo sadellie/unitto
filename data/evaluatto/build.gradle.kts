@@ -28,5 +28,4 @@ android {
 
 dependencies {
     implementation(project(":core:base"))
-    testImplementation(libs.junit.junit)
 }

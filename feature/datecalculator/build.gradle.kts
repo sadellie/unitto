@@ -29,8 +29,6 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit.junit)
-
     implementation(project(":data:common"))
     implementation(project(":data:model"))
     implementation(project(":data:userprefs"))

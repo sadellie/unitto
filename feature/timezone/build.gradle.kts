@@ -29,10 +29,8 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit.junit)
     testImplementation(libs.org.robolectric.robolectric)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
     implementation(libs.com.github.sadellie.themmo)
     implementation(libs.org.burnoutcrew.composereorderable.reorderable)
     implementation(libs.androidx.appcompat.appcompat)
