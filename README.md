@@ -10,9 +10,9 @@
 # 📲 Download
 
 <p align="middle">
-    <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/gplay.svg" height="80"></a>
-    <a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fdroid.svg" height="80"/></a>
-    <a href="https://github.com/sadellie/unitto/releases/latest"><img alt="GitHub" src="./content/github.svg" height="80"/></a>
+    <a href="https://play.google.com/store/apps/details?id=com.sadellie.unitto"><img alt="Google Play" src="./content/gplay.svg" height="60"></a>
+    <a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fdroid.svg" height="60"/></a>
+    <a href="https://github.com/sadellie/unitto/releases/latest"><img alt="GitHub" src="./content/github.svg" height="60"/></a>
 </p>
 
 Prefer _Google Play_
@@ -23,9 +23,9 @@ Prefer _Google Play_
 </p>
 
 <p align="middle">
-    <a href="https://poeditor.com/join/project/T4zjmoq8dx"><img alt="Translate" src="./content/translate.svg" height="80"/></a>
-    <a href="https://github.com/sadellie/unitto/issues/new"><img alt="Issues" src="./content/issue.svg" height="80"/></a>
-    <a href="https://github.com/sadellie/unitto/discussions/new/choose"><img alt="Discussions" src="./content/discussion.svg" height="80"/></a>
+    <a href="https://poeditor.com/join/project/T4zjmoq8dx"><img alt="Translate" src="./content/translate.svg" height="60"/></a>
+    <a href="https://github.com/sadellie/unitto/issues/new"><img alt="Issues" src="./content/issue.svg" height="60"/></a>
+    <a href="https://github.com/sadellie/unitto/discussions/new/choose"><img alt="Discussions" src="./content/discussion.svg" height="60"/></a>
 </p>
 
 ## 👩‍💻 Do NOT contribute code
