@@ -23,12 +23,9 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.core.ui"
-
-    // Workaround from https://github.com/robolectric/robolectric/pull/4736
-    testOptions.unitTests.isIncludeAndroidResources = true
-}
+android.namespace = "com.sadellie.unitto.core.ui"
+// Workaround from https://github.com/robolectric/robolectric/pull/4736
+android.testOptions.unitTests.isIncludeAndroidResources = true
 
 dependencies {
     testImplementation(libs.org.robolectric.robolectric)

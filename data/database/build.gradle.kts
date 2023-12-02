@@ -23,9 +23,9 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.database"
+android.namespace = "com.sadellie.unitto.data.database"
 
+android {
     room {
         val schemaLocation = "$projectDir/schemas"
         schemaDirectory(schemaLocation)

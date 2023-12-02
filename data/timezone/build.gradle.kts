@@ -22,13 +22,11 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.timezone"
-}
+android.namespace = "com.sadellie.unitto.data.timezone"
 
 dependencies {
     implementation(project(":core:base"))
     implementation(project(":data:common"))
-    implementation(project(":data:model"))
     implementation(project(":data:database"))
+    implementation(project(":data:model"))
 }

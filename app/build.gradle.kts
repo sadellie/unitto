@@ -76,7 +76,6 @@ android {
     flavorDimensions += "mainFlavorDimension"
     productFlavors {
         create("playStore") {}
-        create("ruStore") {}
         create("fdroid") {}
     }
 

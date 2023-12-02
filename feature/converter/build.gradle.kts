@@ -25,11 +25,8 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.feature.converter"
-
-    testOptions.unitTests.isIncludeAndroidResources = true
-}
+android.namespace = "com.sadellie.unitto.feature.converter"
+android.testOptions.unitTests.isIncludeAndroidResources = true
 
 dependencies {
     testImplementation(libs.org.robolectric.robolectric)
@@ -44,8 +41,8 @@ dependencies {
 
     implementation(project(":data:common"))
     implementation(project(":data:database"))
+    implementation(project(":data:evaluatto"))
     implementation(project(":data:model"))
     implementation(project(":data:userprefs"))
-    implementation(project(":data:units"))
-    implementation(project(":data:evaluatto"))
+    implementation(project(":data:converter"))
 }

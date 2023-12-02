@@ -21,10 +21,8 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    // Different namespace. Possible promotion to a separate project.
-    namespace = "io.github.sadellie.evaluatto"
-}
+// Different namespace. Possible promotion to a separate project.
+android.namespace = "io.github.sadellie.evaluatto"
 
 dependencies {
     implementation(project(":core:base"))

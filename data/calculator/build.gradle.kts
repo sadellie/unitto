@@ -22,11 +22,9 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.calculator"
-}
+android.namespace = "com.sadellie.unitto.data.calculator"
 
 dependencies {
-    implementation(project(":data:model"))
     implementation(project(":data:database"))
+    implementation(project(":data:model"))
 }

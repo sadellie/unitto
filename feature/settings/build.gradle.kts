@@ -24,9 +24,7 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.feature.settings"
-}
+android.namespace = "com.sadellie.unitto.feature.settings"
 
 dependencies {
     implementation(libs.com.github.sadellie.themmo)
@@ -37,6 +35,6 @@ dependencies {
     implementation(project(":data:common"))
     implementation(project(":data:database"))
     implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
     implementation(project(":data:licenses"))
+    implementation(project(":data:userprefs"))
 }

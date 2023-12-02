@@ -48,7 +48,6 @@ internal fun Project.configureKotlinAndroid(
         flavorDimensions += "mainFlavorDimension"
         productFlavors {
             create("playStore") {}
-            create("ruStore") {}
             create("fdroid") {}
         }
 

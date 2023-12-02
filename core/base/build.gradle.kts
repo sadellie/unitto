@@ -33,9 +33,6 @@ android {
         getByName("playStore") {
             storeLink("http://play.google.com/store/apps/details?id=com.sadellie.unitto")
         }
-        getByName("ruStore") {
-            storeLink("https://apps.rustore.ru/app/com.sadellie.unitto")
-        }
         getByName("fdroid") {
             storeLink("https://github.com/sadellie/unitto")
         }

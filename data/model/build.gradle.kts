@@ -21,9 +21,7 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.model"
-}
+android.namespace = "com.sadellie.unitto.data.model"
 
 dependencies {
     implementation(project(":core:base"))

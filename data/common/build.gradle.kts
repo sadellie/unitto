@@ -21,9 +21,7 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.common"
-}
+android.namespace = "com.sadellie.unitto.data.common"
 
 dependencies {
     implementation(libs.androidx.core.core.ktx)

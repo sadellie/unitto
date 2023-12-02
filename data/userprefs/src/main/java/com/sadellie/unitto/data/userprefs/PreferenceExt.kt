@@ -25,7 +25,7 @@ import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.units.MyUnitIDS
+import com.sadellie.unitto.data.converter.MyUnitIDS
 
 fun Preferences.getEnableDynamicTheme(): Boolean {
     return this[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true

@@ -22,9 +22,7 @@ plugins {
     id("unitto.android.hilt")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.backup"
-}
+android.namespace = "com.sadellie.unitto.data.backup"
 
 dependencies {
     implementation(libs.androidx.datastore.datastore.preferences)

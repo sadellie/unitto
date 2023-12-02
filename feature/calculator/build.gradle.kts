@@ -24,19 +24,17 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.feature.calculator"
-    testOptions.unitTests.isIncludeAndroidResources = true
-}
+android.namespace = "com.sadellie.unitto.feature.calculator"
+android.testOptions.unitTests.isIncludeAndroidResources = true
 
 dependencies {
     testImplementation(libs.org.robolectric.robolectric)
     testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
 
+    implementation(project(":data:calculator"))
     implementation(project(":data:common"))
     implementation(project(":data:database"))
+    implementation(project(":data:evaluatto"))
     implementation(project(":data:model"))
     implementation(project(":data:userprefs"))
-    implementation(project(":data:calculator"))
-    implementation(project(":data:evaluatto"))
 }

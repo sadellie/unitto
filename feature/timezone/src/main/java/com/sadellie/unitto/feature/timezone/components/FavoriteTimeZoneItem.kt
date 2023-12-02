@@ -159,7 +159,6 @@ internal fun FavoriteTimeZoneItem(
                     fadeIn() togetherWith fadeOut() using (SizeTransform(clip = false))
                 }
             ) { time ->
-                // TODO Add AM PM as dots (apply to 12 and 24 hour systems)
                 Text(
                     text = time,
                     style = MaterialTheme.typography.headlineMedium,

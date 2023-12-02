@@ -22,6 +22,4 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.licenses"
-}
+android.namespace = "com.sadellie.unitto.data.licenses"

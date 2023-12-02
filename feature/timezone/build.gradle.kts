@@ -24,9 +24,7 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.feature.timezone"
-}
+android.namespace = "com.sadellie.unitto.feature.timezone"
 
 dependencies {
     testImplementation(libs.org.robolectric.robolectric)
@@ -36,8 +34,8 @@ dependencies {
     implementation(libs.androidx.appcompat.appcompat)
 
     implementation(project(":data:common"))
-    implementation(project(":data:userprefs"))
     implementation(project(":data:database"))
-    implementation(project(":data:timezone"))
     implementation(project(":data:model"))
+    implementation(project(":data:timezone"))
+    implementation(project(":data:userprefs"))
 }

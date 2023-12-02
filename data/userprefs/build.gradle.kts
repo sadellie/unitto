@@ -22,9 +22,7 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android {
-    namespace = "com.sadellie.unitto.data.userprefs"
-}
+android.namespace = "com.sadellie.unitto.data.userprefs"
 
 dependencies {
     implementation(libs.androidx.datastore.datastore.preferences)
@@ -32,5 +30,5 @@ dependencies {
 
     implementation(project(":core:base"))
     implementation(project(":data:model"))
-    implementation(project(":data:units"))
+    implementation(project(":data:converter"))
 }
