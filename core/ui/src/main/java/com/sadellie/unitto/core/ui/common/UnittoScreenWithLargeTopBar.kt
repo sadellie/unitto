@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.ui.common
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,6 +40,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 fun UnittoScreenWithLargeTopBar(
     title: String,
     navigationIcon: @Composable () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
@@ -53,7 +55,8 @@ fun UnittoScreenWithLargeTopBar(
                     Text(text = title)
                 },
                 navigationIcon = navigationIcon,
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                actions = actions
             )
         },
         content = content

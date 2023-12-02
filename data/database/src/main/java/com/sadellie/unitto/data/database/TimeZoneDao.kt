@@ -74,4 +74,7 @@ interface TimeZoneDao {
         }
         updateDragged(id, 0, targetPosition)
     }
+
+    @Query("DELETE FROM time_zones")
+    suspend fun clear()
 }

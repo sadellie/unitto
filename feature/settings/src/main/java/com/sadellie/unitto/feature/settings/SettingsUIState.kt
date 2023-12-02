@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2023 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,26 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.database
+package com.sadellie.unitto.feature.settings
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+internal sealed class SettingsUIState {
+    data object Loading : SettingsUIState()
 
-@Dao
-interface UnitsDao {
+    data object BackupInProgress : SettingsUIState()
 
-    @Query("SELECT * FROM units")
-    fun getAllFlow(): Flow<List<UnitsEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUnit(unit: UnitsEntity)
-
-    @Query("SELECT * FROM units WHERE unitId == :unitId LIMIT 1")
-    suspend fun getById(unitId: String): UnitsEntity?
-
-    @Query("DELETE FROM units")
-    suspend fun clear()
+    data class Ready(
+        val enableVibrations: Boolean,
+        val cacheSize: Int,
+    ) : SettingsUIState()
 }

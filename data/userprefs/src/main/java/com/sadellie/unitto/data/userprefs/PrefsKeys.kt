@@ -23,7 +23,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
-internal object PrefsKeys {
+object PrefsKeys {
     // COMMON
     val THEMING_MODE = stringPreferencesKey("THEMING_MODE_PREF_KEY")
     val ENABLE_DYNAMIC_THEME = booleanPreferencesKey("ENABLE_DYNAMIC_THEME_PREF_KEY")

@@ -18,14 +18,22 @@
 
 package com.sadellie.unitto.feature.settings
 
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.data.backup.BackupManager
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.database.CurrencyRatesDao
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,15 +41,61 @@ import javax.inject.Inject
 internal class SettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val currencyRatesDao: CurrencyRatesDao,
+    private val backupManager: BackupManager
 ) : ViewModel() {
-    val userPrefs = userPrefsRepository.generalPrefs
-        .stateIn(viewModelScope, null)
+    private val _backupFileUri = MutableSharedFlow<Uri?>()
+    val backupFileUri = _backupFileUri.asSharedFlow()
 
-    val cachePercentage = currencyRatesDao.size()
-        .map {
-            (it / 100_000f).coerceIn(0f, 1f)
+    private val _showErrorToast = MutableSharedFlow<Boolean>()
+    val showErrorToast = _showErrorToast.asSharedFlow()
+
+    private val _operation = MutableStateFlow(false)
+    private var backupJob: Job? = null
+
+    val uiState = combine(
+        userPrefsRepository.generalPrefs,
+        currencyRatesDao.size(),
+        _operation,
+    ) { prefs, cacheSize, operation ->
+        if (operation) return@combine SettingsUIState.BackupInProgress
+
+        SettingsUIState.Ready(
+            enableVibrations = prefs.enableVibrations,
+            cacheSize = cacheSize,
+        )
+    }
+        .stateIn(viewModelScope, SettingsUIState.Loading)
+
+    fun backup() {
+        backupJob?.cancel()
+        backupJob = viewModelScope.launch(Dispatchers.IO) {
+            _operation.update { true }
+            try {
+                val backupFileUri = backupManager.backup()
+                _backupFileUri.emit(backupFileUri) // Emit to trigger file share intent
+                _showErrorToast.emit(false)
+            } catch (e: Exception) {
+                _showErrorToast.emit(true)
+                Log.e(TAG, "$e")
+            }
+            _operation.update { false }
         }
-        .stateIn(viewModelScope, 0f)
+    }
+
+    fun restore(uri: Uri) {
+        backupJob?.cancel()
+        backupJob = viewModelScope.launch(Dispatchers.IO) {
+            _operation.update { true }
+            try {
+                backupManager.restore(uri)
+                _showErrorToast.emit(false)
+            } catch (e: Exception) {
+                _showErrorToast.emit(true)
+                Log.e(TAG, "$e")
+            }
+            _operation.update { false }
+        }
+    }
 
     /**
      * @see UserPreferencesRepository.updateVibrations
@@ -54,3 +108,5 @@ internal class SettingsViewModel @Inject constructor(
         currencyRatesDao.clear()
     }
 }
+
+private const val TAG = "SettingsViewModel"

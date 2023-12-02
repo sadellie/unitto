@@ -22,10 +22,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import com.sadellie.unitto.core.base.OutputFormat
-import com.sadellie.unitto.core.base.Separator
-import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
@@ -40,7 +36,6 @@ import com.sadellie.unitto.data.model.userprefs.FormattingPreferences
 import com.sadellie.unitto.data.model.userprefs.GeneralPreferences
 import com.sadellie.unitto.data.model.userprefs.StartingScreenPreferences
 import com.sadellie.unitto.data.model.userprefs.UnitGroupsPreferences
-import com.sadellie.unitto.data.units.MyUnitIDS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -286,108 +281,4 @@ class UserPreferencesRepositoryImpl @Inject constructor(
             preferences[PrefsKeys.RPN_MODE] = enabled
         }
     }
-}
-
-private fun Preferences.getEnableDynamicTheme(): Boolean {
-    return this[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true
-}
-
-private fun Preferences.getThemingMode(): String {
-    return this[PrefsKeys.THEMING_MODE] ?: ""
-}
-
-private fun Preferences.getEnableAmoledTheme(): Boolean {
-    return this[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
-}
-
-private fun Preferences.getCustomColor(): Long {
-    return this[PrefsKeys.CUSTOM_COLOR] ?: 16L // From Color.Unspecified
-}
-
-private fun Preferences.getMonetMode(): String {
-    return this[PrefsKeys.MONET_MODE] ?: ""
-}
-
-private fun Preferences.getStartingScreen(): String {
-    return this[PrefsKeys.STARTING_SCREEN]
-        ?: TopLevelDestinations.Calculator.graph
-}
-
-private fun Preferences.getEnableToolsExperiment(): Boolean {
-    return this[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
-}
-
-private fun Preferences.getEnableVibrations(): Boolean {
-    return this[PrefsKeys.ENABLE_VIBRATIONS] ?: true
-}
-
-private fun Preferences.getRadianMode(): Boolean {
-    return this[PrefsKeys.RADIAN_MODE] ?: true
-}
-
-private fun Preferences.getSeparator(): Int {
-    return this[PrefsKeys.SEPARATOR] ?: Separator.SPACE
-}
-
-private fun Preferences.getMiddleZero(): Boolean {
-    return this[PrefsKeys.MIDDLE_ZERO] ?: true
-}
-
-private fun Preferences.getPartialHistoryView(): Boolean {
-    return this[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: true
-}
-
-private fun Preferences.getDigitsPrecision(): Int {
-    return this[PrefsKeys.DIGITS_PRECISION] ?: 3
-}
-
-private fun Preferences.getOutputFormat(): Int {
-    return this[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
-}
-
-private fun Preferences.getUnitConverterFormatTime(): Boolean {
-    return this[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
-}
-
-private fun Preferences.getUnitConverterSorting(): UnitsListSorting {
-    return this[PrefsKeys.UNIT_CONVERTER_SORTING]
-        ?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
-}
-
-private fun Preferences.getShownUnitGroups(): List<UnitGroup> {
-    return this[PrefsKeys.SHOWN_UNIT_GROUPS]?.letTryOrNull { list ->
-        list.ifEmpty { return@letTryOrNull listOf() }.split(",")
-            .map { UnitGroup.valueOf(it) }
-    } ?: ALL_UNIT_GROUPS
-}
-
-private fun Preferences.getUnitConverterFavoritesOnly(): Boolean {
-    return this[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY]
-        ?: false
-}
-
-private fun Preferences.getLatestLeftSide(): String {
-    return this[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
-}
-
-private fun Preferences.getLatestRightSide(): String {
-    return this[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
-}
-
-private fun Preferences.getAcButton(): Boolean {
-    return this[PrefsKeys.AC_BUTTON] ?: true
-}
-
-private fun Preferences.getClearInputAfterEquals(): Boolean {
-    return this[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] ?: true
-}
-
-private fun Preferences.getRpnMode(): Boolean {
-    return this[PrefsKeys.RPN_MODE] ?: false
-}
-
-private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {
-    this?.let(block)
-} catch (e: Exception) {
-    null
 }

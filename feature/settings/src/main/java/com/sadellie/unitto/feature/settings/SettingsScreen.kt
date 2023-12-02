@@ -18,12 +18,21 @@
 
 package com.sadellie.unitto.feature.settings
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,16 +43,27 @@ import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -59,8 +79,6 @@ import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
-import com.sadellie.unitto.data.model.userprefs.GeneralPreferences
-import com.sadellie.unitto.data.userprefs.GeneralPreferencesImpl
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
@@ -74,38 +92,99 @@ internal fun SettingsRoute(
     navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
 ) {
-    val userPrefs = viewModel.userPrefs.collectAsStateWithLifecycle().value
-    val cachePercentage = viewModel.cachePercentage.collectAsStateWithLifecycle()
+    val mContext = LocalContext.current
 
-    when (userPrefs) {
-        null -> UnittoEmptyScreen()
-        else -> {
-            SettingsScreen(
-                userPrefs = userPrefs,
+    val errorLabel = stringResource(R.string.error_label)
+
+    val uiState: SettingsUIState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val backupFileUri: Uri? = viewModel.backupFileUri.collectAsStateWithLifecycle(initialValue = null).value
+    val showErrorToast: Boolean = viewModel.showErrorToast.collectAsStateWithLifecycle(initialValue = false).value
+
+    // Share backup file when it's emitted
+    LaunchedEffect(backupFileUri) {
+        if (backupFileUri == null) return@LaunchedEffect
+        mContext.share(backupFileUri)
+    }
+
+    LaunchedEffect(showErrorToast) {
+        if (showErrorToast) Toast.makeText(mContext, errorLabel, Toast.LENGTH_SHORT).show()
+    }
+
+    Crossfade(targetState = uiState) { state ->
+        when (state) {
+            SettingsUIState.Loading -> UnittoEmptyScreen()
+
+            SettingsUIState.BackupInProgress -> BackingUpScreen()
+
+            is SettingsUIState.Ready -> SettingsScreen(
+                uiState = state,
                 navigateUp = navigateUp,
                 navControllerAction = navControllerAction,
                 updateVibrations = viewModel::updateVibrations,
-                cachePercentage = cachePercentage.value,
                 clearCache = viewModel::clearCache,
+                backup =  viewModel::backup,
+                restore = viewModel::restore
             )
         }
     }
 }
 
 @Composable
+private fun BackingUpScreen() {
+    Scaffold { padding ->
+        Box(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+
+    BackHandler {}
+}
+
+@Composable
 private fun SettingsScreen(
-    userPrefs: GeneralPreferences,
+    uiState: SettingsUIState.Ready,
     navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
     updateVibrations: (Boolean) -> Unit,
-    cachePercentage: Float,
     clearCache: () -> Unit,
+    backup: () -> Unit,
+    restore: (Uri) -> Unit = {},
 ) {
     val mContext = LocalContext.current
+    var showMenu by remember { mutableStateOf(false) }
+
+    // Pass picked file uri to BackupManager
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { pickedUri ->
+        if (pickedUri != null) restore(pickedUri)
+    }
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_title),
-        navigationIcon = { NavigateUpButton(navigateUp) }
+        navigationIcon = { NavigateUpButton(navigateUp) },
+        actions = {
+            IconButton(
+                onClick = { showMenu = !showMenu },
+                content = { Icon(Icons.Default.MoreVert, null) }
+            )
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                DropdownMenuItem(
+                    onClick = backup,
+                    text = { Text("Backup") }
+                )
+                DropdownMenuItem(
+                    onClick = { launcher.launch(arrayOf(backupMimeType)) },
+                    text = { Text("Restore") }
+                )
+            }
+        }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -155,12 +234,12 @@ private fun SettingsScreen(
                 headlineText = stringResource(R.string.settings_vibrations),
                 supportingText = stringResource(R.string.settings_vibrations_support),
                 modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
-                switchState = userPrefs.enableVibrations,
+                switchState = uiState.enableVibrations,
                 onSwitchChange = updateVibrations
             )
 
             AnimatedVisibility(
-                visible = cachePercentage > 0,
+                visible = uiState.cacheSize > 0,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
@@ -189,19 +268,38 @@ private fun SettingsScreen(
     }
 }
 
+private fun Context.share(uri: Uri) {
+    val shareIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_STREAM, uri)
+        type = backupMimeType // This is a fucking war crime, it should be text/json
+    }
+
+    startActivity(shareIntent)
+}
+
+private const val backupMimeType = "application/octet-stream"
+
 @Preview
 @Composable
 private fun PreviewSettingsScreen() {
     var cacheSize by remember { mutableFloatStateOf(0.9f) }
 
     SettingsScreen(
-        userPrefs = GeneralPreferencesImpl(
-            enableVibrations = true
+        uiState = SettingsUIState.Ready(
+            enableVibrations = false,
+            cacheSize = 2,
         ),
         navigateUp = {},
         navControllerAction = {},
         updateVibrations = {},
-        cachePercentage = cacheSize,
-        clearCache = { cacheSize = 0f }
+        clearCache = { cacheSize = 0f },
+        backup = {}
     )
+}
+
+@Preview
+@Composable
+private fun PreviewBackingUpScreen() {
+    BackingUpScreen()
 }
