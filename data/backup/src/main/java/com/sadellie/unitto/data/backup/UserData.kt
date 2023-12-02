@@ -20,8 +20,6 @@ package com.sadellie.unitto.data.backup
 
 import com.sadellie.unitto.data.database.TimeZoneEntity
 import com.sadellie.unitto.data.database.UnitsEntity
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
 
 // Don't move to model module. This uses entity classes from database module
 data class UserData(
@@ -47,10 +45,10 @@ data class UserData(
 
     val latestLeftSide: String,
     val latestRightSide: String,
-    val shownUnitGroups: List<UnitGroup>,
+    val shownUnitGroups: String,
     val unitConverterFavoritesOnly: Boolean,
     val unitConverterFormatTime: Boolean,
-    val unitConverterSorting: UnitsListSorting,
+    val unitConverterSorting: String,
 
     val unitsTable: List<UnitsEntity>,
     val timeZoneTable: List<TimeZoneEntity>,

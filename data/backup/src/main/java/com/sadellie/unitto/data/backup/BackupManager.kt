@@ -135,10 +135,10 @@ class BackupManager @Inject constructor(
             clearInputAfterEquals = data.getClearInputAfterEquals(),
             latestLeftSide = data.getLatestLeftSide(),
             latestRightSide = data.getLatestRightSide(),
-            shownUnitGroups = data.getShownUnitGroups(),
+            shownUnitGroups = data.getShownUnitGroups().joinToString(","),
             unitConverterFavoritesOnly = data.getUnitConverterFavoritesOnly(),
             unitConverterFormatTime = data.getUnitConverterFormatTime(),
-            unitConverterSorting = data.getUnitConverterSorting(),
+            unitConverterSorting = data.getUnitConverterSorting().name,
             unitsTable = unitsTableData,
             timeZoneTable = timeZoneTableData,
         )
@@ -172,10 +172,10 @@ class BackupManager @Inject constructor(
             // UNIT CONVERTER
             it[PrefsKeys.LATEST_LEFT_SIDE] = userData.latestLeftSide
             it[PrefsKeys.LATEST_RIGHT_SIDE] = userData.latestRightSide
-            it[PrefsKeys.SHOWN_UNIT_GROUPS] = userData.shownUnitGroups.joinToString(",")
+            it[PrefsKeys.SHOWN_UNIT_GROUPS] = userData.shownUnitGroups
             it[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY] = userData.unitConverterFavoritesOnly
             it[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] = userData.unitConverterFormatTime
-            it[PrefsKeys.UNIT_CONVERTER_SORTING] = userData.unitConverterSorting.name
+            it[PrefsKeys.UNIT_CONVERTER_SORTING] = userData.unitConverterSorting
         }
     }
 
