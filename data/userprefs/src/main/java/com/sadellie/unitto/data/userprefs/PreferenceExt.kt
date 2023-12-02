@@ -22,10 +22,10 @@ import androidx.datastore.preferences.core.Preferences
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.converter.MyUnitIDS
 
 fun Preferences.getEnableDynamicTheme(): Boolean {
     return this[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true
@@ -121,7 +121,7 @@ fun Preferences.getAcButton(): Boolean {
 }
 
 fun Preferences.getClearInputAfterEquals(): Boolean {
-    return this[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] ?: true
+    return this[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] ?: false
 }
 
 fun Preferences.getRpnMode(): Boolean {
