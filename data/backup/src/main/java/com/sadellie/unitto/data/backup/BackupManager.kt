@@ -52,7 +52,6 @@ import com.sadellie.unitto.data.userprefs.getUnitConverterFormatTime
 import com.sadellie.unitto.data.userprefs.getUnitConverterSorting
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -70,9 +69,7 @@ class BackupManager @Inject constructor(
     // Not planned at the moment
     // private val calculatorHistoryDao: CalculatorHistoryDao,
 ) {
-    private val moshi: Moshi = Moshi.Builder()
-        .addLast(KotlinJsonAdapterFactory())
-        .build()
+    private val moshi: Moshi = Moshi.Builder().build()
     private val jsonAdapter: JsonAdapter<UserData> = moshi.adapter(UserData::class.java)
     private val auth = "com.sadellie.unitto.BackupManager"
 

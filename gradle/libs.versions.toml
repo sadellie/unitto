@@ -63,6 +63,7 @@ com-google-dagger-android-hilt-android = { group = "com.google.dagger", name = "
 com-google-dagger-dagger-android-processor = { group = "com.google.dagger", name = "dagger-android-processor", version.ref = "comGoogleDagger" }
 com-google-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "comGoogleDagger" }
 com-squareup-moshi-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "comSquareupMoshiMoshiKotlin" }
+com-squareup-moshi-moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "comSquareupMoshiMoshiKotlin" }
 com-squareup-retrofit2-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "comSquareupRetrofit2ConverterMoshi" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 org-burnoutcrew-composereorderable-reorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "orgBurnoutcrewComposereorderableReorderable" }

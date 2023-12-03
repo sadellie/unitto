@@ -20,36 +20,39 @@ package com.sadellie.unitto.data.backup
 
 import com.sadellie.unitto.data.database.TimeZoneEntity
 import com.sadellie.unitto.data.database.UnitsEntity
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 // Don't move to model module. This uses entity classes from database module
-data class UserData(
-    val themingMode: String,
-    val enableDynamicTheme: Boolean,
-    val enableAmoledTheme: Boolean,
-    val customColor: Long,
-    val monetMode: String,
-    val startingScreen: String,
-    val enableToolsExperiment: Boolean,
-    val enableVibrations: Boolean,
-    val middleZero: Boolean,
-    val acButton: Boolean,
-    val rpnMode: Boolean,
+@JsonClass(generateAdapter = true)
+internal data class UserData(
+    @Json(name = "themingMode") val themingMode: String,
+    @Json(name = "enableDynamicTheme") val enableDynamicTheme: Boolean,
+    @Json(name = "enableAmoledTheme") val enableAmoledTheme: Boolean,
+    @Json(name = "customColor") val customColor: Long,
+    @Json(name = "monetMode") val monetMode: String,
+    @Json(name = "startingScreen") val startingScreen: String,
+    @Json(name = "enableToolsExperiment") val enableToolsExperiment: Boolean,
+    @Json(name = "enableVibrations") val enableVibrations: Boolean,
+    @Json(name = "middleZero") val middleZero: Boolean,
+    @Json(name = "acButton") val acButton: Boolean,
+    @Json(name = "rpnMode") val rpnMode: Boolean,
 
-    val precision: Int,
-    val separator: Int,
-    val outputFormat: Int,
+    @Json(name = "precision") val precision: Int,
+    @Json(name = "separator") val separator: Int,
+    @Json(name = "outputFormat") val outputFormat: Int,
 
-    val radianMode: Boolean,
-    val partialHistoryView: Boolean,
-    val clearInputAfterEquals: Boolean,
+    @Json(name = "radianMode") val radianMode: Boolean,
+    @Json(name = "partialHistoryView") val partialHistoryView: Boolean,
+    @Json(name = "clearInputAfterEquals") val clearInputAfterEquals: Boolean,
 
-    val latestLeftSide: String,
-    val latestRightSide: String,
-    val shownUnitGroups: String,
-    val unitConverterFavoritesOnly: Boolean,
-    val unitConverterFormatTime: Boolean,
-    val unitConverterSorting: String,
+    @Json(name = "latestLeftSide") val latestLeftSide: String,
+    @Json(name = "latestRightSide") val latestRightSide: String,
+    @Json(name = "shownUnitGroups") val shownUnitGroups: String,
+    @Json(name = "unitConverterFavoritesOnly") val unitConverterFavoritesOnly: Boolean,
+    @Json(name = "unitConverterFormatTime") val unitConverterFormatTime: Boolean,
+    @Json(name = "unitConverterSorting") val unitConverterSorting: String,
 
-    val unitsTable: List<UnitsEntity>,
-    val timeZoneTable: List<TimeZoneEntity>,
+    @Json(name = "unitsTable") val unitsTable: List<UnitsEntity>,
+    @Json(name = "timeZoneTable") val timeZoneTable: List<TimeZoneEntity>,
 )

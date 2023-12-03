@@ -17,6 +17,7 @@
  */
 
 plugins {
+    id("com.google.devtools.ksp")
     id("unitto.library")
     id("unitto.android.library.jacoco")
     id("unitto.android.hilt")
@@ -27,6 +28,7 @@ android.namespace = "com.sadellie.unitto.data.backup"
 dependencies {
     implementation(libs.androidx.datastore.datastore.preferences)
     implementation(libs.com.squareup.moshi.moshi.kotlin)
+    ksp(libs.com.squareup.moshi.moshi.kotlin.codegen)
 
     implementation(project(":data:database"))
     implementation(project(":data:model"))
