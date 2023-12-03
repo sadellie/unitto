@@ -32,6 +32,7 @@ import com.sadellie.unitto.core.ui.common.textfield.getTextField
 import com.sadellie.unitto.data.common.combine
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.stateIn
+import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.repository.UnitsRepository
@@ -430,13 +431,21 @@ internal class ConverterViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            val userPrefs = userPrefsRepository.converterPrefs.first()
-            val unitFrom = unitsRepo.getById(userPrefs.latestLeftSideUnit)
-            val unitTo = unitsRepo.getById(userPrefs.latestRightSideUnit)
+            try {
+                val userPrefs = userPrefsRepository.converterPrefs.first()
+                val unitFrom = unitsRepo.getById(userPrefs.latestLeftSideUnit)
+                val unitTo = unitsRepo.getById(userPrefs.latestRightSideUnit)
 
-            _unitFrom.update { unitFrom }
-            _unitTo.update { unitTo }
-            if (unitFrom.group == UnitGroup.CURRENCY) updateCurrencyRates(unitFrom)
+                _unitFrom.update { unitFrom }
+                _unitTo.update { unitTo }
+                if (unitFrom.group == UnitGroup.CURRENCY) updateCurrencyRates(unitFrom)
+            } catch (e: NoSuchElementException) {
+                val unitFrom = unitsRepo.getById(MyUnitIDS.kilometer)
+                val unitTo = unitsRepo.getById(MyUnitIDS.mile)
+
+                _unitFrom.update { unitFrom }
+                _unitTo.update { unitTo }
+            }
         }
     }
 }
