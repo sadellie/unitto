@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings
+package com.sadellie.unitto.data.backup
 
-internal sealed class SettingsUIState {
-    data object Loading : SettingsUIState()
+import com.squareup.moshi.JsonClass
 
-    data class Ready(
-        val enableVibrations: Boolean,
-        val cacheSize: Int,
-        val backupInProgress: Boolean,
-    ) : SettingsUIState()
-}
+@JsonClass(generateAdapter = true)
+internal data class UserDataUnit(
+    val unitId: String,
+    val isFavorite: Boolean,
+    val pairedUnitId: String?,
+    val frequency: Int,
+)

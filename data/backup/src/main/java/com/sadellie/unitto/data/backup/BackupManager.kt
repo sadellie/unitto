@@ -52,6 +52,7 @@ import com.sadellie.unitto.data.userprefs.getUnitConverterFormatTime
 import com.sadellie.unitto.data.userprefs.getUnitConverterSorting
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -61,6 +62,7 @@ import java.io.File
 import java.io.InputStreamReader
 import javax.inject.Inject
 
+@OptIn(ExperimentalStdlibApi::class)
 class BackupManager @Inject constructor(
     @ApplicationContext private val mContext: Context,
     private val dataStore: DataStore<Preferences>,
@@ -69,8 +71,10 @@ class BackupManager @Inject constructor(
     // Not planned at the moment
     // private val calculatorHistoryDao: CalculatorHistoryDao,
 ) {
-    private val moshi: Moshi = Moshi.Builder().build()
-    private val jsonAdapter: JsonAdapter<UserData> = moshi.adapter(UserData::class.java)
+    private val moshi: Moshi = Moshi.Builder()
+        .add(UserDataTableAdapter())
+        .build()
+    private val jsonAdapter: JsonAdapter<UserData> = moshi.adapter<UserData>()
     private val auth = "com.sadellie.unitto.BackupManager"
 
     suspend fun backup(): Uri = withContext(Dispatchers.IO) {

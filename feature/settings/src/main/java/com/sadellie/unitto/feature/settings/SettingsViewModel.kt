@@ -49,19 +49,19 @@ internal class SettingsViewModel @Inject constructor(
     private val _showErrorToast = MutableSharedFlow<Boolean>()
     val showErrorToast = _showErrorToast.asSharedFlow()
 
-    private val _operation = MutableStateFlow(false)
+    private val _backupInProgress = MutableStateFlow(false)
     private var backupJob: Job? = null
 
     val uiState = combine(
         userPrefsRepository.generalPrefs,
         currencyRatesDao.size(),
-        _operation,
-    ) { prefs, cacheSize, operation ->
-        if (operation) return@combine SettingsUIState.BackupInProgress
+        _backupInProgress,
+    ) { prefs, cacheSize, backupInProgress ->
 
         SettingsUIState.Ready(
             enableVibrations = prefs.enableVibrations,
             cacheSize = cacheSize,
+            backupInProgress = backupInProgress
         )
     }
         .stateIn(viewModelScope, SettingsUIState.Loading)
@@ -69,7 +69,7 @@ internal class SettingsViewModel @Inject constructor(
     fun backup() {
         backupJob?.cancel()
         backupJob = viewModelScope.launch(Dispatchers.IO) {
-            _operation.update { true }
+            _backupInProgress.update { true }
             try {
                 val backupFileUri = backupManager.backup()
                 _backupFileUri.emit(backupFileUri) // Emit to trigger file share intent
@@ -78,14 +78,14 @@ internal class SettingsViewModel @Inject constructor(
                 _showErrorToast.emit(true)
                 Log.e(TAG, "$e")
             }
-            _operation.update { false }
+            _backupInProgress.update { false }
         }
     }
 
     fun restore(uri: Uri) {
         backupJob?.cancel()
         backupJob = viewModelScope.launch(Dispatchers.IO) {
-            _operation.update { true }
+            _backupInProgress.update { true }
             try {
                 backupManager.restore(uri)
                 _showErrorToast.emit(false)
@@ -93,7 +93,7 @@ internal class SettingsViewModel @Inject constructor(
                 _showErrorToast.emit(true)
                 Log.e(TAG, "$e")
             }
-            _operation.update { false }
+            _backupInProgress.update { false }
         }
     }
 

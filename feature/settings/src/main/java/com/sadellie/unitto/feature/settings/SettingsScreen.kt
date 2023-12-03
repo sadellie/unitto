@@ -26,7 +26,6 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -110,39 +109,19 @@ internal fun SettingsRoute(
         if (showErrorToast) Toast.makeText(mContext, errorLabel, Toast.LENGTH_SHORT).show()
     }
 
-    Crossfade(targetState = uiState) { state ->
-        when (state) {
-            SettingsUIState.Loading -> UnittoEmptyScreen()
+    when (uiState) {
+        SettingsUIState.Loading -> UnittoEmptyScreen()
 
-            SettingsUIState.BackupInProgress -> BackingUpScreen()
-
-            is SettingsUIState.Ready -> SettingsScreen(
-                uiState = state,
-                navigateUp = navigateUp,
-                navControllerAction = navControllerAction,
-                updateVibrations = viewModel::updateVibrations,
-                clearCache = viewModel::clearCache,
-                backup =  viewModel::backup,
-                restore = viewModel::restore
-            )
-        }
+        is SettingsUIState.Ready -> SettingsScreen(
+            uiState = uiState,
+            navigateUp = navigateUp,
+            navControllerAction = navControllerAction,
+            updateVibrations = viewModel::updateVibrations,
+            clearCache = viewModel::clearCache,
+            backup =  viewModel::backup,
+            restore = viewModel::restore
+        )
     }
-}
-
-@Composable
-private fun BackingUpScreen() {
-    Scaffold { padding ->
-        Box(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            CircularProgressIndicator()
-        }
-    }
-
-    BackHandler {}
 }
 
 @Composable
@@ -163,6 +142,8 @@ private fun SettingsScreen(
         if (pickedUri != null) restore(pickedUri)
     }
 
+    BackHandler(uiState.backupInProgress) {}
+
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_title),
         navigationIcon = { NavigateUpButton(navigateUp) },
@@ -176,11 +157,11 @@ private fun SettingsScreen(
                 onDismissRequest = { showMenu = false }
             ) {
                 DropdownMenuItem(
-                    onClick = backup,
+                    onClick = { showMenu = false; backup() },
                     text = { Text("Backup") }
                 )
                 DropdownMenuItem(
-                    onClick = { launcher.launch(arrayOf(backupMimeType)) },
+                    onClick = { showMenu = false; launcher.launch(arrayOf(backupMimeType)) },
                     text = { Text("Restore") }
                 )
             }
@@ -266,13 +247,26 @@ private fun SettingsScreen(
             )
         }
     }
+
+    AnimatedVisibility(visible = uiState.backupInProgress) {
+        Scaffold { padding ->
+            Box(
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
 }
 
 private fun Context.share(uri: Uri) {
     val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_STREAM, uri)
-        type = backupMimeType // This is a fucking war crime, it should be text/json
+        type = backupMimeType
     }
 
     startActivity(shareIntent)
@@ -289,6 +283,7 @@ private fun PreviewSettingsScreen() {
         uiState = SettingsUIState.Ready(
             enableVibrations = false,
             cacheSize = 2,
+            backupInProgress = false
         ),
         navigateUp = {},
         navControllerAction = {},
@@ -301,5 +296,16 @@ private fun PreviewSettingsScreen() {
 @Preview
 @Composable
 private fun PreviewBackingUpScreen() {
-    BackingUpScreen()
+    SettingsScreen(
+        uiState = SettingsUIState.Ready(
+            enableVibrations = false,
+            cacheSize = 2,
+            backupInProgress = true
+        ),
+        navigateUp = {},
+        navControllerAction = {},
+        updateVibrations = {},
+        clearCache = {},
+        backup = {}
+    )
 }
