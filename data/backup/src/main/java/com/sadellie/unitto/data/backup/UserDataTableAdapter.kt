@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.data.backup
 
+import com.sadellie.unitto.data.database.CalculatorHistoryEntity
 import com.sadellie.unitto.data.database.TimeZoneEntity
 import com.sadellie.unitto.data.database.UnitsEntity
 import com.squareup.moshi.FromJson
@@ -26,6 +27,24 @@ import com.squareup.moshi.ToJson
 // Have to use this wrapper since entity classes are in database module
 @Suppress("UNUSED")
 internal class UserDataTableAdapter {
+    @ToJson
+    fun toJson(calculatorHistoryEntity: CalculatorHistoryEntity): UserDataCalculatorHistory =
+        UserDataCalculatorHistory(
+            entityId = calculatorHistoryEntity.entityId,
+            timestamp = calculatorHistoryEntity.timestamp,
+            expression = calculatorHistoryEntity.expression,
+            result = calculatorHistoryEntity.result
+        )
+
+    @FromJson
+    fun fromJson(userDataCalculatorHistory: UserDataCalculatorHistory): CalculatorHistoryEntity =
+        CalculatorHistoryEntity(
+            entityId = userDataCalculatorHistory.entityId,
+            timestamp = userDataCalculatorHistory.timestamp,
+            expression = userDataCalculatorHistory.expression,
+            result = userDataCalculatorHistory.result
+        )
+
     @ToJson
     fun toJson(unitsEntity: UnitsEntity): UserDataUnit =
         UserDataUnit(

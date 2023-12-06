@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.data.backup
 
+import com.sadellie.unitto.data.database.CalculatorHistoryEntity
 import com.sadellie.unitto.data.database.TimeZoneEntity
 import com.sadellie.unitto.data.database.UnitsEntity
 import com.squareup.moshi.Json
@@ -33,6 +34,7 @@ internal data class UserData(
     @Json(name = "monetMode") val monetMode: String,
     @Json(name = "startingScreen") val startingScreen: String,
     @Json(name = "enableToolsExperiment") val enableToolsExperiment: Boolean,
+    @Json(name = "systemFont") val systemFont: Boolean,
     @Json(name = "enableVibrations") val enableVibrations: Boolean,
     @Json(name = "middleZero") val middleZero: Boolean,
     @Json(name = "acButton") val acButton: Boolean,
@@ -53,6 +55,7 @@ internal data class UserData(
     @Json(name = "unitConverterFormatTime") val unitConverterFormatTime: Boolean,
     @Json(name = "unitConverterSorting") val unitConverterSorting: String,
 
+    @Json(name = "calculatorHistoryTable") val calculatorHistoryTable: List<CalculatorHistoryEntity>,
     @Json(name = "unitsTable") val unitsTable: List<UnitsEntity>,
     @Json(name = "timeZoneTable") val timeZoneTable: List<TimeZoneEntity>,
 )
