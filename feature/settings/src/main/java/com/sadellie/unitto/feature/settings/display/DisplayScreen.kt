@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.settings.display
 
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -95,8 +96,10 @@ internal fun DisplayRoute(
                         themmoController.setMonetMode(MonetMode.TonalSpot)
                         viewModel.updateMonetMode(MonetMode.TonalSpot)
                     }
-                    themmoController.enableDynamicTheme(newValue)
-                    viewModel.updateDynamicTheme(newValue)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                        themmoController.enableDynamicTheme(newValue)
+                        viewModel.updateDynamicTheme(newValue)
+                    }
                 },
                 isAmoledThemeEnabled = themmoController.isAmoledThemeEnabled,
                 onAmoledThemeChange = { newValue ->
@@ -295,6 +298,7 @@ private fun DisplayScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O_MR1)
 @Preview
 @Composable
 private fun Preview() {
