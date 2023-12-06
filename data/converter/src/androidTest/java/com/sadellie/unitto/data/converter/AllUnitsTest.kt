@@ -20,6 +20,8 @@ package com.sadellie.unitto.data.converter
 
 import android.content.Context
 import androidx.room.Room
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.database.UnittoDatabase
@@ -32,15 +34,13 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import java.math.BigDecimal
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class AllUnitsTest {
 
     private var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
-    private val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
+    private val mContext: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val database = Room.inMemoryDatabaseBuilder(mContext, UnittoDatabase::class.java).build()
     private val allUnitsRepository = UnitsRepositoryImpl(
         unitsDao = database.unitsDao(),
@@ -257,6 +257,11 @@ class AllUnitsTest {
         torr.checkWith(hectopascal, "456", "607.95")
         micron_of_mercury.checkWith(hectopascal, "456", "0.60795")
         millimeter_of_mercury.checkWith(hectopascal, "456", "607.95")
+        kilogram_force_per_square_meter.checkWith(dekapascal, "456", "447.18324")
+        kilogram_force_per_square_centimeter.checkWith(dekapascal, "456", "4471832.4")
+        gram_force_per_square_centimeter.checkWith(dekapascal, "456", "4471.8324")
+        pound_force_per_square_foot.checkWith(dekapascal, "456", "2183.33981")
+        pound_force_per_square_inch.checkWith(dekapascal, "456", "314400.93257")
     }
 
     @Test
@@ -362,6 +367,10 @@ class AllUnitsTest {
         cubic_centimeter.checkWith(us_liquid_gallon, "1507", "0.39811")
         cubic_meter.checkWith(us_liquid_gallon, "1507", "398107.2829")
         cubic_kilometer.checkWith(us_liquid_gallon, "0.0000001507", "39810.72829")
+        cubic_inch.checkWith(us_liquid_gallon, "1507", "6.52381")
+        cubic_foot.checkWith(us_liquid_gallon, "1507", "11273.14286")
+        cubic_yard.checkWith(us_liquid_gallon, "1507", "304374.85714")
+        cubic_mile.checkWith(us_liquid_gallon, "0.00001507", "16593835.41175")
     }
 
     @Test

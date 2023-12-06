@@ -154,6 +154,10 @@ object MyUnitIDS {
     const val cubic_centimeter = "cubic_centimeter"
     const val cubic_meter = "cubic_meter"
     const val cubic_kilometer = "cubic_kilometer"
+    const val cubic_inch = "cubic_inch"
+    const val cubic_foot = "cubic_foot"
+    const val cubic_yard = "cubic_yard"
+    const val cubic_mile = "cubic_mile"
 
     // TIME
     const val attosecond = "attosecond"
@@ -261,6 +265,11 @@ object MyUnitIDS {
     const val torr = "torr"
     const val micron_of_mercury = "micron_of_mercury"
     const val millimeter_of_mercury = "millimeter_of_mercury"
+    const val kilogram_force_per_square_meter = "kilogram_force_per_square_meter"
+    const val kilogram_force_per_square_centimeter = "kilogram_force_per_square_centimeter"
+    const val gram_force_per_square_centimeter = "gram_force_per_square_centimeter"
+    const val pound_force_per_square_foot = "pound_force_per_square_foot"
+    const val pound_force_per_square_inch = "pound_force_per_square_inch"
 
     // ACCELERATION
     const val attometer_per_square_second = "attometer_per_square_second"

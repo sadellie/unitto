@@ -19,10 +19,10 @@
 package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.converter.MyUnitIDS
 import java.math.BigDecimal
 
 internal val volumeCollection: List<AbstractUnit> by lazy {
@@ -48,5 +48,9 @@ internal val volumeCollection: List<AbstractUnit> by lazy {
         NormalUnit(MyUnitIDS.cubic_centimeter,      BigDecimal.valueOf(1_000_000_000_000_000),      UnitGroup.VOLUME, R.string.unit_cubic_centimeter,     R.string.unit_cubic_centimeter_short),
         NormalUnit(MyUnitIDS.cubic_meter,           BigDecimal.valueOf(1.0E+21),                    UnitGroup.VOLUME, R.string.unit_cubic_meter,          R.string.unit_cubic_meter_short),
         NormalUnit(MyUnitIDS.cubic_kilometer,       BigDecimal.valueOf(1.0E+30),                    UnitGroup.VOLUME, R.string.unit_cubic_kilometer,      R.string.unit_cubic_kilometer_short),
+        NormalUnit(MyUnitIDS.cubic_inch,            BigDecimal.valueOf(1.6387064E+16),              UnitGroup.VOLUME, R.string.unit_cubic_inch,           R.string.unit_cubic_inch_short),
+        NormalUnit(MyUnitIDS.cubic_foot,            BigDecimal.valueOf(2.831684659E+19),            UnitGroup.VOLUME, R.string.unit_cubic_foot,           R.string.unit_cubic_foot_short),
+        NormalUnit(MyUnitIDS.cubic_yard,            BigDecimal.valueOf(7.645548579839955E+20),      UnitGroup.VOLUME, R.string.unit_cubic_yard,           R.string.unit_cubic_yard_short),
+        NormalUnit(MyUnitIDS.cubic_mile,            BigDecimal.valueOf(4.168181825440539E+30),      UnitGroup.VOLUME, R.string.unit_cubic_mile,           R.string.unit_cubic_mile_short),
     )
 }

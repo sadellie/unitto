@@ -35,8 +35,6 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.org.robolectric.robolectric)
-
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.androidx.datastore.datastore.preferences)
 
