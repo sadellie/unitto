@@ -22,7 +22,7 @@ import androidx.annotation.StringRes
 import com.sadellie.unitto.core.base.R
 
 val ALL_UNIT_GROUPS: List<UnitGroup> by lazy {
-    UnitGroup.values().toList()
+    UnitGroup.entries
 }
 
 /**

@@ -249,7 +249,7 @@ private fun DisplayScreen(
                                 modifier = Modifier.padding(top = 12.dp),
                                 selected = monetMode,
                                 onItemClick = onMonetModeChange,
-                                monetModes = remember { MonetMode.values().toList() },
+                                monetModes = remember { MonetMode.entries },
                                 customColor = selectedColor,
                                 themingMode = currentThemingMode,
                             )
