@@ -34,7 +34,7 @@ android {
         applicationId = "com.sadellie.unitto"
         minSdk = 21
         targetSdk = 34
-        versionCode = 30
+        versionCode = libs.versions.appCode.get().toInt()
         versionName = "Popstar"
         resourceConfigurations += setOf(
             "en",
