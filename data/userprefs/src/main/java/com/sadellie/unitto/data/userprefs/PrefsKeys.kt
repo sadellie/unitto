@@ -32,7 +32,7 @@ object PrefsKeys {
     val MONET_MODE = stringPreferencesKey("MONET_MODE_PREF_KEY")
     val STARTING_SCREEN = stringPreferencesKey("STARTING_SCREEN_PREF_KEY")
     val ENABLE_TOOLS_EXPERIMENT = booleanPreferencesKey("ENABLE_TOOLS_EXPERIMENT_PREF_KEY")
-    // val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
+    val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
     val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
     val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
     val AC_BUTTON = booleanPreferencesKey("AC_BUTTON_PREF_KEY")

@@ -58,6 +58,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 monetMode = preferences.getMonetMode(),
                 startingScreen = preferences.getStartingScreen(),
                 enableToolsExperiment = preferences.getEnableToolsExperiment(),
+                systemFont = preferences.getSystemFont(),
                 rpnMode = preferences.getRpnMode(),
             )
         }
@@ -106,6 +107,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val displayPrefs: Flow<DisplayPreferences> = data
         .map { preferences ->
             DisplayPreferencesImpl(
+                systemFont = preferences.getSystemFont(),
                 middleZero = preferences.getMiddleZero(),
                 acButton = preferences.getAcButton(),
             )
@@ -255,6 +257,12 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override suspend fun updateUnitConverterSorting(sorting: UnitsListSorting) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.UNIT_CONVERTER_SORTING] = sorting.name
+        }
+    }
+
+    override suspend fun updateSystemFont(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.SYSTEM_FONT] = enabled
         }
     }
 

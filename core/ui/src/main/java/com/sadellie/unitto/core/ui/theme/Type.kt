@@ -24,7 +24,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -40,6 +42,14 @@ data class NumberTypography(
     val displayMedium: TextStyle,
     val displaySmall: TextStyle,
 )
+
+val NumberTypographySystem by lazy {
+    NumberTypography(
+        displayLarge = TypographySystem.displayLarge,
+        displayMedium = TypographySystem.displayMedium,
+        displaySmall = TypographySystem.displaySmall,
+    )
+}
 
 val NumberTypographyUnitto by lazy {
     NumberTypography(
@@ -66,6 +76,8 @@ val NumberTypographyUnitto by lazy {
         ),
     )
 }
+
+val LocalNumberTypography = staticCompositionLocalOf { NumberTypographySystem }
 
 val TypographySystem by lazy { Typography() }
 
@@ -111,20 +123,24 @@ private fun PreviewSystemTypography() {
 @Preview(widthDp = 480)
 @Composable
 private fun PreviewNumberTypography() {
-    val textStyles = mapOf(
-        "displayLarge" to NumberTypographyUnitto.displayLarge,
-        "displayMedium" to NumberTypographyUnitto.displayMedium,
-        "displaySmall" to NumberTypographyUnitto.displaySmall,
-    )
+    CompositionLocalProvider(
+        LocalNumberTypography provides NumberTypographyUnitto
+    ) {
+        val textStyles = mapOf(
+            "displayLarge" to LocalNumberTypography.current.displayLarge,
+            "displayMedium" to LocalNumberTypography.current.displayMedium,
+            "displaySmall" to LocalNumberTypography.current.displaySmall,
+        )
 
-    LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
-        textStyles.forEach { (label, style) ->
-            item {
-                Text(
-                    text = "$label 123 Error 7 1⁄2",
-                    style = style,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+        LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
+            textStyles.forEach { (label, style) ->
+                item {
+                    Text(
+                        text = "$label 123 Error 7 1⁄2",
+                        style = style,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
         }
     }

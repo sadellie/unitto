@@ -55,6 +55,10 @@ fun Preferences.getEnableToolsExperiment(): Boolean {
     return this[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
 }
 
+fun Preferences.getSystemFont(): Boolean {
+    return this[PrefsKeys.SYSTEM_FONT] ?: false
+}
+
 fun Preferences.getEnableVibrations(): Boolean {
     return this[PrefsKeys.ENABLE_VIBRATIONS] ?: true
 }

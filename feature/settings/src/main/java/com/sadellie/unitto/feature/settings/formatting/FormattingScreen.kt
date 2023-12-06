@@ -62,7 +62,7 @@ import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.UnittoSlider
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
-import com.sadellie.unitto.core.ui.theme.NumberTypographyUnitto
+import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import com.sadellie.unitto.data.common.format
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -137,7 +137,7 @@ fun FormattingScreen(
 
                     Text(
                         text = preview,
-                        style = NumberTypographyUnitto.displayMedium,
+                        style = LocalNumberTypography.current.displayMedium,
                         maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()

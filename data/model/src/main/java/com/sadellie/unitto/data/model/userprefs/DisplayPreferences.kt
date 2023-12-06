@@ -19,6 +19,7 @@
 package com.sadellie.unitto.data.model.userprefs
 
 interface DisplayPreferences {
+    val systemFont: Boolean
     val middleZero: Boolean
     val acButton: Boolean
 }

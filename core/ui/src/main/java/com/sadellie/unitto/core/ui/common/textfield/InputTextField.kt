@@ -59,7 +59,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.sadellie.unitto.core.ui.theme.NumberTypographyUnitto
+import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
@@ -110,7 +110,7 @@ fun ExpressionTextField(
         modifier = modifier,
         value = value,
         formattedValue = value.text.formatExpression(formatterSymbols),
-        textStyle = NumberTypographyUnitto.displayLarge.copy(color = textColor),
+        textStyle = LocalNumberTypography.current.displayLarge.copy(color = textColor),
         minRatio = minRatio,
         onValueChange = { onCursorChange(it.selection) },
         readOnly = readOnly,
@@ -165,7 +165,7 @@ fun UnformattedTextField(
     AutoSizableTextField(
         modifier = modifier,
         value = value,
-        textStyle = NumberTypographyUnitto.displayLarge.copy(color = textColor),
+        textStyle = LocalNumberTypography.current.displayLarge.copy(color = textColor),
         minRatio = minRatio,
         onValueChange = { onCursorChange(it.selection) },
         readOnly = readOnly,
