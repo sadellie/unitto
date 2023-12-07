@@ -155,7 +155,7 @@ private fun AboutScreen(
                 UnittoListItem(
                     icon = Icons.Default.Info,
                     headlineText = stringResource(R.string.settings_version_name),
-                    supportingText = "${BuildConfig.APP_NAME} (${BuildConfig.APP_CODE})",
+                    supportingText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                     modifier = Modifier.combinedClickable {
                         if (prefs.enableToolsExperiment) {
                             showToast(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG)

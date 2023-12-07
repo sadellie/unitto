@@ -25,16 +25,22 @@ android {
     namespace = "com.sadellie.unitto.core.base"
 
     defaultConfig {
-        buildConfigField("String", "APP_NAME", """"${libs.versions.appName.get()}"""")
-        buildConfigField("String", "APP_CODE", """"${libs.versions.appCode.get()}"""")
+        stringConfigField("VERSION_NAME", libs.versions.versionName.get())
+        stringConfigField("VERSION_CODE", libs.versions.versionCode.get())
     }
 
     productFlavors {
         getByName("playStore") {
-            storeLink("http://play.google.com/store/apps/details?id=com.sadellie.unitto")
+            stringConfigField(
+                "STORE_LINK",
+                "http://play.google.com/store/apps/details?id=com.sadellie.unitto"
+            )
         }
         getByName("fdroid") {
-            storeLink("https://github.com/sadellie/unitto")
+            stringConfigField(
+                "STORE_LINK",
+                "https://github.com/sadellie/unitto"
+            )
         }
     }
 
@@ -47,10 +53,8 @@ android {
     lint.warning.add("MissingTranslation")
 }
 
-fun com.android.build.api.dsl.VariantDimension.storeLink(url: String) {
+fun com.android.build.api.dsl.VariantDimension.stringConfigField(name: String, url: String) {
     buildConfigField(
-        "String",
-        "STORE_LINK",
-        "\"${url}\""
+        "String", name, "\"${url}\""
     )
 }

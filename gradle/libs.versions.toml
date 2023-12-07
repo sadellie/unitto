@@ -1,6 +1,6 @@
 [versions]
-appCode = "31"
-appName = "Popstar"
+versionCode = "31"
+versionName = "Popstar"
 
 androidxBrowserBrowser = "1.7.0"
 androidGradlePlugin = "8.2.0"
