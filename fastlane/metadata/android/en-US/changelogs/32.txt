@@ -1,0 +1,8 @@
+"Popstar" update:
+
+- Input is now not cleared by default (see calculator settings)
+- Fractional output
+- Chrome OS, tablets and foldables support
+- Improved landscape and split screen layout
+- Added more units
+- Date difference improvements
