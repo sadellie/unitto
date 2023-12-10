@@ -10,13 +10,16 @@ androidxComposeCompiler = "1.5.0"
 androidxComposeMaterial3 = "1.2.0-alpha12"
 androidxCoreCoreKts = "1.12.0"
 androidxDatastoreDatastorePreferences = "1.0.0"
+androidxEspresso = "3.5.1"
 androidxHiltHiltNavigationCompose = "1.1.0"
+androidxMacroBenchmark = "1.2.2"
 androidxLifecycleLifecycleRuntimeCompose = "2.6.2"
 androidxNavigationNavigationCompose = "2.7.5"
 androidxRoom = "2.6.1"
 androidxTest = "1.5.0"
 androidxTestExtJunitKtx = "1.1.5"
 androidxTestRunner = "1.5.2"
+androidxUiAutomator = "2.2.0"
 androidxWindowWindow = "1.2.0"
 comAndroidToolsDesugarJdkLibs = "2.0.4"
 comGithubSadellieThemmo = "1.1.2"
@@ -34,6 +37,7 @@ orgRobolectricRobolectric = "4.10.3"
 
 [libraries]
 androidx-appcompat-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompatAppCompat" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
 androidx-browser-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowserBrowser" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
 androidx-compose-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "androidxComposeMaterial3" }
@@ -52,9 +56,11 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTest" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 androidx-test-ext-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExtJunitKtx" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTest" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
 androidx-window-window = { group = "androidx.window", name = "window", version.ref = "androidxWindowWindow" }
 com-android-tools-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "comAndroidToolsDesugarJdkLibs" }
 com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
@@ -83,3 +89,5 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "comGoogleDagger" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "androidxRoom" }
+androidTest = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidxMacroBenchmark"}

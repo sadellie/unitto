@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -7,36 +8,44 @@
         android:name=".UnittoApplication"
         android:icon="@mipmap/ic_launcher_icon"
         android:label="@string/calculator_title"
-        android:supportsRtl="false"
         android:localeConfig="@xml/locales_config"
+        android:supportsRtl="false"
         android:theme="@style/Theme.Unitto">
+        <profileable
+            android:shell="true"
+            tools:targetApi="UPSIDE_DOWN_CAKE" />
+
         <activity
-            android:windowSoftInputMode="adjustPan"
             android:name=".MainActivity"
             android:allowTaskReparenting="true"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter android:label="@string/calculator_title">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="app" android:host="com.sadellie.unitto" />
+
+                <data
+                    android:host="com.sadellie.unitto"
+                    android:scheme="app" />
             </intent-filter>
         </activity>
 
         <service
             android:name=".UnittoTileService"
+            android:exported="true"
             android:icon="@drawable/tile"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
-            android:exported="true">
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
@@ -45,6 +54,6 @@
                 android:name="autoStoreLocales"
                 android:value="true" />
         </service>
-</application>
+    </application>
 
 </manifest>

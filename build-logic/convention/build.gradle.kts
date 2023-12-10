@@ -75,5 +75,10 @@ gradlePlugin {
             id = "unitto.android.library.jacoco"
             implementationClass = "UnittoAndroidLibraryJacocoPlugin"
         }
+
+        register("unittoAndroidTestConventionPlugin") {
+            id = "unitto.android.test"
+            implementationClass = "UnittoAndroidTestConventionPlugin"
+        }
     }
 }
