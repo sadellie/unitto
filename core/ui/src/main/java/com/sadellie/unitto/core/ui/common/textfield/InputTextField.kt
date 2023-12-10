@@ -85,25 +85,23 @@ fun ExpressionTextField(
         onCursorChange(TextRange(value.selection.end))
     }
 
-    val textToolbar: UnittoTextToolbar = remember(readOnly) {
-        if (readOnly) {
-            UnittoTextToolbar(
-                view = localView,
-                copyCallback = ::copyCallback,
-            )
-        } else {
-            UnittoTextToolbar(
-                view = localView,
-                copyCallback = ::copyCallback,
-                pasteCallback = {
-                    pasteCallback(clipboardManager.getText()?.text?.clearAndFilterExpression(formatterSymbols) ?: "")
-                },
-                cutCallback = {
-                    clipboardManager.copyWithoutGrouping(value, formatterSymbols)
-                    cutCallback()
-                }
-            )
-        }
+    val textToolbar: UnittoTextToolbar = if (readOnly) {
+        UnittoTextToolbar(
+            view = localView,
+            copyCallback = ::copyCallback,
+        )
+    } else {
+        UnittoTextToolbar(
+            view = localView,
+            copyCallback = ::copyCallback,
+            pasteCallback = {
+                pasteCallback(clipboardManager.getText()?.text?.clearAndFilterExpression(formatterSymbols) ?: "")
+            },
+            cutCallback = {
+                clipboardManager.copyWithoutGrouping(value, formatterSymbols)
+                cutCallback()
+            }
+        )
     }
 
     AutoSizableTextField(
@@ -114,8 +112,6 @@ fun ExpressionTextField(
         minRatio = minRatio,
         onValueChange = { onCursorChange(it.selection) },
         readOnly = readOnly,
-        showToolbar = textToolbar::showMenu,
-        hideToolbar = textToolbar::hide,
         visualTransformation = expressionTransformer,
         placeholder = placeholder,
         textToolbar = textToolbar,
@@ -169,8 +165,6 @@ fun UnformattedTextField(
         minRatio = minRatio,
         onValueChange = { onCursorChange(it.selection) },
         readOnly = readOnly,
-        showToolbar = textToolbar::showMenu,
-        hideToolbar = textToolbar::hide,
         placeholder = placeholder,
         textToolbar = textToolbar
     )
@@ -186,8 +180,6 @@ private fun AutoSizableTextField(
     minRatio: Float = 1f,
     onValueChange: (TextFieldValue) -> Unit,
     readOnly: Boolean = false,
-    showToolbar: (rect: Rect) -> Unit = {},
-    hideToolbar: () -> Unit = {},
     visualTransformation: VisualTransformation = VisualTransformation.None,
     placeholder: String? = null,
     textToolbar: UnittoTextToolbar
@@ -199,57 +191,59 @@ private fun AutoSizableTextField(
     var nFontSize: TextUnit by remember { mutableStateOf(0.sp) }
     var minFontSize: TextUnit
 
-    BoxWithConstraints(
-        modifier = modifier,
-        contentAlignment = Alignment.BottomStart
+    CompositionLocalProvider(
+        LocalTextInputService provides null,
+        LocalTextToolbar provides textToolbar
     ) {
-        with(density) {
-            // Cursor handle is not visible without this, 0.836f is the minimum required factor here
-            nFontSize = maxHeight.toSp() * 0.83f
-            minFontSize = nFontSize * minRatio
-        }
+        val localTextToolbar = LocalTextToolbar.current
 
-        // Modified: https://blog.canopas.com/autosizing-textfield-in-jetpack-compose-7a80f0270853
-        val calculateParagraph = @Composable {
-            Paragraph(
-                text = formattedValue,
-                style = textStyle.copy(fontSize = nFontSize),
-                constraints = Constraints(
-                    maxWidth = ceil(with(density) { maxWidth.toPx() }).toInt()
-                ),
-                density = density,
-                fontFamilyResolver = createFontFamilyResolver(LocalContext.current),
-                spanStyles = listOf(),
-                placeholders = listOf(),
-                maxLines = 1,
-                ellipsis = false
-            )
-        }
-
-        var intrinsics = calculateParagraph()
-        with(density) {
-            while ((intrinsics.maxIntrinsicWidth > maxWidth.toPx()) && nFontSize >= minFontSize) {
-                nFontSize *= scaleFactor
-                intrinsics = calculateParagraph()
-            }
-        }
-
-        val nTextStyle = textStyle.copy(
-            // https://issuetracker.google.com/issues/266470454
-            // textAlign = TextAlign.End,
-            fontSize = nFontSize
-        )
-        var offset = Offset.Zero
-
-        CompositionLocalProvider(
-            LocalTextInputService provides null,
-            LocalTextToolbar provides textToolbar
+        BoxWithConstraints(
+            modifier = modifier,
+            contentAlignment = Alignment.BottomStart
         ) {
+            with(density) {
+                // Cursor handle is not visible without this, 0.836f is the minimum required factor here
+                nFontSize = maxHeight.toSp() * 0.83f
+                minFontSize = nFontSize * minRatio
+            }
+
+            // Modified: https://blog.canopas.com/autosizing-textfield-in-jetpack-compose-7a80f0270853
+            val calculateParagraph = @Composable {
+                Paragraph(
+                    text = formattedValue,
+                    style = textStyle.copy(fontSize = nFontSize),
+                    constraints = Constraints(
+                        maxWidth = ceil(with(density) { maxWidth.toPx() }).toInt()
+                    ),
+                    density = density,
+                    fontFamilyResolver = createFontFamilyResolver(LocalContext.current),
+                    spanStyles = listOf(),
+                    placeholders = listOf(),
+                    maxLines = 1,
+                    ellipsis = false
+                )
+            }
+
+            var intrinsics = calculateParagraph()
+            with(density) {
+                while ((intrinsics.maxIntrinsicWidth > maxWidth.toPx()) && nFontSize >= minFontSize) {
+                    nFontSize *= scaleFactor
+                    intrinsics = calculateParagraph()
+                }
+            }
+
+            val nTextStyle = textStyle.copy(
+                // https://issuetracker.google.com/issues/266470454
+                // textAlign = TextAlign.End,
+                fontSize = nFontSize
+            )
+            var offset = Offset.Zero
+
             BasicTextField(
                 value = textValue,
                 onValueChange = {
-                    showToolbar(Rect(offset, 0f))
-                    hideToolbar()
+                    localTextToolbar.showMenu(Rect(offset, 0f))
+                    localTextToolbar.hide()
                     onValueChange(it)
                 },
                 modifier = Modifier
@@ -258,10 +252,10 @@ private fun AutoSizableTextField(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
                         onClick = {
-                            hideToolbar()
+                            localTextToolbar.hide()
                             focusRequester.requestFocus()
                             onValueChange(value.copy(selection = TextRange.Zero))
-                            showToolbar(Rect(offset, 0f))
+                            localTextToolbar.showMenu(Rect(offset, 0f))
                         }
                     )
                     .widthIn(max = with(density) { intrinsics.width.toDp() })
