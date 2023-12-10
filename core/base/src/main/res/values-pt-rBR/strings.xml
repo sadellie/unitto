@@ -78,6 +78,8 @@ Used in this dialog window. Should be short -->
     <string name="settings_auto">Auto</string>
     <string name="settings_calculator_support">Visualização do histórico</string>
     <string name="settings_clear_cache">Limpar cache</string>
+    <string name="settings_clear_input">Limpar entrada</string>
+    <string name="settings_clear_input_support">Iniciar nova expressão ao clicar em \"=\" e em qualquer botão</string>
     <string name="settings_color_scheme">Esquema de cores</string>
     <string name="settings_color_theme">Tema</string>
     <string name="settings_color_theme_support">Escolha um modo de tema</string>
@@ -511,13 +513,13 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gallon_per_second_us">Galão/segundo (EUA)</string>
     <string name="unit_gallon_per_second_us_short">gal/s</string>
     <string name="unit_gallon_uk_per_100_mile">Galão/100 milhas (UK)</string>
-    <string name="unit_gallon_uk_per_100_mile_short">Galão/100 milhas (UK)</string>
+    <string name="unit_gallon_uk_per_100_mile_short">Galão/100 milhas</string>
     <string name="unit_gallon_uk_per_mile">Galão/milha (UK)</string>
-    <string name="unit_gallon_uk_per_mile_short">gal/mi (UK)</string>
+    <string name="unit_gallon_uk_per_mile_short">gal/mi</string>
     <string name="unit_gallon_us_per_100_mile">Galão/100 milhas (US)</string>
-    <string name="unit_gallon_us_per_100_mile_short">galão/100 milhas (US)</string>
+    <string name="unit_gallon_us_per_100_mile_short">galão/100 milhas</string>
     <string name="unit_gallon_us_per_mile">Galão/milha (US)</string>
-    <string name="unit_gallon_us_per_mile_short">gal/mi (US)</string>
+    <string name="unit_gallon_us_per_mile_short">gal/mi</string>
     <string name="unit_gibibit">Gibibit</string>
     <string name="unit_gibibit_per_second">Gibibit/segundo</string>
     <string name="unit_gibibit_per_second_short">Gib/s</string>
@@ -588,24 +590,26 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_hexadecimal_short">base16</string>
     <string name="unit_horse_power_mechanical">Potência</string>
     <string name="unit_horse_power_mechanical_short">hp</string>
-    <string name="unit_hour">Hor</string>
+
+    <!-- Correcting the "Hor" to "Hora". -->
+    <string name="unit_hour">Hora</string>
     <string name="unit_hour_short">h</string>
     <string name="unit_imperial_cup">Copo Imperial</string>
-    <string name="unit_imperial_cup_short">Cp (UK)</string>
+    <string name="unit_imperial_cup_short">Cp</string>
     <string name="unit_imperial_fluid_ounce">Onça fluída Imperial</string>
-    <string name="unit_imperial_fluid_ounce_short">fl oz (UK)</string>
+    <string name="unit_imperial_fluid_ounce_short">fl oz</string>
     <string name="unit_imperial_gallon">Galão imperial</string>
-    <string name="unit_imperial_gallon_short">gal (UK)</string>
+    <string name="unit_imperial_gallon_short">gal</string>
     <string name="unit_imperial_pint">Pinta Imperial</string>
-    <string name="unit_imperial_pint_short">pt (UK)</string>
+    <string name="unit_imperial_pint_short">pt</string>
     <string name="unit_imperial_quart">Quarteirão Imperial</string>
-    <string name="unit_imperial_quart_short">qt (UK)</string>
+    <string name="unit_imperial_quart_short">qt</string>
     <string name="unit_imperial_tablespoon">Colher de sopa imperial</string>
-    <string name="unit_imperial_tablespoon_short">Cs (UK)</string>
+    <string name="unit_imperial_tablespoon_short">Cs</string>
     <string name="unit_imperial_teaspoon">Colher de chá Imperial</string>
-    <string name="unit_imperial_teaspoon_short">Cc (UK)</string>
+    <string name="unit_imperial_teaspoon_short">Cc</string>
     <string name="unit_imperial_ton">Tonelada imperial</string>
-    <string name="unit_imperial_ton_short">t (UK)</string>
+    <string name="unit_imperial_ton_short">t</string>
     <string name="unit_inch">Polegada</string>
     <string name="unit_inch_short">in</string>
     <string name="unit_jiffy">Momento</string>
@@ -771,11 +775,11 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_metric_ton">Tonelada métrica</string>
     <string name="unit_metric_ton_short">t</string>
     <string name="unit_mi_per_gallon_uk">Milha/galão (UK)</string>
-    <string name="unit_mi_per_gallon_uk_short">mog (UK)</string>
+    <string name="unit_mi_per_gallon_uk_short">mog</string>
     <string name="unit_mi_per_gallon_us">Milha/galão (US)</string>
-    <string name="unit_mi_per_gallon_us_short">mpg (US)</string>
+    <string name="unit_mi_per_gallon_us_short">mpg</string>
     <string name="unit_mi_us_per_l">Milha/litro (US)</string>
-    <string name="unit_mi_us_per_l_short">mi/L (US)</string>
+    <string name="unit_mi_us_per_l_short">mi/L</string>
     <string name="unit_microfarad">Microfarad</string>
     <string name="unit_microfarad_short">µF</string>
     <string name="unit_microgram">Micrograma</string>
@@ -1051,21 +1055,21 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_uranus_surface_gravity">Gravidade superficial Uraniana</string>
     <string name="unit_uranus_surface_gravity_short">Urano g</string>
     <string name="unit_us_fluid_ounce">Onça fluida - EUA</string>
-    <string name="unit_us_fluid_ounce_short">fl oz (EUA)</string>
+    <string name="unit_us_fluid_ounce_short">fl oz</string>
     <string name="unit_us_legal_cup">Copo - EUA</string>
-    <string name="unit_us_legal_cup_short">cup (EUA)</string>
+    <string name="unit_us_legal_cup_short">cup</string>
     <string name="unit_us_liquid_gallon">Galão líquido - EUA</string>
-    <string name="unit_us_liquid_gallon_short">gal (EUA)</string>
+    <string name="unit_us_liquid_gallon_short">gal</string>
     <string name="unit_us_liquid_pint">Pinta líquida - EUA</string>
-    <string name="unit_us_liquid_pint_short">pt (EUA)</string>
+    <string name="unit_us_liquid_pint_short">pt</string>
     <string name="unit_us_liquid_quart">Quarteirão líquido - EUA</string>
-    <string name="unit_us_liquid_quart_short">qt (EUA)</string>
+    <string name="unit_us_liquid_quart_short">qt</string>
     <string name="unit_us_tablespoon">colher de sopa - EUA</string>
 
     <!-- Many of the culinary measurement units have an abbreviation in Portuguese - BR. -->
-    <string name="unit_us_tablespoon_short">Cs (EUA)</string>
+    <string name="unit_us_tablespoon_short">Cs</string>
     <string name="unit_us_teaspoon">Colhe de chá - EUA</string>
-    <string name="unit_us_teaspoon_short">Cc (EUA)</string>
+    <string name="unit_us_teaspoon_short">Cc</string>
     <string name="unit_velocity_of_light_in_vacuum">Velocidade da luz no vácuo</string>
     <string name="unit_venus_equatorial_radius">Raio equatorial de Venus</string>
     <string name="unit_venus_equatorial_radius_short">RE Venus</string>

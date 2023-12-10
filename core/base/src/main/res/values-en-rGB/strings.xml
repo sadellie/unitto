@@ -10,6 +10,7 @@
     <string name="clear_history_label">Clear history</string>
     <string name="clear_input_description">Clear input</string>
     <string name="clear_label">Clear</string>
+    <string name="click_to_try_again_label">Click to try again</string>
     <string name="converter_favorite_button_description">Add or remove unit from favorites</string>
     <string name="converter_left_side_title">Convert from</string>
     <string name="converter_no_results_support">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
@@ -17,6 +18,7 @@
     <string name="converter_search_bar_placeholder">Search units</string>
     <string name="converter_swap_units_description">Swap units</string>
     <string name="copied_label">Copied %1$s!</string>
+    <string name="date_calculator_add">Add</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_days">Days</string>
@@ -32,6 +34,8 @@
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_months">Months</string>
     <string name="date_calculator_start">Start</string>
+    <string name="date_calculator_subtract">Subtract</string>
+    <string name="date_calculator_title">Date calculator</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_years">Years</string>
@@ -41,6 +45,9 @@
     <string name="enabled_label">Enabled</string>
     <string name="error_label">Error</string>
     <string name="hello_label">Hello!</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/iqEp9rZZ9XqtJ3CKVpy33lre.png -->
+    <string name="label_label">Label</string>
     <string name="loading_label">Loading…</string>
     <string name="navigate_up_description">Navigate up</string>
 
@@ -53,6 +60,7 @@ Used in this dialog window. Should be short -->
     <string name="open_menu_description">Open menu</string>
     <string name="open_settings_label">Open settings</string>
     <string name="search_button_description">Search button</string>
+    <string name="search_text_field_placeholder">Search…</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
     <string name="select_time_label">Select time</string>
@@ -68,14 +76,20 @@ Used in this dialog window. Should be short -->
     <string name="settings_amoled_dark">AMOLED Dark</string>
     <string name="settings_amoled_dark_support">Use black background for dark themes</string>
     <string name="settings_auto">Auto</string>
+    <string name="settings_calculator_support">History view</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_input">Clear input</string>
+    <string name="settings_clear_input_support">Start new expression when clicking \"=\" and any button</string>
     <string name="settings_color_scheme">Colour scheme</string>
     <string name="settings_color_theme">Colour theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
     <string name="settings_comma">Comma</string>
+    <string name="settings_converter_support">Unit groups, sorting, formatting</string>
     <string name="settings_currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
     <string name="settings_currency_rates_note_title">Wrong currency rates?</string>
     <string name="settings_dark_mode">Dark</string>
     <string name="settings_disable_unit_group_description">Disable unit group</string>
+    <string name="settings_display">Display</string>
     <string name="settings_display_support">App look and feel</string>
     <string name="settings_dynamic_colors">Dynamic colours</string>
     <string name="settings_dynamic_colors_support">Use colours from your wallpaper</string>
@@ -92,8 +106,14 @@ https://s3.eu-west-1.amazonaws.com/po-pub/i/prtM85P6x1fMuLg1I0zbkceo.png
 
 Maybe this can be labeled better? Let me know. It should be something that can describe content of the Formatting screen. -->
     <string name="settings_formatting_support">Precision and numbers appearance</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_support">Change the app language</string>
     <string name="settings_light_mode">Light</string>
+    <string name="settings_middle_zero">Zero in the middle</string>
+    <string name="settings_middle_zero_support">Swap zero and decimal buttons</string>
     <string name="settings_note">Note</string>
+    <string name="settings_partial_history_view">Partial history view</string>
+    <string name="settings_partial_history_view_support">Peek latest entrance in history</string>
     <string name="settings_period">Period</string>
     <string name="settings_precision">Precision</string>
     <string name="settings_precision_info">Converted values may have a precision higher than the preferred one.</string>
@@ -113,6 +133,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_space">Space</string>
     <string name="settings_starting_screen">Starting screen</string>
     <string name="settings_starting_screen_support">Choose which screen is shown when you launch the app</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/r1VikAn70eXQP4da2hrntTGQ.jpg -->
+    <!-- Option name to use system default setting -->
+    <string name="settings_system">System</string>
+    <string name="settings_system_font">System font</string>
+    <string name="settings_system_font_support">Use system font for texts in app</string>
     <string name="settings_terms_and_conditions">Terms and Conditions</string>
     <string name="settings_third_party_licenses">Third party licenses</string>
     <string name="settings_title">Settings</string>
@@ -126,6 +152,11 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_vibrations">Vibrations</string>
     <string name="settings_vibrations_support">Haptic feedback when clicking keyboard buttons</string>
     <string name="settings_view_source_code">View source code</string>
+    <string name="time_zone_add_title">Add time zone</string>
+    <string name="time_zone_no_results_button">Read the article</string>
+    <string name="time_zone_no_results_support">Need more time zones?</string>
+    <string name="time_zone_title">Time zones</string>
+    <string name="tomorrow">Tomorrow</string>
     <string name="unit_acre">Acre</string>
     <string name="unit_acre_short">ac</string>
     <string name="unit_angle_minute">Minute</string>
@@ -200,31 +231,31 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_cosmic_velocity_second">Second Cosmic Velocity</string>
     <string name="unit_cosmic_velocity_third">Third Cosmic Velocity</string>
     <string name="unit_cubic_centimeter">Cubic centimetre</string>
-    <string name="unit_cubic_centimeter_short">cm^3</string>
+    <string name="unit_cubic_centimeter_short">cm³</string>
     <string name="unit_cubic_foot_per_hour">Cubic Foot/hour</string>
-    <string name="unit_cubic_foot_per_hour_short">ft3/h</string>
+    <string name="unit_cubic_foot_per_hour_short">ft³/h</string>
     <string name="unit_cubic_foot_per_minute">Cubic Foot/minute</string>
-    <string name="unit_cubic_foot_per_minute_short">ft3/m</string>
+    <string name="unit_cubic_foot_per_minute_short">ft³/m</string>
     <string name="unit_cubic_foot_per_second">Cubic Foot/second</string>
-    <string name="unit_cubic_foot_per_second_short">ft3/s</string>
+    <string name="unit_cubic_foot_per_second_short">ft³/s</string>
     <string name="unit_cubic_kilometer">Cubic kilometre</string>
-    <string name="unit_cubic_kilometer_short">km^3</string>
+    <string name="unit_cubic_kilometer_short">km³</string>
     <string name="unit_cubic_meter">Cubic metre</string>
     <string name="unit_cubic_meter_per_hour">Cubic Metre/hour</string>
-    <string name="unit_cubic_meter_per_hour_short">m3/h</string>
+    <string name="unit_cubic_meter_per_hour_short">m³/h</string>
     <string name="unit_cubic_meter_per_minute">Cubic Metre/minute</string>
-    <string name="unit_cubic_meter_per_minute_short">m3/m</string>
+    <string name="unit_cubic_meter_per_minute_short">m³/m</string>
     <string name="unit_cubic_meter_per_second">Cubic Metre/second</string>
-    <string name="unit_cubic_meter_per_second_short">m3/s</string>
-    <string name="unit_cubic_meter_short">m^3</string>
+    <string name="unit_cubic_meter_per_second_short">m³/s</string>
+    <string name="unit_cubic_meter_short">m³</string>
     <string name="unit_cubic_millimeter">Cubic millimetre</string>
     <string name="unit_cubic_millimeter_per_hour">Cubic Millimetre/hour</string>
-    <string name="unit_cubic_millimeter_per_hour_short">mm3/h</string>
+    <string name="unit_cubic_millimeter_per_hour_short">mm³/h</string>
     <string name="unit_cubic_millimeter_per_minute">Cubic Millimetre/minute</string>
-    <string name="unit_cubic_millimeter_per_minute_short">mm3/m</string>
+    <string name="unit_cubic_millimeter_per_minute_short">mm³/m</string>
     <string name="unit_cubic_millimeter_per_second">Cubic Millimetre/second</string>
-    <string name="unit_cubic_millimeter_per_second_short">mm3/s</string>
-    <string name="unit_cubic_millimeter_short">mm^3</string>
+    <string name="unit_cubic_millimeter_per_second_short">mm³/s</string>
+    <string name="unit_cubic_millimeter_short">mm³</string>
     <string name="unit_currency_ada">Cardano</string>
     <string name="unit_currency_aed">United Arab Emirates Dirham</string>
     <string name="unit_currency_afn">Afghan afghani</string>
@@ -481,6 +512,22 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gallon_per_second_imperial_short">gal/s</string>
     <string name="unit_gallon_per_second_us">Gallon/second (US)</string>
     <string name="unit_gallon_per_second_us_short">gal/s</string>
+    <string name="unit_gallon_uk_per_100_mile">Gallon/100 mile (UK)</string>
+    <string name="unit_gallon_uk_per_100_mile_short">gal/100 mi</string>
+    <string name="unit_gallon_uk_per_mile">Gallon/mile (UK)</string>
+    <string name="unit_gallon_uk_per_mile_short">gal/mi</string>
+    <string name="unit_gallon_us_per_100_mile">Gallon/100 mile (US)</string>
+    <string name="unit_gallon_us_per_100_mile_short">gal/100 mi</string>
+    <string name="unit_gallon_us_per_mile">Gallon/mile (US)</string>
+    <string name="unit_gallon_us_per_mile_short">gal/mi</string>
+    <string name="unit_gibibit">Gibibit</string>
+    <string name="unit_gibibit_per_second">Gibibit/second</string>
+    <string name="unit_gibibit_per_second_short">Gib/s</string>
+    <string name="unit_gibibit_short">Gib</string>
+    <string name="unit_gibibyte">Gibibyte</string>
+    <string name="unit_gibibyte_per_second">Gibibyte/second</string>
+    <string name="unit_gibibyte_per_second_short">GiB/s</string>
+    <string name="unit_gibibyte_short">GiB</string>
     <string name="unit_gigabit">Gigabit</string>
     <string name="unit_gigabit_per_second">Gigabit/second</string>
     <string name="unit_gigabit_per_second_short">Gb/s</string>
@@ -520,6 +567,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_group_flow_rate">Flow</string>
     <string name="unit_group_flux">Flux</string>
     <string name="unit_group_force">Force</string>
+    <string name="unit_group_fuel_consumption">Fuel</string>
     <string name="unit_group_length">Length</string>
     <string name="unit_group_luminance">Luminance</string>
     <string name="unit_group_mass">Mass</string>
@@ -545,21 +593,21 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_hour">Hour</string>
     <string name="unit_hour_short">h</string>
     <string name="unit_imperial_cup">Imperial cup</string>
-    <string name="unit_imperial_cup_short">cup (UK)</string>
+    <string name="unit_imperial_cup_short">cup</string>
     <string name="unit_imperial_fluid_ounce">Imperial fluid ounce</string>
-    <string name="unit_imperial_fluid_ounce_short">fl oz (UK)</string>
+    <string name="unit_imperial_fluid_ounce_short">fl oz</string>
     <string name="unit_imperial_gallon">Imperial gallon</string>
-    <string name="unit_imperial_gallon_short">gal (UK)</string>
+    <string name="unit_imperial_gallon_short">gal</string>
     <string name="unit_imperial_pint">Imperial pint</string>
-    <string name="unit_imperial_pint_short">pt (UK)</string>
+    <string name="unit_imperial_pint_short">pt</string>
     <string name="unit_imperial_quart">Imperial quart</string>
-    <string name="unit_imperial_quart_short">qt (UK)</string>
+    <string name="unit_imperial_quart_short">qt</string>
     <string name="unit_imperial_tablespoon">Imperial tablespoon</string>
-    <string name="unit_imperial_tablespoon_short">tablespoon (UK)</string>
+    <string name="unit_imperial_tablespoon_short">tablespoon</string>
     <string name="unit_imperial_teaspoon">Imperial teaspoon</string>
-    <string name="unit_imperial_teaspoon_short">teaspoon (UK)</string>
+    <string name="unit_imperial_teaspoon_short">teaspoon</string>
     <string name="unit_imperial_ton">Imperial ton</string>
-    <string name="unit_imperial_ton_short">t (UK)</string>
+    <string name="unit_imperial_ton_short">t</string>
     <string name="unit_inch">Inch</string>
     <string name="unit_inch_short">in</string>
     <string name="unit_jiffy">Jiffy</string>
@@ -639,9 +687,15 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilowatt_short">kW</string>
     <string name="unit_kiloweber">Kiloweber</string>
     <string name="unit_kiloweber_short">kWb</string>
+    <string name="unit_km_per_l">Kilometre/litre</string>
+    <string name="unit_km_per_l_short">km/L</string>
     <string name="unit_knot">Knot</string>
     <string name="unit_knot_short">kt</string>
     <string name="unit_ksi">Kilopound per square inch</string>
+    <string name="unit_l_per_100_km">Litre/100 kilometre</string>
+    <string name="unit_l_per_100_km_short">L/100 km</string>
+    <string name="unit_l_per_km">Litre/kilometre</string>
+    <string name="unit_l_per_km_short">L/km</string>
     <string name="unit_lambert">Lambert</string>
     <string name="unit_lambert_short">L</string>
     <string name="unit_light_year">Light year</string>
@@ -718,6 +772,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_meter_short">m</string>
     <string name="unit_metric_ton">Metric ton</string>
     <string name="unit_metric_ton_short">t</string>
+    <string name="unit_mi_per_gallon_uk">Mile/gallon (UK)</string>
+    <string name="unit_mi_per_gallon_uk_short">mpg</string>
+    <string name="unit_mi_per_gallon_us">Mile/gallon (US)</string>
+    <string name="unit_mi_per_gallon_us_short">mpg</string>
+    <string name="unit_mi_us_per_l">Mile/litre (US)</string>
+    <string name="unit_mi_us_per_l_short">mi/L</string>
     <string name="unit_microfarad">Microfarad</string>
     <string name="unit_microfarad_short">µF</string>
     <string name="unit_microgram">Microgram</string>
@@ -993,19 +1053,19 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_uranus_surface_gravity">Uranus surface gravity</string>
     <string name="unit_uranus_surface_gravity_short">Uranus g</string>
     <string name="unit_us_fluid_ounce">US fluid ounce</string>
-    <string name="unit_us_fluid_ounce_short">fl oz (US)</string>
+    <string name="unit_us_fluid_ounce_short">fl oz</string>
     <string name="unit_us_legal_cup">US legal cup</string>
-    <string name="unit_us_legal_cup_short">cup (US)</string>
+    <string name="unit_us_legal_cup_short">cup</string>
     <string name="unit_us_liquid_gallon">US liquid gallon</string>
-    <string name="unit_us_liquid_gallon_short">gal (US)</string>
+    <string name="unit_us_liquid_gallon_short">gal</string>
     <string name="unit_us_liquid_pint">US liquid pint</string>
-    <string name="unit_us_liquid_pint_short">pt (US)</string>
+    <string name="unit_us_liquid_pint_short">pt</string>
     <string name="unit_us_liquid_quart">US liquid quart</string>
-    <string name="unit_us_liquid_quart_short">qt (US)</string>
+    <string name="unit_us_liquid_quart_short">qt</string>
     <string name="unit_us_tablespoon">US tablespoon</string>
-    <string name="unit_us_tablespoon_short">tablespoon (US)</string>
+    <string name="unit_us_tablespoon_short">tablespoon</string>
     <string name="unit_us_teaspoon">US teaspoon</string>
-    <string name="unit_us_teaspoon_short">teaspoon (US)</string>
+    <string name="unit_us_teaspoon_short">teaspoon</string>
     <string name="unit_velocity_of_light_in_vacuum">Speed of light in vacuum</string>
     <string name="unit_venus_equatorial_radius">Venus equatorial radius</string>
     <string name="unit_venus_equatorial_radius_short">Venus R</string>
@@ -1030,4 +1090,5 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_yard_per_second_short">yd/s</string>
     <string name="unit_yard_short">yd</string>
     <string name="unit_year_short">y</string>
+    <string name="yesterday">Yesterday</string>
 </resources>
