@@ -41,7 +41,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
-import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -66,6 +65,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
@@ -195,7 +195,7 @@ private fun Ready(
             }
 
             var historyListHeight by remember { mutableStateOf(0.dp) }
-            val keyboardHeight by remember(historyListHeight) {
+            val keyboardHeight by remember(historyListHeight, textBoxHeight) {
                 derivedStateOf {
                     if (historyListHeight > HistoryItemHeight) {
                         maxHeight - textBoxHeight - HistoryItemHeight
@@ -205,7 +205,7 @@ private fun Ready(
                 }
             }
 
-            LaunchedEffect(uiState.partialHistoryView) {
+            LaunchedEffect(uiState.partialHistoryView, textBoxHeight) {
                 val anchors: DraggableAnchors<DragState> = with(density) {
                     if (uiState.partialHistoryView) {
                         DraggableAnchors {
