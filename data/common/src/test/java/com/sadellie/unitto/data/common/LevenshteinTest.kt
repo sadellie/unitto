@@ -16,9 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.converter
+package com.sadellie.unitto.data.common
 
-import com.sadellie.unitto.data.common.lev
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

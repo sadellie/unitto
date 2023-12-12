@@ -18,13 +18,32 @@
 
 package com.sadellie.unitto.data.converter
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.data.common.format
-import com.sadellie.unitto.data.database.UnittoDatabase
+import com.sadellie.unitto.data.converter.collections.accelerationCollection
+import com.sadellie.unitto.data.converter.collections.angleCollection
+import com.sadellie.unitto.data.converter.collections.areaCollection
+import com.sadellie.unitto.data.converter.collections.currencyCollection
+import com.sadellie.unitto.data.converter.collections.dataCollection
+import com.sadellie.unitto.data.converter.collections.dataTransferCollection
+import com.sadellie.unitto.data.converter.collections.electrostaticCapacitance
+import com.sadellie.unitto.data.converter.collections.energyCollection
+import com.sadellie.unitto.data.converter.collections.flowRateCollection
+import com.sadellie.unitto.data.converter.collections.fluxCollection
+import com.sadellie.unitto.data.converter.collections.forceCollection
+import com.sadellie.unitto.data.converter.collections.fuelConsumptionCollection
+import com.sadellie.unitto.data.converter.collections.lengthCollection
+import com.sadellie.unitto.data.converter.collections.luminanceCollection
+import com.sadellie.unitto.data.converter.collections.massCollection
+import com.sadellie.unitto.data.converter.collections.numberBaseCollection
+import com.sadellie.unitto.data.converter.collections.powerCollection
+import com.sadellie.unitto.data.converter.collections.prefixCollection
+import com.sadellie.unitto.data.converter.collections.pressureCollection
+import com.sadellie.unitto.data.converter.collections.speedCollection
+import com.sadellie.unitto.data.converter.collections.temperatureCollection
+import com.sadellie.unitto.data.converter.collections.timeCollection
+import com.sadellie.unitto.data.converter.collections.torqueCollection
+import com.sadellie.unitto.data.converter.collections.volumeCollection
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
@@ -33,20 +52,35 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
 import java.math.BigDecimal
 
-@RunWith(AndroidJUnit4::class)
 class AllUnitsTest {
 
     private var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
-    private val mContext: Context = InstrumentationRegistry.getInstrumentation().targetContext
-    private val database = Room.inMemoryDatabaseBuilder(mContext, UnittoDatabase::class.java).build()
-    private val allUnitsRepository = UnitsRepositoryImpl(
-        unitsDao = database.unitsDao(),
-        currencyRatesDao = database.currencyRatesDao(),
-        mContext = mContext
-    )
+    private val allUnits = lengthCollection +
+            currencyCollection +
+            massCollection +
+            speedCollection +
+            temperatureCollection +
+            areaCollection +
+            timeCollection +
+            volumeCollection +
+            dataCollection +
+            pressureCollection +
+            accelerationCollection +
+            energyCollection +
+            powerCollection +
+            angleCollection +
+            dataTransferCollection +
+            fluxCollection +
+            numberBaseCollection +
+            electrostaticCapacitance +
+            prefixCollection +
+            forceCollection +
+            torqueCollection +
+            flowRateCollection +
+            luminanceCollection +
+            fuelConsumptionCollection
 
     @Test
     fun testAcceleration() = testWithUnits {
@@ -551,9 +585,8 @@ class AllUnitsTest {
     }
 
     private fun String.checkWith(checkingId: String, value: String, expected: String) {
-        val str = this
-        val unitFrom = runBlocking { allUnitsRepository.getById(str) }
-        val unitTo = runBlocking { allUnitsRepository.getById(checkingId) }
+        val unitFrom = allUnits.first { it.id == this }
+        val unitTo = allUnits.first { it.id == checkingId }
 
         val actual = when (unitFrom.group) {
             UnitGroup.NUMBER_BASE -> (unitFrom as NumberBaseUnit).convert((unitTo as NumberBaseUnit), value)
@@ -573,8 +606,12 @@ class AllUnitsTest {
     @After
     fun after() = runBlocking {
         val unitGroup = history.keys.first()
+        val testedCount = history[unitGroup]?.size
+        val totalCount = allUnits.count { it.group == unitGroup }
+
         // GROUP : testedCount / totalCount
-        println("${unitGroup.name} : ${history[unitGroup]?.size} / ${allUnitsRepository.getCollection(unitGroup).size}")
+        println("${unitGroup.name} : $testedCount / $totalCount")
+        if (testedCount != totalCount) throw Exception("Didn't cover all units")
     }
 
     private fun testWithUnits(block: MyUnitIDS.() -> Unit): Unit = with(MyUnitIDS, block = block)
