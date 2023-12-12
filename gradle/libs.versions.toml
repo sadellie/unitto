@@ -1,5 +1,5 @@
 [versions]
-versionCode = "32"
+versionCode = "33"
 versionName = "Popstar"
 
 androidxBrowserBrowser = "1.7.0"
