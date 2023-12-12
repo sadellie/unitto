@@ -75,3 +75,15 @@ fun String.isExpression(): Boolean {
     // Rest of the string must be just like positive
     return this.drop(1).isExpression()
 }
+
+fun String.normalizeSuperscript(): String = this
+    .replace('⁰', '0')
+    .replace('¹', '1')
+    .replace('²', '2')
+    .replace('³', '3')
+    .replace('⁴', '4')
+    .replace('⁵', '5')
+    .replace('⁶', '6')
+    .replace('⁷', '7')
+    .replace('⁸', '8')
+    .replace('⁹', '9')

@@ -20,6 +20,7 @@ package com.sadellie.unitto.data.model.unit
 
 import android.content.Context
 import com.sadellie.unitto.data.common.lev
+import com.sadellie.unitto.data.common.normalizeSuperscript
 import com.sadellie.unitto.data.model.UnitGroup
 import java.math.BigDecimal
 
@@ -52,7 +53,10 @@ fun Sequence<AbstractUnit>.filterByLev(stringA: String, context: Context): Seque
     // List of pair: Unit and it's levDist
     val unitsWithDist = mutableListOf<Pair<AbstractUnit, Int>>()
     this.forEach { unit ->
-        val unitShortName: String = context.getString(unit.shortName).lowercase()
+        val unitShortName: String = context
+            .getString(unit.shortName)
+            .lowercase()
+            .normalizeSuperscript()
         /**
          * There is a chance that we search for unit with a specific short name. Such cases are
          * should be higher in the list. Best possible match.
@@ -62,7 +66,10 @@ fun Sequence<AbstractUnit>.filterByLev(stringA: String, context: Context): Seque
             return@forEach
         }
 
-        val unitFullName: String = context.getString(unit.displayName).lowercase()
+        val unitFullName: String = context
+            .getString(unit.displayName)
+            .lowercase()
+            .normalizeSuperscript()
 
         /**
          * There is chance that unit name doesn't need any edits (contains part of the query)
