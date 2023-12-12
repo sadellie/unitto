@@ -59,6 +59,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -79,6 +80,7 @@ import com.sadellie.unitto.feature.calculator.components.TextBox
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.math.roundToInt
 
 @Composable
 internal fun CalculatorRoute(
@@ -272,7 +274,7 @@ private fun Ready(
             CalculatorKeyboard(
                 modifier = Modifier
                     .semantics { testTag = "ready" }
-                    .offset(y = historyListHeight + textBoxHeight)
+                    .offset { IntOffset(x = 0, y = (historyListHeight + textBoxHeight).toPx().roundToInt()) }
                     .height(keyboardHeight)
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),

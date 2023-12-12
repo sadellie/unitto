@@ -29,8 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
 import kotlinx.coroutines.launch
@@ -71,7 +71,12 @@ fun BasicKeyboardButton(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.matchParentSize().scale(contentHeight),
+            modifier = Modifier
+                .matchParentSize()
+                .graphicsLayer {
+                    scaleX = contentHeight
+                    scaleY = contentHeight
+                },
             tint = iconColor
         )
     }
