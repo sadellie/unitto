@@ -5,16 +5,17 @@ versionName = "Popstar"
 androidxBrowserBrowser = "1.7.0"
 androidGradlePlugin = "8.2.0"
 androidxAppCompatAppCompat = "1.6.1"
-androidxCompose = "1.6.0-beta02"
-androidxComposeCompiler = "1.5.0"
-androidxComposeMaterial3 = "1.2.0-alpha12"
+androidxCompose = "1.6.0-beta03"
+androidxComposeCompiler = "1.5.7"
+androidxComposeMaterial3 = "1.2.0-beta01"
 androidxCoreCoreKts = "1.12.0"
+androidxGlanceGlance = "1.0.0"
 androidxDatastoreDatastorePreferences = "1.0.0"
 androidxEspresso = "3.5.1"
 androidxHiltHiltNavigationCompose = "1.1.0"
 androidxMacroBenchmark = "1.2.2"
 androidxLifecycleLifecycleRuntimeCompose = "2.6.2"
-androidxNavigationNavigationCompose = "2.7.5"
+androidxNavigationNavigationCompose = "2.7.6"
 androidxRoom = "2.6.1"
 androidxTest = "1.5.0"
 androidxTestExtJunitKtx = "1.1.5"
@@ -24,16 +25,16 @@ androidxWindowWindow = "1.2.0"
 comAndroidToolsDesugarJdkLibs = "2.0.4"
 comGithubSadellieThemmo = "1.1.2"
 comGoogleAccompanistAccompanistSystemuicontroller = "0.30.1"
-comGoogleDagger = "2.48"
+comGoogleDagger = "2.48.1"
 comSquareupMoshiMoshiKotlin = "1.15.0"
 comSquareupRetrofit2ConverterMoshi = "2.9.0"
 orgJacocoOrgJacocoCore = "0.8.10"
 junitJunit = "4.13.2"
-kotlin = "1.9.0"
-ksp = "1.9.0-1.0.13"
+kotlin = "1.9.21"
+ksp = "1.9.21-1.0.16"
 orgBurnoutcrewComposereorderableReorderable = "0.9.6"
-orgJetbrainsKotlinxKotlinxCoroutinesTest = "1.7.2"
-orgRobolectricRobolectric = "4.10.3"
+orgJetbrainsKotlinxKotlinxCoroutinesTest = "1.7.3"
+orgRobolectricRobolectric = "4.11.1"
 
 [libraries]
 androidx-appcompat-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompatAppCompat" }
@@ -48,6 +49,9 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxCompose" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxCompose" }
 androidx-core-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreCoreKts" }
+androidx-glance-glance = { group = "androidx.glance", name = "glance", version.ref = "androidxGlanceGlance" }
+androidx-glance-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "androidxGlanceGlance" }
+androidx-glance-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "androidxGlanceGlance" }
 androidx-datastore-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDatastoreDatastorePreferences" }
 androidx-hilt-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltHiltNavigationCompose" }
 androidx-lifecycle-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycleLifecycleRuntimeCompose" }
