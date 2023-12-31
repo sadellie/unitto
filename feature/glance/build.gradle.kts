@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,18 +24,18 @@ plugins {
     id("unitto.android.library.jacoco")
 }
 
-android.namespace = "com.sadellie.unitto.feature.settings"
+android.namespace = "com.sadellie.unitto.feature.glance"
 
 dependencies {
-    implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.org.burnoutcrew.composereorderable.reorderable)
-    implementation(libs.androidx.appcompat.appcompat)
+    implementation(libs.androidx.glance.glance)
+    implementation(libs.androidx.glance.glance.appwidget)
+    implementation(libs.androidx.glance.glance.material3)
+    implementation(libs.androidx.work.work.runtime.ktx)
 
-    implementation(project(":data:backup"))
+    implementation(project(":data:calculator"))
     implementation(project(":data:common"))
     implementation(project(":data:database"))
+    implementation(project(":data:evaluatto"))
     implementation(project(":data:model"))
-    implementation(project(":data:licenses"))
     implementation(project(":data:userprefs"))
-    implementation(project(":feature:glance"))
 }

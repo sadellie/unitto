@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Unitto is a unit converter for Android
   ~ Copyright (c) 2023 Elshan Agaev
   ~
@@ -17,5 +16,10 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest>
-</manifest>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/app_name"
+    android:initialLayout="@layout/glance_default_loading_layout"
+    android:minWidth="276.0dp"
+    android:minHeight="172.0dp"
+    android:widgetCategory="home_screen"
+    />

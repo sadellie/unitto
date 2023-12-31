@@ -22,6 +22,7 @@ androidxTestExtJunitKtx = "1.1.5"
 androidxTestRunner = "1.5.2"
 androidxUiAutomator = "2.2.0"
 androidxWindowWindow = "1.2.0"
+androidxWorkWorkRuntimeKtx = "2.9.0"
 comAndroidToolsDesugarJdkLibs = "2.0.4"
 comGithubSadellieThemmo = "1.1.2"
 comGoogleAccompanistAccompanistSystemuicontroller = "0.30.1"
@@ -66,6 +67,7 @@ androidx-test-runner = { group = "androidx.test", name = "runner", version.ref =
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTest" }
 androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
 androidx-window-window = { group = "androidx.window", name = "window", version.ref = "androidxWindowWindow" }
+androidx-work-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWorkWorkRuntimeKtx" }
 com-android-tools-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "comAndroidToolsDesugarJdkLibs" }
 com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
 com-google-accompanist-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "comGoogleAccompanistAccompanistSystemuicontroller" }
