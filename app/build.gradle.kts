@@ -132,8 +132,6 @@ dependencies {
     implementation(libs.com.google.accompanist.accompanist.systemuicontroller)
     implementation(libs.androidx.datastore.datastore.preferences)
     implementation(libs.androidx.appcompat.appcompat)
-    implementation(libs.androidx.glance.glance)
-    implementation(libs.androidx.glance.glance.appwidget)
 
     implementation(project(":feature:converter"))
     implementation(project(":feature:calculator"))
