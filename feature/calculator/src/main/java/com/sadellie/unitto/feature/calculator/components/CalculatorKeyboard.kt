@@ -192,8 +192,8 @@ private fun PortraitKeyboard(
     ColumnWithConstraints(
         modifier = modifier,
     ) { constraints ->
-        val spacerHeight = remember { constraints.maxHeight * 0.025f }
-        val additionalButtonHeight = remember { constraints.maxHeight * 0.09f }
+        val spacerHeight = constraints.maxHeight * 0.025f
+        val additionalButtonHeight = constraints.maxHeight * 0.09f
 
         Spacer(modifier = Modifier.height(spacerHeight))
 
