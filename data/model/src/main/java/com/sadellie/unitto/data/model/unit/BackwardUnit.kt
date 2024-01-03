@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import com.sadellie.unitto.data.model.UnitGroup
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-data class FuelForward(
+data class BackwardUnit(
     override val id: String,
     override val basicUnit: BigDecimal,
     override val group: UnitGroup,
@@ -39,16 +39,17 @@ data class FuelForward(
         if (unitTo.basicUnit.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
 
         return when (unitTo) {
-            is FuelForward -> this
+            is NormalUnit -> this
                 .basicUnit
                 .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                .div(unitTo.basicUnit).multiply(value)
-
-            is FuelBackward -> unitTo
-                .basicUnit
-                .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                .div(this.basicUnit)
+                .div(unitTo.basicUnit)
                 .div(value)
+
+            is BackwardUnit -> unitTo
+                .basicUnit
+                .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                .multiply(value)
+                .div(this.basicUnit)
 
             else -> BigDecimal.ZERO
         }
@@ -63,7 +64,7 @@ data class FuelForward(
         isFavorite: Boolean,
         pairId: String?,
         counter: Int,
-    ): FuelForward = copy(
+    ): BackwardUnit = copy(
         id = id,
         basicUnit = basicUnit,
         group = group,

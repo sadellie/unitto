@@ -38,11 +38,21 @@ data class NormalUnit(
         // Avoid division by zero
         if (unitTo.basicUnit.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
 
-        return this
-            .basicUnit
-            .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-            .multiply(value)
-            .div(unitTo.basicUnit)
+        return when (unitTo) {
+            is NormalUnit -> this
+                .basicUnit
+                .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                .multiply(value)
+                .div(unitTo.basicUnit)
+
+            is BackwardUnit -> unitTo
+                .basicUnit
+                .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                .div(this.basicUnit)
+                .div(value)
+
+            else -> BigDecimal.ZERO
+        }
     }
 
     override fun clone(

@@ -19,10 +19,10 @@
 package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.converter.MyUnitIDS
 import java.math.BigDecimal
 
 internal val massCollection: List<AbstractUnit> by lazy {
@@ -31,6 +31,7 @@ internal val massCollection: List<AbstractUnit> by lazy {
         NormalUnit(MyUnitIDS.atomic_mass_unit,   BigDecimal.valueOf(1.6605402E-24), UnitGroup.MASS, R.string.unit_atomic_mass_unit,   R.string.unit_atomic_mass_unit_short),
         NormalUnit(MyUnitIDS.microgram,          BigDecimal(1E-6),                  UnitGroup.MASS, R.string.unit_microgram,          R.string.unit_microgram_short),
         NormalUnit(MyUnitIDS.milligram,          BigDecimal.valueOf(1E-3),          UnitGroup.MASS, R.string.unit_milligram,          R.string.unit_milligram_short),
+        NormalUnit(MyUnitIDS.grain,              BigDecimal.valueOf(0.06479891),    UnitGroup.MASS, R.string.unit_grain,              R.string.unit_grain_short),
         NormalUnit(MyUnitIDS.gram,               BigDecimal.valueOf(1),             UnitGroup.MASS, R.string.unit_gram,               R.string.unit_gram_short),
         NormalUnit(MyUnitIDS.kilogram,           BigDecimal.valueOf(1E+3),          UnitGroup.MASS, R.string.unit_kilogram,           R.string.unit_kilogram_short),
         NormalUnit(MyUnitIDS.metric_ton,         BigDecimal.valueOf(1E+6),          UnitGroup.MASS, R.string.unit_metric_ton,         R.string.unit_metric_ton_short),

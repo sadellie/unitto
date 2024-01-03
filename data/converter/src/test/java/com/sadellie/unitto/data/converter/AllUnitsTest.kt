@@ -235,6 +235,7 @@ class AllUnitsTest {
     fun testMass() = testWithUnits {
         electron_mass_rest.checkWith(milligram, "1500000000000000000", "0.000001")
         atomic_mass_unit.checkWith(electron_mass_rest, "150", "273433.27951")
+        grain.checkWith(milligram, "1500", "97198.365")
         microgram.checkWith(gram, "1500", "0.0015")
         milligram.checkWith(ounce, "1500", "0.05291")
         gram.checkWith(ounce, "1500", "52.91094")
@@ -321,6 +322,10 @@ class AllUnitsTest {
         mile_per_hour.checkWith(foot_per_hour, "396", "2090880")
         mile_per_minute.checkWith(foot_per_hour, "396", "125452800")
         mile_per_second.checkWith(foot_per_hour, "396", "7527168000")
+        minute_per_kilometer.checkWith(kilometer_per_minute, "396", "0.00253")
+        minute_per_mile.checkWith(mile_per_minute, "396", "0.00253")
+        hour_per_kilometer.checkWith(kilometer_per_hour, "396", "0.00253")
+        hour_per_mile.checkWith(mile_per_hour, "396", "0.00253")
         knot.checkWith(meter_per_hour, "396", "733392")
         velocity_of_light_in_vacuum.checkWith(meter_per_second, "1", "299792458")
         cosmic_velocity_first.checkWith(meter_per_second, "1", "7900")
