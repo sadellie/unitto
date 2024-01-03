@@ -23,6 +23,8 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -40,17 +42,24 @@ import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -126,39 +135,39 @@ private fun SettingsScreen(
     restore: (Uri) -> Unit = {},
 ) {
     val mContext = LocalContext.current
-//    var showMenu by remember { mutableStateOf(false) }
-//
-//    // Pass picked file uri to BackupManager
-//    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { pickedUri ->
-//        if (pickedUri != null) restore(pickedUri)
-//    }
+    var showMenu by remember { mutableStateOf(false) }
+
+    // Pass picked file uri to BackupManager
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { pickedUri ->
+        if (pickedUri != null) restore(pickedUri)
+    }
 
     BackHandler(uiState.backupInProgress) {}
 
     UnittoScreenWithLargeTopBar(
         title = stringResource(R.string.settings_title),
         navigationIcon = { NavigateUpButton(navigateUp) },
-//        actions = {
-//            IconButton(
-//                onClick = { showMenu = !showMenu },
-//                content = { Icon(Icons.Default.MoreVert, null) }
-//            )
-//            DropdownMenu(
-//                expanded = showMenu,
-//                onDismissRequest = { showMenu = false }
-//            ) {
-//                // TODO Translate
-//                DropdownMenuItem(
-//                    onClick = { showMenu = false; backup() },
-//                    text = { Text("Backup") }
-//                )
-//                // TODO Translate
-//                DropdownMenuItem(
-//                    onClick = { showMenu = false; launcher.launch(arrayOf(backupMimeType)) },
-//                    text = { Text("Restore") }
-//                )
-//            }
-//        }
+        actions = {
+            IconButton(
+                onClick = { showMenu = !showMenu },
+                content = { Icon(Icons.Default.MoreVert, null) }
+            )
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                // TODO Translate
+                DropdownMenuItem(
+                    onClick = { showMenu = false; backup() },
+                    text = { Text("Backup") }
+                )
+                // TODO Translate
+                DropdownMenuItem(
+                    onClick = { showMenu = false; launcher.launch(arrayOf(backupMimeType)) },
+                    text = { Text("Restore") }
+                )
+            }
+        }
     ) { padding ->
         Column(
             modifier = Modifier
