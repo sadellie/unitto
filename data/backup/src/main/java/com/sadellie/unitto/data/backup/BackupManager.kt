@@ -99,7 +99,8 @@ class BackupManager @Inject constructor(
         }
 
         // Return error
-        val userData: UserData = jsonAdapter.fromJson(jsonContent.toString()) ?: return@withContext IllegalArgumentException("Can't parse: $jsonContent")
+        val userData: UserData = jsonAdapter.fromJson(jsonContent.toString())
+            ?: return@withContext IllegalArgumentException("Can't parse: $jsonContent")
 
         // Apply tables
         updateCalculatorHistoryTable(userData)

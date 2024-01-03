@@ -18,38 +18,29 @@
 
 package com.sadellie.unitto.data.backup
 
-import com.sadellie.unitto.data.database.UnitsDao
-import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.database.CalculatorHistoryDao
+import com.sadellie.unitto.data.database.CalculatorHistoryEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-var units = listOf(
-    UnitsEntity(
-        unitId = "UnitId1",
-        isFavorite = false,
-        pairedUnitId = "Pair",
-        frequency = 9
-    ),
-    UnitsEntity(
-        unitId = "UnitId2",
-        isFavorite = false,
-        pairedUnitId = "Pair",
-        frequency = 9
+var calculatorHistory: List<CalculatorHistoryEntity> = listOf(
+    CalculatorHistoryEntity(
+        timestamp = System.currentTimeMillis(),
+        expression = "2+2",
+        result = "4"
     )
 )
 
-object FakeUnitsDao : UnitsDao {
-    override fun getAllFlow(): Flow<List<UnitsEntity>> {
-        return flow {
-            emit(units)
-        }
+object FakeCalculatorHistoryDao: CalculatorHistoryDao {
+    override fun getAllDescending(): Flow<List<CalculatorHistoryEntity>> = flow {
+        emit(calculatorHistory)
     }
 
-    override suspend fun insertUnit(unit: UnitsEntity) {
-        units += unit
+    override suspend fun insert(vararg historyEntity: CalculatorHistoryEntity) {
+        calculatorHistory += historyEntity
     }
-    override suspend fun getById(unitId: String): UnitsEntity? = null
+
     override suspend fun clear() {
-        units = emptyList()
+        calculatorHistory = emptyList()
     }
 }

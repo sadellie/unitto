@@ -23,7 +23,7 @@ import com.sadellie.unitto.data.database.TimeZoneEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-val timeZones = listOf(
+var timeZones = listOf(
     TimeZoneEntity(
         id = "id1",
         position = 9,
@@ -37,18 +37,20 @@ val timeZones = listOf(
 )
 
 object FakeTimeZoneDao: TimeZoneDao {
-    override fun getFavorites(): Flow<List<TimeZoneEntity>> {
-        return flow {
-            emit(timeZones)
-        }
+    override fun getFavorites(): Flow<List<TimeZoneEntity>> = flow {
+        emit(timeZones)
     }
 
     override fun getMaxPosition(): Int = 0
-    override suspend fun insert(vararg timeZoneEntity: TimeZoneEntity) {}
+    override suspend fun insert(vararg timeZoneEntity: TimeZoneEntity) {
+        timeZones += timeZoneEntity
+    }
     override suspend fun removeFromFavorites(id: String) {}
     override suspend fun updateLabel(id: String, label: String) {}
     override suspend fun updateDragged(id: String, oldPosition: Int, newPosition: Int) {}
     override suspend fun moveDown(currentPosition: Int, targetPosition: Int) {}
     override suspend fun moveUp(currentPosition: Int, targetPosition: Int) {}
-    override suspend fun clear() {}
+    override suspend fun clear() {
+        timeZones = emptyList()
+    }
 }

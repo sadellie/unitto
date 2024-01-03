@@ -18,31 +18,31 @@
 
 package com.sadellie.unitto.data.backup
 
-import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
-import com.sadellie.unitto.data.model.UnitsListSorting
-
-object FakeUsrPreferenceValues {
-    const val themingMode = "ThemingMode"
-    const val enableDynamicTheme = false
-    const val enableAmoledTheme = false
-    const val customColor = 777L
-    const val monetMode = "MonetMode"
-    const val startingScreen = "StartingScreen"
-    const val enableToolsExperiment = false
-    const val enableVibrations = false
-    const val middleZero = false
-    const val acButton = false
-    const val rpnMode = false
-    const val precision = 69
-    const val separator = 1
-    const val outputFormat = 1
-    const val radianMode = false
-    const val partialHistoryView = false
-    const val clearInputAfterEquals = false
-    const val latestLeftSide = "LeftSideUnit"
-    const val latestRightSide = "RightSideUnit"
-    val shownUnitGroups = ALL_UNIT_GROUPS
-    const val unitConverterFavoritesOnly = false
-    const val unitConverterFormatTime = false
-    val unitConverterSorting = UnitsListSorting.USAGE
-}
+internal val fakeUserData = UserData(
+    themingMode = "AUTO",
+    enableDynamicTheme = false,
+    enableAmoledTheme = false,
+    customColor = 777L,
+    monetMode = "TonalSpot",
+    startingScreen = "calculator_route",
+    enableToolsExperiment = false,
+    systemFont = false,
+    enableVibrations = false,
+    middleZero = false,
+    acButton = false,
+    rpnMode = false,
+    precision = 11,
+    separator = 1,
+    outputFormat = 1,
+    radianMode = false,
+    partialHistoryView = false,
+    latestLeftSide = "kilometer",
+    latestRightSide = "mile",
+    shownUnitGroups = "LENGTH",
+    unitConverterFavoritesOnly = false,
+    unitConverterFormatTime = false,
+    unitConverterSorting = "USAGE",
+    calculatorHistoryTable = calculatorHistory,
+    unitsTable = units,
+    timeZoneTable = timeZones
+)
