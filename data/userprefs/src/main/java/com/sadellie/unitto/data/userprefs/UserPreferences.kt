@@ -81,7 +81,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 precision = preferences.getDigitsPrecision(),
                 outputFormat = preferences.getOutputFormat(),
                 acButton = preferences.getAcButton(),
-                clearInputAfterEquals = preferences.getClearInputAfterEquals()
             )
         }
 
@@ -275,12 +274,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override suspend fun updateAcButton(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.AC_BUTTON] = enabled
-        }
-    }
-
-    override suspend fun updateClearInputAfterEquals(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] = enabled
         }
     }
 

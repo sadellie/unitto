@@ -83,7 +83,6 @@ class BackupManagerTest {
                 // CALCULATOR
                 it[PrefsKeys.RADIAN_MODE] = FakeUsrPreferenceValues.radianMode
                 it[PrefsKeys.PARTIAL_HISTORY_VIEW] = FakeUsrPreferenceValues.partialHistoryView
-                it[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] = FakeUsrPreferenceValues.clearInputAfterEquals
 
                 // UNIT CONVERTER
                 it[PrefsKeys.LATEST_LEFT_SIDE] = FakeUsrPreferenceValues.latestLeftSide
@@ -116,7 +115,6 @@ class BackupManagerTest {
             outputFormat = FakeUsrPreferenceValues.outputFormat,
             radianMode = FakeUsrPreferenceValues.radianMode,
             partialHistoryView = FakeUsrPreferenceValues.partialHistoryView,
-            clearInputAfterEquals = FakeUsrPreferenceValues.clearInputAfterEquals,
             latestLeftSide = FakeUsrPreferenceValues.latestLeftSide,
             latestRightSide = FakeUsrPreferenceValues.latestRightSide,
             shownUnitGroups = FakeUsrPreferenceValues.shownUnitGroups,

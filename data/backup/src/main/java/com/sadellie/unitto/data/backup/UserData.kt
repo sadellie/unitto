@@ -46,7 +46,6 @@ internal data class UserData(
 
     @Json(name = "radianMode") val radianMode: Boolean,
     @Json(name = "partialHistoryView") val partialHistoryView: Boolean,
-    @Json(name = "clearInputAfterEquals") val clearInputAfterEquals: Boolean,
 
     @Json(name = "latestLeftSide") val latestLeftSide: String,
     @Json(name = "latestRightSide") val latestRightSide: String,

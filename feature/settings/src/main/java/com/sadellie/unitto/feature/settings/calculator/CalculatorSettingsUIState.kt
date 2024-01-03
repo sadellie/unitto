@@ -25,6 +25,5 @@ internal sealed class CalculatorSettingsUIState {
 
     data class Standard(
         val partialHistoryView: Boolean,
-        val clearInputAfterEquals: Boolean,
     ) : CalculatorSettingsUIState()
 }

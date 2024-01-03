@@ -116,8 +116,8 @@ internal class CalculatorViewModel @Inject constructor(
         .stateIn(viewModelScope, CalculatorUIState.Loading)
 
     fun addTokens(tokens: String) = _input.update {
-        val clearInputAfterEquals = _prefs.value?.clearInputAfterEquals ?: true
-        val newValue = if (_equalClicked.value and clearInputAfterEquals) {
+        val newValue = if (_equalClicked.value and Token.Digit.allWithDot.contains(tokens)) {
+            // Clean input after clicking "=" and any token that is a Digit
             TextFieldValue().addTokens(tokens)
         } else {
             it.addTokens(tokens)
@@ -129,12 +129,7 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun addBracket() = _input.update {
-        val clearInputAfterEquals = _prefs.value?.clearInputAfterEquals ?: true
-        val newValue = if (_equalClicked.value and clearInputAfterEquals) {
-            TextFieldValue().addBracket()
-        } else {
-            it.addBracket()
-        }
+        val newValue = it.addBracket()
         _equalClicked.update { false }
         _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
@@ -142,8 +137,7 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun deleteTokens() = _input.update {
-        val clearInputAfterEquals = _prefs.value?.clearInputAfterEquals ?: true
-        val newValue = if (_equalClicked.value and clearInputAfterEquals) {
+        val newValue = if (_equalClicked.value) {
             TextFieldValue().deleteTokens()
         } else {
             it.deleteTokens()

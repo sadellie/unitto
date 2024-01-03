@@ -22,7 +22,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -48,7 +47,6 @@ internal fun CalculatorSettingsRoute(
                 uiState = prefs,
                 navigateUpAction = navigateUpAction,
                 updatePartialHistoryView = viewModel::updatePartialHistoryView,
-                updateClearInputAfterEquals = viewModel::updateClearInputAfterEquals,
                 updateRpnMode = viewModel::updateRpnMode,
             )
         }
@@ -61,7 +59,6 @@ private fun CalculatorSettingsScreen(
     uiState: CalculatorSettingsUIState,
     navigateUpAction: () -> Unit,
     updatePartialHistoryView: (Boolean) -> Unit,
-    updateClearInputAfterEquals: (Boolean) -> Unit,
     updateRpnMode: (Boolean) -> Unit,
 ) {
     UnittoScreenWithLargeTopBar(
@@ -104,14 +101,6 @@ private fun CalculatorSettingsScreen(
                                 switchState = state.partialHistoryView,
                                 onSwitchChange = updatePartialHistoryView
                             )
-
-                            UnittoListItem(
-                                headlineText = stringResource(R.string.settings_clear_input),
-                                icon = Icons.AutoMirrored.Filled.Backspace,
-                                supportingText = stringResource(R.string.settings_clear_input_support),
-                                switchState = state.clearInputAfterEquals,
-                                onSwitchChange = updateClearInputAfterEquals
-                            )
                         }
                     }
 
@@ -128,11 +117,9 @@ private fun PreviewCalculatorSettingsScreenStandard() {
     CalculatorSettingsScreen(
         uiState = CalculatorSettingsUIState.Standard(
             partialHistoryView = true,
-            clearInputAfterEquals = false
         ),
         navigateUpAction = {},
         updatePartialHistoryView = {},
-        updateClearInputAfterEquals = {},
         updateRpnMode = {}
     )
 }
@@ -144,7 +131,6 @@ private fun PreviewCalculatorSettingsScreenRPN() {
         uiState = CalculatorSettingsUIState.RPN,
         navigateUpAction = {},
         updatePartialHistoryView = {},
-        updateClearInputAfterEquals = {},
         updateRpnMode = {}
     )
 }

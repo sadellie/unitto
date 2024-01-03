@@ -124,10 +124,6 @@ fun Preferences.getAcButton(): Boolean {
     return this[PrefsKeys.AC_BUTTON] ?: true
 }
 
-fun Preferences.getClearInputAfterEquals(): Boolean {
-    return this[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] ?: false
-}
-
 fun Preferences.getRpnMode(): Boolean {
     return this[PrefsKeys.RPN_MODE] ?: false
 }

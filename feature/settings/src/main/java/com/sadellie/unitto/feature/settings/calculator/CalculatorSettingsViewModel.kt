@@ -40,7 +40,6 @@ internal class CalculatorSettingsViewModel @Inject constructor(
         } else {
             CalculatorSettingsUIState.Standard(
                 partialHistoryView = calc.partialHistoryView,
-                clearInputAfterEquals = calc.clearInputAfterEquals
             )
         }
     }
@@ -48,10 +47,6 @@ internal class CalculatorSettingsViewModel @Inject constructor(
 
     fun updatePartialHistoryView(enabled: Boolean) = viewModelScope.launch {
         userPrefsRepository.updatePartialHistoryView(enabled)
-    }
-
-    fun updateClearInputAfterEquals(enabled: Boolean) = viewModelScope.launch {
-        userPrefsRepository.updateClearInputAfterEquals(enabled)
     }
 
     fun updateRpnMode(enabled: Boolean) = viewModelScope.launch {

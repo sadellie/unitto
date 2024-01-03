@@ -29,7 +29,6 @@ import com.sadellie.unitto.data.database.TimeZoneDao
 import com.sadellie.unitto.data.database.UnitsDao
 import com.sadellie.unitto.data.userprefs.PrefsKeys
 import com.sadellie.unitto.data.userprefs.getAcButton
-import com.sadellie.unitto.data.userprefs.getClearInputAfterEquals
 import com.sadellie.unitto.data.userprefs.getCustomColor
 import com.sadellie.unitto.data.userprefs.getDigitsPrecision
 import com.sadellie.unitto.data.userprefs.getEnableAmoledTheme
@@ -137,7 +136,6 @@ class BackupManager @Inject constructor(
             outputFormat = data.getOutputFormat(),
             radianMode = data.getRadianMode(),
             partialHistoryView = data.getPartialHistoryView(),
-            clearInputAfterEquals = data.getClearInputAfterEquals(),
             latestLeftSide = data.getLatestLeftSide(),
             latestRightSide = data.getLatestRightSide(),
             shownUnitGroups = data.getShownUnitGroups().joinToString(","),
@@ -174,7 +172,6 @@ class BackupManager @Inject constructor(
             // CALCULATOR
             it[PrefsKeys.RADIAN_MODE] = userData.radianMode
             it[PrefsKeys.PARTIAL_HISTORY_VIEW] = userData.partialHistoryView
-            it[PrefsKeys.CLEAR_INPUT_AFTER_EQUALS] = userData.clearInputAfterEquals
 
             // UNIT CONVERTER
             it[PrefsKeys.LATEST_LEFT_SIDE] = userData.latestLeftSide
