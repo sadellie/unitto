@@ -65,8 +65,11 @@ internal class ConverterViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val converterInputKey = "CONVERTER_INPUT"
-    private val _input = MutableStateFlow(savedStateHandle.getTextField(converterInputKey))
+    private val converterInputKey1 = "CONVERTER_INPUT_1"
+    private val converterInputKey2 = "CONVERTER_INPUT_2"
+    private val _input1 = MutableStateFlow(savedStateHandle.getTextField(converterInputKey1))
+    private val _input2 = MutableStateFlow(savedStateHandle.getTextField(converterInputKey2))
+    private val _focusedOnInput2 = MutableStateFlow(false)
     private val _calculation = MutableStateFlow<BigDecimal?>(null)
     private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
     private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)
@@ -83,18 +86,20 @@ internal class ConverterViewModel @Inject constructor(
     private var _loadCurrenciesJob: Job? = null
 
     val converterUiState: StateFlow<UnitConverterUIState> = combine(
-        _input,
+        _input1,
+        _input2,
         _calculation,
         _result,
         _unitFrom,
         _unitTo,
         userPrefsRepository.converterPrefs,
         _currenciesState
-    ) { input, calculation, result, unitFrom, unitTo, prefs, currenciesState ->
+    ) { input1, input2, calculation, result, unitFrom, unitTo, prefs, currenciesState ->
         return@combine when {
             (unitFrom is DefaultUnit) and (unitTo is DefaultUnit) -> {
                 UnitConverterUIState.Default(
-                    input = input,
+                    input1 = input1,
+                    input2 = input2,
                     calculation = calculation,
                     result = result,
                     unitFrom = unitFrom as DefaultUnit,
@@ -111,7 +116,7 @@ internal class ConverterViewModel @Inject constructor(
             }
             (unitFrom is NumberBaseUnit) and (unitTo is NumberBaseUnit) -> {
                 UnitConverterUIState.NumberBase(
-                    input = input,
+                    input = input1,
                     result = result,
                     unitFrom = unitFrom as NumberBaseUnit,
                     unitTo = unitTo as NumberBaseUnit,
@@ -134,24 +139,31 @@ internal class ConverterViewModel @Inject constructor(
                 is CurrencyRateUpdateState.Ready, is CurrencyRateUpdateState.Nothing -> {}
             }
 
-            when (ui) {
-                is UnitConverterUIState.Default -> {
-                    convertDefault(
-                        unitFrom = ui.unitFrom,
-                        unitTo = ui.unitTo,
-                        input = ui.input,
-                        formatTime = ui.formatTime
-                    )
+            try {
+                when (ui) {
+                    is UnitConverterUIState.Default -> {
+                        convertDefault(
+                            unitFrom = ui.unitFrom,
+                            unitTo = ui.unitTo,
+                            input1 = ui.input1,
+                            input2 = ui.input2,
+                            formatTime = ui.formatTime
+                        )
+                    }
+                    is UnitConverterUIState.NumberBase -> {
+                        convertNumberBase(
+                            unitFrom = ui.unitFrom,
+                            unitTo = ui.unitTo,
+                            input = ui.input
+                        )
+                    }
+                    is UnitConverterUIState.Loading -> {}
                 }
-                is UnitConverterUIState.NumberBase -> {
-                    convertNumberBase(
-                        unitFrom = ui.unitFrom,
-                        unitTo = ui.unitTo,
-                        input = ui.input
-                    )
-                }
-                is UnitConverterUIState.Loading -> {}
+            } catch (e: Exception) {
+                _result.update { ConverterResult.Default(BigDecimal.ZERO) }
             }
+
+
             ui
         }
         .stateIn(viewModelScope, UnitConverterUIState.Loading)
@@ -194,7 +206,7 @@ internal class ConverterViewModel @Inject constructor(
     val rightSideUIState = combine(
         _unitFrom,
         _unitTo,
-        _input,
+        _input1,
         _calculation,
         _rightQuery,
         _rightUnits,
@@ -251,30 +263,73 @@ internal class ConverterViewModel @Inject constructor(
         }
     }
 
-    fun addTokens(tokens: String) = _input.update {
-        val newValue = it.addTokens(tokens)
-        savedStateHandle[converterInputKey] = newValue.text
-        newValue
+    /**
+     * Change currently focused text field. For feet and inches input
+     *
+     * @param focusOnInput2 `true` if focus is on inches input. `false`if focus on feet input.
+     */
+    fun updateFocused(focusOnInput2: Boolean) = _focusedOnInput2.update { focusOnInput2 }
+
+    fun addTokens(tokens: String) {
+        if (_focusedOnInput2.value) {
+            _input2.update {
+                val newValue = it.addTokens(tokens)
+                savedStateHandle[converterInputKey2] = newValue.text
+                newValue
+            }
+        } else {
+            _input1.update {
+                val newValue = it.addTokens(tokens)
+                savedStateHandle[converterInputKey1] = newValue.text
+                newValue
+            }
+        }
     }
 
-    fun addBracket() = _input.update {
-        val newValue = it.addBracket()
-        savedStateHandle[converterInputKey] = newValue.text
-        newValue
+    fun addBracket() {
+        if (_focusedOnInput2.value) {
+            _input2.update {
+                val newValue = it.addBracket()
+                savedStateHandle[converterInputKey2] = newValue.text
+                newValue
+            }
+        } else {
+            _input1.update {
+                val newValue = it.addBracket()
+                savedStateHandle[converterInputKey1] = newValue.text
+                newValue
+            }
+        }
     }
 
-    fun deleteTokens() = _input.update {
-        val newValue = it.deleteTokens()
-        savedStateHandle[converterInputKey] = newValue.text
-        newValue
+    fun deleteTokens() {
+        if (_focusedOnInput2.value) {
+            _input2.update {
+                val newValue = it.deleteTokens()
+                savedStateHandle[converterInputKey2] = newValue.text
+                newValue
+            }
+        } else {
+            _input1.update {
+                val newValue = it.deleteTokens()
+                savedStateHandle[converterInputKey1] = newValue.text
+                newValue
+            }
+        }
     }
 
-    fun clearInput() = _input.update {
-        savedStateHandle[converterInputKey] = ""
-        TextFieldValue()
+    fun clearInput() {
+        _input1.update {
+            savedStateHandle[converterInputKey1] = ""
+            TextFieldValue()
+        }
+        _input2.update {
+            savedStateHandle[converterInputKey2] = ""
+            TextFieldValue()
+        }
     }
 
-    fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
+    fun onCursorChange(selection: TextRange) = _input1.update { it.copy(selection = selection) }
 
     fun updateCurrencyRates(unit: AbstractUnit) {
         _loadCurrenciesJob = viewModelScope.launch(Dispatchers.IO) {
@@ -387,31 +442,50 @@ internal class ConverterViewModel @Inject constructor(
     private fun convertDefault(
         unitFrom: DefaultUnit,
         unitTo: DefaultUnit,
-        input: TextFieldValue,
+        input1: TextFieldValue,
+        input2: TextFieldValue,
         formatTime: Boolean,
     ) = viewModelScope.launch(Dispatchers.Default) {
-        val calculated = try {
-            Expression(input.text.ifEmpty { Token.Digit._0 }).calculate()
+        val footInchInput = unitFrom.id == MyUnitIDS.foot
+
+        if (footInchInput) { _calculation.update { null } }
+
+        // Calculate
+        val calculated1 = try {
+            Expression(input1.text.ifEmpty { Token.Digit._0 }).calculate()
         } catch (e: ExpressionException.DivideByZero) {
             _calculation.update { null }
             return@launch
         } catch (e: Exception) {
             return@launch
         }
-        _calculation.update { if (input.text.isExpression()) calculated else null }
-
-        try {
-            if ((unitFrom.group == UnitGroup.TIME) and (formatTime)) {
-                _result.update { formatTime(calculated.multiply(unitFrom.basicUnit)) }
-
-                return@launch
-            }
-
-            val conversion = unitFrom.convert(unitTo, calculated)
-
-            _result.update { ConverterResult.Default(conversion) }
+        val calculated2 = try {
+            Expression(input2.text.ifEmpty { Token.Digit._0 }).calculate()
+        } catch (e: ExpressionException.DivideByZero) {
+            _calculation.update { null }
+            return@launch
         } catch (e: Exception) {
-            _result.update { ConverterResult.Default(BigDecimal.ZERO) }
+            return@launch
+        }
+
+        // Update calculation
+        _calculation.update { if (input1.text.isExpression()) calculated1 else null }
+
+        // Convert
+        var conversion = unitFrom.convert(unitTo, calculated1)
+        if (footInchInput) {
+            // Converted from second text field too
+            val inches = unitsRepo.getById(MyUnitIDS.inch) as DefaultUnit
+            conversion += inches.convert(unitTo, calculated2)
+        }
+
+        // Update result
+        _result.update {
+            when {
+                (unitFrom.group == UnitGroup.TIME) and (formatTime) -> formatTime(calculated1.multiply(unitFrom.basicUnit))
+                unitTo.id == MyUnitIDS.foot -> formatFootInch(conversion, unitTo, unitsRepo.getById(MyUnitIDS.inch) as DefaultUnit)
+                else -> ConverterResult.Default(conversion)
+            }
         }
     }
 

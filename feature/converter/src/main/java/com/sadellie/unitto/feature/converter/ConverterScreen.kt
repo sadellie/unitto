@@ -31,6 +31,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,6 +48,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -57,6 +60,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -64,6 +68,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
@@ -81,6 +86,7 @@ import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.data.common.format
+import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
@@ -109,6 +115,7 @@ internal fun ConverterRoute(
         deleteDigit = viewModel::deleteTokens,
         clearInput = viewModel::clearInput,
         onCursorChange = viewModel::onCursorChange,
+        onFocusOnInput2 = viewModel::updateFocused,
         onErrorClick = viewModel::updateCurrencyRates,
         addBracket = viewModel::addBracket
     )
@@ -126,6 +133,7 @@ private fun ConverterScreen(
     deleteDigit: () -> Unit,
     clearInput: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
+    onFocusOnInput2: (Boolean) -> Unit,
     onErrorClick: (AbstractUnit) -> Unit,
     addBracket: () -> Unit,
 ) {
@@ -160,6 +168,7 @@ private fun ConverterScreen(
                     modifier = Modifier.padding(it),
                     uiState = uiState,
                     onCursorChange = onCursorChange,
+                    onFocusOnInput2 = onFocusOnInput2,
                     processInput = processInput,
                     deleteDigit = deleteDigit,
                     navigateToLeftScreen = navigateToLeftScreen,
@@ -254,6 +263,7 @@ private fun Default(
     modifier: Modifier,
     uiState: UnitConverterUIState.Default,
     onCursorChange: (TextRange) -> Unit,
+    onFocusOnInput2: (Boolean) -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
     navigateToLeftScreen: () -> Unit,
@@ -288,7 +298,9 @@ private fun Default(
         modifier = modifier.fillMaxSize(),
         content1 = { contentModifier ->
             ColumnWithConstraints(modifier = contentModifier) {
-                val textFieldModifier = Modifier.fillMaxWidth().weight(2f)
+                val textFieldModifier = Modifier
+                    .fillMaxWidth()
+                    .weight(2f)
 
                 AnimatedVisibility(
                     visible = lastUpdate != null,
@@ -307,33 +319,79 @@ private fun Default(
                     )
                 }
 
-                ExpressionTextField(
-                    modifier = textFieldModifier,
-                    minRatio = 0.7f,
-                    placeholder = Token.Digit._0,
-                    value = uiState.input,
-                    onCursorChange = onCursorChange,
-                    pasteCallback = processInput,
-                    cutCallback = deleteDigit,
-                    formatterSymbols = uiState.formatterSymbols,
-                )
-                AnimatedVisibility(
-                    visible = calculation.text.isNotEmpty(),
-                    modifier = Modifier.weight(1f),
-                    enter = expandVertically(clip = false),
-                    exit = shrinkVertically(clip = false)
-                ) {
+                if (uiState.unitFrom.id == MyUnitIDS.foot) {
+                    Row(
+                        modifier = textFieldModifier,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        ) {
+                            ExpressionTextField(
+                                modifier = Modifier.fillMaxWidth().weight(1f),
+                                minRatio = 0.7f,
+                                placeholder = Token.Digit._0,
+                                value = uiState.input1,
+                                onCursorChange = onCursorChange,
+                                pasteCallback = processInput,
+                                cutCallback = deleteDigit,
+                                formatterSymbols = uiState.formatterSymbols,
+                            )
+                            AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
+                        }
+
+                        VerticalDivider()
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        ) {
+                            ExpressionTextField(
+                                modifier = Modifier.fillMaxWidth().weight(1f)
+                                    .onFocusEvent { state -> onFocusOnInput2(state.hasFocus) },
+                                minRatio = 0.7f,
+                                placeholder = Token.Digit._0,
+                                value = uiState.input2,
+                                onCursorChange = onCursorChange,
+                                pasteCallback = processInput,
+                                cutCallback = deleteDigit,
+                                formatterSymbols = uiState.formatterSymbols,
+                            )
+                            AnimatedUnitShortName(stringResource(R.string.unit_inch_short))
+                        }
+                    }
+                } else {
                     ExpressionTextField(
-                        modifier = Modifier,
-                        value = calculation,
-                        onCursorChange = { calculation = calculation.copy(selection = it) },
-                        formatterSymbols = uiState.formatterSymbols,
+                        modifier = textFieldModifier,
                         minRatio = 0.7f,
-                        textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                        readOnly = true
+                        placeholder = Token.Digit._0,
+                        value = uiState.input1,
+                        onCursorChange = onCursorChange,
+                        pasteCallback = processInput,
+                        cutCallback = deleteDigit,
+                        formatterSymbols = uiState.formatterSymbols,
                     )
+                    AnimatedVisibility(
+                        visible = calculation.text.isNotEmpty(),
+                        modifier = Modifier.weight(1f),
+                        enter = expandVertically(clip = false),
+                        exit = shrinkVertically(clip = false)
+                    ) {
+                        ExpressionTextField(
+                            modifier = Modifier,
+                            value = calculation,
+                            onCursorChange = { calculation = calculation.copy(selection = it) },
+                            formatterSymbols = uiState.formatterSymbols,
+                            minRatio = 0.7f,
+                            textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            readOnly = true
+                        )
+                    }
+                    AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
                 }
-                AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
 
                 ConverterResultTextField(
                     modifier = textFieldModifier,
@@ -392,6 +450,7 @@ private fun ConverterResultTextField(
             is ConverterResult.Default -> result.value.format(scale, outputFormat)
             is ConverterResult.NumberBase -> result.value.uppercase()
             is ConverterResult.Time -> result.format(mContext, formatterSymbols)
+            is ConverterResult.FootInch -> result.format(mContext, scale, outputFormat, formatterSymbols)
             else -> ""
         }
         mutableStateOf(TextFieldValue(value))
@@ -430,7 +489,9 @@ private fun ConverterResultTextField(
             )
         }
 
-        is ConverterResult.NumberBase, is ConverterResult.Time -> {
+        is ConverterResult.NumberBase,
+        is ConverterResult.Time,
+        is ConverterResult.FootInch -> {
             UnformattedTextField(
                 modifier = modifier,
                 value = resultTextField,
@@ -527,6 +588,7 @@ private fun PreviewConverterScreen() {
         deleteDigit = {},
         clearInput = {},
         onCursorChange = {},
+        onFocusOnInput2 = {},
         onErrorClick = {},
         addBracket = {}
     )

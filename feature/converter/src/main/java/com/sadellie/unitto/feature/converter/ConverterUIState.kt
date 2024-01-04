@@ -24,6 +24,7 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
+import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.isEqualTo
 import com.sadellie.unitto.data.common.isGreaterThan
 import com.sadellie.unitto.data.common.isLessThan
@@ -37,7 +38,8 @@ internal sealed class UnitConverterUIState {
     data object Loading : UnitConverterUIState()
 
     data class Default(
-        val input: TextFieldValue = TextFieldValue(),
+        val input1: TextFieldValue,
+        val input2: TextFieldValue,
         val calculation: BigDecimal?,
         val result: ConverterResult,
         val unitFrom: DefaultUnit,
@@ -53,7 +55,7 @@ internal sealed class UnitConverterUIState {
     ) : UnitConverterUIState()
 
     data class NumberBase(
-        val input: TextFieldValue = TextFieldValue(),
+        val input: TextFieldValue,
         val result: ConverterResult,
         val unitFrom: NumberBaseUnit,
         val unitTo: NumberBaseUnit,
@@ -83,6 +85,11 @@ internal sealed class ConverterResult {
         val microsecond: BigDecimal,
         val nanosecond: BigDecimal,
         val attosecond: BigDecimal,
+    ) : ConverterResult()
+
+    data class FootInch(
+        val foot: BigDecimal,
+        val inch: BigDecimal,
     ) : ConverterResult()
 
     data object Loading : ConverterResult()
@@ -126,6 +133,25 @@ internal fun ConverterResult.Time.format(mContext: Context, formatterSymbols: Fo
     }
 
     return (if (negative) Token.Operator.minus else "") + result.joinToString(" ").ifEmpty { Token.Digit._0 }
+}
+
+internal fun ConverterResult.FootInch.format(
+    mContext: Context,
+    scale: Int,
+    outputFormat: Int,
+    formatterSymbols: FormatterSymbols
+): String {
+    var result = ""
+    result += foot.format(scale, outputFormat).formatExpression(formatterSymbols)
+
+    if (inch.isGreaterThan(BigDecimal.ZERO)) {
+        result += mContext.getString(R.string.unit_foot_short)
+        result += " "
+        result += inch.format(scale, outputFormat).formatExpression(formatterSymbols)
+        result += mContext.getString(R.string.unit_inch_short)
+    }
+
+    return result
 }
 
 internal fun formatTime(
@@ -200,6 +226,26 @@ internal fun formatTime(
         nanosecond = nanosecond,
         attosecond = attosecond
     )
+}
+
+/**
+ * Creates an object for displaying formatted foot and inch output. Units are passed as objects so
+ * that changes in basic units don't require modifying the method. Also this method can't access
+ * units repository directly.
+ *
+ * @param input Input in feet.
+ * @param footUnit Foot unit [DefaultUnit].
+ * @param inchUnit Inch unit [DefaultUnit].
+ * @return Result where decimal places are converter into inches.
+ */
+internal fun formatFootInch(
+    input: BigDecimal,
+    footUnit: DefaultUnit,
+    inchUnit: DefaultUnit
+): ConverterResult.FootInch {
+    val (integral, fractional) = input.divideAndRemainder(BigDecimal.ONE)
+
+    return ConverterResult.FootInch(integral, footUnit.convert(inchUnit, fractional))
 }
 
 private val dayBasicUnit by lazy { BigDecimal("86400000000000000000000") }
