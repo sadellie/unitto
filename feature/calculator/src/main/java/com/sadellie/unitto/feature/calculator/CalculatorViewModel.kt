@@ -188,7 +188,9 @@ internal class CalculatorViewModel @Inject constructor(
 
         _equalClicked.update { true }
 
-        val resultFormatted = result.format(prefs.precision, prefs.outputFormat)
+        val resultFormatted = result
+            .format(prefs.precision, prefs.outputFormat)
+            .replace("-", Token.Operator.minus)
 
         withContext(Dispatchers.IO) {
             calculatorHistoryRepository.add(
