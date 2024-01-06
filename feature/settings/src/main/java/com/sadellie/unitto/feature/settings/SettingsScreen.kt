@@ -156,15 +156,13 @@ private fun SettingsScreen(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
             ) {
-                // TODO Translate
                 DropdownMenuItem(
                     onClick = { showMenu = false; backup() },
-                    text = { Text("Backup") }
+                    text = { Text(stringResource(R.string.settings_back_up)) }
                 )
-                // TODO Translate
                 DropdownMenuItem(
                     onClick = { showMenu = false; launcher.launch(arrayOf(backupMimeType)) },
-                    text = { Text("Restore") }
+                    text = { Text(stringResource(R.string.settings_restore)) }
                 )
             }
         }
