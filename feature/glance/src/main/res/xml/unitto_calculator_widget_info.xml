@@ -17,9 +17,14 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:description="@string/app_name"
     android:initialLayout="@layout/glance_default_loading_layout"
-    android:minWidth="276.0dp"
-    android:minHeight="172.0dp"
+    android:targetCellHeight="4"
+    android:targetCellWidth="4"
+    android:minWidth="276dp"
+    android:minHeight="176.dp"
+    android:minResizeHeight="176.dp"
+    android:resizeMode="vertical"
     android:widgetCategory="home_screen"
-    />
+    tools:targetApi="s" />

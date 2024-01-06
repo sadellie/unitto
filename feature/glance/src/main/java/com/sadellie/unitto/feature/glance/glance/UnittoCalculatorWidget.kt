@@ -20,6 +20,7 @@ package com.sadellie.unitto.feature.glance.glance
 
 import android.content.ComponentName
 import android.content.Context
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -58,6 +59,7 @@ import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
+import androidx.glance.material3.ColorProviders
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
@@ -69,6 +71,8 @@ import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
+import com.sadellie.unitto.core.ui.theme.DarkThemeColors
+import com.sadellie.unitto.core.ui.theme.LightThemeColors
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
 import com.sadellie.unitto.feature.glance.R
@@ -104,14 +108,30 @@ class UnittoCalculatorWidget : GlanceAppWidget() {
         provideContent {
             val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(initial = null).value
 
-            if (appPrefs == null) {
-                LoadingUI()
-                return@provideContent
-            }
+            WidgetTheme {
+                if (appPrefs == null) {
+                    LoadingUI()
+                    return@WidgetTheme
+                }
 
-            ReadyUI(appPrefs)
+                ReadyUI(appPrefs)
+            }
         }
     }
+
+    @Composable
+    private fun WidgetTheme(content: @Composable () -> Unit) =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            GlanceTheme {
+                content()
+            }
+        } else {
+            GlanceTheme(
+                colors = ColorProviders(light = LightThemeColors, dark = DarkThemeColors)
+            ) {
+                content()
+            }
+        }
 
     @Composable
     private fun ReadyUI(
@@ -157,13 +177,21 @@ class UnittoCalculatorWidget : GlanceAppWidget() {
                     text = input.formatExpression(formatterSymbols),
                     modifier = GlanceModifier.fillMaxWidth(),
                     maxLines = 2,
-                    style = TextStyle(fontSize = 36.sp, textAlign = TextAlign.End)
+                    style = TextStyle(
+                        fontSize = 36.sp,
+                        textAlign = TextAlign.End,
+                        color = GlanceTheme.colors.onSurfaceVariant
+                    ),
                 )
                 Text(
                     text = output.formatExpression(formatterSymbols),
                     modifier = GlanceModifier.fillMaxWidth(),
                     maxLines = 1,
-                    style = TextStyle(fontSize = 28.sp, textAlign = TextAlign.End)
+                    style = TextStyle(
+                        fontSize = 36.sp,
+                        textAlign = TextAlign.End,
+                        color = GlanceTheme.colors.onSurfaceVariant
+                    ),
                 )
             }
 
@@ -314,6 +342,26 @@ class UnittoCalculatorWidget : GlanceAppWidget() {
         }
     }
 }
+
+// https://gist.github.com/rozPierog/1145af6e1f10c9199000828ab4bd6bad
+// Kinda works, but corners parameter needs to be split
+//@SuppressLint("RestrictedApi")
+//fun GlanceModifier.cornerRadiusCompat(
+//    cornerRadius: Int,
+//    @ColorInt color: Int,
+//    @FloatRange(from = 0.0, to = 1.0) backgroundAlpha: Float = 1f,
+//): GlanceModifier {
+//    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//        this.background(Color(color).copy(alpha = backgroundAlpha))
+//            .cornerRadius(cornerRadius.dp)
+//    } else {
+//        val radii = FloatArray(8) { cornerRadius.toFloat() }
+//        val shape = ShapeDrawable(RoundRectShape(radii, null, null))
+//        shape.paint.color = ColorUtils.setAlphaComponent(color, (255 * backgroundAlpha).toInt())
+//        val bitmap = shape.toBitmap(width = 150, height = 75)
+//        this.background(BitmapImageProvider(bitmap))
+//    }
+//}
 
 private fun String.addToken(token: String): String =
     TextFieldValue(this, TextRange(length)).addTokens(token).text
