@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.glance.Button
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -233,10 +232,11 @@ class UnittoCalculatorWidget : GlanceAppWidget() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Button(
-                text = LocalContext.current.resources.getString(com.sadellie.unitto.core.base.R.string.loading_label),
-                onClick = {},
-                style = TextStyle(GlanceTheme.colors.onBackground, fontSize = 36.sp)
+            GlanceKeyboardButton(
+                glanceModifier = GlanceModifier,
+                containerColor = GlanceTheme.colors.primary,
+                iconRes = R.drawable.refresh,
+                onClick = actionRunCallback<RestartWidget>(),
             )
         }
     }

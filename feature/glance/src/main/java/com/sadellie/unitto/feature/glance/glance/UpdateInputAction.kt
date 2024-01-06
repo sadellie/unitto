@@ -77,6 +77,16 @@ internal class CopyResultAction : ActionCallback {
     }
 }
 
+internal class RestartWidget : ActionCallback {
+    override suspend fun onAction(
+        context: Context,
+        glanceId: GlanceId,
+        parameters: ActionParameters
+    ) {
+        UnittoCalculatorWidget().update(context, glanceId)
+    }
+}
+
 private fun calculate(
     input: String,
     precision: Int,
