@@ -20,11 +20,17 @@ package com.sadellie.unitto.feature.glance.glance
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ComponentName
 import android.content.Context
 import androidx.glance.GlanceId
+import androidx.glance.action.Action
 import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
+import androidx.glance.action.actionStartActivity
 import androidx.glance.appwidget.action.ActionCallback
+import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.state.updateAppWidgetState
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.isExpression
 import io.github.sadellie.evaluatto.Expression
@@ -86,6 +92,36 @@ internal class RestartWidget : ActionCallback {
         UnittoCalculatorWidget().update(context, glanceId)
     }
 }
+
+internal fun updateInputAction(
+    input: String,
+    precision: Int,
+    outputFormat: Int
+): Action = actionRunCallback<UpdateInputAction>(
+    actionParametersOf(
+        UnittoCalculatorWidget.inputKey to input,
+        UnittoCalculatorWidget.precisionKey to precision,
+        UnittoCalculatorWidget.outputFormatKey to outputFormat
+    )
+)
+
+internal fun copyAction(
+    output: String,
+    fractional: String
+): Action = actionRunCallback<CopyResultAction>(
+    actionParametersOf(
+        UnittoCalculatorWidget.outputKey to output.replace(Token.Digit.dot, fractional)
+    )
+)
+
+internal fun launchAction(
+    mContext: Context
+): Action = actionStartActivity(
+    ComponentName(
+        mContext,
+        "com.sadellie.unitto.MainActivity"
+    )
+)
 
 private fun calculate(
     input: String,
