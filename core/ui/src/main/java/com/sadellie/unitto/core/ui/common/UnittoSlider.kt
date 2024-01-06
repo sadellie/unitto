@@ -105,8 +105,8 @@ private fun SquigglyTrack(
         val height = size.height
         val initialOffset = strokeWidth / 2
         val thumbPosition = width
-            .times(sliderState.value)
-            .div(sliderState.valueRange.endInclusive)
+            .times(sliderState.value - sliderState.valueRange.start)
+            .div(sliderState.valueRange.endInclusive - sliderState.valueRange.start)
             .minus(initialOffset)
 
         val path = Path().apply {
