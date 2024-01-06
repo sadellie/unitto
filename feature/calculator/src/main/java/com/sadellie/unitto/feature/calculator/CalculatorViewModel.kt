@@ -116,11 +116,15 @@ internal class CalculatorViewModel @Inject constructor(
         .stateIn(viewModelScope, CalculatorUIState.Loading)
 
     fun addTokens(tokens: String) = _input.update {
-        val newValue = if (_equalClicked.value and Token.Digit.allWithDot.contains(tokens)) {
+        var newValue = if (_equalClicked.value and Token.Digit.allWithDot.contains(tokens)) {
             // Clean input after clicking "=" and any token that is a Digit
             TextFieldValue().addTokens(tokens)
         } else {
             it.addTokens(tokens)
+        }
+        // Cursor is set to 0 when equal is clicked
+        if (_equalClicked.value) {
+            newValue = newValue.copy(selection = TextRange(it.text.length))
         }
         _equalClicked.update { false }
         _fractionJob?.cancel()
@@ -129,7 +133,11 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun addBracket() = _input.update {
-        val newValue = it.addBracket()
+        var newValue = it.addBracket()
+        // Cursor is set to 0 when equal is clicked
+        if (_equalClicked.value) {
+            newValue = newValue.copy(selection = TextRange(it.text.length))
+        }
         _equalClicked.update { false }
         _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
@@ -138,7 +146,7 @@ internal class CalculatorViewModel @Inject constructor(
 
     fun deleteTokens() = _input.update {
         val newValue = if (_equalClicked.value) {
-            TextFieldValue().deleteTokens()
+            TextFieldValue()
         } else {
             it.deleteTokens()
         }
@@ -155,7 +163,12 @@ internal class CalculatorViewModel @Inject constructor(
         TextFieldValue()
     }
 
-    fun onCursorChange(selection: TextRange) = _input.update { it.copy(selection = selection) }
+    fun onCursorChange(selection: TextRange) = _input.update {
+        // Without this line: will place token (even in the middle of the input) and place cursor at
+        // the end. This line also removes fractional output once user touches input text field
+        _equalClicked.update { false }
+        it.copy(selection = selection)
+    }
 
     fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateRadianMode(newValue)
@@ -203,7 +216,7 @@ internal class CalculatorViewModel @Inject constructor(
         _fractionJob = launch(Dispatchers.Default) {
             val fraction = result.toFractionalString()
 
-            _input.update { TextFieldValue(resultFormatted, TextRange(resultFormatted.length)) }
+            _input.update { TextFieldValue(resultFormatted, TextRange.Zero) }
             _result.update { CalculationResult.Fraction(fraction) }
         }
     }
