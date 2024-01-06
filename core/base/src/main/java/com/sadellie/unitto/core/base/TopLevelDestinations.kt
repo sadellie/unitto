@@ -35,6 +35,9 @@ private const val DATE_CALCULATOR_START = "date_calculator_start"
 private const val TIME_ZONE_GRAPH = "time_zone_route"
 private const val TIME_ZONE_START = "time_zone_start"
 
+private const val BODY_MASS_GRAPH = "body_mass_route"
+private const val BODY_MASS_START = "body_mass_start"
+
 private const val SETTINGS_GRAPH = "settings_route"
 private const val SETTINGS_START = "settings_start"
 
@@ -94,6 +97,17 @@ sealed class TopLevelDestinations(
         )
     )
 
+    data object BodyMass : TopLevelDestinations(
+        graph = BODY_MASS_GRAPH,
+        start = BODY_MASS_START,
+        name = R.string.body_mass_title,
+        shortcut = Shortcut(
+            R.string.body_mass_title,
+            R.string.body_mass_title,
+            R.drawable.ic_shortcut_body_mass
+        )
+    )
+
     data object Settings : TopLevelDestinations(
         graph = SETTINGS_GRAPH,
         start = SETTINGS_START,
@@ -103,20 +117,19 @@ sealed class TopLevelDestinations(
 
 // Shown in settings
 val TOP_LEVEL_DESTINATIONS by lazy {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        listOf(
-            TopLevelDestinations.Calculator,
-            TopLevelDestinations.Converter,
-            TopLevelDestinations.DateCalculator,
-            TopLevelDestinations.TimeZone,
-        )
-    } else {
-        listOf(
-            TopLevelDestinations.Calculator,
-            TopLevelDestinations.Converter,
-            TopLevelDestinations.DateCalculator,
-        )
+    var all = listOf(
+        TopLevelDestinations.Calculator,
+        TopLevelDestinations.Converter,
+        TopLevelDestinations.DateCalculator,
+        TopLevelDestinations.TimeZone,
+        TopLevelDestinations.BodyMass,
+    )
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+        all = all - TopLevelDestinations.TimeZone
     }
+
+    all
 }
 
 // Only routes, not graphs!

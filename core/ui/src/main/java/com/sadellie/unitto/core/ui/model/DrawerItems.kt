@@ -20,11 +20,13 @@ package com.sadellie.unitto.core.ui.model
 
 import android.os.Build
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material.icons.outlined.Accessibility
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Schedule
@@ -62,6 +64,12 @@ sealed class DrawerItems(
         defaultIcon = Icons.Outlined.Schedule
     )
 
+    data object BodyMass : DrawerItems(
+        destination = TopLevelDestinations.BodyMass,
+        selectedIcon = Icons.Filled.Accessibility, // temporary
+        defaultIcon = Icons.Outlined.Accessibility // temporary
+    )
+
     data object Settings : DrawerItems(
         destination = TopLevelDestinations.Settings,
         selectedIcon = Icons.Filled.Settings,
@@ -73,20 +81,19 @@ sealed class DrawerItems(
          * Excluding Settings tab since it appears only for expanded layout
          */
         val MAIN by lazy {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                listOf(
-                    Calculator,
-                    Converter,
-                    DateDifference,
-                    TimeZones,
-                )
-            } else {
-                listOf(
-                    Calculator,
-                    Converter,
-                    DateDifference,
-                )
+            var all = listOf(
+                Calculator,
+                Converter,
+                DateDifference,
+                TimeZones,
+                BodyMass
+            )
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                all = all - TimeZones
             }
+
+            all
         }
     }
 }

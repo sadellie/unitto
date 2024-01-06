@@ -1,0 +1,31 @@
+<!--
+  ~ Unitto is a unit converter for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <group>
+    <clip-path
+        android:pathData="M0,0h24v24h-24z"/>
+    <path
+        android:pathData="M6,19H18L16.575,9H7.425L6,19ZM12,7C12.283,7 12.521,6.904 12.713,6.713C12.904,6.521 13,6.283 13,6C13,5.717 12.904,5.479 12.713,5.287C12.521,5.096 12.283,5 12,5C11.717,5 11.479,5.096 11.288,5.287C11.096,5.479 11,5.717 11,6C11,6.283 11.096,6.521 11.288,6.713C11.479,6.904 11.717,7 12,7ZM14.825,7H16.575C17.075,7 17.508,7.167 17.875,7.5C18.242,7.833 18.467,8.242 18.55,8.725L19.975,18.725C20.058,19.325 19.904,19.854 19.513,20.313C19.121,20.771 18.617,21 18,21H6C5.383,21 4.879,20.771 4.488,20.313C4.096,19.854 3.942,19.325 4.025,18.725L5.45,8.725C5.533,8.242 5.758,7.833 6.125,7.5C6.492,7.167 6.925,7 7.425,7H9.175C9.125,6.833 9.083,6.671 9.05,6.512C9.017,6.354 9,6.183 9,6C9,5.167 9.292,4.458 9.875,3.875C10.458,3.292 11.167,3 12,3C12.833,3 13.542,3.292 14.125,3.875C14.708,4.458 15,5.167 15,6C15,6.183 14.983,6.354 14.95,6.512C14.917,6.671 14.875,6.833 14.825,7Z"
+        android:fillColor="@color/unitto_primary"/>
+  </group>
+</vector>

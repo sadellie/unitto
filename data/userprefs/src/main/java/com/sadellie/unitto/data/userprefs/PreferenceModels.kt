@@ -24,6 +24,7 @@ import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
 import com.sadellie.unitto.data.model.userprefs.AddSubtractPreferences
 import com.sadellie.unitto.data.model.userprefs.AppPreferences
+import com.sadellie.unitto.data.model.userprefs.BodyMassPreferences
 import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
 import com.sadellie.unitto.data.model.userprefs.ConverterPreferences
 import com.sadellie.unitto.data.model.userprefs.DisplayPreferences
@@ -95,6 +96,11 @@ data class AddSubtractPreferencesImpl(
     override val separator: Int,
     override val enableVibrations: Boolean,
 ) : AddSubtractPreferences
+
+data class BodyMassPreferencesImpl(
+    override val separator: Int,
+    override val enableVibrations: Boolean,
+) : BodyMassPreferences
 
 data class AboutPreferencesImpl(
     override val enableToolsExperiment: Boolean,

@@ -29,6 +29,7 @@ import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
 import com.sadellie.unitto.data.model.userprefs.AddSubtractPreferences
 import com.sadellie.unitto.data.model.userprefs.AppPreferences
+import com.sadellie.unitto.data.model.userprefs.BodyMassPreferences
 import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
 import com.sadellie.unitto.data.model.userprefs.ConverterPreferences
 import com.sadellie.unitto.data.model.userprefs.DisplayPreferences
@@ -131,6 +132,14 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val addSubtractPrefs: Flow<AddSubtractPreferences> = data
         .map { preferences ->
             AddSubtractPreferencesImpl(
+                separator = preferences.getSeparator(),
+                enableVibrations = preferences.getEnableVibrations(),
+            )
+        }
+
+    override val bodyMassPrefs: Flow<BodyMassPreferences> = data
+        .map { preferences ->
+            BodyMassPreferencesImpl(
                 separator = preferences.getSeparator(),
                 enableVibrations = preferences.getEnableVibrations(),
             )

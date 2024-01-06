@@ -4,6 +4,23 @@
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/QNmUuI88wb1Fm5P8wRIZajZF.png -->
     <string name="add_label">Add</string>
     <string name="app_name" translatable="false">Unitto</string>
+
+    <!-- Person's height -->
+    <string name="body_mass_height">Height</string>
+    <string name="body_mass_imperial">Imperial</string>
+    <string name="body_mass_metric">Metric</string>
+    <string name="body_mass_normal">Normal weight</string>
+    <string name="body_mass_obese_1">Obese (Class 1)</string>
+    <string name="body_mass_obese_2">Obese (Class 2)</string>
+    <string name="body_mass_obese_3">Obese (Class 3)</string>
+    <string name="body_mass_overweight">Overweight</string>
+
+    <!-- Also known as Body mass index (BMI) -->
+    <string name="body_mass_title">Body mass</string>
+    <string name="body_mass_underweight">Underweight</string>
+
+    <!-- Person's weight -->
+    <string name="body_mass_weight">Weight</string>
     <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>
     <string name="calculator_divide_by_zero_error">Can\'t divide by 0</string>
     <string name="calculator_no_history">No history</string>

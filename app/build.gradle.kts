@@ -138,6 +138,7 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:datecalculator"))
     implementation(project(":feature:timezone"))
+    implementation(project(":feature:bodymass"))
     implementation(project(":feature:glance"))
     implementation(project(":data:model"))
     implementation(project(":data:userprefs"))

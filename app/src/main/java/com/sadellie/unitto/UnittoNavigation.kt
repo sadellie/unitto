@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.sadellie.unitto.feature.bodymass.navigation.bodyMassGraph
 import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
 import com.sadellie.unitto.feature.converter.navigation.converterGraph
 import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorGraph
@@ -77,6 +78,11 @@ internal fun UnittoNavigation(
             navigateToMenu = openDrawer,
             navigateToSettings = navController::navigateToSettings,
             navController = navController,
+        )
+
+        bodyMassGraph(
+            openDrawer = openDrawer,
+            navigateToSettings = navController::navigateToSettings,
         )
     }
 }
