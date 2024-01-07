@@ -44,3 +44,5 @@ Leave.
 Terms and Conditions: https://sadellie.github.io/unitto/terms
 
 Privacy Policy: https://sadellie.github.io/unitto/privacy
+
+FAQ: https://sadellie.github.io/unitto/faq
