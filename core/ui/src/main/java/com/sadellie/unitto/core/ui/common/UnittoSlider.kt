@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.common
 
+import androidx.annotation.FloatRange
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -77,12 +78,13 @@ fun UnittoSlider(
 private fun SquigglyTrack(
     sliderState: SliderState,
     eachWaveWidth: Float = 80f,
+    @FloatRange(0.0, 1.0) waveHeight: Float = 0.7f,
     strokeWidth: Float = 15f,
     filledColor: Color = MaterialTheme.colorScheme.primary,
     unfilledColor: Color = MaterialTheme.colorScheme.surfaceVariant
 ) {
     val coroutineScope = rememberCoroutineScope()
-    var direct by remember { mutableFloatStateOf(0.72f) }
+    var direct by remember { mutableFloatStateOf(waveHeight * (100f - strokeWidth * 2f ) / 100f ) }
     val animatedDirect = animateFloatAsState(
         targetValue = direct,
         animationSpec = spring(stiffness = Spring.StiffnessLow),
