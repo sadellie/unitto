@@ -27,6 +27,7 @@ internal val fakeUserData = UserData(
     startingScreen = "calculator_route",
     enableToolsExperiment = false,
     systemFont = false,
+    lastReadChangelog = "33",
     enableVibrations = false,
     middleZero = false,
     acButton = false,

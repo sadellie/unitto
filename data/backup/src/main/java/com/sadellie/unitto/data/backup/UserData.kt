@@ -35,6 +35,7 @@ internal data class UserData(
     @Json(name = "startingScreen") val startingScreen: String,
     @Json(name = "enableToolsExperiment") val enableToolsExperiment: Boolean,
     @Json(name = "systemFont") val systemFont: Boolean,
+    @Json(name = "lastReadChangelog") val lastReadChangelog: String,
     @Json(name = "enableVibrations") val enableVibrations: Boolean,
     @Json(name = "middleZero") val middleZero: Boolean,
     @Json(name = "acButton") val acButton: Boolean,

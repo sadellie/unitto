@@ -34,6 +34,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -48,6 +49,7 @@ import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled._123
+import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -58,15 +60,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
@@ -78,12 +81,15 @@ import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
+import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 import com.sadellie.unitto.feature.settings.navigation.aboutRoute
 import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.displayRoute
 import com.sadellie.unitto.feature.settings.navigation.formattingRoute
 import com.sadellie.unitto.feature.settings.navigation.startingScreenRoute
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun SettingsRoute(
@@ -116,9 +122,10 @@ internal fun SettingsRoute(
             uiState = uiState,
             navigateUp = navigateUp,
             navControllerAction = navControllerAction,
+            updateLastReadChangelog = viewModel::updateLastReadChangelog,
             updateVibrations = viewModel::updateVibrations,
             clearCache = viewModel::clearCache,
-            backup =  viewModel::backup,
+            backup = viewModel::backup,
             restore = viewModel::restore
         )
     }
@@ -129,6 +136,7 @@ private fun SettingsScreen(
     uiState: SettingsUIState.Ready,
     navigateUp: () -> Unit,
     navControllerAction: (String) -> Unit,
+    updateLastReadChangelog: (String) -> Unit,
     updateVibrations: (Boolean) -> Unit,
     clearCache: () -> Unit,
     backup: () -> Unit,
@@ -173,6 +181,26 @@ private fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(padding)
         ) {
+            AnimatedVisibility(
+                visible = uiState.showUpdateChangelog,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut(),
+            ) {
+                val title = stringResource(R.string.settings_updated, stringResource(R.string.app_name))
+                AnnoyingBox(
+                    modifier = Modifier
+                        .padding(16.dp, 8.dp)
+                        .fillMaxWidth(),
+                    imageVector = Icons.Outlined.NewReleases,
+                    imageVectorContentDescription = title,
+                    title = title,
+                    support = stringResource(R.string.settings_updated_support, BuildConfig.VERSION_NAME),
+                ) {
+                    openLink(mContext, "https://github.com/sadellie/unitto/releases/latest")
+                    updateLastReadChangelog(BuildConfig.VERSION_CODE)
+                }
+            }
+
             UnittoListItem(
                 icon = Icons.Default.Palette,
                 headlineText = stringResource(R.string.settings_display),
@@ -277,35 +305,40 @@ private const val backupMimeType = "application/octet-stream"
 @Preview
 @Composable
 private fun PreviewSettingsScreen() {
-    var cacheSize by remember { mutableFloatStateOf(0.9f) }
+    val corScope = rememberCoroutineScope()
+    var uiState by remember {
+        mutableStateOf(
+            SettingsUIState.Ready(
+                enableVibrations = false,
+                cacheSize = 2,
+                backupInProgress = false,
+                showUpdateChangelog = true
+            )
+        )
+    }
 
     SettingsScreen(
         uiState = SettingsUIState.Ready(
             enableVibrations = false,
             cacheSize = 2,
-            backupInProgress = false
+            backupInProgress = false,
+            showUpdateChangelog = true
         ),
         navigateUp = {},
         navControllerAction = {},
+        updateLastReadChangelog = {
+            uiState = uiState.copy(showUpdateChangelog = false)
+        },
         updateVibrations = {},
-        clearCache = { cacheSize = 0f },
-        backup = {}
-    )
-}
-
-@Preview
-@Composable
-private fun PreviewBackingUpScreen() {
-    SettingsScreen(
-        uiState = SettingsUIState.Ready(
-            enableVibrations = false,
-            cacheSize = 2,
-            backupInProgress = true
-        ),
-        navigateUp = {},
-        navControllerAction = {},
-        updateVibrations = {},
-        clearCache = {},
-        backup = {}
+        clearCache = {
+            uiState = uiState.copy(cacheSize = 0)
+        },
+        backup = {
+            corScope.launch {
+                uiState = uiState.copy(backupInProgress = true)
+                delay(2000)
+                uiState = uiState.copy(backupInProgress = false)
+            }
+        }
     )
 }

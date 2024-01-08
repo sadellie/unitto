@@ -186,6 +186,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_unit_groups_title">Unit groups</string>
     <string name="settings_units_sorting">Units list sorting</string>
     <string name="settings_units_sorting_support">Change units order</string>
+
+    <!-- Please keep "%1$s". It will be formatted in the app. Example (English): "Unitto has been updated" -->
+    <string name="settings_updated">%1$s has been updated</string>
+
+    <!-- Please keep "%1$s". It will be formatted in the app. Example (English): "See what's new in version Quick Silver" -->
+    <string name="settings_updated_support">See what\'s new in version %1$s</string>
     <string name="settings_version_name">Version name</string>
     <string name="settings_vibrations">Vibrations</string>
     <string name="settings_vibrations_support">Haptic feedback when clicking keyboard buttons</string>

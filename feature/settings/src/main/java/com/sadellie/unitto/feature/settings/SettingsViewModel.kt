@@ -22,6 +22,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.data.backup.BackupManager
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.database.CurrencyRatesDao
@@ -57,11 +58,11 @@ internal class SettingsViewModel @Inject constructor(
         currencyRatesDao.size(),
         _backupInProgress,
     ) { prefs, cacheSize, backupInProgress ->
-
         SettingsUIState.Ready(
             enableVibrations = prefs.enableVibrations,
             cacheSize = cacheSize,
-            backupInProgress = backupInProgress
+            backupInProgress = backupInProgress,
+            showUpdateChangelog = prefs.lastReadChangelog != BuildConfig.VERSION_CODE
         )
     }
         .stateIn(viewModelScope, SettingsUIState.Loading)
@@ -95,6 +96,13 @@ internal class SettingsViewModel @Inject constructor(
             }
             _backupInProgress.update { false }
         }
+    }
+
+    /**
+     * @see UserPreferencesRepository.updateLastReadChangelog
+     */
+    fun updateLastReadChangelog(value: String) = viewModelScope.launch {
+        userPrefsRepository.updateLastReadChangelog(value)
     }
 
     /**

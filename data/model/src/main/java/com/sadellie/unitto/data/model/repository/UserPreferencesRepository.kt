@@ -69,6 +69,8 @@ interface UserPreferencesRepository {
 
     suspend fun updateShownUnitGroups(shownUnitGroups: List<UnitGroup>)
 
+    suspend fun updateLastReadChangelog(value: String)
+
     suspend fun updateVibrations(enabled: Boolean)
 
     suspend fun updateMiddleZero(enabled: Boolean)

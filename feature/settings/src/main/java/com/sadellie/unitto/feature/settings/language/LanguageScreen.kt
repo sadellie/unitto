@@ -19,25 +19,16 @@
 package com.sadellie.unitto.feature.settings.language
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Translate
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -48,8 +39,8 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
-import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.openLink
+import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 
 @Composable
 internal fun LanguageRoute(
@@ -83,43 +74,14 @@ private fun LanguageScreen(
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             item("translate") {
-                Box(Modifier.padding(16.dp, 8.dp)) {
-                    Row(
-                        modifier = Modifier
-                            .squashable(
-                                onClick = {
-                                    openLink(mContext, "https://poeditor.com/join/project/T4zjmoq8dx")
-                                },
-                                interactionSource = remember { MutableInteractionSource() },
-                                cornerRadiusRange = 15..50
-                            )
-                            .background(MaterialTheme.colorScheme.secondaryContainer)
-                            .padding(16.dp, 4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Translate,
-                            contentDescription = stringResource(R.string.settings_translate_app),
-                            modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Column(
-                            Modifier
-                                .weight(1f)
-                                .padding(vertical = 8.dp)) {
-                            Text(
-                                text = stringResource(R.string.settings_translate_app),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            )
-                            Text(
-                                text = stringResource(R.string.settings_translate_app_support),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            )
-                        }
-                    }
+                AnnoyingBox(
+                    modifier = Modifier.padding(16.dp, 8.dp).fillMaxWidth(),
+                    imageVector = Icons.Default.Translate,
+                    imageVectorContentDescription = stringResource(R.string.settings_translate_app),
+                    title = stringResource(R.string.settings_translate_app),
+                    support = stringResource(R.string.settings_translate_app_support)
+                ) {
+                    openLink(mContext, "https://poeditor.com/join/project/T4zjmoq8dx")
                 }
             }
 

@@ -67,6 +67,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val generalPrefs: Flow<GeneralPreferences> = data
         .map { preferences ->
             GeneralPreferencesImpl(
+                lastReadChangelog = preferences.getLastReadChangelog(),
                 enableVibrations = preferences.getEnableVibrations(),
             )
         }
@@ -223,6 +224,12 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override suspend fun updateShownUnitGroups(shownUnitGroups: List<UnitGroup>) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.SHOWN_UNIT_GROUPS] = shownUnitGroups.joinToString(",")
+        }
+    }
+
+    override suspend fun updateLastReadChangelog(value: String) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.LAST_READ_CHANGELOG] = value
         }
     }
 

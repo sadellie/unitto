@@ -46,6 +46,7 @@ data class AppPreferencesImpl(
 ) : AppPreferences
 
 data class GeneralPreferencesImpl(
+    override val lastReadChangelog: String,
     override val enableVibrations: Boolean,
 ) : GeneralPreferences
 

@@ -75,6 +75,7 @@ class BackupManagerTest {
                 it[PrefsKeys.STARTING_SCREEN] = fakeUserData.startingScreen
                 it[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] = fakeUserData.enableToolsExperiment
                 it[PrefsKeys.SYSTEM_FONT] = fakeUserData.systemFont
+                it[PrefsKeys.LAST_READ_CHANGELOG] = fakeUserData.lastReadChangelog
                 it[PrefsKeys.ENABLE_VIBRATIONS] = fakeUserData.enableVibrations
                 it[PrefsKeys.MIDDLE_ZERO] = fakeUserData.middleZero
                 it[PrefsKeys.AC_BUTTON] = fakeUserData.acButton

@@ -35,6 +35,7 @@ import com.sadellie.unitto.data.userprefs.getEnableAmoledTheme
 import com.sadellie.unitto.data.userprefs.getEnableDynamicTheme
 import com.sadellie.unitto.data.userprefs.getEnableToolsExperiment
 import com.sadellie.unitto.data.userprefs.getEnableVibrations
+import com.sadellie.unitto.data.userprefs.getLastReadChangelog
 import com.sadellie.unitto.data.userprefs.getLatestLeftSide
 import com.sadellie.unitto.data.userprefs.getLatestRightSide
 import com.sadellie.unitto.data.userprefs.getMiddleZero
@@ -128,6 +129,7 @@ class BackupManager @Inject constructor(
             startingScreen = data.getStartingScreen(),
             enableToolsExperiment = data.getEnableToolsExperiment(),
             systemFont = data.getSystemFont(),
+            lastReadChangelog = data.getLastReadChangelog(),
             enableVibrations = data.getEnableVibrations(),
             middleZero = data.getMiddleZero(),
             acButton = data.getAcButton(),
@@ -160,6 +162,7 @@ class BackupManager @Inject constructor(
             it[PrefsKeys.STARTING_SCREEN] = userData.startingScreen
             it[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] = userData.enableToolsExperiment
             it[PrefsKeys.SYSTEM_FONT] = userData.systemFont
+            it[PrefsKeys.LAST_READ_CHANGELOG] = userData.lastReadChangelog
             it[PrefsKeys.ENABLE_VIBRATIONS] = userData.enableVibrations
             it[PrefsKeys.MIDDLE_ZERO] = userData.middleZero
             it[PrefsKeys.AC_BUTTON] = userData.acButton

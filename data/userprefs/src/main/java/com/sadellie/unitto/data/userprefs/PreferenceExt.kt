@@ -59,6 +59,10 @@ fun Preferences.getSystemFont(): Boolean {
     return this[PrefsKeys.SYSTEM_FONT] ?: false
 }
 
+fun Preferences.getLastReadChangelog(): String {
+    return this[PrefsKeys.LAST_READ_CHANGELOG] ?: ""
+}
+
 fun Preferences.getEnableVibrations(): Boolean {
     return this[PrefsKeys.ENABLE_VIBRATIONS] ?: true
 }

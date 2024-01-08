@@ -25,5 +25,6 @@ internal sealed class SettingsUIState {
         val enableVibrations: Boolean,
         val cacheSize: Int,
         val backupInProgress: Boolean,
+        val showUpdateChangelog: Boolean,
     ) : SettingsUIState()
 }

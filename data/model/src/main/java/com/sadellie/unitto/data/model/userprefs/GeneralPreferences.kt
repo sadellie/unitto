@@ -19,5 +19,6 @@
 package com.sadellie.unitto.data.model.userprefs
 
 interface GeneralPreferences {
+    val lastReadChangelog: String
     val enableVibrations: Boolean
 }
