@@ -21,12 +21,14 @@ package com.sadellie.unitto.core.ui.model
 import android.os.Build
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Accessibility
+import androidx.compose.material.icons.filled.AccessibilityNew
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.outlined.Accessibility
+import androidx.compose.material.icons.outlined.AccessibilityNew
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Schedule
@@ -66,8 +68,8 @@ sealed class DrawerItems(
 
     data object BodyMass : DrawerItems(
         destination = TopLevelDestinations.BodyMass,
-        selectedIcon = Icons.Filled.Accessibility, // temporary
-        defaultIcon = Icons.Outlined.Accessibility // temporary
+        selectedIcon = Icons.Filled.AccessibilityNew,
+        defaultIcon = Icons.Outlined.AccessibilityNew
     )
 
     data object Settings : DrawerItems(
