@@ -110,7 +110,7 @@ fun AddTimeZoneScreen(
         ) { empty ->
             if (empty) {
                 SearchPlaceholder(
-                    onButtonClick = { openLink(mContext, "https://sadellie.github.io/unitto/faq#add-time-zones") },
+                    onButtonClick = { openLink(mContext, "https://sadellie.github.io/unitto/help#add-time-zones") },
                     supportText = stringResource(R.string.time_zone_no_results_support),
                     buttonLabel = stringResource(R.string.time_zone_no_results_button),
                 )
