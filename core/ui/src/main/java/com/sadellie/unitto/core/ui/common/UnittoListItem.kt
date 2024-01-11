@@ -33,13 +33,13 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -126,7 +126,8 @@ fun UnittoListItem(
         .clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = rememberRipple(),
-            onClick = { onSwitchChange(!switchState) }
+            onClick = { onSwitchChange(!switchState) },
+            role = Role.Switch
         ),
     headlineText = headlineText,
     supportingText = supportingText,
