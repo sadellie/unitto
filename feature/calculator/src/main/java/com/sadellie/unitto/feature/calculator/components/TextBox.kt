@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +41,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
@@ -104,7 +104,7 @@ fun TextBox(
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = outputTF,
-                        minRatio = 1f,
+                        minRatio = 0.8f,
                         onCursorChange = { outputTF = outputTF.copy(selection = it) },
                         formatterSymbols = formatterSymbols,
                         textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
@@ -122,7 +122,7 @@ fun TextBox(
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = outputTF,
-                        minRatio = 1f,
+                        minRatio = 0.8f,
                         onCursorChange = { outputTF = outputTF.copy(selection = it) },
                         formatterSymbols = formatterSymbols,
                         textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
