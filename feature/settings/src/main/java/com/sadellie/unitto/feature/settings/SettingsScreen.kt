@@ -18,11 +18,14 @@
 
 package com.sadellie.unitto.feature.settings
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -169,7 +172,7 @@ private fun SettingsScreen(
                     text = { Text(stringResource(R.string.settings_back_up)) }
                 )
                 DropdownMenuItem(
-                    onClick = { showMenu = false; launcher.launch(arrayOf(backupMimeType)) },
+                    onClick = { showMenu = false; launcher.launchPicker() },
                     text = { Text(stringResource(R.string.settings_restore)) }
                 )
             }
@@ -298,6 +301,14 @@ private fun Context.share(uri: Uri) {
     }
 
     startActivity(shareIntent)
+}
+
+private fun ManagedActivityResultLauncher<Array<String>, Uri?>.launchPicker() {
+    try {
+        launch(arrayOf(backupMimeType))
+    } catch (e: ActivityNotFoundException) {
+        Log.e("SettingsScreen", "launchPicker: ActivityNotFoundException")
+    }
 }
 
 private const val backupMimeType = "application/octet-stream"
