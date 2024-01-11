@@ -279,7 +279,11 @@ private fun SettingsScreen(
         }
     }
 
-    AnimatedVisibility(visible = uiState.backupInProgress) {
+    AnimatedVisibility(
+        visible = uiState.backupInProgress,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Scaffold { padding ->
             Box(
                 modifier = Modifier
