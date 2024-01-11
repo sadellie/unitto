@@ -236,7 +236,7 @@ internal class ConverterViewModel @Inject constructor(
 
             filterUnitsRight(
                 query = it.query,
-                unitGroup = it.unitTo.group,
+                unitGroup = it.unitFrom.group,
                 favoritesOnly = it.favorites,
                 sorting = it.sorting,
             )
