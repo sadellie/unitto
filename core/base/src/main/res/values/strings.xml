@@ -10,6 +10,9 @@
     <string name="body_mass_imperial">Imperial</string>
     <string name="body_mass_metric">Metric</string>
     <string name="body_mass_normal">Normal weight</string>
+
+    <!-- Will be a text followed by a number like so: "Normal weight for your height - 60" -->
+    <string name="body_mass_normal_weight">Normal weight for your height</string>
     <string name="body_mass_obese_1">Obese (Class 1)</string>
     <string name="body_mass_obese_2">Obese (Class 2)</string>
     <string name="body_mass_obese_3">Obese (Class 3)</string>

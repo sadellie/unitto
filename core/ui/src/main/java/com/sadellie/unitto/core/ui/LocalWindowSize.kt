@@ -37,7 +37,7 @@ import androidx.window.layout.WindowMetricsCalculator
 
 val LocalWindowSize: ProvidableCompositionLocal<WindowSizeClass> = compositionLocalOf {
     WindowSizeClass.calculateFromSize(
-        size = Size.Unspecified,
+        size = Size.Zero,
         density = defaultDensity
     )
 }

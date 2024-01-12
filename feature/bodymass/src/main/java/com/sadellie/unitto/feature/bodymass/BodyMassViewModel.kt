@@ -24,7 +24,6 @@ import android.os.Build
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.data.common.combine
 import com.sadellie.unitto.data.common.stateIn
@@ -36,7 +35,6 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
-import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,9 +46,7 @@ internal class BodyMassViewModel @Inject constructor(
     private val _height2 = MutableStateFlow(TextFieldValue())
     private val _weight = MutableStateFlow(TextFieldValue())
     private val _result = MutableStateFlow<BigDecimal>(BigDecimal.ZERO)
-    private val cmToMFactor = BigDecimal("10000")
-    private val footToInchFactor = BigDecimal("12")
-    private val metricToImperialFactor = BigDecimal("703")
+    private val _normalWeightRange = MutableStateFlow<Pair<BigDecimal, BigDecimal>>(BigDecimal.ZERO to BigDecimal.ZERO)
 
     val uiState = combine(
         userPreferencesRepository.bodyMassPrefs,
@@ -58,34 +54,40 @@ internal class BodyMassViewModel @Inject constructor(
         _height1,
         _height2,
         _weight,
-        _result
-    ) { userPrefs, isMetric, height1, height2, weight, result ->
+        _result,
+        _normalWeightRange
+    ) { userPrefs, isMetric, height1, height2, weight, result, normalWeightRange ->
         UIState.Ready(
             isMetric = isMetric,
             height1 = height1,
             height2 = height2,
             weight = weight,
             result = result,
+            normalWeightRange = normalWeightRange,
             allowVibration = userPrefs.enableVibrations,
             formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
         )
     }
         .mapLatest { ui ->
-            val newResult: BigDecimal = try {
-                val height1 = BigDecimal(ui.height1.text.ifEmpty { "0" })
-                val weight = BigDecimal(ui.weight.text.ifEmpty { "0" })
+            withContext(Dispatchers.Default) {
+                try {
+                    val height1 = BigDecimal(ui.height1.text.ifEmpty { "0" })
+                    val weight = BigDecimal(ui.weight.text.ifEmpty { "0" })
 
-                if (ui.isMetric) {
-                    calculateMetric(height1, weight)
-                } else {
-                    val height2 = BigDecimal(ui.height2.text.ifEmpty { "0" })
-                    calculateImperial(height1, height2, weight)
+                    if (ui.isMetric) {
+                        _result.update { calculateMetric(height1, weight) }
+                        _normalWeightRange.update { calculateNormalWeightMetric(height1) }
+                    } else {
+                        val height2 = BigDecimal(ui.height2.text.ifEmpty { "0" })
+
+                        _result.update { calculateImperial(height1, height2, weight) }
+                        _normalWeightRange.update { calculateNormalWeightImperial(height1, height2) }
+                    }
+                } catch (e: Exception) {
+                    _result.update { BigDecimal.ZERO }
+                    _normalWeightRange.update { BigDecimal.ZERO to BigDecimal.ZERO }
                 }
-            } catch (e: Exception) {
-                BigDecimal.ZERO
             }
-
-            _result.update { newResult }
 
             ui
         }
@@ -95,29 +97,6 @@ internal class BodyMassViewModel @Inject constructor(
     fun updateHeight2(textFieldValue: TextFieldValue) = _height2.update { textFieldValue }
     fun updateWeight(textFieldValue: TextFieldValue) = _weight.update { textFieldValue }
     fun updateIsMetric(isMetric: Boolean) = _isMetric.update { isMetric }
-
-    private suspend  fun calculateMetric(
-        height: BigDecimal,
-        weight: BigDecimal,
-    ) = withContext(Dispatchers.Default) {
-        return@withContext weight
-            .divide(height.pow(2), MAX_PRECISION, RoundingMode.HALF_EVEN)
-            .multiply(cmToMFactor)
-    }
-
-    private suspend fun calculateImperial(
-        height1: BigDecimal,
-        height2: BigDecimal,
-        weight: BigDecimal
-    ) = withContext(Dispatchers.Default) {
-        val height = height1
-            .multiply(footToInchFactor)
-            .plus(height2)
-
-        return@withContext weight
-            .divide(height.pow(2), MAX_PRECISION, RoundingMode.HALF_EVEN)
-            .multiply(metricToImperialFactor) // Approximate lbs/inch^2 to kg/m^2
-    }
 
     private fun getInitialIsMetric(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return true
