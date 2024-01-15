@@ -114,7 +114,7 @@ fun AssistChip(
             modifier = Modifier.height(AssistChipDefaults.IconSize),
             imageVector = imageVector,
             contentDescription = contentDescription,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
