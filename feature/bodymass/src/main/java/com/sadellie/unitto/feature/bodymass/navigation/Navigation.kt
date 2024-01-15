@@ -20,13 +20,13 @@ package com.sadellie.unitto.feature.bodymass.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.bodymass.BodyMassRoute
 
-private val graph = TopLevelDestinations.BodyMass.graph
-private val start = TopLevelDestinations.BodyMass.start
+private val graph = DrawerItem.BodyMass.graph
+private val start = DrawerItem.BodyMass.start
 
 fun NavGraphBuilder.bodyMassGraph(
     openDrawer: () -> Unit,

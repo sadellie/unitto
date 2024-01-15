@@ -18,126 +18,18 @@
 
 package com.sadellie.unitto.core.base
 
-import android.os.Build
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-
 // Don't touch, users have "..._route" in their settings
-private const val CONVERTER_GRAPH = "converter_route"
-private const val CONVERTER_START = "converter_start"
-
-private const val CALCULATOR_GRAPH = "calculator_route"
-private const val CALCULATOR_START = "calculator_start"
-
-private const val DATE_CALCULATOR_GRAPH = "date_calculator_route"
-private const val DATE_CALCULATOR_START = "date_calculator_start"
-
-private const val TIME_ZONE_GRAPH = "time_zone_route"
-private const val TIME_ZONE_START = "time_zone_start"
-
-private const val BODY_MASS_GRAPH = "body_mass_route"
-private const val BODY_MASS_START = "body_mass_start"
-
-private const val SETTINGS_GRAPH = "settings_route"
-private const val SETTINGS_START = "settings_start"
-
-data class Shortcut(
-    @StringRes val shortcutShortLabel: Int,
-    @StringRes val shortcutLongLabel: Int,
-    @DrawableRes val shortcutDrawable: Int,
-)
-
-sealed class TopLevelDestinations(
-    val graph: String,
-    val start: String = graph,
-    @StringRes val name: Int,
-    val shortcut: Shortcut? = null
-) {
-    data object Converter : TopLevelDestinations(
-        graph = CONVERTER_GRAPH,
-        start = CONVERTER_START,
-        name = R.string.unit_converter_title,
-        shortcut = Shortcut(
-            R.string.unit_converter_title,
-            R.string.unit_converter_title,
-            R.drawable.ic_shortcut_unit_converter
-        )
-    )
-
-    data object Calculator : TopLevelDestinations(
-        graph = CALCULATOR_GRAPH,
-        start = CALCULATOR_START,
-        name = R.string.calculator_title,
-        shortcut = Shortcut(
-            R.string.calculator_title,
-            R.string.calculator_title,
-            R.drawable.ic_shortcut_calculator
-        )
-    )
-
-    data object DateCalculator : TopLevelDestinations(
-        graph = DATE_CALCULATOR_GRAPH,
-        start = DATE_CALCULATOR_START,
-        name = R.string.date_calculator_title,
-        shortcut = Shortcut(
-            R.string.date_calculator_title,
-            R.string.date_calculator_title,
-            R.drawable.ic_shortcut_date_calculator
-        )
-    )
-
-    data object TimeZone : TopLevelDestinations(
-        graph = TIME_ZONE_GRAPH,
-        start = TIME_ZONE_START,
-        name = R.string.time_zone_title,
-        shortcut = Shortcut(
-            R.string.time_zone_title,
-            R.string.time_zone_title,
-            R.drawable.ic_shortcut_time_zone
-        )
-    )
-
-    data object BodyMass : TopLevelDestinations(
-        graph = BODY_MASS_GRAPH,
-        start = BODY_MASS_START,
-        name = R.string.body_mass_title,
-        shortcut = Shortcut(
-            R.string.body_mass_title,
-            R.string.body_mass_title,
-            R.drawable.ic_shortcut_body_mass
-        )
-    )
-
-    data object Settings : TopLevelDestinations(
-        graph = SETTINGS_GRAPH,
-        start = SETTINGS_START,
-        name = R.string.settings_title
-    )
-}
-
-// Shown in settings
-val TOP_LEVEL_DESTINATIONS by lazy {
-    var all = listOf(
-        TopLevelDestinations.Calculator,
-        TopLevelDestinations.Converter,
-        TopLevelDestinations.DateCalculator,
-        TopLevelDestinations.TimeZone,
-        TopLevelDestinations.BodyMass,
-    )
-
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-        all = all - TopLevelDestinations.TimeZone
-    }
-
-    all
-}
-
-// Only routes, not graphs!
-val TOP_LEVEL_START_ROUTES by lazy {
-    listOf(
-        CALCULATOR_START,
-        CONVERTER_START,
-        DATE_CALCULATOR_START,
-        TIME_ZONE_START,
-    )
+object TopLevelDestinations {
+    const val CONVERTER_GRAPH = "converter_route"
+    const val CONVERTER_START = "converter_start"
+    const val CALCULATOR_GRAPH = "calculator_route"
+    const val CALCULATOR_START = "calculator_start"
+    const val DATE_CALCULATOR_GRAPH = "date_calculator_route"
+    const val DATE_CALCULATOR_START = "date_calculator_start"
+    const val TIME_ZONE_GRAPH = "time_zone_route"
+    const val TIME_ZONE_START = "time_zone_start"
+    const val BODY_MASS_GRAPH = "body_mass_route"
+    const val BODY_MASS_START = "body_mass_start"
+    const val SETTINGS_GRAPH = "settings_route"
+    const val SETTINGS_START = "settings_start"
 }

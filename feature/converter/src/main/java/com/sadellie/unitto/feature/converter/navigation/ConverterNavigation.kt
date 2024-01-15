@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.converter.ConverterRoute
@@ -31,8 +31,8 @@ import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.LeftSideRoute
 import com.sadellie.unitto.feature.converter.RightSideRoute
 
-private val graph = TopLevelDestinations.Converter.graph
-private val start = TopLevelDestinations.Converter.start
+private val graph = DrawerItem.Converter.graph
+private val start = DrawerItem.Converter.start
 private const val LEFT = "left"
 private const val RIGHT = "right"
 

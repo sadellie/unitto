@@ -23,61 +23,63 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import com.sadellie.unitto.core.ui.model.DrawerItem
+import com.sadellie.unitto.core.ui.model.Shortcut
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-// I think it makes sense to run in coroutine
+/**
+ * Tries to push a dynamic shortcut. Does nothing if [DrawerItem.shortcut] is `null`
+ *
+ * @param drawerItem [DrawerItem]
+ */
 suspend fun Context.pushDynamicShortcut(
-    route: String,
-    @StringRes shortLabel: Int,
-    @StringRes longLabel: Int,
-    @DrawableRes drawable: Int,
+    drawerItem: DrawerItem,
 ) = withContext(Dispatchers.IO) {
-    // Low chance that we WILL push the shortcut
-    if ((0..10).random() != 0) return@withContext
-
+    val shortcut = drawerItem.shortcut ?: return@withContext
+    // Resource intensive method!
     val context = this@pushDynamicShortcut
 
-    val shortcut = shortcutInfoCompat(
+    val shortcutCompat = shortcutInfoCompat(
         context = context,
-        route = route,
-        shortLabel = shortLabel,
-        longLabel = longLabel,
-        drawable = drawable
+        route = drawerItem.graph,
+        shortcut = shortcut
     )
 
     kotlin.runCatching {
-        ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
+        ShortcutManagerCompat.pushDynamicShortcut(context, shortcutCompat)
     }
 }
 
+/**
+ * Tries to pin shortcut. Does nothing if [DrawerItem.shortcut] is `null`
+ *
+ * @param drawerItem [DrawerItem]
+ */
+@RequiresApi(Build.VERSION_CODES.N_MR1)
 fun Context.addShortcut(
-    route: String,
-    @StringRes shortLabel: Int,
-    @StringRes longLabel: Int,
-    @DrawableRes drawable: Int,
+    drawerItem: DrawerItem,
 ) {
+    val shortcut = drawerItem.shortcut ?: return
     val context = this@addShortcut
 
-    val shortcut = shortcutInfoCompat(
+    val shortcutCompat = shortcutInfoCompat(
         context = context,
-        route = route,
-        shortLabel = shortLabel,
-        longLabel = longLabel,
-        drawable = drawable
+        route = drawerItem.graph,
+        shortcut = shortcut
     )
 
-    val shortCutIntent = ShortcutManagerCompat.createShortcutResultIntent(context, shortcut)
+    val shortCutIntent = ShortcutManagerCompat.createShortcutResultIntent(context, shortcutCompat)
 
     try {
         ShortcutManagerCompat.requestPinShortcut(
             context,
-            shortcut,
+            shortcutCompat,
             PendingIntent.getBroadcast(context, 0, shortCutIntent, FLAG_IMMUTABLE).intentSender
         )
     } catch (e: Exception) {
@@ -88,14 +90,12 @@ fun Context.addShortcut(
 private fun Context.shortcutInfoCompat(
     context: Context,
     route: String,
-    shortLabel: Int,
-    longLabel: Int,
-    drawable: Int,
+    shortcut: Shortcut,
 ): ShortcutInfoCompat {
     return ShortcutInfoCompat.Builder(context, route)
-        .setShortLabel(getString(shortLabel))
-        .setLongLabel(getString(longLabel))
-        .setIcon(IconCompat.createWithResource(context, drawable))
+        .setShortLabel(getString(shortcut.shortcutShortLabel))
+        .setLongLabel(getString(shortcut.shortcutLongLabel))
+        .setIcon(IconCompat.createWithResource(context, shortcut.shortcutDrawable))
         .setIntent(
             Intent(
                 Intent.ACTION_VIEW,

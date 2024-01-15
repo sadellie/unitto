@@ -22,7 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.core.ui.unittoStackedComposable
 import com.sadellie.unitto.feature.settings.SettingsRoute
@@ -37,8 +37,8 @@ import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
 import io.github.sadellie.themmo.ThemmoController
 
-private val graph = TopLevelDestinations.Settings.graph
-private val start = TopLevelDestinations.Settings.start
+private val graph = DrawerItem.Settings.graph
+private val start = DrawerItem.Settings.start
 internal const val displayRoute = "display_route"
 internal const val languageRoute = "language_route"
 internal const val startingScreenRoute = "starting_screen_route"
@@ -50,7 +50,7 @@ internal const val calculatorSettingsRoute = "calculator_settings_route"
 internal const val converterSettingsRoute = "converter_settings_route"
 
 fun NavController.navigateToSettings() {
-    navigate(TopLevelDestinations.Settings.start)
+    navigate(DrawerItem.Settings.start)
 }
 
 fun NavController.navigateToUnitGroups() {

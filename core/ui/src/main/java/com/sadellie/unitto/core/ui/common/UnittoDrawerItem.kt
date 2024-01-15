@@ -25,15 +25,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.model.DrawerItem
 
 @Composable
 internal fun UnittoDrawerItem(
     modifier: Modifier = Modifier,
-    destination: TopLevelDestinations,
+    destination: DrawerItem,
     icon: ImageVector,
     selected: Boolean,
-    onClick: (TopLevelDestinations) -> Unit
+    onClick: (DrawerItem) -> Unit
 ) {
     NavigationDrawerItem(
         modifier = modifier,

@@ -25,8 +25,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.timezone.AddTimeZoneRoute
@@ -34,8 +34,8 @@ import com.sadellie.unitto.feature.timezone.TimeZoneRoute
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-private val graph = TopLevelDestinations.TimeZone.graph
-private val start = TopLevelDestinations.TimeZone.start
+private val graph = DrawerItem.TimeZones.graph
+private val start = DrawerItem.TimeZones.start
 private const val ADD_TIME_ZONE_ROUTE = "ADD_TIME_ZONE_ROUTE"
 private const val USER_TIME_ARG = "USER_TIME_ARG"
 

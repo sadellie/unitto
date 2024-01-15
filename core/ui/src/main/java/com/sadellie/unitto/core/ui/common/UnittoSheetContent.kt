@@ -39,18 +39,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowHeightSizeClass
-import com.sadellie.unitto.core.ui.model.DrawerItems
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import kotlinx.coroutines.delay
 
 @Suppress("UnusedReceiverParameter")
 @Composable
 internal fun ColumnScope.SheetContent(
-    tabs: List<DrawerItems>,
+    tabs: List<DrawerItem>,
     currentDestination: String?,
-    onItemClick: (TopLevelDestinations) -> Unit,
+    onItemClick: (DrawerItem) -> Unit,
 ) {
     var showHello by remember { mutableStateOf(false) }
     val interactionSource = remember {
@@ -81,10 +80,10 @@ internal fun ColumnScope.SheetContent(
     }
 
     tabs.forEach { drawerItem ->
-        val selected = drawerItem.destination.start == currentDestination
+        val selected = drawerItem.start == currentDestination
         UnittoDrawerItem(
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-            destination = drawerItem.destination,
+            destination = drawerItem,
             icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
             selected = selected,
             onClick = onItemClick
@@ -97,8 +96,8 @@ internal fun ColumnScope.SheetContent(
 
         UnittoDrawerItem(
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-            destination = DrawerItems.Settings.destination,
-            icon = DrawerItems.Settings.defaultIcon,
+            destination = DrawerItem.Settings,
+            icon = DrawerItem.Settings.defaultIcon,
             selected = false,
             onClick = onItemClick
         )
@@ -111,11 +110,11 @@ private fun PreviewUnittoDrawerSheet() {
     Column {
         SheetContent(
             tabs = listOf(
-                DrawerItems.Calculator,
-                DrawerItems.Calculator,
-                DrawerItems.Calculator,
+                DrawerItem.Calculator,
+                DrawerItem.Calculator,
+                DrawerItem.Calculator,
             ),
-            currentDestination = DrawerItems.Calculator.destination.start,
+            currentDestination = DrawerItem.Calculator.start,
             onItemClick = {}
         )
     }

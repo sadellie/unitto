@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.settings.startingscreen
 import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AppShortcut
 import androidx.compose.material3.Icon
@@ -35,14 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.Shortcut
-import com.sadellie.unitto.core.base.TOP_LEVEL_DESTINATIONS
-import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.addShortcut
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.model.DrawerItem
 
 @Composable
 internal fun StartingScreenRoute(
@@ -74,40 +73,28 @@ private fun StartingScreenScreen(
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
+            items(DrawerItem.main, { it.graph }) { destination ->
+                UnittoListItem(
+                    modifier = Modifier.clickable { updateStartingScreen(destination.graph) },
+                    headlineContent = {
+                        Text(stringResource(destination.name))
+                    },
+                    leadingContent = {
+                        RadioButton(
+                            selected = destination.graph == startingScreen,
+                            onClick = { updateStartingScreen(destination.graph) }
+                        )
+                    },
+                    trailingContent = trail@{
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return@trail
 
-            TOP_LEVEL_DESTINATIONS.forEach { destination ->
-                item {
-                    UnittoListItem(
-                        modifier = Modifier.clickable { updateStartingScreen(destination.graph) },
-                        headlineContent = {
-                            Text(stringResource(destination.name))
-                        },
-                        leadingContent = {
-                            RadioButton(
-                                selected = destination.graph == startingScreen,
-                                onClick = { updateStartingScreen(destination.graph) }
-                            )
-                        },
-                        trailingContent = {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                                IconButton(
-                                    onClick = {
-                                        destination.shortcut?.let { shortcut: Shortcut ->
-                                            mContext.addShortcut(
-                                                destination.graph,
-                                                shortcut.shortcutShortLabel,
-                                                shortcut.shortcutLongLabel,
-                                                shortcut.shortcutDrawable
-                                            )
-                                        }
-                                    }
-                                ) {
-                                    Icon(Icons.Default.AppShortcut, null)
-                                }
-                            }
+                        IconButton(
+                            onClick = { mContext.addShortcut(destination) }
+                        ) {
+                            Icon(Icons.Default.AppShortcut, null)
                         }
-                    )
-                }
+                    }
+                )
             }
         }
     }
@@ -117,7 +104,7 @@ private fun StartingScreenScreen(
 @Composable
 private fun StartingScreenPreview() {
     StartingScreenScreen(
-        startingScreen = TopLevelDestinations.Converter.graph,
+        startingScreen = DrawerItem.Converter.graph,
         updateStartingScreen = {},
         navigateUp = {}
     )

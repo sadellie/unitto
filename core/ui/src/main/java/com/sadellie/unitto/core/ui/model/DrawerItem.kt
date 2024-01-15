@@ -19,15 +19,14 @@
 package com.sadellie.unitto.core.ui.model
 
 import android.os.Build
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material.icons.filled.AccessibilityNew
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material.icons.outlined.Accessibility
 import androidx.compose.material.icons.outlined.AccessibilityNew
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Event
@@ -35,60 +34,102 @@ import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.TopLevelDestinations
 
-sealed class DrawerItems(
-    val destination: TopLevelDestinations,
+sealed class DrawerItem(
+    val graph: String,
+    val start: String,
+    @StringRes val name: Int,
+    val shortcut: Shortcut?,
     val selectedIcon: ImageVector,
     val defaultIcon: ImageVector
 ) {
-    data object Calculator : DrawerItems(
-        destination = TopLevelDestinations.Calculator,
+    data object Calculator : DrawerItem(
+        graph = TopLevelDestinations.CALCULATOR_GRAPH,
+        start = TopLevelDestinations.CALCULATOR_START,
+        name = R.string.calculator_title,
+        shortcut = Shortcut(
+            R.string.calculator_title,
+            R.string.calculator_title,
+            R.drawable.ic_shortcut_calculator
+        ),
         selectedIcon = Icons.Filled.Calculate,
         defaultIcon = Icons.Outlined.Calculate
     )
 
-    data object Converter : DrawerItems(
-        destination = TopLevelDestinations.Converter,
+    data object Converter : DrawerItem(
+        graph = TopLevelDestinations.CONVERTER_GRAPH,
+        start = TopLevelDestinations.CONVERTER_START,
+        name = R.string.unit_converter_title,
+        shortcut = Shortcut(
+            R.string.unit_converter_title,
+            R.string.unit_converter_title,
+            R.drawable.ic_shortcut_unit_converter
+        ),
         selectedIcon = Icons.Filled.SwapHoriz,
         defaultIcon = Icons.Outlined.SwapHoriz
     )
 
-    data object DateDifference : DrawerItems(
-        destination = TopLevelDestinations.DateCalculator,
+    data object DateCalculator : DrawerItem(
+        graph = TopLevelDestinations.DATE_CALCULATOR_GRAPH,
+        start = TopLevelDestinations.DATE_CALCULATOR_START,
+        name = R.string.date_calculator_title,
+        shortcut = Shortcut(
+            R.string.date_calculator_title,
+            R.string.date_calculator_title,
+            R.drawable.ic_shortcut_date_calculator
+        ),
         selectedIcon = Icons.Filled.Event,
         defaultIcon = Icons.Outlined.Event
     )
 
-    data object TimeZones : DrawerItems(
-        destination = TopLevelDestinations.TimeZone,
+    data object TimeZones : DrawerItem(
+        graph = TopLevelDestinations.TIME_ZONE_GRAPH,
+        start = TopLevelDestinations.TIME_ZONE_START,
+        name = R.string.time_zone_title,
+        shortcut = Shortcut(
+            R.string.time_zone_title,
+            R.string.time_zone_title,
+            R.drawable.ic_shortcut_time_zone
+        ),
         selectedIcon = Icons.Filled.Schedule,
         defaultIcon = Icons.Outlined.Schedule
     )
 
-    data object BodyMass : DrawerItems(
-        destination = TopLevelDestinations.BodyMass,
+    data object BodyMass : DrawerItem(
+        graph = TopLevelDestinations.BODY_MASS_GRAPH,
+        start = TopLevelDestinations.BODY_MASS_START,
+        name = R.string.body_mass_title,
+        shortcut = Shortcut(
+            R.string.body_mass_title,
+            R.string.body_mass_title,
+            R.drawable.ic_shortcut_body_mass
+        ),
         selectedIcon = Icons.Filled.AccessibilityNew,
         defaultIcon = Icons.Outlined.AccessibilityNew
     )
 
-    data object Settings : DrawerItems(
-        destination = TopLevelDestinations.Settings,
+    data object Settings : DrawerItem(
+        graph = TopLevelDestinations.SETTINGS_GRAPH,
+        start = TopLevelDestinations.SETTINGS_START,
+        name = R.string.settings_title,
+        shortcut = null,
         selectedIcon = Icons.Filled.Settings,
         defaultIcon = Icons.Outlined.Settings
     )
 
     companion object {
         /**
-         * Excluding Settings tab since it appears only for expanded layout
+         * Except for [Settings]
          */
-        val MAIN by lazy {
+        val main by lazy {
             var all = listOf(
                 Calculator,
                 Converter,
-                DateDifference,
+                DateCalculator,
                 TimeZones,
-                BodyMass
+                BodyMass,
             )
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -97,5 +138,8 @@ sealed class DrawerItems(
 
             all
         }
+
+        // Only routes, not graphs!
+        val startRoutes by lazy { main.map { it.start } }
     }
 }

@@ -20,14 +20,14 @@ package com.sadellie.unitto.feature.calculator.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.base.TopLevelDestinations
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
 import com.sadellie.unitto.feature.calculator.RPNCalculatorRoute
 
-private val graph = TopLevelDestinations.Calculator.graph
-private val start = TopLevelDestinations.Calculator.start
+private val graph = DrawerItem.Calculator.graph
+private val start = DrawerItem.Calculator.start
 
 fun NavGraphBuilder.calculatorGraph(
     rpnMode: Boolean,

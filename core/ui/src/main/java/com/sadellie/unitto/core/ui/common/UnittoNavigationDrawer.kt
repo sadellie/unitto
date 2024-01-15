@@ -58,10 +58,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowWidthSizeClass
-import com.sadellie.unitto.core.ui.model.DrawerItems
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -112,9 +111,9 @@ fun UnittoNavigationDrawer(
     modifier: Modifier,
     gesturesEnabled: Boolean,
     state: DrawerState = rememberDrawerState(),
-    tabs: List<DrawerItems>,
+    tabs: List<DrawerItem>,
     currentDestination: String?,
-    onItemClick: (TopLevelDestinations) -> Unit,
+    onItemClick: (DrawerItem) -> Unit,
     content: @Composable () -> Unit,
 ) {
     if (LocalWindowSize.current.widthSizeClass == WindowWidthSizeClass.Expanded) {
@@ -280,8 +279,8 @@ private fun PreviewUnittoModalNavigationDrawerClose() {
         modifier = Modifier,
         state = drawerState,
         gesturesEnabled = true,
-        tabs = DrawerItems.MAIN,
-        currentDestination = DrawerItems.Calculator.destination.start,
+        tabs = DrawerItem.main,
+        currentDestination = DrawerItem.Calculator.start,
         onItemClick = {},
         content = {
             Column {

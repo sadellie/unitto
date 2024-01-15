@@ -48,7 +48,7 @@ fun Preferences.getMonetMode(): String {
 }
 
 fun Preferences.getStartingScreen(): String {
-    return this[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.Calculator.graph
+    return this[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.CALCULATOR_GRAPH
 }
 
 fun Preferences.getEnableToolsExperiment(): Boolean {

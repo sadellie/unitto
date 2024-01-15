@@ -35,11 +35,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.sadellie.unitto.core.base.Shortcut
-import com.sadellie.unitto.core.base.TOP_LEVEL_START_ROUTES
 import com.sadellie.unitto.core.ui.common.UnittoNavigationDrawer
 import com.sadellie.unitto.core.ui.common.rememberDrawerState
-import com.sadellie.unitto.core.ui.model.DrawerItems
+import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.pushDynamicShortcut
 import com.sadellie.unitto.core.ui.theme.DarkThemeColors
 import com.sadellie.unitto.core.ui.theme.LightThemeColors
@@ -67,7 +65,7 @@ internal fun UnittoApp(prefs: AppPreferences?) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val gesturesEnabled: Boolean by remember(navBackStackEntry?.destination) {
         derivedStateOf {
-            TOP_LEVEL_START_ROUTES.contains(navBackStackEntry?.destination?.route)
+            DrawerItem.startRoutes.contains(navBackStackEntry?.destination?.route)
         }
     }
 
@@ -96,7 +94,7 @@ internal fun UnittoApp(prefs: AppPreferences?) {
                 modifier = Modifier,
                 state = drawerState,
                 gesturesEnabled = gesturesEnabled,
-                tabs = DrawerItems.MAIN,
+                tabs = DrawerItem.main,
                 currentDestination = navBackStackEntry?.destination?.route,
                 onItemClick = { destination ->
                     drawerScope.launch { drawerState.close() }
@@ -109,16 +107,7 @@ internal fun UnittoApp(prefs: AppPreferences?) {
                         restoreState = true
                     }
 
-                    shortcutsScope.launch {
-                        destination.shortcut?.let { shortcut: Shortcut ->
-                            mContext.pushDynamicShortcut(
-                                destination.graph,
-                                shortcut.shortcutShortLabel,
-                                shortcut.shortcutLongLabel,
-                                shortcut.shortcutDrawable
-                            )
-                        }
-                    }
+                    shortcutsScope.launch { mContext.pushDynamicShortcut(destination) }
                 },
                 content = {
                     UnittoNavigation(
