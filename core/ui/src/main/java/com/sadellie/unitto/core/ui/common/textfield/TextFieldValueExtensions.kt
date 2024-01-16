@@ -111,13 +111,7 @@ fun TextFieldValue.deleteTokens(): TextFieldValue {
         // We don't have anything selected (cursor in one position)
         // like this 1234|56 => after deleting will be like this 123|56
         // Cursor moved one symbol left
-        selection.start -> {
-            // We default to 1 here. It means that cursor is not placed after illegal token
-            // Just a number or a binary operator or something else, can delete by one symbol
-            val symbolsToDelete = text.tokenLengthAhead(selection.end)
-
-            selection.start - symbolsToDelete
-        }
+        selection.start -> selection.start - text.tokenLengthAhead(selection.end)
         // We have multiple symbols selected
         // like this 123[45]6 => after deleting will be like this 123|6
         // Cursor will be placed where selection start was
@@ -149,6 +143,7 @@ fun SavedStateHandle.getTextField(key: String): TextFieldValue =
  */
 private fun TextFieldValue.deleteAheadAndAdd(tokens: String): TextFieldValue {
     var newValue = this
+    // For cases like: "12+[34]" and "*" symbol is being added. Will delete selected tokens
     if (!selection.collapsed) newValue = this.deleteTokens()
     return newValue
         .deleteTokens()

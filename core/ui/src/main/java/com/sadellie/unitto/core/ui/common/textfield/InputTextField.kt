@@ -18,19 +18,41 @@
 
 package com.sadellie.unitto.core.ui.common.textfield
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.platform.TextToolbar
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.core.ui.common.textfield.autosize.AutoSizeTextField
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import com.sadellie.unitto.core.ui.common.autosize.AutoSizeTextStyleBox
+import com.sadellie.unitto.core.ui.common.textfield.texttoolbar.UnittoTextToolbar
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 
 @Composable
@@ -141,29 +163,95 @@ fun UnformattedTextField(
 }
 
 /**
- * Copy value to clipboard without grouping symbols.
+ * Based on: https://gist.github.com/inidamleader/b594d35362ebcf3cedf81055df519300
  *
- * Example:
- * "123.456,789" will be copied as "123456,789"
- *
- * @param value Formatted value that has grouping symbols.
+ * @param placeholder Placeholder text, shown when [value] is empty.
+ * @param textToolbar [TextToolbar] with modified actions in menu.
+ * @param alignment The alignment of the text within its container.
+ * @see [BasicTextField]
+ * @see [AutoSizeTextStyleBox]
  */
-fun ClipboardManager.copyWithoutGrouping(
+@Composable
+private fun AutoSizeTextField(
+    modifier: Modifier = Modifier,
     value: TextFieldValue,
-    formatterSymbols: FormatterSymbols
-) = this.setText(
-    AnnotatedString(
-        value.annotatedString
-            .subSequence(value.selection)
-            .text
-            .replace(formatterSymbols.grouping, "")
-    )
-)
+    onValueChange: (TextFieldValue) -> Unit,
+    placeholder: String? = null,
+    textToolbar: TextToolbar = LocalTextToolbar.current,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    textStyle: TextStyle = TextStyle.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    singleLine: Boolean = true,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines: Int = 1,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    cursorBrush: Brush = SolidColor(Color.Black),
+    maxTextSize: TextUnit = TextUnit.Unspecified,
+    minRatio: Float = 1f,
+    alignment: Alignment = Alignment.BottomEnd,
+) = AutoSizeTextStyleBox(
+    modifier = modifier,
+    text = visualTransformation.filter(value.annotatedString).text,
+    maxTextSize = maxTextSize,
+    maxLines = maxLines,
+    minLines = minLines,
+    softWrap = false,
+    style = textStyle,
+    minRatio = minRatio,
+    alignment = alignment
+) {
+    CompositionLocalProvider(
+        LocalTextInputService provides null,
+        LocalTextToolbar provides textToolbar
+    ) {
+        val currentTextToolbar = LocalTextToolbar.current
+        val style = LocalTextStyle.current
+        val focusRequester = remember { FocusRequester() }
 
-private fun ClipboardManager.copy(value: TextFieldValue) = this.setText(
-    AnnotatedString(
-        value.annotatedString
-            .subSequence(value.selection)
-            .text
-    )
-)
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = {
+                        currentTextToolbar.hide()
+                        focusRequester.requestFocus()
+                        onValueChange(value.copy(selection = TextRange.Zero))
+                        currentTextToolbar.showMenu(Rect(Offset.Zero, 0f))
+                    }
+                ),
+            enabled = enabled,
+            readOnly = readOnly,
+            textStyle = style,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            minLines = minLines,
+            visualTransformation = visualTransformation,
+            onTextLayout = onTextLayout,
+            interactionSource = interactionSource,
+            cursorBrush = cursorBrush,
+            decorationBox = { innerTextField ->
+                if (value.text.isEmpty() and !placeholder.isNullOrEmpty()) {
+                    Text(
+                        text = placeholder!!,
+                        style = style.copy(
+                            textAlign = TextAlign.End,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                        )
+                    )
+                }
+                innerTextField()
+            },
+        )
+    }
+}

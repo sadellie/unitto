@@ -16,14 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.ui.common.textfield.autosize
+package com.sadellie.unitto.core.ui.common.autosize
 
-import androidx.compose.runtime.Immutable
-import kotlin.reflect.KProperty
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.isSpecified
 
-@Immutable
-internal data class ImmutableWrapper<T>(val value: T)
-
-internal fun <T> T.toImmutableWrapper() = ImmutableWrapper(this)
-
-internal operator fun <T> ImmutableWrapper<T>.getValue(thisRef: Any?, property: KProperty<*>) = value
+internal fun Density.roundToPx(sp: TextUnit): Int = sp.roundToPx()
+internal fun Density.toSp(px: Int): TextUnit = px.toSp()
+internal fun Density.toIntSize(dpSize: DpSize): IntSize =
+    if (dpSize.isSpecified) IntSize(dpSize.width.roundToPx(), dpSize.height.roundToPx())
+    else IntSize.Zero

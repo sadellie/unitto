@@ -45,6 +45,8 @@ fun String.tokenLengthAhead(pos: Int): Int {
         if (pos.isAfterToken(this, it)) return it.length
     }
 
+    // We default to 1 here. It means that cursor is not placed after illegal token. Just a number
+    // or a binary operator or something else, can delete by one symbol.
     return 1
 }
 

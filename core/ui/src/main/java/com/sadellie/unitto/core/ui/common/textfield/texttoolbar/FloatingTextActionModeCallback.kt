@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.ui.common.textfield
+package com.sadellie.unitto.core.ui.common.textfield.texttoolbar
 
+import android.os.Build
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.annotation.RequiresApi
 
-internal class UnittoPrimaryTextActionModeCallback(
+@RequiresApi(Build.VERSION_CODES.M)
+internal class FloatingTextActionModeCallback(
     private val callback: UnittoActionModeCallback
-) : ActionMode.Callback {
+) : ActionMode.Callback2() {
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         return callback.onActionItemClicked(mode, item)
     }
@@ -39,5 +43,19 @@ internal class UnittoPrimaryTextActionModeCallback(
 
     override fun onDestroyActionMode(mode: ActionMode?) {
         callback.onDestroyActionMode()
+    }
+
+    override fun onGetContentRect(
+        mode: ActionMode?,
+        view: View?,
+        outRect: android.graphics.Rect?
+    ) {
+        val rect = callback.rect
+        outRect?.set(
+            rect.left.toInt(),
+            rect.top.toInt(),
+            rect.right.toInt(),
+            rect.bottom.toInt()
+        )
     }
 }
