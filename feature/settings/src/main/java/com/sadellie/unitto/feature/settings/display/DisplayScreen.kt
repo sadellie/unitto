@@ -67,10 +67,10 @@ import com.sadellie.unitto.core.ui.common.key.UnittoIcons
 import com.sadellie.unitto.core.ui.common.key.unittoicons.Clear
 import com.sadellie.unitto.feature.settings.components.ColorSelector
 import com.sadellie.unitto.feature.settings.components.MonetModeSelector
-import io.github.sadellie.themmo.MonetMode
-import io.github.sadellie.themmo.ThemingMode
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
+import io.github.sadellie.themmo.core.MonetMode
+import io.github.sadellie.themmo.core.ThemingMode
 
 @Composable
 internal fun DisplayRoute(

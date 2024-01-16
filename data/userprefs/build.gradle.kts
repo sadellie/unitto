@@ -26,7 +26,7 @@ android.namespace = "com.sadellie.unitto.data.userprefs"
 
 dependencies {
     implementation(libs.androidx.datastore.datastore.preferences)
-    implementation(libs.com.github.sadellie.themmo)
+    implementation(libs.com.github.sadellie.themmo.core)
 
     implementation(project(":core:base"))
     implementation(project(":data:model"))

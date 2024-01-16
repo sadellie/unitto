@@ -18,12 +18,15 @@
 
 package com.sadellie.unitto.data.model.userprefs
 
+import io.github.sadellie.themmo.core.MonetMode
+import io.github.sadellie.themmo.core.ThemingMode
+
 interface AppPreferences {
-    val themingMode: String
+    val themingMode: ThemingMode
     val enableDynamicTheme: Boolean
     val enableAmoledTheme: Boolean
     val customColor: Long
-    val monetMode: String
+    val monetMode: MonetMode
     val startingScreen: String
     val enableToolsExperiment: Boolean
     val systemFont: Boolean

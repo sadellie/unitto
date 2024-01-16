@@ -32,6 +32,8 @@ import com.sadellie.unitto.data.model.userprefs.FormattingPreferences
 import com.sadellie.unitto.data.model.userprefs.GeneralPreferences
 import com.sadellie.unitto.data.model.userprefs.StartingScreenPreferences
 import com.sadellie.unitto.data.model.userprefs.UnitGroupsPreferences
+import io.github.sadellie.themmo.core.MonetMode
+import io.github.sadellie.themmo.core.ThemingMode
 import kotlinx.coroutines.flow.Flow
 
 interface UserPreferencesRepository {
@@ -55,7 +57,7 @@ interface UserPreferencesRepository {
 
     suspend fun updateLatestPairOfUnits(unitFrom: AbstractUnit, unitTo: AbstractUnit)
 
-    suspend fun updateThemingMode(themingMode: String)
+    suspend fun updateThemingMode(themingMode: ThemingMode)
 
     suspend fun updateDynamicTheme(enabled: Boolean)
 
@@ -63,7 +65,7 @@ interface UserPreferencesRepository {
 
     suspend fun updateCustomColor(color: Long)
 
-    suspend fun updateMonetMode(monetMode: String)
+    suspend fun updateMonetMode(monetMode: MonetMode)
 
     suspend fun updateStartingScreen(startingScreen: String)
 

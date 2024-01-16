@@ -24,6 +24,8 @@ plugins {
 android.namespace = "com.sadellie.unitto.data.model"
 
 dependencies {
+    implementation(libs.com.github.sadellie.themmo.core)
+
     implementation(project(":core:base"))
     implementation(project(":data:common"))
 }

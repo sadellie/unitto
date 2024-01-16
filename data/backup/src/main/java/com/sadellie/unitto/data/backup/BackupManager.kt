@@ -121,11 +121,11 @@ class BackupManager @Inject constructor(
         val timeZoneTableData = timeZoneDao.getFavorites().first()
 
         return UserData(
-            themingMode = data.getThemingMode(),
+            themingMode = data.getThemingMode().name,
             enableDynamicTheme = data.getEnableDynamicTheme(),
             enableAmoledTheme = data.getEnableAmoledTheme(),
             customColor = data.getCustomColor(),
-            monetMode = data.getMonetMode(),
+            monetMode = data.getMonetMode().name,
             startingScreen = data.getStartingScreen(),
             enableToolsExperiment = data.getEnableToolsExperiment(),
             systemFont = data.getSystemFont(),

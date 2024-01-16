@@ -37,6 +37,8 @@ import com.sadellie.unitto.data.model.userprefs.FormattingPreferences
 import com.sadellie.unitto.data.model.userprefs.GeneralPreferences
 import com.sadellie.unitto.data.model.userprefs.StartingScreenPreferences
 import com.sadellie.unitto.data.model.userprefs.UnitGroupsPreferences
+import io.github.sadellie.themmo.core.MonetMode
+import io.github.sadellie.themmo.core.ThemingMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -185,9 +187,9 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateThemingMode(themingMode: String) {
+    override suspend fun updateThemingMode(themingMode: ThemingMode) {
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.THEMING_MODE] = themingMode
+            preferences[PrefsKeys.THEMING_MODE] = themingMode.name
         }
     }
 
@@ -209,9 +211,9 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateMonetMode(monetMode: String) {
+    override suspend fun updateMonetMode(monetMode: MonetMode) {
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.MONET_MODE] = monetMode
+            preferences[PrefsKeys.MONET_MODE] = monetMode.name
         }
     }
 

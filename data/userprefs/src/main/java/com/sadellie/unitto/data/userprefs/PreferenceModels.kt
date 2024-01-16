@@ -32,13 +32,15 @@ import com.sadellie.unitto.data.model.userprefs.FormattingPreferences
 import com.sadellie.unitto.data.model.userprefs.GeneralPreferences
 import com.sadellie.unitto.data.model.userprefs.StartingScreenPreferences
 import com.sadellie.unitto.data.model.userprefs.UnitGroupsPreferences
+import io.github.sadellie.themmo.core.MonetMode
+import io.github.sadellie.themmo.core.ThemingMode
 
 data class AppPreferencesImpl(
-    override val themingMode: String,
+    override val themingMode: ThemingMode,
     override val enableDynamicTheme: Boolean,
     override val enableAmoledTheme: Boolean,
     override val customColor: Long,
-    override val monetMode: String,
+    override val monetMode: MonetMode,
     override val startingScreen: String,
     override val enableToolsExperiment: Boolean,
     override val systemFont: Boolean,

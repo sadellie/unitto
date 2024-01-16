@@ -24,8 +24,8 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.sadellie.themmo.MonetMode
-import io.github.sadellie.themmo.ThemingMode
+import io.github.sadellie.themmo.core.MonetMode
+import io.github.sadellie.themmo.core.ThemingMode
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class DisplayViewModel @Inject constructor(
 
     fun updateThemingMode(themingMode: ThemingMode) {
         viewModelScope.launch {
-            userPrefsRepository.updateThemingMode(themingMode.name)
+            userPrefsRepository.updateThemingMode(themingMode)
         }
     }
 
@@ -63,7 +63,7 @@ class DisplayViewModel @Inject constructor(
 
     fun updateMonetMode(monetMode: MonetMode) {
         viewModelScope.launch {
-            userPrefsRepository.updateMonetMode(monetMode.name)
+            userPrefsRepository.updateMonetMode(monetMode)
         }
     }
 

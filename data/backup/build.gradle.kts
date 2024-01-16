@@ -28,6 +28,7 @@ android.namespace = "com.sadellie.unitto.data.backup"
 dependencies {
     implementation(libs.androidx.datastore.datastore.preferences)
     implementation(libs.com.squareup.moshi.moshi.kotlin)
+    implementation(libs.com.github.sadellie.themmo.core)
     ksp(libs.com.squareup.moshi.moshi.kotlin.codegen)
 
     implementation(project(":data:database"))

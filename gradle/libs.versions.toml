@@ -24,7 +24,7 @@ androidxUiAutomator = "2.2.0"
 androidxWindowWindow = "1.2.0"
 androidxWorkWorkRuntimeKtx = "2.9.0"
 comAndroidToolsDesugarJdkLibs = "2.0.4"
-comGithubSadellieThemmo = "1.2.0"
+comGithubSadellieThemmo = "1.3.0"
 comGoogleAccompanistAccompanistSystemuicontroller = "0.30.1"
 comGoogleDagger = "2.48.1"
 comSquareupMoshiMoshiKotlin = "1.15.0"
@@ -69,7 +69,8 @@ androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiaut
 androidx-window-window = { group = "androidx.window", name = "window", version.ref = "androidxWindowWindow" }
 androidx-work-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWorkWorkRuntimeKtx" }
 com-android-tools-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "comAndroidToolsDesugarJdkLibs" }
-com-github-sadellie-themmo = { group = "com.github.sadellie", name = "themmo", version.ref = "comGithubSadellieThemmo" }
+com-github-sadellie-themmo = { group = "com.github.sadellie.themmo", name = "themmo", version.ref = "comGithubSadellieThemmo" }
+com-github-sadellie-themmo-core = { group = "com.github.sadellie.themmo", name = "themmo-core", version.ref = "comGithubSadellieThemmo" }
 com-google-accompanist-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "comGoogleAccompanistAccompanistSystemuicontroller" }
 com-google-dagger-android-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "comGoogleDagger" }
 com-google-dagger-dagger-android-processor = { group = "com.google.dagger", name = "dagger-android-processor", version.ref = "comGoogleDagger" }

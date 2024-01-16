@@ -26,13 +26,17 @@ import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
+import io.github.sadellie.themmo.core.MonetMode
+import io.github.sadellie.themmo.core.ThemingMode
 
 fun Preferences.getEnableDynamicTheme(): Boolean {
     return this[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true
 }
 
-fun Preferences.getThemingMode(): String {
-    return this[PrefsKeys.THEMING_MODE] ?: ""
+fun Preferences.getThemingMode(): ThemingMode {
+    return this[PrefsKeys.THEMING_MODE]
+        ?.letTryOrNull { ThemingMode.valueOf(it) }
+        ?: ThemingMode.AUTO
 }
 
 fun Preferences.getEnableAmoledTheme(): Boolean {
@@ -43,8 +47,10 @@ fun Preferences.getCustomColor(): Long {
     return this[PrefsKeys.CUSTOM_COLOR] ?: 16L // From Color.Unspecified
 }
 
-fun Preferences.getMonetMode(): String {
-    return this[PrefsKeys.MONET_MODE] ?: ""
+fun Preferences.getMonetMode(): MonetMode {
+    return this[PrefsKeys.MONET_MODE]
+        ?.letTryOrNull { MonetMode.valueOf(it) }
+        ?: MonetMode.TonalSpot
 }
 
 fun Preferences.getStartingScreen(): String {
