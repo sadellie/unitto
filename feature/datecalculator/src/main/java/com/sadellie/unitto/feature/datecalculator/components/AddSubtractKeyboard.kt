@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -34,24 +33,25 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightTall
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
 import com.sadellie.unitto.core.ui.common.KeypadFlow
-import com.sadellie.unitto.core.ui.common.key.UnittoIcons
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Check
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key0
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key1
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key2
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key3
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key4
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key5
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key6
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key7
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key8
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key9
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Tab
+import com.sadellie.unitto.core.ui.common.icons.IconPack
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Backspace
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Check
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key0
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key1
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key2
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key3
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key4
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key5
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key6
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key7
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key8
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key9
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Tab
 
 @Composable
 internal fun AddSubtractKeyboard(
@@ -77,20 +77,20 @@ internal fun AddSubtractKeyboard(
                 .fillMaxWidth(width)
                 .fillMaxHeight(height)
 
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._7) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._8) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._9) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key7, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._7) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key8, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._8) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key9, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._9) }
 
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._4) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._5) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._6) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key4, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._4) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key5, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._5) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key6, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._6) }
 
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._1) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._2) }
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._3) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key1, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._1) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key2, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._2) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key3, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._3) }
 
             Spacer(buttonModifier)
-            KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
+            KeyboardButtonLight(buttonModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
             Spacer(buttonModifier)
         }
 
@@ -107,7 +107,7 @@ internal fun AddSubtractKeyboard(
             val mainButtonModifier = Modifier
                 .fillMaxWidth(width)
                 .fillMaxHeight(height)
-            val actionIconHeight = if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) 0.396f else 0.68f
+            val actionIconHeight = if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) 0.8f else 1.3f
 
             Crossfade(
                 targetState = imeAction == ImeAction.Next,
@@ -115,12 +115,12 @@ internal fun AddSubtractKeyboard(
                 label = "Primary button animation"
             ) { showNext ->
                 if (showNext) {
-                    KeyboardButtonFilled(Modifier.fillMaxSize(), UnittoIcons.Tab, allowVibration, actionIconHeight) { focusManager.moveFocus(FocusDirection.Next) }
+                    KeyboardButtonFilled(Modifier.fillMaxSize(), IconPack.Tab, allowVibration, actionIconHeight) { focusManager.moveFocus(FocusDirection.Next) }
                 } else {
-                    KeyboardButtonFilled(Modifier.fillMaxSize(), UnittoIcons.Check, allowVibration, actionIconHeight) { onConfirm() }
+                    KeyboardButtonFilled(Modifier.fillMaxSize(), IconPack.Check, allowVibration, actionIconHeight) { onConfirm() }
                 }
             }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, actionIconHeight) { deleteSymbol() }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Backspace, allowVibration, actionIconHeight) { deleteSymbol() }
         }
 
     }

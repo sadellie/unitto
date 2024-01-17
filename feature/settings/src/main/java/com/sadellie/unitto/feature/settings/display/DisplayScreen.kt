@@ -63,8 +63,8 @@ import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoListItem
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
-import com.sadellie.unitto.core.ui.common.key.UnittoIcons
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Clear
+import com.sadellie.unitto.core.ui.common.icons.IconPack
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Clear
 import com.sadellie.unitto.feature.settings.components.ColorSelector
 import com.sadellie.unitto.feature.settings.components.MonetModeSelector
 import io.github.sadellie.themmo.Themmo
@@ -273,7 +273,7 @@ private fun DisplayScreen(
             )
 
             UnittoListItem(
-                icon = UnittoIcons.Clear,
+                icon = IconPack.Clear,
                 headlineText = stringResource(R.string.settings_ac_button),
                 supportingText = stringResource(R.string.settings_ac_button_support),
                 switchState = acButton,

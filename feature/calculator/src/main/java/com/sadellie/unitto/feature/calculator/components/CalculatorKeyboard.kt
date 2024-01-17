@@ -65,49 +65,49 @@ import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
 import com.sadellie.unitto.core.ui.common.KeyboardButtonTertiary
 import com.sadellie.unitto.core.ui.common.KeypadFlow
-import com.sadellie.unitto.core.ui.common.key.UnittoIcons
-import com.sadellie.unitto.core.ui.common.key.unittoicons.AcTan
-import com.sadellie.unitto.core.ui.common.key.unittoicons.ArCos
-import com.sadellie.unitto.core.ui.common.key.unittoicons.ArSin
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Backspace
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Brackets
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Clear
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Comma
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Cos
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Deg
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Divide
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Dot
-import com.sadellie.unitto.core.ui.common.key.unittoicons.E
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Equal
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Ex
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Factorial
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Inv
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key0
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key1
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key2
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key3
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key4
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key5
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key6
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key7
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key8
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Key9
-import com.sadellie.unitto.core.ui.common.key.unittoicons.LeftBracket
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Ln
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Log
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Minus
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Modulo
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Multiply
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Percent
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Pi
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Plus
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Power10
-import com.sadellie.unitto.core.ui.common.key.unittoicons.PowerWide
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Rad
-import com.sadellie.unitto.core.ui.common.key.unittoicons.RightBracket
-import com.sadellie.unitto.core.ui.common.key.unittoicons.RootWide
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Sin
-import com.sadellie.unitto.core.ui.common.key.unittoicons.Tan
+import com.sadellie.unitto.core.ui.common.icons.IconPack
+import com.sadellie.unitto.core.ui.common.icons.iconpack.ArCos
+import com.sadellie.unitto.core.ui.common.icons.iconpack.ArSin
+import com.sadellie.unitto.core.ui.common.icons.iconpack.AcTan
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Backspace
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Brackets
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Clear
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Comma
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Cos
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Deg
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Divide
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Dot
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Equal
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Ex
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Exponent
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Factorial
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Inv
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key0
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key1
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key2
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key3
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key4
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key5
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key6
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key7
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key8
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Key9
+import com.sadellie.unitto.core.ui.common.icons.iconpack.LeftBracket
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Ln
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Log
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Minus
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Modulo
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Multiply
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Percent
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Pi
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Plus
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Power
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Power10
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Rad
+import com.sadellie.unitto.core.ui.common.icons.iconpack.RightBracket
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Root
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Sin
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Tan
 
 @Composable
 internal fun CalculatorKeyboard(
@@ -124,8 +124,8 @@ internal fun CalculatorKeyboard(
     toggleAngleMode: () -> Unit,
     evaluate: () -> Unit
 ) {
-    val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) UnittoIcons.Dot else UnittoIcons.Comma }
-    val angleIcon = remember(radianMode) { if (radianMode) UnittoIcons.Rad else UnittoIcons.Deg }
+    val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) IconPack.Dot else IconPack.Comma }
+    val angleIcon = remember(radianMode) { if (radianMode) IconPack.Rad else IconPack.Deg }
     var invMode: Boolean by remember { mutableStateOf(false) }
 
     if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
@@ -215,21 +215,21 @@ private fun PortraitKeyboard(
                         showAdditional = showAdditional,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Modulo, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.modulo) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.pi) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.PowerWide, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.power) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Factorial, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.factorial) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.modulo) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Pi, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.pi) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Power, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.power) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.factorial) }
                         },
                         content2 = { buttonModifier ->
                             KeyboardButtonAdditional(buttonModifier, angleIcon, allowVibration, KeyboardButtonContentHeightWide) { toggleAngleMode() }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArSin, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.arsinBracket) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArCos, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.arcosBracket) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.AcTan, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.actanBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.ArSin, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.arsinBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.ArCos, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.arcosBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.actanBracket) }
 
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Inv, allowVibration, KeyboardButtonContentHeightWide) { toggleInvMode() }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.e) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ex, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.expBracket) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Power10, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, allowVibration, KeyboardButtonContentHeightWide) { toggleInvMode() }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.e) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Ex, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.expBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Power10, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                         }
                     )
                 } else {
@@ -238,21 +238,21 @@ private fun PortraitKeyboard(
                         showAdditional = showAdditional,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.RootWide, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.sqrt) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.pi) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.PowerWide, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.power) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Factorial, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.factorial) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Root, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.sqrt) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Pi, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.pi) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Power, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.power) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Operator.factorial) }
                         },
                         content2 = { buttonModifier ->
                             KeyboardButtonAdditional(buttonModifier, angleIcon, allowVibration, KeyboardButtonContentHeightWide) { toggleAngleMode() }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Sin, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.sinBracket) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Cos, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.cosBracket) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Tan, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.tanBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Sin, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.sinBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Cos, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.cosBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Tan, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.tanBracket) }
 
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Inv, allowVibration, KeyboardButtonContentHeightWide) { toggleInvMode() }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.e) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ln, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.lnBracket) }
-                            KeyboardButtonAdditional(buttonModifier, UnittoIcons.Log, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.logBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, allowVibration, KeyboardButtonContentHeightWide) { toggleInvMode() }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Const.e) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Ln, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.lnBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Log, allowVibration, KeyboardButtonContentHeightWide) { addSymbol(Token.Func.logBracket) }
                         }
                     )
                 }
@@ -285,39 +285,39 @@ private fun PortraitKeyboard(
                 .fillMaxHeight(height)
 
             if (acButton) {
-                KeyboardButtonTertiary(mainButtonModifier, UnittoIcons.Clear, allowVibration, KeyboardButtonContentHeightTall) { clearSymbols() }
-                KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Brackets, allowVibration, KeyboardButtonContentHeightTall) { addBracket() }
+                KeyboardButtonTertiary(mainButtonModifier, IconPack.Clear, allowVibration, KeyboardButtonContentHeightTall) { clearSymbols() }
+                KeyboardButtonFilled(mainButtonModifier, IconPack.Brackets, allowVibration, KeyboardButtonContentHeightTall) { addBracket() }
             } else {
-                KeyboardButtonFilled(mainButtonModifier, UnittoIcons.LeftBracket, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.leftBracket) }
-                KeyboardButtonFilled(mainButtonModifier, UnittoIcons.RightBracket, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.rightBracket) }
+                KeyboardButtonFilled(mainButtonModifier, IconPack.LeftBracket, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.leftBracket) }
+                KeyboardButtonFilled(mainButtonModifier, IconPack.RightBracket, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.rightBracket) }
             }
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Percent, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.percent) }
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Divide, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.divide) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Percent, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.percent) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Divide, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.divide) }
 
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._7) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._8) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._9) }
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Multiply, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.multiply) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key7, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._7) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key8, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._8) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key9, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._9) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Multiply, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.multiply) }
 
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._4) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._5) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._6) }
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Minus, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.minus) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key4, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._4) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key5, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._5) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key6, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._6) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Minus, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.minus) }
 
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._1) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._2) }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._3) }
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Plus, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.plus) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key1, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._1) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key2, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._2) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key3, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._3) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Plus, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.plus) }
 
             if (middleZero) {
                 KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit.dot) }
-                KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
+                KeyboardButtonLight(mainButtonModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
             } else {
-                KeyboardButtonLight(mainButtonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
+                KeyboardButtonLight(mainButtonModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
                 KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit.dot) }
             }
-            KeyboardButtonLight(mainButtonModifier, UnittoIcons.Backspace, allowVibration, KeyboardButtonContentHeightTall, clearSymbols) { deleteSymbol() }
-            KeyboardButtonFilled(mainButtonModifier, UnittoIcons.Equal, allowVibration, KeyboardButtonContentHeightTall) { evaluate() }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightTall, clearSymbols) { deleteSymbol() }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightTall) { evaluate() }
         }
 
         Spacer(modifier = Modifier.height(spacerHeight))
@@ -425,50 +425,50 @@ private fun LandscapeKeyboard(
                     .fillMaxHeight(height)
 
                 KeyboardButtonAdditional(buttonModifier, angleIcon, allowVibration, KeyboardButtonContentHeightShort) { toggleAngleMode() }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Modulo, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.modulo) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.pi) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._7) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._8) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._9) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.modulo) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Pi, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.pi) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key7, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._7) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key8, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._8) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key9, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._9) }
                 if (acButton) {
-                    KeyboardButtonTertiary(buttonModifier, UnittoIcons.Clear, allowVibration, KeyboardButtonContentHeightShort) { clearSymbols() }
-                    KeyboardButtonFilled(buttonModifier, UnittoIcons.Brackets, allowVibration, KeyboardButtonContentHeightShort) { addBracket() }
+                    KeyboardButtonTertiary(buttonModifier, IconPack.Clear, allowVibration, KeyboardButtonContentHeightShort) { clearSymbols() }
+                    KeyboardButtonFilled(buttonModifier, IconPack.Brackets, allowVibration, KeyboardButtonContentHeightShort) { addBracket() }
                 } else {
-                    KeyboardButtonFilled(buttonModifier, UnittoIcons.LeftBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.leftBracket) }
-                    KeyboardButtonFilled(buttonModifier, UnittoIcons.RightBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.rightBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.LeftBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.leftBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.rightBracket) }
                 }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Inv, allowVibration, KeyboardButtonContentHeightShort) { toggleInvMode() }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.PowerWide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.power) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Factorial, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.factorial) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._4) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._5) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._6) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Multiply, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.multiply) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Divide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.divide) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, allowVibration, KeyboardButtonContentHeightShort) { toggleInvMode() }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Power, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.power) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.factorial) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key4, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._4) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key5, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._5) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key6, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._6) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Multiply, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.multiply) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Divide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.divide) }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArSin, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.arsinBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.ArCos, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.arcosBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.AcTan, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.actanBracket) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._2) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._3) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Minus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Percent, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.ArSin, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.arsinBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.ArCos, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.arcosBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.actanBracket) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key1, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key2, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._2) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key3, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._3) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Minus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Percent, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.e) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ex, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.expBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Power10, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.e) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Ex, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.expBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Power10, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                 if (middleZero) {
                     KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
-                    KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
                 } else {
-                    KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
                     KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
                 }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Backspace, allowVibration, KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Plus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Equal, allowVibration, KeyboardButtonContentHeightShort) { evaluate() }
+                KeyboardButtonLight(buttonModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
+                KeyboardButtonFilled(buttonModifier, IconPack.Plus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightShort) { evaluate() }
             }
         } else {
             KeypadFlow(
@@ -481,50 +481,50 @@ private fun LandscapeKeyboard(
                     .fillMaxHeight(height)
 
                 KeyboardButtonAdditional(buttonModifier, angleIcon, allowVibration, KeyboardButtonContentHeightShort) { toggleAngleMode() }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.RootWide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.sqrt) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Pi, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.pi) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key7, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._7) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key8, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._8) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key9, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._9) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Root, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.sqrt) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Pi, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.pi) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key7, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._7) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key8, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._8) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key9, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._9) }
                 if (acButton) {
-                    KeyboardButtonTertiary(buttonModifier, UnittoIcons.Clear, allowVibration, KeyboardButtonContentHeightShort) { clearSymbols() }
-                    KeyboardButtonFilled(buttonModifier, UnittoIcons.Brackets, allowVibration, KeyboardButtonContentHeightShort) { addBracket() }
+                    KeyboardButtonTertiary(buttonModifier, IconPack.Clear, allowVibration, KeyboardButtonContentHeightShort) { clearSymbols() }
+                    KeyboardButtonFilled(buttonModifier, IconPack.Brackets, allowVibration, KeyboardButtonContentHeightShort) { addBracket() }
                 } else {
-                    KeyboardButtonFilled(buttonModifier, UnittoIcons.LeftBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.leftBracket) }
-                    KeyboardButtonFilled(buttonModifier, UnittoIcons.RightBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.rightBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.LeftBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.leftBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.rightBracket) }
                 }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Inv, allowVibration, KeyboardButtonContentHeightShort) { toggleInvMode() }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.PowerWide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.power) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Factorial, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.factorial) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key4, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._4) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key5, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._5) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key6, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._6) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Multiply, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.multiply) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Divide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.divide) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, allowVibration, KeyboardButtonContentHeightShort) { toggleInvMode() }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Power, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.power) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.factorial) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key4, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._4) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key5, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._5) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key6, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._6) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Multiply, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.multiply) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Divide, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.divide) }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Sin, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.sinBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Cos, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.cosBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Tan, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.tanBracket) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key1, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key2, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._2) }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Key3, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._3) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Minus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Percent, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Sin, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.sinBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Cos, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.cosBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Tan, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.tanBracket) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key1, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key2, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._2) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key3, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._3) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Minus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Percent, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
 
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.E, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.e) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Ln, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.lnBracket) }
-                KeyboardButtonAdditional(buttonModifier, UnittoIcons.Log, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.logBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Const.e) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Ln, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.lnBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Log, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Func.logBracket) }
                 if (middleZero) {
                     KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
-                    KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
                 } else {
-                    KeyboardButtonLight(buttonModifier, UnittoIcons.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
                     KeyboardButtonLight(buttonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
                 }
-                KeyboardButtonLight(buttonModifier, UnittoIcons.Backspace, allowVibration, KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Plus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
-                KeyboardButtonFilled(buttonModifier, UnittoIcons.Equal, allowVibration, KeyboardButtonContentHeightShort) { evaluate() }
+                KeyboardButtonLight(buttonModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
+                KeyboardButtonFilled(buttonModifier, IconPack.Plus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightShort) { evaluate() }
             }
         }
     }
@@ -535,8 +535,8 @@ private fun LandscapeKeyboard(
 private fun PreviewPortraitKeyboard() {
     PortraitKeyboard(
         modifier = Modifier.fillMaxHeight(),
-        angleIcon = UnittoIcons.Rad,
-        fractionalIcon = UnittoIcons.Dot,
+        angleIcon = IconPack.Rad,
+        fractionalIcon = IconPack.Dot,
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},
@@ -556,8 +556,8 @@ private fun PreviewPortraitKeyboard() {
 private fun PreviewLandscapeKeyboard() {
     LandscapeKeyboard(
         modifier = Modifier.fillMaxHeight(),
-        angleIcon = UnittoIcons.Rad,
-        fractionalIcon = UnittoIcons.Dot,
+        angleIcon = IconPack.Rad,
+        fractionalIcon = IconPack.Dot,
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},

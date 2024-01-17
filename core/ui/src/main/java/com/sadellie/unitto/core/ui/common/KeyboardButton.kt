@@ -169,14 +169,14 @@ fun KeyboardButtonTertiary(
 /**
  * Mostly for main button in portrait mode. Changes icon size inside.
  */
-const val KeyboardButtonContentHeightTall = 0.578f
+const val KeyboardButtonContentHeightTall = 1.1f
 
 /**
  * Mostly for main button in landscape mode. Changes icon size inside.
  */
-const val KeyboardButtonContentHeightShort = 0.793f
+const val KeyboardButtonContentHeightShort = 1.5f
 
 /**
  * Mostly for additional buttons. Changes icon size inside.
  */
-const val KeyboardButtonContentHeightWide = 0.906f
+const val KeyboardButtonContentHeightWide = 1.6f
