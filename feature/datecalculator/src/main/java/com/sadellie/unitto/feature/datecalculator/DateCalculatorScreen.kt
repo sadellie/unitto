@@ -26,11 +26,9 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -63,7 +61,6 @@ internal fun DateCalculatorScreen(
     val addSubtractLabel = "${stringResource(R.string.date_calculator_add)}/${stringResource(R.string.date_calculator_subtract)}"
     val differenceLabel = stringResource(R.string.date_calculator_difference)
     val focusManager = LocalFocusManager.current
-    var showKeyboard by remember { mutableStateOf(false) }
 
     val allTabs = remember { listOf(addSubtractLabel, differenceLabel) }
     val pagerState = rememberPagerState { allTabs.size }
@@ -99,14 +96,9 @@ internal fun DateCalculatorScreen(
                 verticalAlignment = Alignment.Top
             ) { page ->
                 when (page) {
-                    0 -> AddSubtractPage(
-                        showKeyboard = showKeyboard,
-                        toggleKeyboard = {showKeyboard = it }
-                    )
+                    0 -> AddSubtractPage()
                     1 -> {
-                        focusManager.clearFocus(true)
-                        showKeyboard = false
-
+                        SideEffect { focusManager.clearFocus(true) }
                         DateDifferencePage()
                     }
                 }

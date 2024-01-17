@@ -153,7 +153,6 @@ private fun BodyMassScreen(
                             onValueChange = updateHeight1,
                             label = "${stringResource(R.string.body_mass_height)}, ${stringResource(R.string.unit_centimeter_short)}",
                             expressionFormatter = expressionTransformer,
-                            imeAction = ImeAction.Next
                         )
                     } else {
                         Row(
@@ -165,7 +164,6 @@ private fun BodyMassScreen(
                                 onValueChange = updateHeight1,
                                 label = "${stringResource(R.string.body_mass_height)}, ${stringResource(R.string.unit_foot_short)}",
                                 expressionFormatter = expressionTransformer,
-                                imeAction = ImeAction.Next
                             )
                             BodyMassTextField(
                                 modifier = Modifier.weight(1f),
@@ -173,7 +171,6 @@ private fun BodyMassScreen(
                                 onValueChange = updateHeight2,
                                 label = "${stringResource(R.string.body_mass_height)}, ${stringResource(R.string.unit_inch_short)}",
                                 expressionFormatter = expressionTransformer,
-                                imeAction = ImeAction.Next
                             )
                         }
                     }

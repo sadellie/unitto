@@ -23,14 +23,10 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,25 +46,20 @@ import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
@@ -77,12 +68,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.LocalWindowSize
-import com.sadellie.unitto.core.ui.common.textfield.addTokens
-import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
+import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
 import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
-import com.sadellie.unitto.feature.datecalculator.components.AddSubtractKeyboard
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeSelectorBlock
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
@@ -92,15 +80,11 @@ import java.time.ZonedDateTime
 @Composable
 internal fun AddSubtractPage(
     viewModel: AddSubtractViewModel = hiltViewModel(),
-    showKeyboard: Boolean,
-    toggleKeyboard: (Boolean) -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     AddSubtractView(
         uiState = uiState,
-        showKeyboard = showKeyboard,
-        toggleKeyboard = toggleKeyboard,
         updateStart = viewModel::updateStart,
         updateYears = viewModel::updateYears,
         updateMonths = viewModel::updateMonths,
@@ -115,8 +99,6 @@ internal fun AddSubtractPage(
 @Composable
 private fun AddSubtractView(
     uiState: AddSubtractState,
-    showKeyboard: Boolean,
-    toggleKeyboard: (Boolean) -> Unit,
     updateStart: (ZonedDateTime) -> Unit,
     updateYears: (TextFieldValue) -> Unit,
     updateMonths: (TextFieldValue) -> Unit,
@@ -126,20 +108,9 @@ private fun AddSubtractView(
     updateAddition: (Boolean) -> Unit,
 ) {
     val mContext = LocalContext.current
-    val focusManager = LocalFocusManager.current
-
     var dialogState by remember { mutableStateOf(DialogState.NONE) }
-    var addSymbol: ((TextFieldValue) -> Unit)? by remember { mutableStateOf(null) }
-    var focusedTextFieldValue: TextFieldValue? by remember { mutableStateOf(null) }
-
-    LaunchedEffect(addSymbol, focusedTextFieldValue) {
-        toggleKeyboard((addSymbol != null) and (focusedTextFieldValue != null))
-    }
-
-    BackHandler(showKeyboard) {
-        focusManager.clearFocus()
-        addSymbol = null
-        focusedTextFieldValue = null
+    val expressionTransformer = remember(uiState.formatterSymbols) {
+        ExpressionTransformer(uiState.formatterSymbols)
     }
 
     val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
@@ -241,126 +212,57 @@ private fun AddSubtractView(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     TimeUnitTextField(
-                        modifier = Modifier
-                            .onFocusEvent {
-                                if (it.hasFocus) {
-                                    addSymbol = updateYears
-                                    focusedTextFieldValue = uiState.years
-                                }
-                            }
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         value = uiState.years,
                         onValueChange = updateYears,
                         label = stringResource(R.string.date_calculator_years),
-                        formatterSymbols = uiState.formatterSymbols
+                        expressionFormatter = expressionTransformer,
                     )
 
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         TimeUnitTextField(
-                            modifier = Modifier
-                                .onFocusEvent {
-                                    if (it.hasFocus) {
-                                        addSymbol = updateMonths
-                                        focusedTextFieldValue = uiState.months
-                                    }
-                                }
-                                .weight(1f),
+                            modifier = Modifier.weight(1f),
                             value = uiState.months,
                             onValueChange = updateMonths,
                             label = stringResource(R.string.date_calculator_months),
-                            formatterSymbols = uiState.formatterSymbols
+                            expressionFormatter = expressionTransformer,
                         )
 
                         TimeUnitTextField(
-                            modifier = Modifier
-                                .onFocusEvent {
-                                    if (it.hasFocus) {
-                                        addSymbol = updateDays
-                                        focusedTextFieldValue = uiState.days
-                                    }
-                                }
-                                .weight(1f),
+                            modifier = Modifier.weight(1f),
                             value = uiState.days,
                             onValueChange = updateDays,
                             label = stringResource(R.string.date_calculator_days),
-                            formatterSymbols = uiState.formatterSymbols
+                            expressionFormatter = expressionTransformer,
                         )
                     }
 
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         TimeUnitTextField(
-                            modifier = Modifier
-                                .onFocusEvent {
-                                    if (it.hasFocus) {
-                                        addSymbol = updateHours
-                                        focusedTextFieldValue = uiState.hours
-                                    }
-                                }
-                                .weight(1f),
+                            modifier = Modifier.weight(1f),
                             value = uiState.hours,
                             onValueChange = updateHours,
                             label = stringResource(R.string.date_calculator_hours),
-                            formatterSymbols = uiState.formatterSymbols
+                            expressionFormatter = expressionTransformer,
                         )
 
                         TimeUnitTextField(
-                            modifier = Modifier
-                                .onFocusEvent {
-                                    if (it.hasFocus) {
-                                        addSymbol = updateMinutes
-                                        focusedTextFieldValue = uiState.minutes
-                                    }
-                                }
-                                .weight(1f),
+                            modifier = Modifier.weight(1f),
                             value = uiState.minutes,
                             onValueChange = updateMinutes,
                             label = stringResource(R.string.date_calculator_minutes),
-                            formatterSymbols = uiState.formatterSymbols
+                            expressionFormatter = expressionTransformer,
+                            imeAction = ImeAction.Done
                         )
                     }
                 }
             }
-        }
-        AnimatedVisibility(
-            visible = showKeyboard,
-            enter = slideInVertically { it / 2 } + fadeIn(),
-            exit = slideOutVertically { it / 2 } + fadeOut()
-        ) {
-            HorizontalDivider()
-            AddSubtractKeyboard(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .fillMaxHeight(if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) 0.4f else 0.6f)
-                    .padding(2.dp, 4.dp),
-                addSymbol = {
-                    val newValue = focusedTextFieldValue?.addTokens(it)
-                    if (newValue != null) {
-                        addSymbol?.invoke(newValue)
-                    }
-                },
-                deleteSymbol = {
-                    val newValue = focusedTextFieldValue?.deleteTokens()
-                    if (newValue != null) {
-                        addSymbol?.invoke(newValue)
-                    }
-                },
-                onConfirm = {
-                    focusManager.clearFocus()
-                    addSymbol = null
-                    focusedTextFieldValue = null
-                },
-                allowVibration = uiState.allowVibration,
-                imeAction = if (addSymbol == updateMinutes) ImeAction.Done else ImeAction.Next
-            )
         }
     }
 
@@ -399,8 +301,6 @@ fun AddSubtractViewPreview() {
             start = ZonedDateTimeUtils.nowWithMinutes(),
             result = ZonedDateTimeUtils.nowWithMinutes().plusSeconds(1)
         ),
-        showKeyboard = false,
-        toggleKeyboard = {},
         updateStart = {},
         updateYears = {},
         updateMonths = {},

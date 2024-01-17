@@ -16,40 +16,50 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.bodymass.components
+package com.sadellie.unitto.core.ui.common.textfield
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.material3.Text
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import com.sadellie.unitto.core.base.Token
-import com.sadellie.unitto.core.ui.common.textfield.OutlinedDecimalTextField
 
 @Composable
-internal fun BodyMassTextField(
+fun OutlinedDecimalTextField(
     modifier: Modifier,
     value: TextFieldValue,
-    label: String,
     onValueChange: (TextFieldValue) -> Unit,
+    label: @Composable () -> Unit,
     expressionFormatter: VisualTransformation,
     imeAction: ImeAction = ImeAction.Next
 ) {
-    OutlinedDecimalTextField(
+    OutlinedTextField(
         modifier = modifier,
         value = value,
-        onValueChange = {
-            val cleanText = it.text
-                .replace(",", ".")
-                .filter { char ->
-                    Token.Digit.allWithDot.contains(char.toString())
+        onValueChange = onValueChange,
+        trailingIcon = {
+            AnimatedVisibility(value.text.isNotBlank(), enter = scaleIn(), exit = scaleOut()) {
+                IconButton(onClick = { onValueChange(TextFieldValue()) }) {
+                    Icon(Icons.Outlined.Clear, null)
                 }
-            onValueChange(it.copy(cleanText))
+            }
         },
-        label = { AnimatedContent(label) { Text(it) } },
-        expressionFormatter = expressionFormatter,
-        imeAction = imeAction
+        label = label,
+        singleLine = true,
+        visualTransformation = expressionFormatter,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+            imeAction = imeAction
+        ),
     )
 }
