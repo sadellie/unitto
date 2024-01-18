@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,19 +17,25 @@
  */
 
 plugins {
-    id("com.google.devtools.ksp")
     id("unitto.library")
-    id("unitto.android.library.jacoco")
     id("unitto.android.hilt")
+    id("unitto.room")
+    id("unitto.android.library.jacoco")
 }
 
 android.namespace = "com.sadellie.unitto.data.backup"
 
+android {
+    room {
+        val schemaLocation = "$projectDir/schemas"
+        schemaDirectory(schemaLocation)
+        println("Exported Database schema to $schemaLocation")
+    }
+}
+
 dependencies {
     implementation(libs.androidx.datastore.datastore.preferences)
-    implementation(libs.com.squareup.moshi.moshi.kotlin)
     implementation(libs.com.github.sadellie.themmo.core)
-    ksp(libs.com.squareup.moshi.moshi.kotlin.codegen)
 
     implementation(project(":data:database"))
     implementation(project(":data:model"))

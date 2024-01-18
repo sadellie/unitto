@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.settings
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,7 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.data.backup.BackupManager
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.database.CurrencyRatesDao
+import com.sadellie.unitto.data.database.UnittoDatabase
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -42,11 +44,8 @@ import javax.inject.Inject
 internal class SettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val currencyRatesDao: CurrencyRatesDao,
-    private val backupManager: BackupManager
+    private val database: UnittoDatabase
 ) : ViewModel() {
-    private val _backupFileUri = MutableSharedFlow<Uri?>()
-    val backupFileUri = _backupFileUri.asSharedFlow()
-
     private val _showErrorToast = MutableSharedFlow<Boolean>()
     val showErrorToast = _showErrorToast.asSharedFlow()
 
@@ -67,14 +66,15 @@ internal class SettingsViewModel @Inject constructor(
     }
         .stateIn(viewModelScope, SettingsUIState.Loading)
 
-    fun backup() {
+    fun backup(
+        context: Context,
+        uri: Uri,
+    ) {
         backupJob?.cancel()
         backupJob = viewModelScope.launch(Dispatchers.IO) {
             _backupInProgress.update { true }
             try {
-                val backupFileUri = backupManager.backup()
-                _backupFileUri.emit(backupFileUri) // Emit to trigger file share intent
-                _showErrorToast.emit(false)
+                BackupManager().backup(context, uri, database)
             } catch (e: Exception) {
                 _showErrorToast.emit(true)
                 Log.e(TAG, "$e")
@@ -83,13 +83,15 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun restore(uri: Uri) {
+    fun restore(
+        context: Context,
+        uri: Uri,
+    ) {
         backupJob?.cancel()
         backupJob = viewModelScope.launch(Dispatchers.IO) {
             _backupInProgress.update { true }
             try {
-                backupManager.restore(uri)
-                _showErrorToast.emit(false)
+                BackupManager().restore(context, uri, database)
             } catch (e: Exception) {
                 _showErrorToast.emit(true)
                 Log.e(TAG, "$e")

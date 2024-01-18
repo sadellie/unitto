@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 // DON'T TOUCH!!!
-private const val USER_PREFERENCES = "settings"
+const val USER_PREFERENCES = "settings"
 
 /**
  * This module is for DataStore dependency injection

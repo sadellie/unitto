@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Unitto is a unit converter for Android
-  ~ Copyright (c) 2023 Elshan Agaev
+  ~ Copyright (c) 2023-2024 Elshan Agaev
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -17,16 +17,5 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application>
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities=".BackupManager"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_path"/>
-        </provider>
-    </application>
+<manifest>
 </manifest>

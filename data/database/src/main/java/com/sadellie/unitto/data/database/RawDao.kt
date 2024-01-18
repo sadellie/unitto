@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.backup
+package com.sadellie.unitto.data.database
 
-import com.squareup.moshi.JsonClass
+import androidx.room.Dao
+import androidx.room.RawQuery
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 
-@JsonClass(generateAdapter = true)
-internal data class UserDataCalculatorHistory(
-    val entityId: Int,
-    val timestamp: Long,
-    val expression: String,
-    val result: String,
-)
+@Dao
+interface RawDao {
+    @RawQuery
+    suspend fun execute(query: SupportSQLiteQuery): Int
+
+    suspend fun walCheckpoint() = execute(SimpleSQLiteQuery("PRAGMA wal_checkpoint(FULL)"))
+}

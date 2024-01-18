@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,11 @@ package com.sadellie.unitto.feature.settings
 
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -93,6 +91,8 @@ import com.sadellie.unitto.feature.settings.navigation.formattingRoute
 import com.sadellie.unitto.feature.settings.navigation.startingScreenRoute
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 internal fun SettingsRoute(
@@ -101,21 +101,13 @@ internal fun SettingsRoute(
     navControllerAction: (String) -> Unit,
 ) {
     val mContext = LocalContext.current
-
-    val errorLabel = stringResource(R.string.error_label)
-
-    val uiState: SettingsUIState = viewModel.uiState.collectAsStateWithLifecycle().value
-    val backupFileUri: Uri? = viewModel.backupFileUri.collectAsStateWithLifecycle(initialValue = null).value
-    val showErrorToast: Boolean = viewModel.showErrorToast.collectAsStateWithLifecycle(initialValue = false).value
-
-    // Share backup file when it's emitted
-    LaunchedEffect(backupFileUri) {
-        if (backupFileUri == null) return@LaunchedEffect
-        mContext.share(backupFileUri)
-    }
+    val uiState: SettingsUIState = viewModel.uiState
+        .collectAsStateWithLifecycle().value
+    val showErrorToast: Boolean = viewModel.showErrorToast
+        .collectAsStateWithLifecycle(initialValue = false).value
 
     LaunchedEffect(showErrorToast) {
-        if (showErrorToast) Toast.makeText(mContext, errorLabel, Toast.LENGTH_SHORT).show()
+        if (showErrorToast) showToast(mContext, mContext.resources.getString(R.string.error_label))
     }
 
     when (uiState) {
@@ -142,15 +134,24 @@ private fun SettingsScreen(
     updateLastReadChangelog: (String) -> Unit,
     updateVibrations: (Boolean) -> Unit,
     clearCache: () -> Unit,
-    backup: () -> Unit,
-    restore: (Uri) -> Unit = {},
+    backup: (Context, Uri) -> Unit,
+    restore: (Context, Uri) -> Unit,
 ) {
     val mContext = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
 
     // Pass picked file uri to BackupManager
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { pickedUri ->
-        if (pickedUri != null) restore(pickedUri)
+    val restoreLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { pickedUri ->
+        if (pickedUri != null) restore(mContext, pickedUri)
+    }
+
+    // Pass picked file uri to BackupManager
+    val backupLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument(backupMimeType)
+    ) { pickedUri ->
+        if (pickedUri != null) backup(mContext, pickedUri)
     }
 
     BackHandler(uiState.backupInProgress) {}
@@ -168,11 +169,17 @@ private fun SettingsScreen(
                 onDismissRequest = { showMenu = false }
             ) {
                 DropdownMenuItem(
-                    onClick = { showMenu = false; backup() },
+                    onClick = {
+                        showMenu = false
+                        backupLauncher.launchSafely(backupFileName())
+                    },
                     text = { Text(stringResource(R.string.settings_back_up)) }
                 )
                 DropdownMenuItem(
-                    onClick = { showMenu = false; launcher.launchPicker() },
+                    onClick = {
+                        showMenu = false
+                        restoreLauncher.launchSafely(arrayOf(backupMimeType))
+                    },
                     text = { Text(stringResource(R.string.settings_restore)) }
                 )
             }
@@ -297,25 +304,20 @@ private fun SettingsScreen(
     }
 }
 
-private fun Context.share(uri: Uri) {
-    val shareIntent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_STREAM, uri)
-        type = backupMimeType
-    }
-
-    startActivity(shareIntent)
-}
-
-private fun ManagedActivityResultLauncher<Array<String>, Uri?>.launchPicker() {
+private fun <T> ActivityResultLauncher<T>.launchSafely(input: T) {
     try {
-        launch(arrayOf(backupMimeType))
+        this.launch(input)
     } catch (e: ActivityNotFoundException) {
-        Log.e("SettingsScreen", "launchPicker: ActivityNotFoundException")
+        Log.e("SettingsScreen", "launchSafely: ActivityNotFoundException")
     }
 }
 
-private const val backupMimeType = "application/octet-stream"
+private fun backupFileName(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+    return "${ZonedDateTime.now().format(formatter)}.zip"
+}
+
+private const val backupMimeType = "application/zip"
 
 @Preview
 @Composable
@@ -348,7 +350,14 @@ private fun PreviewSettingsScreen() {
         clearCache = {
             uiState = uiState.copy(cacheSize = 0)
         },
-        backup = {
+        backup = { _, _ ->
+            corScope.launch {
+                uiState = uiState.copy(backupInProgress = true)
+                delay(2000)
+                uiState = uiState.copy(backupInProgress = false)
+            }
+        },
+        restore = { _, _ ->
             corScope.launch {
                 uiState = uiState.copy(backupInProgress = true)
                 delay(2000)

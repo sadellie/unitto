@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+const val DATABASE_NAME = "unitto_database"
+
 /**
  * Module for database. Used to access same instance of database
  *
@@ -34,6 +36,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class UnittoDatabaseModule {
+    @Provides
+    fun provideRawDao(unittoDatabase: UnittoDatabase): RawDao {
+        return unittoDatabase.rawDao()
+    }
 
     @Provides
     fun provideUnitsDao(unittoDatabase: UnittoDatabase): UnitsDao {
@@ -73,7 +79,7 @@ class UnittoDatabaseModule {
         return Room.databaseBuilder(
             appContext.applicationContext,
             UnittoDatabase::class.java,
-            "unitto_database"
+            DATABASE_NAME
         ).build()
     }
 }
