@@ -22,6 +22,8 @@ import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -72,7 +74,8 @@ fun BasicKeyboardButton(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier
-                .matchParentSize()
+                .aspectRatio(1f) // All icons are square (24x24)
+                .fillMaxWidth()
                 .graphicsLayer {
                     scaleX = contentHeight
                     scaleY = contentHeight
@@ -172,11 +175,16 @@ fun KeyboardButtonTertiary(
 const val KeyboardButtonContentHeightTall = 1.1f
 
 /**
- * Mostly for main button in landscape mode. Changes icon size inside.
+ * Mostly for additional button in portrait mode. Changes icon size inside.
  */
-const val KeyboardButtonContentHeightShort = 1.5f
+const val KeyboardButtonContentHeightTallAdditional = 1.6f
 
 /**
- * Mostly for additional buttons. Changes icon size inside.
+ * Mostly for main button in landscape mode. Changes icon size inside.
  */
-const val KeyboardButtonContentHeightWide = 1.6f
+const val KeyboardButtonContentHeightShort = 1.3f
+
+/**
+ * Mostly for additional button in landscape mode. Changes icon size inside.
+ */
+const val KeyboardButtonContentHeightShortAdditional = 1.1f
