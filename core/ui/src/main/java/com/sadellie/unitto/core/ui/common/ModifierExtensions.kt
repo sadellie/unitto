@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -41,15 +41,16 @@ fun Modifier.squashable(
     interactionSource: MutableInteractionSource,
     cornerRadiusRange: IntRange,
     role: Role = Role.Button,
+    animationSpec: AnimationSpec<Int> = tween(),
 ) = composed {
     val isPressed by interactionSource.collectIsPressedAsState()
     val cornerRadius: Int by animateIntAsState(
         targetValue = if (isPressed) cornerRadiusRange.first else cornerRadiusRange.last,
-        animationSpec = tween(easing = FastOutSlowInEasing),
+        animationSpec = animationSpec,
         label = "Squashed animation"
     )
 
-    Modifier
+    this
         .clip(RoundedCornerShape(cornerRadius))
         .combinedClickable(
             onClick = onClick,
@@ -68,15 +69,16 @@ fun Modifier.squashable(
     interactionSource: MutableInteractionSource,
     cornerRadiusRange: ClosedRange<Dp>,
     role: Role = Role.Button,
+    animationSpec: AnimationSpec<Dp> = tween(),
 ) = composed {
     val isPressed by interactionSource.collectIsPressedAsState()
     val cornerRadius: Dp by animateDpAsState(
         targetValue = if (isPressed) cornerRadiusRange.start else cornerRadiusRange.endInclusive,
-        animationSpec = tween(easing = FastOutSlowInEasing),
+        animationSpec = animationSpec,
         label = "Squashed animation"
     )
 
-    Modifier
+    this
         .clip(RoundedCornerShape(cornerRadius))
         .combinedClickable(
             onClick = onClick,

@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.ui.common
 
 import android.view.HapticFeedbackConstants
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -65,6 +66,7 @@ fun BasicKeyboardButton(
                 onLongClick = if (onLongClick != null) { { onLongClick(); vibrate() } } else null,
                 interactionSource = remember { MutableInteractionSource() },
                 cornerRadiusRange = 30..50,
+                animationSpec = tween(250)
             )
             .background(containerColor)
         ,
