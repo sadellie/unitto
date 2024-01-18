@@ -116,16 +116,16 @@ internal class CalculatorViewModel @Inject constructor(
         .stateIn(viewModelScope, CalculatorUIState.Loading)
 
     fun addTokens(tokens: String) = _input.update {
-        var newValue = if (_equalClicked.value and Token.Digit.allWithDot.contains(tokens)) {
+        val isClearInputNeeded = _equalClicked.value and Token.Digit.allWithDot.contains(tokens)
+
+        var newValue = when {
             // Clean input after clicking "=" and any token that is a Digit
-            TextFieldValue().addTokens(tokens)
-        } else {
-            it.addTokens(tokens)
+            isClearInputNeeded -> TextFieldValue()
+            _equalClicked.value -> it.copy(selection = TextRange(it.text.length))
+            else -> it
         }
-        // Cursor is set to 0 when equal is clicked
-        if (_equalClicked.value) {
-            newValue = newValue.copy(selection = TextRange(it.text.length))
-        }
+        newValue = newValue.addTokens(tokens)
+
         _equalClicked.update { false }
         _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text
@@ -133,11 +133,14 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun addBracket() = _input.update {
-        var newValue = it.addBracket()
-        // Cursor is set to 0 when equal is clicked
-        if (_equalClicked.value) {
-            newValue = newValue.copy(selection = TextRange(it.text.length))
+        var newValue = if (_equalClicked.value) {
+            // Cursor is set to 0 when equal is clicked
+            it.copy(selection = TextRange(it.text.length))
+        } else {
+            it
         }
+        newValue = newValue.addBracket()
+
         _equalClicked.update { false }
         _fractionJob?.cancel()
         savedStateHandle[_inputKey] = newValue.text

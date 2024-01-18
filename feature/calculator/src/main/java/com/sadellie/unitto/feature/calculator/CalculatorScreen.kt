@@ -285,7 +285,7 @@ private fun Ready(
                 clearSymbols = clearSymbols,
                 deleteSymbol = deleteSymbol,
                 toggleAngleMode = toggleAngleMode,
-                equal = equal,
+                equal = { focusManager.clearFocus(); equal() },
                 middleZero = uiState.middleZero,
                 acButton = uiState.acButton,
                 addBracket = addBracket
