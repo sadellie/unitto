@@ -99,7 +99,7 @@ internal fun CalculatorRoute(
         deleteTokens = viewModel::deleteTokens,
         onCursorChange = viewModel::onCursorChange,
         toggleCalculatorMode = viewModel::updateRadianMode,
-        evaluate = viewModel::evaluate,
+        equal = viewModel::equal,
         clearHistory = viewModel::clearHistory,
         addBracket = viewModel::addBracket
     )
@@ -116,7 +116,7 @@ internal fun CalculatorScreen(
     deleteTokens: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
     toggleCalculatorMode: (Boolean) -> Unit,
-    evaluate: () -> Unit,
+    equal: () -> Unit,
     clearHistory: () -> Unit
 ) {
     when (uiState) {
@@ -130,7 +130,7 @@ internal fun CalculatorScreen(
             deleteSymbol = deleteTokens,
             onCursorChange = onCursorChange,
             toggleAngleMode = { toggleCalculatorMode(!uiState.radianMode) },
-            evaluate = evaluate,
+            equal = equal,
             clearHistory = clearHistory,
             addBracket = addBracket
         )
@@ -148,7 +148,7 @@ private fun Ready(
     deleteSymbol: () -> Unit,
     onCursorChange: (TextRange) -> Unit,
     toggleAngleMode: () -> Unit,
-    evaluate: () -> Unit,
+    equal: () -> Unit,
     clearHistory: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
@@ -285,7 +285,7 @@ private fun Ready(
                 clearSymbols = clearSymbols,
                 deleteSymbol = deleteSymbol,
                 toggleAngleMode = toggleAngleMode,
-                evaluate = evaluate,
+                equal = equal,
                 middleZero = uiState.middleZero,
                 acButton = uiState.acButton,
                 addBracket = addBracket
@@ -375,7 +375,7 @@ private fun PreviewCalculatorScreen() {
         deleteTokens = {},
         onCursorChange = {},
         toggleCalculatorMode = {},
-        evaluate = {},
+        equal = {},
         clearHistory = {},
         addBracket = {}
     )

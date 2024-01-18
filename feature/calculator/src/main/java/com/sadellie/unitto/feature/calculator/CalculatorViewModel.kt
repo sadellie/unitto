@@ -178,7 +178,7 @@ internal class CalculatorViewModel @Inject constructor(
         calculatorHistoryRepository.clear()
     }
 
-    fun evaluate() = viewModelScope.launch {
+    fun equal() = viewModelScope.launch {
         val prefs = _prefs.value ?: return@launch
         if (_equalClicked.value) return@launch
         if (!_input.value.text.isExpression()) return@launch

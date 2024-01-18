@@ -123,7 +123,7 @@ internal fun CalculatorKeyboard(
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
     toggleAngleMode: () -> Unit,
-    evaluate: () -> Unit
+    equal: () -> Unit
 ) {
     val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) IconPack.Dot else IconPack.Comma }
     val angleIcon = remember(radianMode) { if (radianMode) IconPack.Rad else IconPack.Deg }
@@ -140,7 +140,7 @@ internal fun CalculatorKeyboard(
             toggleAngleMode = toggleAngleMode,
             deleteSymbol = deleteSymbol,
             clearSymbols = clearSymbols,
-            evaluate = evaluate,
+            equal = equal,
             acButton = acButton,
             addBracket = addBracket,
             invMode = invMode,
@@ -157,7 +157,7 @@ internal fun CalculatorKeyboard(
             toggleAngleMode = toggleAngleMode,
             deleteSymbol = deleteSymbol,
             clearSymbols = clearSymbols,
-            evaluate = evaluate,
+            equal = equal,
             acButton = acButton,
             addBracket = addBracket,
             invMode = invMode,
@@ -177,7 +177,7 @@ private fun PortraitKeyboard(
     toggleAngleMode: () -> Unit,
     deleteSymbol: () -> Unit,
     clearSymbols: () -> Unit,
-    evaluate: () -> Unit,
+    equal: () -> Unit,
     acButton: Boolean,
     addBracket: () -> Unit,
     invMode: Boolean,
@@ -318,7 +318,7 @@ private fun PortraitKeyboard(
                 KeyboardButtonLight(mainButtonModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit.dot) }
             }
             KeyboardButtonLight(mainButtonModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightTall, clearSymbols) { deleteSymbol() }
-            KeyboardButtonFilled(mainButtonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightTall) { evaluate() }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightTall) { equal() }
         }
 
         Spacer(modifier = Modifier.height(spacerHeight))
@@ -404,7 +404,7 @@ private fun LandscapeKeyboard(
     toggleAngleMode: () -> Unit,
     deleteSymbol: () -> Unit,
     clearSymbols: () -> Unit,
-    evaluate: () -> Unit,
+    equal: () -> Unit,
     acButton: Boolean,
     addBracket: () -> Unit,
     invMode: Boolean,
@@ -469,7 +469,7 @@ private fun LandscapeKeyboard(
                 }
                 KeyboardButtonLight(buttonModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
                 KeyboardButtonFilled(buttonModifier, IconPack.Plus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightShort) { evaluate() }
+                KeyboardButtonFilled(buttonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightShort) { equal() }
             }
         } else {
             KeypadFlow(
@@ -525,7 +525,7 @@ private fun LandscapeKeyboard(
                 }
                 KeyboardButtonLight(buttonModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
                 KeyboardButtonFilled(buttonModifier, IconPack.Plus, allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightShort) { evaluate() }
+                KeyboardButtonFilled(buttonModifier, IconPack.Equal, allowVibration, KeyboardButtonContentHeightShort) { equal() }
             }
         }
     }
@@ -542,7 +542,7 @@ private fun PreviewPortraitKeyboard() {
         clearSymbols = {},
         deleteSymbol = {},
         toggleAngleMode = {},
-        evaluate = {},
+        equal = {},
         allowVibration = false,
         middleZero = false,
         acButton = true,
@@ -563,7 +563,7 @@ private fun PreviewLandscapeKeyboard() {
         clearSymbols = {},
         deleteSymbol = {},
         toggleAngleMode = {},
-        evaluate = {},
+        equal = {},
         allowVibration = false,
         middleZero = false,
         acButton = true,

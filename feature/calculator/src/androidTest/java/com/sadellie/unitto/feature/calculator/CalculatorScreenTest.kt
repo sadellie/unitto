@@ -48,7 +48,7 @@ class CalculatorScreenTest {
                 deleteTokens = {},
                 onCursorChange = {},
                 toggleCalculatorMode = {},
-                evaluate = {},
+                equal = {},
                 clearHistory = {},
                 addBracket = {}
             )
@@ -81,7 +81,7 @@ class CalculatorScreenTest {
                 deleteTokens = {},
                 onCursorChange = {},
                 toggleCalculatorMode = {},
-                evaluate = {},
+                equal = {},
                 clearHistory = {},
                 addBracket = {}
             )
@@ -115,7 +115,7 @@ class CalculatorScreenTest {
                 deleteTokens = {},
                 onCursorChange = {},
                 toggleCalculatorMode = {},
-                evaluate = {},
+                equal = {},
                 clearHistory = {},
                 addBracket = {}
             )
