@@ -45,6 +45,7 @@ internal class UpdateInputAction : ActionCallback {
     ) = withContext(Dispatchers.Default) {
         // Get new input
         val input = parameters[UnittoCalculatorWidget.inputKey] ?: return@withContext
+        val equalClicked = parameters[UnittoCalculatorWidget.equalClickedKey] ?: return@withContext
         val precision = parameters[UnittoCalculatorWidget.precisionKey] ?: return@withContext
         val outputFormat = parameters[UnittoCalculatorWidget.outputFormatKey] ?: return@withContext
 
@@ -62,6 +63,7 @@ internal class UpdateInputAction : ActionCallback {
             preferences.apply {
                 this[UnittoCalculatorWidget.inputPrefKey] = input
                 this[UnittoCalculatorWidget.outputPrefKey] = output
+                this[UnittoCalculatorWidget.equalClickedPrefKey] = equalClicked
             }
         }
 
@@ -95,11 +97,13 @@ internal class RestartWidget : ActionCallback {
 
 internal fun updateInputAction(
     input: String,
+    equalClicked: Boolean,
     precision: Int,
     outputFormat: Int
 ): Action = actionRunCallback<UpdateInputAction>(
     actionParametersOf(
         UnittoCalculatorWidget.inputKey to input,
+        UnittoCalculatorWidget.equalClickedKey to equalClicked,
         UnittoCalculatorWidget.precisionKey to precision,
         UnittoCalculatorWidget.outputFormatKey to outputFormat
     )

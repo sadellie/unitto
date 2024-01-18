@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -75,11 +76,13 @@ class UnittoCalculatorWidget : GlanceAppWidget() {
     companion object {
         val inputKey = ActionParameters.Key<String>("inputKey")
         val outputKey = ActionParameters.Key<String>("outputKey")
+        val equalClickedKey = ActionParameters.Key<Boolean>("equalClickedKey")
         val precisionKey = ActionParameters.Key<Int>("precisionKey")
         val outputFormatKey = ActionParameters.Key<Int>("outputFormatKey")
 
         val inputPrefKey = stringPreferencesKey("GLANCE_INPUT")
         val outputPrefKey = stringPreferencesKey("GLANCE_OUTPUT")
+        val equalClickedPrefKey = booleanPreferencesKey("GLANCE_EQUAL_CLICKED")
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -122,10 +125,15 @@ private fun ReadyUI(
     val glancePrefs = currentState<Preferences>()
     val input = glancePrefs[UnittoCalculatorWidget.inputPrefKey] ?: ""
     val output = glancePrefs[UnittoCalculatorWidget.outputPrefKey] ?: ""
+    val equalClicked = glancePrefs[UnittoCalculatorWidget.equalClickedPrefKey] ?: false
     val formatterSymbols = AllFormatterSymbols.getById(appPrefs.separator)
 
-    fun runCalculateAction(input: String): Action = updateInputAction(
+    fun runCalculateAction(
+        input: String,
+        equalClicked: Boolean = false
+    ): Action = updateInputAction(
         input = input,
+        equalClicked = equalClicked,
         precision = appPrefs.precision,
         outputFormat = appPrefs.outputFormat
     )
@@ -168,10 +176,14 @@ private fun ReadyUI(
             modifier = GlanceModifier
                 .padding(8.dp),
             addTokenAction = {
-                runCalculateAction(input.addToken(it))
+                runCalculateAction(
+                    // Clear input if equal is clicked and new token is a Digit
+                    (if (equalClicked and Token.Digit.allWithDot.contains(it)) "" else input)
+                        .addToken(it)
+                )
             },
-            replaceInputAction = {
-                runCalculateAction(it)
+            clearInputAction = {
+                runCalculateAction("")
             },
             addBracketAction = {
                 runCalculateAction(input.addBracket())
@@ -182,7 +194,7 @@ private fun ReadyUI(
             equalAction = equal@{
                 if (output.isEmpty()) return@equal actionRunCallback<UpdateInputAction>()
 
-                runCalculateAction(output)
+                runCalculateAction(output, true)
             },
             useDot = formatterSymbols.fractional == Token.Digit.dot,
             middleZero = appPrefs.middleZero
@@ -240,7 +252,7 @@ private fun TextField(
 private fun GlanceKeyboard(
     modifier: GlanceModifier,
     addTokenAction: (String) -> Action,
-    replaceInputAction: (String) -> Action,
+    clearInputAction: () -> Action,
     addBracketAction: () -> Action,
     deleteTokenAction: () -> Action,
     equalAction: () -> Action,
@@ -258,7 +270,7 @@ private fun GlanceKeyboard(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.tertiaryContainer,
             iconRes = R.drawable.clear,
-            onClick = replaceInputAction("")
+            onClick = clearInputAction()
         )
         IconButton(
             glanceModifier = buttonModifier,
