@@ -21,7 +21,7 @@
     <application>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.sadellie.unitto.BackupManager"
+            android:authorities=".BackupManager"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
