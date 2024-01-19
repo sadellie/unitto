@@ -29,6 +29,7 @@ import com.sadellie.unitto.data.userprefs.USER_PREFERENCES
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -87,11 +88,13 @@ class BackupManager {
                                     .file
                                     .writeFromZip(zipInputStream)
                             }
+
+                            else -> throw Exception("Backup file contains unknown files")
                         }
                         entry = zipInputStream.nextEntry
                     }
                 }
-            } ?: return@withContext // Don't restart activity if the file is not found
+            } ?: throw FileNotFoundException() // Don't restart activity if the file is not found
 
         context.restartActivity()
     }
