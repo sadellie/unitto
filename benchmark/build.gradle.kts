@@ -38,8 +38,8 @@ android {
         // for easy local/CI testing.
         create("benchmark") {
             isDebuggable = true
-            signingConfig = getByName("debug").signingConfig
-            matchingFallbacks += listOf("release")
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks.add("release")
         }
     }
 

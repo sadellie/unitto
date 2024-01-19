@@ -24,6 +24,7 @@ plugins {
     id("unitto.android.application.jacoco")
     id("jacoco")
     id("unitto.android.hilt")
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -73,8 +74,11 @@ android {
         }
         create("benchmark") {
             initWith(buildTypes.getByName("release"))
+            matchingFallbacks.add("release")
             signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks += listOf("release")
+            // Only use benchmark proguard rules
+            proguardFiles("benchmark-rules.pro")
+            isMinifyEnabled = true
         }
     }
 
@@ -122,6 +126,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 dependencies {
     implementation(libs.androidx.core.core.ktx)
+    implementation(libs.androidx.profileinstaller.profileinstaller)
     coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs)
 
     implementation(libs.androidx.compose.material3)
@@ -144,4 +149,12 @@ dependencies {
     implementation(project(":data:userprefs"))
     implementation(project(":core:ui"))
     implementation(project(":core:base"))
+
+    baselineProfile(project(":benchmark"))
+}
+
+baselineProfile {
+    // Don't build on every iteration of a full assemble.
+    // Instead enable generation directly for the release build variant.
+    automaticGenerationDuringBuild = false
 }

@@ -40,6 +40,27 @@ Read [this](https://github.com/sadellie/unitto/wiki/Security).
 ## 🤖 Custom ROM developers
 Leave.
 
+## 🤓 Nerds
+
+<details>
+<summary>Benchmarks and Baseline profile</summary>
+
+```
+Pixel 8 - 14
+
+StartupBenchmark_startupPrecompiledWithBaselineProfile
+timeToInitialDisplayMs   min 183.5,   median 219.9,   max 247.3
+
+StartupBenchmark_startupWithoutPreCompilation
+timeToInitialDisplayMs   min 223.6,   median 328.0,   max 663.8
+
+StartupBenchmark_startupWithPartialCompilationAndDisabledBaselineProfile
+timeToInitialDisplayMs   min 264.8,   median 308.0,   max 376.1
+StartupBenchmark_startupFullyPrecompiled
+timeToInitialDisplayMs   min 314.4,   median 336.9,   max 388.3
+```
+</details>
+
 ## 🔎 Additional
 Terms and Conditions: https://sadellie.github.io/unitto/terms
 
