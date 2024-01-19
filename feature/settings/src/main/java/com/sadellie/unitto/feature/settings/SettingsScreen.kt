@@ -313,11 +313,11 @@ private fun <T> ActivityResultLauncher<T>.launchSafely(input: T) {
 }
 
 private fun backupFileName(): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
-    return "${ZonedDateTime.now().format(formatter)}.zip"
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")
+    return "${ZonedDateTime.now().format(formatter)}.unitto"
 }
 
-private const val backupMimeType = "application/zip"
+private const val backupMimeType = "application/octet-stream"
 
 @Preview
 @Composable
