@@ -66,7 +66,7 @@ fun BasicKeyboardButton(
                 onLongClick = if (onLongClick != null) { { onLongClick(); vibrate() } } else null,
                 interactionSource = remember { MutableInteractionSource() },
                 cornerRadiusRange = 30..50,
-                animationSpec = tween(250)
+                animationSpec = tween(200)
             )
             .background(containerColor)
         ,
