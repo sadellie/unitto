@@ -34,6 +34,5 @@ internal sealed class LeftSideUIState {
         val shownUnitGroups: List<UnitGroup>,
         val unitGroup: UnitGroup?,
         val sorting: UnitsListSorting,
-        val verticalList: Boolean,
     ) : LeftSideUIState()
 }

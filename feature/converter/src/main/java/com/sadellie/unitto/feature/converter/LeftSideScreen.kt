@@ -41,13 +41,12 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.SearchPlaceholder
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoSearchBar
+import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.converter.MyUnitIDS
 import com.sadellie.unitto.feature.converter.components.BasicUnitListItem
-import com.sadellie.unitto.feature.converter.components.ChipsFlexRow
 import com.sadellie.unitto.feature.converter.components.ChipsRow
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.UnitGroupHeader
@@ -120,22 +119,13 @@ private fun LeftSideScreen(
                     scrollBehavior = scrollBehavior
                 )
 
-                if (uiState.verticalList) {
-                    ChipsFlexRow(
-                        chosenUnitGroup = uiState.unitGroup,
-                        items = uiState.shownUnitGroups,
-                        selectAction = updateUnitGroup,
-                        navigateToSettingsAction = navigateToUnitGroups
-                    )
-                } else {
-                    ChipsRow(
-                        chosenUnitGroup = uiState.unitGroup,
-                        items = uiState.shownUnitGroups,
-                        selectAction = updateUnitGroup,
-                        lazyListState = chipsRowLazyListState,
-                        navigateToSettingsAction = navigateToUnitGroups
-                    )
-                }
+                ChipsRow(
+                    chosenUnitGroup = uiState.unitGroup,
+                    items = uiState.shownUnitGroups,
+                    selectAction = updateUnitGroup,
+                    lazyListState = chipsRowLazyListState,
+                    navigateToSettingsAction = navigateToUnitGroups
+                )
             }
         }
     ) { paddingValues ->
@@ -203,7 +193,6 @@ private fun LeftSideScreenPreview() {
             shownUnitGroups = listOf(UnitGroup.LENGTH, UnitGroup.TEMPERATURE, UnitGroup.CURRENCY),
             unitGroup = units.keys.toList().first(),
             sorting = UnitsListSorting.USAGE,
-            verticalList = false
         ),
         onQueryChange = {},
         toggleFavoritesOnly = {},

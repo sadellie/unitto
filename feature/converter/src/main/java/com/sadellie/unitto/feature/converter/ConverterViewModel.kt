@@ -183,7 +183,6 @@ internal class ConverterViewModel @Inject constructor(
             sorting = prefs.unitConverterSorting,
             shownUnitGroups = prefs.shownUnitGroups,
             favorites = prefs.unitConverterFavoritesOnly,
-            verticalList = prefs.enableToolsExperiment,
             query = query,
             units = units,
             unitGroup = unitGroup
