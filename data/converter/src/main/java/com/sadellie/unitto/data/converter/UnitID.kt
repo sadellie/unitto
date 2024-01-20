@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package com.sadellie.unitto.data.converter
  *
  * NEVER CHANGE IDS THAT ARE ALREADY HERE, THESE IDS ARE USED IN DATABASE
  */
-object MyUnitIDS {
+object UnitID {
     // LENGTH
     const val attometer = "attometer"
     const val nanometer = "nanometer"

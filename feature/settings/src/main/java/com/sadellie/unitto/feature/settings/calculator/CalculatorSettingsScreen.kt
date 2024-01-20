@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,9 +31,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 
 @Composable
 internal fun CalculatorSettingsRoute(
@@ -41,7 +41,7 @@ internal fun CalculatorSettingsRoute(
     navigateUpAction: () -> Unit,
 ) {
     when (val prefs = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        CalculatorSettingsUIState.Loading -> UnittoEmptyScreen()
+        CalculatorSettingsUIState.Loading -> EmptyScreen()
         else -> {
             CalculatorSettingsScreen(
                 uiState = prefs,
@@ -61,7 +61,7 @@ private fun CalculatorSettingsScreen(
     updatePartialHistoryView: (Boolean) -> Unit,
     updateRpnMode: (Boolean) -> Unit,
 ) {
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.calculator_title),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
@@ -94,7 +94,7 @@ private fun CalculatorSettingsScreen(
                 when (state) {
                     is CalculatorSettingsUIState.Standard -> {
                         Column {
-                            UnittoListItem(
+                            ListItem(
                                 headlineText = stringResource(R.string.settings_partial_history_view),
                                 icon = Icons.Default.Timer,
                                 supportingText = stringResource(R.string.settings_partial_history_view_support),

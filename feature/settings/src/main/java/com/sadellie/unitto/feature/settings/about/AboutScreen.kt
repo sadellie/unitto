@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,9 +47,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
@@ -62,7 +62,7 @@ internal fun AboutRoute(
     navigateToThirdParty: () -> Unit,
 ) {
     when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
-        null -> UnittoEmptyScreen()
+        null -> EmptyScreen()
         else -> {
             AboutScreen(
                 prefs = prefs,
@@ -85,14 +85,14 @@ private fun AboutScreen(
     var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_about_unitto),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             // CURRENCY RATE NOTE
             item {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.AutoMirrored.Filled.Help,
                     headlineText = stringResource(R.string.settings_currency_rates_note_title),
                     modifier = Modifier.clickable { showDialog = true }
@@ -101,7 +101,7 @@ private fun AboutScreen(
 
             // TERMS AND CONDITIONS
             item {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.PrivacyTip,
                     headlineText = stringResource(R.string.settings_terms_and_conditions),
                     modifier = Modifier.clickable {
@@ -115,7 +115,7 @@ private fun AboutScreen(
 
             // PRIVACY POLICY
             item {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.Policy,
                     headlineText = stringResource(R.string.settings_privacy_policy),
                     modifier = Modifier.clickable {
@@ -129,7 +129,7 @@ private fun AboutScreen(
 
             // OPEN SOURCE
             item {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.Code,
                     headlineText = stringResource(R.string.settings_view_source_code),
                     modifier = Modifier.clickable {
@@ -143,7 +143,7 @@ private fun AboutScreen(
 
             // THIRD PARTY
             item {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.Copyright,
                     headlineText = stringResource(R.string.settings_third_party_licenses),
                     modifier = Modifier.clickable { navigateToThirdParty() }
@@ -152,7 +152,7 @@ private fun AboutScreen(
 
             // APP VERSION
             item {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.Info,
                     headlineText = stringResource(R.string.settings_version_name),
                     supportingText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",

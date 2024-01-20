@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,7 +107,7 @@ fun rememberDrawerState(
 }
 
 @Composable
-fun UnittoNavigationDrawer(
+fun NavigationDrawer(
     modifier: Modifier,
     gesturesEnabled: Boolean,
     state: DrawerState = rememberDrawerState(),
@@ -275,7 +275,7 @@ private fun PreviewUnittoModalNavigationDrawerClose() {
     val corScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Open)
 
-    UnittoNavigationDrawer(
+    NavigationDrawer(
         modifier = Modifier,
         state = drawerState,
         gesturesEnabled = true,

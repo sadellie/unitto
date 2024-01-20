@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun UnittoListItem(
+fun ListItem(
     modifier: Modifier = Modifier,
     headlineContent: @Composable () -> Unit,
     supportingContent: @Composable (() -> Unit)? = null,
@@ -90,14 +90,14 @@ fun UnittoListItem(
 }
 
 @Composable
-fun UnittoListItem(
+fun ListItem(
     modifier: Modifier = Modifier,
     headlineText: String,
     supportingText: String? = null,
     icon: ImageVector,
     iconDescription: String = headlineText,
     trailing: @Composable (() -> Unit)? = null,
-) = UnittoListItem(
+) = ListItem(
     modifier = modifier,
     headlineContent = { Text(headlineText) },
     supportingContent = supportingText?.let { { Text(it) } },
@@ -113,7 +113,7 @@ fun UnittoListItem(
 )
 
 @Composable
-fun UnittoListItem(
+fun ListItem(
     modifier: Modifier = Modifier,
     headlineText: String,
     icon: ImageVector,
@@ -121,7 +121,7 @@ fun UnittoListItem(
     supportingText: String? = null,
     switchState: Boolean,
     onSwitchChange: (Boolean) -> Unit
-) = UnittoListItem(
+) = ListItem(
     modifier = modifier
         .clickable(
             interactionSource = remember { MutableInteractionSource() },
@@ -143,9 +143,9 @@ fun UnittoListItem(
 
 @Preview
 @Composable
-fun PreviewUnittoListItem1() {
+fun PreviewListItem1() {
     Column {
-        UnittoListItem(
+        ListItem(
             modifier = Modifier,
             headlineContent = { Text("Headline") },
             supportingContent = { Text("Support") },
@@ -157,7 +157,7 @@ fun PreviewUnittoListItem1() {
             },
         )
 
-        UnittoListItem(
+        ListItem(
             modifier = Modifier,
             headlineContent = { Text("Headline") },
             leadingContent = {
@@ -165,7 +165,7 @@ fun PreviewUnittoListItem1() {
             },
         )
 
-        UnittoListItem(
+        ListItem(
             icon = Icons.Default.Home,
             headlineText = "Text text",
             supportingText = "Support text support text support text support text",
@@ -174,7 +174,7 @@ fun PreviewUnittoListItem1() {
             iconDescription = ""
         )
 
-        UnittoListItem(
+        ListItem(
             icon = Icons.Default.Home,
             headlineText = "Text text",
             supportingText = "Support text support text support text support text",

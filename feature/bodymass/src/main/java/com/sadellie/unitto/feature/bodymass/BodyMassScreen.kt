@@ -54,8 +54,8 @@ import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.SettingsButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.openLink
@@ -71,7 +71,7 @@ internal fun BodyMassRoute(
     viewModel: BodyMassViewModel = hiltViewModel()
 ) {
     when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        UIState.Loading -> UnittoEmptyScreen()
+        UIState.Loading -> EmptyScreen()
         is UIState.Ready -> BodyMassScreen(
             uiState = uiState,
             updateHeight1 = viewModel::updateHeight1,
@@ -104,7 +104,7 @@ private fun BodyMassScreen(
         )
     }
 
-    UnittoScreenWithTopBar(
+    ScaffoldWithTopBar(
         title = { Text(stringResource(R.string.body_mass_title)) },
         navigationIcon = { MenuButton(openDrawer) },
         actions = { SettingsButton(navigateToSettings) }

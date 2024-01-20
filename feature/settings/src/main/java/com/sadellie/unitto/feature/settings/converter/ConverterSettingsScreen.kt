@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,9 +38,9 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.ConverterPreferences
@@ -54,7 +54,7 @@ internal fun ConverterSettingsRoute(
     navigateToUnitsGroup: () -> Unit,
 ) {
     when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
-        null -> UnittoEmptyScreen()
+        null -> EmptyScreen()
         else -> {
             ConverterSettingsScreen(
                 prefs = prefs,
@@ -77,13 +77,13 @@ private fun ConverterSettingsScreen(
 ) {
     var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.unit_converter_title),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             item("unit group") {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.AutoMirrored.Filled.Rule,
                     headlineText = stringResource(R.string.settings_unit_groups_title),
                     supportingText = stringResource(R.string.settings_unit_groups_support),
@@ -92,7 +92,7 @@ private fun ConverterSettingsScreen(
             }
 
             item("units sorting") {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.AutoMirrored.Filled.Sort,
                     headlineText = stringResource(R.string.settings_units_sorting),
                     supportingText = stringResource(R.string.settings_units_sorting_support),
@@ -101,7 +101,7 @@ private fun ConverterSettingsScreen(
             }
 
             item("format time") {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.Timer,
                     headlineText = stringResource(R.string.settings_format_time),
                     supportingText = stringResource(R.string.settings_format_time_support),

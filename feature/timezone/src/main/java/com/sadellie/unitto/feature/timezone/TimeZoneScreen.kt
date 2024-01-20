@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,8 +75,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.datetimepicker.TimePickerDialog
 import com.sadellie.unitto.data.model.timezone.FavoriteZone
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
@@ -99,7 +99,7 @@ internal fun TimeZoneRoute(
     navigateToAddTimeZone: (ZonedDateTime) -> Unit,
 ) {
     when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        TimeZoneUIState.Loading -> UnittoEmptyScreen()
+        TimeZoneUIState.Loading -> EmptyScreen()
         is TimeZoneUIState.Ready -> {
             TimeZoneScreen(
                 uiState = uiState,
@@ -177,7 +177,7 @@ private fun TimeZoneScreen(
         }
     )
 
-    UnittoScreenWithTopBar(
+    ScaffoldWithTopBar(
         title = { Text(stringResource(R.string.time_zone_title)) },
         navigationIcon = { MenuButton(openMenu) },
         actions = { SettingsButton(navigateToSettings) },

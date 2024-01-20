@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ class UnitsRepositoryImpl @Inject constructor(
     private val currencyRatesDao: CurrencyRatesDao,
     @ApplicationContext private val mContext: Context,
 ) : UnitsRepository {
-    private val myUnits = MutableStateFlow(
+    private val _inMemoryUnits = MutableStateFlow(
         lengthCollection +
                 currencyCollection +
                 massCollection +
@@ -100,9 +100,9 @@ class UnitsRepositoryImpl @Inject constructor(
                 fuelConsumptionCollection
     )
 
-    override val allUnits: Flow<List<AbstractUnit>> = combine(
+    override val units: Flow<List<AbstractUnit>> = combine(
         unitsDao.getAllFlow(),
-        myUnits
+        _inMemoryUnits
     ) { basedList, inMemoryList ->
         return@combine inMemoryList.map { inMemoryUnit ->
             val inBaseUnit = basedList.find { it.unitId == inMemoryUnit.id }
@@ -117,11 +117,11 @@ class UnitsRepositoryImpl @Inject constructor(
         .flowOn(Dispatchers.IO)
 
     override suspend fun getById(id: String): AbstractUnit {
-        return allUnits.first().first { it.id == id }
+        return units.first().first { it.id == id }
     }
 
     override suspend fun getCollection(group: UnitGroup): List<AbstractUnit> {
-        return allUnits.first().filter { it.group == group }
+        return units.first().filter { it.group == group }
     }
 
     override suspend fun favorite(unit: AbstractUnit) = withContext(Dispatchers.IO) {
@@ -213,7 +213,7 @@ class UnitsRepositoryImpl @Inject constructor(
                 Log.d("UnitsRepository", "Skipped update: $e")
             }
         }
-        myUnits.update { units ->
+        _inMemoryUnits.update { units ->
             units.map { localUnit ->
                 if (localUnit.group != UnitGroup.CURRENCY) return@map localUnit
                 if (localUnit !is ReverseUnit) return@map localUnit
@@ -246,7 +246,7 @@ class UnitsRepositoryImpl @Inject constructor(
     ): Map<UnitGroup, List<AbstractUnit>> {
         // Leave only shown unit groups
         var units: Sequence<AbstractUnit> = if (unitGroup == null) {
-            allUnits.first().filter { it.group in shownUnitGroups }
+            units.first().filter { it.group in shownUnitGroups }
         } else {
             getCollection(unitGroup)
         }.asSequence()

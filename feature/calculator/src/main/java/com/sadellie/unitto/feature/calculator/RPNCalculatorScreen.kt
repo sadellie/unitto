@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import io.github.sadellie.evaluatto.RPNCalculation
 import java.math.BigDecimal
@@ -51,7 +51,7 @@ internal fun RPNCalculatorRoute(
     viewModel: RPNCalculatorViewModel = hiltViewModel(),
 ) {
     when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        RPNCalculatorUIState.Loading -> UnittoEmptyScreen()
+        RPNCalculatorUIState.Loading -> EmptyScreen()
         is RPNCalculatorUIState.Ready -> RPNCalculatorScreen(
             uiState = uiState,
             openDrawer = openDrawer,
@@ -72,7 +72,7 @@ internal fun RPNCalculatorScreen(
     onCalculationClick: (RPNCalculation) -> Unit,
     onInputEditClick: (RPNInputEdit) -> Unit,
 ) {
-    UnittoScreenWithTopBar(
+    ScaffoldWithTopBar(
         title = { Text(stringResource(id = R.string.calculator_title)) },
         navigationIcon = { MenuButton(openDrawer) },
         actions = { SettingsButton(navigateToSettings) }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ import com.sadellie.unitto.core.ui.common.textfield.getTextField
 import com.sadellie.unitto.data.common.combine
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.converter.MyUnitIDS
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.repository.UnitsRepository
@@ -169,7 +169,7 @@ internal class ConverterViewModel @Inject constructor(
         _leftUnits,
         _leftUnitGroup,
         userPrefsRepository.converterPrefs,
-        unitsRepo.allUnits
+        unitsRepo.units
     ) { unitFrom, query, units, unitGroup, prefs, _ ->
         unitFrom ?: return@combine LeftSideUIState.Loading
 
@@ -206,7 +206,7 @@ internal class ConverterViewModel @Inject constructor(
         _rightUnits,
         userPrefsRepository.converterPrefs,
         _currenciesState,
-        unitsRepo.allUnits,
+        unitsRepo.units,
     ) { unitFrom, unitTo, input, calculation, query, units, prefs, currenciesState, _ ->
         unitFrom ?: return@combine RightSideUIState.Loading
         unitTo ?: return@combine RightSideUIState.Loading
@@ -440,7 +440,7 @@ internal class ConverterViewModel @Inject constructor(
         input2: TextFieldValue,
         formatTime: Boolean,
     ) = viewModelScope.launch(Dispatchers.Default) {
-        val footInchInput = unitFrom.id == MyUnitIDS.foot
+        val footInchInput = unitFrom.id == UnitID.foot
 
         if (footInchInput) { _calculation.update { null } }
 
@@ -470,12 +470,12 @@ internal class ConverterViewModel @Inject constructor(
             var conversion = unitFrom.convert(unitTo, calculated1)
             if (footInchInput) {
                 // Converted from second text field too
-                val inches = unitsRepo.getById(MyUnitIDS.inch) as DefaultUnit
+                val inches = unitsRepo.getById(UnitID.inch) as DefaultUnit
                 conversion += inches.convert(unitTo, calculated2)
             }
             when {
                 (unitFrom.group == UnitGroup.TIME) and (formatTime) -> formatTime(calculated1.multiply(unitFrom.basicUnit))
-                unitTo.id == MyUnitIDS.foot -> formatFootInch(conversion, unitTo, unitsRepo.getById(MyUnitIDS.inch) as DefaultUnit)
+                unitTo.id == UnitID.foot -> formatFootInch(conversion, unitTo, unitsRepo.getById(UnitID.inch) as DefaultUnit)
                 else -> ConverterResult.Default(conversion)
             }
         } catch (e: Exception) {
@@ -511,8 +511,8 @@ internal class ConverterViewModel @Inject constructor(
                 _unitTo.update { unitTo }
                 if (unitFrom.group == UnitGroup.CURRENCY) updateCurrencyRates(unitFrom)
             } catch (e: NoSuchElementException) {
-                val unitFrom = unitsRepo.getById(MyUnitIDS.kilometer)
-                val unitTo = unitsRepo.getById(MyUnitIDS.mile)
+                val unitFrom = unitsRepo.getById(UnitID.kilometer)
+                val unitTo = unitsRepo.getById(UnitID.mile)
 
                 _unitFrom.update { unitFrom }
                 _unitTo.update { unitTo }

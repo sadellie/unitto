@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,17 +76,17 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
+import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
+import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.SettingsButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.data.common.format
-import com.sadellie.unitto.data.converter.MyUnitIDS
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
@@ -138,7 +138,7 @@ private fun ConverterScreen(
     addBracket: () -> Unit,
 ) {
     when (uiState) {
-        UnitConverterUIState.Loading -> UnittoEmptyScreen()
+        UnitConverterUIState.Loading -> EmptyScreen()
 
         is UnitConverterUIState.NumberBase -> {
             UnitConverterTopBar(
@@ -189,7 +189,7 @@ private fun UnitConverterTopBar(
     navigateToSettings: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    UnittoScreenWithTopBar(
+    ScaffoldWithTopBar(
         title = { Text(stringResource(R.string.unit_converter_title)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         actions = {
@@ -319,7 +319,7 @@ private fun Default(
                     )
                 }
 
-                if (uiState.unitFrom.id == MyUnitIDS.foot) {
+                if (uiState.unitFrom.id == UnitID.foot) {
                     Row(
                         modifier = textFieldModifier,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)

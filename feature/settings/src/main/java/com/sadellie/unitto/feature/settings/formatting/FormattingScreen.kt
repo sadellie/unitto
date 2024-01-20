@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,10 +56,10 @@ import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.PagedIsland
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
-import com.sadellie.unitto.core.ui.common.UnittoSlider
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.Slider
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
@@ -73,7 +73,7 @@ fun FormattingRoute(
     navigateUpAction: () -> Unit,
 ) {
     when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        null -> UnittoEmptyScreen()
+        null -> EmptyScreen()
         else -> {
             FormattingScreen(
                 navigateUpAction = navigateUpAction,
@@ -110,7 +110,7 @@ fun FormattingScreen(
         }
     }
 
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_formatting),
         navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { paddingValues ->
@@ -149,7 +149,7 @@ fun FormattingScreen(
             }
 
             item("precision_label") {
-                UnittoListItem(
+                ListItem(
                     leadingContent = {
                         Icon(
                             Icons.Default.Architecture,
@@ -172,7 +172,7 @@ fun FormattingScreen(
             }
 
             item("precision_slider") {
-                UnittoSlider(
+                Slider(
                     modifier = Modifier.padding(start = 56.dp, end = 16.dp),
                     value = uiState.precision.toFloat(),
                     valueRange = precisions,
@@ -181,7 +181,7 @@ fun FormattingScreen(
             }
 
             item("separator_label") {
-                UnittoListItem(
+                ListItem(
                     leadingContent = {
                         Icon(Icons.Default._123, stringResource(R.string.settings_separator))
                     },
@@ -218,7 +218,7 @@ fun FormattingScreen(
             }
 
             item("output_format_label") {
-                UnittoListItem(
+                ListItem(
                     leadingContent = {
                         Icon(Icons.Default.EMobiledata, stringResource(R.string.settings_precision))
                     },

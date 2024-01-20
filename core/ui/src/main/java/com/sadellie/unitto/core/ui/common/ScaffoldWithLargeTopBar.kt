@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
  * @param content See [Scaffold]
  */
 @Composable
-fun UnittoScreenWithLargeTopBar(
+fun ScaffoldWithLargeTopBar(
     title: String,
     navigationIcon: @Composable () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},

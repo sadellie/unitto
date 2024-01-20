@@ -63,7 +63,7 @@ import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-class UnittoCalculatorWidget : GlanceAppWidget() {
+class CalculatorWidget : GlanceAppWidget() {
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
@@ -123,9 +123,9 @@ private fun ReadyUI(
     appPrefs: CalculatorPreferences,
 ) {
     val glancePrefs = currentState<Preferences>()
-    val input = glancePrefs[UnittoCalculatorWidget.inputPrefKey] ?: ""
-    val output = glancePrefs[UnittoCalculatorWidget.outputPrefKey] ?: ""
-    val equalClicked = glancePrefs[UnittoCalculatorWidget.equalClickedPrefKey] ?: false
+    val input = glancePrefs[CalculatorWidget.inputPrefKey] ?: ""
+    val output = glancePrefs[CalculatorWidget.outputPrefKey] ?: ""
+    val equalClicked = glancePrefs[CalculatorWidget.equalClickedPrefKey] ?: false
     val formatterSymbols = AllFormatterSymbols.getById(appPrefs.separator)
 
     fun runCalculateAction(

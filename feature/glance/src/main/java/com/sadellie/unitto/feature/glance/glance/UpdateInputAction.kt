@@ -44,10 +44,10 @@ internal class UpdateInputAction : ActionCallback {
         parameters: ActionParameters
     ) = withContext(Dispatchers.Default) {
         // Get new input
-        val input = parameters[UnittoCalculatorWidget.inputKey] ?: return@withContext
-        val equalClicked = parameters[UnittoCalculatorWidget.equalClickedKey] ?: return@withContext
-        val precision = parameters[UnittoCalculatorWidget.precisionKey] ?: return@withContext
-        val outputFormat = parameters[UnittoCalculatorWidget.outputFormatKey] ?: return@withContext
+        val input = parameters[CalculatorWidget.inputKey] ?: return@withContext
+        val equalClicked = parameters[CalculatorWidget.equalClickedKey] ?: return@withContext
+        val precision = parameters[CalculatorWidget.precisionKey] ?: return@withContext
+        val outputFormat = parameters[CalculatorWidget.outputFormatKey] ?: return@withContext
 
         // calculate
         val output = try {
@@ -61,13 +61,13 @@ internal class UpdateInputAction : ActionCallback {
             glanceId = glanceId,
         ) { preferences ->
             preferences.apply {
-                this[UnittoCalculatorWidget.inputPrefKey] = input
-                this[UnittoCalculatorWidget.outputPrefKey] = output
-                this[UnittoCalculatorWidget.equalClickedPrefKey] = equalClicked
+                this[CalculatorWidget.inputPrefKey] = input
+                this[CalculatorWidget.outputPrefKey] = output
+                this[CalculatorWidget.equalClickedPrefKey] = equalClicked
             }
         }
 
-        UnittoCalculatorWidget().update(context, glanceId)
+        CalculatorWidget().update(context, glanceId)
     }
 }
 
@@ -77,7 +77,7 @@ internal class CopyResultAction : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters,
     ) {
-        val output = parameters[UnittoCalculatorWidget.outputKey]
+        val output = parameters[CalculatorWidget.outputKey]
         if (output.isNullOrEmpty()) return
 
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -91,7 +91,7 @@ internal class RestartWidget : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters
     ) {
-        UnittoCalculatorWidget().update(context, glanceId)
+        CalculatorWidget().update(context, glanceId)
     }
 }
 
@@ -102,10 +102,10 @@ internal fun updateInputAction(
     outputFormat: Int
 ): Action = actionRunCallback<UpdateInputAction>(
     actionParametersOf(
-        UnittoCalculatorWidget.inputKey to input,
-        UnittoCalculatorWidget.equalClickedKey to equalClicked,
-        UnittoCalculatorWidget.precisionKey to precision,
-        UnittoCalculatorWidget.outputFormatKey to outputFormat
+        CalculatorWidget.inputKey to input,
+        CalculatorWidget.equalClickedKey to equalClicked,
+        CalculatorWidget.precisionKey to precision,
+        CalculatorWidget.outputFormatKey to outputFormat
     )
 )
 
@@ -114,7 +114,7 @@ internal fun copyAction(
     fractional: String
 ): Action = actionRunCallback<CopyResultAction>(
     actionParametersOf(
-        UnittoCalculatorWidget.outputKey to output.replace(Token.Digit.dot, fractional)
+        CalculatorWidget.outputKey to output.replace(Token.Digit.dot, fractional)
     )
 )
 

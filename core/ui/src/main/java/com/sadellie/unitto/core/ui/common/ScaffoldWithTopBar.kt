@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,11 +31,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import com.sadellie.unitto.core.ui.WindowHeightSizeClass
-import com.sadellie.unitto.core.ui.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowHeightSizeClass
+import com.sadellie.unitto.core.ui.WindowWidthSizeClass
 
 /**
  * Template screen. Uses [Scaffold] and [CenterAlignedTopAppBar]
@@ -50,7 +50,7 @@ import com.sadellie.unitto.core.ui.LocalWindowSize
  * @param content See [Scaffold]
  */
 @Composable
-fun UnittoScreenWithTopBar(
+fun ScaffoldWithTopBar(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit,

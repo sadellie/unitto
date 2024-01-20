@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 
@@ -68,7 +68,7 @@ private fun LanguageScreen(
         navigateUp()
     }
 
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_language),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
@@ -87,7 +87,7 @@ private fun LanguageScreen(
 
             languages.forEach { (key, res) ->
                 item(key) {
-                    UnittoListItem(
+                    ListItem(
                         modifier = Modifier.clickable { changeLanguage(key) },
                         headlineContent = {
                             Text(stringResource(res))

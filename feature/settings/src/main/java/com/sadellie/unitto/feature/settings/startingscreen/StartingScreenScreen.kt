@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,9 +38,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.addShortcut
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.model.DrawerItem
 
 @Composable
@@ -49,7 +49,7 @@ internal fun StartingScreenRoute(
     navigateUp: () -> Unit
 ) {
     when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
-        null -> UnittoEmptyScreen()
+        null -> EmptyScreen()
         else -> {
             StartingScreenScreen(
                 startingScreen = prefs.startingScreen,
@@ -68,13 +68,13 @@ private fun StartingScreenScreen(
 ) {
     val mContext = LocalContext.current
 
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_starting_screen),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             items(DrawerItem.main, { it.graph }) { destination ->
-                UnittoListItem(
+                ListItem(
                     modifier = Modifier.clickable { updateStartingScreen(destination.graph) },
                     headlineContent = {
                         Text(stringResource(destination.name))

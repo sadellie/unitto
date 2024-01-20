@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.licenses.ALL_THIRD_PARTY
 
@@ -54,7 +54,7 @@ internal fun ThirdPartyLicensesScreen(
 ) {
     val mContext = LocalContext.current
 
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_third_party_licenses),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->

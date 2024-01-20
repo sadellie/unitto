@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ internal fun ColumnScope.SheetContent(
 
     tabs.forEach { drawerItem ->
         val selected = drawerItem.start == currentDestination
-        UnittoDrawerItem(
+        DrawerItem(
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
             destination = drawerItem,
             icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
@@ -94,7 +94,7 @@ internal fun ColumnScope.SheetContent(
     if (LocalWindowSize.current.heightSizeClass == WindowHeightSizeClass.Compact) {
         HorizontalDivider(Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
 
-        UnittoDrawerItem(
+        DrawerItem(
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
             destination = DrawerItem.Settings,
             icon = DrawerItem.Settings.defaultIcon,
@@ -106,7 +106,7 @@ internal fun ColumnScope.SheetContent(
 
 @Preview
 @Composable
-private fun PreviewUnittoDrawerSheet() {
+private fun PreviewDrawerSheet() {
     Column {
         SheetContent(
             tabs = listOf(

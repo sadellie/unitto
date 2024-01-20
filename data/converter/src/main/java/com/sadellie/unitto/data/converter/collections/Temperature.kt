@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,28 +23,28 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.TemperatureUnit
-import com.sadellie.unitto.data.converter.MyUnitIDS
+import com.sadellie.unitto.data.converter.UnitID
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 internal val temperatureCollection: List<AbstractUnit> by lazy {
     listOf(
         TemperatureUnit(
-            id = MyUnitIDS.celsius,
+            id = UnitID.celsius,
             basicUnit = BigDecimal.ONE,
             group = UnitGroup.TEMPERATURE,
             displayName = R.string.unit_celsius,
             shortName = R.string.unit_celsius_short,
             customConvert = { unitTo, value ->
                 when (unitTo.id) {
-                    MyUnitIDS.fahrenheit -> {
+                    UnitID.fahrenheit -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
                             .times(BigDecimal.valueOf(1.8))
                             .plus(BigDecimal(32))
                     }
 
-                    MyUnitIDS.kelvin -> {
+                    UnitID.kelvin -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
                             .plus(BigDecimal.valueOf(273.15))
@@ -55,21 +55,21 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
             }
         ),
         TemperatureUnit(
-            id = MyUnitIDS.fahrenheit,
+            id = UnitID.fahrenheit,
             basicUnit = BigDecimal.ONE,
             group = UnitGroup.TEMPERATURE,
             displayName = R.string.unit_fahrenheit,
             shortName = R.string.unit_fahrenheit_short,
             customConvert = { unitTo, value ->
                 when (unitTo.id) {
-                    MyUnitIDS.celsius -> {
+                    UnitID.celsius -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
                             .minus(BigDecimal(32))
                             .times(BigDecimal(5))
                             .div(BigDecimal(9))
                     }
-                    MyUnitIDS.kelvin -> {
+                    UnitID.kelvin -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
                             .minus(BigDecimal(32))
@@ -82,19 +82,19 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
             }
         ),
         TemperatureUnit(
-            id = MyUnitIDS.kelvin,
+            id = UnitID.kelvin,
             basicUnit = BigDecimal.ONE,
             group = UnitGroup.TEMPERATURE,
             displayName = R.string.unit_kelvin,
             shortName = R.string.unit_kelvin_short,
             customConvert = { unitTo, value ->
                 when (unitTo.id) {
-                    MyUnitIDS.celsius -> {
+                    UnitID.celsius -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
                             .minus(BigDecimal(273.15))
                     }
-                    MyUnitIDS.fahrenheit -> {
+                    UnitID.fahrenheit -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
                             .minus(BigDecimal.valueOf(273.15))

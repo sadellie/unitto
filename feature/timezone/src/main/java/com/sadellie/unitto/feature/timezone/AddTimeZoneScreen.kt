@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.SearchPlaceholder
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoSearchBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.SearchBar
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.common.displayName
@@ -67,7 +67,7 @@ internal fun AddTimeZoneRoute(
     userTime: ZonedDateTime,
 ) {
     when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        AddTimeZoneUIState.Loading -> UnittoEmptyScreen()
+        AddTimeZoneUIState.Loading -> EmptyScreen()
         is AddTimeZoneUIState.Ready -> AddTimeZoneScreen(
             uiState = uiState,
             navigateUp = navigateUp,
@@ -95,7 +95,7 @@ fun AddTimeZoneScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            UnittoSearchBar(
+            SearchBar(
                 query = uiState.query,
                 onQueryChange = onQueryChange,
                 navigateUp = navigateUp,
@@ -117,7 +117,7 @@ fun AddTimeZoneScreen(
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(uiState.list, { it.timeZone.id }) {
-                        UnittoListItem(
+                        ListItem(
                             modifier = Modifier
                                 .animateItemPlacement()
                                 .clickable {

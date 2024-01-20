@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.common.UnittoButton
+import com.sadellie.unitto.core.ui.common.Button
 
 /**
  * Button to select a unit
@@ -51,7 +51,7 @@ internal fun UnitSelectionButton(
     label: String,
     enabled: Boolean = true
 ) {
-    UnittoButton(
+    Button(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
@@ -63,10 +63,10 @@ internal fun UnitSelectionButton(
             transitionSpec = {
                 if (targetState > initialState) {
                     (slideInVertically { height -> height } + fadeIn()) togetherWith
-                        slideOutVertically { height -> -height } + fadeOut()
+                            slideOutVertically { height -> -height } + fadeOut()
                 } else {
                     (slideInVertically { height -> -height } + fadeIn()) togetherWith
-                        slideOutVertically { height -> height } + fadeOut()
+                            slideOutVertically { height -> height } + fadeOut()
                 }.using(
                     SizeTransform(clip = false)
                 )

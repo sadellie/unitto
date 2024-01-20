@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.TopLevelDestinations
-import com.sadellie.unitto.data.converter.MyUnitIDS
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
@@ -123,11 +123,11 @@ fun Preferences.getUnitConverterFavoritesOnly(): Boolean {
 }
 
 fun Preferences.getLatestLeftSide(): String {
-    return this[PrefsKeys.LATEST_LEFT_SIDE] ?: MyUnitIDS.kilometer
+    return this[PrefsKeys.LATEST_LEFT_SIDE] ?: UnitID.kilometer
 }
 
 fun Preferences.getLatestRightSide(): String {
-    return this[PrefsKeys.LATEST_RIGHT_SIDE] ?: MyUnitIDS.mile
+    return this[PrefsKeys.LATEST_RIGHT_SIDE] ?: UnitID.mile
 }
 
 fun Preferences.getAcButton(): Boolean {

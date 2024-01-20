@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 @Composable
-fun UnittoSlider(
+fun Slider(
     modifier: Modifier = Modifier,
     value: Float,
     valueRange: ClosedFloatingPointRange<Float>,
@@ -162,7 +162,7 @@ private fun SquigglyTrack(
 private fun PreviewNewSlider() {
     var currentValue by remember { mutableFloatStateOf(9f) }
 
-    UnittoSlider(
+    com.sadellie.unitto.core.ui.common.Slider(
         value = currentValue,
         valueRange = 0f..16f,
         onValueChange = { currentValue = it }

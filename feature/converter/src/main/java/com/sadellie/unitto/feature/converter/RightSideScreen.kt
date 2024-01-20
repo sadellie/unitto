@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.SearchPlaceholder
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoSearchBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.SearchBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
@@ -46,7 +46,7 @@ import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
 import com.sadellie.unitto.data.model.unit.NumberBaseUnit
-import com.sadellie.unitto.data.converter.MyUnitIDS
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.feature.converter.components.BasicUnitListItem
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.UnitGroupHeader
@@ -61,7 +61,7 @@ internal fun RightSideRoute(
     when (
         val uiState = viewModel.rightSideUIState.collectAsStateWithLifecycle().value
     ) {
-        is RightSideUIState.Loading -> UnittoEmptyScreen()
+        is RightSideUIState.Loading -> EmptyScreen()
         is RightSideUIState.Ready ->
             RightSideScreen(
                 uiState = uiState,
@@ -90,7 +90,7 @@ private fun RightSideScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            UnittoSearchBar(
+            SearchBar(
                 query = uiState.query,
                 onQueryChange = onQueryChange,
                 navigateUp = navigateUp,
@@ -198,13 +198,13 @@ private fun formatUnitToSupportLabel(
 private fun RightSideScreenPreview() {
     val units: Map<UnitGroup, List<AbstractUnit>> = mapOf(
         UnitGroup.LENGTH to listOf(
-            NormalUnit(MyUnitIDS.meter, BigDecimal.valueOf(1.0E+18), UnitGroup.LENGTH, R.string.unit_meter, R.string.unit_meter_short),
-            NormalUnit(MyUnitIDS.kilometer, BigDecimal.valueOf(1.0E+21), UnitGroup.LENGTH, R.string.unit_kilometer, R.string.unit_kilometer_short),
-            NormalUnit(MyUnitIDS.nautical_mile, BigDecimal.valueOf(1.852E+21), UnitGroup.LENGTH, R.string.unit_nautical_mile, R.string.unit_nautical_mile_short),
-            NormalUnit(MyUnitIDS.inch, BigDecimal.valueOf(25_400_000_000_000_000), UnitGroup.LENGTH, R.string.unit_inch, R.string.unit_inch_short),
-            NormalUnit(MyUnitIDS.foot, BigDecimal.valueOf(304_800_000_000_002_200), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
-            NormalUnit(MyUnitIDS.yard, BigDecimal.valueOf(914_400_000_000_006_400), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
-            NormalUnit(MyUnitIDS.mile, BigDecimal.valueOf(1_609_344_000_000_010_500_000.0), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
+            NormalUnit(UnitID.meter, BigDecimal.valueOf(1.0E+18), UnitGroup.LENGTH, R.string.unit_meter, R.string.unit_meter_short),
+            NormalUnit(UnitID.kilometer, BigDecimal.valueOf(1.0E+21), UnitGroup.LENGTH, R.string.unit_kilometer, R.string.unit_kilometer_short),
+            NormalUnit(UnitID.nautical_mile, BigDecimal.valueOf(1.852E+21), UnitGroup.LENGTH, R.string.unit_nautical_mile, R.string.unit_nautical_mile_short),
+            NormalUnit(UnitID.inch, BigDecimal.valueOf(25_400_000_000_000_000), UnitGroup.LENGTH, R.string.unit_inch, R.string.unit_inch_short),
+            NormalUnit(UnitID.foot, BigDecimal.valueOf(304_800_000_000_002_200), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
+            NormalUnit(UnitID.yard, BigDecimal.valueOf(914_400_000_000_006_400), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
+            NormalUnit(UnitID.mile, BigDecimal.valueOf(1_609_344_000_000_010_500_000.0), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
         )
     )
 

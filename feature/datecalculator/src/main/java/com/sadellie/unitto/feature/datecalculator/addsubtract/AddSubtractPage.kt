@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ private fun AddSubtractView(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        mContext.addEvent(uiState.start, uiState.result)
+                        mContext.createEvent(uiState.start, uiState.result)
                     }
                 ) {
                     Icon(
@@ -277,7 +277,7 @@ private fun AddSubtractView(
     )
 }
 
-private fun Context.addEvent(start: ZonedDateTime, end: ZonedDateTime) {
+private fun Context.createEvent(start: ZonedDateTime, end: ZonedDateTime) {
     val startMillis: Long = start.toEpochSecond() * 1000
     val endMillis: Long = end.toEpochSecond() * 1000
     val intent = Intent(Intent.ACTION_INSERT)

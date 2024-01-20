@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -619,5 +619,5 @@ class AllUnitsTest {
         if (testedCount != totalCount) throw Exception("Didn't cover all units")
     }
 
-    private fun testWithUnits(block: MyUnitIDS.() -> Unit): Unit = with(MyUnitIDS, block = block)
+    private fun testWithUnits(block: UnitID.() -> Unit): Unit = with(UnitID, block = block)
 }

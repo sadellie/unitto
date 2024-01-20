@@ -21,6 +21,6 @@ package com.sadellie.unitto.feature.glance.glance
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
-class UnittoCalculatorWidgetReceiver : GlanceAppWidgetReceiver() {
-    override val glanceAppWidget: GlanceAppWidget = UnittoCalculatorWidget()
+class CalculatorWidgetReceiver : GlanceAppWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = CalculatorWidget()
 }

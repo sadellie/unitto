@@ -77,9 +77,9 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
@@ -111,7 +111,7 @@ internal fun SettingsRoute(
     }
 
     when (uiState) {
-        SettingsUIState.Loading -> UnittoEmptyScreen()
+        SettingsUIState.Loading -> EmptyScreen()
 
         is SettingsUIState.Ready -> SettingsScreen(
             uiState = uiState,
@@ -156,7 +156,7 @@ private fun SettingsScreen(
 
     BackHandler(uiState.backupInProgress) {}
 
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_title),
         navigationIcon = { NavigateUpButton(navigateUp) },
         actions = {
@@ -211,35 +211,35 @@ private fun SettingsScreen(
                 }
             }
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.Palette,
                 headlineText = stringResource(R.string.settings_display),
                 supportingText = stringResource(R.string.settings_display_support),
                 modifier = Modifier.clickable { navControllerAction(displayRoute) }
             )
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.Home,
                 headlineText = stringResource(R.string.settings_starting_screen),
                 supportingText = stringResource(R.string.settings_starting_screen_support),
                 modifier = Modifier.clickable { navControllerAction(startingScreenRoute) }
             )
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default._123,
                 headlineText = stringResource(R.string.settings_formatting),
                 supportingText = stringResource(R.string.settings_formatting_support),
                 modifier = Modifier.clickable { navControllerAction(formattingRoute) }
             )
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.Calculate,
                 headlineText = stringResource(R.string.calculator_title),
                 supportingText = stringResource(R.string.settings_calculator_support),
                 modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
             )
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.SwapHoriz,
                 headlineText = stringResource(R.string.unit_converter_title),
                 supportingText = stringResource(R.string.settings_converter_support),
@@ -248,7 +248,7 @@ private fun SettingsScreen(
 
             Header(stringResource(R.string.settings_additional))
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.Vibration,
                 headlineText = stringResource(R.string.settings_vibrations),
                 supportingText = stringResource(R.string.settings_vibrations_support),
@@ -262,7 +262,7 @@ private fun SettingsScreen(
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
-                UnittoListItem(
+                ListItem(
                     headlineText = stringResource(R.string.settings_clear_cache),
                     icon = Icons.Default.Cached,
                     modifier = Modifier.clickable { clearCache(); showToast(mContext, "👌") },
@@ -270,14 +270,14 @@ private fun SettingsScreen(
             }
 
             if (BuildConfig.STORE_LINK.isNotEmpty()) {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.RateReview,
                     headlineText = stringResource(R.string.settings_rate_this_app),
                     modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
                 )
             }
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.Info,
                 headlineText = stringResource(R.string.settings_about_unitto),
                 supportingText = stringResource(R.string.settings_about_unitto_support),

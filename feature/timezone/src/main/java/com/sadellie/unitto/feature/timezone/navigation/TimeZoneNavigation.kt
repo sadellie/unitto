@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
+import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
@@ -63,7 +63,7 @@ fun NavGraphBuilder.timeZoneGraph(
     ) {
         unittoComposable(start) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                UnittoEmptyScreen()
+                EmptyScreen()
                 return@unittoComposable
             }
 
@@ -85,7 +85,7 @@ fun NavGraphBuilder.timeZoneGraph(
             )
         ) { stackEntry ->
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                UnittoEmptyScreen()
+                EmptyScreen()
                 return@unittoComposable
             }
 

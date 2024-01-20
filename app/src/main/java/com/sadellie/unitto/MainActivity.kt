@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2022 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ internal class MainActivity : AppCompatActivity() {
                 LocalWindowSize provides calculateWindowSizeClass(this@MainActivity),
                 LocalNumberTypography provides numbersTypography
             ) {
-                UnittoApp(prefs)
+                App(prefs)
             }
         }
     }

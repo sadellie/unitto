@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,9 +60,9 @@ import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoListItem
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.icons.IconPack
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Clear
 import com.sadellie.unitto.feature.settings.components.ColorSelector
@@ -80,7 +80,7 @@ internal fun DisplayRoute(
     navigateToLanguages: () -> Unit,
 ) {
     when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
-        null -> UnittoEmptyScreen()
+        null -> EmptyScreen()
         else -> {
             DisplayScreen(
                 navigateUp = navigateUp,
@@ -149,7 +149,7 @@ private fun DisplayScreen(
     updateMiddleZero: (Boolean) -> Unit,
     navigateToLanguages: () -> Unit,
 ) {
-    UnittoScreenWithLargeTopBar(
+    ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_display),
         navigationIcon = { NavigateUpButton(navigateUp) }
     ) { paddingValues ->
@@ -159,7 +159,7 @@ private fun DisplayScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(paddingValues)
         ) {
-            UnittoListItem(
+            ListItem(
                 leadingContent = {
                     Icon(
                         Icons.Default.Palette,
@@ -202,7 +202,7 @@ private fun DisplayScreen(
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.DarkMode,
                     headlineText = stringResource(R.string.settings_amoled_dark),
                     supportingText = stringResource(R.string.settings_amoled_dark_support),
@@ -212,7 +212,7 @@ private fun DisplayScreen(
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-                UnittoListItem(
+                ListItem(
                     icon = Icons.Default.Colorize,
                     headlineText = stringResource(R.string.settings_dynamic_colors),
                     supportingText = stringResource(R.string.settings_dynamic_colors_support),
@@ -225,7 +225,7 @@ private fun DisplayScreen(
                     enter = expandVertically() + fadeIn(),
                     exit = shrinkVertically() + fadeOut(),
                 ) {
-                    UnittoListItem(
+                    ListItem(
                         headlineContent = { Text(stringResource(R.string.settings_selected_color)) },
                         supportingContent = {
                             ColorSelector(
@@ -245,7 +245,7 @@ private fun DisplayScreen(
                     enter = expandVertically() + fadeIn(),
                     exit = shrinkVertically() + fadeOut(),
                 ) {
-                    UnittoListItem(
+                    ListItem(
                         headlineContent = { Text(stringResource(R.string.settings_selected_style)) },
                         supportingContent = {
                             MonetModeSelector(
@@ -264,7 +264,7 @@ private fun DisplayScreen(
 
             Header(stringResource(R.string.settings_additional))
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.FontDownload,
                 headlineText = stringResource(R.string.settings_system_font),
                 supportingText = stringResource(R.string.settings_system_font_support),
@@ -272,7 +272,7 @@ private fun DisplayScreen(
                 onSwitchChange = updateSystemFont
             )
 
-            UnittoListItem(
+            ListItem(
                 icon = IconPack.Clear,
                 headlineText = stringResource(R.string.settings_ac_button),
                 supportingText = stringResource(R.string.settings_ac_button_support),
@@ -280,7 +280,7 @@ private fun DisplayScreen(
                 onSwitchChange = updateAcButton
             )
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.ExposureZero,
                 headlineText = stringResource(R.string.settings_middle_zero),
                 supportingText = stringResource(R.string.settings_middle_zero_support),
@@ -288,7 +288,7 @@ private fun DisplayScreen(
                 onSwitchChange = updateMiddleZero
             )
 
-            UnittoListItem(
+            ListItem(
                 icon = Icons.Default.Language,
                 headlineText = stringResource(R.string.settings_language),
                 supportingText = stringResource(R.string.settings_language_support),

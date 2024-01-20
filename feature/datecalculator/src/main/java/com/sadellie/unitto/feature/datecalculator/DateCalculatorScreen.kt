@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.feature.datecalculator.addsubtract.AddSubtractPage
 import com.sadellie.unitto.feature.datecalculator.difference.DateDifferencePage
 import kotlinx.coroutines.launch
@@ -66,7 +66,7 @@ internal fun DateCalculatorScreen(
     val pagerState = rememberPagerState { allTabs.size }
     val coroutineScope = rememberCoroutineScope()
 
-    UnittoScreenWithTopBar(
+    ScaffoldWithTopBar(
         modifier = Modifier,
         title = { Text(stringResource(R.string.date_calculator_title)) },
         navigationIcon = { MenuButton(navigateToMenu) },

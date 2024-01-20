@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.sadellie.unitto.core.ui.common.UnittoNavigationDrawer
+import com.sadellie.unitto.core.ui.common.NavigationDrawer
 import com.sadellie.unitto.core.ui.common.rememberDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.pushDynamicShortcut
@@ -48,7 +48,7 @@ import io.github.sadellie.themmo.ThemmoController
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun UnittoApp(prefs: AppPreferences?) {
+internal fun App(prefs: AppPreferences?) {
 
     val mContext = LocalContext.current
     val navController = rememberNavController()
@@ -88,7 +88,7 @@ internal fun UnittoApp(prefs: AppPreferences?) {
             val backgroundColor = MaterialTheme.colorScheme.background
             val useDarkIcons = remember(backgroundColor) { backgroundColor.luminance() > 0.5f }
 
-            UnittoNavigationDrawer(
+            NavigationDrawer(
                 modifier = Modifier,
                 state = drawerState,
                 gesturesEnabled = gesturesEnabled,

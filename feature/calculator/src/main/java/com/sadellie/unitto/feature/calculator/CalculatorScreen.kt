@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,8 +69,8 @@ import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
-import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
-import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
@@ -120,7 +120,7 @@ internal fun CalculatorScreen(
     clearHistory: () -> Unit
 ) {
     when (uiState) {
-        is CalculatorUIState.Loading -> UnittoEmptyScreen()
+        is CalculatorUIState.Loading -> EmptyScreen()
         is CalculatorUIState.Ready -> Ready(
             uiState = uiState,
             navigateToMenu = navigateToMenu,
@@ -155,7 +155,7 @@ private fun Ready(
     var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
     var showClearHistoryButton by rememberSaveable { mutableStateOf(false) }
 
-    UnittoScreenWithTopBar(
+    ScaffoldWithTopBar(
         title = { Text(stringResource(R.string.calculator_title)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
