@@ -75,9 +75,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.SettingsButton
-import com.sadellie.unitto.core.ui.common.datetimepicker.TimePickerDialog
 import com.sadellie.unitto.core.ui.common.UnittoEmptyScreen
 import com.sadellie.unitto.core.ui.common.UnittoScreenWithTopBar
+import com.sadellie.unitto.core.ui.common.datetimepicker.TimePickerDialog
 import com.sadellie.unitto.data.model.timezone.FavoriteZone
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
@@ -189,7 +189,7 @@ private fun TimeZoneScreen(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.time_zone_add_title),
                     modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
                 )
             }

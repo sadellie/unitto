@@ -43,6 +43,10 @@
     <string name="copied_label">Copied %1$s!</string>
     <string name="date_calculator_add">Add</string>
 
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/CfdIPBOo2IZnLb0elHvLcUQ3.png -->
+    <!-- Screen readers (accessibility) -->
+    <string name="date_calculator_create_event">Create event</string>
+
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_days">Days</string>
     <string name="date_calculator_difference">Difference</string>
@@ -100,6 +104,11 @@ Used in this dialog window. Should be short -->
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
     <string name="select_time_label">Select time</string>
+
+    <!-- Used in multiple places (check icons)
+https://s3.eu-west-1.amazonaws.com/po-pub/i/1oIHPj16krI0jyLmg4JaP2mk.png -->
+    <!-- Screen readers (accessibility) -->
+    <string name="selected_item">Selected item</string>
     <string name="settings_about_unitto">About Unitto</string>
     <string name="settings_about_unitto_support">Learn about the app</string>
 
@@ -206,6 +215,11 @@ Maybe this can be labeled better? Let me know. It should be something that can d
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/UCrz06kaEYxCGAE73ZLl9EtX.png -->
     <string name="time_zone_no_results_support">Need more time zones?</string>
+
+    <!-- Description for Reset button
+https://s3.eu-west-1.amazonaws.com/po-pub/i/llhUZ6FzZenWAgtdNAcXfKWn.png -->
+    <!-- Screen readers (accessibility) -->
+    <string name="time_zone_reset">Reset</string>
     <string name="time_zone_title">Time zones</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="unit_acre">Acre</string>

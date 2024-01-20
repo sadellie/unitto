@@ -46,9 +46,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.squashable
 import com.sadellie.unitto.core.ui.datetime.formatDateDayMonthYear
@@ -113,7 +115,7 @@ internal fun UserTimeZone(
             IconButton(onResetClick) {
                 Icon(
                     imageVector = Icons.Outlined.History,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.time_zone_reset),
                     tint = MaterialTheme.colorScheme.onTertiaryContainer,
                 )
             }

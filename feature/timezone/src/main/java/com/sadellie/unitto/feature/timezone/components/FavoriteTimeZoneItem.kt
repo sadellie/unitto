@@ -234,7 +234,7 @@ private fun TimeZoneLabel(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = null,
+                        contentDescription = null, // Not required because there is text next to it
                         modifier = Modifier.padding(end = 8.dp),
                     )
                     Text(
@@ -250,7 +250,7 @@ private fun TimeZoneLabel(
                 AnimatedVisibility(visible = expanded) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = null,
+                        contentDescription = null, // Not required because there is text next to it
                         modifier = Modifier.padding(end = 8.dp),
                     )
                 }

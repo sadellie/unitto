@@ -128,7 +128,7 @@ private fun AddSubtractView(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Event,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.date_calculator_create_event),
                     )
                 }
             },

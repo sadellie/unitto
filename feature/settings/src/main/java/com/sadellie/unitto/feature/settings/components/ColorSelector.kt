@@ -49,7 +49,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.R
 
 @Composable
 internal fun ColorSelector(
@@ -122,7 +124,7 @@ private fun ColorCheckbox(
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.selected_item),
                 tint = if (color.luminance() > 0.5) Color.Black else Color.White,
             )
         }

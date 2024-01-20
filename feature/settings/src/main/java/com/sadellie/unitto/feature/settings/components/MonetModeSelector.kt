@@ -54,7 +54,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.R
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
@@ -144,7 +146,7 @@ private fun MonetModeCheckbox(
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.selected_item),
                 tint = MaterialTheme.colorScheme.inverseOnSurface,
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.inverseSurface, CircleShape)
