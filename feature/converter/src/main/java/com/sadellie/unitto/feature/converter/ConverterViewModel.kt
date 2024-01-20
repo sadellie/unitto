@@ -139,30 +139,25 @@ internal class ConverterViewModel @Inject constructor(
                 is CurrencyRateUpdateState.Ready, is CurrencyRateUpdateState.Nothing -> {}
             }
 
-            try {
-                when (ui) {
-                    is UnitConverterUIState.Default -> {
-                        convertDefault(
-                            unitFrom = ui.unitFrom,
-                            unitTo = ui.unitTo,
-                            input1 = ui.input1,
-                            input2 = ui.input2,
-                            formatTime = ui.formatTime
-                        )
-                    }
-                    is UnitConverterUIState.NumberBase -> {
-                        convertNumberBase(
-                            unitFrom = ui.unitFrom,
-                            unitTo = ui.unitTo,
-                            input = ui.input
-                        )
-                    }
-                    is UnitConverterUIState.Loading -> {}
+            when (ui) {
+                is UnitConverterUIState.Default -> {
+                    convertDefault(
+                        unitFrom = ui.unitFrom,
+                        unitTo = ui.unitTo,
+                        input1 = ui.input1,
+                        input2 = ui.input2,
+                        formatTime = ui.formatTime
+                    )
                 }
-            } catch (e: Exception) {
-                _result.update { ConverterResult.Default(BigDecimal.ZERO) }
+                is UnitConverterUIState.NumberBase -> {
+                    convertNumberBase(
+                        unitFrom = ui.unitFrom,
+                        unitTo = ui.unitTo,
+                        input = ui.input
+                    )
+                }
+                is UnitConverterUIState.Loading -> {}
             }
-
 
             ui
         }
@@ -471,21 +466,24 @@ internal class ConverterViewModel @Inject constructor(
         _calculation.update { if (input1.text.isExpression()) calculated1 else null }
 
         // Convert
-        var conversion = unitFrom.convert(unitTo, calculated1)
-        if (footInchInput) {
-            // Converted from second text field too
-            val inches = unitsRepo.getById(MyUnitIDS.inch) as DefaultUnit
-            conversion += inches.convert(unitTo, calculated2)
-        }
-
-        // Update result
-        _result.update {
+        val result: ConverterResult = try {
+            var conversion = unitFrom.convert(unitTo, calculated1)
+            if (footInchInput) {
+                // Converted from second text field too
+                val inches = unitsRepo.getById(MyUnitIDS.inch) as DefaultUnit
+                conversion += inches.convert(unitTo, calculated2)
+            }
             when {
                 (unitFrom.group == UnitGroup.TIME) and (formatTime) -> formatTime(calculated1.multiply(unitFrom.basicUnit))
                 unitTo.id == MyUnitIDS.foot -> formatFootInch(conversion, unitTo, unitsRepo.getById(MyUnitIDS.inch) as DefaultUnit)
                 else -> ConverterResult.Default(conversion)
             }
+        } catch (e: Exception) {
+            ConverterResult.Default(BigDecimal.ZERO)
         }
+
+        // Update result
+        _result.update { result }
     }
 
     private fun convertNumberBase(
