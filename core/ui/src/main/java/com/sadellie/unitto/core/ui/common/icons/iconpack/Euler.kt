@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.common.icons.IconPack
 
 @Suppress("UnusedReceiverParameter")
-val IconPack.Exponent: ImageVector
+val IconPack.Euler: ImageVector
     get() {
-        if (_exponent != null) {
-            return _exponent!!
+        if (_euler != null) {
+            return _euler!!
         }
-        _exponent = Builder(name = "Exponent", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
+        _euler = Builder(name = "Euler", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
                 viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
@@ -83,7 +83,7 @@ val IconPack.Exponent: ImageVector
             }
         }
         .build()
-        return _exponent!!
+        return _euler!!
     }
 
-private var _exponent: ImageVector? = null
+private var _euler: ImageVector? = null

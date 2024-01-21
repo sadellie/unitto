@@ -81,7 +81,7 @@ import com.sadellie.unitto.core.ui.common.icons.iconpack.Divide
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Dot
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Equal
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Ex
-import com.sadellie.unitto.core.ui.common.icons.iconpack.Exponent
+import com.sadellie.unitto.core.ui.common.icons.iconpack.Euler
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Factorial
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Inv
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Key0
@@ -234,7 +234,7 @@ private fun PortraitKeyboard(
                             KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, stringResource(R.string.keyboard_actan), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.actanBracket) }
 
                             KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), allowVibration, KeyboardButtonContentHeightTallAdditional) { toggleInvMode() }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, stringResource(R.string.keyboard_euler), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.e) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.e) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Ex, stringResource(R.string.keyboard_exp), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.expBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Power10, stringResource(R.string.keyboard_power_10), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                         }
@@ -257,7 +257,7 @@ private fun PortraitKeyboard(
                             KeyboardButtonAdditional(buttonModifier, IconPack.Tan, stringResource(R.string.keyboard_tan), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.tanBracket) }
 
                             KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), allowVibration, KeyboardButtonContentHeightTallAdditional) { toggleInvMode() }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, stringResource(R.string.keyboard_exp), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.e) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_exp), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.e) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Ln, stringResource(R.string.keyboard_ln), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.lnBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Log, stringResource(R.string.keyboard_log), allowVibration, KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.logBracket) }
                         }
@@ -469,7 +469,7 @@ private fun LandscapeKeyboard(
                 KeyboardButtonFilled(buttonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
                 KeyboardButtonFilled(buttonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, stringResource(R.string.keyboard_euler), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.e) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.e) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Ex, stringResource(R.string.keyboard_exp), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.expBracket) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Power10, stringResource(R.string.keyboard_power_10), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                 if (middleZero) {
@@ -525,7 +525,7 @@ private fun LandscapeKeyboard(
                 KeyboardButtonFilled(buttonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
                 KeyboardButtonFilled(buttonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), allowVibration, KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Exponent, stringResource(R.string.keyboard_euler), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.e) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.e) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Ln, stringResource(R.string.keyboard_ln), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.lnBracket) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Log, stringResource(R.string.keyboard_log), allowVibration, KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.logBracket) }
                 if (middleZero) {
