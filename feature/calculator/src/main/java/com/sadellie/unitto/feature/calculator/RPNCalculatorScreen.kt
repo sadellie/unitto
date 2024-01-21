@@ -97,7 +97,6 @@ internal fun RPNCalculatorScreen(
                     .fillMaxSize(),
                 fractional = uiState.formatterSymbols.fractional,
                 middleZero = uiState.middleZero,
-                allowVibration = uiState.allowVibration,
                 onCalculationClick = onCalculationClick,
                 onInputEditClick = onInputEditClick
             )
@@ -124,7 +123,6 @@ private fun RPNCalculatorScreenPreview() {
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
             formatterSymbols = FormatterSymbols.Spaces,
-            allowVibration = true,
             middleZero = true,
         ),
         openDrawer = {},

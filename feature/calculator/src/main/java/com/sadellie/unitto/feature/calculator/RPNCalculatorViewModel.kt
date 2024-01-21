@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,6 @@ internal class RPNCalculatorViewModel @Inject constructor(
             precision = prefs.precision,
             outputFormat = prefs.outputFormat,
             formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
-            allowVibration = prefs.enableVibrations,
             middleZero = prefs.middleZero
         )
     }

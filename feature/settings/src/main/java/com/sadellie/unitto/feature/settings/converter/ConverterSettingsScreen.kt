@@ -37,9 +37,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitsListSorting
@@ -133,7 +133,6 @@ private fun ConverterSettingsScreen(
 private fun PreviewConverterSettingsScreen() {
     ConverterSettingsScreen(
         prefs = ConverterPreferencesImpl(
-            enableVibrations = true,
             separator = Separator.SPACE,
             middleZero = false,
             precision = 3,
