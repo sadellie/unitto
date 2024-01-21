@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
+import com.sadellie.unitto.core.ui.LocalHapticPreference
 import kotlinx.coroutines.launch
 
 @Composable
@@ -48,10 +49,10 @@ fun BasicKeyboardButton(
     icon: ImageVector,
     contentDescription: String?,
     iconColor: Color,
-    allowVibration: Boolean,
 ) {
     val view = LocalView.current
     val coroutineScope = rememberCoroutineScope()
+    val allowVibration = LocalHapticPreference.current
     fun vibrate() {
         if (allowVibration) {
             coroutineScope.launch {
@@ -93,7 +94,6 @@ fun KeyboardButtonLight(
     modifier: Modifier,
     icon: ImageVector,
     contentDescription: String?,
-    allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -107,7 +107,6 @@ fun KeyboardButtonLight(
         icon = icon,
         contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        allowVibration = allowVibration,
     )
 }
 
@@ -116,7 +115,6 @@ fun KeyboardButtonFilled(
     modifier: Modifier,
     icon: ImageVector,
     contentDescription: String?,
-    allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -130,7 +128,6 @@ fun KeyboardButtonFilled(
         icon = icon,
         contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        allowVibration = allowVibration,
     )
 }
 
@@ -139,7 +136,6 @@ fun KeyboardButtonAdditional(
     modifier: Modifier,
     icon: ImageVector,
     contentDescription: String?,
-    allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -153,7 +149,6 @@ fun KeyboardButtonAdditional(
         icon = icon,
         contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        allowVibration = allowVibration,
     )
 }
 
@@ -162,7 +157,6 @@ fun KeyboardButtonTertiary(
     modifier: Modifier,
     icon: ImageVector,
     contentDescription: String?,
-    allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -176,7 +170,6 @@ fun KeyboardButtonTertiary(
         icon = icon,
         contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-        allowVibration = allowVibration,
     )
 }
 

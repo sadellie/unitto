@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,6 @@ internal sealed class UnitConverterUIState {
         val result: ConverterResult,
         val unitFrom: DefaultUnit,
         val unitTo: DefaultUnit,
-        val enableHaptic: Boolean,
         val middleZero: Boolean,
         val formatterSymbols: FormatterSymbols,
         val scale: Int,
@@ -59,7 +58,6 @@ internal sealed class UnitConverterUIState {
         val result: ConverterResult,
         val unitFrom: NumberBaseUnit,
         val unitTo: NumberBaseUnit,
-        val enableHaptic: Boolean,
     ) : UnitConverterUIState()
 }
 

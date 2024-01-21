@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package com.sadellie.unitto.data.model.userprefs
 
 interface CalculatorPreferences {
     val radianMode: Boolean
-    val enableVibrations: Boolean
     val separator: Int
     val middleZero: Boolean
     val acButton: Boolean

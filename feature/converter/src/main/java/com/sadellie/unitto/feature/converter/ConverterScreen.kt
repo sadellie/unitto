@@ -252,7 +252,6 @@ private fun NumberBase(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                allowVibration = uiState.enableHaptic,
             )
         }
     )
@@ -425,7 +424,6 @@ private fun Default(
                 addDigit = processInput,
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
-                allowVibration = uiState.enableHaptic,
                 fractional = uiState.formatterSymbols.fractional,
                 middleZero = uiState.middleZero,
                 acButton = uiState.acButton,

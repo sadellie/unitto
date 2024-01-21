@@ -67,61 +67,61 @@ internal fun App(prefs: AppPreferences?) {
         }
     }
 
-    if (prefs != null) {
-        val themmoController = remember(prefs) {
-            ThemmoController(
-                lightColorScheme = LightThemeColors,
-                darkColorScheme = DarkThemeColors,
-                themingMode = prefs.themingMode,
-                dynamicThemeEnabled = prefs.enableDynamicTheme,
-                amoledThemeEnabled = prefs.enableAmoledTheme,
-                customColor = prefs.customColor.toColor(),
-                monetMode = prefs.monetMode
-            )
-        }
+    if (prefs == null) return
 
-        Themmo(
-            themmoController = themmoController,
-            typography = TypographySystem,
-            animationSpec = tween(250)
-        ) {
-            val backgroundColor = MaterialTheme.colorScheme.background
-            val useDarkIcons = remember(backgroundColor) { backgroundColor.luminance() > 0.5f }
+    val themmoController = remember(prefs) {
+        ThemmoController(
+            lightColorScheme = LightThemeColors,
+            darkColorScheme = DarkThemeColors,
+            themingMode = prefs.themingMode,
+            dynamicThemeEnabled = prefs.enableDynamicTheme,
+            amoledThemeEnabled = prefs.enableAmoledTheme,
+            customColor = prefs.customColor.toColor(),
+            monetMode = prefs.monetMode
+        )
+    }
 
-            NavigationDrawer(
-                modifier = Modifier,
-                state = drawerState,
-                gesturesEnabled = gesturesEnabled,
-                tabs = DrawerItem.main,
-                currentDestination = navBackStackEntry?.destination?.route,
-                onItemClick = { destination ->
-                    drawerScope.launch { drawerState.close() }
+    Themmo(
+        themmoController = themmoController,
+        typography = TypographySystem,
+        animationSpec = tween(250)
+    ) {
+        val backgroundColor = MaterialTheme.colorScheme.background
+        val useDarkIcons = remember(backgroundColor) { backgroundColor.luminance() > 0.5f }
 
-                    navController.navigate(destination.graph) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
+        NavigationDrawer(
+            modifier = Modifier,
+            state = drawerState,
+            gesturesEnabled = gesturesEnabled,
+            tabs = DrawerItem.main,
+            currentDestination = navBackStackEntry?.destination?.route,
+            onItemClick = { destination ->
+                drawerScope.launch { drawerState.close() }
+
+                navController.navigate(destination.graph) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
                     }
-
-                    shortcutsScope.launch { mContext.pushDynamicShortcut(destination) }
-                },
-                content = {
-                    UnittoNavigation(
-                        navController = navController,
-                        themmoController = it,
-                        startDestination = prefs.startingScreen,
-                        rpnMode = prefs.rpnMode,
-                        openDrawer = { drawerScope.launch { drawerState.open() } }
-                    )
+                    launchSingleTop = true
+                    restoreState = true
                 }
-            )
 
-            LaunchedEffect(useDarkIcons) {
-                sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
-                sysUiController.setStatusBarColor(Color.Transparent, useDarkIcons)
+                shortcutsScope.launch { mContext.pushDynamicShortcut(destination) }
+            },
+            content = {
+                UnittoNavigation(
+                    navController = navController,
+                    themmoController = it,
+                    startDestination = prefs.startingScreen,
+                    rpnMode = prefs.rpnMode,
+                    openDrawer = { drawerScope.launch { drawerState.open() } }
+                )
             }
+        )
+
+        LaunchedEffect(useDarkIcons) {
+            sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
+            sysUiController.setStatusBarColor(Color.Transparent, useDarkIcons)
         }
     }
 

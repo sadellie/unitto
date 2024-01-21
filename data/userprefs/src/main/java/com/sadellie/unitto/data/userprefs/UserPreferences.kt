@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 enableToolsExperiment = preferences.getEnableToolsExperiment(),
                 systemFont = preferences.getSystemFont(),
                 rpnMode = preferences.getRpnMode(),
+                enableVibrations = preferences.getEnableVibrations(),
             )
         }
 
@@ -78,7 +79,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         .map { preferences ->
             CalculatorPreferencesImpl(
                 radianMode = preferences.getRadianMode(),
-                enableVibrations = preferences.getEnableVibrations(),
                 separator = preferences.getSeparator(),
                 middleZero = preferences.getMiddleZero(),
                 partialHistoryView = preferences.getPartialHistoryView(),
@@ -91,7 +91,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val converterPrefs: Flow<ConverterPreferences> = data
         .map { preferences ->
             ConverterPreferencesImpl(
-                enableVibrations = preferences.getEnableVibrations(),
                 separator = preferences.getSeparator(),
                 middleZero = preferences.getMiddleZero(),
                 precision = preferences.getDigitsPrecision(),
@@ -136,7 +135,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         .map { preferences ->
             AddSubtractPreferencesImpl(
                 separator = preferences.getSeparator(),
-                enableVibrations = preferences.getEnableVibrations(),
             )
         }
 
@@ -144,7 +142,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         .map { preferences ->
             BodyMassPreferencesImpl(
                 separator = preferences.getSeparator(),
-                enableVibrations = preferences.getEnableVibrations(),
             )
         }
 

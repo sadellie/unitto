@@ -104,7 +104,6 @@ internal class ConverterViewModel @Inject constructor(
                     result = result,
                     unitFrom = unitFrom as DefaultUnit,
                     unitTo = unitTo as DefaultUnit,
-                    enableHaptic = prefs.enableVibrations,
                     middleZero = prefs.middleZero,
                     formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
                     scale = prefs.precision,
@@ -120,7 +119,6 @@ internal class ConverterViewModel @Inject constructor(
                     result = result,
                     unitFrom = unitFrom as NumberBaseUnit,
                     unitTo = unitTo as NumberBaseUnit,
-                    enableHaptic = prefs.enableVibrations,
                 )
             }
             else -> UnitConverterUIState.Loading

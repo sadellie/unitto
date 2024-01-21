@@ -32,7 +32,6 @@ internal sealed class UIState {
         val weight: TextFieldValue,
         val normalWeightRange: Pair<BigDecimal, BigDecimal>,
         val result: BigDecimal,
-        val allowVibration: Boolean,
         val formatterSymbols: FormatterSymbols,
     ) : UIState()
 }

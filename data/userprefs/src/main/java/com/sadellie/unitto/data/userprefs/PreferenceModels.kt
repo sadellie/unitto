@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@ data class AppPreferencesImpl(
     override val enableToolsExperiment: Boolean,
     override val systemFont: Boolean,
     override val rpnMode: Boolean,
+    override val enableVibrations: Boolean,
 ) : AppPreferences
 
 data class GeneralPreferencesImpl(
@@ -54,7 +55,6 @@ data class GeneralPreferencesImpl(
 
 data class CalculatorPreferencesImpl(
     override val radianMode: Boolean,
-    override val enableVibrations: Boolean,
     override val separator: Int,
     override val middleZero: Boolean,
     override val acButton: Boolean,
@@ -64,7 +64,6 @@ data class CalculatorPreferencesImpl(
 ) : CalculatorPreferences
 
 data class ConverterPreferencesImpl(
-    override val enableVibrations: Boolean,
     override val separator: Int,
     override val middleZero: Boolean,
     override val acButton: Boolean,
@@ -97,12 +96,10 @@ data class UnitGroupsPreferencesImpl(
 
 data class AddSubtractPreferencesImpl(
     override val separator: Int,
-    override val enableVibrations: Boolean,
 ) : AddSubtractPreferences
 
 data class BodyMassPreferencesImpl(
     override val separator: Int,
-    override val enableVibrations: Boolean,
 ) : BodyMassPreferences
 
 data class AboutPreferencesImpl(

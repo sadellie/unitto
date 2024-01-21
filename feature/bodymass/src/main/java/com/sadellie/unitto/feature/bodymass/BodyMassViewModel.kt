@@ -64,7 +64,6 @@ internal class BodyMassViewModel @Inject constructor(
             weight = weight,
             result = result,
             normalWeightRange = normalWeightRange,
-            allowVibration = userPrefs.enableVibrations,
             formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
         )
     }

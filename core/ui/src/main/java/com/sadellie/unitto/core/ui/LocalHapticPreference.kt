@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,22 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.userprefs
+package com.sadellie.unitto.core.ui
 
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
+import androidx.compose.runtime.compositionLocalOf
 
-interface ConverterPreferences {
-    val separator: Int
-    val middleZero: Boolean
-    val acButton: Boolean
-    val precision: Int
-    val outputFormat: Int
-    val unitConverterFormatTime: Boolean
-    val unitConverterSorting: UnitsListSorting
-    val shownUnitGroups: List<UnitGroup>
-    val unitConverterFavoritesOnly: Boolean
-    val enableToolsExperiment: Boolean
-    val latestLeftSideUnit: String
-    val latestRightSideUnit: String
+val LocalHapticPreference = compositionLocalOf {
+    true
 }

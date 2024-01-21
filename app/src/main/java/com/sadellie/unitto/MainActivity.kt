@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.os.ConfigurationCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.ui.LocalHapticPreference
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.calculateWindowSizeClass
@@ -69,7 +70,8 @@ internal class MainActivity : AppCompatActivity() {
             CompositionLocalProvider(
                 LocalLocale provides locale,
                 LocalWindowSize provides calculateWindowSizeClass(this@MainActivity),
-                LocalNumberTypography provides numbersTypography
+                LocalNumberTypography provides numbersTypography,
+                LocalHapticPreference provides (prefs?.enableVibrations ?: true)
             ) {
                 App(prefs)
             }

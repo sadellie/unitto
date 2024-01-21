@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,6 @@ internal class AddSubtractViewModel @Inject constructor(
         .combine(userPreferencesRepository.addSubtractPrefs) { uiState, userPrefs ->
             return@combine uiState.copy(
                 formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
-                allowVibration = userPrefs.enableVibrations,
             )
         }
         .onEach { updateResult() }

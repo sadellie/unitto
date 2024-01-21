@@ -67,10 +67,10 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowHeightSizeClass
-import com.sadellie.unitto.core.ui.common.MenuButton
-import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
+import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
@@ -280,7 +280,6 @@ private fun Ready(
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 radianMode = uiState.radianMode,
                 fractional = uiState.formatterSymbols.fractional,
-                allowVibration = uiState.allowVibration,
                 addSymbol = addSymbol,
                 clearSymbols = clearSymbols,
                 deleteSymbol = deleteSymbol,
@@ -363,7 +362,6 @@ private fun PreviewCalculatorScreen() {
             outputFormat = OutputFormat.PLAIN,
             formatterSymbols = FormatterSymbols.Spaces,
             history = historyItems,
-            allowVibration = false,
             middleZero = false,
             acButton = true,
             partialHistoryView = true
