@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,10 +119,10 @@ private fun RPNCalculatorKeyboardPortrait(
                 .fillMaxWidth(width)
                 .fillMaxHeight(height)
 
-            KeyboardButtonAdditional(aModifier, IconPack.Swap, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Swap) }
-            KeyboardButtonAdditional(aModifier, IconPack.Up, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateUp) }
-            KeyboardButtonAdditional(aModifier, IconPack.Down, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateDown) }
-            KeyboardButtonAdditional(aModifier, IconPack.Pop, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Pop) }
+            KeyboardButtonAdditional(aModifier, IconPack.Swap, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Swap) }
+            KeyboardButtonAdditional(aModifier, IconPack.Up, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateUp) }
+            KeyboardButtonAdditional(aModifier, IconPack.Down, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateDown) }
+            KeyboardButtonAdditional(aModifier, IconPack.Pop, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Pop) }
         }
 
         KeypadFlow(
@@ -134,35 +134,35 @@ private fun RPNCalculatorKeyboardPortrait(
                 .fillMaxWidth(width)
                 .fillMaxHeight(height)
 
-            KeyboardButtonTertiary(bModifier, IconPack.Clear, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Clear) }
-            KeyboardButtonFilled(bModifier, IconPack.Unary, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Negate) }
-            KeyboardButtonFilled(bModifier, IconPack.Percent, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Percent) }
-            KeyboardButtonFilled(bModifier, IconPack.Divide, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Divide) }
+            KeyboardButtonTertiary(bModifier, IconPack.Clear, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Clear) }
+            KeyboardButtonFilled(bModifier, IconPack.Unary, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Negate) }
+            KeyboardButtonFilled(bModifier, IconPack.Percent, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Percent) }
+            KeyboardButtonFilled(bModifier, IconPack.Divide, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Divide) }
 
-            KeyboardButtonLight(bModifier, IconPack.Key7, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._7)) }
-            KeyboardButtonLight(bModifier, IconPack.Key8, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._8)) }
-            KeyboardButtonLight(bModifier, IconPack.Key9, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._9)) }
-            KeyboardButtonFilled(bModifier, IconPack.Multiply, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Multiply) }
+            KeyboardButtonLight(bModifier, IconPack.Key7, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._7)) }
+            KeyboardButtonLight(bModifier, IconPack.Key8, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._8)) }
+            KeyboardButtonLight(bModifier, IconPack.Key9, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._9)) }
+            KeyboardButtonFilled(bModifier, IconPack.Multiply, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Multiply) }
 
-            KeyboardButtonLight(bModifier, IconPack.Key4, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._4)) }
-            KeyboardButtonLight(bModifier, IconPack.Key5, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._5)) }
-            KeyboardButtonLight(bModifier, IconPack.Key6, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._6)) }
-            KeyboardButtonFilled(bModifier, IconPack.Minus, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Minus) }
+            KeyboardButtonLight(bModifier, IconPack.Key4, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._4)) }
+            KeyboardButtonLight(bModifier, IconPack.Key5, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._5)) }
+            KeyboardButtonLight(bModifier, IconPack.Key6, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._6)) }
+            KeyboardButtonFilled(bModifier, IconPack.Minus, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Minus) }
 
-            KeyboardButtonLight(bModifier, IconPack.Key1, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._1)) }
-            KeyboardButtonLight(bModifier, IconPack.Key2, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._2)) }
-            KeyboardButtonLight(bModifier, IconPack.Key3, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._3)) }
-            KeyboardButtonFilled(bModifier, IconPack.Plus, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Plus) }
+            KeyboardButtonLight(bModifier, IconPack.Key1, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._1)) }
+            KeyboardButtonLight(bModifier, IconPack.Key2, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._2)) }
+            KeyboardButtonLight(bModifier, IconPack.Key3, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._3)) }
+            KeyboardButtonFilled(bModifier, IconPack.Plus, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Plus) }
 
             if (middleZero) {
-                KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Dot) }
-                KeyboardButtonLight(bModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+                KeyboardButtonLight(bModifier, fractionalIcon, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Dot) }
+                KeyboardButtonLight(bModifier, IconPack.Key0, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
             } else {
-                KeyboardButtonLight(bModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
-                KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Dot) }
+                KeyboardButtonLight(bModifier, IconPack.Key0, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+                KeyboardButtonLight(bModifier, fractionalIcon, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Dot) }
             }
-            KeyboardButtonLight(bModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Delete) }
-            KeyboardButtonFilled(bModifier, IconPack.Enter, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Enter) }
+            KeyboardButtonLight(bModifier, IconPack.Backspace, null, allowVibration, KeyboardButtonContentHeightTall) { onInputEditClick(RPNInputEdit.Delete) }
+            KeyboardButtonFilled(bModifier, IconPack.Enter, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Enter) }
         }
     }
 }
@@ -185,38 +185,38 @@ private fun RPNCalculatorKeyboardLandscape(
             .fillMaxHeight(height)
             .fillMaxWidth(width)
 
-        KeyboardButtonAdditional(bModifier, IconPack.Swap, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Swap) }
-        KeyboardButtonLight(bModifier, IconPack.Key7, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._7)) }
-        KeyboardButtonLight(bModifier, IconPack.Key8, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._8)) }
-        KeyboardButtonLight(bModifier, IconPack.Key9, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._9)) }
-        KeyboardButtonTertiary(bModifier, IconPack.Clear, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Clear) }
-        KeyboardButtonFilled(bModifier, IconPack.Unary, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Negate) }
+        KeyboardButtonAdditional(bModifier, IconPack.Swap, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Swap) }
+        KeyboardButtonLight(bModifier, IconPack.Key7, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._7)) }
+        KeyboardButtonLight(bModifier, IconPack.Key8, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._8)) }
+        KeyboardButtonLight(bModifier, IconPack.Key9, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._9)) }
+        KeyboardButtonTertiary(bModifier, IconPack.Clear, null, allowVibration, KeyboardButtonContentHeightTall) { onCalculationClick(RPNCalculation.Clear) }
+        KeyboardButtonFilled(bModifier, IconPack.Unary, null, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Negate) }
 
-        KeyboardButtonAdditional(bModifier, IconPack.Up, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateUp) }
-        KeyboardButtonLight(bModifier, IconPack.Key4, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._4)) }
-        KeyboardButtonLight(bModifier, IconPack.Key5, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._5)) }
-        KeyboardButtonLight(bModifier, IconPack.Key6, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._6)) }
-        KeyboardButtonFilled(bModifier, IconPack.Multiply, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Multiply) }
-        KeyboardButtonFilled(bModifier, IconPack.Divide, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Divide) }
+        KeyboardButtonAdditional(bModifier, IconPack.Up, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateUp) }
+        KeyboardButtonLight(bModifier, IconPack.Key4, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._4)) }
+        KeyboardButtonLight(bModifier, IconPack.Key5, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._5)) }
+        KeyboardButtonLight(bModifier, IconPack.Key6, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._6)) }
+        KeyboardButtonFilled(bModifier, IconPack.Multiply, null, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Multiply) }
+        KeyboardButtonFilled(bModifier, IconPack.Divide, null, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Divide) }
 
-        KeyboardButtonAdditional(bModifier, IconPack.Down, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateDown) }
-        KeyboardButtonLight(bModifier, IconPack.Key1, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._1)) }
-        KeyboardButtonLight(bModifier, IconPack.Key2, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._2)) }
-        KeyboardButtonLight(bModifier, IconPack.Key3, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._3)) }
-        KeyboardButtonFilled(bModifier, IconPack.Plus, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Plus) }
-        KeyboardButtonFilled(bModifier, IconPack.Minus, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Minus) }
+        KeyboardButtonAdditional(bModifier, IconPack.Down, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.RotateDown) }
+        KeyboardButtonLight(bModifier, IconPack.Key1, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._1)) }
+        KeyboardButtonLight(bModifier, IconPack.Key2, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._2)) }
+        KeyboardButtonLight(bModifier, IconPack.Key3, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._3)) }
+        KeyboardButtonFilled(bModifier, IconPack.Plus, null, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Plus) }
+        KeyboardButtonFilled(bModifier, IconPack.Minus, null, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Minus) }
 
-        KeyboardButtonAdditional(bModifier, IconPack.Pop, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Pop) }
+        KeyboardButtonAdditional(bModifier, IconPack.Pop, null, allowVibration, KeyboardButtonContentHeightTallAdditional) { onCalculationClick(RPNCalculation.Pop) }
         if (middleZero) {
-            KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Dot) }
-            KeyboardButtonLight(bModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+            KeyboardButtonLight(bModifier, fractionalIcon, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Dot) }
+            KeyboardButtonLight(bModifier, IconPack.Key0, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
         } else {
-            KeyboardButtonLight(bModifier, IconPack.Key0, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
-            KeyboardButtonLight(bModifier, fractionalIcon, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Dot) }
+            KeyboardButtonLight(bModifier, IconPack.Key0, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Digit(Token.Digit._0)) }
+            KeyboardButtonLight(bModifier, fractionalIcon, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Dot) }
         }
-        KeyboardButtonLight(bModifier, IconPack.Backspace, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Delete) }
-        KeyboardButtonFilled(bModifier, IconPack.Percent, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Percent) }
-        KeyboardButtonFilled(bModifier, IconPack.Enter, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Enter) }
+        KeyboardButtonLight(bModifier, IconPack.Backspace, null, allowVibration, KeyboardButtonContentHeightShort) { onInputEditClick(RPNInputEdit.Delete) }
+        KeyboardButtonFilled(bModifier, IconPack.Percent, null, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Percent) }
+        KeyboardButtonFilled(bModifier, IconPack.Enter, null, allowVibration, KeyboardButtonContentHeightShort) { onCalculationClick(RPNCalculation.Enter) }
     }
 }
 

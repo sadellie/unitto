@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2022-2023 Elshan Agaev
+ * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ fun BasicKeyboardButton(
     onLongClick: (() -> Unit)?,
     containerColor: Color,
     icon: ImageVector,
+    contentDescription: String?,
     iconColor: Color,
     allowVibration: Boolean,
 ) {
@@ -74,7 +75,7 @@ fun BasicKeyboardButton(
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = contentDescription,
             modifier = Modifier
                 .aspectRatio(1f) // All icons are square (24x24)
                 .fillMaxWidth()
@@ -91,6 +92,7 @@ fun BasicKeyboardButton(
 fun KeyboardButtonLight(
     modifier: Modifier,
     icon: ImageVector,
+    contentDescription: String?,
     allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
@@ -103,6 +105,7 @@ fun KeyboardButtonLight(
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
         icon = icon,
+        contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
     )
@@ -112,6 +115,7 @@ fun KeyboardButtonLight(
 fun KeyboardButtonFilled(
     modifier: Modifier,
     icon: ImageVector,
+    contentDescription: String?,
     allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
@@ -124,6 +128,7 @@ fun KeyboardButtonFilled(
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         icon = icon,
+        contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
         allowVibration = allowVibration,
     )
@@ -133,6 +138,7 @@ fun KeyboardButtonFilled(
 fun KeyboardButtonAdditional(
     modifier: Modifier,
     icon: ImageVector,
+    contentDescription: String?,
     allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
@@ -145,6 +151,7 @@ fun KeyboardButtonAdditional(
         onLongClick = onLongClick,
         containerColor = Color.Transparent,
         icon = icon,
+        contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         allowVibration = allowVibration,
     )
@@ -154,6 +161,7 @@ fun KeyboardButtonAdditional(
 fun KeyboardButtonTertiary(
     modifier: Modifier,
     icon: ImageVector,
+    contentDescription: String?,
     allowVibration: Boolean,
     contentHeight: Float,
     onLongClick: (() -> Unit)? = null,
@@ -166,6 +174,7 @@ fun KeyboardButtonTertiary(
         onLongClick = onLongClick,
         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
         icon = icon,
+        contentDescription = contentDescription,
         iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
         allowVibration = allowVibration,
     )

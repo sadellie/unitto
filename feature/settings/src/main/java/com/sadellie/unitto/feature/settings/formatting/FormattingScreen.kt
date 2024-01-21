@@ -52,13 +52,13 @@ import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Separator
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.PagedIsland
-import com.sadellie.unitto.core.ui.common.SegmentedButton
-import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.PagedIsland
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.common.SegmentedButton
+import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.Slider
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
@@ -209,7 +209,7 @@ fun FormattingScreen(
                             selected = Separator.PERIOD == uiState.separator
                         )
                         SegmentedButton(
-                            label = stringResource(R.string.settings_comma),
+                            label = stringResource(R.string.comma),
                             onClick = { onSeparatorChange(Separator.COMMA) },
                             selected = Separator.COMMA == uiState.separator
                         )

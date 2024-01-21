@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a unit converter for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/QNmUuI88wb1Fm5P8wRIZajZF.png -->
@@ -34,6 +52,7 @@
     <string name="clear_input_description">Clear input</string>
     <string name="clear_label">Clear</string>
     <string name="click_to_try_again_label">Click to try again</string>
+    <string name="comma">Comma</string>
     <string name="converter_favorite_button_description">Add or remove unit from favorites</string>
     <string name="converter_left_side_title">Convert from</string>
     <string name="converter_no_results_support">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
@@ -72,6 +91,98 @@
     <string name="enabled_label">Enabled</string>
     <string name="error_label">Error</string>
     <string name="hello_label">Hello!</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_actan">Arctangent</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_arcos">Arccosine</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_arsin">Arcsine</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_brackets">Brackets</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_cos">Cosine</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_degree">Degree</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_divide">Divide</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_dot">Dot</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_equal">Equal</string>
+
+    <!-- https://en.wikipedia.org/wiki/E_(mathematical_constant) -->
+    <!-- Screen readers (accessibility) -->
+    <!-- Fuzzy -->
+    <string name="keyboard_euler">Euler\'s number</string>
+
+    <!-- https://en.wikipedia.org/wiki/Exponential_function -->
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_exp">Exponential function</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_factorial">Factorial</string>
+
+    <!-- It's ok not to use exact translation here -->
+    <!-- Screen readers (accessibility). The INV button -->
+    <string name="keyboard_inverse">Inverse</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_left_bracket">Left bracket</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_ln">Natural logarithm</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_log">Logarithm</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_minus">Minus</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_modulo">Modulo</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_multiply">Multiply</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_percent">Percent</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_pi">Pi</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_plus">Plus</string>
+
+    <!-- Exponent or Power, same thing -->
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_power">Power</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_power_10">Power of 10</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_radian">Radian</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_right_bracket">Right bracket</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_root">Square root</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_sin">Sine</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_tan">Tangent</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/iqEp9rZZ9XqtJ3CKVpy33lre.png -->
     <string name="label_label">Label</string>
@@ -130,7 +241,6 @@ Alternatively you can use "Export" -->
     <string name="settings_color_scheme">Color scheme</string>
     <string name="settings_color_theme">Color theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
-    <string name="settings_comma">Comma</string>
     <string name="settings_converter_support">Unit groups, sorting, formatting</string>
     <string name="settings_currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
     <string name="settings_currency_rates_note_title">Wrong currency rates?</string>
