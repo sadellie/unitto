@@ -27,6 +27,8 @@ import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -40,8 +42,9 @@ fun OutlinedDecimalTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     label: @Composable () -> Unit,
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
     expressionFormatter: VisualTransformation,
-    imeAction: ImeAction = ImeAction.Next
+    imeAction: ImeAction = ImeAction.Next,
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -61,5 +64,6 @@ fun OutlinedDecimalTextField(
             keyboardType = KeyboardType.Decimal,
             imeAction = imeAction
         ),
+        colors = colors
     )
 }

@@ -19,6 +19,8 @@
 package com.sadellie.unitto.feature.bodymass.components
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -49,6 +51,11 @@ internal fun BodyMassTextField(
             onValueChange(it.copy(cleanText))
         },
         label = { AnimatedContent(label) { Text(it) } },
+        colors = OutlinedTextFieldDefaults
+            .colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            ),
         expressionFormatter = expressionFormatter,
         imeAction = imeAction
     )
