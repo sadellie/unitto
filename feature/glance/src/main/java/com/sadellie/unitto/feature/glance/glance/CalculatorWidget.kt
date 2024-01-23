@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.glance.glance
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.TextUnit
@@ -86,9 +87,12 @@ class CalculatorWidget : GlanceAppWidget() {
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-
-        val userPrefsRepository =
+        val userPrefsRepository = try {
             EntryPoints.get(context, UserPrefEntryPoint::class.java).userPrefRep()
+        } catch (e: Exception) {
+            Log.e("CalculatorWidget", "Error: $e")
+            provideContent { LoadingUI() } // everything after is unreachable, no need for return
+        }
 
         provideContent {
             val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(initial = null).value
