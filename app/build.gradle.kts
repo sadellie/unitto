@@ -1,6 +1,6 @@
 /*
  * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,14 +129,14 @@ dependencies {
     implementation(libs.androidx.profileinstaller.profileinstaller)
     coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs)
 
+    implementation(libs.androidx.activity.activity.compose)
+    implementation(libs.androidx.appcompat.appcompat)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.window.size)
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.com.google.accompanist.accompanist.systemuicontroller)
     implementation(libs.androidx.datastore.datastore.preferences)
-    implementation(libs.androidx.appcompat.appcompat)
 
     implementation(project(":feature:converter"))
     implementation(project(":feature:calculator"))

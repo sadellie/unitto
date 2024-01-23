@@ -18,11 +18,14 @@
 
 package com.sadellie.unitto
 
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -34,7 +37,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sadellie.unitto.core.ui.common.NavigationDrawer
 import com.sadellie.unitto.core.ui.common.rememberDrawerState
 import com.sadellie.unitto.core.ui.model.DrawerItem
@@ -48,13 +50,10 @@ import io.github.sadellie.themmo.ThemmoController
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun App(prefs: AppPreferences?) {
-
+internal fun ComponentActivity.App(prefs: AppPreferences?) {
     val mContext = LocalContext.current
     val navController = rememberNavController()
-    val sysUiController = rememberSystemUiController()
 
-    // Navigation drawer stuff
     val drawerScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState()
 
@@ -87,7 +86,7 @@ internal fun App(prefs: AppPreferences?) {
         animationSpec = tween(250)
     ) {
         val backgroundColor = MaterialTheme.colorScheme.background
-        val useDarkIcons = remember(backgroundColor) { backgroundColor.luminance() > 0.5f }
+        val isDarkThemeEnabled = remember(backgroundColor) { backgroundColor.luminance() < 0.5f }
 
         NavigationDrawer(
             modifier = Modifier,
@@ -119,9 +118,18 @@ internal fun App(prefs: AppPreferences?) {
             }
         )
 
-        LaunchedEffect(useDarkIcons) {
-            sysUiController.setNavigationBarColor(Color.Transparent, useDarkIcons)
-            sysUiController.setStatusBarColor(Color.Transparent, useDarkIcons)
+        DisposableEffect(isDarkThemeEnabled) {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.auto(
+                    android.graphics.Color.TRANSPARENT,
+                    android.graphics.Color.TRANSPARENT,
+                ) { isDarkThemeEnabled },
+                navigationBarStyle = SystemBarStyle.auto(
+                    lightScrim,
+                    darkScrim,
+                ) { isDarkThemeEnabled },
+            )
+            onDispose {}
         }
     }
 
@@ -135,3 +143,7 @@ private fun Long.toColor(): Color = try {
 } catch (e: Exception) {
     Color.Unspecified
 }
+
+// The default scrims, as defined by androidx and the platform
+private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
