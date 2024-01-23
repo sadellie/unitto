@@ -40,21 +40,21 @@ val IconPack.Multiply: ImageVector
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(8.3375f, 15.1321f)
-                lineTo(14.9633f, 8.5063f)
-                lineTo(15.6625f, 9.2056f)
-                lineTo(9.0367f, 15.8313f)
-                lineTo(8.3375f, 15.1321f)
+                moveTo(8.3375f, 14.9632f)
+                lineTo(14.9633f, 8.3374f)
+                lineTo(15.6625f, 9.0366f)
+                lineTo(9.0367f, 15.6624f)
+                lineTo(8.3375f, 14.9632f)
                 close()
             }
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(9.0367f, 8.5063f)
-                lineTo(15.6625f, 15.1321f)
-                lineTo(14.9633f, 15.8313f)
-                lineTo(8.3375f, 9.2056f)
-                lineTo(9.0367f, 8.5063f)
+                moveTo(9.0367f, 8.3374f)
+                lineTo(15.6625f, 14.9632f)
+                lineTo(14.9633f, 15.6624f)
+                lineTo(8.3375f, 9.0366f)
+                lineTo(9.0367f, 8.3374f)
                 close()
             }
         }

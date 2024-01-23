@@ -40,17 +40,17 @@ val IconPack.Equal: ImageVector
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(8.3377f, 13.5676f)
+                moveTo(8.3377f, 13.3986f)
                 horizontalLineTo(15.6627f)
-                verticalLineTo(14.5037f)
+                verticalLineTo(14.3347f)
                 horizontalLineTo(8.3377f)
-                verticalLineTo(13.5676f)
+                verticalLineTo(13.3986f)
                 close()
-                moveTo(8.3377f, 9.834f)
+                moveTo(8.3377f, 9.665f)
                 horizontalLineTo(15.6627f)
-                verticalLineTo(10.7643f)
+                verticalLineTo(10.5954f)
                 horizontalLineTo(8.3377f)
-                verticalLineTo(9.834f)
+                verticalLineTo(9.665f)
                 close()
             }
         }

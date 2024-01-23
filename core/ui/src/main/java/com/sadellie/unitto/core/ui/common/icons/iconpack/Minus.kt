@@ -40,11 +40,11 @@ val IconPack.Minus: ImageVector
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
-                moveTo(8.3377f, 11.688f)
+                moveTo(8.3377f, 11.5193f)
                 horizontalLineTo(15.6623f)
-                verticalLineTo(12.6494f)
+                verticalLineTo(12.4807f)
                 horizontalLineTo(8.3377f)
-                verticalLineTo(11.688f)
+                verticalLineTo(11.5193f)
                 close()
             }
         }
