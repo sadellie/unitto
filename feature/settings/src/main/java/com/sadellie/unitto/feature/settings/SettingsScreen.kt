@@ -75,10 +75,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.Header
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
+import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
@@ -335,12 +335,7 @@ private fun PreviewSettingsScreen() {
     }
 
     SettingsScreen(
-        uiState = SettingsUIState.Ready(
-            enableVibrations = false,
-            cacheSize = 2,
-            backupInProgress = false,
-            showUpdateChangelog = true
-        ),
+        uiState = uiState,
         navigateUp = {},
         navControllerAction = {},
         updateLastReadChangelog = {
