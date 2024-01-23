@@ -147,9 +147,10 @@ private fun ReadyUI(
         Column(
             modifier = GlanceModifier
                 .background(GlanceTheme.colors.surfaceVariant)
+                .padding(8.dp)
         ) {
             ActionButtons(
-                modifier = GlanceModifier.fillMaxWidth().padding(8.dp),
+                modifier = GlanceModifier.fillMaxWidth().padding(vertical = 8.dp),
                 onCopyClick = copyAction(
                     output = output,
                     fractional = formatterSymbols.fractional
