@@ -166,7 +166,7 @@ private fun ReadyUI(
                 input = input,
                 formatterSymbols = formatterSymbols,
                 fontSize = 36.sp,
-                maxLines = 2
+                maxLines = 1
             )
             TextField(
                 modifier = GlanceModifier.fillMaxWidth(),
