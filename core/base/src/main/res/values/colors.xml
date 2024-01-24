@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Unitto is a unit converter for Android
-  ~ Copyright (c) 2023 Elshan Agaev
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2023-2024 Elshan Agaev
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 <resources>
     <color name="ic_launcher_icon_background">#FCFCF7</color>
-    <color name="window_background">#FFFFFF</color>
     <color name="unitto_primary">#378648</color>
     <color name="ic_shortcut_background">#F5F5F5</color>
 </resources>

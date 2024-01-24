@@ -1,3 +1,21 @@
+<!--
+  - Unitto is a calculator for Android
+  - Copyright (c) 2024 Elshan Agaev
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU General Public License as published by
+  - the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU General Public License for more details.
+  -
+  - You should have received a copy of the GNU General Public License
+  - along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <svg width="131" height="40" viewBox="0 0 131 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="131" height="40" rx="20" fill="#005226"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.8323 11.1428C19.6419 10.9524 19.3332 10.9524 19.1428 11.1428C18.9524 11.3332 18.9524 11.6419 19.1428 11.8323L20.8511 13.5406C20.7849 13.6966 20.7483 13.8682 20.7483 14.0484V16.6487C20.7483 17.3667 21.3303 17.9488 22.0484 17.9488H34.3997C35.1178 17.9488 35.6999 17.3667 35.6999 16.6487V14.0484C35.6999 13.8688 35.6634 13.6977 35.5976 13.5421L37.3075 11.8323C37.4979 11.6419 37.4979 11.3332 37.3075 11.1428C37.1171 10.9524 36.8083 10.9524 36.6179 11.1428L34.909 12.8518C34.7526 12.7851 34.5805 12.7483 34.3997 12.7483H22.0484C21.8682 12.7483 21.6966 12.7849 21.5406 12.8511L19.8323 11.1428ZM25.6238 15.3485C25.6238 16.0666 25.0417 16.6487 24.3236 16.6487C23.6056 16.6487 23.0235 16.0666 23.0235 15.3485C23.0235 14.6305 23.6056 14.0484 24.3236 14.0484C25.0417 14.0484 25.6238 14.6305 25.6238 15.3485ZM33.4246 15.3485C33.4246 16.0666 32.8425 16.6487 32.1245 16.6487C31.4064 16.6487 30.8243 16.0666 30.8243 15.3485C30.8243 14.6305 31.4064 14.0484 32.1245 14.0484C32.8425 14.0484 33.4246 14.6305 33.4246 15.3485Z" fill="#7EFBA0"/>

@@ -1,5 +1,5 @@
 /*
- * Unitto is a unit converter for Android
+ * Unitto is a calculator for Android
  * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
@@ -145,7 +145,10 @@ private fun BodyMassScreen(
                     .padding(16.dp, 24.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Crossfade(targetState = uiState.isMetric) { isMetric ->
+                Crossfade(
+                    targetState = uiState.isMetric,
+                    label = "Measurement system change"
+                ) { isMetric ->
                     if (isMetric) {
                         BodyMassTextField(
                             modifier = Modifier.fillMaxWidth(),
@@ -190,7 +193,8 @@ private fun BodyMassScreen(
                 targetState = uiState.result,
                 transitionSpec = {
                     (fadeIn() togetherWith fadeOut()) using SizeTransform(false)
-                }
+                },
+                label = "Body mass value visibility"
             ) { targetState ->
                 if (targetState.isEqualTo(BigDecimal.ZERO)) return@AnimatedContent
 

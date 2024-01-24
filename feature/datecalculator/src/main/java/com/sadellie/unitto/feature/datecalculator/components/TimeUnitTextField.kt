@@ -1,5 +1,5 @@
 /*
- * Unitto is a unit converter for Android
+ * Unitto is a calculator for Android
  * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ internal fun TimeUnitTextField(
         onValueChange = { newValue ->
             onValueChange(newValue.copy(newValue.text.filter { it.isDigit() }))
         },
-        label = { AnimatedContent(label) { Text(it) } },
+        label = { AnimatedContent(label, label = "Text field label") { Text(it) } },
         colors = OutlinedTextFieldDefaults
             .colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,

@@ -1,5 +1,5 @@
 /*
- * Unitto is a unit converter for Android
+ * Unitto is a calculator for Android
  * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,10 @@
 package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.converter.UnitID
 import java.math.BigDecimal
 
 internal val accelerationCollection: List<AbstractUnit> by lazy {

@@ -1,6 +1,6 @@
 /*
- * Unitto is a unit converter for Android
- * Copyright (c) 2023 Elshan Agaev
+ * Unitto is a calculator for Android
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -158,16 +158,16 @@ fun ZonedDateTime.formatOffset(
 
     val offsetFixed = ChronoUnit.SECONDS.between(currentTime, this)
 
-    if (offsetFixed == 0L) return null
-
     var resultBuffer = ""
-    val absoluteOffset = offsetFixed.absoluteValue
 
     // Add a positive/negative prefix symbol
-    when {
-        offsetFixed > 0 -> resultBuffer += "+"
-        offsetFixed < 0 -> resultBuffer += "-"
+    resultBuffer += when {
+        offsetFixed > 0 -> "+"
+        offsetFixed < 0 -> "-"
+        else -> return null
     }
+
+    val absoluteOffset = offsetFixed.absoluteValue
 
     // Formatted hours and minutes
     val hour = absoluteOffset / 3600

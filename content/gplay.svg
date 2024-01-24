@@ -1,3 +1,21 @@
+<!--
+  - Unitto is a calculator for Android
+  - Copyright (c) 2024 Elshan Agaev
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU General Public License as published by
+  - the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU General Public License for more details.
+  -
+  - You should have received a copy of the GNU General Public License
+  - along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <svg width="164" height="40" viewBox="0 0 164 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="164" height="40" rx="20" fill="#005226"/>
 <path d="M20.0713 11.733C20.0249 11.8873 20 12.064 20 12.2611V27.7384C20 27.936 20.025 28.1128 20.0714 28.2672L28.3379 19.9995L20.0713 11.733Z" fill="#7EFBA0"/>

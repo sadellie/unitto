@@ -1,5 +1,5 @@
 /*
- * Unitto is a unit converter for Android
+ * Unitto is a calculator for Android
  * Copyright (c) 2022-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
@@ -296,7 +296,7 @@ private fun Default(
     PortraitLandscape(
         modifier = modifier.fillMaxSize(),
         content1 = { contentModifier ->
-            ColumnWithConstraints(modifier = contentModifier) {
+            ColumnWithConstraints(modifier = contentModifier) { boxWithConstraintsScope ->
                 val textFieldModifier = Modifier
                     .fillMaxWidth()
                     .weight(2f)
@@ -407,7 +407,7 @@ private fun Default(
                     )
                 )
 
-                Spacer(modifier = Modifier.height(it.maxHeight * 0.03f))
+                Spacer(modifier = Modifier.height(boxWithConstraintsScope.maxHeight * 0.03f))
 
                 UnitSelectionButtons(
                     unitFromLabel = stringResource(uiState.unitFrom.displayName),

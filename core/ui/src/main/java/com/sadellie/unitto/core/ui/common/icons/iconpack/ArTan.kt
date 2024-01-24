@@ -1,5 +1,5 @@
 /*
- * Unitto is a unit converter for Android
+ * Unitto is a calculator for Android
  * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,10 +32,10 @@ import com.sadellie.unitto.core.ui.common.icons.IconPack
 @Suppress("UnusedReceiverParameter")
 val IconPack.AcTan: ImageVector
     get() {
-        if (_acTan != null) {
-            return _acTan!!
+        if (_arTan != null) {
+            return _arTan!!
         }
-        _acTan = Builder(name = "AcTan", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
+        _arTan = Builder(name = "AcTan", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
                 viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
             path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
                     strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
@@ -169,7 +169,7 @@ val IconPack.AcTan: ImageVector
             }
         }
         .build()
-        return _acTan!!
+        return _arTan!!
     }
 
-private var _acTan: ImageVector? = null
+private var _arTan: ImageVector? = null

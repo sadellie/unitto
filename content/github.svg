@@ -1,3 +1,21 @@
+<!--
+  - Unitto is a calculator for Android
+  - Copyright (c) 2024 Elshan Agaev
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU General Public License as published by
+  - the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU General Public License for more details.
+  -
+  - You should have received a copy of the GNU General Public License
+  - along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <svg width="128" height="40" viewBox="0 0 128 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="128" height="40" rx="20" fill="#005226"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M27.9731 11C23.0112 11 19 15.125 19 20.2281C19 24.3074 21.5701 27.7604 25.1356 28.9825C25.5814 29.0744 25.7446 28.7839 25.7446 28.5396C25.7446 28.3257 25.73 27.5924 25.73 26.8283C23.2338 27.3784 22.714 25.7283 22.714 25.7283C22.3129 24.6588 21.7185 24.3839 21.7185 24.3839C20.9016 23.8186 21.778 23.8186 21.778 23.8186C22.6843 23.8797 23.1598 24.7658 23.1598 24.7658C23.9619 26.1713 25.2544 25.7742 25.7744 25.5297C25.8486 24.9338 26.0865 24.5213 26.339 24.2922C24.3482 24.0783 22.2536 23.2838 22.2536 19.7392C22.2536 18.7308 22.6099 17.9058 23.1745 17.2642C23.0854 17.035 22.7734 16.0876 23.2638 14.8195C23.2638 14.8195 24.0214 14.575 25.7298 15.7668C26.4612 15.5648 27.2155 15.462 27.9731 15.4612C28.7308 15.4612 29.5031 15.5682 30.2163 15.7668C31.9249 14.575 32.6825 14.8195 32.6825 14.8195C33.1729 16.0876 32.8607 17.035 32.7716 17.2642C33.3511 17.9058 33.6927 18.7308 33.6927 19.7392C33.6927 23.2838 31.5981 24.0629 29.5924 24.2922C29.9193 24.5824 30.2015 25.1324 30.2015 26.0033C30.2015 27.2408 30.1868 28.234 30.1868 28.5394C30.1868 28.7839 30.3502 29.0744 30.7958 28.9827C34.3613 27.7602 36.9314 24.3074 36.9314 20.2281C36.9461 15.125 32.9202 11 27.9731 11Z" fill="#7EFBA0"/>

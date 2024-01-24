@@ -1,5 +1,5 @@
 /*
- * Unitto is a unit converter for Android
+ * Unitto is a calculator for Android
  * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,10 +56,22 @@ fun Switch(
     colors: SwitchColors = SwitchDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    val trackColor = animateColorAsState(targetValue = trackColor(enabled, checked, colors))
-    val thumbColor = animateColorAsState(targetValue = thumbColor(enabled, checked, colors))
-    val thumbSize = animateDpAsState(targetValue = if (checked) SelectedHandleSize else UnselectedHandleSize)
-    val thumbOffset = animateDpAsState(targetValue = if (checked) ThumbPaddingEnd else ThumbPaddingStart)
+    val trackColor = animateColorAsState(
+        targetValue = trackColor(enabled, checked, colors),
+        label = "Track Color",
+    )
+    val thumbColor = animateColorAsState(
+        targetValue = thumbColor(enabled, checked, colors),
+        label = "Thumb color",
+    )
+    val thumbSize = animateDpAsState(
+        targetValue = if (checked) SelectedHandleSize else UnselectedHandleSize,
+        label = "Thumb size",
+    )
+    val thumbOffset = animateDpAsState(
+        targetValue = if (checked) ThumbPaddingEnd else ThumbPaddingStart,
+        label = "Thumb offset"
+    )
 
     Box(
         modifier = modifier
