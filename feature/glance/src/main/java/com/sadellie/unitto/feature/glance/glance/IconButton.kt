@@ -18,14 +18,20 @@
 
 package com.sadellie.unitto.feature.glance.glance
 
+import android.content.Context
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.IconCompat
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.action.Action
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.cornerRadius
@@ -34,8 +40,10 @@ import androidx.glance.color.ColorProviders
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.unit.ColorProvider
+import com.sadellie.unitto.feature.glance.R
 
 @Composable
 internal fun IconButton(
@@ -43,11 +51,11 @@ internal fun IconButton(
     containerColor: ColorProvider,
     @DrawableRes iconRes: Int,
     contentColor: ColorProvider = GlanceTheme.colors.contentColorFor(containerColor),
-    onClickKey: String = iconRes.toString(),
     onClick: Action,
 ) {
     Box(
         modifier = glanceModifier
+            .height(48.dp)
             .padding(4.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -55,8 +63,11 @@ internal fun IconButton(
             modifier = GlanceModifier
                 .fillMaxWidth()
                 .clickable(onClick)
-                .cornerRadius(100.dp)
-                .background(containerColor)
+                .cornerRadius(
+                    context = LocalContext.current,
+                    cornerRadius = 24.dp,
+                    color = containerColor
+                )
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             provider = ImageProvider(iconRes),
             contentDescription = null,
@@ -74,22 +85,24 @@ private fun ColorProviders.contentColorFor(backgroundColor: ColorProvider): Colo
         else -> onBackground
     }
 
-// https://gist.github.com/rozPierog/1145af6e1f10c9199000828ab4bd6bad
-// Kinda works, but corners parameter needs to be split
-//@SuppressLint("RestrictedApi")
-//fun GlanceModifier.cornerRadiusCompat(
-//    cornerRadius: Int,
-//    @ColorInt color: Int,
-//    @FloatRange(from = 0.0, to = 1.0) backgroundAlpha: Float = 1f,
-//): GlanceModifier {
-//    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//        this.background(Color(color).copy(alpha = backgroundAlpha))
-//            .cornerRadius(cornerRadius.dp)
-//    } else {
-//        val radii = FloatArray(8) { cornerRadius.toFloat() }
-//        val shape = ShapeDrawable(RoundRectShape(radii, null, null))
-//        shape.paint.color = ColorUtils.setAlphaComponent(color, (255 * backgroundAlpha).toInt())
-//        val bitmap = shape.toBitmap(width = 150, height = 75)
-//        this.background(BitmapImageProvider(bitmap))
-//    }
-//}
+fun GlanceModifier.cornerRadius(
+    context: Context,
+    cornerRadius: Dp,
+    color: ColorProvider,
+): GlanceModifier = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> this.background(color).cornerRadius(cornerRadius)
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> this.background(
+        // This
+        ImageProvider(
+            // is
+            IconCompat
+                // so
+                .createWithResource(context, R.drawable.rounded_corners_rectangle_shape)
+                // fucking
+                .toIcon(context)
+                // stupid
+                .setTint(color.getColor(context).toArgb())
+            )
+        )
+        else -> this.background(color)
+    }

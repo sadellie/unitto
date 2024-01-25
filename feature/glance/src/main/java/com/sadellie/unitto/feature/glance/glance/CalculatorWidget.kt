@@ -22,7 +22,7 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
@@ -32,9 +32,11 @@ import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.LocalContext
+import androidx.glance.LocalSize
 import androidx.glance.action.Action
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.appWidgetBackground
 import androidx.glance.appwidget.provideContent
@@ -46,12 +48,12 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
-import androidx.glance.layout.padding
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
@@ -72,18 +74,25 @@ class CalculatorWidget : GlanceAppWidget() {
         fun userPrefRep(): UserPreferencesRepository
     }
 
+    override val sizeMode = SizeMode.Responsive(
+        setOf(SMALL, BIG)
+    )
+
     override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
 
     companion object {
-        val inputKey = ActionParameters.Key<String>("inputKey")
-        val outputKey = ActionParameters.Key<String>("outputKey")
-        val equalClickedKey = ActionParameters.Key<Boolean>("equalClickedKey")
-        val precisionKey = ActionParameters.Key<Int>("precisionKey")
-        val outputFormatKey = ActionParameters.Key<Int>("outputFormatKey")
+        internal val inputKey = ActionParameters.Key<String>("inputKey")
+        internal val outputKey = ActionParameters.Key<String>("outputKey")
+        internal val equalClickedKey = ActionParameters.Key<Boolean>("equalClickedKey")
+        internal val precisionKey = ActionParameters.Key<Int>("precisionKey")
+        internal val outputFormatKey = ActionParameters.Key<Int>("outputFormatKey")
 
-        val inputPrefKey = stringPreferencesKey("GLANCE_INPUT")
-        val outputPrefKey = stringPreferencesKey("GLANCE_OUTPUT")
-        val equalClickedPrefKey = booleanPreferencesKey("GLANCE_EQUAL_CLICKED")
+        internal val inputPrefKey = stringPreferencesKey("GLANCE_INPUT")
+        internal val outputPrefKey = stringPreferencesKey("GLANCE_OUTPUT")
+        internal val equalClickedPrefKey = booleanPreferencesKey("GLANCE_EQUAL_CLICKED")
+
+        internal val SMALL = DpSize(200.dp, 250.dp)
+        internal val BIG = DpSize(250.dp, 400.dp)
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -148,38 +157,28 @@ private fun ReadyUI(
             .background(GlanceTheme.colors.background)
             .fillMaxSize()
     ) {
-        Column(
-            modifier = GlanceModifier
-                .background(GlanceTheme.colors.surfaceVariant)
-                .padding(8.dp)
-        ) {
+        val uiSectionModifier = GlanceModifier.fillMaxWidth()
+
+        if (LocalSize.current != CalculatorWidget.SMALL) {
             ActionButtons(
-                modifier = GlanceModifier.fillMaxWidth().padding(vertical = 8.dp),
-                onCopyClick = copyAction(
-                    output = output,
-                    fractional = formatterSymbols.fractional
-                ),
-                onLaunchClick = launchAction(LocalContext.current)
-            )
-            TextField(
-                modifier = GlanceModifier.fillMaxWidth(),
-                input = input,
-                formatterSymbols = formatterSymbols,
-                fontSize = 36.sp,
-                maxLines = 1
-            )
-            TextField(
-                modifier = GlanceModifier.fillMaxWidth(),
-                input = output,
-                formatterSymbols = formatterSymbols,
-                fontSize = 28.sp,
-                maxLines = 1
+                modifier = uiSectionModifier
+                    .background(GlanceTheme.colors.surfaceVariant),
+                output = output,
+                formatterSymbols = formatterSymbols
             )
         }
 
+        TextFields(
+            modifier = uiSectionModifier
+                .background(GlanceTheme.colors.surfaceVariant)
+                .defaultWeight(),
+            input = input,
+            formatterSymbols = formatterSymbols,
+            output = output
+        )
+
         GlanceKeyboard(
-            modifier = GlanceModifier
-                .padding(8.dp),
+            modifier = uiSectionModifier,
             addTokenAction = {
                 runCalculateAction(
                     // Clear input if equal is clicked and new token is a Digit
@@ -210,47 +209,66 @@ private fun ReadyUI(
 @Composable
 private fun ActionButtons(
     modifier: GlanceModifier,
-    onCopyClick: Action,
-    onLaunchClick: Action,
+    output: String,
+    formatterSymbols: FormatterSymbols,
 ) {
     Row(
         modifier = modifier
     ) {
-        val boxModifier = GlanceModifier.fillMaxWidth().defaultWeight()
+        val buttonModifier = GlanceModifier.fillMaxWidth().defaultWeight()
 
         IconButton(
-            glanceModifier = boxModifier,
+            glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primary,
             iconRes = R.drawable.content_copy,
-            onClick = onCopyClick
+            onClick = copyAction(
+                output = output,
+                fractional = formatterSymbols.fractional
+            )
         )
         IconButton(
-            glanceModifier = boxModifier,
+            glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primary,
             iconRes = R.drawable.open_in_new,
-            onClick = onLaunchClick
+            onClick = launchAction(LocalContext.current)
         )
     }
 }
 
 @Composable
-private fun TextField(
+private fun TextFields(
     modifier: GlanceModifier,
     input: String,
     formatterSymbols: FormatterSymbols,
-    fontSize: TextUnit,
-    maxLines: Int,
+    output: String,
 ) {
-    Text(
-        text = input.formatExpression(formatterSymbols),
+    Column(
         modifier = modifier,
-        maxLines = maxLines,
-        style = TextStyle(
-            fontSize = fontSize,
-            textAlign = TextAlign.End,
-            color = GlanceTheme.colors.onSurfaceVariant
+        verticalAlignment = Alignment.Bottom
+    ) {
+        val textModifier = GlanceModifier.fillMaxWidth()
+
+        Text(
+            text = input.formatExpression(formatterSymbols),
+            modifier = textModifier,
+            maxLines = 1,
+            style = TextStyle(
+                fontSize = 36.sp,
+                textAlign = TextAlign.End,
+                color = GlanceTheme.colors.onSurfaceVariant
+            )
         )
-    )
+        Text(
+            text = output.formatExpression(formatterSymbols),
+            modifier = textModifier,
+            maxLines = 1,
+            style = TextStyle(
+                fontSize = 36.sp,
+                textAlign = TextAlign.End,
+                color = GlanceTheme.colors.onSurfaceVariant.withAlpha(alpha = 0.5f)
+            )
+        )
+    }
 }
 
 @Composable
@@ -264,12 +282,10 @@ private fun GlanceKeyboard(
     useDot: Boolean,
     middleZero: Boolean,
 ) = Column(modifier = modifier) {
-    val rowModifier = GlanceModifier.defaultWeight().fillMaxWidth()
+    val rowModifier = GlanceModifier.fillMaxWidth()
 
-    Row(
-        modifier = rowModifier
-    ) {
-        val buttonModifier = GlanceModifier.fillMaxSize().defaultWeight()
+    Row(rowModifier) {
+        val buttonModifier = GlanceModifier.defaultWeight()
 
         IconButton(
             glanceModifier = buttonModifier,
@@ -296,11 +312,8 @@ private fun GlanceKeyboard(
             onClick = addTokenAction(Token.Operator.divide)
         )
     }
-
-    Row(
-        modifier = rowModifier
-    ) {
-        val buttonModifier = GlanceModifier.fillMaxSize().defaultWeight()
+    Row(rowModifier) {
+        val buttonModifier = GlanceModifier.defaultWeight()
 
         IconButton(
             glanceModifier = buttonModifier,
@@ -327,11 +340,8 @@ private fun GlanceKeyboard(
             onClick = addTokenAction(Token.Operator.multiply)
         )
     }
-
-    Row(
-        modifier = rowModifier
-    ) {
-        val buttonModifier = GlanceModifier.fillMaxSize().defaultWeight()
+    Row(rowModifier) {
+        val buttonModifier = GlanceModifier.defaultWeight()
 
         IconButton(
             glanceModifier = buttonModifier,
@@ -358,11 +368,8 @@ private fun GlanceKeyboard(
             onClick = addTokenAction(Token.Operator.minus)
         )
     }
-
-    Row(
-        modifier = rowModifier
-    ) {
-        val buttonModifier = GlanceModifier.fillMaxSize().defaultWeight()
+    Row(rowModifier) {
+        val buttonModifier = GlanceModifier.defaultWeight()
 
         IconButton(
             glanceModifier = buttonModifier,
@@ -389,11 +396,8 @@ private fun GlanceKeyboard(
             onClick = addTokenAction(Token.Operator.plus)
         )
     }
-
-    Row(
-        modifier = rowModifier
-    ) {
-        val buttonModifier = GlanceModifier.fillMaxSize().defaultWeight()
+    Row(rowModifier) {
+        val buttonModifier = GlanceModifier.defaultWeight()
 
         if (middleZero) {
             IconButton(
@@ -436,3 +440,11 @@ private fun GlanceKeyboard(
         )
     }
 }
+
+@Composable
+private fun ColorProvider.withAlpha(alpha: Float): ColorProvider =
+    ColorProvider(
+        this
+            .getColor(LocalContext.current)
+            .copy(alpha = alpha)
+    )
