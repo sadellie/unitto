@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surfaceVariant"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primary"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/content_copy"
+            android:tint="@color/onPrimary" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primary"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/open_in_new"
+            android:tint="@color/onPrimary" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@color/surfaceVariant"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2+2"
+            android:textColor="@color/onSurfaceVariant"
+            android:textSize="36sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
+            android:text="4"
+            android:textColor="@color/onSurfaceVariant"
+            android:textSize="36sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/tertiaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/clear"
+            android:tint="@color/onTertiaryContainer" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/brackets"
+            android:tint="@color/onPrimaryContainer" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/percent"
+            android:tint="@color/onPrimaryContainer" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/divide"
+            android:tint="@color/onPrimaryContainer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key7"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key8"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key9"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/multiply"
+            android:tint="@color/onPrimaryContainer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key4"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key5"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key6"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/minus"
+            android:tint="@color/onPrimaryContainer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key1"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key2"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key3"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus"
+            android:tint="@color/onPrimaryContainer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/dot"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/key0"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/inverseOnSurface"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/backspace"
+            android:tint="@color/onSurfaceVariant" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_rectangle_shape"
+            android:backgroundTint="@color/primaryContainer"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/equal"
+            android:tint="@color/onPrimaryContainer" />
+    </LinearLayout>
+
+</LinearLayout>

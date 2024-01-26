@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <color name="primary">@android:color/system_primary_light</color>
+    <color name="onPrimary">@android:color/system_on_primary_light</color>
+    <color name="tertiaryContainer">@android:color/system_tertiary_container_light</color>
+    <color name="onTertiaryContainer">@android:color/system_on_tertiary_container_light</color>
+    <color name="primaryContainer">@android:color/system_primary_container_light</color>
+    <color name="onPrimaryContainer">@android:color/system_on_primary_container_light</color>
+    <color name="surfaceVariant">@android:color/system_surface_variant_light</color>
+    <color name="onSurfaceVariant">@android:color/system_on_surface_variant_light</color>
+    <color name="background">@android:color/system_background_light</color>
+    <color name="inverseOnSurface">@android:color/system_text_primary_inverse_light</color>
+</resources>

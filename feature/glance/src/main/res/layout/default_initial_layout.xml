@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Unitto is a calculator for Android
-  ~ Copyright (c) 2023-2024 Elshan Agaev
+  ~ Copyright (c) 2024 Elshan Agaev
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -16,15 +16,15 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:description="@string/calculator_title"
-    android:initialLayout="@layout/default_initial_layout"
-    android:minWidth="220dp"
-    android:minHeight="276dp"
-    android:previewLayout="@layout/calculator_placeholder"
-    android:resizeMode="vertical|horizontal"
-    android:targetCellWidth="4"
-    android:targetCellHeight="4"
-    android:widgetCategory="home_screen"
-    tools:targetApi="s" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:progressTint="@color/primary" />
+</FrameLayout>
