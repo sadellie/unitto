@@ -121,7 +121,6 @@
 
     <!-- https://en.wikipedia.org/wiki/E_(mathematical_constant) -->
     <!-- Screen readers (accessibility) -->
-    <!-- Fuzzy -->
     <string name="keyboard_euler">Euler\'s number</string>
 
     <!-- https://en.wikipedia.org/wiki/Exponential_function -->
@@ -199,6 +198,7 @@
     <string name="locale_pt_rBR" translatable="false">Português (Brasil)</string>
     <string name="locale_ru" translatable="false">Русский</string>
     <string name="locale_tr" translatable="false">Türkçe</string>
+    <string name="locale_zh_rCN" translatable="false">简体中文</string>
     <string name="navigate_up_description">Navigate up</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/9lSfdkfKShwyQFEF4nvbVaIb.jpg 
@@ -956,7 +956,7 @@ https://s3.eu-west-1.amazonaws.com/po-pub/i/llhUZ6FzZenWAgtdNAcXfKWn.png -->
     <string name="unit_gallon_us_per_100_mile">Gallon/100 mile (US)</string>
     <string name="unit_gallon_us_per_100_mile_short">gal/100 mi</string>
     <string name="unit_gallon_us_per_mile">Gallon/mile (US)</string>
-    <string name="unit_gallon_us_per_mile_short">gal/mi </string>
+    <string name="unit_gallon_us_per_mile_short">gal/mi</string>
     <string name="unit_gibibit">Gibibit</string>
     <string name="unit_gibibit_per_second">Gibibit/second</string>
     <string name="unit_gibibit_per_second_short">Gib/s</string>

@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="calculator_clear_history_support">Minden kifejezés az előzményekből örökre törlődni fog. Ez a művelet visszafordíthatatlan!</string>
     <string name="calculator_no_history">Nincsenek előzmények</string>
@@ -8,6 +26,7 @@
     <string name="clear_history_label">Előzmények törlése</string>
     <string name="clear_input_description">Bevitel ürítése</string>
     <string name="clear_label">Kiürítés</string>
+    <string name="comma">Vessző</string>
     <string name="converter_favorite_button_description">Mértékegység hozzáadása vagy törlése a kedvencekből</string>
     <string name="converter_left_side_title">Konvertálás ebből</string>
     <string name="converter_no_results_support">Bizonyosodj meg róla, hogy nincs elírás, próbálj más filtereket, vagy keress kikapcsolt mértékegység-csoportokat.</string>
@@ -20,7 +39,7 @@
     <string name="enabled_label">Bekapcsolva</string>
     <string name="error_label">Hiba</string>
     <string name="hello_label">Hello!</string>
-    <string name="loading_label">Betöltés...</string>
+    <string name="loading_label">Betöltés…</string>
     <string name="navigate_up_description">Navigálás felfelé</string>
     <string name="no_results_description">Üres keresési eredmény</string>
     <string name="no_results_label">Nincs találat</string>
@@ -34,7 +53,6 @@
     <string name="settings_amoled_dark_support">Fekete háttér használata sötét témákhoz</string>
     <string name="settings_auto">Auto</string>
     <string name="settings_color_theme">Színtéma</string>
-    <string name="settings_comma">Vessző</string>
     <string name="settings_currency_rates_note_text">Az árfolyamok naponta frissülnek. Nincs valós idejű árfolyamfigyelő az alkalmazásba építve.</string>
     <string name="settings_currency_rates_note_title">Hibás valutaárfolyamok?</string>
     <string name="settings_dark_mode">Sötét</string>
@@ -88,6 +106,8 @@
     <string name="unit_attometer_per_square_second">Attométer/négyzetszögmásodperc</string>
     <string name="unit_attometer_per_square_second_short">am/s²</string>
     <string name="unit_attometer_short">am</string>
+    <string name="unit_attonewton">Attonewton</string>
+    <string name="unit_attonewton_short">aN</string>
     <string name="unit_attopascal">Attopascal</string>
     <string name="unit_attopascal_short">aPa</string>
     <string name="unit_attosecond">Attomásodperc</string>
@@ -324,6 +344,14 @@
     <string name="unit_dekapascal_short">daPa</string>
     <string name="unit_duodecimal">Duodecimális</string>
     <string name="unit_duodecimal_short">base12</string>
+    <string name="unit_dyne">Dyne</string>
+    <string name="unit_dyne_centimeter">Dyne centiméter</string>
+    <string name="unit_dyne_centimeter_short">dyn*cm</string>
+    <string name="unit_dyne_meter">Dyne méter</string>
+    <string name="unit_dyne_meter_short">dyn*m</string>
+    <string name="unit_dyne_millimeter">Dyne milliméter</string>
+    <string name="unit_dyne_millimeter_short">dyn*mm</string>
+    <string name="unit_dyne_short">dyn</string>
     <string name="unit_earth_equatorial_radius">Föld egyenlítői sugara</string>
     <string name="unit_earth_equatorial_radius_short">Föld E</string>
     <string name="unit_earth_mass">Földtömeg</string>
@@ -390,6 +418,12 @@
     <string name="unit_gigaweber_short">GWb</string>
     <string name="unit_gram">gramm</string>
     <string name="unit_gram_force">Gramm-erő</string>
+    <string name="unit_gram_force_centimeter">Gramm-erő centiméter</string>
+    <string name="unit_gram_force_centimeter_short">gf*cm</string>
+    <string name="unit_gram_force_meter">Gramm-erő méter</string>
+    <string name="unit_gram_force_meter_short">gf*m</string>
+    <string name="unit_gram_force_millimeter">Gramm-erő milliméter</string>
+    <string name="unit_gram_force_millimeter_short">gf*mm</string>
     <string name="unit_gram_force_short">gf</string>
     <string name="unit_gram_short">g</string>
     <string name="unit_group_acceleration">Gyorsulás</string>
@@ -442,6 +476,10 @@
     <string name="unit_jiffy">Pillanat</string>
     <string name="unit_jiffy_short">j</string>
     <string name="unit_joule">Joule</string>
+    <string name="unit_joule_per_centimeter">Joule/centiméter</string>
+    <string name="unit_joule_per_centimeter_short">J/cm</string>
+    <string name="unit_joule_per_meter">Joule/méter</string>
+    <string name="unit_joule_per_meter_short">J/m</string>
     <string name="unit_joule_short">J</string>
     <string name="unit_jupiter_equatorial_radius">Jupiter egyenlítői sugara</string>
     <string name="unit_jupiter_equatorial_radius_short">Jupiter E</string>
@@ -472,6 +510,12 @@
     <string name="unit_kilofarad_short">kF</string>
     <string name="unit_kilogram">kilogramm</string>
     <string name="unit_kilogram_force">Kilogram-erő</string>
+    <string name="unit_kilogram_force_centimeter">Kilogram-erő centiméter</string>
+    <string name="unit_kilogram_force_centimeter_short">kgf*cm</string>
+    <string name="unit_kilogram_force_meter">Kilogramm-erő méter</string>
+    <string name="unit_kilogram_force_meter_short">kgf*m</string>
+    <string name="unit_kilogram_force_millimeter">Kilogram-erő milliméter</string>
+    <string name="unit_kilogram_force_millimeter_short">kgf*mm</string>
     <string name="unit_kilogram_force_short">kgf</string>
     <string name="unit_kilogram_short">kg</string>
     <string name="unit_kilojoule">Kilojoule</string>
@@ -487,11 +531,17 @@
     <string name="unit_kilometer_per_square_second_short">km/s²</string>
     <string name="unit_kilometer_short">km</string>
     <string name="unit_kilonewton">Kilonewton</string>
+    <string name="unit_kilonewton_meter">Kilónewton méter</string>
+    <string name="unit_kilonewton_meter_short">kN*m</string>
     <string name="unit_kilonewton_short">kN</string>
     <string name="unit_kiloparsec">Kilóparsec</string>
     <string name="unit_kiloparsec_short">kpc</string>
     <string name="unit_kilopascal">Kilopascal</string>
     <string name="unit_kilopascal_short">kPa</string>
+    <string name="unit_kilopond">Kilófont</string>
+    <string name="unit_kilopond_short">kp</string>
+    <string name="unit_kilopound_force">Kilófont-erő</string>
+    <string name="unit_kilopound_force_short">kipf</string>
     <string name="unit_kiloton">1 kilótonna TNT</string>
     <string name="unit_kiloton_short">kt</string>
     <string name="unit_kilowatt">Kilówatt</string>
@@ -637,12 +687,24 @@
     <string name="unit_neptune_surface_gravity">A Neptunusz felszíni gravitációja</string>
     <string name="unit_neptune_surface_gravity_short">Neptunusz g</string>
     <string name="unit_newton">Newton</string>
+    <string name="unit_newton_centimeter">Newton centiméter</string>
+    <string name="unit_newton_centimeter_short">N*cm</string>
+    <string name="unit_newton_meter">Newton méter</string>
+    <string name="unit_newton_meter_short">N*m</string>
+    <string name="unit_newton_millimeter">Newton milliméter</string>
+    <string name="unit_newton_millimeter_short">N*mm</string>
     <string name="unit_newton_short">N</string>
     <string name="unit_nonary">Nonáris</string>
     <string name="unit_nonary_short">base9</string>
     <string name="unit_octal">Oktális</string>
     <string name="unit_octal_short">base8</string>
     <string name="unit_ounce">Uncia</string>
+    <string name="unit_ounce_force">Uncia-erő</string>
+    <string name="unit_ounce_force_foot">Uncia-erő láb</string>
+    <string name="unit_ounce_force_foot_short">ozf*ft</string>
+    <string name="unit_ounce_force_inch">Uncia-erő hüvelyk</string>
+    <string name="unit_ounce_force_inch_short">ozf*in</string>
+    <string name="unit_ounce_force_short">ozf</string>
     <string name="unit_ounce_short">oz</string>
     <string name="unit_parsec">Parsec</string>
     <string name="unit_parsec_short">pc</string>
@@ -668,7 +730,13 @@
     <string name="unit_picometer_per_square_second_short">pm/s²</string>
     <string name="unit_picopascal">Picopascal</string>
     <string name="unit_picopascal_short">pPa</string>
+    <string name="unit_pond">Font</string>
+    <string name="unit_pond_short">p</string>
     <string name="unit_pound">Font</string>
+    <string name="unit_pound_force">Font-erő</string>
+    <string name="unit_pound_force_foot">Font-erő láb</string>
+    <string name="unit_pound_force_foot_short">lbf*ft</string>
+    <string name="unit_pound_force_short">lbf</string>
     <string name="unit_pound_short">lbs</string>
     <string name="unit_prefix_atto">Atto</string>
     <string name="unit_prefix_atto_short">a</string>

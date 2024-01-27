@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="add_label">Aggiungi</string>
+
+    <!-- Person's height -->
+    <string name="body_mass_height">Altezza</string>
+    <string name="body_mass_imperial">Imperiale</string>
+    <string name="body_mass_metric">Metrico</string>
+    <string name="body_mass_normal">Peso normale</string>
+
+    <!-- Will be a text followed by a number like so: "Normal weight for your height - 60" -->
+    <string name="body_mass_normal_weight">Peso normale per la tua altezza</string>
+    <string name="body_mass_obese_1">Obesità (Classe 1)</string>
+    <string name="body_mass_obese_2">Obesità (Classe 2)</string>
+    <string name="body_mass_obese_3">Obesità (Classe 3)</string>
+    <string name="body_mass_overweight">Sovrappeso</string>
+
+    <!-- Also known as Body mass index (BMI) -->
+    <string name="body_mass_title">Massa corporea</string>
+    <string name="body_mass_underweight">Sottopeso</string>
+
+    <!-- Person's weight -->
+    <string name="body_mass_weight">Peso</string>
     <string name="calculator_clear_history_support">Tutti risultati dalla cronologia saranno eliminati per sempre. Questa azione non può essere annullata!</string>
     <string name="calculator_divide_by_zero_error">Non divisibile per 0</string>
     <string name="calculator_no_history">Nessuna cronologia</string>
@@ -11,6 +49,7 @@
     <string name="clear_input_description">Svuota input</string>
     <string name="clear_label">Pulisci</string>
     <string name="click_to_try_again_label">Click per riprovare</string>
+    <string name="comma">Virgola</string>
     <string name="converter_favorite_button_description">Aggiungi o rimuovi unità dai preferiti</string>
     <string name="converter_left_side_title">Converti da</string>
     <string name="converter_no_results_support">Assicurati che non ci siano errori, prova filtri diversi o controlla i gruppi di unità disabilitati.</string>
@@ -46,6 +85,40 @@
     <string name="error_label">Errore</string>
     <string name="hello_label">Ciao!</string>
 
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_actan">Arcotangente</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_arcos">Arcocoseno</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_arsin">Arcoseno</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_cos">Coseno</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_divide">Diviso</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_factorial">Fattoriale</string>
+
+    <!-- It's ok not to use exact translation here -->
+    <!-- Screen readers (accessibility). The INV button -->
+    <string name="keyboard_inverse">Inverso</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_log">Logaritmo</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_percent">Percento</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_sin">Seno</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_tan">Tangente</string>
+
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/iqEp9rZZ9XqtJ3CKVpy33lre.png -->
     <string name="label_label">Etichetta</string>
     <string name="loading_label">Caricamento…</string>
@@ -76,12 +149,15 @@ Used in this dialog window. Should be short -->
     <string name="settings_amoled_dark">Scuro AMOLED</string>
     <string name="settings_amoled_dark_support">Usa sfondo nero per temi scuri</string>
     <string name="settings_auto">Auto</string>
+
+    <!-- Option in menu. Here it is used as a verb (action) - "back up", don't confuse with "backup".
+Alternatively you can use "Export" -->
+    <string name="settings_back_up">Esporta</string>
     <string name="settings_calculator_support">Vista cronologia</string>
     <string name="settings_clear_cache">Pulisci cache</string>
     <string name="settings_color_scheme">Schema colore</string>
     <string name="settings_color_theme">Colore tema</string>
     <string name="settings_color_theme_support">Scegli una modalità tematica</string>
-    <string name="settings_comma">Virgola</string>
     <string name="settings_converter_support">Gruppi di unità, ordine, formato</string>
     <string name="settings_currency_rates_note_text">I tassi di cambio sono aggiornati quotidianamente. Non c\'è alcun monitoraggio in tempo reale del mercato nell\'app</string>
     <string name="settings_currency_rates_note_title">Tassi di cambio sbagliati?</string>
@@ -120,6 +196,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_privacy_policy">Politica sulla riservatezza</string>
     <string name="settings_rate_this_app">Valuta questa app</string>
     <string name="settings_reorder_unit_group_description">Riordina gruppo unità</string>
+
+    <!-- Option in menu. Verb (action). Alternatively you can use "Import" -->
+    <string name="settings_restore">Ripristina</string>
     <string name="settings_selected_color">Colore selezionato</string>
     <string name="settings_selected_style">Stile selezionato</string>
     <string name="settings_separator">Separatore</string>
@@ -146,6 +225,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_unit_groups_title">Gruppi di unità</string>
     <string name="settings_units_sorting">Ordine lista unità</string>
     <string name="settings_units_sorting_support">Cambia ordine unità</string>
+
+    <!-- Please keep "%1$s". It will be formatted in the app. Example (English): "Unitto has been updated" -->
+    <string name="settings_updated">%1$s è stato aggiornato</string>
+
+    <!-- Please keep "%1$s". It will be formatted in the app. Example (English): "See what's new in version Quick Silver" -->
+    <string name="settings_updated_support">Vedi le novità nella versione %1$s</string>
     <string name="settings_version_name">Nome versione</string>
     <string name="settings_vibrations">Vibrazioni</string>
     <string name="settings_vibrations_support">Feedback tattile quando si fa clic sui pulsanti della tastiera</string>
@@ -228,12 +313,16 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_cosmic_velocity_third">Terza velocità cosmica</string>
     <string name="unit_cubic_centimeter">Centimetro cubo</string>
     <string name="unit_cubic_centimeter_short">cm³</string>
+    <string name="unit_cubic_foot">Piede cubo</string>
     <string name="unit_cubic_foot_per_hour">Piede cubo/ora</string>
     <string name="unit_cubic_foot_per_hour_short">ft³/h</string>
     <string name="unit_cubic_foot_per_minute">Piede cubo/minuto</string>
     <string name="unit_cubic_foot_per_minute_short">ft³/m</string>
     <string name="unit_cubic_foot_per_second">Piede cubo/secondo</string>
     <string name="unit_cubic_foot_per_second_short">ft³/s</string>
+    <string name="unit_cubic_foot_short">ft³</string>
+    <string name="unit_cubic_inch">Pollice cubo</string>
+    <string name="unit_cubic_inch_short">in³</string>
     <string name="unit_cubic_kilometer">Chilometro cubo</string>
     <string name="unit_cubic_kilometer_short">km³</string>
     <string name="unit_cubic_meter">Metro cubo</string>
@@ -244,6 +333,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_cubic_meter_per_second">Metro cubo/secondo</string>
     <string name="unit_cubic_meter_per_second_short">m³/s</string>
     <string name="unit_cubic_meter_short">m³</string>
+    <string name="unit_cubic_mile">Miglia cubo</string>
+    <string name="unit_cubic_mile_short">mi³</string>
     <string name="unit_cubic_millimeter">Millimetro cubo</string>
     <string name="unit_cubic_millimeter_per_hour">Millimetro cubo/ora</string>
     <string name="unit_cubic_millimeter_per_hour_short">mm³/h</string>
@@ -252,6 +343,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_cubic_millimeter_per_second">Millimetro cubo/secondo</string>
     <string name="unit_cubic_millimeter_per_second_short">mm³/s</string>
     <string name="unit_cubic_millimeter_short">mm³</string>
+    <string name="unit_cubic_yard">Iarda cubo</string>
+    <string name="unit_cubic_yard_short">yd³</string>
     <string name="unit_currency_ada">Cardano</string>
     <string name="unit_currency_aed">Dirham Emirati Arabi</string>
     <string name="unit_currency_afn">Afghani</string>
@@ -521,6 +614,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gallon_us_per_100_mile">Gallone/100 miglia (US)</string>
     <string name="unit_gallon_us_per_100_mile_short">gal/100 mi</string>
     <string name="unit_gallon_us_per_mile">Gallone/miglio (US)</string>
+
+    <!-- there is a space after mi ␣ -->
     <string name="unit_gallon_us_per_mile_short">gal/mi</string>
     <string name="unit_gibibit">Gibibit</string>
     <string name="unit_gibibit_per_second">Gibibit al secondo</string>
@@ -550,6 +645,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gigaton_short">Gt</string>
     <string name="unit_gigaweber">Gigaweber</string>
     <string name="unit_gigaweber_short">GWb</string>
+
+    <!-- Unit of mass -->
+    <string name="unit_grain">Grano</string>
+    <string name="unit_grain_short">gr</string>
     <string name="unit_gram">Grammo</string>
     <string name="unit_gram_force">Grammo-forza</string>
     <string name="unit_gram_force_centimeter">Grammo-forza centimetro</string>
@@ -558,6 +657,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gram_force_meter_short">gf*m</string>
     <string name="unit_gram_force_millimeter">Grammo-forza millimetro</string>
     <string name="unit_gram_force_millimeter_short">gf*mm</string>
+    <string name="unit_gram_force_per_square_centimeter_short">gf/cm²</string>
     <string name="unit_gram_force_short">gf</string>
     <string name="unit_gram_short">g</string>
     <string name="unit_group_acceleration">Accelerazione</string>
@@ -597,6 +697,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_horse_power_mechanical">Cavallo potenza</string>
     <string name="unit_horse_power_mechanical_short">hp</string>
     <string name="unit_hour">Ora</string>
+    <string name="unit_hour_per_kilometer">Ora/chilometro</string>
+    <string name="unit_hour_per_kilometer_short">h/km</string>
+    <string name="unit_hour_per_mile">Ora/miglia</string>
+    <string name="unit_hour_per_mile_short">h/mi</string>
     <string name="unit_hour_short">h</string>
     <string name="unit_imperial_cup">Coppa imperiale</string>
     <string name="unit_imperial_cup_short">tazza</string>
@@ -661,6 +765,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilogram_force_meter_short">kgf*m</string>
     <string name="unit_kilogram_force_millimeter">Kilogrammo-forza millimetro</string>
     <string name="unit_kilogram_force_millimeter_short">kgf*mm</string>
+    <string name="unit_kilogram_force_per_square_centimeter_short">kgf/cm²</string>
+    <string name="unit_kilogram_force_per_square_meter_short">kgf/m²</string>
     <string name="unit_kilogram_force_short">kgf</string>
     <string name="unit_kilogram_short">kg</string>
     <string name="unit_kilojoule">Kilojoule</string>
@@ -847,6 +953,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_milliweber">Milliweber</string>
     <string name="unit_milliweber_short">mWb</string>
     <string name="unit_minute">Minuto</string>
+    <string name="unit_minute_per_kilometer">Minuto/chilometro</string>
+    <string name="unit_minute_per_kilometer_short">m/km</string>
+    <string name="unit_minute_per_mile">Minuto/miglia</string>
+    <string name="unit_minute_per_mile_short">m/mi</string>
     <string name="unit_minute_short">m</string>
     <string name="unit_month_short">m</string>
     <string name="unit_nanofarad">Nanofarad</string>
@@ -921,6 +1031,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_pound_force_foot_short">lbf*ft</string>
     <string name="unit_pound_force_inch">Libbra-forza pollice</string>
     <string name="unit_pound_force_inch_short">lbf*in</string>
+    <string name="unit_pound_force_per_square_foot_short">pf/f²</string>
+    <string name="unit_pound_force_per_square_inch_short">pf/in²</string>
     <string name="unit_pound_force_short">lbf</string>
     <string name="unit_pound_short">lbs</string>
     <string name="unit_prefix_atto">Atto</string>

@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="add_label">Hinzufügen</string>
     <string name="calculator_clear_history_support">Alle Ausdrücke aus dem Verlauf werden für immer gelöscht. Diese Aktion kann nicht rückgängig gemacht werden!</string>
@@ -11,6 +29,7 @@
     <string name="clear_input_description">Eingabe löschen</string>
     <string name="clear_label">Leeren</string>
     <string name="click_to_try_again_label">Klicken zum erneut Versuchen</string>
+    <string name="comma">Komma</string>
     <string name="converter_favorite_button_description">Einheiten zu den Favoriten hinzufügen oder entfernen</string>
     <string name="converter_left_side_title">Umrechnen von</string>
     <string name="converter_no_results_support">Stelle sicher, dass es keine Tippfehler gibt, versuche einen anderen Filter oder überprüfe die ausgeschalteten Einheitengruppen</string>
@@ -78,12 +97,9 @@ Used in this dialog window. Should be short -->
     <string name="settings_auto">Automatisch</string>
     <string name="settings_calculator_support">Verlaufsansicht</string>
     <string name="settings_clear_cache">Cache leeren</string>
-    <string name="settings_clear_input">Eingabe löschen</string>
-    <string name="settings_clear_input_support">Neuen Ausdruck beginnen, wenn \"=\" und eine beliebige Taste gedrückt wird.</string>
     <string name="settings_color_scheme">Farbschema</string>
     <string name="settings_color_theme">Farbthema</string>
     <string name="settings_color_theme_support">Farbthema auswählen</string>
-    <string name="settings_comma">Komma</string>
     <string name="settings_converter_support">Einheitengruppen, Sortierung, Formatierung</string>
     <string name="settings_currency_rates_note_text">Wechselkurs werden tägliche upgedatet. Es gibt keine Echtzeit Umrechnung in der App</string>
     <string name="settings_currency_rates_note_title">Falsche Wechselkurse?</string>

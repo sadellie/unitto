@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="calculator_clear_history_support">Semua ekspresi dari riwayat akan dihapus selamanya. Tindakan ini tidak bisa diurungkan!</string>
     <string name="calculator_divide_by_zero_error">Tidak bisa dibagi dengan 0</string>
@@ -10,6 +28,7 @@
     <string name="clear_input_description">Hapus masukan</string>
     <string name="clear_label">Hapus</string>
     <string name="click_to_try_again_label">Klik untuk mencoba lagi</string>
+    <string name="comma">Koma</string>
     <string name="converter_favorite_button_description">Tambah atau hapus unit dari favorit</string>
     <string name="converter_left_side_title">Ubah dari</string>
     <string name="converter_no_results_support">Pastikan tidak ada kesalahan pengetikan, coba filter yang berbeda atau periksa grup unit yang dinonaktifkan.</string>
@@ -69,7 +88,6 @@ Used in this dialog window. Should be short -->
     <string name="settings_color_scheme">Skema warna</string>
     <string name="settings_color_theme">Tema warna</string>
     <string name="settings_color_theme_support">Pilih mode tema</string>
-    <string name="settings_comma">Koma</string>
     <string name="settings_converter_support">Grup unit, urutan, format</string>
     <string name="settings_currency_rates_note_text">Nilai tukar mata uang diperbarui sehari sekali. Tidak ada sistem pembaruan instan di dalam aplikasi</string>
     <string name="settings_currency_rates_note_title">Nilai tukar mata uang salah?</string>

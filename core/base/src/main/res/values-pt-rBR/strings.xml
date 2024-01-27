@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="add_label">Adicionar</string>
     <string name="calculator_clear_history_support">Todas as expressões do histórico serão excluídas.  Esta ação não pode ser desfeita!</string>
@@ -11,6 +29,7 @@
     <string name="clear_input_description">Limpar entrada</string>
     <string name="clear_label">Limpar</string>
     <string name="click_to_try_again_label">Clique para tentar novamente</string>
+    <string name="comma">Vírgula</string>
     <string name="converter_favorite_button_description">Adicionar ou remover unidade dos favoritos</string>
     <string name="converter_left_side_title">Converter de</string>
     <string name="converter_no_results_support">Certifique-se de que não haja erros de digitação, experimente filtros diferentes ou verifique se há grupos de unidades desativados.</string>
@@ -78,12 +97,9 @@ Used in this dialog window. Should be short -->
     <string name="settings_auto">Auto</string>
     <string name="settings_calculator_support">Visualização do histórico</string>
     <string name="settings_clear_cache">Limpar cache</string>
-    <string name="settings_clear_input">Limpar entrada</string>
-    <string name="settings_clear_input_support">Iniciar nova expressão ao clicar em \"=\" e em qualquer botão</string>
     <string name="settings_color_scheme">Esquema de cores</string>
     <string name="settings_color_theme">Tema</string>
     <string name="settings_color_theme_support">Escolha um modo de tema</string>
-    <string name="settings_comma">Vírgula</string>
     <string name="settings_converter_support">Grupos de unidades, ordenação, formatação</string>
     <string name="settings_currency_rates_note_text">As taxas de câmbio são atualizadas diariamente.  Não há monitoramento de mercado em tempo real no aplicativo</string>
     <string name="settings_currency_rates_note_title">Taxas de câmbio erradas?</string>
@@ -232,12 +248,16 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_cosmic_velocity_third">3° Velocidade Cósmica</string>
     <string name="unit_cubic_centimeter">Centímetro cúbico</string>
     <string name="unit_cubic_centimeter_short">cm³</string>
+    <string name="unit_cubic_foot">Pé Quadrado</string>
     <string name="unit_cubic_foot_per_hour">Pé Cúbico/hora</string>
     <string name="unit_cubic_foot_per_hour_short">ft³/h</string>
     <string name="unit_cubic_foot_per_minute">Pé Cúbico/minuto</string>
     <string name="unit_cubic_foot_per_minute_short">ft³/m</string>
     <string name="unit_cubic_foot_per_second">Pé Cúbico/segundo</string>
     <string name="unit_cubic_foot_per_second_short">ft³/s</string>
+    <string name="unit_cubic_foot_short">ft³</string>
+    <string name="unit_cubic_inch">Polegada Quadrada</string>
+    <string name="unit_cubic_inch_short">in3</string>
     <string name="unit_cubic_kilometer">Quilômetro cúbico</string>
     <string name="unit_cubic_kilometer_short">km³</string>
     <string name="unit_cubic_meter">Metro cúbico</string>
@@ -248,6 +268,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_cubic_meter_per_second">Metro Cúbico/segundo</string>
     <string name="unit_cubic_meter_per_second_short">m³/s</string>
     <string name="unit_cubic_meter_short">m³</string>
+    <string name="unit_cubic_mile">Minha Cúbica</string>
+    <string name="unit_cubic_mile_short">mi³</string>
     <string name="unit_cubic_millimeter">Milímetro Cúbico</string>
     <string name="unit_cubic_millimeter_per_hour">Milímetro Cúbico/hora</string>
     <string name="unit_cubic_millimeter_per_hour_short">mm³/h</string>
@@ -256,6 +278,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_cubic_millimeter_per_second">Milímetro Cúbico/segundo</string>
     <string name="unit_cubic_millimeter_per_second_short">mm³/s</string>
     <string name="unit_cubic_millimeter_short">mm³</string>
+    <string name="unit_cubic_yard">Jarda Cúbica</string>
+    <string name="unit_cubic_yard_short">yd³</string>
     <string name="unit_currency_ada">Cardano</string>
     <string name="unit_currency_aed">Dirham - Emirados Árabes Unidos</string>
     <string name="unit_currency_afn">Afegane afegão</string>
@@ -554,6 +578,8 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gram_force_meter_short">gf*m</string>
     <string name="unit_gram_force_millimeter">Grama-força/milímetro</string>
     <string name="unit_gram_force_millimeter_short">gf*mm</string>
+    <string name="unit_gram_force_per_square_centimeter">Gram-força/centímetro quadrado</string>
+    <string name="unit_gram_force_per_square_centimeter_short">gf/cm²</string>
     <string name="unit_gram_force_short">gf</string>
     <string name="unit_gram_short">g</string>
     <string name="unit_group_acceleration">Aceleração</string>
@@ -657,6 +683,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_kilogram_force_meter_short">kgf*m</string>
     <string name="unit_kilogram_force_millimeter">Quilograma-força/milímetro</string>
     <string name="unit_kilogram_force_millimeter_short">kgf*mm</string>
+    <string name="unit_kilogram_force_per_square_centimeter">Quilograma-força/centímetro quadrado</string>
+    <string name="unit_kilogram_force_per_square_centimeter_short">kgf/cm²</string>
+    <string name="unit_kilogram_force_per_square_meter">Quilograma-força/metro quadrado</string>
+    <string name="unit_kilogram_force_per_square_meter_short">kgf/m²</string>
     <string name="unit_kilogram_force_short">kgf</string>
     <string name="unit_kilogram_short">kg</string>
     <string name="unit_kilojoule">Quilojoule</string>
@@ -917,6 +947,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_pound_force_foot_short">lbf*ft</string>
     <string name="unit_pound_force_inch">Libra-força/polegada</string>
     <string name="unit_pound_force_inch_short">lbf*in</string>
+    <string name="unit_pound_force_per_square_foot">Libra-força/pé quadrado</string>
+    <string name="unit_pound_force_per_square_foot_short">pf/f²</string>
+    <string name="unit_pound_force_per_square_inch">Libra-força/polegada quadrada</string>
+    <string name="unit_pound_force_per_square_inch_short">pf/in²</string>
     <string name="unit_pound_force_short">lbf</string>
     <string name="unit_pound_short">lbs</string>
     <string name="unit_prefix_atto">Atto</string>

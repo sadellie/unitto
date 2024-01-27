@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="calculator_clear_history_support">Geçmişteki tüm ifadeler tamamen silinecek. Bu işlem geri alınamaz!</string>
     <string name="calculator_divide_by_zero_error">0\'a bölünemez</string>
@@ -9,6 +27,7 @@
     <string name="clear_history_label">Geçmişi temizle</string>
     <string name="clear_input_description">Girdiyi temizle</string>
     <string name="clear_label">Temizle</string>
+    <string name="comma">Virgül</string>
     <string name="converter_favorite_button_description">Birimi favorilere ekleyin veya favorilerden çıkarın</string>
     <string name="converter_left_side_title">Şundan çevir</string>
     <string name="converter_no_results_support">Yazım hatası olmadığından emin olun, farklı filtreler deneyin veya devre dışı bırakılan birim gruplarını kontrol edin.</string>
@@ -57,7 +76,7 @@ Used in this dialog window. Should be short -->
     <string name="open_menu_description">Menüyü aç</string>
     <string name="open_settings_label">Ayarları aç</string>
     <string name="search_button_description">Arama düğmesi</string>
-    <string name="search_text_field_placeholder">Ara...</string>
+    <string name="search_text_field_placeholder">Ara…</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
     <string name="select_time_label">Zaman seçin</string>
@@ -78,7 +97,6 @@ Used in this dialog window. Should be short -->
     <string name="settings_color_scheme">Renk şeması</string>
     <string name="settings_color_theme">Renk teması</string>
     <string name="settings_color_theme_support">Bir tema modu seçin</string>
-    <string name="settings_comma">Virgül</string>
     <string name="settings_converter_support">Birim grupları, sıralama, biçimlendirme</string>
     <string name="settings_currency_rates_note_text">Döviz kurları günlük olarak güncellenmektedir. Uygulamada gerçek zamanlı piyasa izleme yoktur</string>
     <string name="settings_currency_rates_note_title">Döviz kurları yanlış mı?</string>

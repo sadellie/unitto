@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="add_label">Добавить</string>
+
+    <!-- Person's height -->
+    <string name="body_mass_height">Рост</string>
+    <string name="body_mass_imperial">Имперский</string>
+    <string name="body_mass_metric">Метрический</string>
+    <string name="body_mass_normal">Нормальный вес</string>
+
+    <!-- Will be a text followed by a number like so: "Normal weight for your height - 60" -->
+    <string name="body_mass_normal_weight">Нормальный вес для вашего роста</string>
+    <string name="body_mass_obese_1">Ожирение (класс 1)</string>
+    <string name="body_mass_obese_2">Ожирение (класс 2)</string>
+    <string name="body_mass_obese_3">Ожирение (класс 3)</string>
+    <string name="body_mass_overweight">Избыточный вес</string>
+
+    <!-- Also known as Body mass index (BMI) -->
+    <string name="body_mass_title">Масса тела</string>
+    <string name="body_mass_underweight">Недостаток веса</string>
+
+    <!-- Person's weight -->
+    <string name="body_mass_weight">Вес</string>
     <string name="calculator_clear_history_support">Все выражения из истории будут удалены навсегда. Это действие нельзя отменить!</string>
     <string name="calculator_divide_by_zero_error">Нельзя делить на 0</string>
     <string name="calculator_no_history">Нет истории</string>
@@ -11,6 +49,7 @@
     <string name="clear_input_description">Очистить ввод</string>
     <string name="clear_label">Очистить</string>
     <string name="click_to_try_again_label">Нажмите для повторной попытки</string>
+    <string name="comma">Запятая</string>
     <string name="converter_favorite_button_description">Добавить или убрать величину из избранных</string>
     <string name="converter_left_side_title">Перевести из</string>
     <string name="converter_no_results_support">Убедитесь в отсутствии опечаток, попробуйте другие фильтры или проверьте отключенные величины.</string>
@@ -19,6 +58,10 @@
     <string name="converter_swap_units_description">Поменять местами величины</string>
     <string name="copied_label">Скопировано %1$s!</string>
     <string name="date_calculator_add">Сложить</string>
+
+    <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/CfdIPBOo2IZnLb0elHvLcUQ3.png -->
+    <!-- Screen readers (accessibility) -->
+    <string name="date_calculator_create_event">Создать событие</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/33QTn2NVrjJT772cBDFRqSMH.png -->
     <string name="date_calculator_days">Дней</string>
@@ -46,6 +89,97 @@
     <string name="error_label">Ошибка</string>
     <string name="hello_label">Привет!</string>
 
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_actan">Арктангенс</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_arcos">Арккосинус</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_arsin">Арксинус</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_brackets">Скобки</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_cos">Косинус</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_degree">Градус</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_divide">Разделить</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_dot">Точка</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_equal">Равно</string>
+
+    <!-- https://en.wikipedia.org/wiki/E_(mathematical_constant) -->
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_euler">Число Эйлера</string>
+
+    <!-- https://en.wikipedia.org/wiki/Exponential_function -->
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_exp">Показательная функция</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_factorial">Факториал</string>
+
+    <!-- It's ok not to use exact translation here -->
+    <!-- Screen readers (accessibility). The INV button -->
+    <string name="keyboard_inverse">Обратные функции</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_left_bracket">Левая скобка</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_ln">Натуральный логарифм</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_log">Логарифм</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_minus">Минус</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_modulo">Модуль</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_multiply">Умножить</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_percent">Процент</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_pi">Пи</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_plus">Плюс</string>
+
+    <!-- Exponent or Power, same thing -->
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_power">Степень</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_power_10">Степень из 10</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_radian">Радиан</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_right_bracket">Правая скобка</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_root">Квадратный корень</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_sin">Синус</string>
+
+    <!-- Screen readers (accessibility) -->
+    <string name="keyboard_tan">Тангенс</string>
+
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/iqEp9rZZ9XqtJ3CKVpy33lre.png -->
     <string name="label_label">Подпись</string>
     <string name="loading_label">Загрузка…</string>
@@ -64,6 +198,11 @@ Used in this dialog window. Should be short -->
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
     <string name="select_time_label">Выберите время</string>
+
+    <!-- Used in multiple places (check icons)
+https://s3.eu-west-1.amazonaws.com/po-pub/i/1oIHPj16krI0jyLmg4JaP2mk.png -->
+    <!-- Screen readers (accessibility) -->
+    <string name="selected_item">Выбранные элемент</string>
     <string name="settings_about_unitto">О Unitto</string>
     <string name="settings_about_unitto_support">Узнайте больше о приложении</string>
 
@@ -76,14 +215,15 @@ Used in this dialog window. Should be short -->
     <string name="settings_amoled_dark">Чёрная AMOLED</string>
     <string name="settings_amoled_dark_support">Использовать чёрный фон в тёмной теме</string>
     <string name="settings_auto">Авто</string>
+
+    <!-- Option in menu. Here it is used as a verb (action) - "back up", don't confuse with "backup".
+Alternatively you can use "Export" -->
+    <string name="settings_back_up">Экспорт</string>
     <string name="settings_calculator_support">Вид истории</string>
     <string name="settings_clear_cache">Очистить кэш</string>
-    <string name="settings_clear_input">Очистить ввод</string>
-    <string name="settings_clear_input_support">Начинать новое выражение после нажатия \"=\" и любой кнопки</string>
     <string name="settings_color_scheme">Цветовая схема</string>
     <string name="settings_color_theme">Цветовая тема</string>
     <string name="settings_color_theme_support">Выберите режим темы</string>
-    <string name="settings_comma">Запятая</string>
     <string name="settings_converter_support">Группы единиц, сортировка, форматирование</string>
     <string name="settings_currency_rates_note_text">Курсы валют обновляются ежедневно. В приложении нет мониторинга рынка в реальном времени.</string>
     <string name="settings_currency_rates_note_title">Неправильные курсы валют?</string>
@@ -122,6 +262,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_rate_this_app">Оценить приложение</string>
     <string name="settings_reorder_unit_group_description">Переместить группу величин</string>
+
+    <!-- Option in menu. Verb (action). Alternatively you can use "Import" -->
+    <string name="settings_restore">Импорт</string>
     <string name="settings_selected_color">Выбранный цвет</string>
     <string name="settings_selected_style">Выбранный стиль</string>
     <string name="settings_separator">Разделитель</string>
@@ -148,6 +291,12 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_unit_groups_title">Группы величин</string>
     <string name="settings_units_sorting">Сортировка списка единиц измерений</string>
     <string name="settings_units_sorting_support">Изменить порядок единиц измерений</string>
+
+    <!-- Please keep "%1$s". It will be formatted in the app. Example (English): "Unitto has been updated" -->
+    <string name="settings_updated">%1$s был обновлен</string>
+
+    <!-- Please keep "%1$s". It will be formatted in the app. Example (English): "See what's new in version Quick Silver" -->
+    <string name="settings_updated_support">Посмотрите, что нового в версии %1$s</string>
     <string name="settings_version_name">Название версии</string>
     <string name="settings_vibrations">Вибрации</string>
     <string name="settings_vibrations_support">Тактильный отклик при использовании клавиатуры</string>
@@ -155,6 +304,11 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="time_zone_add_title">Добавить часовой пояс</string>
     <string name="time_zone_no_results_button">Прочитать статью</string>
     <string name="time_zone_no_results_support">Нужно больше часовых поясов?</string>
+
+    <!-- Description for Reset button
+https://s3.eu-west-1.amazonaws.com/po-pub/i/llhUZ6FzZenWAgtdNAcXfKWn.png -->
+    <!-- Screen readers (accessibility) -->
+    <string name="time_zone_reset">Сбросить</string>
     <string name="time_zone_title">Часовые пояса</string>
     <string name="tomorrow">Завтра</string>
     <string name="unit_acre">Акр</string>
@@ -554,6 +708,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_gigaton_short">Гт</string>
     <string name="unit_gigaweber">Гигавебер</string>
     <string name="unit_gigaweber_short">ГВб</string>
+
+    <!-- Unit of mass -->
+    <string name="unit_grain">Гран</string>
+    <string name="unit_grain_short">гр</string>
     <string name="unit_gram">Грамм</string>
     <string name="unit_gram_force">Грамм-сила</string>
     <string name="unit_gram_force_centimeter">Грамм-сила сантиметр</string>
@@ -601,6 +759,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_horse_power_mechanical">Лошадиная сила</string>
     <string name="unit_horse_power_mechanical_short">л. с.</string>
     <string name="unit_hour">Час</string>
+    <string name="unit_hour_per_kilometer">Час/километр</string>
+    <string name="unit_hour_per_kilometer_short">ч/км</string>
+    <string name="unit_hour_per_mile">Час/миля</string>
+    <string name="unit_hour_per_mile_short">ч/ми</string>
     <string name="unit_hour_short">ч</string>
     <string name="unit_imperial_cup">Англ. чашка</string>
     <string name="unit_imperial_cup_short">чашка</string>
@@ -855,6 +1017,10 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="unit_milliweber">Милливебер</string>
     <string name="unit_milliweber_short">мВб</string>
     <string name="unit_minute">Минута</string>
+    <string name="unit_minute_per_kilometer">Минута/километр</string>
+    <string name="unit_minute_per_kilometer_short">м/км</string>
+    <string name="unit_minute_per_mile">Минута/миля</string>
+    <string name="unit_minute_per_mile_short">м/ми</string>
     <string name="unit_minute_short">м</string>
     <string name="unit_month_short">м</string>
     <string name="unit_nanofarad">Нанофарад</string>

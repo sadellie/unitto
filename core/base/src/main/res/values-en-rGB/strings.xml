@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="add_label">Add</string>
     <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>
@@ -11,6 +29,7 @@
     <string name="clear_input_description">Clear input</string>
     <string name="clear_label">Clear</string>
     <string name="click_to_try_again_label">Click to try again</string>
+    <string name="comma">Comma</string>
     <string name="converter_favorite_button_description">Add or remove unit from favorites</string>
     <string name="converter_left_side_title">Convert from</string>
     <string name="converter_no_results_support">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
@@ -76,14 +95,15 @@ Used in this dialog window. Should be short -->
     <string name="settings_amoled_dark">AMOLED Dark</string>
     <string name="settings_amoled_dark_support">Use black background for dark themes</string>
     <string name="settings_auto">Auto</string>
+
+    <!-- Option in menu. Here it is used as a verb (action) - "back up", don't confuse with "backup".
+Alternatively you can use "Export" -->
+    <string name="settings_back_up">Back up</string>
     <string name="settings_calculator_support">History view</string>
     <string name="settings_clear_cache">Clear cache</string>
-    <string name="settings_clear_input">Clear input</string>
-    <string name="settings_clear_input_support">Start new expression when clicking \"=\" and any button</string>
     <string name="settings_color_scheme">Colour scheme</string>
     <string name="settings_color_theme">Colour theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
-    <string name="settings_comma">Comma</string>
     <string name="settings_converter_support">Unit groups, sorting, formatting</string>
     <string name="settings_currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
     <string name="settings_currency_rates_note_title">Wrong currency rates?</string>
@@ -122,6 +142,9 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_rate_this_app">Rate this app</string>
     <string name="settings_reorder_unit_group_description">Reorder unit group</string>
+
+    <!-- Option in menu. Verb (action). Alternatively you can use "Import" -->
+    <string name="settings_restore">Restore</string>
     <string name="settings_selected_color">Selected colour</string>
     <string name="settings_selected_style">Selected style</string>
     <string name="settings_separator">Separator</string>

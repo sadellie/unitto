@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="calculator_clear_history_support">Toutes les expressions de l\'historique seront supprimées pour toujours. Cette action ne peux pas être annulée !</string>
     <string name="calculator_divide_by_zero_error">Impossible de diviser par 0</string>
@@ -10,6 +28,7 @@
     <string name="clear_input_description">Effacer l\'entrée</string>
     <string name="clear_label">Clear</string>
     <string name="click_to_try_again_label">Cliquez pour réessayer</string>
+    <string name="comma">Virgule</string>
     <string name="converter_favorite_button_description">Ajouter ou supprimer une unité des favoris</string>
     <string name="converter_left_side_title">Convertir de</string>
     <string name="converter_no_results_support">Assurez-vous qu\'il n\'y a pas de fautes de frappe, essayez différents filtres ou vérifiez si des groupes d\'unités sont désactivés.</string>
@@ -55,7 +74,7 @@ Used in this dialog window. Should be short -->
     <string name="open_menu_description">Ouvrir le menu</string>
     <string name="open_settings_label">Ouvrir les paramètres</string>
     <string name="search_button_description">Bouton de recherche</string>
-    <string name="search_text_field_placeholder">Recherche...</string>
+    <string name="search_text_field_placeholder">Recherche…</string>
 
     <!-- https://s3.eu-west-1.amazonaws.com/po-pub/i/uWOHJmIq9riqsq7PO82ZQp3a.png -->
     <string name="select_time_label">Choisir le temps</string>
@@ -70,7 +89,6 @@ Used in this dialog window. Should be short -->
     <string name="settings_color_scheme">Palette de couleurs</string>
     <string name="settings_color_theme">Thème couleur</string>
     <string name="settings_color_theme_support">Choisir un mode de thème</string>
-    <string name="settings_comma">Virgule</string>
     <string name="settings_converter_support">Groupes d\'unités, tri, formatage</string>
     <string name="settings_currency_rates_note_text">Les taux de change sont mis à jour quotidiennement. L\'application ne permet pas de suivre le marché en temps réel.</string>
     <string name="settings_currency_rates_note_title">Taux de conversion faux ?</string>

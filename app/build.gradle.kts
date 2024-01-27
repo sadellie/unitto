@@ -50,6 +50,7 @@ android {
             "pt-rBR",
             "ru",
             "tr",
+            "zh-rCN",
         )
     }
 
