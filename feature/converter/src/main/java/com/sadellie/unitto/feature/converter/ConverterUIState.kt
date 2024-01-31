@@ -95,7 +95,10 @@ internal sealed class ConverterResult {
     data object Error : ConverterResult()
 }
 
-internal fun ConverterResult.Time.format(mContext: Context, formatterSymbols: FormatterSymbols): String {
+internal fun ConverterResult.Time.format(
+    mContext: Context,
+    formatterSymbols: FormatterSymbols
+): String {
     val result = mutableListOf<String>()
 
     if (day.isGreaterThan(BigDecimal.ZERO)) {

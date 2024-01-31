@@ -19,10 +19,10 @@
 package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.converter.UnitID
 import java.math.BigDecimal
 
 internal val lengthCollection: List<AbstractUnit> by lazy {
@@ -37,7 +37,7 @@ internal val lengthCollection: List<AbstractUnit> by lazy {
         NormalUnit(UnitID.kilometer,                 BigDecimal.valueOf(1.0E+21),                         UnitGroup.LENGTH, R.string.unit_kilometer,                 R.string.unit_kilometer_short),
         NormalUnit(UnitID.nautical_mile,             BigDecimal.valueOf(1.852E+21),                       UnitGroup.LENGTH, R.string.unit_nautical_mile,             R.string.unit_nautical_mile_short),
         NormalUnit(UnitID.inch,                      BigDecimal.valueOf(25_400_000_000_000_000),          UnitGroup.LENGTH, R.string.unit_inch,                      R.string.unit_inch_short),
-        NormalUnit(UnitID.foot,                      BigDecimal.valueOf(304_800_000_000_002_200),         UnitGroup.LENGTH, R.string.unit_foot,                      R.string.unit_foot_short),
+        NormalUnit(UnitID.foot,                      BigDecimal.valueOf(304_800_000_000_000_000),         UnitGroup.LENGTH, R.string.unit_foot,                      R.string.unit_foot_short),
         NormalUnit(UnitID.yard,                      BigDecimal.valueOf(914_400_000_000_006_400),         UnitGroup.LENGTH, R.string.unit_yard,                      R.string.unit_yard_short),
         NormalUnit(UnitID.mile,                      BigDecimal.valueOf(1_609_344_000_000_010_500_000.0), UnitGroup.LENGTH, R.string.unit_mile,                      R.string.unit_mile_short),
         NormalUnit(UnitID.light_year,                BigDecimal.valueOf(9.460730472E+33),                 UnitGroup.LENGTH, R.string.unit_light_year,                R.string.unit_light_year_short),

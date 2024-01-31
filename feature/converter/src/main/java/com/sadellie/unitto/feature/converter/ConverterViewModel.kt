@@ -451,14 +451,6 @@ internal class ConverterViewModel @Inject constructor(
         } catch (e: Exception) {
             return@launch
         }
-        val calculated2 = try {
-            Expression(input2.text.ifEmpty { Token.Digit._0 }).calculate()
-        } catch (e: ExpressionException.DivideByZero) {
-            _calculation.update { null }
-            return@launch
-        } catch (e: Exception) {
-            return@launch
-        }
 
         // Update calculation
         _calculation.update { if (input1.text.isExpression()) calculated1 else null }
@@ -469,6 +461,14 @@ internal class ConverterViewModel @Inject constructor(
             if (footInchInput) {
                 // Converted from second text field too
                 val inches = unitsRepo.getById(UnitID.inch) as DefaultUnit
+                val calculated2 = try {
+                    Expression(input2.text.ifEmpty { Token.Digit._0 }).calculate()
+                } catch (e: ExpressionException.DivideByZero) {
+                    _calculation.update { null }
+                    return@launch
+                } catch (e: Exception) {
+                    return@launch
+                }
                 conversion += inches.convert(unitTo, calculated2)
             }
             when {

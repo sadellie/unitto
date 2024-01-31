@@ -19,6 +19,6 @@
 package com.sadellie.unitto.core.base
 
 /**
- * Current maximum scale that will be used in app. Used in various place in code
+ * Current maximum scale that will be used in app. Used in various places in code.
  */
 const val MAX_PRECISION: Int = 1_000
