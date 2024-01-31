@@ -21,16 +21,17 @@ package com.sadellie.unitto.core.ui.common.textfield
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.base.Token
 
 /**
- * Copy value to clipboard without grouping symbols.
+ * Copy value to clipboard with fractional symbols.
  *
  * Example:
- * "123.456,789" will be copied as "123456,789"
+ * "123456.789" will be copied as "123456,789"
  *
- * @param value Formatted value that has grouping symbols.
+ * @param value Internal [TextFieldValue] without formatting with [Token.Digit.dot] as fractional.
  */
-internal fun ClipboardManager.copyWithoutGrouping(
+internal fun ClipboardManager.copyWithFractional(
     value: TextFieldValue,
     formatterSymbols: FormatterSymbols
 ) = this.setText(
@@ -38,7 +39,7 @@ internal fun ClipboardManager.copyWithoutGrouping(
         value.annotatedString
             .subSequence(value.selection)
             .text
-            .replace(formatterSymbols.grouping, "")
+            .replace(Token.Digit.dot, formatterSymbols.fractional)
     )
 )
 

@@ -62,7 +62,7 @@ fun FixedInputTextField(
     val expressionInteractionSource = remember(expression) { MutableInteractionSource() }
     LaunchedEffect(expressionInteractionSource) {
         expressionInteractionSource.interactions.collect {
-            if (it is PressInteraction.Release) onClick(expression.clearAndFilterExpression(formatterSymbols))
+            if (it is PressInteraction.Release) onClick(value)
         }
     }
 
@@ -71,7 +71,7 @@ fun FixedInputTextField(
         LocalTextToolbar provides UnittoTextToolbar(
             view = LocalView.current,
             copyCallback = {
-                clipboardManager.copyWithoutGrouping(expressionValue, formatterSymbols)
+                clipboardManager.copyWithFractional(expressionValue, formatterSymbols)
                 expressionValue = expressionValue.copy(selection = TextRange(expressionValue.selection.end))
             }
         )

@@ -73,7 +73,7 @@ fun ExpressionTextField(
     val expressionTransformer = remember(formatterSymbols) { ExpressionTransformer(formatterSymbols) }
 
     fun copyCallback() {
-        clipboardManager.copyWithoutGrouping(value, formatterSymbols)
+        clipboardManager.copyWithFractional(value, formatterSymbols)
         onCursorChange(TextRange(value.selection.end))
     }
 
@@ -90,7 +90,7 @@ fun ExpressionTextField(
                 pasteCallback(clipboardManager.getText()?.text?.clearAndFilterExpression(formatterSymbols) ?: "")
             },
             cutCallback = {
-                clipboardManager.copyWithoutGrouping(value, formatterSymbols)
+                clipboardManager.copyWithFractional(value, formatterSymbols)
                 cutCallback()
             }
         )
