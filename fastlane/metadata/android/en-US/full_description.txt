@@ -40,6 +40,15 @@ Used in Unit Converter to update currency rates. Requests are made only when you
 android.permission.ACCESS_NETWORK_STATE
 Used in Unit Converter as a callback. Retries to update currency rates if there was an error (no network, for example) and the Internet connection is back.
 
+android.permission.WAKE_LOCK
+Not used explicitly. Added automatically by Widget feature.
+
+android.permission.RECEIVE_BOOT_COMPLETED
+Not used explicitly. Added automatically by Widget feature.
+
+android.permission.FOREGROUND_SERVICE
+Not used explicitly. Added automatically by Widget feature.
+
 Non-free network service
 <i>Non-free</i> doesn't mean that you need to pay, put your credit card away. In this context it means that you can't host it on your machine.
 
