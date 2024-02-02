@@ -54,11 +54,6 @@ fun String.formatExpression(
 ): String {
     var input = this
 
-    // Don't do anything to engineering string.
-    if (input.contains(Token.DisplayOnly.engineeringE)) {
-        return input.replace(Token.Digit.dot, formatterSymbols.fractional)
-    }
-
     // Fractional
     if (input.contains(Token.DisplayOnly.fraction)) {
         // Only format integral part
@@ -77,8 +72,9 @@ fun String.formatExpression(
             input = input.replace(it, it.formatNumber(formatterSymbols))
         }
 
-    Token.sexyToUgly.forEach { (token, ugliness) ->
-        ugliness.forEach { uglySymbol ->
+    // Replace ugly symbols
+    Token.sexyToUgly.forEach { (token, uglySymbols) ->
+        uglySymbols.forEach { uglySymbol ->
             input = input.replace(uglySymbol, token)
         }
     }

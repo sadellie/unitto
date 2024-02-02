@@ -126,7 +126,7 @@ object Token {
     }
 
     val expressionTokens by lazy {
-        Digit.allWithDot + Operator.all + Func.all + Const.all
+        Digit.allWithDot + Operator.all + Func.all + Const.all + DisplayOnly.engineeringE
     }
 
     val numberBaseTokens by lazy {

@@ -38,7 +38,16 @@ class ExpressionExceptionsTest {
     fun `ugly ahh expression`() = assertExprFail(ExpressionException.BadExpression::class.java, "100+cos()")
 
     @Test
-    fun `ugly ahh expression2`() = assertExprFail(TokenizerException.BadNumber::class.java, "...")
+    fun `ugly ahh expression2`() = assertExprFail(TokenizerException.TooManyFractionSymbols::class.java, "...")
+
+    @Test
+    fun `ugly ahh expression3`() = assertExprFail(TokenizerException.BadScientificNotation::class.java, "2.5E-")
+
+    @Test
+    fun `ugly ahh expression4`() = assertExprFail(TokenizerException.BadScientificNotation::class.java, "2.5E")
+
+    @Test
+    fun `ugly ahh expression5`() = assertExprFail(TokenizerException.BadScientificNotation::class.java, "2.5E÷")
 
     @Test
     fun `too big`() = assertExprFail(ExpressionException.TooBig::class.java, "999999!")

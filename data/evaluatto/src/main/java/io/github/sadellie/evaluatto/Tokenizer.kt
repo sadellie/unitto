@@ -20,8 +20,10 @@ package io.github.sadellie.evaluatto
 
 import com.sadellie.unitto.core.base.Token
 
-sealed class TokenizerException(override val message: String) : Exception(message) {
-    class BadNumber : TokenizerException("Number has multiple commas in it")
+sealed class TokenizerException(message: String) : Exception(message) {
+    class TooManyFractionSymbols : TokenizerException("Number has multiple commas in it")
+    class FailedToUnpackNumber : TokenizerException("Unexpected token before percentage")
+    class BadScientificNotation : TokenizerException("Expected plus or minus symbol after \"E\"")
 }
 
 class Tokenizer(private val streamOfTokens: String) {
@@ -60,7 +62,7 @@ class Tokenizer(private val streamOfTokens: String) {
                         .takeWhile { Token.Digit.allWithDot.contains(it.toString()) }
 
                     if (number.count { it.toString() == Token.Digit.dot } > 1) {
-                        throw TokenizerException.BadNumber()
+                        throw TokenizerException.TooManyFractionSymbols()
                     }
 
                     return number
@@ -74,13 +76,14 @@ class Tokenizer(private val streamOfTokens: String) {
     private fun List<String>.repairLexicon(): List<String> {
         return this
             .missingClosingBrackets()
+            .unpackNotation()
             .missingMultiply()
-            .unpackAlPercents()
+            .unpackAllPercents()
             // input like 80%80% should be treated as 80%*80%.
             // After unpacking we get (80/100)(80/100), the multiply is missing (!!!)
             // No, we can't unpack before fixing missing multiply.
             // Ideally we we need to add missing multiply for 80%80%
-            // In that case unpackAlPercents gets input with all operators 80%*80% in this case
+            // In that case unpackAllPercents gets input with all operators 80%*80% in this case
             // Can't be done right now since missingMultiply checks for tokens in front only
             .missingMultiply()
     }
@@ -135,12 +138,44 @@ class Tokenizer(private val streamOfTokens: String) {
         return result
     }
 
-    private fun List<String>.unpackAlPercents(): List<String> {
+    private fun List<String>.unpackAllPercents(): List<String> {
         var result = this
         while (result.contains(Token.Operator.percent)) {
             val percIndex = result.indexOf(Token.Operator.percent)
             result = result.unpackPercentAt(percIndex)
         }
+        return result
+    }
+
+    private fun List<String>.unpackNotation(): List<String> {
+        // Transform 1E+7 ==> 1*10^7
+        // Transform 1E-7 ==> 1/10^7
+        val result = this.toMutableList()
+        val listIterator = result.listIterator()
+
+        while (listIterator.hasNext()) {
+            if (listIterator.next() == Token.DisplayOnly.engineeringE) {
+                listIterator.remove()
+
+                val tokenAfterE = try {
+                    listIterator.next()
+                } catch (e: Exception) {
+                    throw TokenizerException.BadScientificNotation()
+                }
+
+                listIterator.remove()
+
+                when (tokenAfterE) {
+                    Token.Operator.minus -> listIterator.add(Token.Operator.divide)
+                    Token.Operator.plus -> listIterator.add(Token.Operator.multiply)
+                    else -> throw TokenizerException.BadScientificNotation()
+                }
+
+                listIterator.add("10")
+                listIterator.add(Token.Operator.power)
+            }
+        }
+
         return result
     }
 
@@ -206,8 +241,9 @@ class Tokenizer(private val streamOfTokens: String) {
         // Just number
         if (tokenInFront.all { it in digits }) return listOf(tokenInFront)
 
-        // Not just a number. Probably expression in brackets.
-        if (tokenInFront != Token.Operator.rightBracket) throw Exception("Unexpected token before percentage")
+        // For cases like "100+(2+5)|%". The check above won't pass, so the next expected thing is
+        // a number in brackets. Anything else is not expected.
+        if (tokenInFront != Token.Operator.rightBracket) throw TokenizerException.FailedToUnpackNumber()
 
         // Start walking left until we get balanced brackets
         var cursor = pos - 1

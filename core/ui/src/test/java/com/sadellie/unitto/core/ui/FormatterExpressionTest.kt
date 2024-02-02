@@ -25,6 +25,8 @@ import org.junit.Test
 
 private const val ENG_VALUE = "123E+21"
 private const val ENG_VALUE_FRACTIONAL = "123.3E+21"
+private const val ENG_VALUE_EXPRESSION = "123E+21+(123456.789)"
+private const val ENG_VALUE_FRACTIONAL_EXPRESSION = "123.3E+21+(123456.789)"
 private const val COMPLETE_VALUE = "123456.789"
 private const val INCOMPLETE_VALUE = "123456."
 private const val NO_FRACTIONAL_VALUE = "123456"
@@ -41,6 +43,8 @@ class FormatterExpressionTest {
         fun String.format(): String = formatExpression(FormatterSymbols.Spaces)
         assertEquals("123E+21", ENG_VALUE.format())
         assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
+        assertEquals("123E+21+(123 456.789)", ENG_VALUE_EXPRESSION.format())
+        assertEquals("123.3E+21+(123 456.789)", ENG_VALUE_FRACTIONAL_EXPRESSION.format())
         assertEquals("123 456.789", COMPLETE_VALUE.format())
         assertEquals("123 456.", INCOMPLETE_VALUE.format())
         assertEquals("123 456", NO_FRACTIONAL_VALUE.format())
@@ -56,6 +60,8 @@ class FormatterExpressionTest {
         fun String.format(): String = formatExpression(FormatterSymbols.Comma)
         assertEquals("123E+21", ENG_VALUE.format())
         assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
+        assertEquals("123E+21+(123,456.789)", ENG_VALUE_EXPRESSION.format())
+        assertEquals("123.3E+21+(123,456.789)", ENG_VALUE_FRACTIONAL_EXPRESSION.format())
         assertEquals("123,456.789", COMPLETE_VALUE.format())
         assertEquals("123,456.", INCOMPLETE_VALUE.format())
         assertEquals("123,456", NO_FRACTIONAL_VALUE.format())
@@ -71,6 +77,8 @@ class FormatterExpressionTest {
         fun String.format(): String = formatExpression(FormatterSymbols.Period)
         assertEquals("123E+21", ENG_VALUE.format())
         assertEquals("123,3E+21", ENG_VALUE_FRACTIONAL.format())
+        assertEquals("123E+21+(123.456,789)", ENG_VALUE_EXPRESSION.format())
+        assertEquals("123,3E+21+(123.456,789)", ENG_VALUE_FRACTIONAL_EXPRESSION.format())
         assertEquals("123.456,789", COMPLETE_VALUE.format())
         assertEquals("123.456,", INCOMPLETE_VALUE.format())
         assertEquals("123.456", NO_FRACTIONAL_VALUE.format())

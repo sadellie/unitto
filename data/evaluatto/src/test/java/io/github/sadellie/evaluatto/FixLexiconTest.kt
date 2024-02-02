@@ -130,4 +130,13 @@ class FixLexiconTest {
 
         assertLex("10+(2.÷100×(10))", "10+2.%")
     }
+
+    @Test
+    fun `scientific notation`() {
+        assertLex("1.2×10^3", "1.2E+3")
+
+        assertLex("1.2÷10^3", "1.2E−3")
+
+        assertLex("1.2×10^3+4.5×10^6", "1.2E+3+4.5E+6")
+    }
 }
