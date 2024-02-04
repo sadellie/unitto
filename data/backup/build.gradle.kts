@@ -34,10 +34,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.datastore.datastore.preferences)
-    implementation(libs.com.github.sadellie.themmo.core)
-
     implementation(project(":data:database"))
-    implementation(project(":data:model"))
     implementation(project(":data:userprefs"))
 }

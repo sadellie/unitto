@@ -31,10 +31,6 @@ dependencies {
     testImplementation(libs.org.robolectric.robolectric)
     testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
 
-    implementation(libs.androidx.glance.glance)
-    implementation(libs.androidx.glance.glance.appwidget)
-    implementation(libs.androidx.glance.glance.material3)
-
     implementation(project(":data:calculator"))
     implementation(project(":data:common"))
     implementation(project(":data:database"))

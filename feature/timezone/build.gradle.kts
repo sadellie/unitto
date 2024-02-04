@@ -29,7 +29,6 @@ android.namespace = "com.sadellie.unitto.feature.timezone"
 dependencies {
     testImplementation(libs.org.robolectric.robolectric)
 
-    implementation(libs.com.github.sadellie.themmo)
     implementation(libs.org.burnoutcrew.composereorderable.reorderable)
     implementation(libs.androidx.appcompat.appcompat)
 

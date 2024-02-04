@@ -35,9 +35,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
-    implementation(libs.androidx.datastore.datastore.preferences)
-
     implementation(libs.com.squareup.moshi.moshi.kotlin)
     implementation(libs.com.squareup.retrofit2.converter.moshi)
 

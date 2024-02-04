@@ -37,5 +37,4 @@ dependencies {
     implementation(project(":data:model"))
     implementation(project(":data:licenses"))
     implementation(project(":data:userprefs"))
-    implementation(project(":feature:glance"))
 }
