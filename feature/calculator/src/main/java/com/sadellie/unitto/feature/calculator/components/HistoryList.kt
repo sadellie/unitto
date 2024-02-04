@@ -18,10 +18,15 @@
 
 package com.sadellie.unitto.feature.calculator.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,7 +34,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,18 +60,26 @@ internal fun HistoryList(
     historyItems: List<HistoryItem>,
     formatterSymbols: FormatterSymbols,
     addTokens: (String) -> Unit,
+    onDelete: (HistoryItem) -> Unit,
+    showDeleteButtons: Boolean,
 ) {
-    if (historyItems.isEmpty()) {
-        HistoryListPlaceholder(
-            modifier = modifier,
-        )
-    } else {
-        HistoryListContent(
-            modifier = modifier,
-            historyItems = historyItems,
-            addTokens = addTokens,
-            formatterSymbols = formatterSymbols,
-        )
+    Crossfade(
+        targetState = historyItems.isEmpty()
+    ) { emptyList ->
+        if (emptyList) {
+            HistoryListPlaceholder(
+                modifier = modifier,
+            )
+        } else {
+            HistoryListContent(
+                modifier = modifier,
+                historyItems = historyItems,
+                formatterSymbols = formatterSymbols,
+                addTokens = addTokens,
+                onDelete = onDelete,
+                showDeleteButtons = showDeleteButtons,
+            )
+        }
     }
 }
 
@@ -92,19 +107,24 @@ private fun HistoryListPlaceholder(
 private fun HistoryListContent(
     modifier: Modifier,
     historyItems: List<HistoryItem>,
-    addTokens: (String) -> Unit,
     formatterSymbols: FormatterSymbols,
+    addTokens: (String) -> Unit,
+    onDelete: (HistoryItem) -> Unit,
+    showDeleteButtons: Boolean,
 ) {
     val state = rememberLazyListState()
     val focusManager = LocalFocusManager.current
 
-    // Very bad workaround for https://issuetracker.google.com/issues/295745063
-    // Will remove once the fix is released
+    // Selection handles cause lag
     LaunchedEffect(state.isScrollInProgress) {
         focusManager.clearFocus(true)
     }
 
-    LaunchedEffect(historyItems) { state.scrollToItem(0) }
+    LaunchedEffect(historyItems) {
+        // Don't scroll when the UI is in state where user can delete an item. This fixes items
+        // placement animation
+        if (!showDeleteButtons) state.scrollToItem(0)
+    }
 
     LazyColumn(
         modifier = modifier,
@@ -113,9 +133,12 @@ private fun HistoryListContent(
     ) {
         items(historyItems, { it.id }) { historyItem ->
             HistoryListItem(
+                modifier = Modifier.animateItemPlacement(),
                 historyItem = historyItem,
                 formatterSymbols = formatterSymbols,
                 addTokens = addTokens,
+                onDelete = { onDelete(historyItem) },
+                showDeleteButton = showDeleteButtons,
             )
         }
     }
@@ -127,24 +150,48 @@ private fun HistoryListItem(
     historyItem: HistoryItem,
     formatterSymbols: FormatterSymbols,
     addTokens: (String) -> Unit,
+    onDelete: () -> Unit,
+    showDeleteButton: Boolean,
 ) {
-    Column(
+    Row(
         modifier = modifier.height(HistoryItemHeight),
-        verticalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        FixedExpressionInputTextField(
-            value = historyItem.expression,
-            formatterSymbols = formatterSymbols,
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            onClick = addTokens,
-        )
+        AnimatedVisibility(visible = showDeleteButton) {
+            IconButton(onClick = onDelete) {
+                Icon(
+                    modifier = Modifier,
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = stringResource(R.string.delete_label),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.End
+        ) {
+            FixedExpressionInputTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = historyItem.expression,
+                formatterSymbols = formatterSymbols,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                onClick = { addTokens(historyItem.expression) },
+            )
 
-        FixedExpressionInputTextField(
-            value = historyItem.result,
-            formatterSymbols = formatterSymbols,
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            onClick = addTokens,
-        )
+            FixedExpressionInputTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = historyItem.result,
+                formatterSymbols = formatterSymbols,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                onClick = { addTokens(historyItem.result) },
+            )
+        }
     }
 }
 
@@ -179,6 +226,8 @@ private fun PreviewHistoryList() {
             .fillMaxSize(),
         historyItems = historyItems,
         formatterSymbols = FormatterSymbols.Spaces,
-        addTokens = {}
+        addTokens = {},
+        onDelete = {},
+        showDeleteButtons = true,
     )
 }

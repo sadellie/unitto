@@ -26,7 +26,11 @@ interface CalculatorHistoryRepository {
 
     suspend fun add(
         expression: String,
-        result: String
+        result: String,
+    )
+
+    suspend fun delete(
+        item: HistoryItem,
     )
 
     suspend fun clear()

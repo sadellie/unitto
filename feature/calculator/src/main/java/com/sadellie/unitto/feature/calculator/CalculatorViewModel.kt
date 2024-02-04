@@ -32,6 +32,7 @@ import com.sadellie.unitto.core.ui.common.textfield.getTextField
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.stateIn
+import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.data.model.repository.CalculatorHistoryRepository
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -178,6 +179,10 @@ internal class CalculatorViewModel @Inject constructor(
 
     fun clearHistory() = viewModelScope.launch(Dispatchers.IO) {
         calculatorHistoryRepository.clear()
+    }
+
+    fun deleteHistoryItem(item: HistoryItem) = viewModelScope.launch(Dispatchers.IO) {
+        calculatorHistoryRepository.delete(item)
     }
 
     fun equal() = viewModelScope.launch {

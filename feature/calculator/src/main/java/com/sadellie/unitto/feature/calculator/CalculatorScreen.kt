@@ -101,7 +101,8 @@ internal fun CalculatorRoute(
         toggleCalculatorMode = viewModel::updateRadianMode,
         equal = viewModel::equal,
         clearHistory = viewModel::clearHistory,
-        addBracket = viewModel::addBracket
+        addBracket = viewModel::addBracket,
+        onDelete = viewModel::deleteHistoryItem,
     )
 }
 
@@ -117,7 +118,8 @@ internal fun CalculatorScreen(
     onCursorChange: (TextRange) -> Unit,
     toggleCalculatorMode: (Boolean) -> Unit,
     equal: () -> Unit,
-    clearHistory: () -> Unit
+    clearHistory: () -> Unit,
+    onDelete: (HistoryItem) -> Unit,
 ) {
     when (uiState) {
         is CalculatorUIState.Loading -> EmptyScreen()
@@ -132,7 +134,8 @@ internal fun CalculatorScreen(
             toggleAngleMode = { toggleCalculatorMode(!uiState.radianMode) },
             equal = equal,
             clearHistory = clearHistory,
-            addBracket = addBracket
+            addBracket = addBracket,
+            onDelete = onDelete,
         )
     }
 }
@@ -149,18 +152,27 @@ private fun Ready(
     onCursorChange: (TextRange) -> Unit,
     toggleAngleMode: () -> Unit,
     equal: () -> Unit,
-    clearHistory: () -> Unit
+    clearHistory: () -> Unit,
+    onDelete: (HistoryItem) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
-    var showClearHistoryButton by rememberSaveable { mutableStateOf(false) }
+    val dragState = remember {
+        AnchoredDraggableState(
+            initialValue = DragState.CLOSED,
+            positionalThreshold = { 0f },
+            velocityThreshold = { 0f },
+            animationSpec = tween()
+        )
+    }
+    val isOpen = dragState.currentValue == DragState.OPEN
 
     ScaffoldWithTopBar(
         title = { Text(stringResource(R.string.calculator_title)) },
         navigationIcon = { MenuButton { navigateToMenu() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
-            Crossfade(showClearHistoryButton, label = "Clear button reveal") {
+            Crossfade(isOpen, label = "Clear button reveal") {
                 if (it) {
                     IconButton(
                         onClick = { showClearHistoryDialog = true },
@@ -186,15 +198,6 @@ private fun Ready(
             val textBoxFill = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) 0.4f else 0.25f
 
             val textBoxHeight = maxHeight * textBoxFill
-
-            val dragState = remember {
-                AnchoredDraggableState(
-                    initialValue = DragState.CLOSED,
-                    positionalThreshold = { 0f },
-                    velocityThreshold = { 0f },
-                    animationSpec = tween()
-                )
-            }
 
             var historyListHeight by remember { mutableStateOf(0.dp) }
             val keyboardHeight by remember(historyListHeight, textBoxHeight) {
@@ -234,10 +237,6 @@ private fun Ready(
                 focusManager.clearFocus()
             }
 
-            LaunchedEffect(dragState.currentValue) {
-                showClearHistoryButton = dragState.currentValue == DragState.OPEN
-            }
-
             BackHandler(dragState.currentValue != DragState.CLOSED) {
                 coroutineScope.launch {
                     dragState.animateTo(DragState.CLOSED)
@@ -251,7 +250,9 @@ private fun Ready(
                     .height(historyListHeight),
                 historyItems = uiState.history,
                 formatterSymbols = uiState.formatterSymbols,
-                addTokens = addSymbol
+                addTokens = addSymbol,
+                onDelete = onDelete,
+                showDeleteButtons = isOpen
             )
 
             TextBox(
@@ -274,7 +275,14 @@ private fun Ready(
             CalculatorKeyboard(
                 modifier = Modifier
                     .semantics { testTag = "ready" }
-                    .offset { IntOffset(x = 0, y = (historyListHeight + textBoxHeight).toPx().roundToInt()) }
+                    .offset {
+                        IntOffset(
+                            x = 0,
+                            y = (historyListHeight + textBoxHeight)
+                                .toPx()
+                                .roundToInt()
+                        )
+                    }
                     .height(keyboardHeight)
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -375,6 +383,7 @@ private fun PreviewCalculatorScreen() {
         toggleCalculatorMode = {},
         equal = {},
         clearHistory = {},
-        addBracket = {}
+        addBracket = {},
+        onDelete = {},
     )
 }

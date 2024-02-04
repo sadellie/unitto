@@ -32,6 +32,9 @@ interface CalculatorHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg historyEntity: CalculatorHistoryEntity)
 
+    @Query("DELETE FROM calculator_history WHERE entityId = :entityId")
+    suspend fun delete(entityId: Int)
+
     @Query("DELETE FROM calculator_history")
     suspend fun clear()
 }

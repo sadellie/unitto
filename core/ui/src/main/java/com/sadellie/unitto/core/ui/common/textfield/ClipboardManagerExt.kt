@@ -50,3 +50,5 @@ internal fun ClipboardManager.copy(value: TextFieldValue) = this.setText(
             .text
     )
 )
+
+internal const val PLAIN_TEXT_LABEL = "plain text"

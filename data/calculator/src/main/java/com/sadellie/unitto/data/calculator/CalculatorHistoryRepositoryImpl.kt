@@ -53,6 +53,10 @@ class CalculatorHistoryRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun delete(item: HistoryItem) {
+        calculatorHistoryDao.delete(item.id)
+    }
+
     override suspend fun clear() {
         calculatorHistoryDao.clear()
     }
