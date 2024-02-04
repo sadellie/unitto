@@ -112,7 +112,6 @@ internal fun ComponentActivity.App(prefs: AppPreferences?) {
                     navController = navController,
                     themmoController = it,
                     startDestination = prefs.startingScreen,
-                    rpnMode = prefs.rpnMode,
                     openDrawer = { drawerScope.launch { drawerState.open() } }
                 )
             }

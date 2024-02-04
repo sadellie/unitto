@@ -62,7 +62,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 startingScreen = preferences.getStartingScreen(),
                 enableToolsExperiment = preferences.getEnableToolsExperiment(),
                 systemFont = preferences.getSystemFont(),
-                rpnMode = preferences.getRpnMode(),
                 enableVibrations = preferences.getEnableVibrations(),
             )
         }
@@ -289,12 +288,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override suspend fun updateAcButton(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.AC_BUTTON] = enabled
-        }
-    }
-
-    override suspend fun updateRpnMode(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PrefsKeys.RPN_MODE] = enabled
         }
     }
 }

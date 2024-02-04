@@ -42,7 +42,6 @@ internal fun UnittoNavigation(
     themmoController: ThemmoController,
     startDestination: String,
     openDrawer: () -> Unit,
-    rpnMode: Boolean,
 ) {
     NavHost(
         navController = navController,
@@ -65,7 +64,6 @@ internal fun UnittoNavigation(
 
         calculatorGraph(
             openDrawer = openDrawer,
-            rpnMode = rpnMode,
             navigateToSettings = navController::navigateToSettings
         )
 

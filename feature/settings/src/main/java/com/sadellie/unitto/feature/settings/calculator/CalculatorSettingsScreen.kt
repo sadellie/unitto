@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.calculator
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -29,84 +28,51 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
+import com.sadellie.unitto.data.userprefs.CalculatorPreferencesImpl
 
 @Composable
 internal fun CalculatorSettingsRoute(
     viewModel: CalculatorSettingsViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
 ) {
-    when (val prefs = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        CalculatorSettingsUIState.Loading -> EmptyScreen()
+    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+        null -> EmptyScreen()
         else -> {
             CalculatorSettingsScreen(
-                uiState = prefs,
+                prefs = prefs,
                 navigateUpAction = navigateUpAction,
                 updatePartialHistoryView = viewModel::updatePartialHistoryView,
-                updateRpnMode = viewModel::updateRpnMode,
             )
         }
     }
 }
 
-// TODO Translate
 @Composable
 private fun CalculatorSettingsScreen(
-    uiState: CalculatorSettingsUIState,
+    prefs: CalculatorPreferences,
     navigateUpAction: () -> Unit,
     updatePartialHistoryView: (Boolean) -> Unit,
-    updateRpnMode: (Boolean) -> Unit,
 ) {
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.calculator_title),
         navigationIcon = { NavigateUpButton(navigateUpAction) }
     ) { padding ->
         Column(Modifier.padding(padding)) {
-//            SingleChoiceSegmentedButtonRow(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(16.dp)
-//            ) {
-//                SegmentedButton(
-//                    selected = uiState is CalculatorSettingsUIState.Standard,
-//                    onClick = { updateRpnMode(false) },
-//                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-//                ) {
-//                    Text("Standard")
-//                }
-//                SegmentedButton(
-//                    selected = uiState == CalculatorSettingsUIState.RPN,
-//                    onClick = { updateRpnMode(true) },
-//                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-//                ) {
-//                    Text("RPN")
-//                }
-//            }
-
-            Crossfade(
-                targetState = uiState,
-                label = "Mode switch"
-            ) { state ->
-                when (state) {
-                    is CalculatorSettingsUIState.Standard -> {
-                        Column {
-                            ListItem(
-                                headlineText = stringResource(R.string.settings_partial_history_view),
-                                icon = Icons.Default.Timer,
-                                supportingText = stringResource(R.string.settings_partial_history_view_support),
-                                switchState = state.partialHistoryView,
-                                onSwitchChange = updatePartialHistoryView
-                            )
-                        }
-                    }
-
-                    else -> Unit
-                }
-            }
+            ListItem(
+                headlineText = stringResource(R.string.settings_partial_history_view),
+                icon = Icons.Default.Timer,
+                supportingText = stringResource(R.string.settings_partial_history_view_support),
+                switchState = prefs.partialHistoryView,
+                onSwitchChange = updatePartialHistoryView
+            )
         }
     }
 }
@@ -115,22 +81,16 @@ private fun CalculatorSettingsScreen(
 @Composable
 private fun PreviewCalculatorSettingsScreenStandard() {
     CalculatorSettingsScreen(
-        uiState = CalculatorSettingsUIState.Standard(
-            partialHistoryView = true,
+        prefs = CalculatorPreferencesImpl(
+            radianMode = true,
+            separator = Separator.SPACE,
+            middleZero = false,
+            acButton = false,
+            partialHistoryView = false,
+            precision = 3,
+            outputFormat = OutputFormat.PLAIN
         ),
         navigateUpAction = {},
         updatePartialHistoryView = {},
-        updateRpnMode = {}
-    )
-}
-
-@Preview
-@Composable
-private fun PreviewCalculatorSettingsScreenRPN() {
-    CalculatorSettingsScreen(
-        uiState = CalculatorSettingsUIState.RPN,
-        navigateUpAction = {},
-        updatePartialHistoryView = {},
-        updateRpnMode = {}
     )
 }

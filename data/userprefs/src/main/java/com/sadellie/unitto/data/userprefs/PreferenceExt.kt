@@ -134,10 +134,6 @@ fun Preferences.getAcButton(): Boolean {
     return this[PrefsKeys.AC_BUTTON] ?: true
 }
 
-fun Preferences.getRpnMode(): Boolean {
-    return this[PrefsKeys.RPN_MODE] ?: false
-}
-
 private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {
     this?.let(block)
 } catch (e: Exception) {

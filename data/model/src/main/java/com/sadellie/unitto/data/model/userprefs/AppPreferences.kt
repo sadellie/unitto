@@ -30,6 +30,5 @@ interface AppPreferences {
     val startingScreen: String
     val enableToolsExperiment: Boolean
     val systemFont: Boolean
-    val rpnMode: Boolean
     val enableVibrations: Boolean
 }

@@ -92,6 +92,4 @@ interface UserPreferencesRepository {
     suspend fun updatePartialHistoryView(enabled: Boolean)
 
     suspend fun updateAcButton(enabled: Boolean)
-
-    suspend fun updateRpnMode(enabled: Boolean)
 }

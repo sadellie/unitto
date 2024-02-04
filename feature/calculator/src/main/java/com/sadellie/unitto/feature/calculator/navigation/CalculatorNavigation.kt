@@ -24,13 +24,11 @@ import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
-import com.sadellie.unitto.feature.calculator.RPNCalculatorRoute
 
 private val graph = DrawerItem.Calculator.graph
 private val start = DrawerItem.Calculator.start
 
 fun NavGraphBuilder.calculatorGraph(
-    rpnMode: Boolean,
     openDrawer: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
@@ -42,17 +40,10 @@ fun NavGraphBuilder.calculatorGraph(
         )
     ) {
         unittoComposable(start) {
-            if (rpnMode) {
-                RPNCalculatorRoute(
-                    openDrawer = openDrawer,
-                    navigateToSettings = navigateToSettings
-                )
-            } else {
-                CalculatorRoute(
-                    navigateToMenu = openDrawer,
-                    navigateToSettings = navigateToSettings
-                )
-            }
+            CalculatorRoute(
+                navigateToMenu = openDrawer,
+                navigateToSettings = navigateToSettings
+            )
         }
     }
 }
