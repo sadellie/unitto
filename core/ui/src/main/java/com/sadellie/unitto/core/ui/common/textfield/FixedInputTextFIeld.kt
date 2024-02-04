@@ -18,76 +18,72 @@
 
 package com.sadellie.unitto.core.ui.common.textfield
 
+import android.content.ClipData
+import android.content.Context
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalTextInputService
-import androidx.compose.ui.platform.LocalTextToolbar
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.common.textfield.texttoolbar.UnittoTextToolbar
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 
 @Composable
-fun FixedInputTextField(
+fun FixedExpressionInputTextField(
     modifier: Modifier = Modifier,
     value: String,
     formatterSymbols: FormatterSymbols,
     textColor: Color,
     onClick: (cleanValue: String) -> Unit
 ) {
-    val clipboardManager = LocalClipboardManager.current
-    val expression = value.take(1000)
-    var expressionValue by remember(expression) {
-        mutableStateOf(TextFieldValue(expression, TextRange(expression.length)))
-    }
+    val clipboardManager = FormattedExpressionClipboardManager(
+        formatterSymbols = formatterSymbols,
+        clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE)
+                as android.content.ClipboardManager
+    )
 
-    val expressionInteractionSource = remember(expression) { MutableInteractionSource() }
-    LaunchedEffect(expressionInteractionSource) {
-        expressionInteractionSource.interactions.collect {
-            if (it is PressInteraction.Release) onClick(value)
-        }
-    }
-
-    CompositionLocalProvider(
-        LocalTextInputService provides null,
-        LocalTextToolbar provides UnittoTextToolbar(
-            view = LocalView.current,
-            copyCallback = {
-                clipboardManager.copyWithFractional(expressionValue, formatterSymbols)
-                expressionValue = expressionValue.copy(selection = TextRange(expressionValue.selection.end))
-            }
-        )
-    ) {
-        BasicTextField(
-            value = expressionValue,
-            onValueChange = { expressionValue = it },
-            maxLines = 1,
+    CompositionLocalProvider(LocalClipboardManager provides clipboardManager) {
+        SelectionContainer(
             modifier = modifier
+                .clickable { onClick(value) }
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
                 .horizontalScroll(rememberScrollState(), reverseScrolling = true),
-            textStyle = LocalNumberTypography.current.displaySmall.copy(color = textColor, textAlign = TextAlign.End),
-            readOnly = true,
-            visualTransformation = ExpressionTransformer(formatterSymbols),
-            interactionSource = expressionInteractionSource
+        ) {
+            Text(
+                text = value.formatExpression(formatterSymbols),
+                style = LocalNumberTypography.current.displaySmall
+                    .copy(color = textColor, textAlign = TextAlign.End),
+            )
+        }
+    }
+}
+
+private class FormattedExpressionClipboardManager(
+    private val formatterSymbols: FormatterSymbols,
+    private val clipboardManager: android.content.ClipboardManager
+): ClipboardManager {
+    override fun getText(): AnnotatedString? = null
+
+    override fun setText(annotatedString: AnnotatedString) {
+        clipboardManager.setPrimaryClip(
+            ClipData.newPlainText(
+                PLAIN_TEXT_LABEL,
+                annotatedString
+                    .text
+                    .replace(formatterSymbols.grouping, "")
+            )
         )
     }
 }

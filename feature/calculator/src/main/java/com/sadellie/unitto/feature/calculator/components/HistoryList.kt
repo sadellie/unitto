@@ -41,7 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.textfield.FixedInputTextField
+import com.sadellie.unitto.core.ui.common.textfield.FixedExpressionInputTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 import java.text.SimpleDateFormat
@@ -132,14 +132,14 @@ private fun HistoryListItem(
         modifier = modifier.height(HistoryItemHeight),
         verticalArrangement = Arrangement.Center
     ) {
-        FixedInputTextField(
+        FixedExpressionInputTextField(
             value = historyItem.expression,
             formatterSymbols = formatterSymbols,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant,
             onClick = addTokens,
         )
 
-        FixedInputTextField(
+        FixedExpressionInputTextField(
             value = historyItem.result,
             formatterSymbols = formatterSymbols,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
