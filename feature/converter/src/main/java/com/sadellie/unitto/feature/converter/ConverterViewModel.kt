@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.converter
 
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -321,7 +320,7 @@ internal class ConverterViewModel @Inject constructor(
         }
     }
 
-    fun onCursorChange(selection: TextRange) = _input1.update { it.copy(selection = selection) }
+    fun updateInput(value: TextFieldValue) = _input1.update { value }
 
     fun updateCurrencyRates(unit: AbstractUnit) {
         _loadCurrenciesJob = viewModelScope.launch(Dispatchers.IO) {

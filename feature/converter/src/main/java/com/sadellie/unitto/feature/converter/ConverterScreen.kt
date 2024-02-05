@@ -64,7 +64,6 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -83,7 +82,8 @@ import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
-import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
+import com.sadellie.unitto.core.ui.common.textfield.NumberBaseTextField
+import com.sadellie.unitto.core.ui.common.textfield.SimpleTextField
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.converter.UnitID
@@ -114,7 +114,7 @@ internal fun ConverterRoute(
         processInput = viewModel::addTokens,
         deleteDigit = viewModel::deleteTokens,
         clearInput = viewModel::clearInput,
-        onCursorChange = viewModel::onCursorChange,
+        onValueChange = viewModel::updateInput,
         onFocusOnInput2 = viewModel::updateFocused,
         onErrorClick = viewModel::updateCurrencyRates,
         addBracket = viewModel::addBracket
@@ -132,7 +132,7 @@ private fun ConverterScreen(
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
     clearInput: () -> Unit,
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     onFocusOnInput2: (Boolean) -> Unit,
     onErrorClick: (AbstractUnit) -> Unit,
     addBracket: () -> Unit,
@@ -148,7 +148,7 @@ private fun ConverterScreen(
                 NumberBase(
                     modifier = Modifier.padding(it),
                     uiState = uiState,
-                    onCursorChange = onCursorChange,
+                    onValueChange = onValueChange,
                     processInput = processInput,
                     deleteDigit = deleteDigit,
                     navigateToLeftScreen = navigateToLeftScreen,
@@ -167,7 +167,7 @@ private fun ConverterScreen(
                 Default(
                     modifier = Modifier.padding(it),
                     uiState = uiState,
-                    onCursorChange = onCursorChange,
+                    onValueChange = onValueChange,
                     onFocusOnInput2 = onFocusOnInput2,
                     processInput = processInput,
                     deleteDigit = deleteDigit,
@@ -204,7 +204,7 @@ private fun UnitConverterTopBar(
 private fun NumberBase(
     modifier: Modifier,
     uiState: UnitConverterUIState.NumberBase,
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
     navigateToLeftScreen: () -> Unit,
@@ -218,14 +218,12 @@ private fun NumberBase(
             ColumnWithConstraints(modifier = contentModifier) {
                 val textFieldModifier = Modifier.weight(2f)
 
-                UnformattedTextField(
+                NumberBaseTextField(
                     modifier = textFieldModifier,
                     minRatio = 0.7f,
                     placeholder = Token.Digit._0,
                     value = uiState.input,
-                    onCursorChange = onCursorChange,
-                    pasteCallback = processInput,
-                    cutCallback = deleteDigit,
+                    onValueChange = onValueChange,
                 )
                 AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
 
@@ -261,7 +259,7 @@ private fun NumberBase(
 private fun Default(
     modifier: Modifier,
     uiState: UnitConverterUIState.Default,
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     onFocusOnInput2: (Boolean) -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
@@ -330,13 +328,11 @@ private fun Default(
                         ) {
                             ExpressionTextField(
                                 modifier = Modifier.fillMaxWidth().weight(1f),
-                                minRatio = 0.7f,
-                                placeholder = Token.Digit._0,
                                 value = uiState.input1,
-                                onCursorChange = onCursorChange,
-                                pasteCallback = processInput,
-                                cutCallback = deleteDigit,
+                                minRatio = 0.7f,
+                                onValueChange = onValueChange,
                                 formatterSymbols = uiState.formatterSymbols,
+                                placeholder = Token.Digit._0,
                             )
                             AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
                         }
@@ -351,13 +347,11 @@ private fun Default(
                             ExpressionTextField(
                                 modifier = Modifier.fillMaxWidth().weight(1f)
                                     .onFocusEvent { state -> onFocusOnInput2(state.hasFocus) },
-                                minRatio = 0.7f,
-                                placeholder = Token.Digit._0,
                                 value = uiState.input2,
-                                onCursorChange = onCursorChange,
-                                pasteCallback = processInput,
-                                cutCallback = deleteDigit,
+                                minRatio = 0.7f,
+                                onValueChange = onValueChange,
                                 formatterSymbols = uiState.formatterSymbols,
+                                placeholder = Token.Digit._0,
                             )
                             AnimatedUnitShortName(stringResource(R.string.unit_inch_short))
                         }
@@ -365,13 +359,11 @@ private fun Default(
                 } else {
                     ExpressionTextField(
                         modifier = textFieldModifier,
-                        minRatio = 0.7f,
-                        placeholder = Token.Digit._0,
                         value = uiState.input1,
-                        onCursorChange = onCursorChange,
-                        pasteCallback = processInput,
-                        cutCallback = deleteDigit,
+                        minRatio = 0.7f,
+                        onValueChange = onValueChange,
                         formatterSymbols = uiState.formatterSymbols,
+                        placeholder = Token.Digit._0,
                     )
                     AnimatedVisibility(
                         visible = calculation.text.isNotEmpty(),
@@ -382,10 +374,10 @@ private fun Default(
                         ExpressionTextField(
                             modifier = Modifier,
                             value = calculation,
-                            onCursorChange = { calculation = calculation.copy(selection = it) },
-                            formatterSymbols = uiState.formatterSymbols,
                             minRatio = 0.7f,
+                            onValueChange = { calculation = it },
                             textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            formatterSymbols = uiState.formatterSymbols,
                             readOnly = true
                         )
                     }
@@ -456,20 +448,20 @@ private fun ConverterResultTextField(
 
     when (result) {
         is ConverterResult.Loading -> {
-            UnformattedTextField(
+            SimpleTextField(
                 modifier = modifier,
                 value = TextFieldValue(stringResource(R.string.loading_label)),
-                onCursorChange = {},
+                onValueChange = {},
                 minRatio = 0.7f,
                 readOnly = true
             )
         }
 
         is ConverterResult.Error -> {
-            UnformattedTextField(
+            SimpleTextField(
                 modifier = modifier,
                 value = TextFieldValue(stringResource(R.string.error_label)),
-                onCursorChange = { onErrorClick() },
+                onValueChange = { onErrorClick() },
                 minRatio = 0.7f,
                 readOnly = true,
                 textColor = MaterialTheme.colorScheme.error,
@@ -480,20 +472,29 @@ private fun ConverterResultTextField(
             ExpressionTextField(
                 modifier = modifier,
                 value = resultTextField,
-                onCursorChange = { resultTextField = resultTextField.copy(selection = it) },
+                minRatio = 0.7f,
+                onValueChange = { resultTextField = it },
                 formatterSymbols = formatterSymbols,
+                readOnly = true
+            )
+        }
+
+        is ConverterResult.NumberBase -> {
+            NumberBaseTextField(
+                modifier = modifier,
+                value = resultTextField,
+                onValueChange = { resultTextField = it },
                 minRatio = 0.7f,
                 readOnly = true
             )
         }
 
-        is ConverterResult.NumberBase,
         is ConverterResult.Time,
         is ConverterResult.FootInch -> {
-            UnformattedTextField(
+            SimpleTextField(
                 modifier = modifier,
                 value = resultTextField,
-                onCursorChange = { resultTextField = resultTextField.copy(selection = it) },
+                onValueChange = { resultTextField = it },
                 minRatio = 0.7f,
                 readOnly = true
             )
@@ -585,7 +586,7 @@ private fun PreviewConverterScreen() {
         processInput = {},
         deleteDigit = {},
         clearInput = {},
-        onCursorChange = {},
+        onValueChange = {},
         onFocusOnInput2 = {},
         onErrorClick = {},
         addBracket = {}

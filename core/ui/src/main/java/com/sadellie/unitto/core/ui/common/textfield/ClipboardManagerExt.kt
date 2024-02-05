@@ -18,37 +18,46 @@
 
 package com.sadellie.unitto.core.ui.common.textfield
 
+import android.content.ClipData
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.base.Token
 
 /**
- * Copy value to clipboard with fractional symbols.
+ * Unformatted values are expected. Basically what BigDecimal and Expression parser use.
  *
- * Example:
- * "123456.789" will be copied as "123456,789"
- *
- * @param value Internal [TextFieldValue] without formatting with [Token.Digit.dot] as fractional.
+ * @property formatterSymbols Current [FormatterSymbols].
+ * @property clipboardManager [android.content.ClipboardManager] provided by system.
  */
-internal fun ClipboardManager.copyWithFractional(
-    value: TextFieldValue,
-    formatterSymbols: FormatterSymbols
-) = this.setText(
-    AnnotatedString(
-        value.annotatedString
-            .subSequence(value.selection)
-            .text
-            .replace(Token.Digit.dot, formatterSymbols.fractional)
+internal class ExpressionClipboardManager(
+    private val formatterSymbols: FormatterSymbols,
+    private val clipboardManager: android.content.ClipboardManager
+): ClipboardManager {
+    override fun setText(annotatedString: AnnotatedString) = clipboardManager.setPrimaryClip(
+        ClipData.newPlainText(
+            PLAIN_TEXT_LABEL,
+            annotatedString
+                .text
+                .replace(Token.Digit.dot, formatterSymbols.fractional)
+        )
     )
-)
 
-internal fun ClipboardManager.copy(value: TextFieldValue) = this.setText(
-    AnnotatedString(
-        value.annotatedString
-            .subSequence(value.selection)
-            .text
-    )
-)
+    override fun getText(): AnnotatedString? = clipboardManager.primaryClip?.let { primaryClip ->
+        if (primaryClip.itemCount > 0) {
+            val clipText = primaryClip.getItemAt(0)?.text ?:return@let null
+
+            clipText
+                .toString()
+                .toAnnotatedString()
+        } else {
+            null
+        }
+    }
+
+    override fun hasText() =
+        clipboardManager.primaryClipDescription?.hasMimeType("text/*") ?: false
+}
 
 internal const val PLAIN_TEXT_LABEL = "plain text"
+
+private fun CharSequence.toAnnotatedString(): AnnotatedString = AnnotatedString(this.toString())

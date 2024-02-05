@@ -56,7 +56,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -97,7 +96,7 @@ internal fun CalculatorRoute(
         addTokens = viewModel::addTokens,
         clearInput = viewModel::clearInput,
         deleteTokens = viewModel::deleteTokens,
-        onCursorChange = viewModel::onCursorChange,
+        onValueChange = viewModel::updateInput,
         toggleCalculatorMode = viewModel::updateRadianMode,
         equal = viewModel::equal,
         clearHistory = viewModel::clearHistory,
@@ -115,7 +114,7 @@ internal fun CalculatorScreen(
     addBracket: () -> Unit,
     clearInput: () -> Unit,
     deleteTokens: () -> Unit,
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     toggleCalculatorMode: (Boolean) -> Unit,
     equal: () -> Unit,
     clearHistory: () -> Unit,
@@ -130,7 +129,7 @@ internal fun CalculatorScreen(
             addSymbol = addTokens,
             clearSymbols = clearInput,
             deleteSymbol = deleteTokens,
-            onCursorChange = onCursorChange,
+            onValueChange = onValueChange,
             toggleAngleMode = { toggleCalculatorMode(!uiState.radianMode) },
             equal = equal,
             clearHistory = clearHistory,
@@ -149,7 +148,7 @@ private fun Ready(
     addBracket: () -> Unit,
     clearSymbols: () -> Unit,
     deleteSymbol: () -> Unit,
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     toggleAngleMode: () -> Unit,
     equal: () -> Unit,
     clearHistory: () -> Unit,
@@ -266,9 +265,7 @@ private fun Ready(
                     ),
                 formatterSymbols = uiState.formatterSymbols,
                 input = uiState.input,
-                deleteSymbol = deleteSymbol,
-                addSymbol = addSymbol,
-                onCursorChange = onCursorChange,
+                onValueChange = onValueChange,
                 output = uiState.output
             )
 
@@ -379,7 +376,7 @@ private fun PreviewCalculatorScreen() {
         addTokens = {},
         clearInput = {},
         deleteTokens = {},
-        onCursorChange = {},
+        onValueChange = {},
         toggleCalculatorMode = {},
         equal = {},
         clearHistory = {},

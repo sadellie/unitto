@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.core.ui.common.textfield
 
-import androidx.compose.foundation.clickable
+import android.content.Context
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
@@ -32,27 +32,19 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
-import androidx.compose.ui.platform.LocalTextToolbar
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.platform.TextToolbar
 import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import com.sadellie.unitto.core.ui.common.autosize.AutoSizeTextStyleBox
-import com.sadellie.unitto.core.ui.common.textfield.texttoolbar.UnittoTextToolbar
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 
 @Composable
@@ -60,105 +52,86 @@ fun ExpressionTextField(
     modifier: Modifier,
     value: TextFieldValue,
     minRatio: Float = 1f,
-    cutCallback: () -> Unit = {},
-    pasteCallback: (String) -> Unit = {},
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     formatterSymbols: FormatterSymbols,
     readOnly: Boolean = false,
     placeholder: String = "",
 ) {
-    val localView = LocalView.current
-    val clipboardManager = LocalClipboardManager.current
-    val expressionTransformer = remember(formatterSymbols) { ExpressionTransformer(formatterSymbols) }
-
-    fun copyCallback() {
-        clipboardManager.copyWithFractional(value, formatterSymbols)
-        onCursorChange(TextRange(value.selection.end))
+    val context = LocalContext.current
+    val clipboardManager = remember(formatterSymbols) {
+        ExpressionClipboardManager(
+            formatterSymbols = formatterSymbols,
+            clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE)
+                    as android.content.ClipboardManager
+        )
+    }
+    val expressionTransformer = remember(formatterSymbols) {
+        ExpressionTransformer(formatterSymbols)
     }
 
-    val textToolbar: UnittoTextToolbar = if (readOnly) {
-        UnittoTextToolbar(
-            view = localView,
-            copyCallback = ::copyCallback,
-        )
-    } else {
-        UnittoTextToolbar(
-            view = localView,
-            copyCallback = ::copyCallback,
-            pasteCallback = {
-                pasteCallback(clipboardManager.getText()?.text?.clearAndFilterExpression(formatterSymbols) ?: "")
+    CompositionLocalProvider(
+        LocalClipboardManager provides clipboardManager
+    ) {
+        AutoSizeTextField(
+            modifier = modifier,
+            value = value,
+            onValueChange = {
+                onValueChange(it.copy(text = it.text.clearAndFilterExpression(formatterSymbols)))
             },
-            cutCallback = {
-                clipboardManager.copyWithFractional(value, formatterSymbols)
-                cutCallback()
-            }
+            placeholder = placeholder,
+            readOnly = readOnly,
+            textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
+            visualTransformation = expressionTransformer,
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+            minRatio = minRatio
         )
     }
+}
 
+@Composable
+fun NumberBaseTextField(
+    modifier: Modifier,
+    value: TextFieldValue,
+    minRatio: Float = 1f,
+    onValueChange: (TextFieldValue) -> Unit,
+    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    readOnly: Boolean = false,
+    placeholder: String = "",
+) {
     AutoSizeTextField(
         modifier = modifier,
         value = value,
-        onValueChange = { onCursorChange(it.selection) },
+        onValueChange = {
+            onValueChange(it.copy(text = it.text.clearAndFilterNumberBase()))
+        },
         placeholder = placeholder,
-        textToolbar = textToolbar,
         readOnly = readOnly,
         textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
-        visualTransformation = expressionTransformer,
         cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
         minRatio = minRatio
     )
 }
 
 @Composable
-fun UnformattedTextField(
+fun SimpleTextField(
     modifier: Modifier,
     value: TextFieldValue,
     minRatio: Float = 1f,
-    cutCallback: () -> Unit = {},
-    pasteCallback: (String) -> Unit = {},
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     readOnly: Boolean = false,
     placeholder: String = "",
 ) {
-    val localView = LocalView.current
-    val clipboardManager = LocalClipboardManager.current
-    fun copyCallback() {
-        clipboardManager.copy(value)
-        onCursorChange(TextRange(value.selection.end))
-    }
-
-    val textToolbar: UnittoTextToolbar = remember(readOnly) {
-        if (readOnly) {
-            UnittoTextToolbar(
-                view = localView,
-                copyCallback = ::copyCallback,
-            )
-        } else {
-            UnittoTextToolbar(
-                view = localView,
-                copyCallback = ::copyCallback,
-                pasteCallback = {
-                    pasteCallback(clipboardManager.getText()?.text?.clearAndFilterNumberBase() ?: "")
-                },
-                cutCallback = {
-                    clipboardManager.copy(value)
-                    cutCallback()
-                }
-            )
-        }
-    }
-
     AutoSizeTextField(
         modifier = modifier,
         value = value,
-        onValueChange = { onCursorChange(it.selection) },
+        onValueChange = onValueChange,
         placeholder = placeholder,
-        textToolbar = textToolbar,
         readOnly = readOnly,
-        textStyle = LocalNumberTypography.current.displayLarge.copy(color = textColor),
-        minRatio = minRatio,
+        textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+        minRatio = minRatio
     )
 }
 
@@ -166,7 +139,6 @@ fun UnformattedTextField(
  * Based on: https://gist.github.com/inidamleader/b594d35362ebcf3cedf81055df519300
  *
  * @param placeholder Placeholder text, shown when [value] is empty.
- * @param textToolbar [TextToolbar] with modified actions in menu.
  * @param alignment The alignment of the text within its container.
  * @see [BasicTextField]
  * @see [AutoSizeTextStyleBox]
@@ -177,7 +149,6 @@ private fun AutoSizeTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     placeholder: String? = null,
-    textToolbar: TextToolbar = LocalTextToolbar.current,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = TextStyle.Default,
@@ -206,28 +177,14 @@ private fun AutoSizeTextField(
 ) {
     CompositionLocalProvider(
         LocalTextInputService provides null,
-        LocalTextToolbar provides textToolbar
     ) {
-        val currentTextToolbar = LocalTextToolbar.current
         val style = LocalTextStyle.current
-        val focusRequester = remember { FocusRequester() }
 
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {
-                        currentTextToolbar.hide()
-                        focusRequester.requestFocus()
-                        onValueChange(value.copy(selection = TextRange.Zero))
-                        currentTextToolbar.showMenu(Rect(Offset.Zero, 0f))
-                    }
-                ),
+                .fillMaxWidth(),
             enabled = enabled,
             readOnly = readOnly,
             textStyle = style,

@@ -46,11 +46,12 @@ class CalculatorScreenTest {
                 addTokens = {},
                 clearInput = {},
                 deleteTokens = {},
-                onCursorChange = {},
+                onValueChange = {},
                 toggleCalculatorMode = {},
                 equal = {},
                 clearHistory = {},
-                addBracket = {}
+                addBracket = {},
+                onDelete = {},
             )
         }
 
@@ -69,7 +70,6 @@ class CalculatorScreenTest {
                     outputFormat = OutputFormat.PLAIN,
                     formatterSymbols = FormatterSymbols.Spaces,
                     history = emptyList(),
-                    allowVibration = false,
                     middleZero = false,
                     acButton = true,
                     partialHistoryView = true
@@ -79,11 +79,12 @@ class CalculatorScreenTest {
                 addTokens = {},
                 clearInput = {},
                 deleteTokens = {},
-                onCursorChange = {},
+                onValueChange = {},
                 toggleCalculatorMode = {},
                 equal = {},
                 clearHistory = {},
-                addBracket = {}
+                addBracket = {},
+                onDelete = {},
             )
         }
 
@@ -103,7 +104,6 @@ class CalculatorScreenTest {
                     outputFormat = OutputFormat.PLAIN,
                     formatterSymbols = FormatterSymbols.Spaces,
                     history = emptyList(),
-                    allowVibration = false,
                     middleZero = false,
                     acButton = true,
                     partialHistoryView = true
@@ -113,11 +113,12 @@ class CalculatorScreenTest {
                 addTokens = {},
                 clearInput = {},
                 deleteTokens = {},
-                onCursorChange = {},
+                onValueChange = {},
                 toggleCalculatorMode = {},
                 equal = {},
                 clearHistory = {},
-                addBracket = {}
+                addBracket = {},
+                onDelete = {},
             )
         }
 

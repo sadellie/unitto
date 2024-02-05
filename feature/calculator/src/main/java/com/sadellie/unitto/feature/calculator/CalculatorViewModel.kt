@@ -166,11 +166,11 @@ internal class CalculatorViewModel @Inject constructor(
         TextFieldValue()
     }
 
-    fun onCursorChange(selection: TextRange) = _input.update {
+    fun updateInput(value: TextFieldValue) = _input.update {
         // Without this line: will place token (even in the middle of the input) and place cursor at
         // the end. This line also removes fractional output once user touches input text field
         _equalClicked.update { false }
-        it.copy(selection = selection)
+        value
     }
 
     fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {

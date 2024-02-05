@@ -37,14 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
-import com.sadellie.unitto.core.ui.common.textfield.UnformattedTextField
+import com.sadellie.unitto.core.ui.common.textfield.SimpleTextField
 import com.sadellie.unitto.feature.calculator.CalculationResult
 
 @Composable
@@ -52,9 +51,7 @@ fun TextBox(
     modifier: Modifier,
     formatterSymbols: FormatterSymbols,
     input: TextFieldValue,
-    deleteSymbol: () -> Unit,
-    addSymbol: (String) -> Unit,
-    onCursorChange: (TextRange) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     output: CalculationResult,
 ) {
     Column(
@@ -77,9 +74,7 @@ fun TextBox(
                 .padding(horizontal = 8.dp),
             value = input,
             minRatio = 0.5f,
-            cutCallback = deleteSymbol,
-            pasteCallback = addSymbol,
-            onCursorChange = onCursorChange,
+            onValueChange = onValueChange,
             formatterSymbols = formatterSymbols
         )
         if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
@@ -105,9 +100,9 @@ fun TextBox(
                             .padding(horizontal = 8.dp),
                         value = outputTF,
                         minRatio = 0.8f,
-                        onCursorChange = { outputTF = outputTF.copy(selection = it) },
-                        formatterSymbols = formatterSymbols,
+                        onValueChange = { outputTF = it },
                         textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
+                        formatterSymbols = formatterSymbols,
                         readOnly = true,
                     )
                 }
@@ -123,36 +118,36 @@ fun TextBox(
                             .padding(horizontal = 8.dp),
                         value = outputTF,
                         minRatio = 0.8f,
-                        onCursorChange = { outputTF = outputTF.copy(selection = it) },
-                        formatterSymbols = formatterSymbols,
+                        onValueChange = { outputTF = it },
                         textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
+                        formatterSymbols = formatterSymbols,
                         readOnly = true,
                     )
                 }
 
                 is CalculationResult.DivideByZeroError -> {
-                    UnformattedTextField(
+                    SimpleTextField(
                         modifier = Modifier
                             .weight(2f)
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = TextFieldValue(stringResource(output.label)),
                         minRatio = 0.8f,
-                        onCursorChange = {},
+                        onValueChange = {},
                         textColor = MaterialTheme.colorScheme.error,
                         readOnly = true,
                     )
                 }
 
                 is CalculationResult.Error -> {
-                    UnformattedTextField(
+                    SimpleTextField(
                         modifier = Modifier
                             .weight(2f)
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = TextFieldValue(stringResource(output.label)),
                         minRatio = 0.8f,
-                        onCursorChange = {},
+                        onValueChange = {},
                         textColor = MaterialTheme.colorScheme.error,
                         readOnly = true,
                     )
