@@ -40,7 +40,7 @@ fun <T : Throwable?> assertExprFail(
 }
 
 fun assertLex(expected: List<String>, actual: String) =
-    assertEquals(expected, Tokenizer(actual).tokenize())
+    assertEquals(expected, actual.tokenize())
 
 fun assertLex(expected: String, actual: String) =
-    assertEquals(expected, Tokenizer(actual).tokenize().joinToString(""))
+    assertEquals(expected, actual.tokenize().joinToString(""))

@@ -35,7 +35,7 @@ class Expression(
     private val radianMode: Boolean = true,
     private val roundingMode: RoundingMode = RoundingMode.HALF_EVEN
 ) {
-    private val tokens = Tokenizer(input).tokenize()
+    private val tokens = input.tokenize()
     private var cursorPosition = 0
 
     /**
