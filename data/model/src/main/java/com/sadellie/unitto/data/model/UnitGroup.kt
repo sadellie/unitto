@@ -21,17 +21,10 @@ package com.sadellie.unitto.data.model
 import androidx.annotation.StringRes
 import com.sadellie.unitto.core.base.R
 
-val ALL_UNIT_GROUPS: List<UnitGroup> by lazy {
-    UnitGroup.entries
-}
-
-/**
- * As not all measurements can be converted between each other, we separate them into groups.
- * Within one group all measurements can be converted
- */
 enum class UnitGroup(
     @StringRes val res: Int
 ) {
+    // NOTE: This order is used as default for new users
     LENGTH(res = R.string.unit_group_length),
     CURRENCY(res = R.string.unit_group_currency),
     MASS(res = R.string.unit_group_mass),

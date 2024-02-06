@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.data.userprefs
 
-import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
@@ -90,7 +89,7 @@ data class FormattingPreferencesImpl(
 ) : FormattingPreferences
 
 data class UnitGroupsPreferencesImpl(
-    override val shownUnitGroups: List<UnitGroup> = ALL_UNIT_GROUPS,
+    override val shownUnitGroups: List<UnitGroup> = UnitGroup.entries,
 ) : UnitGroupsPreferences
 
 data class AddSubtractPreferencesImpl(

@@ -34,7 +34,7 @@ import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
 import com.sadellie.unitto.feature.settings.language.LanguageRoute
 import com.sadellie.unitto.feature.settings.startingscreen.StartingScreenRoute
 import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
-import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsScreen
+import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsRoute
 import io.github.sadellie.themmo.ThemmoController
 
 private val graph = DrawerItem.Settings.graph
@@ -115,7 +115,7 @@ fun NavGraphBuilder.settingGraph(
         }
 
         unittoStackedComposable(unitsGroupRoute) {
-            UnitGroupsScreen(
+            UnitGroupsRoute(
                 navigateUpAction = navController::navigateUp,
             )
         }

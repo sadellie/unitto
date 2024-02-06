@@ -41,7 +41,7 @@ import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
+import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.ConverterPreferences
 import com.sadellie.unitto.data.userprefs.ConverterPreferencesImpl
@@ -139,7 +139,7 @@ private fun PreviewConverterSettingsScreen() {
             outputFormat = OutputFormat.PLAIN,
             unitConverterFormatTime = false,
             unitConverterSorting = UnitsListSorting.USAGE,
-            shownUnitGroups = ALL_UNIT_GROUPS,
+            shownUnitGroups = UnitGroup.entries,
             unitConverterFavoritesOnly = false,
             enableToolsExperiment = false,
             latestLeftSideUnit = "kilometer",

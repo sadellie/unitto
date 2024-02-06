@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.AssistChip
 import com.sadellie.unitto.core.ui.common.FilterChip
-import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 
 /**
@@ -55,7 +54,7 @@ import com.sadellie.unitto.data.model.UnitGroup
  */
 @Composable
 internal fun ChipsRow(
-    items: List<UnitGroup> = ALL_UNIT_GROUPS,
+    items: List<UnitGroup> = UnitGroup.entries,
     chosenUnitGroup: UnitGroup?,
     selectAction: (UnitGroup?) -> Unit,
     navigateToSettingsAction: () -> Unit,
@@ -105,7 +104,7 @@ fun PreviewUnittoChips() {
     }
 
     ChipsRow(
-        items = ALL_UNIT_GROUPS,
+        items = UnitGroup.entries,
         chosenUnitGroup = selected,
         selectAction = { selectAction(it) },
         navigateToSettingsAction = {},

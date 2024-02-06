@@ -20,75 +20,52 @@ package com.sadellie.unitto.feature.settings.unitgroups
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.burnoutcrew.reorderable.ItemPosition
 import javax.inject.Inject
 
 @HiltViewModel
-class UnitGroupsViewModel @Inject constructor(
+internal class UnitGroupsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
-    private val unitGroupsRepository: UnitGroupsRepository,
 ) : ViewModel() {
-    val shownUnitGroups = unitGroupsRepository.shownUnitGroups
-    val hiddenUnitGroups = unitGroupsRepository.hiddenUnitGroups
 
-    /**
-     * @see UnitGroupsRepository.markUnitGroupAsHidden
-     * @see UserPreferencesRepository.updateShownUnitGroups
-     */
-    fun hideUnitGroup(unitGroup: UnitGroup) {
-        viewModelScope.launch {
-            unitGroupsRepository.markUnitGroupAsHidden(unitGroup)
-            userPrefsRepository.updateShownUnitGroups(unitGroupsRepository.shownUnitGroups.value)
-        }
-    }
-
-    /**
-     * @see UnitGroupsRepository.markUnitGroupAsShown
-     * @see UserPreferencesRepository.updateShownUnitGroups
-     */
-    fun returnUnitGroup(unitGroup: UnitGroup) {
-        viewModelScope.launch {
-            unitGroupsRepository.markUnitGroupAsShown(unitGroup)
-            userPrefsRepository.updateShownUnitGroups(unitGroupsRepository.shownUnitGroups.value)
-        }
-    }
-
-    /**
-     * @see UnitGroupsRepository.moveShownUnitGroups
-     */
-    fun onMove(from: ItemPosition, to: ItemPosition) {
-        viewModelScope.launch {
-            unitGroupsRepository.moveShownUnitGroups(from, to)
-        }
-    }
-
-    /**
-     * @see UserPreferencesRepository.updateShownUnitGroups
-     */
-    fun onDragEnd() {
-        viewModelScope.launch {
-            userPrefsRepository.updateShownUnitGroups(unitGroupsRepository.shownUnitGroups.value)
-        }
-    }
-
-    /**
-     * Prevent from dragging over non-draggable items (headers and hidden)
-     *
-     * @param pos Position we are dragging over.
-     * @return True if can drag over given item.
-     */
-    fun canDragOver(pos: ItemPosition) = shownUnitGroups.value.any { it == pos.key }
-
-    init {
-        viewModelScope.launch {
-            unitGroupsRepository.updateShownGroups(
-                userPrefsRepository.unitGroupsPrefs.first().shownUnitGroups
+    val uiState = userPrefsRepository.unitGroupsPrefs
+        .map {
+            UnitGroupsUIState.Ready(
+                shownUnitGroups = it.shownUnitGroups,
+                hiddenUnitGroups = UnitGroup.entries - it.shownUnitGroups.toSet()
             )
+        }
+        .stateIn(viewModelScope, UnitGroupsUIState.Loading)
+
+    /**
+     * @see UserPreferencesRepository.removeShownUnitGroup
+     */
+    fun removeShownUnitGroup(unitGroup: UnitGroup) {
+        viewModelScope.launch {
+            userPrefsRepository.removeShownUnitGroup(unitGroup)
+        }
+    }
+
+    /**
+     * @see UserPreferencesRepository.addShownUnitGroup
+     */
+    fun addShownUnitGroup(unitGroup: UnitGroup) {
+        viewModelScope.launch {
+            userPrefsRepository.addShownUnitGroup(unitGroup)
+        }
+    }
+
+    /**
+     * @see UserPreferencesRepository.updateShownUnitGroups
+     */
+    fun updateShownUnitGroups(unitGroups: List<UnitGroup>) {
+        viewModelScope.launch {
+            userPrefsRepository.updateShownUnitGroups(unitGroups)
         }
     }
 }

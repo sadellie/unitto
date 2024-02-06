@@ -23,90 +23,105 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Separator
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.ALL_UNIT_GROUPS
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 
-fun Preferences.getEnableDynamicTheme(): Boolean {
+internal fun Preferences.getEnableDynamicTheme(): Boolean {
     return this[PrefsKeys.ENABLE_DYNAMIC_THEME] ?: true
 }
 
-fun Preferences.getThemingMode(): ThemingMode {
+internal fun Preferences.getThemingMode(): ThemingMode {
     return this[PrefsKeys.THEMING_MODE]
         ?.letTryOrNull { ThemingMode.valueOf(it) }
         ?: ThemingMode.AUTO
 }
 
-fun Preferences.getEnableAmoledTheme(): Boolean {
+internal fun Preferences.getEnableAmoledTheme(): Boolean {
     return this[PrefsKeys.ENABLE_AMOLED_THEME] ?: false
 }
 
-fun Preferences.getCustomColor(): Long {
+internal fun Preferences.getCustomColor(): Long {
     return this[PrefsKeys.CUSTOM_COLOR] ?: 16L // From Color.Unspecified
 }
 
-fun Preferences.getMonetMode(): MonetMode {
+internal fun Preferences.getMonetMode(): MonetMode {
     return this[PrefsKeys.MONET_MODE]
         ?.letTryOrNull { MonetMode.valueOf(it) }
         ?: MonetMode.TonalSpot
 }
 
-fun Preferences.getStartingScreen(): String {
+internal fun Preferences.getStartingScreen(): String {
     return this[PrefsKeys.STARTING_SCREEN] ?: TopLevelDestinations.CALCULATOR_GRAPH
 }
 
-fun Preferences.getEnableToolsExperiment(): Boolean {
+internal fun Preferences.getEnableToolsExperiment(): Boolean {
     return this[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
 }
 
-fun Preferences.getSystemFont(): Boolean {
+internal fun Preferences.getSystemFont(): Boolean {
     return this[PrefsKeys.SYSTEM_FONT] ?: false
 }
 
-fun Preferences.getLastReadChangelog(): String {
+internal fun Preferences.getLastReadChangelog(): String {
     return this[PrefsKeys.LAST_READ_CHANGELOG] ?: ""
 }
 
-fun Preferences.getEnableVibrations(): Boolean {
+internal fun Preferences.getEnableVibrations(): Boolean {
     return this[PrefsKeys.ENABLE_VIBRATIONS] ?: true
 }
 
-fun Preferences.getRadianMode(): Boolean {
+internal fun Preferences.getRadianMode(): Boolean {
     return this[PrefsKeys.RADIAN_MODE] ?: true
 }
 
-fun Preferences.getSeparator(): Int {
+internal fun Preferences.getSeparator(): Int {
     return this[PrefsKeys.SEPARATOR] ?: Separator.SPACE
 }
 
-fun Preferences.getMiddleZero(): Boolean {
+internal fun Preferences.getMiddleZero(): Boolean {
     return this[PrefsKeys.MIDDLE_ZERO] ?: true
 }
 
-fun Preferences.getPartialHistoryView(): Boolean {
+internal fun Preferences.getPartialHistoryView(): Boolean {
     return this[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: true
 }
 
-fun Preferences.getDigitsPrecision(): Int {
+internal fun Preferences.getDigitsPrecision(): Int {
     return this[PrefsKeys.DIGITS_PRECISION] ?: 3
 }
 
-fun Preferences.getOutputFormat(): Int {
+internal fun Preferences.getOutputFormat(): Int {
     return this[PrefsKeys.OUTPUT_FORMAT] ?: OutputFormat.PLAIN
 }
 
-fun Preferences.getUnitConverterFormatTime(): Boolean {
+internal fun Preferences.getUnitConverterFormatTime(): Boolean {
     return this[PrefsKeys.UNIT_CONVERTER_FORMAT_TIME] ?: false
 }
 
-fun Preferences.getUnitConverterSorting(): UnitsListSorting {
+internal fun Preferences.getUnitConverterSorting(): UnitsListSorting {
     return this[PrefsKeys.UNIT_CONVERTER_SORTING]
         ?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
 }
 
-fun Preferences.getShownUnitGroups(): List<UnitGroup> {
+// TODO Remove when 80% users are on sets
+internal fun Preferences.getShownUnitGroups(): List<UnitGroup> {
+//    Uncomment once legacy is gone
+//    return this[PrefsKeys.ENABLED_UNIT_GROUPS]
+//        ?.letTryOrNull { stringSet: Set<String> ->
+//            stringSet.map { UnitGroup.valueOf(it) }
+//        } ?: UnitGroup.entries
+
+    // Try new method
+    val unitGroups: List<UnitGroup>? = this[PrefsKeys.ENABLED_UNIT_GROUPS]
+        ?.letTryOrNull { stringSet: Set<String> ->
+            stringSet.map { UnitGroup.valueOf(it) }
+        }
+
+    if (!unitGroups.isNullOrEmpty()) return unitGroups
+
+    // Failed to get from sets, try old method
     return this[PrefsKeys.SHOWN_UNIT_GROUPS]
         ?.letTryOrNull { list ->
             list
@@ -114,23 +129,23 @@ fun Preferences.getShownUnitGroups(): List<UnitGroup> {
                 .split(",")
                 .map { UnitGroup.valueOf(it) }
         }
-        ?: ALL_UNIT_GROUPS
+        ?: UnitGroup.entries
 }
 
-fun Preferences.getUnitConverterFavoritesOnly(): Boolean {
+internal fun Preferences.getUnitConverterFavoritesOnly(): Boolean {
     return this[PrefsKeys.UNIT_CONVERTER_FAVORITES_ONLY]
         ?: false
 }
 
-fun Preferences.getLatestLeftSide(): String {
+internal fun Preferences.getLatestLeftSide(): String {
     return this[PrefsKeys.LATEST_LEFT_SIDE] ?: UnitID.kilometer
 }
 
-fun Preferences.getLatestRightSide(): String {
+internal fun Preferences.getLatestRightSide(): String {
     return this[PrefsKeys.LATEST_RIGHT_SIDE] ?: UnitID.mile
 }
 
-fun Preferences.getAcButton(): Boolean {
+internal fun Preferences.getAcButton(): Boolean {
     return this[PrefsKeys.AC_BUTTON] ?: true
 }
 
