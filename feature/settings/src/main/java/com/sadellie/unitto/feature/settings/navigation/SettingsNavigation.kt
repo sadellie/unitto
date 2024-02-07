@@ -27,6 +27,7 @@ import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.core.ui.unittoStackedComposable
 import com.sadellie.unitto.feature.settings.SettingsRoute
 import com.sadellie.unitto.feature.settings.about.AboutRoute
+import com.sadellie.unitto.feature.settings.bouncingemoji.BouncingEmojiRoute
 import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsRoute
 import com.sadellie.unitto.feature.settings.converter.ConverterSettingsRoute
 import com.sadellie.unitto.feature.settings.display.DisplayRoute
@@ -48,6 +49,7 @@ internal const val aboutRoute = "about_route"
 internal const val formattingRoute = "formatting_route"
 internal const val calculatorSettingsRoute = "calculator_settings_route"
 internal const val converterSettingsRoute = "converter_settings_route"
+internal const val bouncingEmoji = "bouncing_emoji_route"
 
 fun NavController.navigateToSettings() {
     navigate(DrawerItem.Settings.start)
@@ -123,13 +125,20 @@ fun NavGraphBuilder.settingGraph(
         unittoStackedComposable(aboutRoute) {
             AboutRoute(
                 navigateUpAction = navController::navigateUp,
-                navigateToThirdParty = { navController.navigate(thirdPartyRoute) }
+                navigateToThirdParty = { navController.navigate(thirdPartyRoute) },
+                navigateToEasterEgg = { navController.navigate(bouncingEmoji) },
             )
         }
 
         unittoStackedComposable(thirdPartyRoute) {
             ThirdPartyLicensesScreen(
                 navigateUpAction = navController::navigateUp,
+            )
+        }
+
+        unittoStackedComposable(bouncingEmoji) {
+            BouncingEmojiRoute(
+                navigateUpAction = navController::navigateUp
             )
         }
     }

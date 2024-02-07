@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.about
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,44 +41,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
-import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
-import com.sadellie.unitto.core.ui.showToast
-import com.sadellie.unitto.data.model.userprefs.AboutPreferences
-import com.sadellie.unitto.data.userprefs.AboutPreferencesImpl
 
 @Composable
 internal fun AboutRoute(
-    viewModel: AboutViewModel = hiltViewModel(),
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
+    navigateToEasterEgg: () -> Unit,
 ) {
-    when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
-        null -> EmptyScreen()
-        else -> {
-            AboutScreen(
-                prefs = prefs,
-                navigateUpAction = navigateUpAction,
-                navigateToThirdParty = navigateToThirdParty,
-                enableToolsExperiment = viewModel::enableToolsExperiment
-            )
-        }
-    }
+    AboutScreen(
+        navigateUpAction = navigateUpAction,
+        navigateToThirdParty = navigateToThirdParty,
+        navigateToEasterEgg = navigateToEasterEgg
+    )
 }
 
 @Composable
 private fun AboutScreen(
-    prefs: AboutPreferences,
     navigateUpAction: () -> Unit,
     navigateToThirdParty: () -> Unit,
-    enableToolsExperiment: () -> Unit,
+    navigateToEasterEgg: () -> Unit,
 ) {
     val mContext = LocalContext.current
     var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
@@ -157,16 +143,11 @@ private fun AboutScreen(
                     headlineText = stringResource(R.string.settings_version_name),
                     supportingText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                     modifier = Modifier.combinedClickable {
-                        if (prefs.enableToolsExperiment) {
-                            showToast(mContext, "Experiments features are already enabled!", Toast.LENGTH_LONG)
-                            return@combinedClickable
-                        }
-
                         aboutItemClick++
-                        if (aboutItemClick < 7) return@combinedClickable
-
-                        enableToolsExperiment()
-                        showToast(mContext, "Experimental features enabled!", Toast.LENGTH_LONG)
+                        if (aboutItemClick > 5) {
+                            aboutItemClick = 0
+                            navigateToEasterEgg()
+                        }
                     }
                 )
             }
@@ -195,11 +176,8 @@ private fun AboutScreen(
 @Composable
 fun PreviewAboutScreen() {
     AboutScreen(
-        prefs = AboutPreferencesImpl(
-            enableToolsExperiment = false
-        ),
         navigateUpAction = {},
         navigateToThirdParty = {},
-        enableToolsExperiment = {}
+        navigateToEasterEgg = {}
     )
 }
