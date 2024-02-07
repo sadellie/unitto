@@ -36,9 +36,10 @@ import androidx.compose.ui.util.fastForEach
 import androidx.window.layout.WindowMetricsCalculator
 
 val LocalWindowSize: ProvidableCompositionLocal<WindowSizeClass> = compositionLocalOf {
-    WindowSizeClass.calculateFromSize(
-        size = Size.Zero,
-        density = defaultDensity
+    // Phone in portrait mode
+    WindowSizeClass(
+        heightSizeClass = WindowHeightSizeClass.Medium,
+        widthSizeClass = WindowWidthSizeClass.Compact,
     )
 }
 
@@ -80,7 +81,7 @@ fun calculateWindowSizeClass(activity: Activity): WindowSizeClass {
  * @property heightSizeClass height-based window size class ([WindowHeightSizeClass])
  */
 @Immutable
-class WindowSizeClass private constructor(
+class WindowSizeClass(
     val widthSizeClass: WindowWidthSizeClass,
     val heightSizeClass: WindowHeightSizeClass
 ) {
