@@ -18,13 +18,9 @@
 
 package com.sadellie.unitto.feature.converter
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,12 +29,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.SearchPlaceholder
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.SearchBar
 import com.sadellie.unitto.data.converter.UnitID
@@ -46,10 +41,9 @@ import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.feature.converter.components.BasicUnitListItem
 import com.sadellie.unitto.feature.converter.components.ChipsRow
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
-import com.sadellie.unitto.feature.converter.components.UnitGroupHeader
+import com.sadellie.unitto.feature.converter.components.UnitsList
 import java.math.BigDecimal
 
 @Composable
@@ -129,43 +123,20 @@ private fun LeftSideScreen(
             }
         }
     ) { paddingValues ->
-        Crossfade(
-            targetState = uiState.units.isNotEmpty(),
+        val resources = LocalContext.current.resources
+        UnitsList(
             modifier = Modifier.padding(paddingValues),
-            label = "Units list"
-        ) { hasUnits ->
-            when (hasUnits) {
-                true -> LazyColumn(Modifier.fillMaxSize()) {
-                    uiState.units.forEach { (unitGroup, units) ->
-                        item(unitGroup.name) {
-                            UnitGroupHeader(Modifier.animateItemPlacement(), unitGroup)
-                        }
-
-                        items(units, { it.id }) {
-                            BasicUnitListItem(
-                                modifier = Modifier.animateItemPlacement(),
-                                name = stringResource(it.displayName),
-                                supportLabel = stringResource(it.shortName),
-                                isFavorite = it.isFavorite,
-                                isSelected = it.id == uiState.unitFrom.id,
-                                onClick = {
-                                    onQueryChange(TextFieldValue())
-                                    updateUnitFrom(it)
-                                    navigateUp()
-                                },
-                                favoriteUnit = { favoriteUnit(it) }
-                            )
-                        }
-                    }
-                }
-
-                false -> SearchPlaceholder(
-                    onButtonClick = navigateToUnitGroups,
-                    supportText = stringResource(R.string.converter_no_results_support),
-                    buttonLabel = stringResource(R.string.open_settings_label)
-                )
-            }
-        }
+            groupedUnits = uiState.units,
+            navigateToUnitGroups = navigateToUnitGroups,
+            currentUnitId = uiState.unitFrom.id,
+            supportLabel = { resources.getString(it.shortName) },
+            onClick = {
+                onQueryChange(TextFieldValue())
+                updateUnitFrom(it)
+                navigateUp()
+            },
+            favoriteUnit = { favoriteUnit(it) }
+        )
     }
 }
 
