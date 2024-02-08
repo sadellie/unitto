@@ -20,6 +20,7 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.EmptyScreen
@@ -114,10 +116,12 @@ private fun LeftSideScreen(
                 )
 
                 ChipsRow(
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp, bottom = 4.dp)
+                        .fillMaxWidth(),
                     chosenUnitGroup = uiState.unitGroup,
                     items = uiState.shownUnitGroups,
                     selectAction = updateUnitGroup,
-                    lazyListState = chipsRowLazyListState,
                     navigateToSettingsAction = navigateToUnitGroups
                 )
             }
@@ -161,7 +165,7 @@ private fun LeftSideScreenPreview() {
             units = units,
             query = TextFieldValue("test"),
             favorites = false,
-            shownUnitGroups = listOf(UnitGroup.LENGTH, UnitGroup.TEMPERATURE, UnitGroup.CURRENCY),
+            shownUnitGroups = UnitGroup.entries,
             unitGroup = units.keys.toList().first(),
             sorting = UnitsListSorting.USAGE,
         ),

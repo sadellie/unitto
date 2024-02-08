@@ -18,7 +18,8 @@
 
 package com.sadellie.unitto.core.ui.common
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,7 +27,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.FilterChipDefaults
@@ -40,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,41 +49,37 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun FilterChip(
     modifier: Modifier = Modifier,
-    selected: Boolean,
+    isSelected: Boolean,
     onClick: () -> Unit,
     label: String,
-    imageVector: ImageVector,
-    contentDescription: String,
 ) {
+    val transition = updateTransition(targetState = isSelected, label = "Selected transition")
+    val backgroundColor = transition.animateColor(label = "Background color") {
+        if (it) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
+    }
+    val borderColor = transition.animateColor(label = "Border color") {
+        if (it) Color.Transparent else MaterialTheme.colorScheme.outline
+    }
+
     Row(
         modifier = modifier
-            .background(
-                color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
-                shape = FilterChipDefaults.shape
-            )
+            .padding(vertical = 8.dp)
+            .clip(FilterChipDefaults.shape)
+            .clickable { onClick() }
+            .background(backgroundColor.value)
             .border(
                 width = 1.dp,
-                color = if (selected) Color.Transparent else MaterialTheme.colorScheme.outline,
+                color = borderColor.value,
                 shape = FilterChipDefaults.shape
             )
             .height(FilterChipDefaults.Height)
-            .clickable { onClick() }
-            .padding(start = 8.dp, end = 16.dp),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AnimatedVisibility(visible = selected) {
-            Icon(
-                modifier = Modifier.height(FilterChipDefaults.IconSize),
-                imageVector = imageVector,
-                contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
         Text(
-            modifier = Modifier.padding(start = 8.dp),
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -96,17 +93,16 @@ fun AssistChip(
 ) {
     Row(
         modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = AssistChipDefaults.shape
-            )
+            .padding(vertical = 8.dp)
+            .clip(FilterChipDefaults.shape)
+            .clickable { onClick() }
+            .background(MaterialTheme.colorScheme.surface)
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outline,
                 shape = AssistChipDefaults.shape
             )
             .height(32.dp)
-            .clickable { onClick() }
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -135,10 +131,8 @@ fun PreviewFilterChip() {
     var isSelected by remember { mutableStateOf(true) }
 
     FilterChip(
-        selected = isSelected,
+        isSelected = isSelected,
         onClick = { isSelected = !isSelected },
         label = "Label",
-        imageVector = Icons.Default.Check,
-        contentDescription = ""
     )
 }
