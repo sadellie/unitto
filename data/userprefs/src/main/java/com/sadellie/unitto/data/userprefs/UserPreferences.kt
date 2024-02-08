@@ -221,25 +221,25 @@ class UserPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun updateShownUnitGroups(shownUnitGroups: List<UnitGroup>) {
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.ENABLED_UNIT_GROUPS] = shownUnitGroups
-                .map { it.name }
-                .toSet()
+            preferences[PrefsKeys.SHOWN_UNIT_GROUPS] = shownUnitGroups.packToString()
         }
     }
 
     override suspend fun addShownUnitGroup(unitGroup: UnitGroup) {
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.ENABLED_UNIT_GROUPS] = preferences[PrefsKeys.ENABLED_UNIT_GROUPS]
-                ?.plus(unitGroup.name)
-                ?: emptySet()
+            preferences[PrefsKeys.SHOWN_UNIT_GROUPS] = preferences
+                .getShownUnitGroups()
+                .plus(unitGroup)
+                .packToString()
         }
     }
 
     override suspend fun removeShownUnitGroup(unitGroup: UnitGroup) {
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.ENABLED_UNIT_GROUPS] = preferences[PrefsKeys.ENABLED_UNIT_GROUPS]
-                ?.minus(unitGroup.name)
-                ?: emptySet()
+            preferences[PrefsKeys.SHOWN_UNIT_GROUPS] = preferences
+                .getShownUnitGroups()
+                .minus(unitGroup)
+                .packToString()
         }
     }
 

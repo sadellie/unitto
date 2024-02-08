@@ -105,23 +105,7 @@ internal fun Preferences.getUnitConverterSorting(): UnitsListSorting {
         ?.let { UnitsListSorting.valueOf(it) } ?: UnitsListSorting.USAGE
 }
 
-// TODO Remove when 80% users are on sets
 internal fun Preferences.getShownUnitGroups(): List<UnitGroup> {
-//    Uncomment once legacy is gone
-//    return this[PrefsKeys.ENABLED_UNIT_GROUPS]
-//        ?.letTryOrNull { stringSet: Set<String> ->
-//            stringSet.map { UnitGroup.valueOf(it) }
-//        } ?: UnitGroup.entries
-
-    // Try new method
-    val unitGroups: List<UnitGroup>? = this[PrefsKeys.ENABLED_UNIT_GROUPS]
-        ?.letTryOrNull { stringSet: Set<String> ->
-            stringSet.map { UnitGroup.valueOf(it) }
-        }
-
-    if (!unitGroups.isNullOrEmpty()) return unitGroups
-
-    // Failed to get from sets, try old method
     return this[PrefsKeys.SHOWN_UNIT_GROUPS]
         ?.letTryOrNull { list ->
             list
@@ -148,6 +132,8 @@ internal fun Preferences.getLatestRightSide(): String {
 internal fun Preferences.getAcButton(): Boolean {
     return this[PrefsKeys.AC_BUTTON] ?: true
 }
+
+internal fun List<UnitGroup>.packToString(): String = this.joinToString(",")
 
 private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {
     this?.let(block)
