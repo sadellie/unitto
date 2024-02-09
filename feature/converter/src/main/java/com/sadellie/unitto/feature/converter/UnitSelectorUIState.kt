@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,20 +24,39 @@ import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 
-internal sealed class RightSideUIState {
-    data object Loading : RightSideUIState()
+internal sealed class UnitSelectorUIState {
+    data object Loading : UnitSelectorUIState()
 
-    data class Ready(
+    data class UnitFrom(
+        val query: TextFieldValue,
+        val unitFrom: AbstractUnit,
+        val shownUnitGroups: List<UnitGroup>,
+        val showFavoritesOnly: Boolean,
+        val units: UnitSearchResult,
+        val selectedUnitGroup: UnitGroup?,
+        val sorting: UnitsListSorting,
+    ) : UnitSelectorUIState()
+
+    data class UnitTo(
+        val query: TextFieldValue,
         val unitFrom: AbstractUnit,
         val unitTo: AbstractUnit,
-        val query: TextFieldValue,
-        val units: Map<UnitGroup, List<AbstractUnit>>,
-        val favorites: Boolean,
+        val showFavoritesOnly: Boolean,
+        val units: UnitSearchResult,
+        val input: String?,
         val sorting: UnitsListSorting,
-        val input: String,
         val scale: Int,
         val outputFormat: Int,
         val formatterSymbols: FormatterSymbols,
-        val currencyRateUpdateState: CurrencyRateUpdateState,
-    ) : RightSideUIState()
+    ) : UnitSelectorUIState()
+}
+
+internal sealed class UnitSearchResult {
+    data object Empty : UnitSearchResult()
+
+    data object Loading : UnitSearchResult()
+
+    data class Success(
+        val units: Map<UnitGroup, List<AbstractUnit>>
+    ) : UnitSearchResult()
 }

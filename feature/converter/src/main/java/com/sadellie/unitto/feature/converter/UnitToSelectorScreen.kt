@@ -18,125 +18,105 @@
 
 package com.sadellie.unitto.feature.converter
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.SearchBar
+import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.ui.common.textfield.formatExpression
+import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.unit.DefaultUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.feature.converter.components.ChipsRow
+import com.sadellie.unitto.data.model.unit.NumberBaseUnit
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.UnitsList
 import java.math.BigDecimal
 
 @Composable
-internal fun LeftSideRoute(
-    viewModel: ConverterViewModel,
+internal fun UnitToSelectorRoute(
+    unitSelectorViewModel: UnitSelectorViewModel,
+    converterViewModel: ConverterViewModel,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
     when (
-        val uiState = viewModel.leftSideUIState.collectAsStateWithLifecycle().value
+        val uiState = unitSelectorViewModel.unitToUIState.collectAsStateWithLifecycle().value
     ) {
-        is LeftSideUIState.Loading -> EmptyScreen()
-        is LeftSideUIState.Ready -> LeftSideScreen(
+        is UnitSelectorUIState.UnitTo -> UnitToSelectorScreen(
             uiState = uiState,
-            onQueryChange = viewModel::queryChangeLeft,
-            toggleFavoritesOnly = viewModel::favoritesOnlyChange,
-            updateUnitFrom = viewModel::updateUnitFrom,
-            updateUnitGroup = viewModel::updateUnitGroupLeft,
-            favoriteUnit = viewModel::favoriteUnit,
+            onQueryChange = unitSelectorViewModel::updateSelectorQuery,
+            toggleFavoritesOnly = unitSelectorViewModel::updateShowFavoritesOnly,
+            updateUnitTo = converterViewModel::updateUnitTo,
+            favoriteUnit = unitSelectorViewModel::favoriteUnit,
             navigateUp = navigateUp,
             navigateToUnitGroups = navigateToUnitGroups,
         )
+        else -> EmptyScreen()
     }
 }
 
 @Composable
-private fun LeftSideScreen(
-    uiState: LeftSideUIState.Ready,
+private fun UnitToSelectorScreen(
+    uiState: UnitSelectorUIState.UnitTo,
     onQueryChange: (TextFieldValue) -> Unit,
     toggleFavoritesOnly: (Boolean) -> Unit,
-    updateUnitFrom: (AbstractUnit) -> Unit,
-    updateUnitGroup: (UnitGroup?) -> Unit,
+    updateUnitTo: (AbstractUnit) -> Unit,
     favoriteUnit: (AbstractUnit) -> Unit,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    val chipsRowLazyListState = rememberLazyListState()
-
-    LaunchedEffect(uiState.unitFrom, uiState.shownUnitGroups) {
-        updateUnitGroup(uiState.unitFrom.group)
-
-        kotlin.runCatching {
-            val groupToSelect = uiState.shownUnitGroups.indexOf(uiState.unitFrom.group)
-            if (groupToSelect > -1) {
-                chipsRowLazyListState.scrollToItem(groupToSelect)
-            }
-        }
-    }
-
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            Column(
-                Modifier.background(MaterialTheme.colorScheme.surface)
-            ) {
-                SearchBar(
-                    query = uiState.query,
-                    onQueryChange = onQueryChange,
-                    navigateUp = navigateUp,
-                    trailingIcon = {
-                        FavoritesButton(uiState.favorites) {
-                            toggleFavoritesOnly(!uiState.favorites)
-                        }
-                    },
-                    scrollBehavior = scrollBehavior
-                )
-
-                ChipsRow(
-                    modifier = Modifier
-                        .padding(start = 8.dp, end = 8.dp, bottom = 4.dp)
-                        .fillMaxWidth(),
-                    chosenUnitGroup = uiState.unitGroup,
-                    items = uiState.shownUnitGroups,
-                    selectAction = updateUnitGroup,
-                    navigateToSettingsAction = navigateToUnitGroups
-                )
-            }
+            SearchBar(
+                query = uiState.query,
+                onQueryChange = onQueryChange,
+                navigateUp = navigateUp,
+                trailingIcon = {
+                    FavoritesButton(uiState.showFavoritesOnly) {
+                        toggleFavoritesOnly(!uiState.showFavoritesOnly)
+                    }
+                },
+                scrollBehavior = scrollBehavior
+            )
         }
     ) { paddingValues ->
         val resources = LocalContext.current.resources
         UnitsList(
             modifier = Modifier.padding(paddingValues),
-            groupedUnits = uiState.units,
+            searchResult = uiState.units,
             navigateToUnitGroups = navigateToUnitGroups,
-            currentUnitId = uiState.unitFrom.id,
-            supportLabel = { resources.getString(it.shortName) },
+            currentUnitId = uiState.unitTo.id,
+            supportLabel = {
+                formatUnitToSupportLabel(
+                    unitFrom = uiState.unitFrom,
+                    unitTo = it,
+                    input = uiState.input,
+                    shortName = resources.getString(it.shortName),
+                    scale = uiState.scale,
+                    outputFormat = uiState.outputFormat,
+                    formatterSymbols = uiState.formatterSymbols,
+                )
+            },
             onClick = {
                 onQueryChange(TextFieldValue())
-                updateUnitFrom(it)
+                updateUnitTo(it)
                 navigateUp()
             },
             favoriteUnit = { favoriteUnit(it) }
@@ -144,9 +124,48 @@ private fun LeftSideScreen(
     }
 }
 
+private fun formatUnitToSupportLabel(
+    unitFrom: AbstractUnit?,
+    unitTo: AbstractUnit?,
+    input: String?,
+    shortName: String,
+    scale: Int,
+    outputFormat: Int,
+    formatterSymbols: FormatterSymbols,
+): String {
+    if (input.isNullOrEmpty()) return shortName
+
+    try {
+        if ((unitFrom is DefaultUnit) and (unitTo is DefaultUnit)) {
+            unitFrom as DefaultUnit
+            unitTo as DefaultUnit
+
+            val conversion = unitFrom
+                .convert(unitTo, BigDecimal(input))
+                .format(scale, outputFormat)
+                .formatExpression(formatterSymbols)
+
+            return "$conversion $shortName"
+        }
+
+        if ((unitFrom is NumberBaseUnit) and (unitTo is NumberBaseUnit)) {
+            unitFrom as NumberBaseUnit
+            unitTo as NumberBaseUnit
+
+            val conversion = unitFrom.convert(unitTo, input).uppercase()
+
+            return "$conversion $shortName"
+        }
+    } catch (e: Exception) {
+        return shortName
+    }
+
+    return shortName
+}
+
 @Preview
 @Composable
-private fun LeftSideScreenPreview() {
+private fun UnitToSelectorPreview() {
     val units: Map<UnitGroup, List<AbstractUnit>> = mapOf(
         UnitGroup.LENGTH to listOf(
             NormalUnit(UnitID.meter, BigDecimal.valueOf(1.0E+18), UnitGroup.LENGTH, R.string.unit_meter, R.string.unit_meter_short),
@@ -159,20 +178,22 @@ private fun LeftSideScreenPreview() {
         )
     )
 
-    LeftSideScreen(
-        uiState = LeftSideUIState.Ready(
+    UnitToSelectorScreen(
+        uiState = UnitSelectorUIState.UnitTo(
             unitFrom = units.values.first().first(),
-            units = units,
+            unitTo = units.values.first().first(),
             query = TextFieldValue("test"),
-            favorites = false,
-            shownUnitGroups = UnitGroup.entries,
-            unitGroup = units.keys.toList().first(),
+            units = UnitSearchResult.Success(units),
+            showFavoritesOnly = false,
             sorting = UnitsListSorting.USAGE,
+            input = "100",
+            scale = 3,
+            outputFormat = OutputFormat.PLAIN,
+            formatterSymbols = FormatterSymbols.Spaces,
         ),
         onQueryChange = {},
         toggleFavoritesOnly = {},
-        updateUnitFrom = {},
-        updateUnitGroup = {},
+        updateUnitTo = {},
         favoriteUnit = {},
         navigateUp = {},
         navigateToUnitGroups = {}

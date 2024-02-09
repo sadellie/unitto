@@ -33,12 +33,13 @@ import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.feature.converter.UnitSearchResult
 import java.math.BigDecimal
 
 @Composable
 internal fun UnitsList(
     modifier: Modifier,
-    groupedUnits: Map<UnitGroup, List<AbstractUnit>>,
+    searchResult: UnitSearchResult,
     navigateToUnitGroups: () -> Unit,
     currentUnitId: String,
     supportLabel: (AbstractUnit) -> String,
@@ -47,14 +48,14 @@ internal fun UnitsList(
 ) {
     Crossfade(
         modifier = modifier,
-        targetState = groupedUnits.isNotEmpty(),
+        targetState = searchResult,
         label = "Units list"
-    ) { hasUnits ->
-        when (hasUnits) {
-            true -> LazyColumn(
+    ) { result ->
+        when (result) {
+            is UnitSearchResult.Success -> LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                groupedUnits.forEach { (group, units) ->
+                result.units.forEach { (group, units) ->
                     item(group.name) {
                         UnitGroupHeader(Modifier.animateItemPlacement(), group)
                     }
@@ -73,11 +74,13 @@ internal fun UnitsList(
                 }
             }
 
-            false -> SearchPlaceholder(
+            UnitSearchResult.Empty -> SearchPlaceholder(
                 onButtonClick = navigateToUnitGroups,
                 supportText = stringResource(R.string.converter_no_results_support),
                 buttonLabel = stringResource(R.string.open_settings_label)
             )
+
+            UnitSearchResult.Loading -> Unit
         }
     }
 }
@@ -100,7 +103,7 @@ private fun PreviewUnitsList() {
 
     UnitsList(
         modifier = Modifier.fillMaxSize(),
-        groupedUnits = groupedUnits,
+        searchResult = UnitSearchResult.Success(units = groupedUnits),
         navigateToUnitGroups = {},
         currentUnitId = UnitID.mile,
         supportLabel = { resources.getString(it.shortName) },

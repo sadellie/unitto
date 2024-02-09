@@ -97,8 +97,8 @@ import java.util.Locale
 @Composable
 internal fun ConverterRoute(
     viewModel: ConverterViewModel = hiltViewModel(),
-    navigateToLeftScreen: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
+    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
     navigateToMenu: () -> Unit,
     navigateToSettings: () -> Unit,
 ) {
@@ -124,8 +124,8 @@ internal fun ConverterRoute(
 @Composable
 private fun ConverterScreen(
     uiState: UnitConverterUIState,
-    navigateToLeftScreen: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
+    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
     navigateToSettings: () -> Unit,
     navigateToMenu: () -> Unit,
     swapUnits: () -> Unit,
@@ -207,9 +207,9 @@ private fun NumberBase(
     onValueChange: (TextFieldValue) -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
-    navigateToLeftScreen: () -> Unit,
+    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
     swapUnits: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
     clearInput: () -> Unit,
 ) {
     PortraitLandscape(
@@ -239,8 +239,8 @@ private fun NumberBase(
                     unitFromLabel = stringResource(uiState.unitFrom.displayName),
                     unitToLabel = stringResource(uiState.unitTo.displayName),
                     swapUnits = swapUnits,
-                    navigateToLeftScreen = navigateToLeftScreen,
-                    navigateToRightScreen = navigateToRightScreen
+                    navigateToLeftScreen = { navigateToLeftScreen(uiState) },
+                    navigateToRightScreen = { navigateToRightScreen(uiState) }
                 )
             }
         },
@@ -263,9 +263,9 @@ private fun Default(
     onFocusOnInput2: (Boolean) -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
-    navigateToLeftScreen: () -> Unit,
+    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
     swapUnits: () -> Unit,
-    navigateToRightScreen: () -> Unit,
+    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
     clearInput: () -> Unit,
     refreshCurrencyRates: (AbstractUnit) -> Unit,
     addBracket: () -> Unit,
@@ -327,7 +327,9 @@ private fun Default(
                                 .weight(1f)
                         ) {
                             ExpressionTextField(
-                                modifier = Modifier.fillMaxWidth().weight(1f),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
                                 value = uiState.input1,
                                 minRatio = 0.7f,
                                 onValueChange = onValueChange,
@@ -345,7 +347,9 @@ private fun Default(
                                 .weight(1f)
                         ) {
                             ExpressionTextField(
-                                modifier = Modifier.fillMaxWidth().weight(1f)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
                                     .onFocusEvent { state -> onFocusOnInput2(state.hasFocus) },
                                 value = uiState.input2,
                                 minRatio = 0.7f,
@@ -405,8 +409,8 @@ private fun Default(
                     unitFromLabel = stringResource(uiState.unitFrom.displayName),
                     unitToLabel = stringResource(uiState.unitTo.displayName),
                     swapUnits = swapUnits,
-                    navigateToLeftScreen = navigateToLeftScreen,
-                    navigateToRightScreen = navigateToRightScreen
+                    navigateToLeftScreen = { navigateToLeftScreen(uiState) },
+                    navigateToRightScreen = { navigateToRightScreen(uiState) }
                 )
             }
         },

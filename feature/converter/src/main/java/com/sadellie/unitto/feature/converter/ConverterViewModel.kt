@@ -33,7 +33,6 @@ import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.repository.UnitsRepository
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import com.sadellie.unitto.data.model.unit.AbstractUnit
@@ -45,12 +44,10 @@ import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -73,13 +70,6 @@ internal class ConverterViewModel @Inject constructor(
     private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
     private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)
     private val _unitTo = MutableStateFlow<AbstractUnit?>(null)
-
-    private val _leftQuery = MutableStateFlow(TextFieldValue())
-    private val _leftUnits = MutableStateFlow<Map<UnitGroup, List<AbstractUnit>>>(emptyMap())
-    private val _leftUnitGroup = MutableStateFlow<UnitGroup?>(null)
-
-    private val _rightQuery = MutableStateFlow(TextFieldValue())
-    private val _rightUnits = MutableStateFlow<Map<UnitGroup, List<AbstractUnit>>>(emptyMap())
 
     private val _currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
     private var _loadCurrenciesJob: Job? = null
@@ -159,81 +149,6 @@ internal class ConverterViewModel @Inject constructor(
             ui
         }
         .stateIn(viewModelScope, UnitConverterUIState.Loading)
-
-    val leftSideUIState = combine(
-        _unitFrom,
-        _leftQuery,
-        _leftUnits,
-        _leftUnitGroup,
-        userPrefsRepository.converterPrefs,
-        unitsRepo.units
-    ) { unitFrom, query, units, unitGroup, prefs, _ ->
-        unitFrom ?: return@combine LeftSideUIState.Loading
-
-        return@combine LeftSideUIState.Ready(
-            unitFrom = unitFrom,
-            sorting = prefs.unitConverterSorting,
-            shownUnitGroups = prefs.shownUnitGroups,
-            favorites = prefs.unitConverterFavoritesOnly,
-            query = query,
-            units = units,
-            unitGroup = unitGroup
-        )
-    }
-        .mapLatest {
-            if (it !is LeftSideUIState.Ready) return@mapLatest it
-
-            filterUnitsLeft(
-                query = it.query,
-                unitGroup = it.unitGroup,
-                favoritesOnly = it.favorites,
-                sorting = it.sorting,
-                shownUnitGroups = it.shownUnitGroups,
-            )
-            it
-        }
-        .stateIn(viewModelScope, SharingStarted.Lazily, LeftSideUIState.Loading)
-
-    val rightSideUIState = combine(
-        _unitFrom,
-        _unitTo,
-        _input1,
-        _calculation,
-        _rightQuery,
-        _rightUnits,
-        userPrefsRepository.converterPrefs,
-        _currenciesState,
-        unitsRepo.units,
-    ) { unitFrom, unitTo, input, calculation, query, units, prefs, currenciesState, _ ->
-        unitFrom ?: return@combine RightSideUIState.Loading
-        unitTo ?: return@combine RightSideUIState.Loading
-
-        return@combine RightSideUIState.Ready(
-            unitFrom = unitFrom,
-            unitTo = unitTo,
-            sorting = prefs.unitConverterSorting,
-            favorites = prefs.unitConverterFavoritesOnly,
-            input = (calculation?.toPlainString() ?: input.text).replace(Token.Operator.minus, "-"),
-            scale = prefs.precision,
-            outputFormat = prefs.outputFormat,
-            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
-            currencyRateUpdateState = currenciesState,
-            query = query,
-            units = units,
-        )
-    }
-        .mapLatest {
-            if (it !is RightSideUIState.Ready) return@mapLatest it
-
-            filterUnitsRight(
-                query = it.query,
-                unitGroup = it.unitFrom.group,
-                favoritesOnly = it.favorites,
-                sorting = it.sorting,
-            )
-            it
-        }
-        .stateIn(viewModelScope, SharingStarted.Lazily, RightSideUIState.Loading)
 
     fun swapUnits() {
         _unitFrom
@@ -377,56 +292,6 @@ internal class ConverterViewModel @Inject constructor(
 
             unitsRepo.setPair(unitFrom, unitTo)
             userPrefsRepository.updateLatestPairOfUnits(unitFrom = unitFrom, unitTo = unitTo)
-        }
-    }
-
-    fun queryChangeLeft(query: TextFieldValue) = _leftQuery.update { query }
-
-    fun queryChangeRight(query: TextFieldValue) = _rightQuery.update { query }
-
-    fun favoritesOnlyChange(enabled: Boolean) = viewModelScope.launch {
-        userPrefsRepository.updateUnitConverterFavoritesOnly(enabled)
-    }
-
-    fun updateUnitGroupLeft(unitGroup: UnitGroup?) = _leftUnitGroup.update { unitGroup }
-
-    fun favoriteUnit(unit: AbstractUnit) = viewModelScope.launch {
-        unitsRepo.favorite(unit)
-    }
-
-    private fun filterUnitsLeft(
-        query: TextFieldValue,
-        unitGroup: UnitGroup?,
-        favoritesOnly: Boolean,
-        sorting: UnitsListSorting,
-        shownUnitGroups: List<UnitGroup>,
-    ) = viewModelScope.launch(Dispatchers.Default) {
-        _leftUnits.update {
-            unitsRepo.filterUnits(
-                query = query.text,
-                unitGroup = unitGroup,
-                favoritesOnly = favoritesOnly,
-                hideBrokenUnits = false,
-                sorting = sorting,
-                shownUnitGroups = shownUnitGroups
-            )
-        }
-    }
-
-    private fun filterUnitsRight(
-        query: TextFieldValue,
-        unitGroup: UnitGroup?,
-        favoritesOnly: Boolean,
-        sorting: UnitsListSorting,
-    ) = viewModelScope.launch(Dispatchers.Default) {
-        _rightUnits.update {
-            unitsRepo.filterUnits(
-                query = query.text,
-                unitGroup = unitGroup,
-                favoritesOnly = favoritesOnly,
-                hideBrokenUnits = true,
-                sorting = sorting,
-            )
         }
     }
 
