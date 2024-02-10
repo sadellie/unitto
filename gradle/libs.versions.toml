@@ -1,6 +1,6 @@
 [versions]
-versionCode = "36"
-versionName = "Quick Silver"
+versionCode = "37"
+versionName = "Red Salsa"
 
 androidxBrowserBrowser = "1.7.0"
 androidGradlePlugin = "8.2.1"
