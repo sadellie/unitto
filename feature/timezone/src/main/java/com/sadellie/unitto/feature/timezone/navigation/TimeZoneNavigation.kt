@@ -50,8 +50,7 @@ private fun NavController.navigateToAddTimeZone(
 }
 
 fun NavGraphBuilder.timeZoneGraph(
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
     navController: NavHostController,
 ) {
     unittoNavigation(
@@ -68,8 +67,7 @@ fun NavGraphBuilder.timeZoneGraph(
             }
 
             TimeZoneRoute(
-                openMenu = navigateToMenu,
-                navigateToSettings = navigateToSettings,
+                openDrawer = openDrawer,
                 navigateToAddTimeZone = navController::navigateToAddTimeZone
             )
         }

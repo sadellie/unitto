@@ -30,7 +30,6 @@ import com.sadellie.unitto.feature.bodymass.navigation.bodyMassGraph
 import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
 import com.sadellie.unitto.feature.converter.navigation.converterGraph
 import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorGraph
-import com.sadellie.unitto.feature.settings.navigation.navigateToSettings
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
 import com.sadellie.unitto.feature.timezone.navigation.timeZoneGraph
@@ -48,39 +47,35 @@ internal fun UnittoNavigation(
         startDestination = startDestination,
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         enterTransition = { fadeIn() },
-        exitTransition = { fadeOut() }
+        exitTransition = { fadeOut() },
     ) {
+        calculatorGraph(
+            openDrawer = openDrawer,
+        )
+
         converterGraph(
             openDrawer = openDrawer,
             navController = navController,
-            navigateToSettings = navController::navigateToSettings,
-            navigateToUnitGroups = navController::navigateToUnitGroups
-        )
-
-        settingGraph(
-            themmoController = themmoController,
-            navController = navController
-        )
-
-        calculatorGraph(
-            openDrawer = openDrawer,
-            navigateToSettings = navController::navigateToSettings
+            navigateToUnitGroups = navController::navigateToUnitGroups,
         )
 
         dateCalculatorGraph(
-            navigateToMenu = openDrawer,
-            navigateToSettings = navController::navigateToSettings
+            openDrawer = openDrawer,
         )
 
         timeZoneGraph(
-            navigateToMenu = openDrawer,
-            navigateToSettings = navController::navigateToSettings,
+            openDrawer = openDrawer,
             navController = navController,
         )
 
         bodyMassGraph(
             openDrawer = openDrawer,
-            navigateToSettings = navController::navigateToSettings,
+        )
+
+        settingGraph(
+            openDrawer = openDrawer,
+            navController = navController,
+            themmoController = themmoController,
         )
     }
 }

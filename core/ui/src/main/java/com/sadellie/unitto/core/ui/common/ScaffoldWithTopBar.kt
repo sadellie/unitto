@@ -71,7 +71,11 @@ fun ScaffoldWithTopBar(
             ) {
                 CenterAlignedTopAppBar(
                     title = title,
-                    navigationIcon = if (LocalWindowSize.current.widthSizeClass != WindowWidthSizeClass.Expanded) navigationIcon else { {} },
+                    navigationIcon = {
+                        if (LocalWindowSize.current.widthSizeClass != WindowWidthSizeClass.Expanded) {
+                            navigationIcon()
+                        }
+                    },
                     actions = actions,
                     colors = colors,
                     scrollBehavior = scrollBehavior,

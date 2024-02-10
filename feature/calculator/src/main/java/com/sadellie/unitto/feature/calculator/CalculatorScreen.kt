@@ -19,7 +19,7 @@
 package com.sadellie.unitto.feature.calculator
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -66,10 +66,9 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowHeightSizeClass
+import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
-import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
-import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
@@ -83,24 +82,22 @@ import kotlin.math.roundToInt
 
 @Composable
 internal fun CalculatorRoute(
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
-    viewModel: CalculatorViewModel = hiltViewModel()
+    openDrawer: () -> Unit,
+    viewModel: CalculatorViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     CalculatorScreen(
         uiState = uiState.value,
-        navigateToMenu = navigateToMenu,
-        navigateToSettings = navigateToSettings,
+        openDrawer = openDrawer,
         addTokens = viewModel::addTokens,
+        addBracket = viewModel::addBracket,
         clearInput = viewModel::clearInput,
         deleteTokens = viewModel::deleteTokens,
         onValueChange = viewModel::updateInput,
         toggleCalculatorMode = viewModel::updateRadianMode,
         equal = viewModel::equal,
         clearHistory = viewModel::clearHistory,
-        addBracket = viewModel::addBracket,
         onDelete = viewModel::deleteHistoryItem,
     )
 }
@@ -108,8 +105,7 @@ internal fun CalculatorRoute(
 @Composable
 internal fun CalculatorScreen(
     uiState: CalculatorUIState,
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
     addTokens: (String) -> Unit,
     addBracket: () -> Unit,
     clearInput: () -> Unit,
@@ -124,16 +120,15 @@ internal fun CalculatorScreen(
         is CalculatorUIState.Loading -> EmptyScreen()
         is CalculatorUIState.Ready -> Ready(
             uiState = uiState,
-            navigateToMenu = navigateToMenu,
-            navigateToSettings = navigateToSettings,
+            openDrawer = openDrawer,
             addSymbol = addTokens,
+            addBracket = addBracket,
             clearSymbols = clearInput,
             deleteSymbol = deleteTokens,
             onValueChange = onValueChange,
             toggleAngleMode = { toggleCalculatorMode(!uiState.radianMode) },
             equal = equal,
             clearHistory = clearHistory,
-            addBracket = addBracket,
             onDelete = onDelete,
         )
     }
@@ -142,8 +137,7 @@ internal fun CalculatorScreen(
 @Composable
 private fun Ready(
     uiState: CalculatorUIState.Ready,
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
     addSymbol: (String) -> Unit,
     addBracket: () -> Unit,
     clearSymbols: () -> Unit,
@@ -167,25 +161,21 @@ private fun Ready(
     val isOpen = dragState.currentValue == DragState.OPEN
 
     ScaffoldWithTopBar(
-        title = { Text(stringResource(R.string.calculator_title)) },
-        navigationIcon = { MenuButton { navigateToMenu() } },
+        title = {},
+        navigationIcon = { DrawerButton { openDrawer() } },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
         actions = {
-            Crossfade(isOpen, label = "Clear button reveal") {
-                if (it) {
-                    IconButton(
-                        onClick = { showClearHistoryDialog = true },
-                        content = {
-                            Icon(
-                                Icons.Default.Delete,
-                                stringResource(R.string.clear_history_label)
-                            )
-                        },
-                        modifier = Modifier.semantics { testTag = "historyButton" }
-                    )
-                } else {
-                    SettingsButton(navigateToSettings)
-                }
+            AnimatedVisibility(isOpen, label = "Clear button reveal") {
+                IconButton(
+                    onClick = { showClearHistoryDialog = true },
+                    content = {
+                        Icon(
+                            Icons.Default.Delete,
+                            stringResource(R.string.clear_history_label)
+                        )
+                    },
+                    modifier = Modifier.semantics { testTag = "historyButton" }
+                )
             }
         }
     ) { paddingValues ->
@@ -371,16 +361,15 @@ private fun PreviewCalculatorScreen() {
             acButton = true,
             partialHistoryView = true
         ),
-        navigateToMenu = {},
-        navigateToSettings = {},
+        openDrawer = {},
         addTokens = {},
+        addBracket = {},
         clearInput = {},
         deleteTokens = {},
         onValueChange = {},
         toggleCalculatorMode = {},
         equal = {},
         clearHistory = {},
-        addBracket = {},
         onDelete = {},
     )
 }

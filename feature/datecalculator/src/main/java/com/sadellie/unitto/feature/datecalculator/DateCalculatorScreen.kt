@@ -35,8 +35,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.MenuButton
-import com.sadellie.unitto.core.ui.common.SettingsButton
+import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.feature.datecalculator.addsubtract.AddSubtractPage
 import com.sadellie.unitto.feature.datecalculator.difference.DateDifferencePage
@@ -44,19 +43,16 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun DateCalculatorRoute(
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
 ) {
     DateCalculatorScreen(
-        navigateToMenu = navigateToMenu,
-        navigateToSettings = navigateToSettings,
+        openDrawer = openDrawer,
     )
 }
 
 @Composable
 internal fun DateCalculatorScreen(
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
 ) {
     val addSubtractLabel = "${stringResource(R.string.date_calculator_add)}/${stringResource(R.string.date_calculator_subtract)}"
     val differenceLabel = stringResource(R.string.date_calculator_difference)
@@ -69,8 +65,7 @@ internal fun DateCalculatorScreen(
     ScaffoldWithTopBar(
         modifier = Modifier,
         title = { Text(stringResource(R.string.date_calculator_title)) },
-        navigationIcon = { MenuButton(navigateToMenu) },
-        actions = { SettingsButton(navigateToSettings) },
+        navigationIcon = { DrawerButton(openDrawer) },
     ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues),
@@ -111,7 +106,6 @@ internal fun DateCalculatorScreen(
 @Composable
 private fun DateCalculatorScreenPreview() {
     DateCalculatorScreen(
-        navigateToMenu = {},
-        navigateToSettings = {},
+        openDrawer = {},
     )
 }

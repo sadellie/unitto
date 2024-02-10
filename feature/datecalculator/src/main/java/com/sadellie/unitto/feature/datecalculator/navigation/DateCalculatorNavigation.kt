@@ -29,8 +29,7 @@ private val graph = DrawerItem.DateCalculator.graph
 private val start = DrawerItem.DateCalculator.start
 
 fun NavGraphBuilder.dateCalculatorGraph(
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit
+    openDrawer: () -> Unit,
 ) {
     unittoNavigation(
         startDestination = start,
@@ -41,8 +40,7 @@ fun NavGraphBuilder.dateCalculatorGraph(
     ) {
         unittoComposable(start) {
             DateCalculatorRoute(
-                navigateToMenu = navigateToMenu,
-                navigateToSettings = navigateToSettings
+                openDrawer = openDrawer,
             )
         }
     }

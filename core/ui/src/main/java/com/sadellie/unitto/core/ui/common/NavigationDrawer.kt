@@ -111,7 +111,8 @@ fun NavigationDrawer(
     modifier: Modifier,
     gesturesEnabled: Boolean,
     state: DrawerState = rememberDrawerState(),
-    tabs: List<DrawerItem>,
+    mainTabs: List<DrawerItem>,
+    additionalTabs: List<DrawerItem>,
     currentDestination: String?,
     onItemClick: (DrawerItem) -> Unit,
     content: @Composable () -> Unit,
@@ -126,7 +127,8 @@ fun NavigationDrawer(
                         .verticalScroll(rememberScrollState())
                 ) {
                     SheetContent(
-                        tabs = tabs,
+                        mainTabs = mainTabs,
+                        additionalTabs = additionalTabs,
                         currentDestination = currentDestination,
                         onItemClick = onItemClick
                     )
@@ -144,7 +146,8 @@ fun NavigationDrawer(
                         .verticalScroll(rememberScrollState())
                 ) {
                     SheetContent(
-                        tabs = tabs,
+                        mainTabs = mainTabs,
+                        additionalTabs = additionalTabs,
                         currentDestination = currentDestination,
                         onItemClick = onItemClick
                     )
@@ -279,7 +282,8 @@ private fun PreviewUnittoModalNavigationDrawerClose() {
         modifier = Modifier,
         state = drawerState,
         gesturesEnabled = true,
-        tabs = DrawerItem.main,
+        mainTabs = DrawerItem.main,
+        additionalTabs = DrawerItem.additional,
         currentDestination = DrawerItem.Calculator.start,
         onItemClick = {},
         content = {

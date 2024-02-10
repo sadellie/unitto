@@ -62,7 +62,6 @@ private fun NavHostController.navigateRight(
 fun NavGraphBuilder.converterGraph(
     openDrawer: () -> Unit,
     navController: NavHostController,
-    navigateToSettings: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
     unittoNavigation(
@@ -127,8 +126,7 @@ fun NavGraphBuilder.converterGraph(
                         UnitConverterUIState.Loading -> Unit
                     }
                 },
-                navigateToSettings = navigateToSettings,
-                navigateToMenu = openDrawer
+                openDrawer = openDrawer,
             )
         }
 

@@ -30,7 +30,6 @@ private val start = DrawerItem.BodyMass.start
 
 fun NavGraphBuilder.bodyMassGraph(
     openDrawer: () -> Unit,
-    navigateToSettings: () -> Unit
 ) {
     unittoNavigation(
         startDestination = start,
@@ -42,7 +41,6 @@ fun NavGraphBuilder.bodyMassGraph(
         unittoComposable(start) {
             BodyMassRoute(
                 openDrawer = openDrawer,
-                navigateToSettings = navigateToSettings
             )
         }
     }

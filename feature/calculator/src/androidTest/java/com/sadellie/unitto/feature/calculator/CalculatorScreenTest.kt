@@ -41,16 +41,15 @@ class CalculatorScreenTest {
         setContent {
             CalculatorScreen(
                 uiState = CalculatorUIState.Loading,
-                navigateToMenu = {},
-                navigateToSettings = {},
+                openDrawer = {},
                 addTokens = {},
+                addBracket = {},
                 clearInput = {},
                 deleteTokens = {},
                 onValueChange = {},
                 toggleCalculatorMode = {},
                 equal = {},
                 clearHistory = {},
-                addBracket = {},
                 onDelete = {},
             )
         }
@@ -74,16 +73,15 @@ class CalculatorScreenTest {
                     acButton = true,
                     partialHistoryView = true
                 ),
-                navigateToMenu = {},
-                navigateToSettings = {},
+                openDrawer = {},
                 addTokens = {},
+                addBracket = {},
                 clearInput = {},
                 deleteTokens = {},
                 onValueChange = {},
                 toggleCalculatorMode = {},
                 equal = {},
                 clearHistory = {},
-                addBracket = {},
                 onDelete = {},
             )
         }
@@ -108,16 +106,15 @@ class CalculatorScreenTest {
                     acButton = true,
                     partialHistoryView = true
                 ),
-                navigateToMenu = {},
-                navigateToSettings = {},
+                openDrawer = {},
                 addTokens = {},
+                addBracket = {},
                 clearInput = {},
                 deleteTokens = {},
                 onValueChange = {},
                 toggleCalculatorMode = {},
                 equal = {},
                 clearHistory = {},
-                addBracket = {},
                 onDelete = {},
             )
         }

@@ -139,7 +139,9 @@ sealed class DrawerItem(
             all
         }
 
+        val additional = listOf(Settings)
+
         // Only routes, not graphs!
-        val startRoutes by lazy { main.map { it.start } }
+        val startRoutes by lazy { (main + additional).map { it.start } }
     }
 }

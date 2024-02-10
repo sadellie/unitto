@@ -51,17 +51,14 @@ internal const val calculatorSettingsRoute = "calculator_settings_route"
 internal const val converterSettingsRoute = "converter_settings_route"
 internal const val bouncingEmoji = "bouncing_emoji_route"
 
-fun NavController.navigateToSettings() {
-    navigate(DrawerItem.Settings.start)
-}
-
 fun NavController.navigateToUnitGroups() {
     navigate(unitsGroupRoute)
 }
 
 fun NavGraphBuilder.settingGraph(
-    themmoController: ThemmoController,
+    openDrawer: () -> Unit,
     navController: NavHostController,
+    themmoController: ThemmoController,
 ) {
     unittoNavigation(
         startDestination = start,
@@ -72,7 +69,7 @@ fun NavGraphBuilder.settingGraph(
     ) {
         unittoStackedComposable(start) {
             SettingsRoute(
-                navigateUp = navController::navigateUp,
+                openDrawer = openDrawer,
                 navControllerAction = navController::navigate
             )
         }

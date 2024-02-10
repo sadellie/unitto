@@ -73,8 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.MenuButton
-import com.sadellie.unitto.core.ui.common.SettingsButton
+import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.datetimepicker.TimePickerDialog
@@ -94,8 +93,7 @@ import java.time.ZonedDateTime
 @Composable
 internal fun TimeZoneRoute(
     viewModel: TimeZoneViewModel = hiltViewModel(),
-    openMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
     navigateToAddTimeZone: (ZonedDateTime) -> Unit,
 ) {
     when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
@@ -103,8 +101,7 @@ internal fun TimeZoneRoute(
         is TimeZoneUIState.Ready -> {
             TimeZoneScreen(
                 uiState = uiState,
-                openMenu = openMenu,
-                navigateToSettings = navigateToSettings,
+                openDrawer = openDrawer,
                 navigateToAddTimeZone = navigateToAddTimeZone,
                 setCurrentTime = viewModel::setCurrentTime,
                 setSelectedTime = viewModel::setSelectedTime,
@@ -122,8 +119,7 @@ internal fun TimeZoneRoute(
 @Composable
 private fun TimeZoneScreen(
     uiState: TimeZoneUIState.Ready,
-    openMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
     navigateToAddTimeZone: (ZonedDateTime) -> Unit,
     setCurrentTime: () -> Unit,
     setSelectedTime: (ZonedDateTime) -> Unit,
@@ -179,8 +175,7 @@ private fun TimeZoneScreen(
 
     ScaffoldWithTopBar(
         title = { Text(stringResource(R.string.time_zone_title)) },
-        navigationIcon = { MenuButton(openMenu) },
-        actions = { SettingsButton(navigateToSettings) },
+        navigationIcon = { DrawerButton(openDrawer) },
         floatingActionButton = {
             LargeFloatingActionButton(
                 onClick = {
@@ -366,8 +361,7 @@ fun PreviewTimeZoneScreen() {
             selectedTimeZone = null,
             dialogState = TimeZoneDialogState.Nothing
         ),
-        openMenu = {},
-        navigateToSettings = {},
+        openDrawer = {},
         navigateToAddTimeZone = {},
         setCurrentTime = {},
         setSelectedTime = {},
@@ -375,6 +369,6 @@ fun PreviewTimeZoneScreen() {
         delete = {},
         updateLabel = { _, _ -> },
         selectTimeZone = {},
-        setDialogState = {}
+        setDialogState = {},
     )
 }

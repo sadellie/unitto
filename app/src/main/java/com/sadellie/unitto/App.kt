@@ -92,7 +92,8 @@ internal fun ComponentActivity.App(prefs: AppPreferences?) {
             modifier = Modifier,
             state = drawerState,
             gesturesEnabled = gesturesEnabled,
-            tabs = DrawerItem.main,
+            mainTabs = DrawerItem.main,
+            additionalTabs = DrawerItem.additional,
             currentDestination = navBackStackEntry?.destination?.route,
             onItemClick = { destination ->
                 drawerScope.launch { drawerState.close() }

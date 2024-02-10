@@ -75,10 +75,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.LocalWindowSize
+import com.sadellie.unitto.core.ui.WindowWidthSizeClass
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.ListItem
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
@@ -97,7 +99,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
-    navigateUp: () -> Unit,
+    openDrawer: () -> Unit,
     navControllerAction: (String) -> Unit,
 ) {
     val mContext = LocalContext.current
@@ -115,7 +117,7 @@ internal fun SettingsRoute(
 
         is SettingsUIState.Ready -> SettingsScreen(
             uiState = uiState,
-            navigateUp = navigateUp,
+            openDrawer = openDrawer,
             navControllerAction = navControllerAction,
             updateLastReadChangelog = viewModel::updateLastReadChangelog,
             updateVibrations = viewModel::updateVibrations,
@@ -129,7 +131,7 @@ internal fun SettingsRoute(
 @Composable
 private fun SettingsScreen(
     uiState: SettingsUIState.Ready,
-    navigateUp: () -> Unit,
+    openDrawer: () -> Unit,
     navControllerAction: (String) -> Unit,
     updateLastReadChangelog: (String) -> Unit,
     updateVibrations: (Boolean) -> Unit,
@@ -158,7 +160,11 @@ private fun SettingsScreen(
 
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_title),
-        navigationIcon = { NavigateUpButton(navigateUp) },
+        navigationIcon = {
+            if (LocalWindowSize.current.widthSizeClass != WindowWidthSizeClass.Expanded) {
+                DrawerButton(openDrawer)
+            }
+         },
         actions = {
             IconButton(
                 onClick = { showMenu = !showMenu },
@@ -336,7 +342,7 @@ private fun PreviewSettingsScreen() {
 
     SettingsScreen(
         uiState = uiState,
-        navigateUp = {},
+        openDrawer = {},
         navControllerAction = {},
         updateLastReadChangelog = {
             uiState = uiState.copy(showUpdateChangelog = false)

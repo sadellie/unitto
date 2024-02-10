@@ -75,11 +75,10 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.LocalLocale
 import com.sadellie.unitto.core.ui.common.ColumnWithConstraints
+import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
-import com.sadellie.unitto.core.ui.common.MenuButton
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
-import com.sadellie.unitto.core.ui.common.SettingsButton
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.NumberBaseTextField
@@ -99,8 +98,7 @@ internal fun ConverterRoute(
     viewModel: ConverterViewModel = hiltViewModel(),
     navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
     navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
 ) {
     val uiState = viewModel.converterUiState.collectAsStateWithLifecycle()
 
@@ -108,8 +106,7 @@ internal fun ConverterRoute(
         uiState = uiState.value,
         navigateToLeftScreen = navigateToLeftScreen,
         navigateToRightScreen = navigateToRightScreen,
-        navigateToSettings = navigateToSettings,
-        navigateToMenu = navigateToMenu,
+        openDrawer = openDrawer,
         swapUnits = viewModel::swapUnits,
         processInput = viewModel::addTokens,
         deleteDigit = viewModel::deleteTokens,
@@ -126,8 +123,7 @@ private fun ConverterScreen(
     uiState: UnitConverterUIState,
     navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
     navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
-    navigateToSettings: () -> Unit,
-    navigateToMenu: () -> Unit,
+    openDrawer: () -> Unit,
     swapUnits: () -> Unit,
     processInput: (String) -> Unit,
     deleteDigit: () -> Unit,
@@ -142,8 +138,7 @@ private fun ConverterScreen(
 
         is UnitConverterUIState.NumberBase -> {
             UnitConverterTopBar(
-                navigateToMenu = navigateToMenu,
-                navigateToSettings = navigateToSettings
+                openDrawer = openDrawer,
             ) {
                 NumberBase(
                     modifier = Modifier.padding(it),
@@ -161,8 +156,7 @@ private fun ConverterScreen(
 
         is UnitConverterUIState.Default -> {
             UnitConverterTopBar(
-                navigateToMenu = navigateToMenu,
-                navigateToSettings = navigateToSettings
+                openDrawer = openDrawer,
             ) {
                 Default(
                     modifier = Modifier.padding(it),
@@ -185,16 +179,12 @@ private fun ConverterScreen(
 
 @Composable
 private fun UnitConverterTopBar(
-    navigateToMenu: () -> Unit,
-    navigateToSettings: () -> Unit,
+    openDrawer: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     ScaffoldWithTopBar(
-        title = { Text(stringResource(R.string.unit_converter_title)) },
-        navigationIcon = { MenuButton { navigateToMenu() } },
-        actions = {
-            SettingsButton(navigateToSettings)
-        },
+        title = {},
+        navigationIcon = { DrawerButton { openDrawer() } },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
         content = { content(it) }
     )
@@ -584,8 +574,7 @@ private fun PreviewConverterScreen() {
         uiState = UnitConverterUIState.Loading,
         navigateToLeftScreen = {},
         navigateToRightScreen = {},
-        navigateToSettings = {},
-        navigateToMenu = {},
+        openDrawer = {},
         swapUnits = {},
         processInput = {},
         deleteDigit = {},
@@ -593,6 +582,6 @@ private fun PreviewConverterScreen() {
         onValueChange = {},
         onFocusOnInput2 = {},
         onErrorClick = {},
-        addBracket = {}
+        addBracket = {},
     )
 }

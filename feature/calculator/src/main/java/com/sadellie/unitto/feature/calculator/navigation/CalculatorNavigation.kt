@@ -30,7 +30,6 @@ private val start = DrawerItem.Calculator.start
 
 fun NavGraphBuilder.calculatorGraph(
     openDrawer: () -> Unit,
-    navigateToSettings: () -> Unit
 ) {
     unittoNavigation(
         startDestination = start,
@@ -41,8 +40,7 @@ fun NavGraphBuilder.calculatorGraph(
     ) {
         unittoComposable(start) {
             CalculatorRoute(
-                navigateToMenu = openDrawer,
-                navigateToSettings = navigateToSettings
+                openDrawer = openDrawer,
             )
         }
     }

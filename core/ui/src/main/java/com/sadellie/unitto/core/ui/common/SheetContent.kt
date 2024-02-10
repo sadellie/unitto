@@ -39,15 +39,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.LocalWindowSize
-import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.model.DrawerItem
 import kotlinx.coroutines.delay
 
 @Suppress("UnusedReceiverParameter")
 @Composable
 internal fun ColumnScope.SheetContent(
-    tabs: List<DrawerItem>,
+    mainTabs: List<DrawerItem>,
+    additionalTabs: List<DrawerItem>,
     currentDestination: String?,
     onItemClick: (DrawerItem) -> Unit,
 ) {
@@ -79,7 +78,7 @@ internal fun ColumnScope.SheetContent(
         )
     }
 
-    tabs.forEach { drawerItem ->
+    mainTabs.forEach { drawerItem ->
         val selected = drawerItem.start == currentDestination
         DrawerItem(
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
@@ -90,15 +89,15 @@ internal fun ColumnScope.SheetContent(
         )
     }
 
-    // Top bar (and settings button in it) is not visible for compact height
-    if (LocalWindowSize.current.heightSizeClass == WindowHeightSizeClass.Compact) {
-        HorizontalDivider(Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
+    HorizontalDivider(Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
 
+    additionalTabs.forEach { drawerItem ->
+        val selected = drawerItem.start == currentDestination
         DrawerItem(
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-            destination = DrawerItem.Settings,
-            icon = DrawerItem.Settings.defaultIcon,
-            selected = false,
+            destination = drawerItem,
+            icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
+            selected = selected,
             onClick = onItemClick
         )
     }
@@ -109,7 +108,12 @@ internal fun ColumnScope.SheetContent(
 private fun PreviewDrawerSheet() {
     Column {
         SheetContent(
-            tabs = listOf(
+            mainTabs = listOf(
+                DrawerItem.Calculator,
+                DrawerItem.Calculator,
+                DrawerItem.Calculator,
+            ),
+            additionalTabs = listOf(
                 DrawerItem.Calculator,
                 DrawerItem.Calculator,
                 DrawerItem.Calculator,
