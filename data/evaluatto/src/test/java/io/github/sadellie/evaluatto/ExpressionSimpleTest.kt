@@ -108,4 +108,7 @@ class ExpressionSimpleTest {
 
     @Test
     fun expression28() = assertExpr("e", "2.7182818285")
+
+    @Test
+    fun expression29() = assertExpr("0!", "1")
 }

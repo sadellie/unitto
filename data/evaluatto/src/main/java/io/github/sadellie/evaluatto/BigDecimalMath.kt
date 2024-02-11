@@ -93,6 +93,8 @@ internal fun BigDecimal.factorial(): BigDecimal {
     if (this < BigDecimal.ZERO) throw ExpressionException.FactorialCalculation()
     if (this > maxFactorial) throw ExpressionException.TooBig()
 
+    if (this.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ONE
+
     var expr = this
     for (i in 1 until this.toInt()) {
         expr *= BigDecimal(i)
