@@ -19,18 +19,18 @@
 package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.converter.UnitID
 import java.math.BigDecimal
 
 internal val powerCollection: List<AbstractUnit> by lazy {
     listOf(
-        NormalUnit(UnitID.attowatt,                  BigDecimal.valueOf(1),                              UnitGroup.POWER,    R.string.unit_attowatt,                  R.string.unit_attowatt_short),
-        NormalUnit(UnitID.watt,                      BigDecimal.valueOf(1_000_000_000_000_000_000),      UnitGroup.POWER,    R.string.unit_watt,                      R.string.unit_watt_short),
-        NormalUnit(UnitID.kilowatt,                  BigDecimal.valueOf(1.0E+21),                        UnitGroup.POWER,    R.string.unit_kilowatt,                  R.string.unit_kilowatt_short),
-        NormalUnit(UnitID.megawatt,                  BigDecimal.valueOf(1.0E+24),                        UnitGroup.POWER,    R.string.unit_megawatt,                  R.string.unit_megawatt_short),
-        NormalUnit(UnitID.horse_power_mechanical,    BigDecimal.valueOf(745_699_871_582_285_700_000.0),  UnitGroup.POWER,    R.string.unit_horse_power_mechanical,    R.string.unit_horse_power_mechanical_short),
+        NormalUnit(UnitID.attowatt,                  BigDecimal("1"),                              UnitGroup.POWER,    R.string.unit_attowatt,                  R.string.unit_attowatt_short),
+        NormalUnit(UnitID.watt,                      BigDecimal("1000000000000000000"),      UnitGroup.POWER,    R.string.unit_watt,                      R.string.unit_watt_short),
+        NormalUnit(UnitID.kilowatt,                  BigDecimal("1000000000000000000000"),                        UnitGroup.POWER,    R.string.unit_kilowatt,                  R.string.unit_kilowatt_short),
+        NormalUnit(UnitID.megawatt,                  BigDecimal("1000000000000000000000000"),                        UnitGroup.POWER,    R.string.unit_megawatt,                  R.string.unit_megawatt_short),
+        NormalUnit(UnitID.horse_power_mechanical,    BigDecimal("745699871582285700000"),  UnitGroup.POWER,    R.string.unit_horse_power_mechanical,    R.string.unit_horse_power_mechanical_short),
     )
 }

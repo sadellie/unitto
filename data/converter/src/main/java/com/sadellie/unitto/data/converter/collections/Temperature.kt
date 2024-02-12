@@ -20,10 +20,10 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.TemperatureUnit
-import com.sadellie.unitto.data.converter.UnitID
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -40,14 +40,14 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
                     UnitID.fahrenheit -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .times(BigDecimal.valueOf(1.8))
-                            .plus(BigDecimal(32))
+                            .times(BigDecimal("1.8"))
+                            .plus(BigDecimal("32"))
                     }
 
                     UnitID.kelvin -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .plus(BigDecimal.valueOf(273.15))
+                            .plus(BigDecimal("273.15"))
                     }
 
                     else -> value
@@ -65,17 +65,17 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
                     UnitID.celsius -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal(32))
-                            .times(BigDecimal(5))
-                            .div(BigDecimal(9))
+                            .minus(BigDecimal("32"))
+                            .times(BigDecimal("5"))
+                            .div(BigDecimal("9"))
                     }
                     UnitID.kelvin -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal(32))
-                            .times(BigDecimal(5))
-                            .div(BigDecimal(9))
-                            .add(BigDecimal.valueOf(273.15))
+                            .minus(BigDecimal("32"))
+                            .times(BigDecimal("5"))
+                            .div(BigDecimal("9"))
+                            .add(BigDecimal("273.15"))
                     }
                     else -> value
                 }
@@ -92,14 +92,14 @@ internal val temperatureCollection: List<AbstractUnit> by lazy {
                     UnitID.celsius -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal(273.15))
+                            .minus(BigDecimal("273.15"))
                     }
                     UnitID.fahrenheit -> {
                         value
                             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                            .minus(BigDecimal.valueOf(273.15))
-                            .times(BigDecimal.valueOf(1.8))
-                            .plus(BigDecimal(32))
+                            .minus(BigDecimal("273.15"))
+                            .times(BigDecimal("1.8"))
+                            .plus(BigDecimal("32"))
                     }
                     else -> value
                 }

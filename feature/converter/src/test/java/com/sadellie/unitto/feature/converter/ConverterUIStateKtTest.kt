@@ -33,7 +33,7 @@ class ConverterUIStateKtTest {
     @Test
     fun format() {
         val formatterSymbols = FormatterSymbols.Spaces
-        var basicValue = BigDecimal.valueOf(1)
+        var basicValue = BigDecimal("1")
         val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
 
         fun String.formatTime() = formatTime(basicValue.multiply(BigDecimal(this)))
@@ -44,14 +44,14 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("−0.05as", "-0.05".formatTime())
         Assert.assertEquals("0", "0".formatTime())
 
-        basicValue = BigDecimal.valueOf(86_400_000_000_000_000_000_000.0)
+        basicValue = BigDecimal("86400000000000000000000")
         Assert.assertEquals("−28d", "-28".formatTime())
         Assert.assertEquals("−1h 12m", "-0.05".formatTime())
         Assert.assertEquals("0", "0".formatTime())
         Assert.assertEquals("0", "-0".formatTime())
 
         // DAYS
-        basicValue = BigDecimal.valueOf(86_400_000_000_000_000_000_000.0)
+        basicValue = BigDecimal("86400000000000000000000")
         Assert.assertEquals("12h", "0.5".formatTime())
         Assert.assertEquals("1h 12m", "0.05".formatTime())
         Assert.assertEquals("7m 12s", "0.005".formatTime())
@@ -61,7 +61,7 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("90d 7m 12s", "90.005".formatTime())
 
         // HOURS
-        basicValue = BigDecimal.valueOf(3_600_000_000_000_000_000_000.0)
+        basicValue = BigDecimal("3600000000000000000000")
         Assert.assertEquals("30m", "0.5".formatTime())
         Assert.assertEquals("3m", "0.05".formatTime())
         Assert.assertEquals("18s", "0.005".formatTime())
@@ -71,7 +71,7 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("3d 18h 18s", "90.005".formatTime())
 
         // MINUTES
-        basicValue = BigDecimal.valueOf(60_000_000_000_000_000_000.0)
+        basicValue = BigDecimal("60000000000000000000")
         Assert.assertEquals("30s", "0.5".formatTime())
         Assert.assertEquals("3s", "0.05".formatTime())
         Assert.assertEquals("300ms", "0.005".formatTime())
@@ -81,7 +81,7 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("1h 30m 300ms", "90.005".formatTime())
 
         // SECONDS
-        basicValue = BigDecimal.valueOf(1_000_000_000_000_000_000)
+        basicValue = BigDecimal("1000000000000000000")
         Assert.assertEquals("500ms", "0.5".formatTime())
         Assert.assertEquals("50ms", "0.05".formatTime())
         Assert.assertEquals("5ms", "0.005".formatTime())
@@ -91,7 +91,7 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("1m 30s 5ms", "90.005".formatTime())
 
         // MILLISECONDS
-        basicValue = BigDecimal.valueOf(1_000_000_000_000_000)
+        basicValue = BigDecimal("1000000000000000")
         Assert.assertEquals("500µs", "0.5".formatTime())
         Assert.assertEquals("50µs", "0.05".formatTime())
         Assert.assertEquals("5µs", "0.005".formatTime())
@@ -101,7 +101,7 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("90ms 5µs", "90.005".formatTime())
 
         // MICROSECONDS
-        basicValue = BigDecimal.valueOf(1_000_000_000_000)
+        basicValue = BigDecimal("1000000000000")
         Assert.assertEquals("500ns", "0.5".formatTime())
         Assert.assertEquals("50ns", "0.05".formatTime())
         Assert.assertEquals("5ns", "0.005".formatTime())
@@ -111,7 +111,7 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("90µs 5ns", "90.005".formatTime())
 
         // NANOSECONDS
-        basicValue = BigDecimal.valueOf(1_000_000_000)
+        basicValue = BigDecimal("1000000000")
         Assert.assertEquals("500 000 000as", "0.5".formatTime())
         Assert.assertEquals("50 000 000as", "0.05".formatTime())
         Assert.assertEquals("5 000 000as", "0.005".formatTime())
@@ -121,7 +121,7 @@ class ConverterUIStateKtTest {
         Assert.assertEquals("90ns 5 000 000as", "90.005".formatTime())
 
         // ATTOSECONDS
-        basicValue = BigDecimal.valueOf(1)
+        basicValue = BigDecimal("1")
         Assert.assertEquals("0.5as", "0.5".formatTime())
         Assert.assertEquals("0.05as", "0.05".formatTime())
         Assert.assertEquals("0.005as", "0.005".formatTime())

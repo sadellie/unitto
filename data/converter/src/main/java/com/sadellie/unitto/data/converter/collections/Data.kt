@@ -19,33 +19,33 @@
 package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.converter.UnitID
 import java.math.BigDecimal
 
 internal val dataCollection: List<AbstractUnit> by lazy {
     listOf(
-        NormalUnit(UnitID.bit,       BigDecimal.valueOf(1),                          UnitGroup.DATA, R.string.unit_bit,       R.string.unit_bit_short),
-        NormalUnit(UnitID.kibibit,   BigDecimal.valueOf(1_024),                      UnitGroup.DATA, R.string.unit_kibibit,   R.string.unit_kibibit_short),
-        NormalUnit(UnitID.kilobit,   BigDecimal.valueOf(1_000),                      UnitGroup.DATA, R.string.unit_kilobit,   R.string.unit_kilobit_short),
-        NormalUnit(UnitID.megabit,   BigDecimal.valueOf(1_000_000),                  UnitGroup.DATA, R.string.unit_megabit,   R.string.unit_megabit_short),
-        NormalUnit(UnitID.mebibit,   BigDecimal.valueOf(1_048_576),                  UnitGroup.DATA, R.string.unit_mebibit,   R.string.unit_mebibit_short),
-        NormalUnit(UnitID.gigabit,   BigDecimal.valueOf(1_000_000_000),              UnitGroup.DATA, R.string.unit_gigabit,   R.string.unit_gigabit_short),
-        NormalUnit(UnitID.gibibit,   BigDecimal.valueOf(1_073_741_824),              UnitGroup.DATA, R.string.unit_gibibit,   R.string.unit_gibibit_short),
-        NormalUnit(UnitID.terabit,   BigDecimal.valueOf(1_000_000_000_000),          UnitGroup.DATA, R.string.unit_terabit,   R.string.unit_terabit_short),
-        NormalUnit(UnitID.petabit,   BigDecimal.valueOf(1_000_000_000_000_000),      UnitGroup.DATA, R.string.unit_petabit,   R.string.unit_petabit_short),
-        NormalUnit(UnitID.exabit,    BigDecimal.valueOf(1_000_000_000_000_000_000),  UnitGroup.DATA, R.string.unit_exabit,    R.string.unit_exabit_short),
-        NormalUnit(UnitID.byte,      BigDecimal.valueOf(8),                          UnitGroup.DATA, R.string.unit_byte,     R.string.unit_byte_short),
-        NormalUnit(UnitID.kibibyte,  BigDecimal.valueOf(8_192),                      UnitGroup.DATA, R.string.unit_kibibyte,  R.string.unit_kibibyte_short),
-        NormalUnit(UnitID.kilobyte,  BigDecimal.valueOf(8_000),                      UnitGroup.DATA, R.string.unit_kilobyte,  R.string.unit_kilobyte_short),
-        NormalUnit(UnitID.megabyte,  BigDecimal.valueOf(8_000_000),                  UnitGroup.DATA, R.string.unit_megabyte,  R.string.unit_megabyte_short),
-        NormalUnit(UnitID.mebibyte,  BigDecimal.valueOf(8_388_608),                  UnitGroup.DATA, R.string.unit_mebibyte,  R.string.unit_mebibyte_short),
-        NormalUnit(UnitID.gigabyte,  BigDecimal.valueOf(8_000_000_000),              UnitGroup.DATA, R.string.unit_gigabyte,  R.string.unit_gigabyte_short),
-        NormalUnit(UnitID.gibibyte,  BigDecimal.valueOf(8_589_934_592),              UnitGroup.DATA, R.string.unit_gibibyte,  R.string.unit_gibibyte_short),
-        NormalUnit(UnitID.terabyte,  BigDecimal.valueOf(8_000_000_000_000),          UnitGroup.DATA, R.string.unit_terabyte,  R.string.unit_terabyte_short),
-        NormalUnit(UnitID.petabyte,  BigDecimal.valueOf(8_000_000_000_000_000),      UnitGroup.DATA, R.string.unit_petabyte,  R.string.unit_petabyte_short),
-        NormalUnit(UnitID.exabyte,   BigDecimal.valueOf(8_000_000_000_000_000_000),  UnitGroup.DATA, R.string.unit_exabyte,   R.string.unit_exabyte_short),
+        NormalUnit(UnitID.bit,       BigDecimal("1"),                          UnitGroup.DATA, R.string.unit_bit,       R.string.unit_bit_short),
+        NormalUnit(UnitID.kibibit,   BigDecimal("1024"),                      UnitGroup.DATA, R.string.unit_kibibit,   R.string.unit_kibibit_short),
+        NormalUnit(UnitID.kilobit,   BigDecimal("1000"),                      UnitGroup.DATA, R.string.unit_kilobit,   R.string.unit_kilobit_short),
+        NormalUnit(UnitID.megabit,   BigDecimal("1000000"),                  UnitGroup.DATA, R.string.unit_megabit,   R.string.unit_megabit_short),
+        NormalUnit(UnitID.mebibit,   BigDecimal("1048576"),                  UnitGroup.DATA, R.string.unit_mebibit,   R.string.unit_mebibit_short),
+        NormalUnit(UnitID.gigabit,   BigDecimal("1000000000"),              UnitGroup.DATA, R.string.unit_gigabit,   R.string.unit_gigabit_short),
+        NormalUnit(UnitID.gibibit,   BigDecimal("1073741824"),              UnitGroup.DATA, R.string.unit_gibibit,   R.string.unit_gibibit_short),
+        NormalUnit(UnitID.terabit,   BigDecimal("1000000000000"),          UnitGroup.DATA, R.string.unit_terabit,   R.string.unit_terabit_short),
+        NormalUnit(UnitID.petabit,   BigDecimal("1000000000000000"),      UnitGroup.DATA, R.string.unit_petabit,   R.string.unit_petabit_short),
+        NormalUnit(UnitID.exabit,    BigDecimal("1000000000000000000"),  UnitGroup.DATA, R.string.unit_exabit,    R.string.unit_exabit_short),
+        NormalUnit(UnitID.byte,      BigDecimal("8"),                          UnitGroup.DATA, R.string.unit_byte,     R.string.unit_byte_short),
+        NormalUnit(UnitID.kibibyte,  BigDecimal("8192"),                      UnitGroup.DATA, R.string.unit_kibibyte,  R.string.unit_kibibyte_short),
+        NormalUnit(UnitID.kilobyte,  BigDecimal("8000"),                      UnitGroup.DATA, R.string.unit_kilobyte,  R.string.unit_kilobyte_short),
+        NormalUnit(UnitID.megabyte,  BigDecimal("8000000"),                  UnitGroup.DATA, R.string.unit_megabyte,  R.string.unit_megabyte_short),
+        NormalUnit(UnitID.mebibyte,  BigDecimal("8388608"),                  UnitGroup.DATA, R.string.unit_mebibyte,  R.string.unit_mebibyte_short),
+        NormalUnit(UnitID.gigabyte,  BigDecimal("8000000000"),              UnitGroup.DATA, R.string.unit_gigabyte,  R.string.unit_gigabyte_short),
+        NormalUnit(UnitID.gibibyte,  BigDecimal("8589934592"),              UnitGroup.DATA, R.string.unit_gibibyte,  R.string.unit_gibibyte_short),
+        NormalUnit(UnitID.terabyte,  BigDecimal("8000000000000"),          UnitGroup.DATA, R.string.unit_terabyte,  R.string.unit_terabyte_short),
+        NormalUnit(UnitID.petabyte,  BigDecimal("8000000000000000"),      UnitGroup.DATA, R.string.unit_petabyte,  R.string.unit_petabyte_short),
+        NormalUnit(UnitID.exabyte,   BigDecimal("8000000000000000000"),  UnitGroup.DATA, R.string.unit_exabyte,   R.string.unit_exabyte_short),
     )
 }
