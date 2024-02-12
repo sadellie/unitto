@@ -74,10 +74,13 @@ fun PagedIsland(
                 .clip(RoundedCornerShape(32.dp))
                 .clickable {
                     onClick()
-                    if (pagerState.currentPage == (pagerState.pageCount - 1)) return@clickable
+                    val targetPage = pagerState.currentPage + 1
 
                     corScope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        pagerState.animateScrollToPage(
+                            // Animate to first page if target page is out of bounds
+                            if (targetPage >= pagerState.pageCount) 0 else targetPage
+                        )
                     }
                 }
                 .background(backgroundColor)
