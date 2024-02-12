@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,12 @@
 package com.sadellie.unitto.core.base
 
 /**
- * Separators mean symbols that separate fractional part
+ * Formatter symbols. Always use [Token].
+ *
+ * @property grouping Symbol fpr thousands separator.
+ * @property fractional Symbol decimal separator.
  */
-object Separator {
-    const val SPACE = 0
-    const val PERIOD = 1
-    const val COMMA = 2
-}
+data class FormatterSymbols(
+    val grouping: String,
+    val fractional: String,
+)

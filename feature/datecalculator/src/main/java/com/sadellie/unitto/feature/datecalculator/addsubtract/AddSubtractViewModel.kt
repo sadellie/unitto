@@ -22,7 +22,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +45,7 @@ internal class AddSubtractViewModel @Inject constructor(
     val uiState: StateFlow<AddSubtractState> = _uiState
         .combine(userPreferencesRepository.addSubtractPrefs) { uiState, userPrefs ->
             return@combine uiState.copy(
-                formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator),
+                formatterSymbols = userPrefs.formatterSymbols,
             )
         }
         .onEach { updateResult() }

@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.settings.formatting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.base.MAX_PRECISION
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,9 +37,8 @@ class FormattingViewModel @Inject constructor(
     val uiState = _prefs.map { mainPrefs ->
         FormattingUIState(
             precision = mainPrefs.digitsPrecision,
-            separator = mainPrefs.separator,
             outputFormat = mainPrefs.outputFormat,
-            formatterSymbols = AllFormatterSymbols.getById(mainPrefs.separator)
+            formatterSymbols = mainPrefs.formatterSymbols
         )
     }
         .stateIn(viewModelScope, null)
@@ -55,10 +53,10 @@ class FormattingViewModel @Inject constructor(
     }
 
     /**
-     * @see UserPreferencesRepository.updateSeparator
+     * @see UserPreferencesRepository.updateFormatterSymbols
      */
-    fun updateSeparator(separator: Int) = viewModelScope.launch {
-        userPreferencesRepository.updateSeparator(separator)
+    fun updateFormatterSymbols(grouping: String, fractional: String) = viewModelScope.launch {
+        userPreferencesRepository.updateFormatterSymbols(grouping, fractional)
     }
 
     /**

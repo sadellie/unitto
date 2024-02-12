@@ -18,7 +18,8 @@
 
 package com.sadellie.unitto.core.ui
 
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -40,7 +41,7 @@ class FormatterExpressionTest {
 
     @Test
     fun setSeparatorSpaces() {
-        fun String.format(): String = formatExpression(FormatterSymbols.Spaces)
+        fun String.format(): String = formatExpression(FormatterSymbols(Token.SPACE, Token.PERIOD))
         assertEquals("123E+21", ENG_VALUE.format())
         assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
         assertEquals("123E+21+(123 456.789)", ENG_VALUE_EXPRESSION.format())
@@ -57,7 +58,7 @@ class FormatterExpressionTest {
 
     @Test
     fun setSeparatorComma() {
-        fun String.format(): String = formatExpression(FormatterSymbols.Comma)
+        fun String.format(): String = formatExpression(FormatterSymbols(Token.COMMA, Token.PERIOD))
         assertEquals("123E+21", ENG_VALUE.format())
         assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
         assertEquals("123E+21+(123,456.789)", ENG_VALUE_EXPRESSION.format())
@@ -74,7 +75,7 @@ class FormatterExpressionTest {
 
     @Test
     fun setSeparatorPeriod() {
-        fun String.format(): String = formatExpression(FormatterSymbols.Period)
+        fun String.format(): String = formatExpression(FormatterSymbols(Token.PERIOD, Token.COMMA))
         assertEquals("123E+21", ENG_VALUE.format())
         assertEquals("123,3E+21", ENG_VALUE_FRACTIONAL.format())
         assertEquals("123E+21+(123.456,789)", ENG_VALUE_EXPRESSION.format())

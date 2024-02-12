@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.common.textfield
 
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.Token
 
 private val numbersRegex by lazy { Regex("[\\d.]+") }

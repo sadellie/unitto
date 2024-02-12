@@ -54,9 +54,8 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.Token
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import com.sadellie.unitto.data.model.userprefs.CalculatorPreferences
@@ -139,7 +138,7 @@ private fun ReadyUI(
     val input = glancePrefs[CalculatorWidget.inputPrefKey] ?: ""
     val output = glancePrefs[CalculatorWidget.outputPrefKey] ?: ""
     val equalClicked = glancePrefs[CalculatorWidget.equalClickedPrefKey] ?: false
-    val formatterSymbols = AllFormatterSymbols.getById(appPrefs.separator)
+    val formatterSymbols = appPrefs.formatterSymbols
 
     fun runCalculateAction(
         input: String,

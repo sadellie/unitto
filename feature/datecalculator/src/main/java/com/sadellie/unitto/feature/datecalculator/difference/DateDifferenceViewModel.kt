@@ -20,7 +20,6 @@ package com.sadellie.unitto.feature.datecalculator.difference
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
@@ -55,7 +54,7 @@ internal class DateDifferenceViewModel @Inject constructor(
                 result = result,
                 precision = prefs.digitsPrecision,
                 outputFormat = prefs.outputFormat,
-                formatterSymbols = AllFormatterSymbols.getById(prefs.separator)
+                formatterSymbols = prefs.formatterSymbols
             )
         }
         .mapLatest { ui ->

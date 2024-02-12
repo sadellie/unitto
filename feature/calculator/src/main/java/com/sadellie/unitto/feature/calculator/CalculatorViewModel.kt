@@ -24,7 +24,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.base.Token
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
@@ -79,7 +78,7 @@ internal class CalculatorViewModel @Inject constructor(
             radianMode = prefs.radianMode,
             precision = prefs.precision,
             outputFormat = prefs.outputFormat,
-            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
+            formatterSymbols = prefs.formatterSymbols,
             history = history,
             middleZero = prefs.middleZero,
             acButton = prefs.acButton,

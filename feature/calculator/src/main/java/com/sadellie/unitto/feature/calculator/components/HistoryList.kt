@@ -47,9 +47,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.FixedExpressionInputTextField
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -225,7 +226,7 @@ private fun PreviewHistoryList() {
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
             .fillMaxSize(),
         historyItems = historyItems,
-        formatterSymbols = FormatterSymbols.Spaces,
+        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
         addTokens = {},
         onDelete = {},
         showDeleteButtons = true,

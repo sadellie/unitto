@@ -19,7 +19,7 @@
 package com.sadellie.unitto.feature.bodymass
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
 import java.math.BigDecimal
 
 internal sealed class UIState {

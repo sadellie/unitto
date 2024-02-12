@@ -18,14 +18,15 @@
 
 package com.sadellie.unitto.core.ui
 
+import com.sadellie.unitto.core.base.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ExpressionTransformerTest {
 
-    private val expr = ExpressionTransformer(FormatterSymbols.Comma)
+    private val expr = ExpressionTransformer(FormatterSymbols(Token.COMMA, Token.PERIOD))
 
     // Use "|" for cursor
     private fun origToTrans(orig: String, trans: String) {

@@ -19,7 +19,8 @@
 package com.sadellie.unitto.feature.datecalculator.addsubtract
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
@@ -32,6 +33,6 @@ internal data class AddSubtractState(
     val hours: TextFieldValue = TextFieldValue(),
     val minutes: TextFieldValue = TextFieldValue(),
     val addition: Boolean = true,
-    val formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
+    val formatterSymbols: FormatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
     val allowVibration: Boolean = false,
 )

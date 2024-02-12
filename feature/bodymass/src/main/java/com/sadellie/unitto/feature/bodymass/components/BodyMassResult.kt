@@ -37,9 +37,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
 import java.math.BigDecimal
@@ -171,6 +172,6 @@ fun PreviewBodyMassResult() {
         value = BigDecimal(18.5),
         range = BigDecimal(50) to BigDecimal(80),
         rangeSuffix = "kg",
-        formatterSymbols = FormatterSymbols.Spaces,
+        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
     )
 }

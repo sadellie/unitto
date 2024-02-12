@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.feature.datecalculator.difference
 
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
 import java.time.ZonedDateTime
 
 internal sealed class DifferenceUIState {

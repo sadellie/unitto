@@ -18,11 +18,12 @@
 
 package com.sadellie.unitto.data.model.userprefs
 
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 
 interface ConverterPreferences {
-    val separator: Int
+    val formatterSymbols: FormatterSymbols
     val middleZero: Boolean
     val acButton: Boolean
     val precision: Int

@@ -23,7 +23,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.base.Token
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
@@ -94,7 +93,7 @@ internal class ConverterViewModel @Inject constructor(
                     unitFrom = unitFrom as DefaultUnit,
                     unitTo = unitTo as DefaultUnit,
                     middleZero = prefs.middleZero,
-                    formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
+                    formatterSymbols = prefs.formatterSymbols,
                     scale = prefs.precision,
                     outputFormat = prefs.outputFormat,
                     formatTime = prefs.unitConverterFormatTime,

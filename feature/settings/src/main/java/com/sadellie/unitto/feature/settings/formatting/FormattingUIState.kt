@@ -18,11 +18,10 @@
 
 package com.sadellie.unitto.feature.settings.formatting
 
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
 
 data class FormattingUIState(
     val precision: Int,
-    val separator: Int,
     val outputFormat: Int,
     val formatterSymbols: FormatterSymbols,
 )

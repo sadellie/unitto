@@ -28,9 +28,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.Separator
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
@@ -83,7 +84,7 @@ private fun PreviewCalculatorSettingsScreenStandard() {
     CalculatorSettingsScreen(
         prefs = CalculatorPreferencesImpl(
             radianMode = true,
-            separator = Separator.SPACE,
+            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
             middleZero = false,
             acButton = false,
             partialHistoryView = false,

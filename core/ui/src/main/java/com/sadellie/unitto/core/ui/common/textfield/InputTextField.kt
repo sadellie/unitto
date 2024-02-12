@@ -44,6 +44,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.autosize.AutoSizeTextStyleBox
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 

@@ -21,6 +21,7 @@ package com.sadellie.unitto.core.ui.common.textfield
 import android.content.ClipData
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.Token
 
 /**

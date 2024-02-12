@@ -110,7 +110,6 @@ import com.sadellie.unitto.core.ui.common.icons.iconpack.RightBracket
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Root
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Sin
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Tan
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 
 @Composable
 internal fun CalculatorKeyboard(
@@ -182,8 +181,8 @@ private fun PortraitKeyboard(
     val angleIcon = remember(radianMode) { if (radianMode) IconPack.Rad else IconPack.Deg }
     val angleIconDescription = remember(radianMode) { if (radianMode) R.string.keyboard_radian else R.string.keyboard_degree }
 
-    val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) IconPack.Dot else IconPack.Comma }
-    val fractionalIconDescription = remember(fractional) { if (fractional == Token.Digit.dot) R.string.keyboard_dot else R.string.comma }
+    val fractionalIcon = remember(fractional) { if (fractional == Token.PERIOD) IconPack.Dot else IconPack.Comma }
+    val fractionalIconDescription = remember(fractional) { if (fractional == Token.PERIOD) R.string.keyboard_dot else R.string.comma }
 
     var showAdditional: Boolean by remember { mutableStateOf(false) }
     val expandRotation: Float by animateFloatAsState(
@@ -414,8 +413,8 @@ private fun LandscapeKeyboard(
     val angleIcon = remember(radianMode) { if (radianMode) IconPack.Rad else IconPack.Deg }
     val angleIconDescription = remember(radianMode) { if (radianMode) R.string.keyboard_radian else R.string.keyboard_degree }
 
-    val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) IconPack.Dot else IconPack.Comma }
-    val fractionalIconDescription = remember(fractional) { if (fractional == Token.Digit.dot) R.string.keyboard_dot else R.string.comma }
+    val fractionalIcon = remember(fractional) { if (fractional == Token.PERIOD) IconPack.Dot else IconPack.Comma }
+    val fractionalIconDescription = remember(fractional) { if (fractional == Token.PERIOD) R.string.keyboard_dot else R.string.comma }
 
     Crossfade(
         targetState = invMode,
@@ -544,7 +543,7 @@ private fun PreviewPortraitKeyboard() {
     PortraitKeyboard(
         modifier = Modifier.fillMaxHeight(),
         radianMode = true,
-        fractional = FormatterSymbols.Comma.fractional,
+        fractional = Token.PERIOD,
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},
@@ -564,7 +563,7 @@ private fun PreviewLandscapeKeyboard() {
     LandscapeKeyboard(
         modifier = Modifier.fillMaxHeight(),
         radianMode = true,
-        fractional = FormatterSymbols.Comma.fractional,
+        fractional = Token.PERIOD,
         addSymbol = {},
         clearSymbols = {},
         deleteSymbol = {},

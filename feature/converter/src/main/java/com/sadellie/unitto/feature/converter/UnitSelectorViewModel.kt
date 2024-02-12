@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.repository.UnitsRepository
@@ -112,7 +111,7 @@ internal class UnitSelectorViewModel @Inject constructor(
             sorting = prefs.unitConverterSorting,
             scale = prefs.precision,
             outputFormat = prefs.outputFormat,
-            formatterSymbols = AllFormatterSymbols.getById(prefs.separator),
+            formatterSymbols = prefs.formatterSymbols,
         )
     }
         .mapLatest { ui ->

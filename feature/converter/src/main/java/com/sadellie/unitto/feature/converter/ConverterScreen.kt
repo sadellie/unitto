@@ -70,6 +70,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
@@ -80,7 +81,6 @@ import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.PortraitLandscape
 import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.NumberBaseTextField
 import com.sadellie.unitto.core.ui.common.textfield.SimpleTextField
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
@@ -425,7 +425,7 @@ private fun ConverterResultTextField(
     result: ConverterResult,
     scale: Int = 0,
     outputFormat: Int = OutputFormat.PLAIN,
-    formatterSymbols: FormatterSymbols = FormatterSymbols.Spaces,
+    formatterSymbols: FormatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
     onErrorClick: () -> Unit = {},
 ) {
     val mContext = LocalContext.current

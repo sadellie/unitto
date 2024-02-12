@@ -22,6 +22,14 @@ import org.junit.Assert
 import org.junit.Test
 
 class TokenTest {
+
+    @Test
+    fun testFormatterSymbols() {
+        Assert.assertEquals(" ", Token.SPACE)
+        Assert.assertEquals(".", Token.PERIOD)
+        Assert.assertEquals(",", Token.COMMA)
+    }
+
     @Test
     fun testDigit() {
         Assert.assertEquals("1234567890", Token.Digit.all.joinToString(""))
@@ -126,7 +134,7 @@ class TokenTest {
             "e",
         ).joinToString("")
 
-        Assert.assertEquals("1234567890.$operator$func$consts", Token.expressionTokens.joinToString(""))
+        Assert.assertEquals("1234567890.$operator$func${consts}E", Token.expressionTokens.joinToString(""))
     }
 
     @Test

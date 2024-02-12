@@ -20,6 +20,10 @@ package com.sadellie.unitto.core.base
 
 @Suppress("ObjectPropertyName")
 object Token {
+    const val SPACE = " "
+    const val PERIOD = "."
+    const val COMMA = ","
+
     object Digit {
         const val _1 = "1"
         const val _2 = "2"

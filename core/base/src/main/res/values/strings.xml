@@ -245,6 +245,7 @@ Alternatively you can use "Export" -->
     <string name="settings_currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
     <string name="settings_currency_rates_note_title">Wrong currency rates?</string>
     <string name="settings_dark_mode">Dark</string>
+    <string name="settings_decimal_separator">Decimal separator</string>
     <string name="settings_disable_unit_group_description">Disable unit group</string>
     <string name="settings_display">Display</string>
     <string name="settings_display_support">App look and feel</string>
@@ -301,6 +302,7 @@ Maybe this can be labeled better? Let me know. It should be something that can d
     <string name="settings_system_font_support">Use system font for texts in app</string>
     <string name="settings_terms_and_conditions">Terms and Conditions</string>
     <string name="settings_third_party_licenses">Third party licenses</string>
+    <string name="settings_thousands_separator">Thousands separator</string>
     <string name="settings_title">Settings</string>
     <string name="settings_translate_app">Translate this app</string>
     <string name="settings_translate_app_support">Join POEditor project to help</string>

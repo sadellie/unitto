@@ -78,7 +78,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         .map { preferences ->
             CalculatorPreferencesImpl(
                 radianMode = preferences.getRadianMode(),
-                separator = preferences.getSeparator(),
+                formatterSymbols = preferences.getFormatterSymbols(),
                 middleZero = preferences.getMiddleZero(),
                 partialHistoryView = preferences.getPartialHistoryView(),
                 precision = preferences.getDigitsPrecision(),
@@ -90,7 +90,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val converterPrefs: Flow<ConverterPreferences> = data
         .map { preferences ->
             ConverterPreferencesImpl(
-                separator = preferences.getSeparator(),
+                formatterSymbols = preferences.getFormatterSymbols(),
                 middleZero = preferences.getMiddleZero(),
                 precision = preferences.getDigitsPrecision(),
                 outputFormat = preferences.getOutputFormat(),
@@ -118,7 +118,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         .map { preferences ->
             FormattingPreferencesImpl(
                 digitsPrecision = preferences.getDigitsPrecision(),
-                separator = preferences.getSeparator(),
+                formatterSymbols = preferences.getFormatterSymbols(),
                 outputFormat = preferences.getOutputFormat(),
             )
         }
@@ -133,14 +133,14 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val addSubtractPrefs: Flow<AddSubtractPreferences> = data
         .map { preferences ->
             AddSubtractPreferencesImpl(
-                separator = preferences.getSeparator(),
+                formatterSymbols = preferences.getFormatterSymbols(),
             )
         }
 
     override val bodyMassPrefs: Flow<BodyMassPreferences> = data
         .map { preferences ->
             BodyMassPreferencesImpl(
-                separator = preferences.getSeparator(),
+                formatterSymbols = preferences.getFormatterSymbols(),
             )
         }
 
@@ -164,9 +164,13 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateSeparator(separator: Int) {
+    override suspend fun updateFormatterSymbols(grouping: String, fractional: String) {
+        // Grouping and fractional symbols are always different
+        if (grouping == fractional) return
+
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.SEPARATOR] = separator
+            preferences[PrefsKeys.FORMATTER_GROUPING] = grouping
+            preferences[PrefsKeys.FORMATTER_FRACTIONAL] = fractional
         }
     }
 

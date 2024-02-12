@@ -19,7 +19,8 @@
 package com.sadellie.unitto.feature.converter
 
 import android.content.Context
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +33,7 @@ class ConverterUIStateKtTest {
 
     @Test
     fun format() {
-        val formatterSymbols = FormatterSymbols.Spaces
+        val formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD)
         var basicValue = BigDecimal("1")
         val mContext: Context = RuntimeEnvironment.getApplication().applicationContext
 

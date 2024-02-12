@@ -18,9 +18,11 @@
 
 package com.sadellie.unitto.data.model.userprefs
 
+import com.sadellie.unitto.core.base.FormatterSymbols
+
 interface CalculatorPreferences {
     val radianMode: Boolean
-    val separator: Int
+    val formatterSymbols: FormatterSymbols
     val middleZero: Boolean
     val acButton: Boolean
     val partialHistoryView: Boolean

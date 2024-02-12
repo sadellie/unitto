@@ -28,11 +28,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.SearchBar
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.converter.UnitID
@@ -189,7 +190,7 @@ private fun UnitToSelectorPreview() {
             input = "100",
             scale = 3,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = FormatterSymbols.Spaces,
+            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
         ),
         onQueryChange = {},
         toggleFavoritesOnly = {},

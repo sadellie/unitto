@@ -40,9 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
@@ -185,7 +186,7 @@ fun DateDifferenceViewPreview() {
             ),
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = FormatterSymbols.Spaces
+            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD)
         ),
         setStartDate = {},
         setEndDate = {},

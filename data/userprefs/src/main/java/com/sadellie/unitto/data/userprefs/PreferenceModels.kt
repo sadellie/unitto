@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.data.userprefs
 
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
@@ -53,7 +54,7 @@ data class GeneralPreferencesImpl(
 
 data class CalculatorPreferencesImpl(
     override val radianMode: Boolean,
-    override val separator: Int,
+    override val formatterSymbols: FormatterSymbols,
     override val middleZero: Boolean,
     override val acButton: Boolean,
     override val partialHistoryView: Boolean,
@@ -62,7 +63,7 @@ data class CalculatorPreferencesImpl(
 ) : CalculatorPreferences
 
 data class ConverterPreferencesImpl(
-    override val separator: Int,
+    override val formatterSymbols: FormatterSymbols,
     override val middleZero: Boolean,
     override val acButton: Boolean,
     override val precision: Int,
@@ -84,7 +85,7 @@ data class DisplayPreferencesImpl(
 
 data class FormattingPreferencesImpl(
     override val digitsPrecision: Int,
-    override val separator: Int,
+    override val formatterSymbols: FormatterSymbols,
     override val outputFormat: Int,
 ) : FormattingPreferences
 
@@ -93,11 +94,11 @@ data class UnitGroupsPreferencesImpl(
 ) : UnitGroupsPreferences
 
 data class AddSubtractPreferencesImpl(
-    override val separator: Int,
+    override val formatterSymbols: FormatterSymbols,
 ) : AddSubtractPreferences
 
 data class BodyMassPreferencesImpl(
-    override val separator: Int,
+    override val formatterSymbols: FormatterSymbols,
 ) : BodyMassPreferences
 
 data class AboutPreferencesImpl(

@@ -42,6 +42,8 @@ object PrefsKeys {
     // FORMATTER
     val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
     val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
+    val FORMATTER_GROUPING = stringPreferencesKey("FORMATTER_GROUPING_PREF_KEY")
+    val FORMATTER_FRACTIONAL = stringPreferencesKey("FORMATTER_FRACTIONAL_PREF_KEY")
     val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
 
     // CALCULATOR

@@ -18,6 +18,8 @@
 
 package com.sadellie.unitto.data.model.userprefs
 
+import com.sadellie.unitto.core.base.FormatterSymbols
+
 interface AddSubtractPreferences{
-    val separator: Int
+    val formatterSymbols: FormatterSymbols
 }

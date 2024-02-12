@@ -24,7 +24,6 @@ import android.os.Build
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.ui.common.textfield.AllFormatterSymbols
 import com.sadellie.unitto.data.common.combine
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
@@ -64,7 +63,7 @@ internal class BodyMassViewModel @Inject constructor(
             weight = weight,
             result = result,
             normalWeightRange = normalWeightRange,
-            formatterSymbols = AllFormatterSymbols.getById(userPrefs.separator)
+            formatterSymbols = userPrefs.formatterSymbols
         )
     }
         .mapLatest { ui ->

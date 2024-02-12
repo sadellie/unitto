@@ -19,7 +19,7 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.data.model.UnitGroup
 import com.sadellie.unitto.data.model.UnitsListSorting
 import com.sadellie.unitto.data.model.unit.AbstractUnit

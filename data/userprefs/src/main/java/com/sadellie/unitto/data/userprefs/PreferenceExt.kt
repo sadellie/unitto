@@ -19,8 +19,9 @@
 package com.sadellie.unitto.data.userprefs
 
 import androidx.datastore.preferences.core.Preferences
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.OutputFormat
-import com.sadellie.unitto.core.base.Separator
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.converter.UnitID
 import com.sadellie.unitto.data.model.UnitGroup
@@ -76,8 +77,21 @@ internal fun Preferences.getRadianMode(): Boolean {
     return this[PrefsKeys.RADIAN_MODE] ?: true
 }
 
-internal fun Preferences.getSeparator(): Int {
-    return this[PrefsKeys.SEPARATOR] ?: Separator.SPACE
+internal fun Preferences.getFormatterSymbols(): FormatterSymbols {
+    val grouping = this[PrefsKeys.FORMATTER_GROUPING]
+    val fractional = this[PrefsKeys.FORMATTER_FRACTIONAL]
+
+    // Updating from older version or fresh install
+    // TODO Remove in the future
+    if ((grouping == null) or (fractional == null)) {
+        return when(this[PrefsKeys.SEPARATOR] ?: 0) {
+            0 -> FormatterSymbols(Token.SPACE, Token.PERIOD)
+            1 -> FormatterSymbols(Token.PERIOD, Token.COMMA)
+            else -> FormatterSymbols(Token.COMMA, Token.PERIOD)
+        }
+    }
+
+    return FormatterSymbols(grouping ?: Token.SPACE, fractional ?: Token.PERIOD)
 }
 
 internal fun Preferences.getMiddleZero(): Boolean {

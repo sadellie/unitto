@@ -66,7 +66,6 @@ import com.sadellie.unitto.core.ui.common.icons.iconpack.Plus
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Power
 import com.sadellie.unitto.core.ui.common.icons.iconpack.RightBracket
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Root
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 
 @Composable
 internal fun DefaultKeyboard(
@@ -79,8 +78,8 @@ internal fun DefaultKeyboard(
     acButton: Boolean,
     addBracket: () -> Unit,
 ) {
-    val fractionalIcon = remember(fractional) { if (fractional == Token.Digit.dot) IconPack.Dot else IconPack.Comma }
-    val fractionalIconDescription = remember(fractional) { if (fractional == Token.Digit.dot) R.string.keyboard_dot else R.string.comma }
+    val fractionalIcon = remember(fractional) { if (fractional == Token.PERIOD) IconPack.Dot else IconPack.Comma }
+    val fractionalIconDescription = remember(fractional) { if (fractional == Token.PERIOD) R.string.keyboard_dot else R.string.comma }
     val contentHeight: Float = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) KeyboardButtonContentHeightShort else KeyboardButtonContentHeightTall
 
     KeypadFlow(
@@ -178,7 +177,7 @@ private fun PreviewConverterKeyboard() {
         addDigit = {},
         clearInput = {},
         deleteDigit = {},
-        fractional = FormatterSymbols.Spaces.fractional,
+        fractional = Token.PERIOD,
         middleZero = false,
         acButton = true,
         addBracket = {}

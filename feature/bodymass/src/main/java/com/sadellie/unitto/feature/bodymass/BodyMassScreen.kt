@@ -49,14 +49,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTransformer
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.common.isEqualTo
 import com.sadellie.unitto.feature.bodymass.components.BodyMassResult
@@ -223,7 +224,7 @@ fun PreviewBodyMassScreen() {
             weight = TextFieldValue(),
             normalWeightRange = BigDecimal(30) to BigDecimal(50),
             result = BigDecimal(18.5),
-            formatterSymbols = FormatterSymbols.Spaces
+            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD)
         ),
         updateHeight1 = {},
         updateHeight2 = {},

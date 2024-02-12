@@ -18,40 +18,44 @@
 
 package com.sadellie.unitto.core.ui
 
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.textfield.clearAndFilterExpression
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class CleanAndFilterExpression {
+    
+    private val formatterSymbols = FormatterSymbols(Token.COMMA, Token.PERIOD)
+    
     @Test
     fun noAdditionalSymbols() {
-        assertEquals("123", "123".clearAndFilterExpression(FormatterSymbols.Comma))
-        assertEquals("123.456", "123.456".clearAndFilterExpression(FormatterSymbols.Comma))
+        assertEquals("123", "123".clearAndFilterExpression(formatterSymbols))
+        assertEquals("123.456", "123.456".clearAndFilterExpression(formatterSymbols))
     }
 
     @Test
     fun hasFormatterSymbol() {
-        assertEquals("123456", "123,456".clearAndFilterExpression(FormatterSymbols.Comma))
-        assertEquals("123456.789", "123,456.789".clearAndFilterExpression(FormatterSymbols.Comma))
+        assertEquals("123456", "123,456".clearAndFilterExpression(formatterSymbols))
+        assertEquals("123456.789", "123,456.789".clearAndFilterExpression(formatterSymbols))
     }
 
     @Test
     fun hasWrongFormatterSymbol() {
-        assertEquals("123456", "123 456".clearAndFilterExpression(FormatterSymbols.Comma))
-        assertEquals("123456.789", "123 456.789".clearAndFilterExpression(FormatterSymbols.Comma))
+        assertEquals("123456", "123 456".clearAndFilterExpression(formatterSymbols))
+        assertEquals("123456.789", "123 456.789".clearAndFilterExpression(formatterSymbols))
     }
 
     @Test
     fun fractionExpression() {
-        assertEquals("1600+1234÷56789", "1,600 1234⁄56789".clearAndFilterExpression(FormatterSymbols.Comma))
-        assertEquals("123456.789+1234÷56789", "123,456.789 1234⁄56789".clearAndFilterExpression(FormatterSymbols.Comma))
+        assertEquals("1600+1234÷56789", "1,600 1234⁄56789".clearAndFilterExpression(formatterSymbols))
+        assertEquals("123456.789+1234÷56789", "123,456.789 1234⁄56789".clearAndFilterExpression(formatterSymbols))
     }
 
     @Test
     fun garbage() {
         // 'e' is a known symbol
-        assertEquals("eeee−123", "pee pee poo poo -123".clearAndFilterExpression(FormatterSymbols.Comma))
-        assertEquals("eeee−123.456", "pee pee poo poo -123.456".clearAndFilterExpression(FormatterSymbols.Comma))
+        assertEquals("eeee−123", "pee pee poo poo -123".clearAndFilterExpression(formatterSymbols))
+        assertEquals("eeee−123.456", "pee pee poo poo -123.456".clearAndFilterExpression(formatterSymbols))
     }
 }

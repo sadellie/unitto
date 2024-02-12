@@ -26,9 +26,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
+import com.sadellie.unitto.core.base.Token
 import org.junit.Rule
 import org.junit.Test
 
@@ -67,7 +68,7 @@ class CalculatorScreenTest {
                     radianMode = false,
                     precision = 3,
                     outputFormat = OutputFormat.PLAIN,
-                    formatterSymbols = FormatterSymbols.Spaces,
+                    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
                     history = emptyList(),
                     middleZero = false,
                     acButton = true,
@@ -100,7 +101,7 @@ class CalculatorScreenTest {
                     radianMode = false,
                     precision = 3,
                     outputFormat = OutputFormat.PLAIN,
-                    formatterSymbols = FormatterSymbols.Spaces,
+                    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
                     history = emptyList(),
                     middleZero = false,
                     acButton = true,

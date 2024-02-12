@@ -20,9 +20,9 @@ package com.sadellie.unitto.feature.converter
 
 import android.content.Context
 import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.isEqualTo

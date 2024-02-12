@@ -20,8 +20,8 @@ package com.sadellie.unitto.feature.calculator
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.text.input.TextFieldValue
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.data.model.HistoryItem
 
 internal sealed class CalculatorUIState {

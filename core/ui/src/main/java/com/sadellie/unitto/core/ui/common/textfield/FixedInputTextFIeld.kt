@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 
 @Composable

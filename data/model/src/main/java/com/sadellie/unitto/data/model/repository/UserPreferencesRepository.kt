@@ -51,7 +51,7 @@ interface UserPreferencesRepository {
 
     suspend fun updateDigitsPrecision(precision: Int)
 
-    suspend fun updateSeparator(separator: Int)
+    suspend fun updateFormatterSymbols(grouping: String, fractional: String)
 
     suspend fun updateOutputFormat(outputFormat: Int)
 

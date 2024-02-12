@@ -18,13 +18,18 @@
 
 package com.sadellie.unitto.feature.settings.formatting
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
@@ -38,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -48,10 +54,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.base.FormatterSymbols
 import com.sadellie.unitto.core.base.MAX_PRECISION
 import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.base.Separator
+import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
@@ -60,7 +67,6 @@ import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.common.Slider
-import com.sadellie.unitto.core.ui.common.textfield.FormatterSymbols
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.core.ui.theme.LocalNumberTypography
 import com.sadellie.unitto.data.common.format
@@ -79,7 +85,7 @@ fun FormattingRoute(
                 navigateUpAction = navigateUpAction,
                 uiState = uiState,
                 onPrecisionChange = viewModel::updatePrecision,
-                onSeparatorChange = viewModel::updateSeparator,
+                updateFormatterSymbols = viewModel::updateFormatterSymbols,
                 onOutputFormatChange = viewModel::updateOutputFormat,
             )
         }
@@ -91,7 +97,7 @@ fun FormattingScreen(
     navigateUpAction: () -> Unit,
     uiState: FormattingUIState,
     onPrecisionChange: (Int) -> Unit,
-    onSeparatorChange: (Int) -> Unit,
+    updateFormatterSymbols: (grouping: String, fractional: String) -> Unit,
     onOutputFormatChange: (Int) -> Unit,
     precisions: ClosedFloatingPointRange<Float> = 0f..16f, // 16th is a MAX_PRECISION (1000)
 ) {
@@ -114,143 +120,162 @@ fun FormattingScreen(
         title = stringResource(R.string.settings_formatting),
         navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(paddingValues)
         ) {
-            item("preview") {
-                PagedIsland(
+            PagedIsland(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                pagerState = rememberPagerState { 2 },
+            ) { currentPage ->
+                val preview = when (currentPage) {
+                    0 -> "123456.${"789123456".repeat(ceil(uiState.precision.toDouble() / 9.0).toInt())}"
+                    1 -> "0.${"1".padStart(uiState.precision, '0')}"
+                    else -> ""
+                }
+                    .toBigDecimalOrNull()
+                    ?.format(uiState.precision, uiState.outputFormat)
+                    ?.formatExpression(uiState.formatterSymbols)
+                    ?: ""
+
+                Text(
+                    text = preview,
+                    style = LocalNumberTypography.current.displayMedium,
+                    maxLines = 1,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    pagerState = rememberPagerState { 2 },
-                ) { currentPage ->
-                    val preview = when (currentPage) {
-                        0 -> "123456.${"789123456".repeat(ceil(uiState.precision.toDouble() / 9.0).toInt())}"
-                        1 -> "0.${"1".padStart(uiState.precision, '0')}"
-                        else -> ""
-                    }
-                        .toBigDecimalOrNull()
-                        ?.format(uiState.precision, uiState.outputFormat)
-                        ?.formatExpression(uiState.formatterSymbols)
-                        ?: ""
+                        .horizontalScroll(rememberScrollState()),
+                    textAlign = TextAlign.End,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
 
-                    Text(
-                        text = preview,
-                        style = LocalNumberTypography.current.displayMedium,
-                        maxLines = 1,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState()),
-                        textAlign = TextAlign.End,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+            ListItem(
+                leadingContent = {
+                    Icon(
+                        Icons.Default.Architecture,
+                        stringResource(R.string.settings_precision)
+                    )
+                },
+                headlineContent = {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(R.string.settings_precision))
+                        Text(precisionText)
+                    }
+                },
+                supportingContent = {
+                    Text(stringResource(R.string.settings_precision_support))
+                }
+            )
+
+            Slider(
+                modifier = Modifier.padding(start = 56.dp, end = 16.dp),
+                value = uiState.precision.toFloat(),
+                valueRange = precisions,
+                onValueChange = { onPrecisionChange(it.roundToInt()) },
+            )
+
+            ListItem(
+                leadingContent = {
+                    Icon(Icons.Default._123, stringResource(R.string.settings_thousands_separator))
+                },
+                headlineContent = { Text(stringResource(R.string.settings_thousands_separator)) },
+            )
+
+            Row(
+                Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .wrapContentWidth()
+                    .padding(start = 56.dp)
+            ) {
+                SegmentedButtonsRow {
+                    SegmentedButton(
+                        label = stringResource(R.string.settings_space),
+                        onClick = { updateFormatterSymbols(Token.SPACE, uiState.formatterSymbols.fractional) },
+                        selected = uiState.formatterSymbols.grouping == Token.SPACE
+                    )
+                    SegmentedButton(
+                        label = stringResource(R.string.settings_period),
+                        onClick = { updateFormatterSymbols(Token.PERIOD, Token.COMMA) },
+                        selected = uiState.formatterSymbols.grouping == Token.PERIOD,
+                    )
+                    SegmentedButton(
+                        label = stringResource(R.string.comma),
+                        onClick = { updateFormatterSymbols(Token.COMMA, Token.PERIOD) },
+                        selected = uiState.formatterSymbols.grouping == Token.COMMA,
                     )
                 }
             }
 
-            item("precision_label") {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Architecture,
-                            stringResource(R.string.settings_precision)
-                        )
-                    },
-                    headlineContent = {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(stringResource(R.string.settings_precision))
-                            Text(precisionText)
-                        }
-                    },
-                    supportingContent = {
-                        Text(stringResource(R.string.settings_precision_support))
-                    }
-                )
-            }
-
-            item("precision_slider") {
-                Slider(
-                    modifier = Modifier.padding(start = 56.dp, end = 16.dp),
-                    value = uiState.precision.toFloat(),
-                    valueRange = precisions,
-                    onValueChange = { onPrecisionChange(it.roundToInt()) },
-                )
-            }
-
-            item("separator_label") {
-                ListItem(
-                    leadingContent = {
-                        Icon(Icons.Default._123, stringResource(R.string.settings_separator))
-                    },
-                    headlineContent = { Text(stringResource(R.string.settings_separator)) },
-                    supportingContent = { Text(stringResource(R.string.settings_separator_support)) },
-                )
-            }
-
-            item("separator") {
-                Row(
-                    Modifier
-                        .horizontalScroll(rememberScrollState())
-                        .wrapContentWidth()
-                        .padding(start = 56.dp)
+            AnimatedVisibility(
+                visible = uiState.formatterSymbols.grouping == Token.SPACE,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Column(
+                    modifier = Modifier.padding(start = 40.dp)
                 ) {
-                    SegmentedButtonsRow {
-                        SegmentedButton(
-                            label = stringResource(R.string.settings_space),
-                            onClick = { onSeparatorChange(Separator.SPACE) },
-                            selected = Separator.SPACE == uiState.separator
-                        )
-                        SegmentedButton(
-                            label = stringResource(R.string.settings_period),
-                            onClick = { onSeparatorChange(Separator.PERIOD) },
-                            selected = Separator.PERIOD == uiState.separator
-                        )
-                        SegmentedButton(
-                            label = stringResource(R.string.comma),
-                            onClick = { onSeparatorChange(Separator.COMMA) },
-                            selected = Separator.COMMA == uiState.separator
-                        )
+                    ListItem(
+                        modifier = Modifier,
+                        headlineContent = { Text(stringResource(R.string.settings_decimal_separator)) },
+                    )
+                    Row(
+                        Modifier
+                            .horizontalScroll(rememberScrollState())
+                            .wrapContentWidth()
+                            .padding(start = 16.dp)
+                    ) {
+                        SegmentedButtonsRow {
+                            SegmentedButton(
+                                label = stringResource(R.string.settings_period),
+                                onClick = { updateFormatterSymbols(Token.SPACE, Token.PERIOD) },
+                                selected = uiState.formatterSymbols.fractional == Token.PERIOD,
+                            )
+                            SegmentedButton(
+                                label = stringResource(R.string.comma),
+                                onClick = { updateFormatterSymbols(Token.SPACE, Token.COMMA) },
+                                selected = uiState.formatterSymbols.fractional == Token.COMMA,
+                            )
+                        }
                     }
                 }
             }
 
-            item("output_format_label") {
-                ListItem(
-                    leadingContent = {
-                        Icon(Icons.Default.EMobiledata, stringResource(R.string.settings_precision))
-                    },
-                    headlineContent = { Text(stringResource(R.string.settings_exponential_notation)) },
-                    supportingContent = { Text(stringResource(R.string.settings_exponential_notation_support)) }
-                )
-            }
+            ListItem(
+                leadingContent = {
+                    Icon(Icons.Default.EMobiledata, stringResource(R.string.settings_precision))
+                },
+                headlineContent = { Text(stringResource(R.string.settings_exponential_notation)) },
+                supportingContent = { Text(stringResource(R.string.settings_exponential_notation_support)) }
+            )
 
-            item("output_format") {
-                Row(
-                    Modifier
-                        .horizontalScroll(rememberScrollState())
-                        .wrapContentWidth()
-                        .padding(start = 56.dp)
-                ) {
-                    SegmentedButtonsRow {
-                        SegmentedButton(
-                            label = stringResource(R.string.settings_auto),
-                            onClick = { onOutputFormatChange(OutputFormat.ALLOW_ENGINEERING) },
-                            selected = OutputFormat.ALLOW_ENGINEERING == uiState.outputFormat
-                        )
-                        SegmentedButton(
-                            label = stringResource(R.string.enabled_label),
-                            onClick = { onOutputFormatChange(OutputFormat.FORCE_ENGINEERING) },
-                            selected = OutputFormat.FORCE_ENGINEERING == uiState.outputFormat
-                        )
-                        SegmentedButton(
-                            label = stringResource(R.string.disabled_label),
-                            onClick = { onOutputFormatChange(OutputFormat.PLAIN) },
-                            selected = OutputFormat.PLAIN == uiState.outputFormat
-                        )
-                    }
+            Row(
+                Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .wrapContentWidth()
+                    .padding(start = 56.dp)
+            ) {
+                SegmentedButtonsRow {
+                    SegmentedButton(
+                        label = stringResource(R.string.settings_auto),
+                        onClick = { onOutputFormatChange(OutputFormat.ALLOW_ENGINEERING) },
+                        selected = OutputFormat.ALLOW_ENGINEERING == uiState.outputFormat
+                    )
+                    SegmentedButton(
+                        label = stringResource(R.string.enabled_label),
+                        onClick = { onOutputFormatChange(OutputFormat.FORCE_ENGINEERING) },
+                        selected = OutputFormat.FORCE_ENGINEERING == uiState.outputFormat
+                    )
+                    SegmentedButton(
+                        label = stringResource(R.string.disabled_label),
+                        onClick = { onOutputFormatChange(OutputFormat.PLAIN) },
+                        selected = OutputFormat.PLAIN == uiState.outputFormat
+                    )
                 }
             }
         }
@@ -261,18 +286,19 @@ fun FormattingScreen(
 @Composable
 private fun PreviewFormattingScreen() {
     var currentPrecision by remember { mutableIntStateOf(6) }
-    var currentSeparator by remember { mutableIntStateOf(Separator.COMMA) }
+    var currentFormatterSymbols by remember { mutableStateOf(FormatterSymbols(Token.SPACE, Token.PERIOD)) }
     var currentOutputFormat by remember { mutableIntStateOf(OutputFormat.PLAIN) }
 
     FormattingScreen(
         uiState = FormattingUIState(
             precision = 16,
-            separator = Separator.SPACE,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = FormatterSymbols.Spaces
+            formatterSymbols = currentFormatterSymbols
         ),
         onPrecisionChange = { currentPrecision = it },
-        onSeparatorChange = { currentSeparator = it },
+        updateFormatterSymbols = updateFormatterSymbols@{ grouping, fractional ->
+            currentFormatterSymbols = FormatterSymbols(grouping, fractional)
+        },
         onOutputFormatChange = { currentOutputFormat = it },
         navigateUpAction = {},
     )
