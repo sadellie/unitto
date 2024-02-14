@@ -44,9 +44,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -119,14 +117,16 @@ internal fun CalculatorKeyboard(
     onDeleteClick: () -> Unit,
     onClearClick: () -> Unit,
     onEqualClick: () -> Unit,
-    onAngleClick: (Boolean) -> Unit,
     radianMode: Boolean,
+    onRadianModeClick: (Boolean) -> Unit,
+    additionalButtons: Boolean,
+    onAdditionalButtonsClick: (Boolean) -> Unit,
+    inverseMode: Boolean,
+    onInverseModeClick: (Boolean) -> Unit,
     showAcButton: Boolean,
     middleZero: Boolean,
     fractional: String,
 ) {
-    var showInvButtons: Boolean by remember { mutableStateOf(false) }
-
     if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
         LandscapeKeyboard(
             modifier = modifier,
@@ -135,10 +135,10 @@ internal fun CalculatorKeyboard(
             onDeleteClick = onDeleteClick,
             onClearClick = onClearClick,
             onEqualClick = onEqualClick,
-            onInvClick = { showInvButtons = !showInvButtons },
-            onAngleClick = onAngleClick,
-            showInvButtons = showInvButtons,
             radianMode = radianMode,
+            onRadianModeClick = onRadianModeClick,
+            inverseMode = inverseMode,
+            onInverseModeClick = onInverseModeClick,
             showAcButton = showAcButton,
             middleZero = middleZero,
             fractional = fractional,
@@ -151,10 +151,12 @@ internal fun CalculatorKeyboard(
             onDeleteClick = onDeleteClick,
             onClearClick = onClearClick,
             onEqualClick = onEqualClick,
-            onInvClick = { showInvButtons = !showInvButtons },
-            onAngleClick = onAngleClick,
-            showInvButtons = showInvButtons,
             radianMode = radianMode,
+            onRadianModeClick = onRadianModeClick,
+            additionalButtons = additionalButtons,
+            onAdditionalButtonsClick = onAdditionalButtonsClick,
+            inverseMode = inverseMode,
+            onInverseModeClick = onInverseModeClick,
             showAcButton = showAcButton,
             middleZero = middleZero,
             fractional = fractional,
@@ -170,10 +172,12 @@ private fun PortraitKeyboard(
     onDeleteClick: () -> Unit,
     onClearClick: () -> Unit,
     onEqualClick: () -> Unit,
-    onInvClick: () -> Unit,
-    onAngleClick: (Boolean) -> Unit,
-    showInvButtons: Boolean,
     radianMode: Boolean,
+    onRadianModeClick: (Boolean) -> Unit,
+    additionalButtons: Boolean,
+    onAdditionalButtonsClick: (Boolean) -> Unit,
+    inverseMode: Boolean,
+    onInverseModeClick: (Boolean) -> Unit,
     showAcButton: Boolean,
     middleZero: Boolean,
     fractional: String,
@@ -184,9 +188,8 @@ private fun PortraitKeyboard(
     val fractionalIcon = remember(fractional) { if (fractional == Token.PERIOD) IconPack.Dot else IconPack.Comma }
     val fractionalIconDescription = remember(fractional) { if (fractional == Token.PERIOD) R.string.keyboard_dot else R.string.comma }
 
-    var showAdditional: Boolean by remember { mutableStateOf(false) }
     val expandRotation: Float by animateFloatAsState(
-        targetValue = if (showAdditional) 180f else 0f,
+        targetValue = if (additionalButtons) 180f else 0f,
         animationSpec = tween(easing = FastOutSlowInEasing),
         label = "Rotate on expand"
     )
@@ -205,7 +208,7 @@ private fun PortraitKeyboard(
             horizontalArrangement = Arrangement.Start
         ) {
             Crossfade(
-                targetState = showInvButtons,
+                targetState = inverseMode,
                 label = "Inverse switch",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -214,7 +217,7 @@ private fun PortraitKeyboard(
                 if (inverse) {
                     AdditionalPortrait(
                         modifier = Modifier.fillMaxWidth(),
-                        showAdditional = showAdditional,
+                        additionalButtons = additionalButtons,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
                             KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, stringResource(R.string.keyboard_modulo), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.modulo) }
@@ -223,12 +226,12 @@ private fun PortraitKeyboard(
                             KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.factorial) }
                         },
                         content2 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { onAngleClick(!radianMode) }
+                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { onRadianModeClick(!radianMode) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.ArSin, stringResource(R.string.keyboard_arsin), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.arsinBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.ArCos, stringResource(R.string.keyboard_arcos), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.arcosBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, stringResource(R.string.keyboard_actan), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.actanBracket) }
 
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { onInvClick() }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { onInverseModeClick(!inverseMode) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Const.e) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Ex, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.expBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Power10, stringResource(R.string.keyboard_power_10), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
@@ -237,7 +240,7 @@ private fun PortraitKeyboard(
                 } else {
                     AdditionalPortrait(
                         modifier = Modifier.fillMaxWidth(),
-                        showAdditional = showAdditional,
+                        additionalButtons = additionalButtons,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
                             KeyboardButtonAdditional(buttonModifier, IconPack.Root, stringResource(R.string.keyboard_root), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.sqrt) }
@@ -246,12 +249,12 @@ private fun PortraitKeyboard(
                             KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.factorial) }
                         },
                         content2 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { onAngleClick(!radianMode) }
+                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { onRadianModeClick(!radianMode) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Sin, stringResource(R.string.keyboard_sin), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.sinBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Cos, stringResource(R.string.keyboard_cos), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.cosBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Tan, stringResource(R.string.keyboard_tan), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.tanBracket) }
 
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { onInvClick() }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { onInverseModeClick(!inverseMode) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Const.e) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Ln, stringResource(R.string.keyboard_ln), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.lnBracket) }
                             KeyboardButtonAdditional(buttonModifier, IconPack.Log, stringResource(R.string.keyboard_log), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.logBracket) }
@@ -265,7 +268,7 @@ private fun PortraitKeyboard(
                 contentAlignment = Alignment.Center
             ) {
                 IconButton(
-                    onClick = { showAdditional = !showAdditional },
+                    onClick = { onAdditionalButtonsClick(!additionalButtons) },
                     colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface)
                 ) {
                     Icon(Icons.Default.ExpandMore, null, Modifier.rotate(expandRotation))
@@ -333,7 +336,7 @@ private fun PortraitKeyboard(
  *
  * Height: 3 buttons
  *
- * @param showAdditional When `true` reveals [content2] with animation.
+ * @param additionalButtons When `true` reveals [content2] with animation.
  * @param buttonHeight Button height in [Dp].
  * @param content1 First row of buttons.
  * @param content2 Second and third rows of buttons.
@@ -341,13 +344,13 @@ private fun PortraitKeyboard(
 @Composable
 private fun AdditionalPortrait(
     modifier: Modifier,
-    showAdditional: Boolean,
+    additionalButtons: Boolean,
     buttonHeight: Dp,
     content1: @Composable (buttonModifier: Modifier) -> Unit,
     content2: @Composable (buttonModifier: Modifier) -> Unit
 ) {
     AnimatedContent(
-        targetState = showAdditional,
+        targetState = additionalButtons,
         modifier = modifier,
         label = "Additional buttons reveal",
         transitionSpec = {
@@ -402,10 +405,10 @@ private fun LandscapeKeyboard(
     onDeleteClick: () -> Unit,
     onClearClick: () -> Unit,
     onEqualClick: () -> Unit,
-    onInvClick: () -> Unit,
-    onAngleClick: (Boolean) -> Unit,
-    showInvButtons: Boolean,
     radianMode: Boolean,
+    onRadianModeClick: (Boolean) -> Unit,
+    inverseMode: Boolean,
+    onInverseModeClick: (Boolean) -> Unit,
     showAcButton: Boolean,
     middleZero: Boolean,
     fractional: String,
@@ -417,7 +420,7 @@ private fun LandscapeKeyboard(
     val fractionalIconDescription = remember(fractional) { if (fractional == Token.PERIOD) R.string.keyboard_dot else R.string.comma }
 
     Crossfade(
-        targetState = showInvButtons,
+        targetState = inverseMode,
         label = "Inverse switch",
         modifier = modifier
     ) { inverse ->
@@ -431,7 +434,7 @@ private fun LandscapeKeyboard(
                     .fillMaxWidth(width)
                     .fillMaxHeight(height)
 
-                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { onAngleClick(!radianMode) }
+                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { onRadianModeClick(!radianMode) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, stringResource(R.string.keyboard_modulo), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.modulo) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Const.pi) }
                 KeyboardButtonLight(buttonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._7) }
@@ -445,7 +448,7 @@ private fun LandscapeKeyboard(
                     KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.rightBracket) }
                 }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { onInvClick() }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { onInverseModeClick(!inverseMode) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.power) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.factorial) }
                 KeyboardButtonLight(buttonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._4) }
@@ -487,7 +490,7 @@ private fun LandscapeKeyboard(
                     .fillMaxWidth(width)
                     .fillMaxHeight(height)
 
-                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { onAngleClick(!radianMode) }
+                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { onRadianModeClick(!radianMode) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Root, stringResource(R.string.keyboard_root), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.sqrt) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Const.pi) }
                 KeyboardButtonLight(buttonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._7) }
@@ -501,7 +504,7 @@ private fun LandscapeKeyboard(
                     KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.rightBracket) }
                 }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { onInvClick() }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { onInverseModeClick(!inverseMode) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.power) }
                 KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.factorial) }
                 KeyboardButtonLight(buttonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._4) }
@@ -547,10 +550,12 @@ private fun PreviewPortraitKeyboard() {
         onDeleteClick = {},
         onClearClick = {},
         onEqualClick = {},
-        onInvClick = {},
-        onAngleClick = {},
-        showInvButtons = false,
         radianMode = true,
+        onRadianModeClick = {},
+        additionalButtons = false,
+        onAdditionalButtonsClick = {},
+        inverseMode = false,
+        onInverseModeClick = {},
         showAcButton = true,
         middleZero = false,
         fractional = Token.PERIOD,
@@ -567,10 +572,10 @@ private fun PreviewLandscapeKeyboard() {
         onDeleteClick = {},
         onClearClick = {},
         onEqualClick = {},
-        onInvClick = {},
-        onAngleClick = {},
-        showInvButtons = false,
         radianMode = true,
+        onRadianModeClick = {},
+        inverseMode = false,
+        onInverseModeClick = {},
         showAcButton = true,
         middleZero = false,
         fractional = Token.PERIOD,

@@ -51,6 +51,8 @@ class CalculatorScreenTest {
                     history = emptyList(),
                     middleZero = false,
                     acButton = true,
+                    additionalButtons = false,
+                    inverseMode = false,
                     partialHistoryView = true
                 ),
                 openDrawer = {},
@@ -60,9 +62,12 @@ class CalculatorScreenTest {
                 onDeleteClick = {},
                 onClearClick = {},
                 onEqualClick = {},
-                onAngleClick = {},
+                onRadianModeClick = {},
+                onAdditionalButtonsClick = {},
+                onInverseModeClick = {},
                 onClearHistoryClick = {},
-            ) {}
+                onDeleteHistoryItemClick = {},
+            )
         }
 
         onNodeWithTag("loading").assertDoesNotExist()
@@ -83,6 +88,8 @@ class CalculatorScreenTest {
                     history = emptyList(),
                     middleZero = false,
                     acButton = true,
+                    additionalButtons = false,
+                    inverseMode = false,
                     partialHistoryView = true
                 ),
                 openDrawer = {},
@@ -92,9 +99,12 @@ class CalculatorScreenTest {
                 onDeleteClick = {},
                 onClearClick = {},
                 onEqualClick = {},
-                onAngleClick = {},
+                onRadianModeClick = {},
+                onAdditionalButtonsClick = {},
+                onInverseModeClick = {},
                 onClearHistoryClick = {},
-            ) {}
+                onDeleteHistoryItemClick = {},
+            )
         }
 
         onNodeWithTag("inputBox")

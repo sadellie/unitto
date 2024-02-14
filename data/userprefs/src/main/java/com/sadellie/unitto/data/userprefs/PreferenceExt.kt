@@ -147,6 +147,14 @@ internal fun Preferences.getAcButton(): Boolean {
     return this[PrefsKeys.AC_BUTTON] ?: true
 }
 
+internal fun Preferences.getAdditionalButtons(): Boolean {
+    return this[PrefsKeys.ADDITIONAL_BUTTONS] ?: false
+}
+
+internal fun Preferences.getInverseMode(): Boolean {
+    return this[PrefsKeys.INVERSE_MODE] ?: false
+}
+
 internal fun List<UnitGroup>.packToString(): String = this.joinToString(",")
 
 private inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? = try {

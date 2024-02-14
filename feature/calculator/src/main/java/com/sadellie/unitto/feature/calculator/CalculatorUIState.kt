@@ -35,6 +35,8 @@ internal sealed class CalculatorUIState {
         val history: List<HistoryItem>,
         val middleZero: Boolean,
         val acButton: Boolean,
+        val additionalButtons: Boolean,
+        val inverseMode: Boolean,
         val partialHistoryView: Boolean,
     ) : CalculatorUIState()
 }

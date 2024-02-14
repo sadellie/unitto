@@ -57,6 +57,8 @@ data class CalculatorPreferencesImpl(
     override val formatterSymbols: FormatterSymbols,
     override val middleZero: Boolean,
     override val acButton: Boolean,
+    override val additionalButtons: Boolean,
+    override val inverseMode: Boolean,
     override val partialHistoryView: Boolean,
     override val precision: Int,
     override val outputFormat: Int,

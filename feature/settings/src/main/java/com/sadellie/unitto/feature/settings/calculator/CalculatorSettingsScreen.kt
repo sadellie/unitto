@@ -87,6 +87,8 @@ private fun PreviewCalculatorSettingsScreenStandard() {
             formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
             middleZero = false,
             acButton = false,
+            additionalButtons = false,
+            inverseMode = false,
             partialHistoryView = false,
             precision = 3,
             outputFormat = OutputFormat.PLAIN

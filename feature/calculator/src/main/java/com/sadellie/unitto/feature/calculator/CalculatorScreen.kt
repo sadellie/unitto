@@ -97,7 +97,9 @@ internal fun CalculatorRoute(
             onDeleteClick = viewModel::deleteTokens,
             onClearClick = viewModel::clearInput,
             onEqualClick = viewModel::equal,
-            onAngleClick = viewModel::updateRadianMode,
+            onRadianModeClick = viewModel::updateRadianMode,
+            onAdditionalButtonsClick = viewModel::updateAdditionalButtons,
+            onInverseModeClick = viewModel::updateInverseMode,
             onClearHistoryClick = viewModel::clearHistory,
             onDeleteHistoryItemClick = viewModel::deleteHistoryItem,
         )
@@ -114,7 +116,9 @@ internal fun Ready(
     onDeleteClick: () -> Unit,
     onClearClick: () -> Unit,
     onEqualClick: () -> Unit,
-    onAngleClick: (Boolean) -> Unit,
+    onRadianModeClick: (Boolean) -> Unit,
+    onAdditionalButtonsClick: (Boolean) -> Unit,
+    onInverseModeClick: (Boolean) -> Unit,
     onClearHistoryClick: () -> Unit,
     onDeleteHistoryItemClick: (HistoryItem) -> Unit,
 ) {
@@ -248,8 +252,12 @@ internal fun Ready(
                 onDeleteClick = onDeleteClick,
                 onClearClick = onClearClick,
                 onEqualClick = { focusManager.clearFocus(); onEqualClick() },
-                onAngleClick = onAngleClick,
                 radianMode = uiState.radianMode,
+                onRadianModeClick = onRadianModeClick,
+                additionalButtons = uiState.additionalButtons,
+                onAdditionalButtonsClick = onAdditionalButtonsClick,
+                inverseMode = uiState.inverseMode,
+                onInverseModeClick = onInverseModeClick,
                 showAcButton = uiState.acButton,
                 middleZero = uiState.middleZero,
                 fractional = uiState.formatterSymbols.fractional,
@@ -329,6 +337,8 @@ private fun PreviewCalculatorScreen() {
             history = historyItems,
             middleZero = false,
             acButton = true,
+            additionalButtons = false,
+            inverseMode = false,
             partialHistoryView = true
         ),
         openDrawer = {},
@@ -338,7 +348,10 @@ private fun PreviewCalculatorScreen() {
         onDeleteClick = {},
         onClearClick = {},
         onEqualClick = {},
-        onAngleClick = {},
+        onRadianModeClick = {},
+        onAdditionalButtonsClick = {},
+        onInverseModeClick = {},
         onClearHistoryClick = {},
-    ) {}
+        onDeleteHistoryItemClick = {},
+    )
 }

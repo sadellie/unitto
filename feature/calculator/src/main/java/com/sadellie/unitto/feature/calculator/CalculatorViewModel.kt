@@ -83,6 +83,8 @@ internal class CalculatorViewModel @Inject constructor(
             history = history,
             middleZero = prefs.middleZero,
             acButton = prefs.acButton,
+            additionalButtons = prefs.additionalButtons,
+            inverseMode = prefs.inverseMode,
             partialHistoryView = prefs.partialHistoryView,
         )
     }
@@ -156,6 +158,14 @@ internal class CalculatorViewModel @Inject constructor(
 
     fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateRadianMode(newValue)
+    }
+
+    fun updateAdditionalButtons(newValue: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateAdditionalButtons(newValue)
+    }
+
+    fun updateInverseMode(newValue: Boolean) = viewModelScope.launch {
+        userPrefsRepository.updateInverseMode(newValue)
     }
 
     fun clearHistory() = viewModelScope.launch(Dispatchers.IO) {

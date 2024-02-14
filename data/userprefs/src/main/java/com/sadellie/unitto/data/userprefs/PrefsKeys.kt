@@ -49,6 +49,8 @@ object PrefsKeys {
     // CALCULATOR
     val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
     val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
+    val ADDITIONAL_BUTTONS = booleanPreferencesKey("ADDITIONAL_BUTTONS_PREF_KEY")
+    val INVERSE_MODE = booleanPreferencesKey("INVERSE_MODE_PREF_KEY")
 
     // UNIT CONVERTER
     val LATEST_LEFT_SIDE = stringPreferencesKey("LATEST_LEFT_SIDE_PREF_KEY")

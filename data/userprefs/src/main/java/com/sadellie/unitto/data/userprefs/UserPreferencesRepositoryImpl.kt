@@ -84,6 +84,8 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 precision = preferences.getDigitsPrecision(),
                 outputFormat = preferences.getOutputFormat(),
                 acButton = preferences.getAcButton(),
+                additionalButtons = preferences.getAdditionalButtons(),
+                inverseMode = preferences.getInverseMode(),
             )
         }
 
@@ -310,6 +312,18 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override suspend fun updateAcButton(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[PrefsKeys.AC_BUTTON] = enabled
+        }
+    }
+
+    override suspend fun updateAdditionalButtons(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.ADDITIONAL_BUTTONS] = enabled
+        }
+    }
+
+    override suspend fun updateInverseMode(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PrefsKeys.INVERSE_MODE] = enabled
         }
     }
 }

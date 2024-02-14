@@ -25,6 +25,8 @@ interface CalculatorPreferences {
     val formatterSymbols: FormatterSymbols
     val middleZero: Boolean
     val acButton: Boolean
+    val additionalButtons: Boolean
+    val inverseMode: Boolean
     val partialHistoryView: Boolean
     val precision: Int
     val outputFormat: Int
