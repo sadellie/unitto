@@ -18,10 +18,8 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import androidx.annotation.StringRes
 import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.base.FormatterSymbols
-import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.model.HistoryItem
 
 internal sealed class CalculatorUIState {
@@ -48,13 +46,7 @@ sealed class CalculationResult {
 
     data object Empty : CalculationResult()
 
-    data object DivideByZeroError : CalculationResult() {
-        @StringRes
-        val label: Int = R.string.calculator_divide_by_zero_error
-    }
+    data object DivideByZeroError : CalculationResult()
 
-    data object Error : CalculationResult() {
-        @StringRes
-        val label: Int = R.string.error_label
-    }
+    data object Error : CalculationResult()
 }

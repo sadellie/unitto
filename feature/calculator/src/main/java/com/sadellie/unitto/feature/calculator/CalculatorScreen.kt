@@ -86,68 +86,37 @@ internal fun CalculatorRoute(
     openDrawer: () -> Unit,
     viewModel: CalculatorViewModel = hiltViewModel(),
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    CalculatorScreen(
-        uiState = uiState.value,
-        openDrawer = openDrawer,
-        addTokens = viewModel::addTokens,
-        addBracket = viewModel::addBracket,
-        clearInput = viewModel::clearInput,
-        deleteTokens = viewModel::deleteTokens,
-        onValueChange = viewModel::updateInput,
-        toggleCalculatorMode = viewModel::updateRadianMode,
-        equal = viewModel::equal,
-        clearHistory = viewModel::clearHistory,
-        onDelete = viewModel::deleteHistoryItem,
-    )
-}
-
-@Composable
-internal fun CalculatorScreen(
-    uiState: CalculatorUIState,
-    openDrawer: () -> Unit,
-    addTokens: (String) -> Unit,
-    addBracket: () -> Unit,
-    clearInput: () -> Unit,
-    deleteTokens: () -> Unit,
-    onValueChange: (TextFieldValue) -> Unit,
-    toggleCalculatorMode: (Boolean) -> Unit,
-    equal: () -> Unit,
-    clearHistory: () -> Unit,
-    onDelete: (HistoryItem) -> Unit,
-) {
-    when (uiState) {
-        is CalculatorUIState.Loading -> EmptyScreen()
+    when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+        CalculatorUIState.Loading -> EmptyScreen()
         is CalculatorUIState.Ready -> Ready(
             uiState = uiState,
             openDrawer = openDrawer,
-            addSymbol = addTokens,
-            addBracket = addBracket,
-            clearSymbols = clearInput,
-            deleteSymbol = deleteTokens,
-            onValueChange = onValueChange,
-            toggleAngleMode = { toggleCalculatorMode(!uiState.radianMode) },
-            equal = equal,
-            clearHistory = clearHistory,
-            onDelete = onDelete,
+            onInputChange = viewModel::updateInput,
+            onAddTokenClick = viewModel::addTokens,
+            onBracketsClick = viewModel::addBracket,
+            onDeleteClick = viewModel::deleteTokens,
+            onClearClick = viewModel::clearInput,
+            onEqualClick = viewModel::equal,
+            onAngleClick = viewModel::updateRadianMode,
+            onClearHistoryClick = viewModel::clearHistory,
+            onDeleteHistoryItemClick = viewModel::deleteHistoryItem,
         )
     }
 }
 
 @Composable
-private fun Ready(
+internal fun Ready(
     uiState: CalculatorUIState.Ready,
     openDrawer: () -> Unit,
-    addSymbol: (String) -> Unit,
-    addBracket: () -> Unit,
-    clearSymbols: () -> Unit,
-    deleteSymbol: () -> Unit,
-    onValueChange: (TextFieldValue) -> Unit,
-    toggleAngleMode: () -> Unit,
-    equal: () -> Unit,
-    clearHistory: () -> Unit,
-    onDelete: (HistoryItem) -> Unit,
+    onInputChange: (TextFieldValue) -> Unit,
+    onAddTokenClick: (String) -> Unit,
+    onBracketsClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onClearClick: () -> Unit,
+    onEqualClick: () -> Unit,
+    onAngleClick: (Boolean) -> Unit,
+    onClearHistoryClick: () -> Unit,
+    onDeleteHistoryItemClick: (HistoryItem) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
@@ -240,8 +209,8 @@ private fun Ready(
                     .height(historyListHeight),
                 historyItems = uiState.history,
                 formatterSymbols = uiState.formatterSymbols,
-                addTokens = addSymbol,
-                onDelete = onDelete,
+                addTokens = onAddTokenClick,
+                onDelete = onDeleteHistoryItemClick,
                 showDeleteButtons = isOpen
             )
 
@@ -256,7 +225,7 @@ private fun Ready(
                     ),
                 formatterSymbols = uiState.formatterSymbols,
                 input = uiState.input,
-                onValueChange = onValueChange,
+                onValueChange = onInputChange,
                 output = uiState.output
             )
 
@@ -274,16 +243,16 @@ private fun Ready(
                     .height(keyboardHeight)
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
+                onAddTokenClick = onAddTokenClick,
+                onBracketsClick = onBracketsClick,
+                onDeleteClick = onDeleteClick,
+                onClearClick = onClearClick,
+                onEqualClick = { focusManager.clearFocus(); onEqualClick() },
+                onAngleClick = onAngleClick,
                 radianMode = uiState.radianMode,
-                fractional = uiState.formatterSymbols.fractional,
-                addSymbol = addSymbol,
-                clearSymbols = clearSymbols,
-                deleteSymbol = deleteSymbol,
-                toggleAngleMode = toggleAngleMode,
-                equal = { focusManager.clearFocus(); equal() },
+                showAcButton = uiState.acButton,
                 middleZero = uiState.middleZero,
-                acButton = uiState.acButton,
-                addBracket = addBracket
+                fractional = uiState.formatterSymbols.fractional,
             )
         }
     }
@@ -302,7 +271,7 @@ private fun Ready(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        clearHistory()
+                        onClearHistoryClick()
                         showClearHistoryDialog = false
                     }
                 ) {
@@ -349,7 +318,7 @@ private fun PreviewCalculatorScreen() {
         )
     }
 
-    CalculatorScreen(
+    Ready(
         uiState = CalculatorUIState.Ready(
             input = TextFieldValue("1.2345"),
             output = CalculationResult.Default("1234"),
@@ -363,14 +332,13 @@ private fun PreviewCalculatorScreen() {
             partialHistoryView = true
         ),
         openDrawer = {},
-        addTokens = {},
-        addBracket = {},
-        clearInput = {},
-        deleteTokens = {},
-        onValueChange = {},
-        toggleCalculatorMode = {},
-        equal = {},
-        clearHistory = {},
-        onDelete = {},
-    )
+        onInputChange = {},
+        onAddTokenClick = {},
+        onBracketsClick = {},
+        onDeleteClick = {},
+        onClearClick = {},
+        onEqualClick = {},
+        onAngleClick = {},
+        onClearHistoryClick = {},
+    ) {}
 }

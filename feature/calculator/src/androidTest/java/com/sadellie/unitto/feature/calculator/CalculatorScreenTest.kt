@@ -38,30 +38,9 @@ class CalculatorScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun loading_showLoadingKeyboard(): Unit = with(composeTestRule) {
+    fun ready(): Unit = with(composeTestRule) {
         setContent {
-            CalculatorScreen(
-                uiState = CalculatorUIState.Loading,
-                openDrawer = {},
-                addTokens = {},
-                addBracket = {},
-                clearInput = {},
-                deleteTokens = {},
-                onValueChange = {},
-                toggleCalculatorMode = {},
-                equal = {},
-                clearHistory = {},
-                onDelete = {},
-            )
-        }
-
-        onNodeWithTag("loading").assertExists()
-    }
-
-    @Test
-    fun ready_showRealKeyboard(): Unit = with(composeTestRule) {
-        setContent {
-            CalculatorScreen(
+            Ready(
                 uiState = CalculatorUIState.Ready(
                     input = TextFieldValue(),
                     output = CalculationResult.Empty,
@@ -75,16 +54,15 @@ class CalculatorScreenTest {
                     partialHistoryView = true
                 ),
                 openDrawer = {},
-                addTokens = {},
-                addBracket = {},
-                clearInput = {},
-                deleteTokens = {},
-                onValueChange = {},
-                toggleCalculatorMode = {},
-                equal = {},
-                clearHistory = {},
-                onDelete = {},
-            )
+                onInputChange = {},
+                onAddTokenClick = {},
+                onBracketsClick = {},
+                onDeleteClick = {},
+                onClearClick = {},
+                onEqualClick = {},
+                onAngleClick = {},
+                onClearHistoryClick = {},
+            ) {}
         }
 
         onNodeWithTag("loading").assertDoesNotExist()
@@ -94,7 +72,7 @@ class CalculatorScreenTest {
     @Test
     fun ready_swipeForHistory(): Unit = with(composeTestRule) {
         setContent {
-            CalculatorScreen(
+            Ready(
                 uiState = CalculatorUIState.Ready(
                     input = TextFieldValue(),
                     output = CalculationResult.Empty,
@@ -108,16 +86,15 @@ class CalculatorScreenTest {
                     partialHistoryView = true
                 ),
                 openDrawer = {},
-                addTokens = {},
-                addBracket = {},
-                clearInput = {},
-                deleteTokens = {},
-                onValueChange = {},
-                toggleCalculatorMode = {},
-                equal = {},
-                clearHistory = {},
-                onDelete = {},
-            )
+                onInputChange = {},
+                onAddTokenClick = {},
+                onBracketsClick = {},
+                onDeleteClick = {},
+                onClearClick = {},
+                onEqualClick = {},
+                onAngleClick = {},
+                onClearHistoryClick = {},
+            ) {}
         }
 
         onNodeWithTag("inputBox")

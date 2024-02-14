@@ -114,50 +114,50 @@ import com.sadellie.unitto.core.ui.common.icons.iconpack.Tan
 @Composable
 internal fun CalculatorKeyboard(
     modifier: Modifier,
+    onAddTokenClick: (String) -> Unit,
+    onBracketsClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onClearClick: () -> Unit,
+    onEqualClick: () -> Unit,
+    onAngleClick: (Boolean) -> Unit,
     radianMode: Boolean,
-    fractional: String,
+    showAcButton: Boolean,
     middleZero: Boolean,
-    acButton: Boolean,
-    addSymbol: (String) -> Unit,
-    addBracket: () -> Unit,
-    clearSymbols: () -> Unit,
-    deleteSymbol: () -> Unit,
-    toggleAngleMode: () -> Unit,
-    equal: () -> Unit
+    fractional: String,
 ) {
-    var invMode: Boolean by remember { mutableStateOf(false) }
+    var showInvButtons: Boolean by remember { mutableStateOf(false) }
 
     if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
         LandscapeKeyboard(
             modifier = modifier,
+            onAddTokenClick = onAddTokenClick,
+            onBracketsClick = onBracketsClick,
+            onDeleteClick = onDeleteClick,
+            onClearClick = onClearClick,
+            onEqualClick = onEqualClick,
+            onInvClick = { showInvButtons = !showInvButtons },
+            onAngleClick = onAngleClick,
+            showInvButtons = showInvButtons,
             radianMode = radianMode,
-            fractional = fractional,
+            showAcButton = showAcButton,
             middleZero = middleZero,
-            addSymbol = addSymbol,
-            toggleAngleMode = toggleAngleMode,
-            deleteSymbol = deleteSymbol,
-            clearSymbols = clearSymbols,
-            equal = equal,
-            acButton = acButton,
-            addBracket = addBracket,
-            invMode = invMode,
-            toggleInvMode = { invMode = !invMode },
+            fractional = fractional,
         )
     } else {
         PortraitKeyboard(
             modifier = modifier,
+            onAddTokenClick = onAddTokenClick,
+            onBracketsClick = onBracketsClick,
+            onDeleteClick = onDeleteClick,
+            onClearClick = onClearClick,
+            onEqualClick = onEqualClick,
+            onInvClick = { showInvButtons = !showInvButtons },
+            onAngleClick = onAngleClick,
+            showInvButtons = showInvButtons,
             radianMode = radianMode,
-            fractional = fractional,
+            showAcButton = showAcButton,
             middleZero = middleZero,
-            addSymbol = addSymbol,
-            toggleAngleMode = toggleAngleMode,
-            deleteSymbol = deleteSymbol,
-            clearSymbols = clearSymbols,
-            equal = equal,
-            acButton = acButton,
-            addBracket = addBracket,
-            invMode = invMode,
-            toggleInvMode = { invMode = !invMode },
+            fractional = fractional,
         )
     }
 }
@@ -165,18 +165,18 @@ internal fun CalculatorKeyboard(
 @Composable
 private fun PortraitKeyboard(
     modifier: Modifier,
+    onAddTokenClick: (String) -> Unit,
+    onBracketsClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onClearClick: () -> Unit,
+    onEqualClick: () -> Unit,
+    onInvClick: () -> Unit,
+    onAngleClick: (Boolean) -> Unit,
+    showInvButtons: Boolean,
     radianMode: Boolean,
-    fractional: String,
+    showAcButton: Boolean,
     middleZero: Boolean,
-    addSymbol: (String) -> Unit,
-    toggleAngleMode: () -> Unit,
-    deleteSymbol: () -> Unit,
-    clearSymbols: () -> Unit,
-    equal: () -> Unit,
-    acButton: Boolean,
-    addBracket: () -> Unit,
-    invMode: Boolean,
-    toggleInvMode: () -> Unit,
+    fractional: String,
 ) {
     val angleIcon = remember(radianMode) { if (radianMode) IconPack.Rad else IconPack.Deg }
     val angleIconDescription = remember(radianMode) { if (radianMode) R.string.keyboard_radian else R.string.keyboard_degree }
@@ -205,7 +205,7 @@ private fun PortraitKeyboard(
             horizontalArrangement = Arrangement.Start
         ) {
             Crossfade(
-                targetState = invMode,
+                targetState = showInvButtons,
                 label = "Inverse switch",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -217,21 +217,21 @@ private fun PortraitKeyboard(
                         showAdditional = showAdditional,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, stringResource(R.string.keyboard_modulo), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Operator.modulo) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.pi) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Operator.power) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Operator.factorial) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, stringResource(R.string.keyboard_modulo), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.modulo) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Const.pi) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.power) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.factorial) }
                         },
                         content2 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { toggleAngleMode() }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.ArSin, stringResource(R.string.keyboard_arsin), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.arsinBracket) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.ArCos, stringResource(R.string.keyboard_arcos), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.arcosBracket) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, stringResource(R.string.keyboard_actan), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.actanBracket) }
+                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { onAngleClick(!radianMode) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.ArSin, stringResource(R.string.keyboard_arsin), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.arsinBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.ArCos, stringResource(R.string.keyboard_arcos), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.arcosBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, stringResource(R.string.keyboard_actan), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.actanBracket) }
 
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { toggleInvMode() }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.e) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Ex, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.expBracket) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Power10, stringResource(R.string.keyboard_power_10), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { onInvClick() }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Const.e) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Ex, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.expBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Power10, stringResource(R.string.keyboard_power_10), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                         }
                     )
                 } else {
@@ -240,21 +240,21 @@ private fun PortraitKeyboard(
                         showAdditional = showAdditional,
                         buttonHeight = additionalButtonHeight,
                         content1 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Root, stringResource(R.string.keyboard_root), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Operator.sqrt) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.pi) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Operator.power) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Operator.factorial) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Root, stringResource(R.string.keyboard_root), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.sqrt) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Const.pi) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.power) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Operator.factorial) }
                         },
                         content2 = { buttonModifier ->
-                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { toggleAngleMode() }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Sin, stringResource(R.string.keyboard_sin), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.sinBracket) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Cos, stringResource(R.string.keyboard_cos), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.cosBracket) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Tan, stringResource(R.string.keyboard_tan), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.tanBracket) }
+                            KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightTallAdditional) { onAngleClick(!radianMode) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Sin, stringResource(R.string.keyboard_sin), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.sinBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Cos, stringResource(R.string.keyboard_cos), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.cosBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Tan, stringResource(R.string.keyboard_tan), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.tanBracket) }
 
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { toggleInvMode() }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Const.e) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Ln, stringResource(R.string.keyboard_ln), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.lnBracket) }
-                            KeyboardButtonAdditional(buttonModifier, IconPack.Log, stringResource(R.string.keyboard_log), KeyboardButtonContentHeightTallAdditional) { addSymbol(Token.Func.logBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightTallAdditional) { onInvClick() }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Const.e) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Ln, stringResource(R.string.keyboard_ln), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.lnBracket) }
+                            KeyboardButtonAdditional(buttonModifier, IconPack.Log, stringResource(R.string.keyboard_log), KeyboardButtonContentHeightTallAdditional) { onAddTokenClick(Token.Func.logBracket) }
                         }
                     )
                 }
@@ -286,40 +286,40 @@ private fun PortraitKeyboard(
                 .fillMaxWidth(width)
                 .fillMaxHeight(height)
 
-            if (acButton) {
-                KeyboardButtonTertiary(mainButtonModifier, IconPack.Clear, stringResource(R.string.clear_label), KeyboardButtonContentHeightTall) { clearSymbols() }
-                KeyboardButtonFilled(mainButtonModifier, IconPack.Brackets, stringResource(R.string.keyboard_brackets), KeyboardButtonContentHeightTall) { addBracket() }
+            if (showAcButton) {
+                KeyboardButtonTertiary(mainButtonModifier, IconPack.Clear, stringResource(R.string.clear_label), KeyboardButtonContentHeightTall) { onClearClick() }
+                KeyboardButtonFilled(mainButtonModifier, IconPack.Brackets, stringResource(R.string.keyboard_brackets), KeyboardButtonContentHeightTall) { onBracketsClick() }
             } else {
-                KeyboardButtonFilled(mainButtonModifier, IconPack.LeftBracket, stringResource(R.string.keyboard_left_bracket), KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.leftBracket) }
-                KeyboardButtonFilled(mainButtonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.rightBracket) }
+                KeyboardButtonFilled(mainButtonModifier, IconPack.LeftBracket, stringResource(R.string.keyboard_left_bracket), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Operator.leftBracket) }
+                KeyboardButtonFilled(mainButtonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Operator.rightBracket) }
             }
-            KeyboardButtonFilled(mainButtonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.percent) }
-            KeyboardButtonFilled(mainButtonModifier, IconPack.Divide, stringResource(R.string.keyboard_divide), KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.divide) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Operator.percent) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Divide, stringResource(R.string.keyboard_divide), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Operator.divide) }
 
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._7) }
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key8, Token.Digit._8, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._8) }
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key9, Token.Digit._9, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._9) }
-            KeyboardButtonFilled(mainButtonModifier, IconPack.Multiply, stringResource(R.string.keyboard_multiply), KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.multiply) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._7) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key8, Token.Digit._8, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._8) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key9, Token.Digit._9, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._9) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Multiply, stringResource(R.string.keyboard_multiply), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Operator.multiply) }
 
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._4) }
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key5, Token.Digit._5, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._5) }
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key6, Token.Digit._6, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._6) }
-            KeyboardButtonFilled(mainButtonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.minus) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._4) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key5, Token.Digit._5, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._5) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key6, Token.Digit._6, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._6) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Operator.minus) }
 
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key1, Token.Digit._1, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._1) }
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key2, Token.Digit._2, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._2) }
-            KeyboardButtonLight(mainButtonModifier, IconPack.Key3, Token.Digit._3, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._3) }
-            KeyboardButtonFilled(mainButtonModifier, IconPack.Plus, stringResource(R.string.keyboard_plus), KeyboardButtonContentHeightTall) { addSymbol(Token.Operator.plus) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key1, Token.Digit._1, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._1) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key2, Token.Digit._2, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._2) }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Key3, Token.Digit._3, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._3) }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Plus, stringResource(R.string.keyboard_plus), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Operator.plus) }
 
             if (middleZero) {
-                KeyboardButtonLight(mainButtonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightTall) { addSymbol(Token.Digit.dot) }
-                KeyboardButtonLight(mainButtonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
+                KeyboardButtonLight(mainButtonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit.dot) }
+                KeyboardButtonLight(mainButtonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._0) }
             } else {
-                KeyboardButtonLight(mainButtonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightTall) { addSymbol(Token.Digit._0) }
-                KeyboardButtonLight(mainButtonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightTall) { addSymbol(Token.Digit.dot) }
+                KeyboardButtonLight(mainButtonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit._0) }
+                KeyboardButtonLight(mainButtonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightTall) { onAddTokenClick(Token.Digit.dot) }
             }
-            KeyboardButtonLight(mainButtonModifier, IconPack.Backspace, stringResource(R.string.delete_label), KeyboardButtonContentHeightTall, clearSymbols) { deleteSymbol() }
-            KeyboardButtonFilled(mainButtonModifier, IconPack.Equal, stringResource(R.string.keyboard_equal), KeyboardButtonContentHeightTall) { equal() }
+            KeyboardButtonLight(mainButtonModifier, IconPack.Backspace, stringResource(R.string.delete_label), KeyboardButtonContentHeightTall, onClearClick) { onDeleteClick() }
+            KeyboardButtonFilled(mainButtonModifier, IconPack.Equal, stringResource(R.string.keyboard_equal), KeyboardButtonContentHeightTall) { onEqualClick() }
         }
 
         Spacer(modifier = Modifier.height(spacerHeight))
@@ -397,18 +397,18 @@ private fun AdditionalPortrait(
 @Composable
 private fun LandscapeKeyboard(
     modifier: Modifier,
+    onAddTokenClick: (String) -> Unit,
+    onBracketsClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onClearClick: () -> Unit,
+    onEqualClick: () -> Unit,
+    onInvClick: () -> Unit,
+    onAngleClick: (Boolean) -> Unit,
+    showInvButtons: Boolean,
     radianMode: Boolean,
-    fractional: String,
+    showAcButton: Boolean,
     middleZero: Boolean,
-    addSymbol: (String) -> Unit,
-    toggleAngleMode: () -> Unit,
-    deleteSymbol: () -> Unit,
-    clearSymbols: () -> Unit,
-    equal: () -> Unit,
-    acButton: Boolean,
-    addBracket: () -> Unit,
-    invMode: Boolean,
-    toggleInvMode: () -> Unit,
+    fractional: String,
 ) {
     val angleIcon = remember(radianMode) { if (radianMode) IconPack.Rad else IconPack.Deg }
     val angleIconDescription = remember(radianMode) { if (radianMode) R.string.keyboard_radian else R.string.keyboard_degree }
@@ -417,7 +417,7 @@ private fun LandscapeKeyboard(
     val fractionalIconDescription = remember(fractional) { if (fractional == Token.PERIOD) R.string.keyboard_dot else R.string.comma }
 
     Crossfade(
-        targetState = invMode,
+        targetState = showInvButtons,
         label = "Inverse switch",
         modifier = modifier
     ) { inverse ->
@@ -431,51 +431,51 @@ private fun LandscapeKeyboard(
                     .fillMaxWidth(width)
                     .fillMaxHeight(height)
 
-                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { toggleAngleMode() }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, stringResource(R.string.keyboard_modulo), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Operator.modulo) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.pi) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._7) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key8, Token.Digit._8, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._8) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key9, Token.Digit._9, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._9) }
-                if (acButton) {
-                    KeyboardButtonTertiary(buttonModifier, IconPack.Clear, stringResource(R.string.clear_label), KeyboardButtonContentHeightShort) { clearSymbols() }
-                    KeyboardButtonFilled(buttonModifier, IconPack.Brackets, stringResource(R.string.keyboard_brackets), KeyboardButtonContentHeightShort) { addBracket() }
+                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { onAngleClick(!radianMode) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Modulo, stringResource(R.string.keyboard_modulo), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.modulo) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Const.pi) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._7) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key8, Token.Digit._8, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._8) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key9, Token.Digit._9, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._9) }
+                if (showAcButton) {
+                    KeyboardButtonTertiary(buttonModifier, IconPack.Clear, stringResource(R.string.clear_label), KeyboardButtonContentHeightShort) { onClearClick() }
+                    KeyboardButtonFilled(buttonModifier, IconPack.Brackets, stringResource(R.string.keyboard_brackets), KeyboardButtonContentHeightShort) { onBracketsClick() }
                 } else {
-                    KeyboardButtonFilled(buttonModifier, IconPack.LeftBracket, stringResource(R.string.keyboard_left_bracket), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.leftBracket) }
-                    KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.rightBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.LeftBracket, stringResource(R.string.keyboard_left_bracket), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.leftBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.rightBracket) }
                 }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { toggleInvMode() }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Operator.power) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Operator.factorial) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._4) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key5, Token.Digit._5, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._5) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key6, Token.Digit._6, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._6) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Multiply, stringResource(R.string.keyboard_multiply), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.multiply) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Divide, stringResource(R.string.keyboard_divide), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.divide) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { onInvClick() }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.power) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.factorial) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._4) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key5, Token.Digit._5, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._5) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key6, Token.Digit._6, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._6) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Multiply, stringResource(R.string.keyboard_multiply), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.multiply) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Divide, stringResource(R.string.keyboard_divide), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.divide) }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.ArSin, stringResource(R.string.keyboard_arsin), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.arsinBracket) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.ArCos, stringResource(R.string.keyboard_arcos), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.arcosBracket) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, stringResource(R.string.keyboard_actan), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.actanBracket) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key1, Token.Digit._1, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key2, Token.Digit._2, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._2) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key3, Token.Digit._3, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._3) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.ArSin, stringResource(R.string.keyboard_arsin), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.arsinBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.ArCos, stringResource(R.string.keyboard_arcos), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.arcosBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.AcTan, stringResource(R.string.keyboard_actan), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.actanBracket) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key1, Token.Digit._1, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._1) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key2, Token.Digit._2, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._2) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key3, Token.Digit._3, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._3) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.minus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.percent) }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.e) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Ex, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.expBracket) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Power10, stringResource(R.string.keyboard_power_10), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Const.e) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Ex, stringResource(R.string.keyboard_exp), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.expBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Power10, stringResource(R.string.keyboard_power_10), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Digit._1 + Token.Digit._0 + Token.Operator.power) }
                 if (middleZero) {
-                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
-                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit.dot) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._0) }
                 } else {
-                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
-                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit.dot) }
                 }
-                KeyboardButtonLight(buttonModifier, IconPack.Backspace, stringResource(R.string.delete_label), KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
-                KeyboardButtonFilled(buttonModifier, IconPack.Plus, stringResource(R.string.keyboard_plus), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Equal, stringResource(R.string.keyboard_equal), KeyboardButtonContentHeightShort) { equal() }
+                KeyboardButtonLight(buttonModifier, IconPack.Backspace, stringResource(R.string.delete_label), KeyboardButtonContentHeightShort, onClearClick) { onDeleteClick() }
+                KeyboardButtonFilled(buttonModifier, IconPack.Plus, stringResource(R.string.keyboard_plus), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.plus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Equal, stringResource(R.string.keyboard_equal), KeyboardButtonContentHeightShort) { onEqualClick() }
             }
         } else {
             KeypadFlow(
@@ -487,51 +487,51 @@ private fun LandscapeKeyboard(
                     .fillMaxWidth(width)
                     .fillMaxHeight(height)
 
-                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { toggleAngleMode() }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Root, stringResource(R.string.keyboard_root), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Operator.sqrt) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.pi) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._7) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key8, Token.Digit._8, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._8) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key9, Token.Digit._9, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._9) }
-                if (acButton) {
-                    KeyboardButtonTertiary(buttonModifier, IconPack.Clear, stringResource(R.string.clear_label), KeyboardButtonContentHeightShort) { clearSymbols() }
-                    KeyboardButtonFilled(buttonModifier, IconPack.Brackets, stringResource(R.string.keyboard_brackets), KeyboardButtonContentHeightShort) { addBracket() }
+                KeyboardButtonAdditional(buttonModifier, angleIcon, stringResource(angleIconDescription), KeyboardButtonContentHeightShortAdditional) { onAngleClick(!radianMode) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Root, stringResource(R.string.keyboard_root), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.sqrt) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Pi, stringResource(R.string.keyboard_pi), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Const.pi) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key7, Token.Digit._7, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._7) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key8, Token.Digit._8, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._8) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key9, Token.Digit._9, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._9) }
+                if (showAcButton) {
+                    KeyboardButtonTertiary(buttonModifier, IconPack.Clear, stringResource(R.string.clear_label), KeyboardButtonContentHeightShort) { onClearClick() }
+                    KeyboardButtonFilled(buttonModifier, IconPack.Brackets, stringResource(R.string.keyboard_brackets), KeyboardButtonContentHeightShort) { onBracketsClick() }
                 } else {
-                    KeyboardButtonFilled(buttonModifier, IconPack.LeftBracket, stringResource(R.string.keyboard_left_bracket), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.leftBracket) }
-                    KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.rightBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.LeftBracket, stringResource(R.string.keyboard_left_bracket), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.leftBracket) }
+                    KeyboardButtonFilled(buttonModifier, IconPack.RightBracket, stringResource(R.string.keyboard_right_bracket), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.rightBracket) }
                 }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { toggleInvMode() }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Operator.power) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Operator.factorial) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._4) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key5, Token.Digit._5, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._5) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key6, Token.Digit._6, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._6) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Multiply, stringResource(R.string.keyboard_multiply), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.multiply) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Divide, stringResource(R.string.keyboard_divide), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.divide) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Inv, stringResource(R.string.keyboard_inverse), KeyboardButtonContentHeightShortAdditional) { onInvClick() }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Power, stringResource(R.string.keyboard_power), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.power) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Factorial, stringResource(R.string.keyboard_factorial), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Operator.factorial) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key4, Token.Digit._4, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._4) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key5, Token.Digit._5, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._5) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key6, Token.Digit._6, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._6) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Multiply, stringResource(R.string.keyboard_multiply), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.multiply) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Divide, stringResource(R.string.keyboard_divide), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.divide) }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Sin, stringResource(R.string.keyboard_sin), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.sinBracket) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Cos, stringResource(R.string.keyboard_cos), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.cosBracket) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Tan, stringResource(R.string.keyboard_tan), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.tanBracket) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key1, Token.Digit._1, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._1) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key2, Token.Digit._2, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._2) }
-                KeyboardButtonLight(buttonModifier, IconPack.Key3, Token.Digit._3, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._3) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.minus) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.percent) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Sin, stringResource(R.string.keyboard_sin), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.sinBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Cos, stringResource(R.string.keyboard_cos), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.cosBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Tan, stringResource(R.string.keyboard_tan), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.tanBracket) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key1, Token.Digit._1, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._1) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key2, Token.Digit._2, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._2) }
+                KeyboardButtonLight(buttonModifier, IconPack.Key3, Token.Digit._3, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._3) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Minus, stringResource(R.string.keyboard_minus), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.minus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Percent, stringResource(R.string.keyboard_percent), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.percent) }
 
-                KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Const.e) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Ln, stringResource(R.string.keyboard_ln), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.lnBracket) }
-                KeyboardButtonAdditional(buttonModifier, IconPack.Log, stringResource(R.string.keyboard_log), KeyboardButtonContentHeightShortAdditional) { addSymbol(Token.Func.logBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Euler, stringResource(R.string.keyboard_euler), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Const.e) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Ln, stringResource(R.string.keyboard_ln), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.lnBracket) }
+                KeyboardButtonAdditional(buttonModifier, IconPack.Log, stringResource(R.string.keyboard_log), KeyboardButtonContentHeightShortAdditional) { onAddTokenClick(Token.Func.logBracket) }
                 if (middleZero) {
-                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
-                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit.dot) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._0) }
                 } else {
-                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { addSymbol(Token.Digit._0) }
-                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { addSymbol(Token.Digit.dot) }
+                    KeyboardButtonLight(buttonModifier, IconPack.Key0, Token.Digit._0, KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit._0) }
+                    KeyboardButtonLight(buttonModifier, fractionalIcon, stringResource(fractionalIconDescription), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Digit.dot) }
                 }
-                KeyboardButtonLight(buttonModifier, IconPack.Backspace, stringResource(R.string.delete_label), KeyboardButtonContentHeightShort, clearSymbols) { deleteSymbol() }
-                KeyboardButtonFilled(buttonModifier, IconPack.Plus, stringResource(R.string.keyboard_plus), KeyboardButtonContentHeightShort) { addSymbol(Token.Operator.plus) }
-                KeyboardButtonFilled(buttonModifier, IconPack.Equal, stringResource(R.string.keyboard_equal), KeyboardButtonContentHeightShort) { equal() }
+                KeyboardButtonLight(buttonModifier, IconPack.Backspace, stringResource(R.string.delete_label), KeyboardButtonContentHeightShort, onClearClick) { onDeleteClick() }
+                KeyboardButtonFilled(buttonModifier, IconPack.Plus, stringResource(R.string.keyboard_plus), KeyboardButtonContentHeightShort) { onAddTokenClick(Token.Operator.plus) }
+                KeyboardButtonFilled(buttonModifier, IconPack.Equal, stringResource(R.string.keyboard_equal), KeyboardButtonContentHeightShort) { onEqualClick() }
             }
         }
     }
@@ -542,18 +542,18 @@ private fun LandscapeKeyboard(
 private fun PreviewPortraitKeyboard() {
     PortraitKeyboard(
         modifier = Modifier.fillMaxHeight(),
+        onAddTokenClick = {},
+        onBracketsClick = {},
+        onDeleteClick = {},
+        onClearClick = {},
+        onEqualClick = {},
+        onInvClick = {},
+        onAngleClick = {},
+        showInvButtons = false,
         radianMode = true,
-        fractional = Token.PERIOD,
-        addSymbol = {},
-        clearSymbols = {},
-        deleteSymbol = {},
-        toggleAngleMode = {},
-        equal = {},
+        showAcButton = true,
         middleZero = false,
-        acButton = true,
-        addBracket = {},
-        invMode = false,
-        toggleInvMode = {}
+        fractional = Token.PERIOD,
     )
 }
 
@@ -562,17 +562,17 @@ private fun PreviewPortraitKeyboard() {
 private fun PreviewLandscapeKeyboard() {
     LandscapeKeyboard(
         modifier = Modifier.fillMaxHeight(),
+        onAddTokenClick = {},
+        onBracketsClick = {},
+        onDeleteClick = {},
+        onClearClick = {},
+        onEqualClick = {},
+        onInvClick = {},
+        onAngleClick = {},
+        showInvButtons = false,
         radianMode = true,
-        fractional = Token.PERIOD,
-        addSymbol = {},
-        clearSymbols = {},
-        deleteSymbol = {},
-        toggleAngleMode = {},
-        equal = {},
+        showAcButton = true,
         middleZero = false,
-        acButton = true,
-        addBracket = {},
-        invMode = false,
-        toggleInvMode = {}
+        fractional = Token.PERIOD,
     )
 }

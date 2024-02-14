@@ -126,6 +126,8 @@ fun TextFieldValue.deleteTokens(): TextFieldValue {
     )
 }
 
+fun TextFieldValue.placeCursorAtTheEnd(): TextFieldValue = copy(selection = TextRange(text.length))
+
 /**
  * Tries to get a [TextFieldValue]. Places cursor at the end.
  *

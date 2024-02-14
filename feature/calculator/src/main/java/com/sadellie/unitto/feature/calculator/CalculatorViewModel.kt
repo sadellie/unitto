@@ -28,6 +28,7 @@ import com.sadellie.unitto.core.ui.common.textfield.addBracket
 import com.sadellie.unitto.core.ui.common.textfield.addTokens
 import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.core.ui.common.textfield.getTextField
+import com.sadellie.unitto.core.ui.common.textfield.placeCursorAtTheEnd
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.isExpression
 import com.sadellie.unitto.data.common.stateIn
@@ -114,62 +115,43 @@ internal class CalculatorViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, CalculatorUIState.Loading)
 
-    fun addTokens(tokens: String) = _input.update {
+    fun addTokens(tokens: String) {
         val isClearInputNeeded = _equalClicked.value and Token.Digit.allWithDot.contains(tokens)
-
-        var newValue = when {
+        val newValue = when {
             // Clean input after clicking "=" and any token that is a Digit
             isClearInputNeeded -> TextFieldValue()
-            _equalClicked.value -> it.copy(selection = TextRange(it.text.length))
-            else -> it
-        }
-        newValue = newValue.addTokens(tokens)
-
-        _equalClicked.update { false }
-        _fractionJob?.cancel()
-        savedStateHandle[_inputKey] = newValue.text
-        newValue
+            _equalClicked.value -> _input.value.placeCursorAtTheEnd()
+            else -> _input.value
+        }.addTokens(tokens)
+        updateInput(newValue)
     }
 
-    fun addBracket() = _input.update {
-        var newValue = if (_equalClicked.value) {
+    fun addBracket() {
+        val newValue = if (_equalClicked.value) {
             // Cursor is set to 0 when equal is clicked
-            it.copy(selection = TextRange(it.text.length))
+            _input.value.placeCursorAtTheEnd()
         } else {
-            it
-        }
-        newValue = newValue.addBracket()
-
-        _equalClicked.update { false }
-        _fractionJob?.cancel()
-        savedStateHandle[_inputKey] = newValue.text
-        newValue
+            _input.value
+        }.addBracket()
+        updateInput(newValue)
     }
 
-    fun deleteTokens() = _input.update {
+    fun deleteTokens() {
         val newValue = if (_equalClicked.value) {
             TextFieldValue()
         } else {
-            it.deleteTokens()
+            _input.value.deleteTokens()
         }
-        _equalClicked.update { false }
-        _fractionJob?.cancel()
-        savedStateHandle[_inputKey] = newValue.text
-        newValue
+        updateInput(newValue)
     }
 
-    fun clearInput() = _input.update {
-        _equalClicked.update { false }
-        _fractionJob?.cancel()
-        savedStateHandle[_inputKey] = ""
-        TextFieldValue()
-    }
+    fun clearInput() = updateInput(TextFieldValue())
 
-    fun updateInput(value: TextFieldValue) = _input.update {
-        // Without this line: will place token (even in the middle of the input) and place cursor at
-        // the end. This line also removes fractional output once user touches input text field
+    fun updateInput(value: TextFieldValue) {
+        _fractionJob?.cancel()
         _equalClicked.update { false }
-        value
+        _input.update { value }
+        savedStateHandle[_inputKey] = value.text
     }
 
     fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {

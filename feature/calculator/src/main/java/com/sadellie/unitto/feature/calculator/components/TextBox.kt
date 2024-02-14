@@ -40,6 +40,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.FormatterSymbols
+import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowHeightSizeClass
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
@@ -78,26 +79,23 @@ fun TextBox(
             formatterSymbols = formatterSymbols
         )
         if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
+            val calculationResultModifier = Modifier
+                .weight(2f)
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+
             when (output) {
                 is CalculationResult.Empty -> {
                     Spacer(
-                        modifier = Modifier
-                            .weight(2f)
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
+                        modifier = calculationResultModifier
                     )
                 }
 
                 is CalculationResult.Default -> {
-                    var outputTF by remember(output) {
-                        mutableStateOf(TextFieldValue(output.text))
-                    }
+                    var outputTF by remember(output) { mutableStateOf(TextFieldValue(output.text)) }
 
                     ExpressionTextField(
-                        modifier = Modifier
-                            .weight(2f)
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
+                        modifier = calculationResultModifier,
                         value = outputTF,
                         minRatio = 0.8f,
                         onValueChange = { outputTF = it },
@@ -108,17 +106,13 @@ fun TextBox(
                 }
 
                 is CalculationResult.Fraction -> {
-                    var outputTF by remember(output) {
-                        mutableStateOf(TextFieldValue(output.text))
-                    }
+                    var outputTF by remember(output) { mutableStateOf(TextFieldValue(output.text)) }
+
                     ExpressionTextField(
-                        modifier = Modifier
-                            .weight(2f)
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
+                        modifier = calculationResultModifier,
                         value = outputTF,
                         minRatio = 0.8f,
-                        onValueChange = { outputTF = it },
+                        onValueChange = { outputTF = outputTF.copy(selection = it.selection) },
                         textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
                         formatterSymbols = formatterSymbols,
                         readOnly = true,
@@ -127,11 +121,8 @@ fun TextBox(
 
                 is CalculationResult.DivideByZeroError -> {
                     SimpleTextField(
-                        modifier = Modifier
-                            .weight(2f)
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
-                        value = TextFieldValue(stringResource(output.label)),
+                        modifier = calculationResultModifier,
+                        value = TextFieldValue(stringResource(R.string.calculator_divide_by_zero_error)),
                         minRatio = 0.8f,
                         onValueChange = {},
                         textColor = MaterialTheme.colorScheme.error,
@@ -145,7 +136,7 @@ fun TextBox(
                             .weight(2f)
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
-                        value = TextFieldValue(stringResource(output.label)),
+                        value = TextFieldValue(stringResource(R.string.error_label)),
                         minRatio = 0.8f,
                         onValueChange = {},
                         textColor = MaterialTheme.colorScheme.error,
