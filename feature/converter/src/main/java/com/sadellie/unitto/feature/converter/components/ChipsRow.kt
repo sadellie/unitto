@@ -74,7 +74,8 @@ internal fun ChipsRow(
         transitionSpec = {
             expandVertically(expandFrom = Alignment.Top) { it } + fadeIn() togetherWith
                     shrinkVertically(shrinkTowards = Alignment.Top) { it } + fadeOut()
-        }
+        },
+        label = "Expand chips row",
     ) { isExpanded ->
         FlexRow(
             modifier = modifier,

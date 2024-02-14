@@ -110,8 +110,8 @@ private fun BouncingEmojiScreen(
             var x by rememberSaveable { mutableFloatStateOf((width - ballSizePx) * initialX) }
             var y by rememberSaveable { mutableFloatStateOf((height - ballSizePx) * initialY) }
 
-            val animatedX = animateFloatAsState(x)
-            val animatedY = animateFloatAsState(y)
+            val animatedX = animateFloatAsState(x, label = "X position")
+            val animatedY = animateFloatAsState(y, label = "Y position")
 
             var xSpeed by rememberSaveable { mutableFloatStateOf(10f) }
             var ySpeed by rememberSaveable { mutableFloatStateOf(10f) }
@@ -204,7 +204,8 @@ private fun AnimatedText(
         transitionSpec = {
             slideInVertically { height -> height } + fadeIn() togetherWith
                     slideOutVertically { height -> -height } + fadeOut()
-        }
+        },
+        label = "Text animation",
     ) {
         Text(
             text = it,

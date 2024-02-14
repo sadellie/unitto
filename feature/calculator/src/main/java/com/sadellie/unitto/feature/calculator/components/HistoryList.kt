@@ -65,7 +65,8 @@ internal fun HistoryList(
     showDeleteButtons: Boolean,
 ) {
     Crossfade(
-        targetState = historyItems.isEmpty()
+        targetState = historyItems.isEmpty(),
+        label = "History list",
     ) { emptyList ->
         if (emptyList) {
             HistoryListPlaceholder(
