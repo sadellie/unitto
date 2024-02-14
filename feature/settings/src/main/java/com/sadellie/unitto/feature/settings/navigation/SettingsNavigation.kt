@@ -23,6 +23,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.ui.model.DrawerItem
+import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
 import com.sadellie.unitto.core.ui.unittoStackedComposable
 import com.sadellie.unitto.feature.settings.SettingsRoute
@@ -67,7 +68,7 @@ fun NavGraphBuilder.settingGraph(
             navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
         )
     ) {
-        unittoStackedComposable(start) {
+        unittoComposable(start) {
             SettingsRoute(
                 openDrawer = openDrawer,
                 navControllerAction = navController::navigate
