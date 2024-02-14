@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
  * [HorizontalPager] with a background and a page indicator.
  *
  * @param modifier [Modifier] that will be applied to the surround [Column].
- * @param pagerState [PagerState] that will passed [HorizontalPager].
+ * @param pageCount Page count for [PagerState] that will passed [HorizontalPager].
  * @param backgroundColor [Color] for background.
  * @param pageIndicatorAlignment [Alignment.Horizontal] for page indicator.
  * @param onClick Called on all clicks, even if the page didn't change.
@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PagedIsland(
     modifier: Modifier = Modifier,
-    pagerState: PagerState,
+    pageCount: Int,
     backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     pageIndicatorAlignment: Alignment.Horizontal = Alignment.End,
     onClick: () -> Unit = {},
@@ -67,6 +67,8 @@ fun PagedIsland(
     val contentColor = MaterialTheme.colorScheme.contentColorFor(backgroundColor)
     val disabledContentColor = contentColor.copy(alpha = 0.5f)
     val corScope = rememberCoroutineScope()
+    // https://stackoverflow.com/a/75469260
+    val pagerState = rememberPagerState { pageCount * 1_000 }
 
     ProvideColor(color = contentColor) {
         Column(
@@ -92,8 +94,8 @@ fun PagedIsland(
                     .padding(vertical = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, pageIndicatorAlignment),
             ) {
-                repeat(pagerState.pageCount) {
-                    PageDot(if (it == pagerState.currentPage) contentColor else disabledContentColor)
+                repeat(pageCount) {
+                    PageDot(if (it == pagerState.currentPage % pageCount) contentColor else disabledContentColor)
                 }
             }
 
@@ -102,10 +104,9 @@ fun PagedIsland(
                     .animateContentSize()
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
-                state = pagerState
-            ) { page ->
-                pageContent(page)
-            }
+                state = pagerState,
+                pageContent = { page -> pageContent(page % pageCount) }
+            )
         }
     }
 }
@@ -124,7 +125,7 @@ private fun PageDot(
 private fun PreviewPagedIsland() {
     PagedIsland(
         modifier = Modifier.size(400.dp, 250.dp),
-        pagerState = rememberPagerState { 5 }
+        pageCount = 5,
     ) { currentPage ->
         Column {
             Text("Current page: $currentPage")

@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.datecalculator.components
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,7 +44,7 @@ internal fun DateTimeResultBlock(
 
     PagedIsland(
         modifier = modifier,
-        pagerState = rememberPagerState { 6 },
+        pageCount = 6,
         onClick = { focusManager.clearFocus() },
         backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
     ) { currentPage ->
