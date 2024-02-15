@@ -114,7 +114,7 @@ internal fun ConverterRoute(
         onValueChange = viewModel::updateInput,
         onFocusOnInput2 = viewModel::updateFocused,
         onErrorClick = viewModel::updateCurrencyRates,
-        addBracket = viewModel::addBracket
+        addBracket = viewModel::addBracket,
     )
 }
 
@@ -149,7 +149,7 @@ private fun ConverterScreen(
                     navigateToLeftScreen = navigateToLeftScreen,
                     swapUnits = swapUnits,
                     navigateToRightScreen = navigateToRightScreen,
-                    clearInput = clearInput
+                    clearInput = clearInput,
                 )
             }
         }
@@ -180,13 +180,13 @@ private fun ConverterScreen(
 @Composable
 private fun UnitConverterTopBar(
     openDrawer: () -> Unit,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     ScaffoldWithTopBar(
         title = {},
         navigationIcon = { DrawerButton { openDrawer() } },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
-        content = { content(it) }
+        content = { content(it) },
     )
 }
 
@@ -219,7 +219,7 @@ private fun NumberBase(
 
                 ConverterResultTextField(
                     modifier = textFieldModifier,
-                    result = uiState.result
+                    result = uiState.result,
                 )
                 AnimatedUnitShortName(stringResource(uiState.unitTo.shortName))
 
@@ -230,7 +230,7 @@ private fun NumberBase(
                     unitToLabel = stringResource(uiState.unitTo.displayName),
                     swapUnits = swapUnits,
                     navigateToLeftScreen = { navigateToLeftScreen(uiState) },
-                    navigateToRightScreen = { navigateToRightScreen(uiState) }
+                    navigateToRightScreen = { navigateToRightScreen(uiState) },
                 )
             }
         },
@@ -241,7 +241,7 @@ private fun NumberBase(
                 deleteDigit = deleteDigit,
                 clearInput = clearInput,
             )
-        }
+        },
     )
 }
 
@@ -263,7 +263,7 @@ private fun Default(
     val locale: Locale = LocalLocale.current
     var calculation by remember(uiState.calculation) {
         mutableStateOf(
-            TextFieldValue(uiState.calculation?.format(uiState.scale, uiState.outputFormat) ?: "")
+            TextFieldValue(uiState.calculation?.format(uiState.scale, uiState.outputFormat) ?: ""),
         )
     }
     val connection by connectivityState()
@@ -302,19 +302,19 @@ private fun Default(
                             .fillMaxWidth(),
                         text = lastUpdate.orEmpty(),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
 
                 if (uiState.unitFrom.id == UnitID.foot) {
                     Row(
                         modifier = textFieldModifier,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f)
+                                .weight(1f),
                         ) {
                             ExpressionTextField(
                                 modifier = Modifier
@@ -334,7 +334,7 @@ private fun Default(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f)
+                                .weight(1f),
                         ) {
                             ExpressionTextField(
                                 modifier = Modifier
@@ -363,7 +363,7 @@ private fun Default(
                         visible = calculation.text.isNotEmpty(),
                         modifier = Modifier.weight(1f),
                         enter = expandVertically(clip = false),
-                        exit = shrinkVertically(clip = false)
+                        exit = shrinkVertically(clip = false),
                     ) {
                         ExpressionTextField(
                             modifier = Modifier,
@@ -372,7 +372,7 @@ private fun Default(
                             onValueChange = { calculation = it },
                             textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                             formatterSymbols = uiState.formatterSymbols,
-                            readOnly = true
+                            readOnly = true,
                         )
                     }
                     AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
@@ -384,13 +384,16 @@ private fun Default(
                     scale = uiState.scale,
                     outputFormat = uiState.outputFormat,
                     formatterSymbols = uiState.formatterSymbols,
-                    onErrorClick = { refreshCurrencyRates(uiState.unitFrom) }
+                    onErrorClick = { refreshCurrencyRates(uiState.unitFrom) },
                 )
                 AnimatedUnitShortName(
                     stringResource(
-                        if (uiState.result is ConverterResult.Error) R.string.click_to_try_again_label
-                        else uiState.unitTo.shortName
-                    )
+                        if (uiState.result is ConverterResult.Error) {
+                            R.string.click_to_try_again_label
+                        } else {
+                            uiState.unitTo.shortName
+                        },
+                    ),
                 )
 
                 Spacer(modifier = Modifier.height(boxWithConstraintsScope.maxHeight * 0.03f))
@@ -400,7 +403,7 @@ private fun Default(
                     unitToLabel = stringResource(uiState.unitTo.displayName),
                     swapUnits = swapUnits,
                     navigateToLeftScreen = { navigateToLeftScreen(uiState) },
-                    navigateToRightScreen = { navigateToRightScreen(uiState) }
+                    navigateToRightScreen = { navigateToRightScreen(uiState) },
                 )
             }
         },
@@ -413,9 +416,9 @@ private fun Default(
                 fractional = uiState.formatterSymbols.fractional,
                 middleZero = uiState.middleZero,
                 acButton = uiState.acButton,
-                addBracket = addBracket
+                addBracket = addBracket,
             )
-        }
+        },
     )
 }
 
@@ -447,7 +450,7 @@ private fun ConverterResultTextField(
                 value = TextFieldValue(stringResource(R.string.loading_label)),
                 onValueChange = {},
                 minRatio = 0.7f,
-                readOnly = true
+                readOnly = true,
             )
         }
 
@@ -469,7 +472,7 @@ private fun ConverterResultTextField(
                 minRatio = 0.7f,
                 onValueChange = { resultTextField = it },
                 formatterSymbols = formatterSymbols,
-                readOnly = true
+                readOnly = true,
             )
         }
 
@@ -479,18 +482,19 @@ private fun ConverterResultTextField(
                 value = resultTextField,
                 onValueChange = { resultTextField = it },
                 minRatio = 0.7f,
-                readOnly = true
+                readOnly = true,
             )
         }
 
         is ConverterResult.Time,
-        is ConverterResult.FootInch -> {
+        is ConverterResult.FootInch,
+        -> {
             SimpleTextField(
                 modifier = modifier,
                 value = resultTextField,
                 onValueChange = { resultTextField = it },
                 minRatio = 0.7f,
-                readOnly = true
+                readOnly = true,
             )
         }
     }
@@ -505,14 +509,16 @@ private fun AnimatedUnitShortName(
         targetState = label,
         transitionSpec = {
             // Enter animation
-            (expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
-                    togetherWith fadeOut()) using SizeTransform(clip = false)
+            (
+                expandHorizontally(clip = false, expandFrom = Alignment.Start) + fadeIn()
+                    togetherWith fadeOut()
+                ) using SizeTransform(clip = false)
         },
-        label = "Animated short name from"
+        label = "Animated short name from",
     ) { value ->
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
+            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End),
         )
     }
 }
@@ -529,7 +535,7 @@ private fun UnitSelectionButtons(
     val swapButtonRotation: Float by animateFloatAsState(
         targetValue = if (swapped) 0f else 180f,
         animationSpec = tween(easing = FastOutSlowInEasing),
-        label = "Swap button rotation"
+        label = "Swap button rotation",
     )
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -538,7 +544,7 @@ private fun UnitSelectionButtons(
                 .fillMaxWidth()
                 .weight(1f),
             label = unitFromLabel,
-            onClick = navigateToLeftScreen
+            onClick = navigateToLeftScreen,
         )
         IconButton(
             onClick = {
@@ -549,7 +555,7 @@ private fun UnitSelectionButtons(
             Icon(
                 modifier = Modifier.rotate(swapButtonRotation),
                 imageVector = Icons.Outlined.SwapHoriz,
-                contentDescription = stringResource(R.string.converter_swap_units_description)
+                contentDescription = stringResource(R.string.converter_swap_units_description),
             )
         }
         UnitSelectionButton(
@@ -557,7 +563,7 @@ private fun UnitSelectionButtons(
                 .fillMaxWidth()
                 .weight(1f),
             label = unitToLabel,
-            onClick = navigateToRightScreen
+            onClick = navigateToRightScreen,
         )
     }
 }

@@ -79,7 +79,7 @@ class UnittoDatabaseModule {
         return Room.databaseBuilder(
             appContext.applicationContext,
             UnittoDatabase::class.java,
-            DATABASE_NAME
+            DATABASE_NAME,
         ).build()
     }
 }

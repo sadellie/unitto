@@ -41,10 +41,10 @@ fun ScaffoldWithLargeTopBar(
     title: String,
     navigationIcon: @Composable () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
-        rememberTopAppBarState()
+        rememberTopAppBarState(),
     )
     Scaffold(
         modifier = Modifier
@@ -56,9 +56,9 @@ fun ScaffoldWithLargeTopBar(
                 },
                 navigationIcon = navigationIcon,
                 scrollBehavior = scrollBehavior,
-                actions = actions
+                actions = actions,
             )
         },
-        content = content
+        content = content,
     )
 }

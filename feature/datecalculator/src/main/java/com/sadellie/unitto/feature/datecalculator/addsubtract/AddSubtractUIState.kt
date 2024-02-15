@@ -24,7 +24,7 @@ import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
-internal data class AddSubtractState(
+internal data class AddSubtractUIState(
     val start: ZonedDateTime = ZonedDateTimeUtils.nowWithMinutes(),
     val result: ZonedDateTime = ZonedDateTimeUtils.nowWithMinutes(),
     val years: TextFieldValue = TextFieldValue(),

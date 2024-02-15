@@ -81,14 +81,14 @@ internal fun DateCalculatorScreen(
                                 pagerState.animateScrollToPage(index)
                             }
                         },
-                        text = { Text(tab) }
+                        text = { Text(tab) },
                     )
                 }
             }
 
             HorizontalPager(
                 state = pagerState,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) { page ->
                 when (page) {
                     0 -> AddSubtractPage()

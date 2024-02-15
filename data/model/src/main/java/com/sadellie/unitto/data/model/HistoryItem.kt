@@ -24,5 +24,5 @@ data class HistoryItem(
     val id: Int,
     val date: Date,
     val expression: String,
-    val result: String
+    val result: String,
 )

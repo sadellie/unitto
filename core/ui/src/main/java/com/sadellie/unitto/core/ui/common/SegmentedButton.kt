@@ -47,14 +47,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SegmentedButtonsRow(
     modifier: Modifier = Modifier,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Row(
         modifier
             .width(IntrinsicSize.Max)
             .height(40.dp)
             .clip(CircleShape)
-            .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
+            .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
     ) {
         content()
     }
@@ -66,7 +66,7 @@ fun RowScope.SegmentedButton(
     label: String,
     onClick: () -> Unit,
     selected: Boolean,
-    icon: ImageVector? = null
+    icon: ImageVector? = null,
 ) {
     val containerColor =
         if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
@@ -77,9 +77,9 @@ fun RowScope.SegmentedButton(
         shape = RectangleShape,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = containerColor,
-            contentColor = contentColorFor(containerColor)
+            contentColor = contentColorFor(containerColor),
         ),
-        contentPadding = PaddingValues(horizontal = 12.dp)
+        contentPadding = PaddingValues(horizontal = 12.dp),
     ) {
         if (icon != null) {
             Crossfade(selected, label = "Selected state") {

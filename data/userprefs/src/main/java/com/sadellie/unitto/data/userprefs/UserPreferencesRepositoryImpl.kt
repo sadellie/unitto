@@ -149,7 +149,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override val aboutPrefs: Flow<AboutPreferences> = data
         .map { preferences ->
             AboutPreferencesImpl(
-                enableToolsExperiment = preferences.getEnableToolsExperiment()
+                enableToolsExperiment = preferences.getEnableToolsExperiment(),
             )
         }
 

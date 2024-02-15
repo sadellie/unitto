@@ -70,7 +70,7 @@ internal fun BouncingEmojiRoute(
 ) {
     ScaffoldWithTopBar(
         title = { AnimatedText("Bouncy boy") },
-        navigationIcon = { NavigateUpButton(navigateUpAction) }
+        navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { paddingValues ->
         BouncingEmojiScreen(
             modifier = Modifier
@@ -95,12 +95,12 @@ private fun BouncingEmojiScreen(
     var speed by remember { mutableFloatStateOf(1f) }
 
     CompositionLocalProvider(
-        value = LocalDensity provides Density(density.density, fontScale = 1f)
+        value = LocalDensity provides Density(density.density, fontScale = 1f),
     ) {
         BoxWithConstraints(
             modifier = modifier.clickable {
                 speed = Random.nextFloat()
-            }
+            },
         ) {
             val width = constraints.maxWidth
             val height = constraints.maxHeight
@@ -125,16 +125,16 @@ private fun BouncingEmojiScreen(
                 modifier = Modifier.offset {
                     IntOffset(
                         animatedX.value.roundToInt(),
-                        animatedY.value.roundToInt()
+                        animatedY.value.roundToInt(),
                     )
                 },
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
                         .size(ballSize),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     AnimatedText(emoji, MaterialTheme.typography.displayMedium)
                 }
@@ -150,7 +150,7 @@ private fun BouncingEmojiScreen(
 
             LaunchedEffect(
                 key1 = Unit,
-                key2 = speed
+                key2 = speed,
             ) {
                 while (isActive) {
                     x += xSpeed * speed
@@ -173,7 +173,7 @@ private fun BouncingEmojiScreen(
                     }
 
                     // Count edge hit as 1 bounce
-                    when(bouncedEdges) {
+                    when (bouncedEdges) {
                         2 -> {
                             edgeHits++
                             bounces++
@@ -197,20 +197,20 @@ private fun BouncingEmojiScreen(
 @Composable
 private fun AnimatedText(
     text: String,
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
 ) {
     AnimatedContent(
         targetState = text,
         transitionSpec = {
             slideInVertically { height -> height } + fadeIn() togetherWith
-                    slideOutVertically { height -> -height } + fadeOut()
+                slideOutVertically { height -> -height } + fadeOut()
         },
         label = "Text animation",
     ) {
         Text(
             text = it,
             style = style,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }

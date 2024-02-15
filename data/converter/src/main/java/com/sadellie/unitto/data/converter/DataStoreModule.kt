@@ -35,12 +35,12 @@ class DataStoreModule {
     fun provideUnitsRepository(
         unitsDao: UnitsDao,
         currencyRatesDao: CurrencyRatesDao,
-        @ApplicationContext appContext: Context
+        @ApplicationContext appContext: Context,
     ): UnitsRepository {
         return UnitsRepositoryImpl(
             unitsDao = unitsDao,
             currencyRatesDao = currencyRatesDao,
-            mContext = appContext
+            mContext = appContext,
         )
     }
 }

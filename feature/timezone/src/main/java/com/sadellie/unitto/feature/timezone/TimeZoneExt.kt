@@ -28,6 +28,5 @@ val TimeZone.offsetSeconds
     @RequiresApi(Build.VERSION_CODES.N)
     get() = this.rawOffset / 1000L
 
-
 @RequiresApi(Build.VERSION_CODES.N)
 fun TimeZone.timeNow(): ZonedDateTime = ZonedDateTime.now(ZoneId.of(this.id, ZoneId.SHORT_IDS))

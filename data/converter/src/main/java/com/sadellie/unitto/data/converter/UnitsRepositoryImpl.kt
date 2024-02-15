@@ -73,36 +73,36 @@ class UnitsRepositoryImpl @Inject constructor(
     private val currencyRatesDao: CurrencyRatesDao,
     @ApplicationContext private val mContext: Context,
 ) : UnitsRepository {
-    private val _inMemoryUnits = MutableStateFlow(
+    private val inMemoryUnits = MutableStateFlow(
         lengthCollection +
-                currencyCollection +
-                massCollection +
-                speedCollection +
-                temperatureCollection +
-                areaCollection +
-                timeCollection +
-                volumeCollection +
-                dataCollection +
-                pressureCollection +
-                accelerationCollection +
-                energyCollection +
-                powerCollection +
-                angleCollection +
-                dataTransferCollection +
-                fluxCollection +
-                numberBaseCollection +
-                electrostaticCapacitance +
-                prefixCollection +
-                forceCollection +
-                torqueCollection +
-                flowRateCollection +
-                luminanceCollection +
-                fuelConsumptionCollection
+            currencyCollection +
+            massCollection +
+            speedCollection +
+            temperatureCollection +
+            areaCollection +
+            timeCollection +
+            volumeCollection +
+            dataCollection +
+            pressureCollection +
+            accelerationCollection +
+            energyCollection +
+            powerCollection +
+            angleCollection +
+            dataTransferCollection +
+            fluxCollection +
+            numberBaseCollection +
+            electrostaticCapacitance +
+            prefixCollection +
+            forceCollection +
+            torqueCollection +
+            flowRateCollection +
+            luminanceCollection +
+            fuelConsumptionCollection,
     )
 
     override val units: Flow<List<AbstractUnit>> = combine(
         unitsDao.getAllFlow(),
-        _inMemoryUnits
+        inMemoryUnits,
     ) { basedList, inMemoryList ->
         return@combine inMemoryList.map { inMemoryUnit ->
             val inBaseUnit = basedList.find { it.unitId == inMemoryUnit.id }
@@ -110,7 +110,7 @@ class UnitsRepositoryImpl @Inject constructor(
             inMemoryUnit.clone(
                 isFavorite = inBaseUnit.isFavorite,
                 counter = inBaseUnit.frequency,
-                pairId = inBaseUnit.pairedUnitId
+                pairId = inBaseUnit.pairedUnitId,
             )
         }
     }
@@ -131,8 +131,8 @@ class UnitsRepositoryImpl @Inject constructor(
             unitsDao.insertUnit(
                 UnitsEntity(
                     unitId = unit.id,
-                    isFavorite = true
-                )
+                    isFavorite = true,
+                ),
             )
         } else {
             unitsDao.insertUnit(
@@ -140,8 +140,8 @@ class UnitsRepositoryImpl @Inject constructor(
                     unitId = basedUnit.unitId,
                     isFavorite = !basedUnit.isFavorite,
                     pairedUnitId = basedUnit.pairedUnitId,
-                    frequency = basedUnit.frequency
-                )
+                    frequency = basedUnit.frequency,
+                ),
             )
         }
     }
@@ -153,8 +153,8 @@ class UnitsRepositoryImpl @Inject constructor(
             unitsDao.insertUnit(
                 UnitsEntity(
                     unitId = unit.id,
-                    frequency = 1
-                )
+                    frequency = 1,
+                ),
             )
         } else {
             unitsDao.insertUnit(
@@ -162,8 +162,8 @@ class UnitsRepositoryImpl @Inject constructor(
                     unitId = basedUnit.unitId,
                     isFavorite = basedUnit.isFavorite,
                     pairedUnitId = basedUnit.pairedUnitId,
-                    frequency = basedUnit.frequency + 1
-                )
+                    frequency = basedUnit.frequency + 1,
+                ),
             )
         }
     }
@@ -175,8 +175,8 @@ class UnitsRepositoryImpl @Inject constructor(
             unitsDao.insertUnit(
                 UnitsEntity(
                     unitId = unit.id,
-                    pairedUnitId = pair.id
-                )
+                    pairedUnitId = pair.id,
+                ),
             )
         } else {
             unitsDao.insertUnit(
@@ -184,8 +184,8 @@ class UnitsRepositoryImpl @Inject constructor(
                     unitId = basedUnit.unitId,
                     isFavorite = basedUnit.isFavorite,
                     pairedUnitId = pair.id,
-                    frequency = basedUnit.frequency
-                )
+                    frequency = basedUnit.frequency,
+                ),
             )
         }
     }
@@ -203,7 +203,7 @@ class UnitsRepositoryImpl @Inject constructor(
                             baseUnitId = unit.id,
                             date = epochDay,
                             pairUnitId = pairId,
-                            pairUnitValue = BigDecimal.valueOf(pairValue)
+                            pairUnitValue = BigDecimal.valueOf(pairValue),
                         )
                     }
                 currencyRatesDao.insertRates(rates)
@@ -213,7 +213,7 @@ class UnitsRepositoryImpl @Inject constructor(
                 Log.d("UnitsRepository", "Skipped update: $e")
             }
         }
-        _inMemoryUnits.update { units ->
+        inMemoryUnits.update { units ->
             units.map { localUnit ->
                 if (localUnit.group != UnitGroup.CURRENCY) return@map localUnit
                 if (localUnit !is ReverseUnit) return@map localUnit

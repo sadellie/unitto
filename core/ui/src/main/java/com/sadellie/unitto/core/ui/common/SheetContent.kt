@@ -67,14 +67,14 @@ internal fun ColumnScope.SheetContent(
         modifier = Modifier.clickable(
             interactionSource = interactionSource,
             indication = null,
-            onClick = { showHello = true }
-        )
+            onClick = { showHello = true },
+        ),
     ) { hello ->
         Text(
             text = if (hello) stringResource(R.string.hello_label) else stringResource(R.string.app_name),
             modifier = Modifier.padding(horizontal = 28.dp, vertical = 24.dp),
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 
@@ -85,7 +85,7 @@ internal fun ColumnScope.SheetContent(
             destination = drawerItem,
             icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
             selected = selected,
-            onClick = onItemClick
+            onClick = onItemClick,
         )
     }
 
@@ -98,7 +98,7 @@ internal fun ColumnScope.SheetContent(
             destination = drawerItem,
             icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
             selected = selected,
-            onClick = onItemClick
+            onClick = onItemClick,
         )
     }
 }
@@ -119,7 +119,7 @@ private fun PreviewDrawerSheet() {
                 DrawerItem.Calculator,
             ),
             currentDestination = DrawerItem.Calculator.start,
-            onItemClick = {}
+            onItemClick = {},
         )
     }
 }

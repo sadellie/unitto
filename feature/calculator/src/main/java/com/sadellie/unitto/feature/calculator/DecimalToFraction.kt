@@ -73,7 +73,7 @@ private fun BigDecimal.notRepeatingFractional(): Pair<BigInteger, BigInteger> {
 }
 
 private fun BigDecimal.repeatingFractional(
-    repeatingLength: Int
+    repeatingLength: Int,
 ): Pair<BigInteger, BigInteger> {
     val multiplier = BigInteger.TEN.pow(repeatingLength)
 
@@ -99,7 +99,7 @@ private fun BigDecimal.repeatingDecimals(): String? {
 
     repeat(inputString.length) { index ->
         val stringInFront = inputString.substring(index)
-        (1..stringInFront.length/2).forEach checkLoop@{ loop ->
+        (1..stringInFront.length / 2).forEach checkLoop@{ loop ->
             val pattern = stringInFront.take(loop)
             val checkRange = stringInFront.substring(0, stringInFront.length - stringInFront.length % pattern.length)
             val checkChunks = checkRange.chunked(pattern.length)

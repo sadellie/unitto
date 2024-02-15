@@ -43,7 +43,7 @@ interface TimeZoneDao {
             TimeZoneEntity(
                 id = id,
                 position = getMaxPosition() + 1,
-            )
+            ),
         )
     }
 

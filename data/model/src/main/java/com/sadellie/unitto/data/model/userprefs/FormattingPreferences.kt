@@ -20,7 +20,7 @@ package com.sadellie.unitto.data.model.userprefs
 
 import com.sadellie.unitto.core.base.FormatterSymbols
 
-interface FormattingPreferences{
+interface FormattingPreferences {
     val digitsPrecision: Int
     val formatterSymbols: FormatterSymbols
     val outputFormat: Int

@@ -97,7 +97,7 @@ private fun BodyMassScreen(
     }
     val weightShortLabel = remember(uiState.isMetric) {
         mContext.resources.getString(
-            if (uiState.isMetric) R.string.unit_kilogram_short else R.string.unit_pound_short
+            if (uiState.isMetric) R.string.unit_kilogram_short else R.string.unit_pound_short,
         )
     }
 
@@ -112,22 +112,22 @@ private fun BodyMassScreen(
                 .padding(16.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SegmentedButtonsRow(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 SegmentedButton(
                     label = stringResource(R.string.body_mass_metric),
                     onClick = { updateIsMetric(true) },
                     selected = uiState.isMetric,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
                 SegmentedButton(
                     label = stringResource(R.string.body_mass_imperial),
                     onClick = { updateIsMetric(false) },
                     selected = !uiState.isMetric,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
             }
 
@@ -136,14 +136,14 @@ private fun BodyMassScreen(
                     .fillMaxWidth()
                     .background(
                         MaterialTheme.colorScheme.secondaryContainer,
-                        RoundedCornerShape(32.dp)
+                        RoundedCornerShape(32.dp),
                     )
                     .padding(16.dp, 24.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Crossfade(
                     targetState = uiState.isMetric,
-                    label = "Measurement system change"
+                    label = "Measurement system change",
                 ) { isMetric ->
                     if (isMetric) {
                         BodyMassTextField(
@@ -155,7 +155,7 @@ private fun BodyMassScreen(
                         )
                     } else {
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             BodyMassTextField(
                                 modifier = Modifier.weight(1f),
@@ -180,7 +180,7 @@ private fun BodyMassScreen(
                     onValueChange = updateWeight,
                     label = "${stringResource(R.string.body_mass_weight)}, $weightShortLabel",
                     expressionFormatter = expressionTransformer,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 )
             }
 
@@ -190,7 +190,7 @@ private fun BodyMassScreen(
                 transitionSpec = {
                     (fadeIn() togetherWith fadeOut()) using SizeTransform(false)
                 },
-                label = "Body mass value visibility"
+                label = "Body mass value visibility",
             ) { targetState ->
                 if (targetState.isEqualTo(BigDecimal.ZERO)) return@AnimatedContent
 
@@ -198,14 +198,14 @@ private fun BodyMassScreen(
                     value = targetState,
                     range = uiState.normalWeightRange,
                     rangeSuffix = weightShortLabel,
-                    formatterSymbols = uiState.formatterSymbols
+                    formatterSymbols = uiState.formatterSymbols,
                 )
             }
 
             ElevatedButton(
                 onClick = {
                     openLink(mContext, "https://sadellie.github.io/unitto/help#body-mass-index")
-                }
+                },
             ) {
                 Text(text = stringResource(R.string.time_zone_no_results_button)) // TODO Rename
             }
@@ -224,7 +224,7 @@ fun PreviewBodyMassScreen() {
             weight = TextFieldValue(),
             normalWeightRange = BigDecimal(30) to BigDecimal(50),
             result = BigDecimal(18.5),
-            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD)
+            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
         ),
         updateHeight1 = {},
         updateHeight2 = {},

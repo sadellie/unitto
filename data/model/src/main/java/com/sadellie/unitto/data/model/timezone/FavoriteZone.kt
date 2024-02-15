@@ -26,5 +26,5 @@ import androidx.annotation.RequiresApi
 data class FavoriteZone(
     val timeZone: TimeZone,
     val position: Int,
-    val label: String
+    val label: String,
 )

@@ -54,23 +54,23 @@ internal fun AnnoyingBox(
             .squashable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
-                cornerRadiusRange = 15..25
+                cornerRadiusRange = 15..25,
             )
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .padding(16.dp, 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
             imageVector = imageVector,
             contentDescription = imageVectorContentDescription,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(vertical = 8.dp)
+                .padding(vertical = 8.dp),
         ) {
             Text(
                 text = title,
@@ -94,6 +94,6 @@ fun PreviewAnnoyingBox() {
         imageVector = Icons.Default.Accessibility,
         imageVectorContentDescription = "",
         title = "Title text",
-        support = "Lorem ipsum or something"
+        support = "Lorem ipsum or something",
     ) {}
 }

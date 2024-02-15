@@ -38,46 +38,47 @@ import javax.inject.Inject
 internal class DateDifferenceViewModel @Inject constructor(
     userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
-    private val _start = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
-    private val _end = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
-    private val _result = MutableStateFlow<ZonedDateTimeDifference>(ZonedDateTimeDifference.Zero)
+    private val start = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
+    private val end = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
+    private val result = MutableStateFlow<ZonedDateTimeDifference>(ZonedDateTimeDifference.Zero)
 
     val uiState: StateFlow<DifferenceUIState> = combine(
         userPrefsRepository.formattingPrefs,
-        _start,
-        _end,
-        _result
+        start,
+        end,
+        result,
     ) { prefs, start, end, result ->
-            return@combine DifferenceUIState.Ready(
-                start = start,
-                end = end,
-                result = result,
-                precision = prefs.digitsPrecision,
-                outputFormat = prefs.outputFormat,
-                formatterSymbols = prefs.formatterSymbols
-            )
-        }
+        return@combine DifferenceUIState.Ready(
+            start = start,
+            end = end,
+            result = result,
+            precision = prefs.digitsPrecision,
+            outputFormat = prefs.outputFormat,
+            formatterSymbols = prefs.formatterSymbols,
+        )
+    }
         .mapLatest { ui ->
             updateResult(
                 start = ui.start,
-                end = ui.end
+                end = ui.end,
             )
 
             ui
         }
         .stateIn(
-            viewModelScope, DifferenceUIState.Loading
+            viewModelScope,
+            DifferenceUIState.Loading,
         )
 
-    fun setStartDate(newValue: ZonedDateTime) = _start.update { newValue }
+    fun setStartDate(newValue: ZonedDateTime) = start.update { newValue }
 
-    fun setEndDate(newValue: ZonedDateTime) = _end.update { newValue }
+    fun setEndDate(newValue: ZonedDateTime) = end.update { newValue }
 
     private fun updateResult(
         start: ZonedDateTime,
-        end: ZonedDateTime
+        end: ZonedDateTime,
     ) = viewModelScope.launch(Dispatchers.Default) {
-        _result.update {
+        result.update {
             try {
                 start - end
             } catch (e: Exception) {

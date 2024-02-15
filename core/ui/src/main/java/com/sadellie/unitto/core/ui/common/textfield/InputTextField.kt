@@ -64,7 +64,7 @@ fun ExpressionTextField(
         ExpressionClipboardManager(
             formatterSymbols = formatterSymbols,
             clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE)
-                    as android.content.ClipboardManager
+                as android.content.ClipboardManager,
         )
     }
     val expressionTransformer = remember(formatterSymbols) {
@@ -72,7 +72,7 @@ fun ExpressionTextField(
     }
 
     CompositionLocalProvider(
-        LocalClipboardManager provides clipboardManager
+        LocalClipboardManager provides clipboardManager,
     ) {
         AutoSizeTextField(
             modifier = modifier,
@@ -85,7 +85,7 @@ fun ExpressionTextField(
             textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
             visualTransformation = expressionTransformer,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
-            minRatio = minRatio
+            minRatio = minRatio,
         )
     }
 }
@@ -110,7 +110,7 @@ fun NumberBaseTextField(
         readOnly = readOnly,
         textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
-        minRatio = minRatio
+        minRatio = minRatio,
     )
 }
 
@@ -132,7 +132,7 @@ fun SimpleTextField(
         readOnly = readOnly,
         textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
-        minRatio = minRatio
+        minRatio = minRatio,
     )
 }
 
@@ -174,7 +174,7 @@ private fun AutoSizeTextField(
     softWrap = false,
     style = textStyle,
     minRatio = minRatio,
-    alignment = alignment
+    alignment = alignment,
 ) {
     CompositionLocalProvider(
         LocalTextInputService provides null,
@@ -204,8 +204,8 @@ private fun AutoSizeTextField(
                         text = placeholder!!,
                         style = style.copy(
                             textAlign = TextAlign.End,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
-                        )
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                        ),
                     )
                 }
                 innerTextField()

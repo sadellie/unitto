@@ -62,7 +62,7 @@ internal fun ConverterSettingsRoute(
                 navigateUpAction = navigateUpAction,
                 navigateToUnitsGroup = navigateToUnitsGroup,
                 updateUnitConverterFormatTime = viewModel::updateUnitConverterFormatTime,
-                updateUnitConverterSorting = viewModel::updateUnitConverterSorting
+                updateUnitConverterSorting = viewModel::updateUnitConverterSorting,
             )
         }
     }
@@ -80,7 +80,7 @@ private fun ConverterSettingsScreen(
 
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.unit_converter_title),
-        navigationIcon = { NavigateUpButton(navigateUpAction) }
+        navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             item("unit group") {
@@ -88,7 +88,7 @@ private fun ConverterSettingsScreen(
                     icon = Icons.AutoMirrored.Filled.Rule,
                     headlineText = stringResource(R.string.settings_unit_groups_title),
                     supportingText = stringResource(R.string.settings_unit_groups_support),
-                    modifier = Modifier.clickable { navigateToUnitsGroup() }
+                    modifier = Modifier.clickable { navigateToUnitsGroup() },
                 )
             }
 
@@ -97,7 +97,7 @@ private fun ConverterSettingsScreen(
                     icon = Icons.AutoMirrored.Filled.Sort,
                     headlineText = stringResource(R.string.settings_units_sorting),
                     supportingText = stringResource(R.string.settings_units_sorting_support),
-                    modifier = Modifier.clickable { showDialog = true }
+                    modifier = Modifier.clickable { showDialog = true },
                 )
             }
 
@@ -107,7 +107,7 @@ private fun ConverterSettingsScreen(
                     headlineText = stringResource(R.string.settings_format_time),
                     supportingText = stringResource(R.string.settings_format_time_support),
                     switchState = prefs.unitConverterFormatTime,
-                    onSwitchChange = updateUnitConverterFormatTime
+                    onSwitchChange = updateUnitConverterFormatTime,
                 )
             }
         }
@@ -124,7 +124,7 @@ private fun ConverterSettingsScreen(
             ),
             selectedItemIndex = prefs.unitConverterSorting,
             selectAction = updateUnitConverterSorting,
-            dismissAction = { showDialog = false }
+            dismissAction = { showDialog = false },
         )
     }
 }
@@ -150,6 +150,6 @@ private fun PreviewConverterSettingsScreen() {
         navigateUpAction = {},
         navigateToUnitsGroup = {},
         updateUnitConverterFormatTime = {},
-        updateUnitConverterSorting = {}
+        updateUnitConverterSorting = {},
     )
 }

@@ -41,7 +41,7 @@ internal class UpdateInputAction : ActionCallback {
     override suspend fun onAction(
         context: Context,
         glanceId: GlanceId,
-        parameters: ActionParameters
+        parameters: ActionParameters,
     ) = withContext(Dispatchers.Default) {
         // Get new input
         val input = parameters[CalculatorWidget.inputKey] ?: return@withContext
@@ -89,7 +89,7 @@ internal class RestartWidget : ActionCallback {
     override suspend fun onAction(
         context: Context,
         glanceId: GlanceId,
-        parameters: ActionParameters
+        parameters: ActionParameters,
     ) {
         CalculatorWidget().update(context, glanceId)
     }
@@ -99,38 +99,38 @@ internal fun updateInputAction(
     input: String,
     equalClicked: Boolean,
     precision: Int,
-    outputFormat: Int
+    outputFormat: Int,
 ): Action = actionRunCallback<UpdateInputAction>(
     actionParametersOf(
         CalculatorWidget.inputKey to input,
         CalculatorWidget.equalClickedKey to equalClicked,
         CalculatorWidget.precisionKey to precision,
-        CalculatorWidget.outputFormatKey to outputFormat
-    )
+        CalculatorWidget.outputFormatKey to outputFormat,
+    ),
 )
 
 internal fun copyAction(
     output: String,
-    fractional: String
+    fractional: String,
 ): Action = actionRunCallback<CopyResultAction>(
     actionParametersOf(
-        CalculatorWidget.outputKey to output.replace(Token.Digit.dot, fractional)
-    )
+        CalculatorWidget.outputKey to output.replace(Token.Digit.dot, fractional),
+    ),
 )
 
 internal fun launchAction(
-    mContext: Context
+    mContext: Context,
 ): Action = actionStartActivity(
     ComponentName(
         mContext,
-        "com.sadellie.unitto.MainActivity"
-    )
+        "com.sadellie.unitto.MainActivity",
+    ),
 )
 
 private fun calculate(
     input: String,
     precision: Int,
-    outputFormat: Int
+    outputFormat: Int,
 ): String {
     if (input.isEmpty()) throw Exception()
     if (!input.isExpression()) throw Exception()

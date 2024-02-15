@@ -62,8 +62,8 @@ fun OutlinedDecimalTextField(
         visualTransformation = expressionFormatter,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
-            imeAction = imeAction
+            imeAction = imeAction,
         ),
-        colors = colors
+        colors = colors,
     )
 }

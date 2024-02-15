@@ -18,6 +18,6 @@
 
 package com.sadellie.unitto.data.model.userprefs
 
-interface StartingScreenPreferences{
+interface StartingScreenPreferences {
     val startingScreen: String
 }

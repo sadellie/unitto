@@ -57,12 +57,12 @@ fun ListItem(
             .padding(start = 16.dp, end = 24.dp)
             .heightIn(min = if (supportingContent == null) 56.dp else 72.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         leadingContent?.let {
             ProvideColor(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                content = it
+                content = it,
             )
         }
 
@@ -70,20 +70,20 @@ fun ListItem(
             ProvideStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 textStyle = MaterialTheme.typography.bodyLarge,
-                content = headlineContent
+                content = headlineContent,
             )
             supportingContent?.let {
                 ProvideStyle(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textStyle = MaterialTheme.typography.bodyMedium,
-                    content = it
+                    content = it,
                 )
             }
         }
         trailingContent?.let {
             ProvideColor(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                content = it
+                content = it,
             )
         }
     }
@@ -106,10 +106,10 @@ fun ListItem(
             imageVector = icon,
             contentDescription = iconDescription,
             modifier = Modifier.size(24.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     },
-    trailingContent = trailing
+    trailingContent = trailing,
 )
 
 @Composable
@@ -120,14 +120,14 @@ fun ListItem(
     iconDescription: String = headlineText,
     supportingText: String? = null,
     switchState: Boolean,
-    onSwitchChange: (Boolean) -> Unit
+    onSwitchChange: (Boolean) -> Unit,
 ) = ListItem(
     modifier = modifier
         .clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = rememberRipple(),
             onClick = { onSwitchChange(!switchState) },
-            role = Role.Switch
+            role = Role.Switch,
         ),
     headlineText = headlineText,
     supportingText = supportingText,
@@ -136,9 +136,9 @@ fun ListItem(
     trailing = {
         Switch(
             checked = switchState,
-            onCheckedChange = { onSwitchChange(it) }
+            onCheckedChange = { onSwitchChange(it) },
         )
-    }
+    },
 )
 
 @Preview
@@ -152,7 +152,7 @@ fun PreviewListItem1() {
             leadingContent = {
                 Icon(
                     imageVector = Icons.Default.Home,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             },
         )
@@ -171,7 +171,7 @@ fun PreviewListItem1() {
             supportingText = "Support text support text support text support text",
             modifier = Modifier,
             trailing = {},
-            iconDescription = ""
+            iconDescription = "",
         )
 
         ListItem(

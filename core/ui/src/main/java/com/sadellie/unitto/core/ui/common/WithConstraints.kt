@@ -34,11 +34,11 @@ fun ColumnWithConstraints(
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    content: @Composable (ColumnScope.(BoxWithConstraintsScope)-> Unit)
+    content: @Composable (ColumnScope.(BoxWithConstraintsScope) -> Unit),
 ) = BoxWithConstraints(modifier) {
     Column(
         verticalArrangement = verticalArrangement,
-        horizontalAlignment = horizontalAlignment
+        horizontalAlignment = horizontalAlignment,
     ) { content(this@BoxWithConstraints) }
 }
 
@@ -47,10 +47,10 @@ fun RowWithConstraints(
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     verticalAlignment: Alignment.Vertical = Alignment.Top,
-    content: @Composable (RowScope.(BoxWithConstraintsScope)-> Unit)
+    content: @Composable (RowScope.(BoxWithConstraintsScope) -> Unit),
 ) = BoxWithConstraints(modifier) {
     Row(
         horizontalArrangement = horizontalArrangement,
-        verticalAlignment = verticalAlignment
+        verticalAlignment = verticalAlignment,
     ) { content(this@BoxWithConstraints) }
 }

@@ -50,7 +50,7 @@ fun String.lev(secondString: String): Int {
                 // Insert
                 cost[j] + 1,
                 // Delete
-                newCost[j - 1] + 1
+                newCost[j - 1] + 1,
             )
         }
 
@@ -62,7 +62,6 @@ fun String.lev(secondString: String): Int {
 }
 
 fun String.isExpression(): Boolean {
-
     if (isEmpty()) return false
 
     // Positive numbers and zero

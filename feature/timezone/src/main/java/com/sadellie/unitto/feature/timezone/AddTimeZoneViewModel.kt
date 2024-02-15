@@ -42,14 +42,14 @@ import javax.inject.Inject
 class AddTimeZoneViewModel @Inject constructor(
     private val timezonesRepository: TimeZonesRepository,
 ) : ViewModel() {
-    private val _query = MutableStateFlow(TextFieldValue())
-    private val _result = MutableStateFlow(emptyList<SearchResultZone>())
+    private val query = MutableStateFlow(TextFieldValue())
+    private val result = MutableStateFlow(emptyList<SearchResultZone>())
 
     val uiState = combine(
-        _query,
-        _result,
+        query,
+        result,
         timezonesRepository.favoriteTimeZones,
-    ) { query, result, _  ->
+    ) { query, result, _ ->
         return@combine AddTimeZoneUIState.Ready(
             query = query,
             list = result,
@@ -57,12 +57,12 @@ class AddTimeZoneViewModel @Inject constructor(
     }
         .mapLatest { ui ->
             viewModelScope.launch {
-                _result.update {
+                result.update {
                     timezonesRepository.filter(
                         searchQuery = ui.query.text,
                         locale = ULocale.forLanguageTag(
-                            AppCompatDelegate.getApplicationLocales().toLanguageTags()
-                        )
+                            AppCompatDelegate.getApplicationLocales().toLanguageTags(),
+                        ),
                     )
                 }
             }
@@ -70,7 +70,7 @@ class AddTimeZoneViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, AddTimeZoneUIState.Loading)
 
-    fun onQueryChange(textFieldValue: TextFieldValue) = _query.update { textFieldValue }
+    fun onQueryChange(textFieldValue: TextFieldValue) = query.update { textFieldValue }
 
     fun addToFavorites(timeZone: TimeZone) = viewModelScope.launch {
         timezonesRepository.addToFavorites(timeZone)

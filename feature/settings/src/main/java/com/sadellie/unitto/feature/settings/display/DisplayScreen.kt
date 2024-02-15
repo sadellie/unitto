@@ -56,13 +56,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
+import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.Header
+import com.sadellie.unitto.core.ui.common.ListItem
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
+import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.SegmentedButton
 import com.sadellie.unitto.core.ui.common.SegmentedButtonsRow
-import com.sadellie.unitto.core.ui.common.EmptyScreen
-import com.sadellie.unitto.core.ui.common.ListItem
-import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.common.icons.IconPack
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Clear
 import com.sadellie.unitto.feature.settings.components.ColorSelector
@@ -122,7 +122,7 @@ internal fun DisplayRoute(
                 updateAcButton = viewModel::updateAcButton,
                 middleZero = prefs.middleZero,
                 updateMiddleZero = viewModel::updateMiddleZero,
-                navigateToLanguages = navigateToLanguages
+                navigateToLanguages = navigateToLanguages,
             )
         }
     }
@@ -151,13 +151,13 @@ private fun DisplayScreen(
 ) {
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_display),
-        navigationIcon = { NavigateUpButton(navigateUp) }
+        navigationIcon = { NavigateUpButton(navigateUp) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(paddingValues)
+                .padding(paddingValues),
         ) {
             ListItem(
                 leadingContent = {
@@ -173,26 +173,26 @@ private fun DisplayScreen(
             Row(
                 Modifier
                     .horizontalScroll(rememberScrollState())
-                    .wrapContentWidth()
+                    .wrapContentWidth(),
             ) {
                 SegmentedButtonsRow(modifier = Modifier.padding(56.dp, 8.dp, 24.dp, 2.dp)) {
                     SegmentedButton(
                         label = stringResource(R.string.settings_auto),
                         onClick = { onThemeChange(ThemingMode.AUTO) },
                         selected = ThemingMode.AUTO == currentThemingMode,
-                        icon = Icons.Outlined.HdrAuto
+                        icon = Icons.Outlined.HdrAuto,
                     )
                     SegmentedButton(
                         label = stringResource(R.string.settings_light_mode),
                         onClick = { onThemeChange(ThemingMode.FORCE_LIGHT) },
                         selected = ThemingMode.FORCE_LIGHT == currentThemingMode,
-                        icon = Icons.Outlined.LightMode
+                        icon = Icons.Outlined.LightMode,
                     )
                     SegmentedButton(
                         label = stringResource(R.string.settings_dark_mode),
                         onClick = { onThemeChange(ThemingMode.FORCE_DARK) },
                         selected = ThemingMode.FORCE_DARK == currentThemingMode,
-                        icon = Icons.Outlined.DarkMode
+                        icon = Icons.Outlined.DarkMode,
                     )
                 }
             }
@@ -207,7 +207,7 @@ private fun DisplayScreen(
                     headlineText = stringResource(R.string.settings_amoled_dark),
                     supportingText = stringResource(R.string.settings_amoled_dark_support),
                     switchState = isAmoledThemeEnabled,
-                    onSwitchChange = onAmoledThemeChange
+                    onSwitchChange = onAmoledThemeChange,
                 )
             }
 
@@ -217,7 +217,7 @@ private fun DisplayScreen(
                     headlineText = stringResource(R.string.settings_dynamic_colors),
                     supportingText = stringResource(R.string.settings_dynamic_colors_support),
                     switchState = isDynamicThemeEnabled,
-                    onSwitchChange = onDynamicThemeChange
+                    onSwitchChange = onDynamicThemeChange,
                 )
 
                 AnimatedVisibility(
@@ -233,7 +233,7 @@ private fun DisplayScreen(
                                 selected = selectedColor,
                                 onItemClick = onColorChange,
                                 colors = colorSchemes,
-                                defaultColor = Color(0xFF186c31)
+                                defaultColor = Color(0xFF186c31),
                             )
                         },
                         modifier = Modifier.padding(start = 40.dp),
@@ -257,7 +257,7 @@ private fun DisplayScreen(
                                 themingMode = currentThemingMode,
                             )
                         },
-                        modifier = Modifier.padding(start = 40.dp)
+                        modifier = Modifier.padding(start = 40.dp),
                     )
                 }
             }
@@ -269,7 +269,7 @@ private fun DisplayScreen(
                 headlineText = stringResource(R.string.settings_system_font),
                 supportingText = stringResource(R.string.settings_system_font_support),
                 switchState = systemFont,
-                onSwitchChange = updateSystemFont
+                onSwitchChange = updateSystemFont,
             )
 
             ListItem(
@@ -277,7 +277,7 @@ private fun DisplayScreen(
                 headlineText = stringResource(R.string.settings_ac_button),
                 supportingText = stringResource(R.string.settings_ac_button_support),
                 switchState = acButton,
-                onSwitchChange = updateAcButton
+                onSwitchChange = updateAcButton,
             )
 
             ListItem(
@@ -285,14 +285,14 @@ private fun DisplayScreen(
                 headlineText = stringResource(R.string.settings_middle_zero),
                 supportingText = stringResource(R.string.settings_middle_zero_support),
                 switchState = middleZero,
-                onSwitchChange = updateMiddleZero
+                onSwitchChange = updateMiddleZero,
             )
 
             ListItem(
                 icon = Icons.Default.Language,
                 headlineText = stringResource(R.string.settings_language),
                 supportingText = stringResource(R.string.settings_language_support),
-                modifier = Modifier.clickable { navigateToLanguages() }
+                modifier = Modifier.clickable { navigateToLanguages() },
             )
         }
     }
@@ -321,7 +321,7 @@ private fun Preview() {
             updateAcButton = {},
             middleZero = false,
             updateMiddleZero = {},
-            navigateToLanguages = {}
+            navigateToLanguages = {},
         )
     }
 }

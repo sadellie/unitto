@@ -27,5 +27,8 @@ import androidx.compose.ui.unit.isSpecified
 internal fun Density.roundToPx(sp: TextUnit): Int = sp.roundToPx()
 internal fun Density.toSp(px: Int): TextUnit = px.toSp()
 internal fun Density.toIntSize(dpSize: DpSize): IntSize =
-    if (dpSize.isSpecified) IntSize(dpSize.width.roundToPx(), dpSize.height.roundToPx())
-    else IntSize.Zero
+    if (dpSize.isSpecified) {
+        IntSize(dpSize.width.roundToPx(), dpSize.height.roundToPx())
+    } else {
+        IntSize.Zero
+    }

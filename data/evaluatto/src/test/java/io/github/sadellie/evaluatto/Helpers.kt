@@ -26,13 +26,13 @@ import java.math.RoundingMode
 fun assertExpr(expr: String, result: String, radianMode: Boolean = true) =
     assertEquals(
         BigDecimal(result).setScale(10, RoundingMode.HALF_EVEN),
-        Expression(expr, radianMode).calculate().setScale(10, RoundingMode.HALF_EVEN)
+        Expression(expr, radianMode).calculate().setScale(10, RoundingMode.HALF_EVEN),
     )
 
 fun <T : Throwable?> assertExprFail(
     expectedThrowable: Class<T>?,
     expr: String,
-    radianMode: Boolean = true
+    radianMode: Boolean = true,
 ) {
     assertThrows(expectedThrowable) {
         Expression(expr, radianMode = radianMode).calculate()

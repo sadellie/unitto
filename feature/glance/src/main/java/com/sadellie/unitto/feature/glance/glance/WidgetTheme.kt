@@ -33,7 +33,7 @@ internal fun WidgetTheme(content: @Composable () -> Unit) =
         }
     } else {
         GlanceTheme(
-            colors = ColorProviders(light = LightThemeColors, dark = DarkThemeColors)
+            colors = ColorProviders(light = LightThemeColors, dark = DarkThemeColors),
         ) {
             content()
         }

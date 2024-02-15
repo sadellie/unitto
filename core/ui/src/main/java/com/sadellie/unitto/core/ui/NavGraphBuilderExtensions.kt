@@ -44,16 +44,22 @@ fun NavGraphBuilder.unittoComposable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    enterTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = { unittoFadeIn() },
-    exitTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = { unittoFadeOut() },
-    popEnterTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
-        enterTransition,
-    popExitTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
-        exitTransition,
+    enterTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?
+    )? = { unittoFadeIn() },
+    exitTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
+    )? = { unittoFadeOut() },
+    popEnterTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?
+    )? = enterTransition,
+    popExitTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
+    )? = exitTransition,
     content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ): Unit = composable(
     route = route,
@@ -79,22 +85,26 @@ fun NavGraphBuilder.unittoStackedComposable(
         enterTransition = {
             slideInHorizontally(
                 animationSpec = unittoEnterTween(),
-                initialOffsetX = { (it * 0.2f).toInt() }) + unittoFadeIn()
+                initialOffsetX = { (it * 0.2f).toInt() },
+            ) + unittoFadeIn()
         },
         exitTransition = {
             slideOutHorizontally(
                 animationSpec = unittoExitTween(),
-                targetOffsetX = { -(it * 0.2f).toInt() }) + unittoFadeOut()
+                targetOffsetX = { -(it * 0.2f).toInt() },
+            ) + unittoFadeOut()
         },
         popEnterTransition = {
             slideInHorizontally(
                 animationSpec = unittoEnterTween(),
-                initialOffsetX = { -(it * 0.2f).toInt() }) + unittoFadeIn()
+                initialOffsetX = { -(it * 0.2f).toInt() },
+            ) + unittoFadeIn()
         },
         popExitTransition = {
             slideOutHorizontally(
                 animationSpec = unittoExitTween(),
-                targetOffsetX = { (it * 0.2f).toInt() }) + unittoFadeOut()
+                targetOffsetX = { (it * 0.2f).toInt() },
+            ) + unittoFadeOut()
         },
         content = content,
     )
@@ -113,10 +123,10 @@ fun NavGraphBuilder.unittoNavigation(
     exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         null,
     popEnterTransition: (
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?
     )? = enterTransition,
     popExitTransition: (
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
     )? = exitTransition,
     builder: NavGraphBuilder.() -> Unit,
 ): Unit = navigation(
@@ -128,7 +138,7 @@ fun NavGraphBuilder.unittoNavigation(
     exitTransition = exitTransition,
     popEnterTransition = popEnterTransition,
     popExitTransition = popExitTransition,
-    builder = builder
+    builder = builder,
 )
 
 private const val ENTER_DURATION = 350

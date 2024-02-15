@@ -57,6 +57,6 @@ internal sealed class UnitSearchResult {
     data object Loading : UnitSearchResult()
 
     data class Success(
-        val units: Map<UnitGroup, List<AbstractUnit>>
+        val units: Map<UnitGroup, List<AbstractUnit>>,
     ) : UnitSearchResult()
 }

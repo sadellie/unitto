@@ -47,13 +47,13 @@ fun String.tokenize(): List<String> {
 
 private fun peekTokenAfter(
     streamOfTokens: String,
-    cursor: Int
+    cursor: Int,
 ): String? {
     Token.expressionTokens.forEach { token ->
         val subs = streamOfTokens
             .substring(
                 cursor,
-                (cursor + token.length).coerceAtMost(streamOfTokens.length)
+                (cursor + token.length).coerceAtMost(streamOfTokens.length),
             )
         if (subs == token) {
             // Got a digit, see if there are other digits coming after
@@ -125,8 +125,8 @@ private fun MutableList<String>.missingMultiply(): MutableList<String> {
                 tokenAfter in Token.Func.all ||
                 tokenAfter in Token.Const.all ||
                 tokenAfter == Token.Operator.sqrt ||
-                tokenAfter.isDigitToken()) {
-
+                tokenAfter.isDigitToken()
+            ) {
                 iterator.add(Token.Operator.multiply)
             }
         }
@@ -194,7 +194,7 @@ private fun MutableList<String>.unpackPercentAt(percentIndex: Int): MutableList<
         // Remove percentage
         mutList.removeAt(percentIndex)
 
-        //Add opening bracket before percentage
+        // Add opening bracket before percentage
         mutList.add(percentIndex - percentage.size, Token.Operator.leftBracket)
 
         // Add "/ 100" and closing bracket
@@ -209,7 +209,7 @@ private fun MutableList<String>.unpackPercentAt(percentIndex: Int): MutableList<
     // Remove percentage
     mutList.removeAt(percentIndex)
 
-    //Add opening bracket before percentage
+    // Add opening bracket before percentage
     mutList.add(percentIndex - percentage.size, Token.Operator.leftBracket)
 
     // Add "/ 100" and other stuff
@@ -222,8 +222,8 @@ private fun MutableList<String>.unpackPercentAt(percentIndex: Int): MutableList<
             Token.Operator.leftBracket,
             *base.toTypedArray(),
             Token.Operator.rightBracket,
-            Token.Operator.rightBracket
-        )
+            Token.Operator.rightBracket,
+        ),
     )
 
     return mutList

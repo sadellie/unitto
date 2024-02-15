@@ -28,7 +28,7 @@ import java.time.ZonedDateTime
 
 class ZonedDateTimeUtilsTest {
 
-    @get: Rule
+    @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test

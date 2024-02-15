@@ -30,13 +30,13 @@ class ExpressionTransformer(private val formatterSymbols: FormatterSymbols) : Vi
         val formatted = text.text.formatExpression(formatterSymbols)
         return TransformedText(
             text = AnnotatedString(formatted),
-            offsetMapping = ExpressionMapping(text.text, formatted)
+            offsetMapping = ExpressionMapping(text.text, formatted),
         )
     }
 
     inner class ExpressionMapping(
         private val original: String,
-        private val transformed: String
+        private val transformed: String,
     ) : OffsetMapping {
         // Called when entering text (on each text change)
         // Basically moves cursor to the right position

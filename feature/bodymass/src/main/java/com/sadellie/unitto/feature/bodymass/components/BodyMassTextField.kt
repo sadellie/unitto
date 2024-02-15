@@ -37,7 +37,7 @@ internal fun BodyMassTextField(
     label: String,
     onValueChange: (TextFieldValue) -> Unit,
     expressionFormatter: VisualTransformation,
-    imeAction: ImeAction = ImeAction.Next
+    imeAction: ImeAction = ImeAction.Next,
 ) {
     OutlinedDecimalTextField(
         modifier = modifier,
@@ -57,6 +57,6 @@ internal fun BodyMassTextField(
                 unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ),
         expressionFormatter = expressionFormatter,
-        imeAction = imeAction
+        imeAction = imeAction,
     )
 }

@@ -31,6 +31,6 @@ internal fun UnitGroupHeader(modifier: Modifier, unitGroup: UnitGroup) {
     Header(
         text = stringResource(unitGroup.res),
         modifier = modifier,
-        paddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp)
+        paddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
     )
 }

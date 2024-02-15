@@ -30,7 +30,7 @@ import java.util.Date
 import javax.inject.Inject
 
 class CalculatorHistoryRepositoryImpl @Inject constructor(
-    private val calculatorHistoryDao: CalculatorHistoryDao
+    private val calculatorHistoryDao: CalculatorHistoryDao,
 ) : CalculatorHistoryRepository {
     /**
      * Calculator history sorted by [CalculatorHistoryEntity.timestamp] from new to old (DESC).
@@ -42,14 +42,14 @@ class CalculatorHistoryRepositoryImpl @Inject constructor(
 
     override suspend fun add(
         expression: String,
-        result: String
+        result: String,
     ) {
         calculatorHistoryDao.insert(
             CalculatorHistoryEntity(
                 timestamp = System.currentTimeMillis(),
                 expression = expression,
-                result = result
-            )
+                result = result,
+            ),
         )
     }
 
@@ -67,7 +67,7 @@ class CalculatorHistoryRepositoryImpl @Inject constructor(
                 id = it.entityId,
                 date = Date(it.timestamp),
                 expression = it.expression,
-                result = it.result
+                result = it.result,
             )
         }
     }

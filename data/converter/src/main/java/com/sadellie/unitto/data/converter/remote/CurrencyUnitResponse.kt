@@ -29,7 +29,7 @@ import com.squareup.moshi.ToJson
  */
 data class CurrencyUnitResponse(
     val date: String,
-    val currency: Map<String, Double>
+    val currency: Map<String, Double>,
 )
 
 /**
@@ -37,13 +37,15 @@ data class CurrencyUnitResponse(
  */
 internal class CurrencyAdapter {
     @Suppress("UNUSED", "UNUSED_PARAMETER", "SameReturnValue")
-    @ToJson fun toJson(card: CurrencyUnitResponse): String? = null
+    @ToJson
+    fun toJson(card: CurrencyUnitResponse): String? = null
 
     @Suppress("UNUSED", "UNCHECKED_CAST")
-    @FromJson fun fromJson(response: Map<String, Any>): CurrencyUnitResponse {
+    @FromJson
+    fun fromJson(response: Map<String, Any>): CurrencyUnitResponse {
         return CurrencyUnitResponse(
             date = response["date"] as String,
-            currency = (response[response.keys.elementAt(1)]) as Map<String, Double>
+            currency = (response[response.keys.elementAt(1)]) as Map<String, Double>,
         )
     }
 }

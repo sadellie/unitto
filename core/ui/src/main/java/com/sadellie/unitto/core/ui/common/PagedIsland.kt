@@ -81,12 +81,12 @@ fun PagedIsland(
                     corScope.launch {
                         pagerState.animateScrollToPage(
                             // Animate to first page if target page is out of bounds
-                            if (targetPage >= pagerState.pageCount) 0 else targetPage
+                            if (targetPage >= pagerState.pageCount) 0 else targetPage,
                         )
                     }
                 }
                 .background(backgroundColor)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             Row(
                 modifier = Modifier
@@ -105,7 +105,7 @@ fun PagedIsland(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
                 state = pagerState,
-                pageContent = { page -> pageContent(page % pageCount) }
+                pageContent = { page -> pageContent(page % pageCount) },
             )
         }
     }

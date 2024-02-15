@@ -32,20 +32,20 @@ import com.sadellie.unitto.core.base.Token
  */
 internal class ExpressionClipboardManager(
     private val formatterSymbols: FormatterSymbols,
-    private val clipboardManager: android.content.ClipboardManager
-): ClipboardManager {
+    private val clipboardManager: android.content.ClipboardManager,
+) : ClipboardManager {
     override fun setText(annotatedString: AnnotatedString) = clipboardManager.setPrimaryClip(
         ClipData.newPlainText(
             PLAIN_TEXT_LABEL,
             annotatedString
                 .text
-                .replace(Token.Digit.dot, formatterSymbols.fractional)
-        )
+                .replace(Token.Digit.dot, formatterSymbols.fractional),
+        ),
     )
 
     override fun getText(): AnnotatedString? = clipboardManager.primaryClip?.let { primaryClip ->
         if (primaryClip.itemCount > 0) {
-            val clipText = primaryClip.getItemAt(0)?.text ?:return@let null
+            val clipText = primaryClip.getItemAt(0)?.text ?: return@let null
 
             clipText
                 .toString()

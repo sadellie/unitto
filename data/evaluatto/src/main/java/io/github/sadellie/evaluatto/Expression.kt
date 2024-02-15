@@ -23,7 +23,7 @@ import com.sadellie.unitto.core.base.Token
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-sealed class ExpressionException(override val message: String): Exception(message) {
+sealed class ExpressionException(override val message: String) : Exception(message) {
     class DivideByZero : ExpressionException("Can't divide by zero")
     class FactorialCalculation : ExpressionException("Can calculate factorial of non-negative real numbers only")
     class BadExpression : ExpressionException("Invalid expression. Probably some operator lacks argument")
@@ -33,7 +33,7 @@ sealed class ExpressionException(override val message: String): Exception(messag
 class Expression(
     input: String,
     private val radianMode: Boolean = true,
-    private val roundingMode: RoundingMode = RoundingMode.HALF_EVEN
+    private val roundingMode: RoundingMode = RoundingMode.HALF_EVEN,
 ) {
     private val tokens = input.tokenize()
     private var cursorPosition = 0
@@ -88,8 +88,9 @@ class Expression(
 
         while (peek() in listOf(Token.Operator.multiply, Token.Operator.divide)) {
             when {
-                moveIfMatched(Token.Operator.multiply) -> expression =
-                    expression.multiply(parseFactor())
+                moveIfMatched(Token.Operator.multiply) -> {
+                    expression = expression.multiply(parseFactor())
+                }
 
                 moveIfMatched(Token.Operator.divide) -> {
                     val divisor = parseFactor()

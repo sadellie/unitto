@@ -100,7 +100,7 @@ private fun UnitFromSelectorScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             Column(
-                Modifier.background(MaterialTheme.colorScheme.surface)
+                Modifier.background(MaterialTheme.colorScheme.surface),
             ) {
                 SearchBar(
                     query = uiState.query,
@@ -111,7 +111,7 @@ private fun UnitFromSelectorScreen(
                             toggleFavoritesOnly(!uiState.showFavoritesOnly)
                         }
                     },
-                    scrollBehavior = scrollBehavior
+                    scrollBehavior = scrollBehavior,
                 )
 
                 ChipsRow(
@@ -121,10 +121,10 @@ private fun UnitFromSelectorScreen(
                     chosenUnitGroup = uiState.selectedUnitGroup,
                     items = uiState.shownUnitGroups,
                     selectAction = updateUnitGroup,
-                    navigateToSettingsAction = navigateToUnitGroups
+                    navigateToSettingsAction = navigateToUnitGroups,
                 )
             }
-        }
+        },
     ) { paddingValues ->
         val resources = LocalContext.current.resources
         UnitsList(
@@ -138,7 +138,7 @@ private fun UnitFromSelectorScreen(
                 updateUnitFrom(it)
                 navigateUp()
             },
-            favoriteUnit = { favoriteUnit(it) }
+            favoriteUnit = { favoriteUnit(it) },
         )
     }
 }
@@ -155,7 +155,7 @@ private fun UnitFromSelectorScreenPreview() {
             NormalUnit(UnitID.foot, BigDecimal("304800000000000000"), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
             NormalUnit(UnitID.yard, BigDecimal("914400000000000000"), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
             NormalUnit(UnitID.mile, BigDecimal("1609344000000000000000"), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
-        )
+        ),
     )
 
     UnitFromSelectorScreen(
@@ -174,6 +174,6 @@ private fun UnitFromSelectorScreenPreview() {
         updateUnitGroup = {},
         favoriteUnit = {},
         navigateUp = {},
-        navigateToUnitGroups = {}
+        navigateToUnitGroups = {},
     )
 }

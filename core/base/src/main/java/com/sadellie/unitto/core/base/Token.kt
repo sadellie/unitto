@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("ktlint:standard:property-naming")
+
 package com.sadellie.unitto.core.base
 
 @Suppress("ObjectPropertyName")
@@ -100,14 +102,14 @@ object Token {
 
         val all by lazy {
             listOf(
-                arsin, arcos, actan, sin, cos, tan, log, exp, ln
+                arsin, arcos, actan, sin, cos, tan, log, exp, ln,
             ).sortedByDescending { it.length }
         }
 
         val allWithOpeningBracket by lazy {
             listOf(
                 arsinBracket, arcosBracket, actanBracket, sinBracket, cosBracket, tanBracket,
-                logBracket, expBracket, lnBracket
+                logBracket, expBracket, lnBracket,
             )
         }
     }
@@ -144,7 +146,7 @@ object Token {
             Operator.multiply to listOf("*", "•"),
             Func.arsin to listOf("arsin"),
             Func.arcos to listOf("arcos"),
-            Func.actan to listOf("actan")
+            Func.actan to listOf("actan"),
         )
     }
 }

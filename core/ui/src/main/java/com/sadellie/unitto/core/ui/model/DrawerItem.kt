@@ -43,7 +43,7 @@ sealed class DrawerItem(
     @StringRes val name: Int,
     val shortcut: Shortcut?,
     val selectedIcon: ImageVector,
-    val defaultIcon: ImageVector
+    val defaultIcon: ImageVector,
 ) {
     data object Calculator : DrawerItem(
         graph = TopLevelDestinations.CALCULATOR_GRAPH,
@@ -52,10 +52,10 @@ sealed class DrawerItem(
         shortcut = Shortcut(
             R.string.calculator_title,
             R.string.calculator_title,
-            R.drawable.ic_shortcut_calculator
+            R.drawable.ic_shortcut_calculator,
         ),
         selectedIcon = Icons.Filled.Calculate,
-        defaultIcon = Icons.Outlined.Calculate
+        defaultIcon = Icons.Outlined.Calculate,
     )
 
     data object Converter : DrawerItem(
@@ -65,10 +65,10 @@ sealed class DrawerItem(
         shortcut = Shortcut(
             R.string.unit_converter_title,
             R.string.unit_converter_title,
-            R.drawable.ic_shortcut_unit_converter
+            R.drawable.ic_shortcut_unit_converter,
         ),
         selectedIcon = Icons.Filled.SwapHoriz,
-        defaultIcon = Icons.Outlined.SwapHoriz
+        defaultIcon = Icons.Outlined.SwapHoriz,
     )
 
     data object DateCalculator : DrawerItem(
@@ -78,10 +78,10 @@ sealed class DrawerItem(
         shortcut = Shortcut(
             R.string.date_calculator_title,
             R.string.date_calculator_title,
-            R.drawable.ic_shortcut_date_calculator
+            R.drawable.ic_shortcut_date_calculator,
         ),
         selectedIcon = Icons.Filled.Event,
-        defaultIcon = Icons.Outlined.Event
+        defaultIcon = Icons.Outlined.Event,
     )
 
     data object TimeZones : DrawerItem(
@@ -91,10 +91,10 @@ sealed class DrawerItem(
         shortcut = Shortcut(
             R.string.time_zone_title,
             R.string.time_zone_title,
-            R.drawable.ic_shortcut_time_zone
+            R.drawable.ic_shortcut_time_zone,
         ),
         selectedIcon = Icons.Filled.Schedule,
-        defaultIcon = Icons.Outlined.Schedule
+        defaultIcon = Icons.Outlined.Schedule,
     )
 
     data object BodyMass : DrawerItem(
@@ -104,10 +104,10 @@ sealed class DrawerItem(
         shortcut = Shortcut(
             R.string.body_mass_title,
             R.string.body_mass_title,
-            R.drawable.ic_shortcut_body_mass
+            R.drawable.ic_shortcut_body_mass,
         ),
         selectedIcon = Icons.Filled.AccessibilityNew,
-        defaultIcon = Icons.Outlined.AccessibilityNew
+        defaultIcon = Icons.Outlined.AccessibilityNew,
     )
 
     data object Settings : DrawerItem(
@@ -116,7 +116,7 @@ sealed class DrawerItem(
         name = R.string.settings_title,
         shortcut = null,
         selectedIcon = Icons.Filled.Settings,
-        defaultIcon = Icons.Outlined.Settings
+        defaultIcon = Icons.Outlined.Settings,
     )
 
     companion object {

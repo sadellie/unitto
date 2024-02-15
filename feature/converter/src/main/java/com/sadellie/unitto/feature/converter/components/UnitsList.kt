@@ -49,11 +49,11 @@ internal fun UnitsList(
     Crossfade(
         modifier = modifier,
         targetState = searchResult,
-        label = "Units list"
+        label = "Units list",
     ) { result ->
         when (result) {
             is UnitSearchResult.Success -> LazyColumn(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 result.units.forEach { (group, units) ->
                     item(group.name) {
@@ -77,7 +77,7 @@ internal fun UnitsList(
             UnitSearchResult.Empty -> SearchPlaceholder(
                 onButtonClick = navigateToUnitGroups,
                 supportText = stringResource(R.string.converter_no_results_support),
-                buttonLabel = stringResource(R.string.open_settings_label)
+                buttonLabel = stringResource(R.string.open_settings_label),
             )
 
             UnitSearchResult.Loading -> Unit
@@ -98,7 +98,7 @@ private fun PreviewUnitsList() {
             NormalUnit(UnitID.foot, BigDecimal("304800000000000000"), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
             NormalUnit(UnitID.yard, BigDecimal("914400000000000000"), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
             NormalUnit(UnitID.mile, BigDecimal("1609344000000000000000"), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
-        )
+        ),
     )
 
     UnitsList(
@@ -108,6 +108,6 @@ private fun PreviewUnitsList() {
         currentUnitId = UnitID.mile,
         supportLabel = { resources.getString(it.shortName) },
         onClick = {},
-        favoriteUnit = {}
+        favoriteUnit = {},
     )
 }

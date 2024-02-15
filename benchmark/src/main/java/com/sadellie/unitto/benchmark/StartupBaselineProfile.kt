@@ -31,7 +31,7 @@ class StartupBaselineProfile {
     @Test
     fun generate() = baselineProfileRule.collect(
         packageName = "com.sadellie.unitto",
-        includeInStartupProfile = true
+        includeInStartupProfile = true,
     ) {
         startActivityAndWait()
         device.pressBack()

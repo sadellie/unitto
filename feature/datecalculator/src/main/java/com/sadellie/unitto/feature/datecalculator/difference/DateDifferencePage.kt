@@ -64,7 +64,7 @@ internal fun DateDifferencePage(
         is DifferenceUIState.Ready -> DateDifferenceView(
             uiState = uiState,
             setStartDate = viewModel::setStartDate,
-            setEndDate = viewModel::setEndDate
+            setEndDate = viewModel::setEndDate,
         )
     }
 }
@@ -81,7 +81,7 @@ private fun DateDifferenceView(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         FlowRow(
             modifier = Modifier
@@ -89,7 +89,7 @@ private fun DateDifferenceView(
                 .fillMaxWidth(),
             maxItemsInEachRow = 2,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             DateTimeSelectorBlock(
                 modifier = Modifier
@@ -102,7 +102,7 @@ private fun DateDifferenceView(
                 onLongClick = { setStartDate(ZonedDateTimeUtils.nowWithMinutes()) },
                 onTimeClick = { dialogState = DialogState.FROM_TIME },
                 onDateClick = { dialogState = DialogState.FROM_DATE },
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
             )
 
             DateTimeSelectorBlock(
@@ -116,14 +116,14 @@ private fun DateDifferenceView(
                 onLongClick = { setEndDate(ZonedDateTimeUtils.nowWithMinutes()) },
                 onTimeClick = { dialogState = DialogState.TO_TIME },
                 onDateClick = { dialogState = DialogState.TO_DATE },
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
             )
         }
 
         AnimatedContent(
             targetState = uiState.result,
             label = "Result reveal",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) { result ->
             when (result) {
                 is ZonedDateTimeDifference.Default -> {
@@ -135,7 +135,7 @@ private fun DateDifferenceView(
                         format = {
                             it.format(uiState.precision, uiState.outputFormat)
                                 .formatExpression(uiState.formatterSymbols)
-                        }
+                        },
                     )
                 }
                 ZonedDateTimeDifference.Zero -> Unit
@@ -164,7 +164,6 @@ private fun DateDifferenceView(
     )
 }
 
-
 @Preview
 @Composable
 fun DateDifferenceViewPreview() {
@@ -186,7 +185,7 @@ fun DateDifferenceViewPreview() {
             ),
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD)
+            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
         ),
         setStartDate = {},
         setEndDate = {},

@@ -35,8 +35,8 @@ fun NavGraphBuilder.calculatorGraph(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
-            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
-        )
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" },
+        ),
     ) {
         unittoComposable(start) {
             CalculatorRoute(

@@ -38,7 +38,7 @@ import java.math.BigDecimal
 internal fun DateTimeResultBlock(
     modifier: Modifier = Modifier,
     diff: ZonedDateTimeDifference.Default,
-    format: (BigDecimal) -> String
+    format: (BigDecimal) -> String,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -46,17 +46,17 @@ internal fun DateTimeResultBlock(
         modifier = modifier,
         pageCount = 6,
         onClick = { focusManager.clearFocus() },
-        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
     ) { currentPage ->
-        when(currentPage) {
+        when (currentPage) {
             0 -> {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     Text(
                         text = stringResource(R.string.date_calculator_difference),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                     SelectionContainer {
                         Column {
@@ -93,7 +93,7 @@ internal fun DateTimeResultBlock(
                 Column {
                     Text(
                         text = stringResource(R.string.date_calculator_years),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                     SelectionContainer {
                         DateText(diff.sumYears, format)
@@ -105,7 +105,7 @@ internal fun DateTimeResultBlock(
                 Column {
                     Text(
                         text = stringResource(R.string.date_calculator_months),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                     SelectionContainer {
                         DateText(diff.sumMonths, format)
@@ -117,7 +117,7 @@ internal fun DateTimeResultBlock(
                 Column {
                     Text(
                         text = stringResource(R.string.date_calculator_days),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                     SelectionContainer {
                         DateText(diff.sumDays, format)
@@ -129,7 +129,7 @@ internal fun DateTimeResultBlock(
                 Column {
                     Text(
                         text = stringResource(R.string.date_calculator_hours),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                     SelectionContainer {
                         DateText(diff.sumHours, format)
@@ -141,7 +141,7 @@ internal fun DateTimeResultBlock(
                 Column {
                     Text(
                         text = stringResource(R.string.date_calculator_minutes),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                     SelectionContainer {
                         DateText(diff.sumMinutes, format)
@@ -159,7 +159,7 @@ private fun DateText(
     format: (BigDecimal) -> String,
 ) = Text(
     text = "${stringResource(id)}: ${format(value)}",
-    style = MaterialTheme.typography.displaySmall
+    style = MaterialTheme.typography.displaySmall,
 )
 
 @Composable
@@ -168,7 +168,7 @@ private fun DateText(
     format: (BigDecimal) -> String,
 ) = Text(
     text = format(value),
-    style = MaterialTheme.typography.displaySmall
+    style = MaterialTheme.typography.displaySmall,
 )
 
 @Preview
@@ -188,6 +188,6 @@ private fun DateTimeResultBlockPreview() {
             sumHours = BigDecimal.ZERO,
             sumMinutes = BigDecimal("46080"),
         ),
-        format = { it.toPlainString() }
+        format = { it.toPlainString() },
     )
 }

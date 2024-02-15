@@ -47,10 +47,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalLocale
-import com.sadellie.unitto.core.ui.common.SearchPlaceholder
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
 import com.sadellie.unitto.core.ui.common.SearchBar
+import com.sadellie.unitto.core.ui.common.SearchPlaceholder
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.data.common.displayName
@@ -73,7 +73,7 @@ internal fun AddTimeZoneRoute(
             navigateUp = navigateUp,
             onQueryChange = viewModel::onQueryChange,
             addToFavorites = viewModel::addToFavorites,
-            userTime = userTime
+            userTime = userTime,
         )
     }
 }
@@ -106,7 +106,7 @@ fun AddTimeZoneScreen(
         Crossfade(
             modifier = Modifier.padding(paddingValues),
             targetState = uiState.list.isEmpty() and uiState.query.text.isNotEmpty(),
-            label = "Placeholder"
+            label = "Placeholder",
         ) { empty ->
             if (empty) {
                 SearchPlaceholder(
@@ -131,9 +131,9 @@ fun AddTimeZoneScreen(
                                     text = it.timeZone
                                         .offset(userTime)
                                         .formatTime(locale, is24Hour),
-                                    style = MaterialTheme.typography.headlineSmall
+                                    style = MaterialTheme.typography.headlineSmall,
                                 )
-                            }
+                            },
                         )
                     }
                 }
@@ -156,23 +156,23 @@ fun PreviewAddTimeZoneScreen() {
             list = listOf(
                 "UTC",
                 "Africa/Addis_Ababa",
-                "ACT"
+                "ACT",
             ).map {
                 val zone = TimeZone.getTimeZone(it)
                 SearchResultZone(
                     timeZone = zone,
                     region = zone.regionName(
                         timeZoneNames = timeZoneNames,
-                        localeDisplayNames = localeDisplayNames
+                        localeDisplayNames = localeDisplayNames,
                     ),
                     name = zone.displayName(locale),
-                    rank = 0
+                    rank = 0,
                 )
-            }
+            },
         ),
         navigateUp = {},
         onQueryChange = {},
         addToFavorites = {},
-        userTime = ZonedDateTime.now()
+        userTime = ZonedDateTime.now(),
     )
 }

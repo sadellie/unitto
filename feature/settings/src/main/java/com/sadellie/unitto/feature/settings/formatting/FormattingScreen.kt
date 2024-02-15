@@ -98,7 +98,8 @@ fun FormattingScreen(
     onPrecisionChange: (Int) -> Unit,
     updateFormatterSymbols: (grouping: String, fractional: String) -> Unit,
     onOutputFormatChange: (Int) -> Unit,
-    precisions: ClosedFloatingPointRange<Float> = 0f..16f, // 16th is a MAX_PRECISION (1000)
+    // 16th is a MAX_PRECISION (1000)
+    precisions: ClosedFloatingPointRange<Float> = 0f..16f,
 ) {
     val resources = LocalContext.current.resources
 
@@ -107,7 +108,7 @@ fun FormattingScreen(
             return@derivedStateOf if (uiState.precision >= precisions.endInclusive) {
                 resources.getString(
                     R.string.settings_precision_max,
-                    MAX_PRECISION.toString().formatExpression(uiState.formatterSymbols)
+                    MAX_PRECISION.toString().formatExpression(uiState.formatterSymbols),
                 )
             } else {
                 uiState.precision.toString()
@@ -121,7 +122,7 @@ fun FormattingScreen(
     ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(paddingValues)
+                .padding(paddingValues),
         ) {
             PagedIsland(
                 modifier = Modifier
@@ -147,7 +148,7 @@ fun FormattingScreen(
                         .fillMaxWidth()
                         .horizontalScroll(rememberScrollState()),
                     textAlign = TextAlign.End,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
 
@@ -155,13 +156,13 @@ fun FormattingScreen(
                 leadingContent = {
                     Icon(
                         Icons.Default.Architecture,
-                        stringResource(R.string.settings_precision)
+                        stringResource(R.string.settings_precision),
                     )
                 },
                 headlineContent = {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(stringResource(R.string.settings_precision))
                         Text(precisionText)
@@ -169,7 +170,7 @@ fun FormattingScreen(
                 },
                 supportingContent = {
                     Text(stringResource(R.string.settings_precision_support))
-                }
+                },
             )
 
             Slider(
@@ -190,13 +191,13 @@ fun FormattingScreen(
                 Modifier
                     .horizontalScroll(rememberScrollState())
                     .wrapContentWidth()
-                    .padding(start = 56.dp)
+                    .padding(start = 56.dp),
             ) {
                 SegmentedButtonsRow {
                     SegmentedButton(
                         label = stringResource(R.string.settings_space),
                         onClick = { updateFormatterSymbols(Token.SPACE, uiState.formatterSymbols.fractional) },
-                        selected = uiState.formatterSymbols.grouping == Token.SPACE
+                        selected = uiState.formatterSymbols.grouping == Token.SPACE,
                     )
                     SegmentedButton(
                         label = stringResource(R.string.settings_period),
@@ -214,10 +215,10 @@ fun FormattingScreen(
             AnimatedVisibility(
                 visible = uiState.formatterSymbols.grouping == Token.SPACE,
                 enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
+                exit = shrinkVertically() + fadeOut(),
             ) {
                 Column(
-                    modifier = Modifier.padding(start = 40.dp)
+                    modifier = Modifier.padding(start = 40.dp),
                 ) {
                     ListItem(
                         modifier = Modifier,
@@ -227,7 +228,7 @@ fun FormattingScreen(
                         Modifier
                             .horizontalScroll(rememberScrollState())
                             .wrapContentWidth()
-                            .padding(start = 16.dp)
+                            .padding(start = 16.dp),
                     ) {
                         SegmentedButtonsRow {
                             SegmentedButton(
@@ -250,30 +251,30 @@ fun FormattingScreen(
                     Icon(Icons.Default.EMobiledata, stringResource(R.string.settings_precision))
                 },
                 headlineContent = { Text(stringResource(R.string.settings_exponential_notation)) },
-                supportingContent = { Text(stringResource(R.string.settings_exponential_notation_support)) }
+                supportingContent = { Text(stringResource(R.string.settings_exponential_notation_support)) },
             )
 
             Row(
                 Modifier
                     .horizontalScroll(rememberScrollState())
                     .wrapContentWidth()
-                    .padding(start = 56.dp)
+                    .padding(start = 56.dp),
             ) {
                 SegmentedButtonsRow {
                     SegmentedButton(
                         label = stringResource(R.string.settings_auto),
                         onClick = { onOutputFormatChange(OutputFormat.ALLOW_ENGINEERING) },
-                        selected = OutputFormat.ALLOW_ENGINEERING == uiState.outputFormat
+                        selected = OutputFormat.ALLOW_ENGINEERING == uiState.outputFormat,
                     )
                     SegmentedButton(
                         label = stringResource(R.string.enabled_label),
                         onClick = { onOutputFormatChange(OutputFormat.FORCE_ENGINEERING) },
-                        selected = OutputFormat.FORCE_ENGINEERING == uiState.outputFormat
+                        selected = OutputFormat.FORCE_ENGINEERING == uiState.outputFormat,
                     )
                     SegmentedButton(
                         label = stringResource(R.string.disabled_label),
                         onClick = { onOutputFormatChange(OutputFormat.PLAIN) },
-                        selected = OutputFormat.PLAIN == uiState.outputFormat
+                        selected = OutputFormat.PLAIN == uiState.outputFormat,
                     )
                 }
             }
@@ -292,7 +293,7 @@ private fun PreviewFormattingScreen() {
         uiState = FormattingUIState(
             precision = 16,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = currentFormatterSymbols
+            formatterSymbols = currentFormatterSymbols,
         ),
         onPrecisionChange = { currentPrecision = it },
         updateFormatterSymbols = updateFormatterSymbols@{ grouping, fractional ->

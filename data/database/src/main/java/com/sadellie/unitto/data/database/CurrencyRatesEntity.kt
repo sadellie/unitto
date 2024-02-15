@@ -29,5 +29,5 @@ class CurrencyRatesEntity(
     @ColumnInfo(name = "base_unit_id") val baseUnitId: String,
     @ColumnInfo(name = "timestamp") val date: Long,
     @ColumnInfo(name = "pair_unit_id") val pairUnitId: String,
-    @ColumnInfo(name = "pair_unit_value") val pairUnitValue: BigDecimal?
+    @ColumnInfo(name = "pair_unit_value") val pairUnitValue: BigDecimal?,
 )

@@ -21,10 +21,10 @@ package com.sadellie.unitto.feature.settings.unitgroups
 import com.sadellie.unitto.data.model.UnitGroup
 
 internal sealed class UnitGroupsUIState {
-    data object Loading: UnitGroupsUIState()
+    data object Loading : UnitGroupsUIState()
 
     data class Ready(
         val shownUnitGroups: List<UnitGroup>,
-        val hiddenUnitGroups: List<UnitGroup>
-    ): UnitGroupsUIState()
+        val hiddenUnitGroups: List<UnitGroup>,
+    ) : UnitGroupsUIState()
 }

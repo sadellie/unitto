@@ -51,7 +51,7 @@ internal fun String.clearAndFilterNumberBase(): String {
 }
 
 fun String.formatExpression(
-    formatterSymbols: FormatterSymbols
+    formatterSymbols: FormatterSymbols,
 ): String {
     var input = this
 
@@ -84,7 +84,7 @@ fun String.formatExpression(
 }
 
 private fun String.formatNumber(
-    formatterSymbols: FormatterSymbols
+    formatterSymbols: FormatterSymbols,
 ): String {
     val input = this
 
@@ -114,7 +114,7 @@ private fun String.leaveLegalTokensOnly(legalTokens: List<String>): String {
             val subs = streamOfTokens
                 .substring(
                     cursor,
-                    (cursor + token.length).coerceAtMost(streamOfTokens.length)
+                    (cursor + token.length).coerceAtMost(streamOfTokens.length),
                 )
             if (subs == token) {
                 // Got a digit, see if there are other digits coming after

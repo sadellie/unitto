@@ -35,7 +35,7 @@ import com.sadellie.unitto.core.ui.common.SearchBarIconButton
 @Composable
 internal fun FavoritesButton(
     state: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     SearchBarIconButton(onClick = onClick) {
         AnimatedContent(
@@ -43,11 +43,11 @@ internal fun FavoritesButton(
             transitionSpec = {
                 (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false))
             },
-            label = "Animated click"
+            label = "Animated click",
         ) {
             Icon(
                 if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                contentDescription = stringResource(R.string.converter_favorite_button_description)
+                contentDescription = stringResource(R.string.converter_favorite_button_description),
             )
         }
     }

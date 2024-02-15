@@ -71,14 +71,14 @@ internal fun ColorSelector(
     LazyRow(
         modifier = modifier,
         state = listState,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // Default, Unitto colors
         item(defaultColor.value.toLong()) {
             ColorCheckbox(
                 color = defaultColor,
                 selected = Color.Unspecified == selected,
-                onClick = { onItemClick(Color.Unspecified) }
+                onClick = { onItemClick(Color.Unspecified) },
             )
         }
 
@@ -87,7 +87,7 @@ internal fun ColorSelector(
                 ColorCheckbox(
                     color = it,
                     selected = it == selected,
-                    onClick = { onItemClick(it) }
+                    onClick = { onItemClick(it) },
                 )
             }
         }
@@ -98,7 +98,7 @@ internal fun ColorSelector(
 private fun ColorCheckbox(
     color: Color,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -106,7 +106,7 @@ private fun ColorCheckbox(
             .clip(RoundedCornerShape(25))
             .clickable(onClick = onClick)
             .background(MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Box(
             modifier = Modifier

@@ -57,7 +57,7 @@ internal fun IconButton(
         modifier = glanceModifier
             .height(48.dp)
             .padding(4.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Image(
             modifier = GlanceModifier
@@ -66,12 +66,12 @@ internal fun IconButton(
                 .cornerRadius(
                     context = LocalContext.current,
                     cornerRadius = 24.dp,
-                    color = containerColor
+                    color = containerColor,
                 )
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             provider = ImageProvider(iconRes),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(contentColor)
+            colorFilter = ColorFilter.tint(contentColor),
         )
     }
 }
@@ -101,8 +101,8 @@ fun GlanceModifier.cornerRadius(
                 // fucking
                 .toIcon(context)
                 // stupid
-                .setTint(color.getColor(context).toArgb())
-            )
-        )
-        else -> this.background(color)
-    }
+                .setTint(color.getColor(context).toArgb()),
+        ),
+    )
+    else -> this.background(color)
+}

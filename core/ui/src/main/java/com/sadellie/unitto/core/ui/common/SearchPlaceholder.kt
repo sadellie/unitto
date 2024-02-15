@@ -41,29 +41,29 @@ import com.sadellie.unitto.core.base.R
 fun SearchPlaceholder(
     onButtonClick: () -> Unit,
     supportText: String,
-    buttonLabel: String
+    buttonLabel: String,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Icon(
             imageVector = Icons.Default.SearchOff,
             contentDescription = stringResource(R.string.no_results_description),
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(48.dp),
         )
         Text(
             text = stringResource(R.string.no_results_label),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Text(
             text = supportText,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
         ElevatedButton(onClick = onButtonClick) {
             Text(text = buttonLabel)

@@ -109,7 +109,7 @@ internal fun TimeZoneRoute(
                 delete = viewModel::delete,
                 updateLabel = viewModel::updateLabel,
                 selectTimeZone = viewModel::selectTimeZone,
-                setDialogState = viewModel::setDialogState
+                setDialogState = viewModel::setDialogState,
             )
         }
     }
@@ -132,7 +132,7 @@ private fun TimeZoneScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     var currentUserTime by remember(uiState.customUserTime) {
         mutableStateOf(
-            uiState.customUserTime ?: uiState.userTimeZone.timeNow()
+            uiState.customUserTime ?: uiState.userTimeZone.timeNow(),
         )
     }
     val focusRequester = remember { FocusRequester() }
@@ -170,7 +170,7 @@ private fun TimeZoneScreen(
             val targetInOldTz = uiState.favorites.getOrNull(to - 1) ?: return@onDragEnd
 
             onDragEnd(tz, targetInOldTz.position)
-        }
+        },
     )
 
     ScaffoldWithTopBar(
@@ -180,7 +180,7 @@ private fun TimeZoneScreen(
             LargeFloatingActionButton(
                 onClick = {
                     navigateToAddTimeZone(currentUserTime)
-                }
+                },
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -199,7 +199,7 @@ private fun TimeZoneScreen(
                 .padding(padding)
                 .reorderable(state),
             contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 124.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item("user time") {
                 UserTimeZone(
@@ -209,7 +209,7 @@ private fun TimeZoneScreen(
                     userTime = currentUserTime,
                     onClick = { setDialogState(TimeZoneDialogState.UserTimePicker(currentUserTime)) },
                     onResetClick = setCurrentTime,
-                    showReset = uiState.customUserTime != null
+                    showReset = uiState.customUserTime != null,
                 )
             }
 
@@ -269,11 +269,11 @@ private fun TimeZoneScreen(
                     setSelectedTime(
                         currentUserTime
                             .withHour(hour)
-                            .withMinute(minute)
+                            .withMinute(minute),
                     )
                     setDialogState(TimeZoneDialogState.Nothing)
                 },
-                onCancel = { setDialogState(TimeZoneDialogState.Nothing) }
+                onCancel = { setDialogState(TimeZoneDialogState.Nothing) },
             )
         }
 
@@ -287,12 +287,12 @@ private fun TimeZoneScreen(
                             .withHour(hour)
                             .withMinute(minute)
                             .minusSeconds(uiState.dialogState.timeZone.timeZone.offsetSeconds)
-                            .plusSeconds(uiState.userTimeZone.offsetSeconds)
+                            .plusSeconds(uiState.userTimeZone.offsetSeconds),
 
                     )
                     setDialogState(TimeZoneDialogState.Nothing)
                 },
-                onCancel = { setDialogState(TimeZoneDialogState.Nothing) }
+                onCancel = { setDialogState(TimeZoneDialogState.Nothing) },
             )
         }
 
@@ -301,8 +301,8 @@ private fun TimeZoneScreen(
                 mutableStateOf(
                     TextFieldValue(
                         text = uiState.dialogState.timeZone.label,
-                        selection = TextRange(uiState.dialogState.timeZone.label.length)
-                    )
+                        selection = TextRange(uiState.dialogState.timeZone.label.length),
+                    ),
                 )
             }
             AlertDialog(
@@ -311,7 +311,7 @@ private fun TimeZoneScreen(
                     OutlinedTextField(
                         value = tfv,
                         onValueChange = { tfv = it },
-                        modifier = Modifier.focusRequester(focusRequester)
+                        modifier = Modifier.focusRequester(focusRequester),
                     )
                     LaunchedEffect(Unit) {
                         awaitFrame()
@@ -324,13 +324,13 @@ private fun TimeZoneScreen(
                             setDialogState(TimeZoneDialogState.Nothing)
                             updateLabel(uiState.dialogState.timeZone, tfv.text)
                         },
-                        content = { Text(text = stringResource(R.string.ok_label)) }
+                        content = { Text(text = stringResource(R.string.ok_label)) },
                     )
                 },
                 dismissButton = {
                     TextButton(
                         onClick = { setDialogState(TimeZoneDialogState.Nothing) },
-                        content = { Text(text = stringResource(R.string.cancel_label)) }
+                        content = { Text(text = stringResource(R.string.cancel_label)) },
                     )
                 },
                 onDismissRequest = { setDialogState(TimeZoneDialogState.Nothing) },
@@ -353,13 +353,13 @@ fun PreviewTimeZoneScreen() {
                     FavoriteZone(
                         timeZone = TimeZone.getTimeZone(tz),
                         position = index,
-                        label = if (tz == "ACT") "label text" else ""
+                        label = if (tz == "ACT") "label text" else "",
                     )
                 },
             customUserTime = null,
             userTimeZone = TimeZone.getTimeZone("Africa/Addis_Ababa"),
             selectedTimeZone = null,
-            dialogState = TimeZoneDialogState.Nothing
+            dialogState = TimeZoneDialogState.Nothing,
         ),
         openDrawer = {},
         navigateToAddTimeZone = {},

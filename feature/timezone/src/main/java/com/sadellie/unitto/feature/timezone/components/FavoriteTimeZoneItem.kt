@@ -99,7 +99,7 @@ internal fun FavoriteTimeZoneItem(
     val animatedAlpha by animateFloatAsState(
         label = "delete animation",
         targetValue = if (deleteAnimationRunning) 0f else 1f,
-        finishedListener = { if (it == 0f) onDelete() }
+        finishedListener = { if (it == 0f) onDelete() },
     )
 
     val regionName = remember(timeZoneNames, localeDisplayNames) {
@@ -114,19 +114,19 @@ internal fun FavoriteTimeZoneItem(
             .graphicsLayer(alpha = animatedAlpha)
             .then(modifier)
             .clickable(enabled = !isDragging) { onClick() }
-            .padding(vertical = 16.dp, horizontal = 12.dp)
+            .padding(vertical = 16.dp, horizontal = 12.dp),
     ) {
         TimeZoneLabel(
             label = item.label,
             expanded = expanded,
-            onLabelClick = onLabelClick
+            onLabelClick = onLabelClick,
         )
         Row(
             modifier = Modifier
                 .padding()
                 .heightIn(min = 56.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Column(
                 modifier = Modifier
@@ -139,16 +139,16 @@ internal fun FavoriteTimeZoneItem(
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 AnimatedVisibility(
                     visible = offsetTimeFormatted != null,
-                    label = "Nullable offset"
+                    label = "Nullable offset",
                 ) {
                     Text(
                         text = offsetTimeFormatted ?: "",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -157,12 +157,12 @@ internal fun FavoriteTimeZoneItem(
                 label = "Time change",
                 transitionSpec = {
                     fadeIn() togetherWith fadeOut() using (SizeTransform(clip = false))
-                }
+                },
             ) { time ->
                 Text(
                     text = time,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -173,13 +173,13 @@ internal fun FavoriteTimeZoneItem(
                     title = stringResource(R.string.select_time_label),
                     icon = Icons.Outlined.Schedule,
                     contentDescription = stringResource(R.string.select_time_label),
-                    onClick = { onPrimaryClick(offsetTime) }
+                    onClick = { onPrimaryClick(offsetTime) },
                 )
                 TimeZoneOption(
                     title = stringResource(R.string.delete_label),
                     icon = Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.delete_label),
-                    onClick = { deleteAnimationRunning = true }
+                    onClick = { deleteAnimationRunning = true },
                 )
             }
         }
@@ -192,7 +192,7 @@ private fun TimeZoneOption(
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
-) = ProvideColor(MaterialTheme.colorScheme.onSurfaceVariant){
+) = ProvideColor(MaterialTheme.colorScheme.onSurfaceVariant) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(4.dp))
@@ -200,7 +200,7 @@ private fun TimeZoneOption(
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Icon(
             imageVector = icon,
@@ -219,7 +219,7 @@ private fun TimeZoneLabel(
     onLabelClick: () -> Unit,
 ) = ProvideStyle(
     color = MaterialTheme.colorScheme.onSurfaceVariant,
-    textStyle = MaterialTheme.typography.bodyMedium
+    textStyle = MaterialTheme.typography.bodyMedium,
 ) {
     AnimatedContent(
         label = "Expand animation",
@@ -230,11 +230,12 @@ private fun TimeZoneLabel(
             AnimatedVisibility(expanded) {
                 Row(
                     modifier = Modifier.height(24.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = null, // Not required because there is text next to it
+                        // Not required because there is text next to it
+                        contentDescription = null,
                         modifier = Modifier.padding(end = 8.dp),
                     )
                     Text(
@@ -245,12 +246,13 @@ private fun TimeZoneLabel(
         } else {
             Row(
                 modifier = Modifier.height(24.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 AnimatedVisibility(visible = expanded) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = null, // Not required because there is text next to it
+                        // Not required because there is text next to it
+                        contentDescription = null,
                         modifier = Modifier.padding(end = 8.dp),
                     )
                 }
@@ -277,7 +279,7 @@ private class FavoriteTimeZoneItemParameterProvider :
                 tz = FavoriteZone(
                     timeZone = TimeZone.getDefault(),
                     position = 1,
-                    label = ""
+                    label = "",
                 ),
             ),
             FavoriteTimeZoneItemParameter(
@@ -285,7 +287,7 @@ private class FavoriteTimeZoneItemParameterProvider :
                 tz = FavoriteZone(
                     timeZone = TimeZone.getDefault(),
                     position = 1,
-                    label = "Some text"
+                    label = "Some text",
                 ),
             ),
             FavoriteTimeZoneItemParameter(
@@ -293,7 +295,7 @@ private class FavoriteTimeZoneItemParameterProvider :
                 tz = FavoriteZone(
                     timeZone = TimeZone.getDefault(),
                     position = 1,
-                    label = ""
+                    label = "",
                 ),
             ),
             FavoriteTimeZoneItemParameter(
@@ -301,9 +303,9 @@ private class FavoriteTimeZoneItemParameterProvider :
                 tz = FavoriteZone(
                     timeZone = TimeZone.getDefault(),
                     position = 1,
-                    label = "Some text"
+                    label = "Some text",
                 ),
-            )
+            ),
         )
 }
 
@@ -324,7 +326,7 @@ private fun PreviewFavoriteTimeZones(
         item = tz.tz,
         fromTime = ZonedDateTime.parse(
             "2023-05-01T14:00+03:00[Africa/Addis_Ababa]",
-            DateTimeFormatter.ISO_ZONED_DATE_TIME
+            DateTimeFormatter.ISO_ZONED_DATE_TIME,
         ),
         expanded = expanded,
         onClick = { expanded = !expanded },
@@ -333,6 +335,6 @@ private fun PreviewFavoriteTimeZones(
         onLabelClick = {},
         isDragging = false,
         timeZoneNames = timeZoneNames,
-        localeDisplayNames = localeDisplayNames
+        localeDisplayNames = localeDisplayNames,
     )
 }

@@ -61,9 +61,11 @@ fun TextBox(
             .background(
                 MaterialTheme.colorScheme.surfaceVariant,
                 RoundedCornerShape(
-                    topStartPercent = 0, topEndPercent = 0,
-                    bottomStartPercent = 20, bottomEndPercent = 20
-                )
+                    topStartPercent = 0,
+                    topEndPercent = 0,
+                    bottomStartPercent = 20,
+                    bottomEndPercent = 20,
+                ),
             )
             .padding(top = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,7 +78,7 @@ fun TextBox(
             value = input,
             minRatio = 0.5f,
             onValueChange = onValueChange,
-            formatterSymbols = formatterSymbols
+            formatterSymbols = formatterSymbols,
         )
         if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
             val calculationResultModifier = Modifier
@@ -87,7 +89,7 @@ fun TextBox(
             when (output) {
                 is CalculationResult.Empty -> {
                     Spacer(
-                        modifier = calculationResultModifier
+                        modifier = calculationResultModifier,
                     )
                 }
 
@@ -144,7 +146,6 @@ fun TextBox(
                     )
                 }
             }
-
         }
         // Handle
         Box(
@@ -152,9 +153,9 @@ fun TextBox(
                 .padding(8.dp)
                 .background(
                     MaterialTheme.colorScheme.onSurfaceVariant,
-                    RoundedCornerShape(100)
+                    RoundedCornerShape(100),
                 )
-                .sizeIn(24.dp, 4.dp)
+                .sizeIn(24.dp, 4.dp),
         )
     }
 }

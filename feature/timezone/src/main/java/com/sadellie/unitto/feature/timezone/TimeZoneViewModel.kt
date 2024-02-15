@@ -37,18 +37,18 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.N)
 @HiltViewModel
 internal class TimeZoneViewModel @Inject constructor(
-    private val timezonesRepository: TimeZonesRepository
-): ViewModel() {
-    private val _userTimeZone = MutableStateFlow(TimeZone.getDefault())
-    private val _customUserTime = MutableStateFlow<ZonedDateTime?>(null)
-    private val _selectedTimeZone = MutableStateFlow<FavoriteZone?>(null)
-    private val _dialogState = MutableStateFlow<TimeZoneDialogState>(TimeZoneDialogState.Nothing)
+    private val timezonesRepository: TimeZonesRepository,
+) : ViewModel() {
+    private val userTimeZone = MutableStateFlow(TimeZone.getDefault())
+    private val customUserTime = MutableStateFlow<ZonedDateTime?>(null)
+    private val selectedTimeZone = MutableStateFlow<FavoriteZone?>(null)
+    private val dialogState = MutableStateFlow<TimeZoneDialogState>(TimeZoneDialogState.Nothing)
 
     val uiState = combine(
-        _customUserTime,
-        _userTimeZone,
-        _selectedTimeZone,
-        _dialogState,
+        customUserTime,
+        userTimeZone,
+        selectedTimeZone,
+        dialogState,
         timezonesRepository.favoriteTimeZones,
     ) { customUserTime, userTimeZone, selectedTimeZone, dialogState, favoriteTimeZones ->
         return@combine TimeZoneUIState.Ready(
@@ -56,20 +56,20 @@ internal class TimeZoneViewModel @Inject constructor(
             customUserTime = customUserTime,
             userTimeZone = userTimeZone,
             selectedTimeZone = selectedTimeZone,
-            dialogState = dialogState
+            dialogState = dialogState,
         )
     }
         .stateIn(viewModelScope, TimeZoneUIState.Loading)
 
-    fun setCurrentTime() = _customUserTime.update { null }
+    fun setCurrentTime() = customUserTime.update { null }
 
-    fun setSelectedTime(time: ZonedDateTime) = _customUserTime.update { time }
+    fun setSelectedTime(time: ZonedDateTime) = customUserTime.update { time }
 
-    fun setDialogState(state: TimeZoneDialogState) = _dialogState.update { state }
+    fun setDialogState(state: TimeZoneDialogState) = dialogState.update { state }
 
     fun onDragEnd(
         tz: FavoriteZone,
-        targetPosition: Int
+        targetPosition: Int,
     ) = viewModelScope.launch {
         timezonesRepository.moveTimeZone(tz, targetPosition)
     }
@@ -78,11 +78,11 @@ internal class TimeZoneViewModel @Inject constructor(
         timezonesRepository.removeFromFavorites(timeZone)
     }
 
-    fun selectTimeZone(timeZone: FavoriteZone?) = _selectedTimeZone.update { timeZone }
+    fun selectTimeZone(timeZone: FavoriteZone?) = selectedTimeZone.update { timeZone }
 
     fun updateLabel(
         timeZone: FavoriteZone,
-        label: String
+        label: String,
     ) = viewModelScope.launch {
         timezonesRepository.updateLabel(timeZone = timeZone, label = label)
     }

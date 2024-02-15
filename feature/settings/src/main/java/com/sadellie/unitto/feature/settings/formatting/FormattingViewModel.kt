@@ -30,15 +30,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FormattingViewModel @Inject constructor(
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
-    private val _prefs = userPreferencesRepository.formattingPrefs
+    private val prefs = userPreferencesRepository.formattingPrefs
 
-    val uiState = _prefs.map { mainPrefs ->
+    val uiState = prefs.map { mainPrefs ->
         FormattingUIState(
             precision = mainPrefs.digitsPrecision,
             outputFormat = mainPrefs.outputFormat,
-            formatterSymbols = mainPrefs.formatterSymbols
+            formatterSymbols = mainPrefs.formatterSymbols,
         )
     }
         .stateIn(viewModelScope, null)

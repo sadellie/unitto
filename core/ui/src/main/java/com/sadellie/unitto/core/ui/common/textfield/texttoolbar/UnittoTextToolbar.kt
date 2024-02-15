@@ -29,7 +29,7 @@ class UnittoTextToolbar(
     private val view: View,
     private val copyCallback: () -> Unit,
     private val pasteCallback: (() -> Unit)? = null,
-    private val cutCallback: (() -> Unit)? = null
+    private val cutCallback: (() -> Unit)? = null,
 ) : TextToolbar {
 
     private var actionMode: ActionMode? = null
@@ -42,7 +42,7 @@ class UnittoTextToolbar(
         onCopyRequested: (() -> Unit)?,
         onPasteRequested: (() -> Unit)?,
         onCutRequested: (() -> Unit)?,
-        onSelectAllRequested: (() -> Unit)?
+        onSelectAllRequested: (() -> Unit)?,
     ) {
         textActionModeCallback.rect = rect
         textActionModeCallback.onCopyRequested = copyCallback
@@ -66,17 +66,17 @@ class UnittoTextToolbar(
 
 private fun startActionMode(
     view: View,
-    textActionModeCallback: UnittoActionModeCallback
+    textActionModeCallback: UnittoActionModeCallback,
 ): ActionMode {
     return if (Build.VERSION.SDK_INT >= 23) {
         view.startActionMode(
             FloatingTextActionModeCallback(textActionModeCallback),
-            ActionMode.TYPE_FLOATING
+            ActionMode.TYPE_FLOATING,
         )
     } else {
         // Old devices use toolbar instead of a floating menu
         view.startActionMode(
-            UnittoPrimaryTextActionModeCallback(textActionModeCallback)
+            UnittoPrimaryTextActionModeCallback(textActionModeCallback),
         )
     }
 }

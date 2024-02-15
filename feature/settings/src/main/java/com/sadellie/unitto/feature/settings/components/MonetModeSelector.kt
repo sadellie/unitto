@@ -81,7 +81,7 @@ internal fun MonetModeSelector(
     LazyRow(
         modifier = modifier,
         state = listState,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(monetModes) { monetMode ->
             Themmo(
@@ -93,13 +93,13 @@ internal fun MonetModeSelector(
                         dynamicThemeEnabled = false,
                         amoledThemeEnabled = false,
                         customColor = customColor,
-                        monetMode = monetMode
+                        monetMode = monetMode,
                     )
-                }
+                },
             ) {
                 MonetModeCheckbox(
                     selected = monetMode == selected,
-                    onClick = { onItemClick(monetMode) }
+                    onClick = { onItemClick(monetMode) },
                 )
             }
         }
@@ -109,7 +109,7 @@ internal fun MonetModeSelector(
 @Composable
 private fun MonetModeCheckbox(
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -117,7 +117,7 @@ private fun MonetModeCheckbox(
             .clip(RoundedCornerShape(25))
             .clickable(onClick = onClick)
             .background(MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Box(
             modifier = Modifier
@@ -127,17 +127,21 @@ private fun MonetModeCheckbox(
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.secondary)
                 .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
-            contentAlignment = Alignment.BottomStart
+            contentAlignment = Alignment.BottomStart,
         ) {
             // Is this bad? Yes. Does it work? Also yes.
-            Box(modifier = Modifier
-                .fillMaxHeight(0.5f)
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary))
-            Box(modifier = Modifier
-                .fillMaxHeight(0.5f)
-                .fillMaxWidth(0.5f)
-                .background(MaterialTheme.colorScheme.secondaryContainer))
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight(0.5f)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary),
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight(0.5f)
+                    .fillMaxWidth(0.5f)
+                    .background(MaterialTheme.colorScheme.secondaryContainer),
+            )
         }
         AnimatedVisibility(
             visible = selected,
@@ -150,7 +154,7 @@ private fun MonetModeCheckbox(
                 tint = MaterialTheme.colorScheme.inverseOnSurface,
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.inverseSurface, CircleShape)
-                    .padding(4.dp)
+                    .padding(4.dp),
             )
         }
     }

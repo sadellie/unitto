@@ -61,7 +61,7 @@ class StartupBenchmark {
     fun startupFullyPrecompiled() = startup(CompilationMode.Full())
 
     private fun startup(
-        compilationMode: CompilationMode
+        compilationMode: CompilationMode,
     ) = benchmarkRule.measureRepeated(
         packageName = "com.sadellie.unitto",
         metrics = listOf(StartupTimingMetric()),
@@ -70,7 +70,7 @@ class StartupBenchmark {
         startupMode = StartupMode.COLD,
         setupBlock = {
             pressHome()
-        }
+        },
     ) {
         startActivityAndWait()
     }

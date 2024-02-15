@@ -67,7 +67,7 @@ fun DatePickerDialog(
     BasicAlertDialog(
         onDismissRequest = onDismiss,
         modifier = modifier.wrapContentHeight(),
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+        properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         Surface(
             modifier = modifier
@@ -83,15 +83,14 @@ fun DatePickerDialog(
                 Box(
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(_dialogButtonsPadding)
+                        .padding(_dialogButtonsPadding),
                 ) {
-
                     AlertDialogFlowRow(
                         mainAxisSpacing = _dialogButtonsMainAxisSpacing,
-                        crossAxisSpacing = _dialogButtonsCrossAxisSpacing
+                        crossAxisSpacing = _dialogButtonsCrossAxisSpacing,
                     ) {
                         TextButton(
-                            onClick = onDismiss
+                            onClick = onDismiss,
                         ) {
                             Text(text = dismissLabel)
                         }
@@ -100,16 +99,17 @@ fun DatePickerDialog(
                                 val millis = pickerState.selectedDateMillis ?: return@TextButton
 
                                 val date = LocalDateTime.ofInstant(
-                                    Instant.ofEpochMilli(millis), ZoneId.systemDefault()
+                                    Instant.ofEpochMilli(millis),
+                                    ZoneId.systemDefault(),
                                 )
 
                                 onConfirm(
                                     localDateTime
                                         .withYear(date.year)
                                         .withMonth(date.monthValue)
-                                        .withDayOfMonth(date.dayOfMonth)
+                                        .withDayOfMonth(date.dayOfMonth),
                                 )
-                            }
+                            },
                         ) {
                             Text(text = confirmLabel)
                         }
@@ -125,7 +125,7 @@ fun DatePickerDialog(
 private fun AlertDialogFlowRow(
     mainAxisSpacing: Dp,
     crossAxisSpacing: Dp,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Layout(content) { measurables, constraints ->
         val sequences = mutableListOf<List<Placeable>>()
@@ -142,7 +142,7 @@ private fun AlertDialogFlowRow(
         // Return whether the placeable can be added to the current sequence.
         fun canAddToCurrentSequence(placeable: Placeable) =
             currentSequence.isEmpty() || currentMainAxisSize + mainAxisSpacing.roundToPx() +
-                    placeable.width <= constraints.maxWidth
+                placeable.width <= constraints.maxWidth
 
         // Store current sequence information and start a new sequence.
         fun startNewSequence() {
@@ -187,20 +187,22 @@ private fun AlertDialogFlowRow(
             sequences.forEachIndexed { i, placeables ->
                 val childrenMainAxisSizes = IntArray(placeables.size) { j ->
                     placeables[j].width +
-                            if (j < placeables.lastIndex) mainAxisSpacing.roundToPx() else 0
+                        if (j < placeables.lastIndex) mainAxisSpacing.roundToPx() else 0
                 }
                 val arrangement = Arrangement.End
                 val mainAxisPositions = IntArray(childrenMainAxisSizes.size) { 0 }
                 with(arrangement) {
                     arrange(
-                        mainAxisLayoutSize, childrenMainAxisSizes,
-                        layoutDirection, mainAxisPositions
+                        mainAxisLayoutSize,
+                        childrenMainAxisSizes,
+                        layoutDirection,
+                        mainAxisPositions,
                     )
                 }
                 placeables.forEachIndexed { j, placeable ->
                     placeable.place(
                         x = mainAxisPositions[j],
-                        y = crossAxisPositions[i]
+                        y = crossAxisPositions[i],
                     )
                 }
             }

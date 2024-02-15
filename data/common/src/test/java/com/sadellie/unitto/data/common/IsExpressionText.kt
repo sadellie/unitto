@@ -21,7 +21,6 @@ package com.sadellie.unitto.data.common
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-
 class IsExpressionText {
     @Test
     fun `empty string`() = assertEquals(false, "".isExpression())

@@ -41,13 +41,13 @@ private val start = DrawerItem.Converter.start
 
 private const val UNIT_FROM = "unitFromSelector"
 private const val UNIT_TO = "unitToSelector"
-internal const val unitGroupArg = "unitGroupArg"
-internal const val unitFromIdArg = "unitFromId"
-internal const val unitToIdArg = "unitToIdArg"
-internal const val inputArg = "inputArg"
+internal const val UNIT_GROUP_ARG = "unitGroupArg"
+internal const val UNIT_FROM_ID_ARG = "unitFromIdArg"
+internal const val UNIT_TO_ID_ARG = "unitToIdArg"
+internal const val INPUT_ARG = "inputArg"
 
-private const val UNIT_FROM_ROUTE = "$UNIT_FROM/{$unitFromIdArg}/{$unitGroupArg}"
-private const val UNIT_TO_ROUTE = "$UNIT_TO/{$unitFromIdArg}/{$unitToIdArg}/{$inputArg}"
+private const val UNIT_FROM_ROUTE = "$UNIT_FROM/{$UNIT_FROM_ID_ARG}/{$UNIT_GROUP_ARG}"
+private const val UNIT_TO_ROUTE = "$UNIT_TO/{$UNIT_FROM_ID_ARG}/{$UNIT_TO_ID_ARG}/{$INPUT_ARG}"
 private fun NavHostController.navigateLeft(
     unitFromId: String,
     unitGroup: UnitGroup,
@@ -68,8 +68,8 @@ fun NavGraphBuilder.converterGraph(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
-            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
-        )
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" },
+        ),
     ) {
         unittoComposable(start) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
@@ -83,11 +83,13 @@ fun NavGraphBuilder.converterGraph(
                 // Navigation logic is here, but should actually be in ConverterScreen
                 navigateToLeftScreen = { uiState: UnitConverterUIState ->
                     when (uiState) {
-                        is UnitConverterUIState.Default -> navController
-                            .navigateLeft(uiState.unitFrom.id, uiState.unitFrom.group)
+                        is UnitConverterUIState.Default ->
+                            navController
+                                .navigateLeft(uiState.unitFrom.id, uiState.unitFrom.group)
 
-                        is UnitConverterUIState.NumberBase -> navController
-                            .navigateLeft(uiState.unitFrom.id, uiState.unitFrom.group)
+                        is UnitConverterUIState.NumberBase ->
+                            navController
+                                .navigateLeft(uiState.unitFrom.id, uiState.unitFrom.group)
 
                         else -> Unit
                     }
@@ -110,7 +112,7 @@ fun NavGraphBuilder.converterGraph(
                             navController.navigateRight(
                                 uiState.unitFrom.id,
                                 uiState.unitTo.id,
-                                input
+                                input,
                             )
                         }
 
@@ -119,7 +121,7 @@ fun NavGraphBuilder.converterGraph(
                             navController.navigateRight(
                                 uiState.unitFrom.id,
                                 uiState.unitTo.id,
-                                input
+                                input,
                             )
                         }
 
@@ -133,13 +135,13 @@ fun NavGraphBuilder.converterGraph(
         unittoComposable(
             route = UNIT_FROM_ROUTE,
             arguments = listOf(
-                navArgument(unitFromIdArg) {
+                navArgument(UNIT_FROM_ID_ARG) {
                     type = NavType.StringType
                 },
-                navArgument(unitGroupArg) {
+                navArgument(UNIT_GROUP_ARG) {
                     type = NavType.EnumType(UnitGroup::class.java)
                 },
-            )
+            ),
         ) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 navController.getBackStackEntry(graph)
@@ -151,25 +153,25 @@ fun NavGraphBuilder.converterGraph(
                 unitSelectorViewModel = hiltViewModel(),
                 converterViewModel = parentViewModel,
                 navigateUp = navController::navigateUp,
-                navigateToUnitGroups = navigateToUnitGroups
+                navigateToUnitGroups = navigateToUnitGroups,
             )
         }
 
         unittoComposable(
             route = UNIT_TO_ROUTE,
             arguments = listOf(
-                navArgument(unitFromIdArg) {
+                navArgument(UNIT_FROM_ID_ARG) {
                     type = NavType.StringType
                 },
-                navArgument(unitToIdArg) {
+                navArgument(UNIT_TO_ID_ARG) {
                     type = NavType.StringType
                 },
-                navArgument(inputArg) {
+                navArgument(INPUT_ARG) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
                 },
-            )
+            ),
         ) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 navController.getBackStackEntry(graph)
@@ -181,7 +183,7 @@ fun NavGraphBuilder.converterGraph(
                 unitSelectorViewModel = hiltViewModel(),
                 converterViewModel = parentViewModel,
                 navigateUp = navController::navigateUp,
-                navigateToUnitGroups = navigateToUnitGroups
+                navigateToUnitGroups = navigateToUnitGroups,
             )
         }
     }

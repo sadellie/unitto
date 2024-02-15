@@ -49,7 +49,7 @@ fun KeypadFlow(
     columns: Int,
     @IntRange(0, 100) horizontalPadding: Int = 10,
     @IntRange(0, 100) verticalPadding: Int = 10,
-    content: @Composable FlowRowScope.(width: Float, height: Float) -> Unit
+    content: @Composable FlowRowScope.(width: Float, height: Float) -> Unit,
 ) {
     val height: Float = remember { (1f - verticalPadding / 100f) / rows }
     val width: Float = remember { (1f - horizontalPadding / 100f) / columns }
@@ -58,7 +58,7 @@ fun KeypadFlow(
         modifier = modifier,
         maxItemsInEachRow = columns,
         horizontalArrangement = Arrangement.SpaceAround,
-        verticalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.SpaceAround,
     ) {
         content(width, height)
     }

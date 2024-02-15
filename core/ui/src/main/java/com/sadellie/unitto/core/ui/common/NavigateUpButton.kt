@@ -36,7 +36,7 @@ fun NavigateUpButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(
             Icons.AutoMirrored.Outlined.ArrowBack,
-            contentDescription = stringResource(R.string.navigate_up_description)
+            contentDescription = stringResource(R.string.navigate_up_description),
         )
     }
 }

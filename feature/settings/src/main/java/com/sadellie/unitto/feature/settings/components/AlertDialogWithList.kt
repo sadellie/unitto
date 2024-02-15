@@ -58,7 +58,7 @@ internal fun <T> AlertDialogWithList(
     selectAction: (T) -> Unit,
     dismissAction: () -> Unit,
     supportText: String? = null,
-    dismissButtonLabel: String = stringResource(R.string.cancel_label)
+    dismissButtonLabel: String = stringResource(R.string.cancel_label),
 ) {
     AlertDialog(
         onDismissRequest = dismissAction,
@@ -78,7 +78,7 @@ internal fun <T> AlertDialogWithList(
                             onClick = {
                                 selectAction(option)
                                 dismissAction()
-                            }
+                            },
                         )
                     }
                 }
@@ -88,7 +88,7 @@ internal fun <T> AlertDialogWithList(
             TextButton(onClick = dismissAction) {
                 Text(text = dismissButtonLabel, color = MaterialTheme.colorScheme.primary)
             }
-        }
+        },
     )
 }
 
@@ -103,7 +103,7 @@ internal fun <T> AlertDialogWithList(
 private fun CustomDialogContentListItem(
     label: String,
     selected: Boolean = false,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -111,9 +111,9 @@ private fun CustomDialogContentListItem(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = onClick
+                onClick = onClick,
             ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(selected, onClick)
         Text(label)

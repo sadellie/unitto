@@ -83,7 +83,7 @@ fun calculateWindowSizeClass(activity: Activity): WindowSizeClass {
 @Immutable
 class WindowSizeClass(
     val widthSizeClass: WindowWidthSizeClass,
-    val heightSizeClass: WindowHeightSizeClass
+    val heightSizeClass: WindowHeightSizeClass,
 ) {
     companion object {
         /**
@@ -118,7 +118,7 @@ class WindowSizeClass(
             supportedWidthSizeClasses: Set<WindowWidthSizeClass> =
                 WindowWidthSizeClass.DefaultSizeClasses,
             supportedHeightSizeClasses: Set<WindowHeightSizeClass> =
-                WindowHeightSizeClass.DefaultSizeClasses
+                WindowHeightSizeClass.DefaultSizeClasses,
         ): WindowSizeClass {
             val windowWidthSizeClass =
                 WindowWidthSizeClass.fromWidth(size.width, density, supportedWidthSizeClasses)
@@ -225,7 +225,9 @@ value class WindowWidthSizeClass private constructor(private val value: Int) :
         /** Calculates the [WindowWidthSizeClass] for a given [width] */
         internal fun fromWidth(width: Dp): WindowWidthSizeClass {
             return fromWidth(
-                with(defaultDensity) { width.toPx() }, defaultDensity, DefaultSizeClasses
+                with(defaultDensity) { width.toPx() },
+                defaultDensity,
+                DefaultSizeClasses,
             )
         }
 
@@ -236,7 +238,7 @@ value class WindowWidthSizeClass private constructor(private val value: Int) :
         internal fun fromWidth(
             width: Float,
             density: Density,
-            supportedSizeClasses: Set<WindowWidthSizeClass>
+            supportedSizeClasses: Set<WindowWidthSizeClass>,
         ): WindowWidthSizeClass {
             require(width >= 0) { "Width must not be negative" }
             require(supportedSizeClasses.isNotEmpty()) { "Must support at least one size class" }
@@ -323,7 +325,9 @@ value class WindowHeightSizeClass private constructor(private val value: Int) :
         /** Calculates the [WindowHeightSizeClass] for a given [height] */
         internal fun fromHeight(height: Dp): WindowHeightSizeClass {
             return fromHeight(
-                with(defaultDensity) { height.toPx() }, defaultDensity, DefaultSizeClasses
+                with(defaultDensity) { height.toPx() },
+                defaultDensity,
+                DefaultSizeClasses,
             )
         }
 
@@ -334,7 +338,7 @@ value class WindowHeightSizeClass private constructor(private val value: Int) :
         internal fun fromHeight(
             height: Float,
             density: Density,
-            supportedSizeClasses: Set<WindowHeightSizeClass>
+            supportedSizeClasses: Set<WindowHeightSizeClass>,
         ): WindowHeightSizeClass {
             require(height >= 0) { "Width must not be negative" }
             require(supportedSizeClasses.isNotEmpty()) { "Must support at least one size class" }

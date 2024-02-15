@@ -27,7 +27,7 @@ import androidx.annotation.RequiresApi
 
 @RequiresApi(Build.VERSION_CODES.M)
 internal class FloatingTextActionModeCallback(
-    private val callback: UnittoActionModeCallback
+    private val callback: UnittoActionModeCallback,
 ) : ActionMode.Callback2() {
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         return callback.onActionItemClicked(mode, item)
@@ -48,14 +48,14 @@ internal class FloatingTextActionModeCallback(
     override fun onGetContentRect(
         mode: ActionMode?,
         view: View?,
-        outRect: android.graphics.Rect?
+        outRect: android.graphics.Rect?,
     ) {
         val rect = callback.rect
         outRect?.set(
             rect.left.toInt(),
             rect.top.toInt(),
             rect.right.toInt(),
-            rect.bottom.toInt()
+            rect.bottom.toInt(),
         )
     }
 }

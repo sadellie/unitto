@@ -52,8 +52,11 @@ fun PortraitLandscape(
                 .weight(1f)
                 .fillMaxSize()
                 .padding(
-                    it.maxWidth * 0.015f, 0.dp,
-                    it.maxHeight * 0.03f, it.maxHeight * 0.03f)
+                    it.maxWidth * 0.015f,
+                    0.dp,
+                    it.maxHeight * 0.03f,
+                    it.maxHeight * 0.03f,
+                )
             content1(contentModifier)
             content2(contentModifier)
         }

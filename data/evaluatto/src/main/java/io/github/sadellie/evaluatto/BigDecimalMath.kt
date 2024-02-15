@@ -78,12 +78,13 @@ internal fun BigDecimal.pow(n: BigDecimal): BigDecimal {
     val n2IntPart = right.subtract(remainderOfRight)
     val intPow = pow(n2IntPart.intValueExact(), mathContext)
     val doublePow = BigDecimal(
-        toDouble().pow(remainderOfRight.toDouble())
+        toDouble().pow(remainderOfRight.toDouble()),
     )
 
     var result = intPow.multiply(doublePow, mathContext)
-    if (signOfRight == -1) result =
-        BigDecimal.ONE.divide(result, mathContext.precision, RoundingMode.HALF_UP)
+    if (signOfRight == -1) {
+        result = BigDecimal.ONE.divide(result, mathContext.precision, RoundingMode.HALF_UP)
+    }
 
     return result
 }

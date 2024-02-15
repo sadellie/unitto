@@ -73,7 +73,7 @@ fun TimePickerDialog(
     val pickerState = rememberTimePickerState(
         initialHour = hour,
         initialMinute = minute,
-        is24Hour = DateFormat.is24HourFormat(LocalContext.current)
+        is24Hour = DateFormat.is24HourFormat(LocalContext.current),
     )
     val configuration = LocalConfiguration.current
     var showingPicker by rememberSaveable { mutableStateOf(true) }
@@ -81,8 +81,8 @@ fun TimePickerDialog(
     BasicAlertDialog(
         onDismissRequest = onCancel,
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+            usePlatformDefaultWidth = false,
+        ),
     ) {
         Surface(
             shape = MaterialTheme.shapes.extraLarge,
@@ -92,7 +92,7 @@ fun TimePickerDialog(
                 .height(IntrinsicSize.Min)
                 .background(
                     shape = MaterialTheme.shapes.extraLarge,
-                    color = MaterialTheme.colorScheme.surface
+                    color = MaterialTheme.colorScheme.surface,
                 ),
         ) {
             if (configuration.screenHeightDp > 400) {
@@ -103,7 +103,7 @@ fun TimePickerDialog(
                         .fillMaxSize()
                         .semantics {
                             isTraversalGroup = true
-                        }
+                        },
                 ) {
                     IconButton(
                         modifier = Modifier
@@ -114,7 +114,8 @@ fun TimePickerDialog(
                             .size(64.dp, 72.dp)
                             .align(Alignment.BottomStart)
                             .zIndex(5f),
-                        onClick = { showingPicker = !showingPicker }) {
+                        onClick = { showingPicker = !showingPicker },
+                    ) {
                         val icon = if (showingPicker) {
                             Icons.Outlined.Keyboard
                         } else {
@@ -122,21 +123,21 @@ fun TimePickerDialog(
                         }
                         Icon(
                             imageVector = icon,
-                            contentDescription = stringResource(R.string.select_time_label)
+                            contentDescription = stringResource(R.string.select_time_label),
                         )
                     }
                 }
             }
             Column(
                 modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 20.dp),
                     text = stringResource(R.string.select_time_label),
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
                 if (showingPicker && configuration.screenHeightDp > 400) {
                     TimePicker(state = pickerState)
@@ -146,14 +147,14 @@ fun TimePickerDialog(
                 Row(
                     modifier = Modifier
                         .height(40.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     TextButton(
-                        onClick = onCancel
+                        onClick = onCancel,
                     ) { Text(stringResource(R.string.cancel_label)) }
                     TextButton(
-                        onClick = { onConfirm(pickerState.hour, pickerState.minute) }
+                        onClick = { onConfirm(pickerState.hour, pickerState.minute) },
                     ) { Text(confirmLabel) }
                 }
             }

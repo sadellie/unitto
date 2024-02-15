@@ -150,7 +150,12 @@ class TokenTest {
     @Test
     fun testSexyToUgly() {
         listOf(
-            "−", "÷", "×", "sin⁻¹", "cos⁻¹", "tan⁻¹"
+            "−",
+            "÷",
+            "×",
+            "sin⁻¹",
+            "cos⁻¹",
+            "tan⁻¹",
         ).forEach {
             assert(it in Token.sexyToUgly.keys)
         }

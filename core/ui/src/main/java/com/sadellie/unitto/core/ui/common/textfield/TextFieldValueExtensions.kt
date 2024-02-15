@@ -30,7 +30,8 @@ fun TextFieldValue.addTokens(tokens: String): TextFieldValue {
         Token.Operator.plus,
         Token.Operator.multiply,
         Token.Operator.divide,
-        Token.Operator.power -> {
+        Token.Operator.power,
+        -> {
             if (ahead == Token.Operator.plus) return deleteAheadAndAdd(tokens)
             if (ahead == Token.Operator.minus) return deleteAheadAndAdd(tokens)
             if (ahead == Token.Operator.multiply) return deleteAheadAndAdd(tokens)
@@ -50,7 +51,7 @@ fun TextFieldValue.addTokens(tokens: String): TextFieldValue {
 
     return this.copy(
         text = text.replaceRange(selection.start, selection.end, tokens),
-        selection = TextRange(selection.start + tokens.length)
+        selection = TextRange(selection.start + tokens.length),
     )
 }
 
@@ -93,7 +94,7 @@ fun TextFieldValue.addBracket(): TextFieldValue {
         Token.Operator.plus,
         Token.Operator.minus,
         Token.Operator.power,
-        Token.Operator.leftBracket
+        Token.Operator.leftBracket,
     )
     if (text.tokenAhead(selection.start) in operators2) {
         return addTokens(Token.Operator.leftBracket)
@@ -122,7 +123,7 @@ fun TextFieldValue.deleteTokens(): TextFieldValue {
 
     return this.copy(
         text = newText,
-        selection = TextRange((newText.length - distanceFromEnd).coerceAtLeast(0))
+        selection = TextRange((newText.length - distanceFromEnd).coerceAtLeast(0)),
     )
 }
 

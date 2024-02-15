@@ -53,7 +53,7 @@ class DataStoreModule {
     fun provideUserPreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-            produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) }
+            produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) },
         )
     }
 

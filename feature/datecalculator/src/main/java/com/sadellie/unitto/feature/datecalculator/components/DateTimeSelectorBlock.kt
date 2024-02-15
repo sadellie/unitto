@@ -68,7 +68,7 @@ internal fun DateTimeSelectorBlock(
     val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
 
     ProvideColor(
-        MaterialTheme.colorScheme.contentColorFor(containerColor)
+        MaterialTheme.colorScheme.contentColorFor(containerColor),
     ) {
         Column(
             modifier = Modifier
@@ -76,12 +76,12 @@ internal fun DateTimeSelectorBlock(
                     onClick = onClick,
                     onLongClick = onLongClick,
                     interactionSource = remember { MutableInteractionSource() },
-                    cornerRadiusRange = 8.dp..32.dp
+                    cornerRadiusRange = 8.dp..32.dp,
                 )
                 .background(containerColor)
                 .then(modifier)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.Start
+            horizontalAlignment = Alignment.Start,
         ) {
             Text(
                 text = title,
@@ -93,22 +93,22 @@ internal fun DateTimeSelectorBlock(
                 modifier = Modifier.clickable(
                     indication = rememberRipple(),
                     interactionSource = remember { MutableInteractionSource() },
-                    onClick = onTimeClick
-                )
+                    onClick = onTimeClick,
+                ),
             ) {
                 AnimatedContent(
                     targetState = dateTime,
                     transitionSpec = {
                         slideInVertically { height -> height } + fadeIn() togetherWith
-                                slideOutVertically { height -> -height } + fadeOut() using
-                                SizeTransform()
+                            slideOutVertically { height -> -height } + fadeOut() using
+                            SizeTransform()
                     },
                     label = "Animated time",
                 ) { time ->
                     Text(
                         text = time.formatTimeShort(locale, is24Hour),
                         style = MaterialTheme.typography.displaySmall,
-                        maxLines = 1
+                        maxLines = 1,
                     )
                 }
 
@@ -117,15 +117,15 @@ internal fun DateTimeSelectorBlock(
                         targetState = dateTime,
                         transitionSpec = {
                             slideInVertically { height -> height } + fadeIn() togetherWith
-                                    slideOutVertically { height -> -height } + fadeOut() using
-                                    SizeTransform()
+                                slideOutVertically { height -> -height } + fadeOut() using
+                                SizeTransform()
                         },
                         label = "Animated am/pm",
                     ) { time ->
                         Text(
                             text = time.formatTimeAmPm(locale),
                             style = MaterialTheme.typography.bodyLarge,
-                            maxLines = 1
+                            maxLines = 1,
                         )
                     }
                 }
@@ -135,8 +135,8 @@ internal fun DateTimeSelectorBlock(
                 targetState = dateTime,
                 transitionSpec = {
                     slideInVertically { height -> height } + fadeIn() togetherWith
-                            slideOutVertically { height -> -height } + fadeOut() using
-                            SizeTransform()
+                        slideOutVertically { height -> -height } + fadeOut() using
+                        SizeTransform()
                 },
                 label = "Animated date",
             ) { date ->
@@ -144,11 +144,11 @@ internal fun DateTimeSelectorBlock(
                     modifier = Modifier.clickable(
                         indication = rememberRipple(),
                         interactionSource = remember { MutableInteractionSource() },
-                        onClick = onDateClick
+                        onClick = onDateClick,
                     ),
                     text = date.formatDateWeekDayMonthYear(locale),
                     style = MaterialTheme.typography.bodySmall,
-                    maxLines = 1
+                    maxLines = 1,
                 )
             }
         }

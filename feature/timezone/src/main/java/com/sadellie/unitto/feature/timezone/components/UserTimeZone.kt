@@ -77,7 +77,7 @@ internal fun UserTimeZone(
                 onClick = onClick,
                 onLongClick = onResetClick,
                 cornerRadiusRange = 8.dp..32.dp,
-                interactionSource = remember { MutableInteractionSource() }
+                interactionSource = remember { MutableInteractionSource() },
             )
             .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -86,11 +86,11 @@ internal fun UserTimeZone(
             Text(
                 text = userTime.formatZone(locale),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onTertiaryContainer
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
             )
 
             Row(
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.Bottom,
             ) {
                 SlidingText(userTime.formatTimeHours(locale, is24Hour))
                 TimeSeparator()
@@ -104,7 +104,7 @@ internal fun UserTimeZone(
             Text(
                 text = userTime.formatDateDayMonthYear(locale),
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onTertiaryContainer
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
             )
         }
         AnimatedVisibility(
@@ -132,16 +132,16 @@ private fun SlidingText(
         label = "user time change",
         transitionSpec = {
             slideInVertically { height -> height } + fadeIn() togetherWith
-                    slideOutVertically { height -> -height } + fadeOut() using
-                    SizeTransform()
-        }
+                slideOutVertically { height -> -height } + fadeOut() using
+                SizeTransform()
+        },
     ) { target ->
         Text(
             text = target,
             style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.onTertiaryContainer,
             overflow = TextOverflow.Visible,
-            maxLines = 1
+            maxLines = 1,
         )
     }
 }
@@ -153,7 +153,7 @@ private fun TimeSeparator() {
         style = MaterialTheme.typography.displayLarge,
         color = MaterialTheme.colorScheme.onTertiaryContainer,
         overflow = TextOverflow.Visible,
-        maxLines = 1
+        maxLines = 1,
     )
 }
 
@@ -165,6 +165,6 @@ private fun PreviewUserTimeZone() {
         userTime = ZonedDateTime.now(),
         onClick = {},
         onResetClick = {},
-        showReset = true
+        showReset = true,
     )
 }

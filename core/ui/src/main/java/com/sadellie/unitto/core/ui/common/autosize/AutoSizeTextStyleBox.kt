@@ -43,54 +43,6 @@ import androidx.compose.ui.unit.TextUnit
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-// HUGE performance drop. Don't use for buttons
-///**
-// * Composable function that automatically adjusts the text size to fit within given constraints using AnnotatedString, considering the ratio of line spacing to text size.
-// *
-// * Features:
-// *  Similar to AutoSizeText(String), with support for AnnotatedString.
-// *
-// * @param inlineContent a map storing composables that replaces certain ranges of the text, used to
-// * insert composables into text layout. See [InlineTextContent].
-// * @see AutoSizeText
-// */
-//@Composable
-//internal fun AutoSizeText(
-//    text: AnnotatedString,
-//    modifier: Modifier = Modifier,
-//    minRatio: Float = 1f,
-//    maxTextSize: TextUnit = TextUnit.Unspecified,
-//    alignment: Alignment = Alignment.TopStart,
-//    overflow: TextOverflow = TextOverflow.Clip,
-//    softWrap: Boolean = true,
-//    maxLines: Int = Int.MAX_VALUE,
-//    minLines: Int = 1,
-//    inlineContent: Map<String, InlineTextContent> = mapOf(),
-//    onTextLayout: (TextLayoutResult) -> Unit = {},
-//    style: TextStyle = LocalTextStyle.current,
-//) = AutoSizeTextStyleBox(
-//    modifier = modifier,
-//    text = text,
-//    maxTextSize = maxTextSize,
-//    maxLines = maxLines,
-//    minLines = minLines,
-//    softWrap = softWrap,
-//    style = style,
-//    minRatio = minRatio,
-//    alignment = alignment
-//) {
-//    Text(
-//        text = text,
-//        overflow = overflow,
-//        softWrap = softWrap,
-//        maxLines = maxLines,
-//        minLines = minLines,
-//        inlineContent = inlineContent,
-//        onTextLayout = onTextLayout,
-//        style = LocalTextStyle.current,
-//    )
-//}
-
 /**
  * [BoxWithConstraints] with [autoTextStyle] passed via [LocalTextStyle].
  *
@@ -122,11 +74,11 @@ internal fun AutoSizeTextStyleBox(
     style: TextStyle,
     minRatio: Float,
     alignment: Alignment,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val density = LocalDensity.current
     CompositionLocalProvider(
-        LocalDensity provides Density(density = density.density, fontScale = 1F)
+        LocalDensity provides Density(density = density.density, fontScale = 1F),
     ) {
         BoxWithConstraints(
             modifier = modifier,
@@ -141,12 +93,12 @@ internal fun AutoSizeTextStyleBox(
                 style = style,
                 alignment = alignment,
                 density = density,
-                minRatio = minRatio
+                minRatio = minRatio,
             )
 
             CompositionLocalProvider(
                 value = LocalTextStyle.provides(autoTextStyle),
-                content = content
+                content = content,
             )
         }
     }
@@ -290,10 +242,11 @@ private fun <E> IntProgression.findElectedValue(
     var high = last
     while (low <= high) {
         val mid = low + (high - low) / 2
-        if (shouldMoveBackward(transform(mid)))
+        if (shouldMoveBackward(transform(mid))) {
             high = mid - 1
-        else
+        } else {
             low = mid + 1
+        }
     }
     transform(high.coerceAtLeast(minimumValue = first))
 }

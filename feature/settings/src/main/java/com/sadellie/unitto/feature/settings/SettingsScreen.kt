@@ -77,20 +77,20 @@ import com.sadellie.unitto.core.base.BuildConfig
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowWidthSizeClass
+import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.ListItem
-import com.sadellie.unitto.core.ui.common.DrawerButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.core.ui.showToast
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
-import com.sadellie.unitto.feature.settings.navigation.aboutRoute
-import com.sadellie.unitto.feature.settings.navigation.calculatorSettingsRoute
-import com.sadellie.unitto.feature.settings.navigation.converterSettingsRoute
-import com.sadellie.unitto.feature.settings.navigation.displayRoute
-import com.sadellie.unitto.feature.settings.navigation.formattingRoute
-import com.sadellie.unitto.feature.settings.navigation.startingScreenRoute
+import com.sadellie.unitto.feature.settings.navigation.ABOUT_ROUTE
+import com.sadellie.unitto.feature.settings.navigation.CALCULATOR_SETTINGS_ROUTE
+import com.sadellie.unitto.feature.settings.navigation.CONVERTER_SETTINGS_ROUTE
+import com.sadellie.unitto.feature.settings.navigation.DISPLAY_ROUTE
+import com.sadellie.unitto.feature.settings.navigation.FORMATTING_ROUTE
+import com.sadellie.unitto.feature.settings.navigation.STARTING_SCREEN_ROUTE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
@@ -123,7 +123,7 @@ internal fun SettingsRoute(
             updateVibrations = viewModel::updateVibrations,
             clearCache = viewModel::clearCache,
             backup = viewModel::backup,
-            restore = viewModel::restore
+            restore = viewModel::restore,
         )
     }
 }
@@ -144,14 +144,14 @@ private fun SettingsScreen(
 
     // Pass picked file uri to BackupManager
     val restoreLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenDocument()
+        ActivityResultContracts.OpenDocument(),
     ) { pickedUri ->
         if (pickedUri != null) restore(mContext, pickedUri)
     }
 
     // Pass picked file uri to BackupManager
     val backupLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument(backupMimeType)
+        ActivityResultContracts.CreateDocument(BACKUP_MIME_TYPE),
     ) { pickedUri ->
         if (pickedUri != null) backup(mContext, pickedUri)
     }
@@ -164,38 +164,38 @@ private fun SettingsScreen(
             if (LocalWindowSize.current.widthSizeClass != WindowWidthSizeClass.Expanded) {
                 DrawerButton(openDrawer)
             }
-         },
+        },
         actions = {
             IconButton(
                 onClick = { showMenu = !showMenu },
-                content = { Icon(Icons.Default.MoreVert, null) }
+                content = { Icon(Icons.Default.MoreVert, null) },
             )
             DropdownMenu(
                 expanded = showMenu,
-                onDismissRequest = { showMenu = false }
+                onDismissRequest = { showMenu = false },
             ) {
                 DropdownMenuItem(
                     onClick = {
                         showMenu = false
                         backupLauncher.launchSafely(backupFileName())
                     },
-                    text = { Text(stringResource(R.string.settings_back_up)) }
+                    text = { Text(stringResource(R.string.settings_back_up)) },
                 )
                 DropdownMenuItem(
                     onClick = {
                         showMenu = false
-                        restoreLauncher.launchSafely(arrayOf(backupMimeType))
+                        restoreLauncher.launchSafely(arrayOf(BACKUP_MIME_TYPE))
                     },
-                    text = { Text(stringResource(R.string.settings_restore)) }
+                    text = { Text(stringResource(R.string.settings_restore)) },
                 )
             }
-        }
+        },
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(padding)
+                .padding(padding),
         ) {
             AnimatedVisibility(
                 visible = uiState.showUpdateChangelog,
@@ -221,35 +221,35 @@ private fun SettingsScreen(
                 icon = Icons.Default.Palette,
                 headlineText = stringResource(R.string.settings_display),
                 supportingText = stringResource(R.string.settings_display_support),
-                modifier = Modifier.clickable { navControllerAction(displayRoute) }
+                modifier = Modifier.clickable { navControllerAction(DISPLAY_ROUTE) },
             )
 
             ListItem(
                 icon = Icons.Default.Home,
                 headlineText = stringResource(R.string.settings_starting_screen),
                 supportingText = stringResource(R.string.settings_starting_screen_support),
-                modifier = Modifier.clickable { navControllerAction(startingScreenRoute) }
+                modifier = Modifier.clickable { navControllerAction(STARTING_SCREEN_ROUTE) },
             )
 
             ListItem(
                 icon = Icons.Default._123,
                 headlineText = stringResource(R.string.settings_formatting),
                 supportingText = stringResource(R.string.settings_formatting_support),
-                modifier = Modifier.clickable { navControllerAction(formattingRoute) }
+                modifier = Modifier.clickable { navControllerAction(FORMATTING_ROUTE) },
             )
 
             ListItem(
                 icon = Icons.Default.Calculate,
                 headlineText = stringResource(R.string.calculator_title),
                 supportingText = stringResource(R.string.settings_calculator_support),
-                modifier = Modifier.clickable { navControllerAction(calculatorSettingsRoute) }
+                modifier = Modifier.clickable { navControllerAction(CALCULATOR_SETTINGS_ROUTE) },
             )
 
             ListItem(
                 icon = Icons.Default.SwapHoriz,
                 headlineText = stringResource(R.string.unit_converter_title),
                 supportingText = stringResource(R.string.settings_converter_support),
-                modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) }
+                modifier = Modifier.clickable { navControllerAction(CONVERTER_SETTINGS_ROUTE) },
             )
 
             Header(stringResource(R.string.settings_additional))
@@ -258,9 +258,9 @@ private fun SettingsScreen(
                 icon = Icons.Default.Vibration,
                 headlineText = stringResource(R.string.settings_vibrations),
                 supportingText = stringResource(R.string.settings_vibrations_support),
-                modifier = Modifier.clickable { navControllerAction(converterSettingsRoute) },
+                modifier = Modifier.clickable { navControllerAction(CONVERTER_SETTINGS_ROUTE) },
                 switchState = uiState.enableVibrations,
-                onSwitchChange = updateVibrations
+                onSwitchChange = updateVibrations,
             )
 
             AnimatedVisibility(
@@ -271,7 +271,10 @@ private fun SettingsScreen(
                 ListItem(
                     headlineText = stringResource(R.string.settings_clear_cache),
                     icon = Icons.Default.Cached,
-                    modifier = Modifier.clickable { clearCache(); showToast(mContext, "👌") },
+                    modifier = Modifier.clickable {
+                        clearCache()
+                        showToast(mContext, "👌")
+                    },
                 )
             }
 
@@ -279,7 +282,7 @@ private fun SettingsScreen(
                 ListItem(
                     icon = Icons.Default.RateReview,
                     headlineText = stringResource(R.string.settings_rate_this_app),
-                    modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) }
+                    modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) },
                 )
             }
 
@@ -287,7 +290,7 @@ private fun SettingsScreen(
                 icon = Icons.Default.Info,
                 headlineText = stringResource(R.string.settings_about_unitto),
                 supportingText = stringResource(R.string.settings_about_unitto_support),
-                modifier = Modifier.clickable { navControllerAction(aboutRoute) }
+                modifier = Modifier.clickable { navControllerAction(ABOUT_ROUTE) },
             )
         }
     }
@@ -295,7 +298,7 @@ private fun SettingsScreen(
     AnimatedVisibility(
         visible = uiState.backupInProgress,
         enter = fadeIn(),
-        exit = fadeOut()
+        exit = fadeOut(),
     ) {
         Scaffold { padding ->
             Box(
@@ -323,7 +326,7 @@ private fun backupFileName(): String {
     return "${ZonedDateTime.now().format(formatter)}.unitto"
 }
 
-private const val backupMimeType = "application/octet-stream"
+private const val BACKUP_MIME_TYPE = "application/octet-stream"
 
 @Preview
 @Composable
@@ -335,8 +338,8 @@ private fun PreviewSettingsScreen() {
                 enableVibrations = false,
                 cacheSize = 2,
                 backupInProgress = false,
-                showUpdateChangelog = true
-            )
+                showUpdateChangelog = true,
+            ),
         )
     }
 
@@ -364,6 +367,6 @@ private fun PreviewSettingsScreen() {
                 delay(2000)
                 uiState = uiState.copy(backupInProgress = false)
             }
-        }
+        },
     )
 }

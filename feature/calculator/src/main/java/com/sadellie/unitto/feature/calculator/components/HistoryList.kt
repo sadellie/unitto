@@ -92,12 +92,12 @@ private fun HistoryListPlaceholder(
     Column(
         modifier = modifier.wrapContentHeight(unbounded = true),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
             modifier = Modifier.height(HistoryItemHeight),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(Icons.Default.History, stringResource(R.string.calculator_no_history))
             Text(stringResource(R.string.calculator_no_history))
@@ -165,7 +165,7 @@ private fun HistoryListItem(
                     modifier = Modifier,
                     imageVector = Icons.Outlined.Close,
                     contentDescription = stringResource(R.string.delete_label),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -174,7 +174,7 @@ private fun HistoryListItem(
                 .weight(1f)
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.End
+            horizontalAlignment = Alignment.End,
         ) {
             FixedExpressionInputTextField(
                 modifier = Modifier
@@ -218,7 +218,7 @@ private fun PreviewHistoryList() {
             id = it.hashCode(),
             date = dtf.parse(it)!!,
             expression = "12345".repeat(10),
-            result = "67890"
+            result = "67890",
         )
     }
 

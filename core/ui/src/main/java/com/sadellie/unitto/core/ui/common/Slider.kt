@@ -56,12 +56,12 @@ fun Slider(
     value: Float,
     valueRange: ClosedFloatingPointRange<Float>,
     onValueChange: (Float) -> Unit,
-    onValueChangeFinished: (Float) -> Unit = {}
+    onValueChangeFinished: (Float) -> Unit = {},
 ) {
     val animated = animateFloatAsState(
         targetValue = value.roundToInt().toFloat(),
         animationSpec = spring(),
-        label = "Thumb animation"
+        label = "Thumb animation",
     )
 
     Slider(
@@ -81,14 +81,14 @@ private fun SquigglyTrack(
     @FloatRange(0.0, 1.0) waveHeight: Float = 0.7f,
     strokeWidth: Float = 15f,
     filledColor: Color = MaterialTheme.colorScheme.primary,
-    unfilledColor: Color = MaterialTheme.colorScheme.surfaceVariant
+    unfilledColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    var direct by remember { mutableFloatStateOf(waveHeight * (100f - strokeWidth * 2f ) / 100f ) }
+    var direct by remember { mutableFloatStateOf(waveHeight * (100f - strokeWidth * 2f) / 100f) }
     val animatedDirect = animateFloatAsState(
         targetValue = direct,
         animationSpec = spring(stiffness = Spring.StiffnessLow),
-        label = "Track animation"
+        label = "Track animation",
     )
 
     LaunchedEffect(sliderState.value) {
@@ -101,7 +101,7 @@ private fun SquigglyTrack(
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
-            .height(20.dp)
+            .height(20.dp),
     ) {
         val width = size.width
         val height = size.height
@@ -114,7 +114,7 @@ private fun SquigglyTrack(
         val path = Path().apply {
             moveTo(
                 x = initialOffset,
-                y = height.times(0.5f)
+                y = height.times(0.5f),
             )
             val amount = ceil(width.div(eachWaveWidth))
 
@@ -125,7 +125,7 @@ private fun SquigglyTrack(
                     dx1 = eachWaveWidth * 0.5f,
                     dy1 = height.times(peek),
                     dx2 = eachWaveWidth,
-                    dy2 = 0f
+                    dy2 = 0f,
                 )
             }
         }
@@ -135,12 +135,12 @@ private fun SquigglyTrack(
             left = 0f,
             right = thumbPosition,
             bottom = height,
-            clipOp = ClipOp.Intersect
+            clipOp = ClipOp.Intersect,
         ) {
             drawPath(
                 path = path,
                 color = filledColor,
-                style = Stroke(strokeWidth, cap = StrokeCap.Round)
+                style = Stroke(strokeWidth, cap = StrokeCap.Round),
             )
         }
 
@@ -149,7 +149,7 @@ private fun SquigglyTrack(
             start = Offset(thumbPosition, height.times(0.5f)),
             end = Offset(width, height.times(0.5f)),
             strokeWidth = strokeWidth,
-            cap = StrokeCap.Round
+            cap = StrokeCap.Round,
         )
     }
 }
@@ -165,6 +165,6 @@ private fun PreviewNewSlider() {
     com.sadellie.unitto.core.ui.common.Slider(
         value = currentValue,
         valueRange = 0f..16f,
-        onValueChange = { currentValue = it }
+        onValueChange = { currentValue = it },
     )
 }

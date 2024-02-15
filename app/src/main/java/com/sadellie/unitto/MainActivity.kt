@@ -68,7 +68,7 @@ internal class MainActivity : AppCompatActivity() {
                 LocalLocale provides locale,
                 LocalWindowSize provides calculateWindowSizeClass(this@MainActivity),
                 LocalNumberTypography provides numbersTypography,
-                LocalHapticPreference provides (prefs?.enableVibrations ?: true)
+                LocalHapticPreference provides (prefs?.enableVibrations ?: true),
             ) {
                 App(prefs)
             }

@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("ktlint:standard:property-naming")
+
 package com.sadellie.unitto.core.ui.common.icons.iconpack
 
 import androidx.compose.ui.graphics.Color

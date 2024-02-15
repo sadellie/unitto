@@ -57,7 +57,7 @@ internal fun AboutRoute(
     AboutScreen(
         navigateUpAction = navigateUpAction,
         navigateToThirdParty = navigateToThirdParty,
-        navigateToEasterEgg = navigateToEasterEgg
+        navigateToEasterEgg = navigateToEasterEgg,
     )
 }
 
@@ -73,7 +73,7 @@ private fun AboutScreen(
 
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_about_unitto),
-        navigationIcon = { NavigateUpButton(navigateUpAction) }
+        navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             // CURRENCY RATE NOTE
@@ -81,7 +81,7 @@ private fun AboutScreen(
                 ListItem(
                     icon = Icons.AutoMirrored.Filled.Help,
                     headlineText = stringResource(R.string.settings_currency_rates_note_title),
-                    modifier = Modifier.clickable { showDialog = true }
+                    modifier = Modifier.clickable { showDialog = true },
                 )
             }
 
@@ -93,9 +93,9 @@ private fun AboutScreen(
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
-                            "https://sadellie.github.io/unitto/terms"
+                            "https://sadellie.github.io/unitto/terms",
                         )
-                    }
+                    },
                 )
             }
 
@@ -107,9 +107,9 @@ private fun AboutScreen(
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
-                            "https://sadellie.github.io/unitto/privacy"
+                            "https://sadellie.github.io/unitto/privacy",
                         )
-                    }
+                    },
                 )
             }
 
@@ -121,9 +121,9 @@ private fun AboutScreen(
                     modifier = Modifier.clickable {
                         openLink(
                             mContext,
-                            "https://github.com/sadellie/unitto"
+                            "https://github.com/sadellie/unitto",
                         )
-                    }
+                    },
                 )
             }
 
@@ -132,7 +132,7 @@ private fun AboutScreen(
                 ListItem(
                     icon = Icons.Default.Copyright,
                     headlineText = stringResource(R.string.settings_third_party_licenses),
-                    modifier = Modifier.clickable { navigateToThirdParty() }
+                    modifier = Modifier.clickable { navigateToThirdParty() },
                 )
             }
 
@@ -148,7 +148,7 @@ private fun AboutScreen(
                             aboutItemClick = 0
                             navigateToEasterEgg()
                         }
-                    }
+                    },
                 )
             }
         }
@@ -167,7 +167,7 @@ private fun AboutScreen(
                     Text(stringResource(R.string.ok_label))
                 }
             },
-            onDismissRequest = { showDialog = false }
+            onDismissRequest = { showDialog = false },
         )
     }
 }
@@ -178,6 +178,6 @@ fun PreviewAboutScreen() {
     AboutScreen(
         navigateUpAction = {},
         navigateToThirdParty = {},
-        navigateToEasterEgg = {}
+        navigateToEasterEgg = {},
     )
 }

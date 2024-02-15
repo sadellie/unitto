@@ -57,18 +57,18 @@ internal class CalculatorViewModel @Inject constructor(
     private val calculatorHistoryRepository: CalculatorHistoryRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _inputKey = "CALCULATOR_INPUT"
-    private val _input = MutableStateFlow(savedStateHandle.getTextField(_inputKey))
-    private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
-    private val _equalClicked = MutableStateFlow(false)
-    private val _prefs = userPrefsRepository.calculatorPrefs
+    private val inputKey = "CALCULATOR_INPUT"
+    private val input = MutableStateFlow(savedStateHandle.getTextField(inputKey))
+    private val result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
+    private val equalClicked = MutableStateFlow(false)
+    private val prefs = userPrefsRepository.calculatorPrefs
         .stateIn(viewModelScope, null)
-    private var _fractionJob: Job? = null
+    private var fractionJob: Job? = null
 
     val uiState: StateFlow<CalculatorUIState> = combine(
-        _input,
-        _result,
-        _prefs,
+        input,
+        result,
+        prefs,
         calculatorHistoryRepository.historyFlow,
     ) { input, result, prefs, history ->
         prefs ?: return@combine CalculatorUIState.Loading
@@ -90,21 +90,21 @@ internal class CalculatorViewModel @Inject constructor(
     }
         .mapLatest { ui ->
             if (ui !is CalculatorUIState.Ready) return@mapLatest ui
-            if (_equalClicked.value) return@mapLatest ui
+            if (equalClicked.value) return@mapLatest ui
 
             if (!ui.input.text.isExpression()) {
-                _result.update { CalculationResult.Empty }
+                result.update { CalculationResult.Empty }
                 return@mapLatest ui
             }
 
-            _result.update {
+            result.update {
                 try {
                     CalculationResult.Default(
                         calculate(
                             input = ui.input.text,
                             radianMode = ui.radianMode,
                         )
-                            .format(ui.precision, ui.outputFormat)
+                            .format(ui.precision, ui.outputFormat),
                     )
                 } catch (e: ExpressionException.DivideByZero) {
                     CalculationResult.Empty
@@ -118,31 +118,31 @@ internal class CalculatorViewModel @Inject constructor(
         .stateIn(viewModelScope, CalculatorUIState.Loading)
 
     fun addTokens(tokens: String) {
-        val isClearInputNeeded = _equalClicked.value and Token.Digit.allWithDot.contains(tokens)
+        val isClearInputNeeded = equalClicked.value and Token.Digit.allWithDot.contains(tokens)
         val newValue = when {
             // Clean input after clicking "=" and any token that is a Digit
             isClearInputNeeded -> TextFieldValue()
-            _equalClicked.value -> _input.value.placeCursorAtTheEnd()
-            else -> _input.value
+            equalClicked.value -> input.value.placeCursorAtTheEnd()
+            else -> input.value
         }.addTokens(tokens)
         updateInput(newValue)
     }
 
     fun addBracket() {
-        val newValue = if (_equalClicked.value) {
+        val newValue = if (equalClicked.value) {
             // Cursor is set to 0 when equal is clicked
-            _input.value.placeCursorAtTheEnd()
+            input.value.placeCursorAtTheEnd()
         } else {
-            _input.value
+            input.value
         }.addBracket()
         updateInput(newValue)
     }
 
     fun deleteTokens() {
-        val newValue = if (_equalClicked.value) {
+        val newValue = if (equalClicked.value) {
             TextFieldValue()
         } else {
-            _input.value.deleteTokens()
+            input.value.deleteTokens()
         }
         updateInput(newValue)
     }
@@ -150,10 +150,10 @@ internal class CalculatorViewModel @Inject constructor(
     fun clearInput() = updateInput(TextFieldValue())
 
     fun updateInput(value: TextFieldValue) {
-        _fractionJob?.cancel()
-        _equalClicked.update { false }
-        _input.update { value }
-        savedStateHandle[_inputKey] = value.text
+        fractionJob?.cancel()
+        equalClicked.update { false }
+        input.update { value }
+        savedStateHandle[inputKey] = value.text
     }
 
     fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {
@@ -177,27 +177,27 @@ internal class CalculatorViewModel @Inject constructor(
     }
 
     fun equal() = viewModelScope.launch {
-        val prefs = _prefs.value ?: return@launch
-        if (_equalClicked.value) return@launch
-        if (!_input.value.text.isExpression()) return@launch
+        val prefs = prefs.value ?: return@launch
+        if (equalClicked.value) return@launch
+        if (!input.value.text.isExpression()) return@launch
 
         val result = try {
-            calculate(_input.value.text, prefs.radianMode, RoundingMode.DOWN)
+            calculate(input.value.text, prefs.radianMode, RoundingMode.DOWN)
         } catch (e: ExpressionException.DivideByZero) {
-            _equalClicked.update { true }
-            _result.update { CalculationResult.DivideByZeroError }
+            equalClicked.update { true }
+            result.update { CalculationResult.DivideByZeroError }
             return@launch
         } catch (e: ExpressionException.FactorialCalculation) {
-            _equalClicked.update { true }
-            _result.update { CalculationResult.Error }
+            equalClicked.update { true }
+            result.update { CalculationResult.Error }
             return@launch
         } catch (e: Exception) {
-            _equalClicked.update { true }
-            _result.update { CalculationResult.Error }
+            equalClicked.update { true }
+            result.update { CalculationResult.Error }
             return@launch
         }
 
-        _equalClicked.update { true }
+        equalClicked.update { true }
 
         val resultFormatted = result
             .format(prefs.precision, prefs.outputFormat)
@@ -205,17 +205,17 @@ internal class CalculatorViewModel @Inject constructor(
 
         withContext(Dispatchers.IO) {
             calculatorHistoryRepository.add(
-                expression = _input.value.text.replace("-", Token.Operator.minus),
-                result = resultFormatted
+                expression = input.value.text.replace("-", Token.Operator.minus),
+                result = resultFormatted,
             )
         }
 
-        _fractionJob?.cancel()
-        _fractionJob = launch(Dispatchers.Default) {
+        fractionJob?.cancel()
+        fractionJob = launch(Dispatchers.Default) {
             val fraction = result.toFractionalString()
 
-            _input.update { TextFieldValue(resultFormatted, TextRange.Zero) }
-            _result.update { CalculationResult.Fraction(fraction) }
+            input.update { TextFieldValue(resultFormatted, TextRange.Zero) }
+            this@CalculatorViewModel.result.update { CalculationResult.Fraction(fraction) }
         }
     }
 

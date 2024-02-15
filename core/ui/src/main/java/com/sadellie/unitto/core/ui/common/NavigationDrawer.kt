@@ -73,7 +73,7 @@ class DrawerState(
         initialValue = initialValue,
         positionalThreshold = { distance -> distance * 0.5f },
         velocityThreshold = { with(requireNotNull(density)) { 400.dp.toPx() } },
-        animationSpec = tween()
+        animationSpec = tween(),
     )
 
     val isOpen: Boolean
@@ -89,10 +89,10 @@ class DrawerState(
     suspend fun close() = anchoredDraggableState.animateTo(DrawerValue.Closed)
 
     companion object {
-        internal fun Saver() =
+        internal fun saver() =
             Saver<DrawerState, DrawerValue>(
                 save = { it.currentValue },
-                restore = { DrawerState(it) }
+                restore = { DrawerState(it) },
             )
     }
 }
@@ -101,7 +101,7 @@ class DrawerState(
 fun rememberDrawerState(
     initialValue: DrawerValue = DrawerValue.Closed,
 ): DrawerState {
-    return rememberSaveable(saver = DrawerState.Saver()) {
+    return rememberSaveable(saver = DrawerState.saver()) {
         DrawerState(initialValue)
     }
 }
@@ -124,17 +124,17 @@ fun NavigationDrawer(
                 PermanentDrawerSheet(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
                 ) {
                     SheetContent(
                         mainTabs = mainTabs,
                         additionalTabs = additionalTabs,
                         currentDestination = currentDestination,
-                        onItemClick = onItemClick
+                        onItemClick = onItemClick,
                     )
                 }
             },
-            content = content
+            content = content,
         )
     } else {
         UnittoModalNavigationDrawer(
@@ -143,19 +143,19 @@ fun NavigationDrawer(
                 ModalDrawerSheet(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
                 ) {
                     SheetContent(
                         mainTabs = mainTabs,
                         additionalTabs = additionalTabs,
                         currentDestination = currentDestination,
-                        onItemClick = onItemClick
+                        onItemClick = onItemClick,
                     )
                 }
             },
             gesturesEnabled = gesturesEnabled,
             state = state,
-            content = content
+            content = content,
         )
     }
 }
@@ -173,7 +173,7 @@ private fun UnittoModalNavigationDrawer(
     val drawerScope = rememberCoroutineScope()
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         val drawerWidth = 360.dp
         val drawerWidthPx = with(density) { drawerWidth.toPx() }
@@ -186,7 +186,7 @@ private fun UnittoModalNavigationDrawer(
                 DraggableAnchors {
                     DrawerValue.Closed at minValue
                     DrawerValue.Open at maxValue
-                }
+                },
             )
         }
 
@@ -202,7 +202,7 @@ private fun UnittoModalNavigationDrawer(
                     state = state.anchoredDraggableState,
                     orientation = Orientation.Horizontal,
                     enabled = gesturesEnabled or state.isOpen,
-                )
+                ),
         )
 
         Scrim(
@@ -210,7 +210,9 @@ private fun UnittoModalNavigationDrawer(
             onClose = { if (gesturesEnabled) drawerScope.launch { state.close() } },
             fraction = {
                 fraction(
-                    minValue, maxValue, state.anchoredDraggableState.requireOffset()
+                    minValue,
+                    maxValue,
+                    state.anchoredDraggableState.requireOffset(),
                 )
             },
         )
@@ -224,14 +226,14 @@ private fun UnittoModalNavigationDrawer(
                             .anchoredDraggableState
                             .requireOffset()
                             .roundToInt(),
-                        y = 0
+                        y = 0,
                     )
                 }
                 .anchoredDraggable(
                     state = state.anchoredDraggableState,
                     orientation = Orientation.Horizontal,
                     enabled = gesturesEnabled or state.isOpen,
-                )
+                ),
         ) {
             drawerContent()
         }
@@ -254,7 +256,7 @@ private fun Scrim(
     Canvas(
         Modifier
             .fillMaxSize()
-            .then(dismissDrawer)
+            .then(dismissDrawer),
     ) {
         drawRect(color, alpha = fraction())
     }
@@ -266,12 +268,12 @@ private fun fraction(a: Float, b: Float, pos: Float) =
 @Preview(
     backgroundColor = 0xFFC8F7D4,
     showBackground = true,
-    device = "spec:width=320dp,height=500dp,dpi=320"
+    device = "spec:width=320dp,height=500dp,dpi=320",
 )
 @Preview(
     backgroundColor = 0xFFC8F7D4,
     showBackground = true,
-    device = "spec:width=440dp,height=500dp,dpi=440"
+    device = "spec:width=440dp,height=500dp,dpi=440",
 )
 @Composable
 private fun PreviewUnittoModalNavigationDrawerClose() {
@@ -290,11 +292,11 @@ private fun PreviewUnittoModalNavigationDrawerClose() {
             Column {
                 Text(text = "Content")
                 Button(
-                    onClick = { corScope.launch { drawerState.open() } }
+                    onClick = { corScope.launch { drawerState.open() } },
                 ) {
                     Text(text = "BUTTON")
                 }
             }
-        }
+        },
     )
 }

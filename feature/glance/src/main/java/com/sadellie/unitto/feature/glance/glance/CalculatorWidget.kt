@@ -74,7 +74,7 @@ class CalculatorWidget : GlanceAppWidget() {
     }
 
     override val sizeMode = SizeMode.Responsive(
-        setOf(SMALL, BIG)
+        setOf(SMALL, BIG),
     )
 
     override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
@@ -119,7 +119,7 @@ private fun LoadingUI() {
             .appWidgetBackground()
             .background(GlanceTheme.colors.background)
             .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         IconButton(
             glanceModifier = GlanceModifier,
@@ -142,19 +142,19 @@ private fun ReadyUI(
 
     fun runCalculateAction(
         input: String,
-        equalClicked: Boolean = false
+        equalClicked: Boolean = false,
     ): Action = updateInputAction(
         input = input,
         equalClicked = equalClicked,
         precision = appPrefs.precision,
-        outputFormat = appPrefs.outputFormat
+        outputFormat = appPrefs.outputFormat,
     )
 
     Column(
         modifier = GlanceModifier
             .appWidgetBackground()
             .background(GlanceTheme.colors.background)
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         val uiSectionModifier = GlanceModifier.fillMaxWidth()
 
@@ -163,7 +163,7 @@ private fun ReadyUI(
                 modifier = uiSectionModifier
                     .background(GlanceTheme.colors.surfaceVariant),
                 output = output,
-                formatterSymbols = formatterSymbols
+                formatterSymbols = formatterSymbols,
             )
         }
 
@@ -173,7 +173,7 @@ private fun ReadyUI(
                 .defaultWeight(),
             input = input,
             formatterSymbols = formatterSymbols,
-            output = output
+            output = output,
         )
 
         GlanceKeyboard(
@@ -182,7 +182,7 @@ private fun ReadyUI(
                 runCalculateAction(
                     // Clear input if equal is clicked and new token is a Digit
                     (if (equalClicked and Token.Digit.allWithDot.contains(it)) "" else input)
-                        .addToken(it)
+                        .addToken(it),
                 )
             },
             clearInputAction = {
@@ -200,7 +200,7 @@ private fun ReadyUI(
                 runCalculateAction(output, true)
             },
             useDot = formatterSymbols.fractional == Token.Digit.dot,
-            middleZero = appPrefs.middleZero
+            middleZero = appPrefs.middleZero,
         )
     }
 }
@@ -212,7 +212,7 @@ private fun ActionButtons(
     formatterSymbols: FormatterSymbols,
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier,
     ) {
         val buttonModifier = GlanceModifier.fillMaxWidth().defaultWeight()
 
@@ -222,14 +222,14 @@ private fun ActionButtons(
             iconRes = R.drawable.content_copy,
             onClick = copyAction(
                 output = output,
-                fractional = formatterSymbols.fractional
-            )
+                fractional = formatterSymbols.fractional,
+            ),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primary,
             iconRes = R.drawable.open_in_new,
-            onClick = launchAction(LocalContext.current)
+            onClick = launchAction(LocalContext.current),
         )
     }
 }
@@ -243,7 +243,7 @@ private fun TextFields(
 ) {
     Column(
         modifier = modifier,
-        verticalAlignment = Alignment.Bottom
+        verticalAlignment = Alignment.Bottom,
     ) {
         val textModifier = GlanceModifier.fillMaxWidth()
 
@@ -254,8 +254,8 @@ private fun TextFields(
             style = TextStyle(
                 fontSize = 36.sp,
                 textAlign = TextAlign.End,
-                color = GlanceTheme.colors.onSurfaceVariant
-            )
+                color = GlanceTheme.colors.onSurfaceVariant,
+            ),
         )
         Text(
             text = output.formatExpression(formatterSymbols),
@@ -264,8 +264,8 @@ private fun TextFields(
             style = TextStyle(
                 fontSize = 36.sp,
                 textAlign = TextAlign.End,
-                color = GlanceTheme.colors.onSurfaceVariant.withAlpha(alpha = 0.5f)
-            )
+                color = GlanceTheme.colors.onSurfaceVariant.withAlpha(alpha = 0.5f),
+            ),
         )
     }
 }
@@ -290,25 +290,25 @@ private fun GlanceKeyboard(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.tertiaryContainer,
             iconRes = R.drawable.clear,
-            onClick = clearInputAction()
+            onClick = clearInputAction(),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primaryContainer,
             iconRes = R.drawable.brackets,
-            onClick = addBracketAction()
+            onClick = addBracketAction(),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primaryContainer,
             iconRes = R.drawable.percent,
-            onClick = addTokenAction(Token.Operator.percent)
+            onClick = addTokenAction(Token.Operator.percent),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primaryContainer,
             iconRes = R.drawable.divide,
-            onClick = addTokenAction(Token.Operator.divide)
+            onClick = addTokenAction(Token.Operator.divide),
         )
     }
     Row(rowModifier) {
@@ -318,25 +318,25 @@ private fun GlanceKeyboard(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key7,
-            onClick = addTokenAction(Token.Digit._7)
+            onClick = addTokenAction(Token.Digit._7),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key8,
-            onClick = addTokenAction(Token.Digit._8)
+            onClick = addTokenAction(Token.Digit._8),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key9,
-            onClick = addTokenAction(Token.Digit._9)
+            onClick = addTokenAction(Token.Digit._9),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primaryContainer,
             iconRes = R.drawable.multiply,
-            onClick = addTokenAction(Token.Operator.multiply)
+            onClick = addTokenAction(Token.Operator.multiply),
         )
     }
     Row(rowModifier) {
@@ -346,25 +346,25 @@ private fun GlanceKeyboard(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key4,
-            onClick = addTokenAction(Token.Digit._4)
+            onClick = addTokenAction(Token.Digit._4),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key5,
-            onClick = addTokenAction(Token.Digit._5)
+            onClick = addTokenAction(Token.Digit._5),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key6,
-            onClick = addTokenAction(Token.Digit._6)
+            onClick = addTokenAction(Token.Digit._6),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primaryContainer,
             iconRes = R.drawable.minus,
-            onClick = addTokenAction(Token.Operator.minus)
+            onClick = addTokenAction(Token.Operator.minus),
         )
     }
     Row(rowModifier) {
@@ -374,25 +374,25 @@ private fun GlanceKeyboard(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key1,
-            onClick = addTokenAction(Token.Digit._1)
+            onClick = addTokenAction(Token.Digit._1),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key2,
-            onClick = addTokenAction(Token.Digit._2)
+            onClick = addTokenAction(Token.Digit._2),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.key3,
-            onClick = addTokenAction(Token.Digit._3)
+            onClick = addTokenAction(Token.Digit._3),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primaryContainer,
             iconRes = R.drawable.plus,
-            onClick = addTokenAction(Token.Operator.plus)
+            onClick = addTokenAction(Token.Operator.plus),
         )
     }
     Row(rowModifier) {
@@ -403,39 +403,39 @@ private fun GlanceKeyboard(
                 glanceModifier = buttonModifier,
                 containerColor = GlanceTheme.colors.inverseOnSurface,
                 iconRes = if (useDot) R.drawable.dot else R.drawable.comma,
-                onClick = addTokenAction(Token.Digit.dot)
+                onClick = addTokenAction(Token.Digit.dot),
             )
             IconButton(
                 glanceModifier = buttonModifier,
                 containerColor = GlanceTheme.colors.inverseOnSurface,
                 iconRes = R.drawable.key0,
-                onClick = addTokenAction(Token.Digit._0)
+                onClick = addTokenAction(Token.Digit._0),
             )
         } else {
             IconButton(
                 glanceModifier = buttonModifier,
                 containerColor = GlanceTheme.colors.inverseOnSurface,
                 iconRes = R.drawable.key0,
-                onClick = addTokenAction(Token.Digit._0)
+                onClick = addTokenAction(Token.Digit._0),
             )
             IconButton(
                 glanceModifier = buttonModifier,
                 containerColor = GlanceTheme.colors.inverseOnSurface,
                 iconRes = if (useDot) R.drawable.dot else R.drawable.comma,
-                onClick = addTokenAction(Token.Digit.dot)
+                onClick = addTokenAction(Token.Digit.dot),
             )
         }
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.inverseOnSurface,
             iconRes = R.drawable.backspace,
-            onClick = deleteTokenAction()
+            onClick = deleteTokenAction(),
         )
         IconButton(
             glanceModifier = buttonModifier,
             containerColor = GlanceTheme.colors.primaryContainer,
             iconRes = R.drawable.equal,
-            onClick = equalAction()
+            onClick = equalAction(),
         )
     }
 }
@@ -445,5 +445,5 @@ private fun ColorProvider.withAlpha(alpha: Float): ColorProvider =
     ColorProvider(
         this
             .getColor(LocalContext.current)
-            .copy(alpha = alpha)
+            .copy(alpha = alpha),
     )

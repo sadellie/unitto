@@ -51,7 +51,7 @@ internal fun calculateMetric(
 internal fun calculateImperial(
     heightFt: BigDecimal,
     heightIn: BigDecimal,
-    weightLbs: BigDecimal
+    weightLbs: BigDecimal,
 ): BigDecimal {
     val heightInches = heightFt
         .multiply(footToInchFactor)
@@ -69,7 +69,7 @@ internal fun calculateImperial(
  * @return [Pair] of [BigDecimal]. First value is lowest weight. Second value is highest value.
  */
 internal fun calculateNormalWeightMetric(
-    heightCm: BigDecimal
+    heightCm: BigDecimal,
 ): Pair<BigDecimal, BigDecimal> {
     val heightMetres2 = heightCm
         .divide(cmToMFactor, MAX_PRECISION, RoundingMode.HALF_EVEN)

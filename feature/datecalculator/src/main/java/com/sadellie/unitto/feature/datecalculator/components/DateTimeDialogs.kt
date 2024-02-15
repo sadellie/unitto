@@ -68,7 +68,7 @@ internal fun DateTimeDialogs(
                 onConfirm = {
                     updateDate(it)
                     updateDialogState(DialogState.NONE)
-                }
+                },
             )
         }
 

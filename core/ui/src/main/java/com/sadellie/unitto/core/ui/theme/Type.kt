@@ -83,7 +83,7 @@ val TypographySystem by lazy { Typography() }
 
 private val FontFamily.Companion.lato: FontFamily
     get() = FontFamily(
-        Font(R.font.lato_regular, weight = FontWeight.Normal)
+        Font(R.font.lato_regular, weight = FontWeight.Normal),
     )
 
 @Preview(widthDp = 480)
@@ -113,7 +113,7 @@ private fun PreviewSystemTypography() {
                 Text(
                     text = "$label 123",
                     style = style,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         }
@@ -124,7 +124,7 @@ private fun PreviewSystemTypography() {
 @Composable
 private fun PreviewNumberTypography() {
     CompositionLocalProvider(
-        LocalNumberTypography provides NumberTypographyUnitto
+        LocalNumberTypography provides NumberTypographyUnitto,
     ) {
         val textStyles = mapOf(
             "displayLarge" to LocalNumberTypography.current.displayLarge,
@@ -138,7 +138,7 @@ private fun PreviewNumberTypography() {
                     Text(
                         text = "$label 123 Error 7 1⁄2",
                         style = style,
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                 }
             }

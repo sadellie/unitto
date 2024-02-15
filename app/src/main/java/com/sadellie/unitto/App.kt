@@ -76,14 +76,14 @@ internal fun ComponentActivity.App(prefs: AppPreferences?) {
             dynamicThemeEnabled = prefs.enableDynamicTheme,
             amoledThemeEnabled = prefs.enableAmoledTheme,
             customColor = prefs.customColor.toColor(),
-            monetMode = prefs.monetMode
+            monetMode = prefs.monetMode,
         )
     }
 
     Themmo(
         themmoController = themmoController,
         typography = TypographySystem,
-        animationSpec = tween(250)
+        animationSpec = tween(250),
     ) {
         val backgroundColor = MaterialTheme.colorScheme.background
         val isDarkThemeEnabled = remember(backgroundColor) { backgroundColor.luminance() < 0.5f }
@@ -113,9 +113,9 @@ internal fun ComponentActivity.App(prefs: AppPreferences?) {
                     navController = navController,
                     themmoController = it,
                     startDestination = prefs.startingScreen,
-                    openDrawer = { drawerScope.launch { drawerState.open() } }
+                    openDrawer = { drawerScope.launch { drawerState.open() } },
                 )
-            }
+            },
         )
 
         DisposableEffect(isDarkThemeEnabled) {

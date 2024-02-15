@@ -70,7 +70,7 @@ fun Switch(
     )
     val thumbOffset = animateDpAsState(
         targetValue = if (checked) ThumbPaddingEnd else ThumbPaddingStart,
-        label = "Thumb offset"
+        label = "Thumb offset",
     )
 
     Box(
@@ -81,15 +81,15 @@ fun Switch(
                 enabled = true,
                 onClickLabel = null,
                 role = Role.Switch,
-                onClick = { onCheckedChange(!checked) }
+                onClick = { onCheckedChange(!checked) },
             )
             .background(trackColor.value, CircleShape)
             .size(TrackWidth, TrackHeight)
             .border(
                 TrackOutlineWidth,
                 borderColor(enabled, checked, colors),
-                CircleShape
-            )
+                CircleShape,
+            ),
     ) {
         Box(
             modifier = Modifier
@@ -100,7 +100,7 @@ fun Switch(
                 )
                 .align(Alignment.CenterStart)
                 .background(thumbColor.value, CircleShape)
-                .size(thumbSize.value)
+                .size(thumbSize.value),
         )
     }
 }
@@ -109,7 +109,7 @@ fun Switch(
 private fun trackColor(
     enabled: Boolean,
     checked: Boolean,
-    colors: SwitchColors
+    colors: SwitchColors,
 ): Color =
     if (enabled) {
         if (checked) colors.checkedTrackColor else colors.uncheckedTrackColor
@@ -121,7 +121,7 @@ private fun trackColor(
 private fun thumbColor(
     enabled: Boolean,
     checked: Boolean,
-    colors: SwitchColors
+    colors: SwitchColors,
 ): Color =
     if (enabled) {
         if (checked) colors.checkedThumbColor else colors.uncheckedThumbColor
@@ -133,7 +133,7 @@ private fun thumbColor(
 private fun borderColor(
     enabled: Boolean,
     checked: Boolean,
-    colors: SwitchColors
+    colors: SwitchColors,
 ): Color =
     if (enabled) {
         if (checked) colors.checkedBorderColor else colors.uncheckedBorderColor
@@ -147,7 +147,7 @@ val TrackOutlineWidth = 1.8.dp
 val SelectedHandleSize = 20.0.dp
 val UnselectedHandleSize = 20.0.dp
 
-val ThumbPaddingStart =  (TrackHeight - UnselectedHandleSize) / 2
+val ThumbPaddingStart = (TrackHeight - UnselectedHandleSize) / 2
 val ThumbPaddingEnd = TrackWidth - SelectedHandleSize / 2 - TrackHeight / 2
 
 @Preview
@@ -156,6 +156,6 @@ fun PreviewPixelSwitch() {
     var checked by remember { mutableStateOf(false) }
     Switch(
         checked = checked,
-        onCheckedChange = { checked = !checked }
+        onCheckedChange = { checked = !checked },
     )
 }

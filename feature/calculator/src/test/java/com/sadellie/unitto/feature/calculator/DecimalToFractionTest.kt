@@ -79,6 +79,6 @@ class DecimalToFractionTest {
 
     private fun assertFractional(expected: String, actual: String) = assertEquals(
         expected,
-        actual.replace("⁄", "/")
+        actual.replace("⁄", "/"),
     )
 }

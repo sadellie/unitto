@@ -33,7 +33,7 @@ internal class UnittoActionModeCallback(
     var onCopyRequested: (() -> Unit)? = null,
     var onPasteRequested: (() -> Unit)? = null,
     var onCutRequested: (() -> Unit)? = null,
-    var onSelectAllRequested: (() -> Unit)? = null
+    var onSelectAllRequested: (() -> Unit)? = null,
 ) {
     fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         requireNotNull(menu)

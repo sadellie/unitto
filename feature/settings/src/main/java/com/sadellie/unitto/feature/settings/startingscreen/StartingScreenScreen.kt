@@ -37,16 +37,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.addShortcut
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.model.DrawerItem
 
 @Composable
 internal fun StartingScreenRoute(
     viewModel: StartingScreenViewModel = hiltViewModel(),
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
 ) {
     when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
         null -> EmptyScreen()
@@ -54,7 +54,7 @@ internal fun StartingScreenRoute(
             StartingScreenScreen(
                 startingScreen = prefs.startingScreen,
                 updateStartingScreen = viewModel::updateStartingScreen,
-                navigateUp = navigateUp
+                navigateUp = navigateUp,
             )
         }
     }
@@ -64,13 +64,13 @@ internal fun StartingScreenRoute(
 private fun StartingScreenScreen(
     startingScreen: String,
     updateStartingScreen: (String) -> Unit,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
 ) {
     val mContext = LocalContext.current
 
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_starting_screen),
-        navigationIcon = { NavigateUpButton(navigateUp) }
+        navigationIcon = { NavigateUpButton(navigateUp) },
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             items(DrawerItem.main, { it.graph }) { destination ->
@@ -82,18 +82,18 @@ private fun StartingScreenScreen(
                     leadingContent = {
                         RadioButton(
                             selected = destination.graph == startingScreen,
-                            onClick = { updateStartingScreen(destination.graph) }
+                            onClick = { updateStartingScreen(destination.graph) },
                         )
                     },
                     trailingContent = trail@{
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return@trail
 
                         IconButton(
-                            onClick = { mContext.addShortcut(destination) }
+                            onClick = { mContext.addShortcut(destination) },
                         ) {
                             Icon(Icons.Default.AppShortcut, null)
                         }
-                    }
+                    },
                 )
             }
         }
@@ -106,6 +106,6 @@ private fun StartingScreenPreview() {
     StartingScreenScreen(
         startingScreen = DrawerItem.Converter.graph,
         updateStartingScreen = {},
-        navigateUp = {}
+        navigateUp = {},
     )
 }

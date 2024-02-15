@@ -40,20 +40,20 @@ class ZonedDateTimeDifferenceKtTest {
         val date2: ZonedDateTime = ZonedDateTime.parse("2023-05-02T12:00+01:00[Europe/Paris]", formatter)
 
         assertEquals(
-            ZonedDateTimeDifference.
-            Default(
-                years = 0,
-                months = 0,
-                days = 1,
-                hours = 0,
-                minutes = 0,
-                sumYears = BigDecimal("0.003"),
-                sumMonths = BigDecimal("0.033"),
-                sumDays = BigDecimal("1.000"),
-                sumHours = BigDecimal("24.000"),
-                sumMinutes = BigDecimal("1440.000"),
-            ),
-            date1.minus(date2, 3)
+            ZonedDateTimeDifference
+                .Default(
+                    years = 0,
+                    months = 0,
+                    days = 1,
+                    hours = 0,
+                    minutes = 0,
+                    sumYears = BigDecimal("0.003"),
+                    sumMonths = BigDecimal("0.033"),
+                    sumDays = BigDecimal("1.000"),
+                    sumHours = BigDecimal("24.000"),
+                    sumMinutes = BigDecimal("1440.000"),
+                ),
+            date1.minus(date2, 3),
         )
     }
 
@@ -75,7 +75,7 @@ class ZonedDateTimeDifferenceKtTest {
                 sumHours = BigDecimal("744.000"),
                 sumMinutes = BigDecimal("44640.000"),
             ),
-            date1.minus(date2, 3)
+            date1.minus(date2, 3),
         )
     }
 
@@ -97,7 +97,7 @@ class ZonedDateTimeDifferenceKtTest {
                 sumHours = BigDecimal("24.000"),
                 sumMinutes = BigDecimal("1440.000"),
             ),
-            date1.minus(date2, 3)
+            date1.minus(date2, 3),
         )
     }
 
@@ -119,7 +119,7 @@ class ZonedDateTimeDifferenceKtTest {
                 sumHours = BigDecimal("744.000"),
                 sumMinutes = BigDecimal("44640.000"),
             ),
-            date1.minus(date2, 3)
+            date1.minus(date2, 3),
         )
     }
 
@@ -141,7 +141,7 @@ class ZonedDateTimeDifferenceKtTest {
                 sumHours = BigDecimal("720.000"),
                 sumMinutes = BigDecimal("43200.000"),
             ),
-            date1.minus(date2, 3)
+            date1.minus(date2, 3),
         )
     }
 }

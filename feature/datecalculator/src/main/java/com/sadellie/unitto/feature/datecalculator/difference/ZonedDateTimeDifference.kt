@@ -49,7 +49,7 @@ internal sealed class ZonedDateTimeDifference {
  * @return [ZonedDateTimeDifference.Default] (_always positive_) or [ZonedDateTimeDifference.Zero]
  */
 internal infix operator fun ZonedDateTime.minus(
-    zonedDateTime: ZonedDateTime
+    zonedDateTime: ZonedDateTime,
 ): ZonedDateTimeDifference = this.minus(zonedDateTime = zonedDateTime, scale = MAX_PRECISION)
 
 /**
@@ -64,7 +64,7 @@ internal infix operator fun ZonedDateTime.minus(
  */
 internal fun ZonedDateTime.minus(
     zonedDateTime: ZonedDateTime,
-    scale: Int
+    scale: Int,
 ): ZonedDateTimeDifference {
     // https://stackoverflow.com/a/25760725
 

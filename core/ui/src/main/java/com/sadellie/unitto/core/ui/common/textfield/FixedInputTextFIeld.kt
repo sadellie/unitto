@@ -49,15 +49,15 @@ fun FixedExpressionInputTextField(
     val clipboardManager = FormattedExpressionClipboardManager(
         formatterSymbols = formatterSymbols,
         clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE)
-                as android.content.ClipboardManager
+            as android.content.ClipboardManager,
     )
 
     CompositionLocalProvider(LocalClipboardManager provides clipboardManager) {
         SelectionContainer(
-            modifier =  Modifier
+            modifier = Modifier
                 .horizontalScroll(rememberScrollState()) // Must be first
                 .clickable(onClick = onClick)
-                .then(modifier)
+                .then(modifier),
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -71,8 +71,8 @@ fun FixedExpressionInputTextField(
 
 private class FormattedExpressionClipboardManager(
     private val formatterSymbols: FormatterSymbols,
-    private val clipboardManager: android.content.ClipboardManager
-): ClipboardManager {
+    private val clipboardManager: android.content.ClipboardManager,
+) : ClipboardManager {
     override fun getText(): AnnotatedString? = null
 
     override fun setText(annotatedString: AnnotatedString) {
@@ -81,8 +81,8 @@ private class FormattedExpressionClipboardManager(
                 PLAIN_TEXT_LABEL,
                 annotatedString
                     .text
-                    .replace(formatterSymbols.grouping, "")
-            )
+                    .replace(formatterSymbols.grouping, ""),
+            ),
         )
     }
 }

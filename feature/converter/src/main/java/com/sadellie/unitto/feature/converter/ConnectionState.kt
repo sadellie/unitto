@@ -41,8 +41,12 @@ private fun Context.observeConnectivityAsFlow() = callbackFlow {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     val callback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) { trySend(ConnectionState.Available) }
-        override fun onLost(network: Network) { trySend(ConnectionState.Unavailable) }
+        override fun onAvailable(network: Network) {
+            trySend(ConnectionState.Available)
+        }
+        override fun onLost(network: Network) {
+            trySend(ConnectionState.Unavailable)
+        }
     }
 
     val networkRequest = NetworkRequest.Builder()

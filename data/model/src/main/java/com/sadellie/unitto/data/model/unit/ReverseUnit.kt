@@ -34,7 +34,6 @@ data class ReverseUnit(
     override val counter: Int = 0,
 ) : DefaultUnit {
     override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal {
-
         return unitTo
             .basicUnit
             .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)

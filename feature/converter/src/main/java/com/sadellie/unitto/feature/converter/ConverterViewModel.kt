@@ -57,31 +57,31 @@ import javax.inject.Inject
 internal class ConverterViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val unitsRepo: UnitsRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val converterInputKey1 = "CONVERTER_INPUT_1"
     private val converterInputKey2 = "CONVERTER_INPUT_2"
-    private val _input1 = MutableStateFlow(savedStateHandle.getTextField(converterInputKey1))
-    private val _input2 = MutableStateFlow(savedStateHandle.getTextField(converterInputKey2))
-    private val _focusedOnInput2 = MutableStateFlow(false)
-    private val _calculation = MutableStateFlow<BigDecimal?>(null)
-    private val _result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
-    private val _unitFrom = MutableStateFlow<AbstractUnit?>(null)
-    private val _unitTo = MutableStateFlow<AbstractUnit?>(null)
+    private val input1 = MutableStateFlow(savedStateHandle.getTextField(converterInputKey1))
+    private val input2 = MutableStateFlow(savedStateHandle.getTextField(converterInputKey2))
+    private val focusedOnInput2 = MutableStateFlow(false)
+    private val calculation = MutableStateFlow<BigDecimal?>(null)
+    private val result = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
+    private val unitFrom = MutableStateFlow<AbstractUnit?>(null)
+    private val unitTo = MutableStateFlow<AbstractUnit?>(null)
 
-    private val _currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
-    private var _loadCurrenciesJob: Job? = null
+    private val currenciesState = MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
+    private var loadCurrenciesJob: Job? = null
 
     val converterUiState: StateFlow<UnitConverterUIState> = combine(
-        _input1,
-        _input2,
-        _calculation,
-        _result,
-        _unitFrom,
-        _unitTo,
+        input1,
+        input2,
+        calculation,
+        result,
+        unitFrom,
+        unitTo,
         userPrefsRepository.converterPrefs,
-        _currenciesState
+        currenciesState,
     ) { input1, input2, calculation, result, unitFrom, unitTo, prefs, currenciesState ->
         return@combine when {
             (unitFrom is DefaultUnit) and (unitTo is DefaultUnit) -> {
@@ -113,13 +113,13 @@ internal class ConverterViewModel @Inject constructor(
         }
     }
         .mapLatest { ui ->
-            when (_currenciesState.value) {
+            when (currenciesState.value) {
                 is CurrencyRateUpdateState.Loading -> {
-                    _result.update { ConverterResult.Loading }
+                    result.update { ConverterResult.Loading }
                     return@mapLatest ui
                 }
                 is CurrencyRateUpdateState.Error -> {
-                    _result.update { ConverterResult.Error }
+                    result.update { ConverterResult.Error }
                     return@mapLatest ui
                 }
                 is CurrencyRateUpdateState.Ready, is CurrencyRateUpdateState.Nothing -> {}
@@ -132,14 +132,14 @@ internal class ConverterViewModel @Inject constructor(
                         unitTo = ui.unitTo,
                         input1 = ui.input1,
                         input2 = ui.input2,
-                        formatTime = ui.formatTime
+                        formatTime = ui.formatTime,
                     )
                 }
                 is UnitConverterUIState.NumberBase -> {
                     convertNumberBase(
                         unitFrom = ui.unitFrom,
                         unitTo = ui.unitTo,
-                        input = ui.input
+                        input = ui.input,
                     )
                 }
                 is UnitConverterUIState.Loading -> {}
@@ -150,19 +150,19 @@ internal class ConverterViewModel @Inject constructor(
         .stateIn(viewModelScope, UnitConverterUIState.Loading)
 
     fun swapUnits() {
-        _unitFrom
-            .getAndUpdate { _unitTo.value }
-            .also { oldUnitFrom -> _unitTo.update { oldUnitFrom } }
+        unitFrom
+            .getAndUpdate { unitTo.value }
+            .also { oldUnitFrom -> unitTo.update { oldUnitFrom } }
 
-        _loadCurrenciesJob?.cancel()
-        _currenciesState.update { CurrencyRateUpdateState.Nothing }
-        _unitFrom.value?.let {
+        loadCurrenciesJob?.cancel()
+        currenciesState.update { CurrencyRateUpdateState.Nothing }
+        unitFrom.value?.let {
             if (it.group == UnitGroup.CURRENCY) updateCurrencyRates(it)
         }
 
         viewModelScope.launch {
-            val unitTo = _unitTo.value ?: return@launch
-            val unitFrom = _unitFrom.value ?: return@launch
+            val unitTo = unitTo.value ?: return@launch
+            val unitFrom = unitFrom.value ?: return@launch
 
             userPrefsRepository.updateLatestPairOfUnits(unitFrom = unitFrom, unitTo = unitTo)
         }
@@ -173,17 +173,17 @@ internal class ConverterViewModel @Inject constructor(
      *
      * @param focusOnInput2 `true` if focus is on inches input. `false`if focus on feet input.
      */
-    fun updateFocused(focusOnInput2: Boolean) = _focusedOnInput2.update { focusOnInput2 }
+    fun updateFocused(focusOnInput2: Boolean) = focusedOnInput2.update { focusOnInput2 }
 
     fun addTokens(tokens: String) {
-        if (_focusedOnInput2.value) {
-            _input2.update {
+        if (focusedOnInput2.value) {
+            input2.update {
                 val newValue = it.addTokens(tokens)
                 savedStateHandle[converterInputKey2] = newValue.text
                 newValue
             }
         } else {
-            _input1.update {
+            input1.update {
                 val newValue = it.addTokens(tokens)
                 savedStateHandle[converterInputKey1] = newValue.text
                 newValue
@@ -192,14 +192,14 @@ internal class ConverterViewModel @Inject constructor(
     }
 
     fun addBracket() {
-        if (_focusedOnInput2.value) {
-            _input2.update {
+        if (focusedOnInput2.value) {
+            input2.update {
                 val newValue = it.addBracket()
                 savedStateHandle[converterInputKey2] = newValue.text
                 newValue
             }
         } else {
-            _input1.update {
+            input1.update {
                 val newValue = it.addBracket()
                 savedStateHandle[converterInputKey1] = newValue.text
                 newValue
@@ -208,14 +208,14 @@ internal class ConverterViewModel @Inject constructor(
     }
 
     fun deleteTokens() {
-        if (_focusedOnInput2.value) {
-            _input2.update {
+        if (focusedOnInput2.value) {
+            input2.update {
                 val newValue = it.deleteTokens()
                 savedStateHandle[converterInputKey2] = newValue.text
                 newValue
             }
         } else {
-            _input1.update {
+            input1.update {
                 val newValue = it.deleteTokens()
                 savedStateHandle[converterInputKey1] = newValue.text
                 newValue
@@ -224,30 +224,30 @@ internal class ConverterViewModel @Inject constructor(
     }
 
     fun clearInput() {
-        _input1.update {
+        input1.update {
             savedStateHandle[converterInputKey1] = ""
             TextFieldValue()
         }
-        _input2.update {
+        input2.update {
             savedStateHandle[converterInputKey2] = ""
             TextFieldValue()
         }
     }
 
-    fun updateInput(value: TextFieldValue) = _input1.update { value }
+    fun updateInput(value: TextFieldValue) = input1.update { value }
 
     fun updateCurrencyRates(unit: AbstractUnit) {
-        _loadCurrenciesJob = viewModelScope.launch(Dispatchers.IO) {
+        loadCurrenciesJob = viewModelScope.launch(Dispatchers.IO) {
             try {
-                _currenciesState.update { CurrencyRateUpdateState.Loading }
+                currenciesState.update { CurrencyRateUpdateState.Loading }
                 val updateDate = unitsRepo.updateRates(unit) ?: throw Exception("Empty cache")
 
                 // Set to fresh objects with updated basic unit values
-                _unitFrom.update { unitFrom -> unitFrom?.id?.let { unitsRepo.getById(it) } }
-                _unitTo.update { unitTo -> unitTo?.id?.let { unitsRepo.getById(it) } }
-                _currenciesState.update { CurrencyRateUpdateState.Ready(updateDate) }
+                unitFrom.update { unitFrom -> unitFrom?.id?.let { unitsRepo.getById(it) } }
+                unitTo.update { unitTo -> unitTo?.id?.let { unitsRepo.getById(it) } }
+                currenciesState.update { CurrencyRateUpdateState.Ready(updateDate) }
             } catch (e: Exception) {
-                _currenciesState.update { CurrencyRateUpdateState.Error }
+                currenciesState.update { CurrencyRateUpdateState.Error }
             }
         }
     }
@@ -266,26 +266,27 @@ internal class ConverterViewModel @Inject constructor(
             userPrefsRepository.updateLatestPairOfUnits(unitFrom = unit, unitTo = pair)
         }
 
-        _loadCurrenciesJob?.cancel()
-        _currenciesState.update { CurrencyRateUpdateState.Nothing }
+        loadCurrenciesJob?.cancel()
+        currenciesState.update { CurrencyRateUpdateState.Nothing }
         if (unit.group == UnitGroup.CURRENCY) updateCurrencyRates(unit)
 
-        _unitFrom.update {
+        unitFrom.update {
             // We change from something to base converter or the other way around
-            if ((it?.group == UnitGroup.NUMBER_BASE) xor (unit.group == UnitGroup.NUMBER_BASE))
+            if ((it?.group == UnitGroup.NUMBER_BASE) xor (unit.group == UnitGroup.NUMBER_BASE)) {
                 clearInput()
+            }
 
             unit
         }
-        _unitTo.update { pair }
+        unitTo.update { pair }
     }
 
     fun updateUnitTo(unit: AbstractUnit) {
-        _unitTo.update { unit }
+        unitTo.update { unit }
 
         viewModelScope.launch {
-            val unitTo = _unitTo.value ?: return@launch
-            val unitFrom = _unitFrom.value ?: return@launch
+            val unitTo = unitTo.value ?: return@launch
+            val unitFrom = unitFrom.value ?: return@launch
 
             unitsRepo.incrementCounter(unitTo)
 
@@ -303,20 +304,22 @@ internal class ConverterViewModel @Inject constructor(
     ) = viewModelScope.launch(Dispatchers.Default) {
         val footInchInput = unitFrom.id == UnitID.foot
 
-        if (footInchInput) { _calculation.update { null } }
+        if (footInchInput) {
+            calculation.update { null }
+        }
 
         // Calculate
         val calculated1 = try {
             Expression(input1.text.ifEmpty { Token.Digit._0 }).calculate()
         } catch (e: ExpressionException.DivideByZero) {
-            _calculation.update { null }
+            calculation.update { null }
             return@launch
         } catch (e: Exception) {
             return@launch
         }
 
         // Update calculation
-        _calculation.update { if (input1.text.isExpression()) calculated1 else null }
+        calculation.update { if (input1.text.isExpression()) calculated1 else null }
 
         // Convert
         val result: ConverterResult = try {
@@ -327,7 +330,7 @@ internal class ConverterViewModel @Inject constructor(
                 val calculated2 = try {
                     Expression(input2.text.ifEmpty { Token.Digit._0 }).calculate()
                 } catch (e: ExpressionException.DivideByZero) {
-                    _calculation.update { null }
+                    calculation.update { null }
                     return@launch
                 } catch (e: Exception) {
                     return@launch
@@ -344,7 +347,7 @@ internal class ConverterViewModel @Inject constructor(
         }
 
         // Update result
-        _result.update { result }
+        this@ConverterViewModel.result.update { result }
     }
 
     private fun convertNumberBase(
@@ -358,7 +361,7 @@ internal class ConverterViewModel @Inject constructor(
             ""
         }
 
-        _result.update { ConverterResult.NumberBase(conversion) }
+        result.update { ConverterResult.NumberBase(conversion) }
     }
 
     init {
@@ -368,15 +371,15 @@ internal class ConverterViewModel @Inject constructor(
                 val unitFrom = unitsRepo.getById(userPrefs.latestLeftSideUnit)
                 val unitTo = unitsRepo.getById(userPrefs.latestRightSideUnit)
 
-                _unitFrom.update { unitFrom }
-                _unitTo.update { unitTo }
+                this@ConverterViewModel.unitFrom.update { unitFrom }
+                this@ConverterViewModel.unitTo.update { unitTo }
                 if (unitFrom.group == UnitGroup.CURRENCY) updateCurrencyRates(unitFrom)
             } catch (e: NoSuchElementException) {
                 val unitFrom = unitsRepo.getById(UnitID.kilometer)
                 val unitTo = unitsRepo.getById(UnitID.mile)
 
-                _unitFrom.update { unitFrom }
-                _unitTo.update { unitTo }
+                this@ConverterViewModel.unitFrom.update { unitFrom }
+                this@ConverterViewModel.unitTo.update { unitTo }
             }
         }
     }

@@ -53,7 +53,7 @@ class CalculatorScreenTest {
                     acButton = true,
                     additionalButtons = false,
                     inverseMode = false,
-                    partialHistoryView = true
+                    partialHistoryView = true,
                 ),
                 openDrawer = {},
                 onInputChange = {},
@@ -90,7 +90,7 @@ class CalculatorScreenTest {
                     acButton = true,
                     additionalButtons = false,
                     inverseMode = false,
-                    partialHistoryView = true
+                    partialHistoryView = true,
                 ),
                 openDrawer = {},
                 onInputChange = {},

@@ -77,7 +77,7 @@ internal fun BodyMassResult(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Column(
             modifier = Modifier
@@ -89,12 +89,12 @@ internal fun BodyMassResult(
             Text(
                 text = stringResource(classification.classification),
                 style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
             )
             Text(
                 text = formattedValue,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
             )
         }
 
@@ -108,12 +108,12 @@ internal fun BodyMassResult(
             Text(
                 text = formattedRange,
                 style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
             )
             Text(
                 text = stringResource(R.string.body_mass_normal_weight),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
             )
         }
     }
@@ -123,7 +123,7 @@ internal fun BodyMassResult(
 private data class BodyMassData(
     val minValue: BigDecimal,
     val color: Color,
-    @StringRes val classification: Int
+    @StringRes val classification: Int,
 )
 
 @Stable
@@ -135,32 +135,32 @@ private val indexes by lazy {
         BodyMassData(
             minValue = BigDecimal("40"),
             color = Color(0x80FF2323),
-            classification = R.string.body_mass_obese_3
+            classification = R.string.body_mass_obese_3,
         ),
         BodyMassData(
             minValue = BigDecimal("35"),
             color = Color(0x80F85F31),
-            classification = R.string.body_mass_obese_2
+            classification = R.string.body_mass_obese_2,
         ),
         BodyMassData(
             minValue = BigDecimal("30"),
             color = Color(0x80FF9634),
-            classification = R.string.body_mass_obese_1
+            classification = R.string.body_mass_obese_1,
         ),
         BodyMassData(
             minValue = BigDecimal("25"),
             color = Color(0x80DBEC18),
-            classification = R.string.body_mass_overweight
+            classification = R.string.body_mass_overweight,
         ),
         BodyMassData(
             minValue = BigDecimal("18.5"),
             color = Color(0x805BF724),
-            classification = R.string.body_mass_normal
+            classification = R.string.body_mass_normal,
         ),
         BodyMassData(
             minValue = BigDecimal("0"),
             color = Color(0x800EACDD),
-            classification = R.string.body_mass_underweight
+            classification = R.string.body_mass_underweight,
         ),
     )
 }

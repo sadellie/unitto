@@ -37,7 +37,7 @@ internal class UnitGroupsViewModel @Inject constructor(
         .map {
             UnitGroupsUIState.Ready(
                 shownUnitGroups = it.shownUnitGroups,
-                hiddenUnitGroups = UnitGroup.entries - it.shownUnitGroups.toSet()
+                hiddenUnitGroups = UnitGroup.entries - it.shownUnitGroups.toSet(),
             )
         }
         .stateIn(viewModelScope, UnitGroupsUIState.Loading)

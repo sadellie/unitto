@@ -70,16 +70,16 @@ fun FilterChip(
             .border(
                 width = 1.dp,
                 color = borderColor.value,
-                shape = FilterChipDefaults.shape
+                shape = FilterChipDefaults.shape,
             )
             .height(FilterChipDefaults.Height)
             .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -100,17 +100,17 @@ fun AssistChip(
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outline,
-                shape = AssistChipDefaults.shape
+                shape = AssistChipDefaults.shape,
             )
             .height(32.dp)
             .padding(horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier.height(AssistChipDefaults.IconSize),
             imageVector = imageVector,
             contentDescription = contentDescription,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -121,7 +121,7 @@ fun PreviewAssistChip() {
     AssistChip(
         onClick = {},
         imageVector = Icons.Default.Settings,
-        contentDescription = ""
+        contentDescription = "",
     )
 }
 

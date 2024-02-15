@@ -84,7 +84,7 @@ internal fun Preferences.getFormatterSymbols(): FormatterSymbols {
     // Updating from older version or fresh install
     // TODO Remove in the future
     if ((grouping == null) or (fractional == null)) {
-        return when(this[PrefsKeys.SEPARATOR] ?: 0) {
+        return when (this[PrefsKeys.SEPARATOR] ?: 0) {
             0 -> FormatterSymbols(Token.SPACE, Token.PERIOD)
             1 -> FormatterSymbols(Token.PERIOD, Token.COMMA)
             else -> FormatterSymbols(Token.COMMA, Token.PERIOD)

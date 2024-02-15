@@ -94,9 +94,9 @@ private fun UnitToSelectorScreen(
                         toggleFavoritesOnly(!uiState.showFavoritesOnly)
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
-        }
+        },
     ) { paddingValues ->
         val resources = LocalContext.current.resources
         UnitsList(
@@ -120,7 +120,7 @@ private fun UnitToSelectorScreen(
                 updateUnitTo(it)
                 navigateUp()
             },
-            favoriteUnit = { favoriteUnit(it) }
+            favoriteUnit = { favoriteUnit(it) },
         )
     }
 }
@@ -176,7 +176,7 @@ private fun UnitToSelectorPreview() {
             NormalUnit(UnitID.foot, BigDecimal("304800000000000000"), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
             NormalUnit(UnitID.yard, BigDecimal("914400000000000000"), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
             NormalUnit(UnitID.mile, BigDecimal("1609344000000000000000"), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
-        )
+        ),
     )
 
     UnitToSelectorScreen(
@@ -197,6 +197,6 @@ private fun UnitToSelectorPreview() {
         updateUnitTo = {},
         favoriteUnit = {},
         navigateUp = {},
-        navigateToUnitGroups = {}
+        navigateToUnitGroups = {},
     )
 }

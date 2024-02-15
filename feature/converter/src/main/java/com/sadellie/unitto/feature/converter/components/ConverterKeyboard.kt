@@ -30,11 +30,10 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.ui.LocalWindowSize
 import com.sadellie.unitto.core.ui.WindowHeightSizeClass
-import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightShort
-import com.sadellie.unitto.core.ui.common.KeyboardButtonContentHeightTall
 import com.sadellie.unitto.core.ui.common.KeyboardButtonFilled
 import com.sadellie.unitto.core.ui.common.KeyboardButtonLight
 import com.sadellie.unitto.core.ui.common.KeyboardButtonTertiary
+import com.sadellie.unitto.core.ui.common.KeyboardButtonToken
 import com.sadellie.unitto.core.ui.common.KeypadFlow
 import com.sadellie.unitto.core.ui.common.icons.IconPack
 import com.sadellie.unitto.core.ui.common.icons.iconpack.Backspace
@@ -80,12 +79,12 @@ internal fun DefaultKeyboard(
 ) {
     val fractionalIcon = remember(fractional) { if (fractional == Token.PERIOD) IconPack.Dot else IconPack.Comma }
     val fractionalIconDescription = remember(fractional) { if (fractional == Token.PERIOD) R.string.keyboard_dot else R.string.comma }
-    val contentHeight: Float = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) KeyboardButtonContentHeightShort else KeyboardButtonContentHeightTall
+    val contentHeight: Float = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) KeyboardButtonToken.CONTENT_HEIGHT_SHORT else KeyboardButtonToken.CONTENT_HEIGHT_TALL
 
     KeypadFlow(
         modifier = modifier,
         rows = 5,
-        columns = 4
+        columns = 4,
     ) { width, height ->
         val bModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
 
@@ -133,12 +132,12 @@ internal fun NumberBaseKeyboard(
     clearInput: () -> Unit,
     deleteDigit: () -> Unit,
 ) {
-    val contentHeight: Float = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) KeyboardButtonContentHeightShort else KeyboardButtonContentHeightTall
+    val contentHeight: Float = if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) KeyboardButtonToken.CONTENT_HEIGHT_SHORT else KeyboardButtonToken.CONTENT_HEIGHT_TALL
 
     KeypadFlow(
         modifier = modifier,
         rows = 6,
-        columns = 3
+        columns = 3,
     ) { width, height ->
         val bModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
         val wideButtonModifier = Modifier.fillMaxHeight(height).fillMaxWidth(width * 2)
@@ -180,7 +179,7 @@ private fun PreviewConverterKeyboard() {
         fractional = Token.PERIOD,
         middleZero = false,
         acButton = true,
-        addBracket = {}
+        addBracket = {},
     )
 }
 

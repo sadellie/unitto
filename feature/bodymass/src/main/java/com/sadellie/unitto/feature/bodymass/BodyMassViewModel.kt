@@ -38,23 +38,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class BodyMassViewModel @Inject constructor(
-    userPreferencesRepository: UserPreferencesRepository
-): ViewModel() {
-    private val _isMetric = MutableStateFlow(getInitialIsMetric())
-    private val _height1 = MutableStateFlow(TextFieldValue())
-    private val _height2 = MutableStateFlow(TextFieldValue())
-    private val _weight = MutableStateFlow(TextFieldValue())
-    private val _result = MutableStateFlow<BigDecimal>(BigDecimal.ZERO)
-    private val _normalWeightRange = MutableStateFlow<Pair<BigDecimal, BigDecimal>>(BigDecimal.ZERO to BigDecimal.ZERO)
+    userPreferencesRepository: UserPreferencesRepository,
+) : ViewModel() {
+    private val isMetric = MutableStateFlow(getInitialIsMetric())
+    private val height1 = MutableStateFlow(TextFieldValue())
+    private val height2 = MutableStateFlow(TextFieldValue())
+    private val weight = MutableStateFlow(TextFieldValue())
+    private val result = MutableStateFlow<BigDecimal>(BigDecimal.ZERO)
+    private val normalWeightRange = MutableStateFlow<Pair<BigDecimal, BigDecimal>>(BigDecimal.ZERO to BigDecimal.ZERO)
 
     val uiState = combine(
         userPreferencesRepository.bodyMassPrefs,
-        _isMetric,
-        _height1,
-        _height2,
-        _weight,
-        _result,
-        _normalWeightRange
+        isMetric,
+        height1,
+        height2,
+        weight,
+        result,
+        normalWeightRange,
     ) { userPrefs, isMetric, height1, height2, weight, result, normalWeightRange ->
         UIState.Ready(
             isMetric = isMetric,
@@ -63,7 +63,7 @@ internal class BodyMassViewModel @Inject constructor(
             weight = weight,
             result = result,
             normalWeightRange = normalWeightRange,
-            formatterSymbols = userPrefs.formatterSymbols
+            formatterSymbols = userPrefs.formatterSymbols,
         )
     }
         .mapLatest { ui ->
@@ -73,17 +73,17 @@ internal class BodyMassViewModel @Inject constructor(
                     val weight = BigDecimal(ui.weight.text.ifEmpty { "0" })
 
                     if (ui.isMetric) {
-                        _result.update { calculateMetric(height1, weight) }
-                        _normalWeightRange.update { calculateNormalWeightMetric(height1) }
+                        result.update { calculateMetric(height1, weight) }
+                        normalWeightRange.update { calculateNormalWeightMetric(height1) }
                     } else {
                         val height2 = BigDecimal(ui.height2.text.ifEmpty { "0" })
 
-                        _result.update { calculateImperial(height1, height2, weight) }
-                        _normalWeightRange.update { calculateNormalWeightImperial(height1, height2) }
+                        result.update { calculateImperial(height1, height2, weight) }
+                        normalWeightRange.update { calculateNormalWeightImperial(height1, height2) }
                     }
                 } catch (e: Exception) {
-                    _result.update { BigDecimal.ZERO }
-                    _normalWeightRange.update { BigDecimal.ZERO to BigDecimal.ZERO }
+                    result.update { BigDecimal.ZERO }
+                    normalWeightRange.update { BigDecimal.ZERO to BigDecimal.ZERO }
                 }
             }
 
@@ -91,10 +91,10 @@ internal class BodyMassViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, UIState.Loading)
 
-    fun updateHeight1(textFieldValue: TextFieldValue) = _height1.update { textFieldValue }
-    fun updateHeight2(textFieldValue: TextFieldValue) = _height2.update { textFieldValue }
-    fun updateWeight(textFieldValue: TextFieldValue) = _weight.update { textFieldValue }
-    fun updateIsMetric(isMetric: Boolean) = _isMetric.update { isMetric }
+    fun updateHeight1(textFieldValue: TextFieldValue) = height1.update { textFieldValue }
+    fun updateHeight2(textFieldValue: TextFieldValue) = height2.update { textFieldValue }
+    fun updateWeight(textFieldValue: TextFieldValue) = weight.update { textFieldValue }
+    fun updateIsMetric(isMetric: Boolean) = this.isMetric.update { isMetric }
 
     private fun getInitialIsMetric(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return true

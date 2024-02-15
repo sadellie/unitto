@@ -44,24 +44,24 @@ import javax.inject.Inject
 internal class SettingsViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
     private val currencyRatesDao: CurrencyRatesDao,
-    private val database: UnittoDatabase
+    private val database: UnittoDatabase,
 ) : ViewModel() {
     private val _showErrorToast = MutableSharedFlow<Boolean>()
     val showErrorToast = _showErrorToast.asSharedFlow()
 
-    private val _backupInProgress = MutableStateFlow(false)
+    private val backupInProgress = MutableStateFlow(false)
     private var backupJob: Job? = null
 
     val uiState = combine(
         userPrefsRepository.generalPrefs,
         currencyRatesDao.size(),
-        _backupInProgress,
+        backupInProgress,
     ) { prefs, cacheSize, backupInProgress ->
         SettingsUIState.Ready(
             enableVibrations = prefs.enableVibrations,
             cacheSize = cacheSize,
             backupInProgress = backupInProgress,
-            showUpdateChangelog = prefs.lastReadChangelog != BuildConfig.VERSION_CODE
+            showUpdateChangelog = prefs.lastReadChangelog != BuildConfig.VERSION_CODE,
         )
     }
         .stateIn(viewModelScope, SettingsUIState.Loading)
@@ -72,14 +72,14 @@ internal class SettingsViewModel @Inject constructor(
     ) {
         backupJob?.cancel()
         backupJob = viewModelScope.launch(Dispatchers.IO) {
-            _backupInProgress.update { true }
+            backupInProgress.update { true }
             try {
                 BackupManager().backup(context, uri, database)
             } catch (e: Exception) {
                 _showErrorToast.emit(true)
                 Log.e(TAG, "$e")
             }
-            _backupInProgress.update { false }
+            backupInProgress.update { false }
         }
     }
 
@@ -89,14 +89,14 @@ internal class SettingsViewModel @Inject constructor(
     ) {
         backupJob?.cancel()
         backupJob = viewModelScope.launch(Dispatchers.IO) {
-            _backupInProgress.update { true }
+            backupInProgress.update { true }
             try {
                 BackupManager().restore(context, uri, database)
             } catch (e: Exception) {
                 _showErrorToast.emit(true)
                 Log.e(TAG, "$e")
             }
-            _backupInProgress.update { false }
+            backupInProgress.update { false }
         }
     }
 

@@ -47,7 +47,7 @@ fun Modifier.squashable(
     val cornerRadius: Int by animateIntAsState(
         targetValue = if (isPressed) cornerRadiusRange.first else cornerRadiusRange.last,
         animationSpec = animationSpec,
-        label = "Squashed animation"
+        label = "Squashed animation",
     )
 
     this
@@ -58,7 +58,7 @@ fun Modifier.squashable(
             interactionSource = interactionSource,
             indication = rememberRipple(),
             role = role,
-            enabled = enabled
+            enabled = enabled,
         )
 }
 
@@ -75,7 +75,7 @@ fun Modifier.squashable(
     val cornerRadius: Dp by animateDpAsState(
         targetValue = if (isPressed) cornerRadiusRange.start else cornerRadiusRange.endInclusive,
         animationSpec = animationSpec,
-        label = "Squashed animation"
+        label = "Squashed animation",
     )
 
     this
@@ -86,6 +86,6 @@ fun Modifier.squashable(
             interactionSource = interactionSource,
             indication = rememberRipple(),
             role = role,
-            enabled = enabled
+            enabled = enabled,
         )
 }

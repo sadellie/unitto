@@ -52,11 +52,11 @@ class FavoriteTimeZonesTest {
                 item = FavoriteZone(
                     timeZone = TimeZone.getTimeZone("Africa/Addis_Ababa"),
                     position = -1,
-                    label = "label text"
+                    label = "label text",
                 ),
                 fromTime = ZonedDateTime.parse(
                     "2023-05-01T14:00+03:00[Africa/Addis_Ababa]",
-                    DateTimeFormatter.ISO_ZONED_DATE_TIME
+                    DateTimeFormatter.ISO_ZONED_DATE_TIME,
                 ),
                 expanded = true,
                 onClick = {},
@@ -65,11 +65,10 @@ class FavoriteTimeZonesTest {
                 onLabelClick = {},
                 isDragging = false,
                 timeZoneNames = timeZoneNames,
-                localeDisplayNames = localeDisplayNames
+                localeDisplayNames = localeDisplayNames,
             )
         }
 
         onNodeWithText("11:00").assertExists()
     }
-
 }

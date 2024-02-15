@@ -44,8 +44,8 @@ interface CurrencyApiService {
      */
     @GET("{baseCurrency}.json")
     suspend fun getCurrencyPairs(
-        @Path("baseCurrency") baseCurrency: String
-    ) : CurrencyUnitResponse
+        @Path("baseCurrency") baseCurrency: String,
+    ): CurrencyUnitResponse
 }
 
 object CurrencyApi {

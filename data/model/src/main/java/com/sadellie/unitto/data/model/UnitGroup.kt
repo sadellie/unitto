@@ -22,7 +22,7 @@ import androidx.annotation.StringRes
 import com.sadellie.unitto.core.base.R
 
 enum class UnitGroup(
-    @StringRes val res: Int
+    @StringRes val res: Int,
 ) {
     // NOTE: This order is used as default for new users
     LENGTH(res = R.string.unit_group_length),
@@ -48,5 +48,5 @@ enum class UnitGroup(
     TORQUE(res = R.string.unit_group_torque),
     FLOW_RATE(res = R.string.unit_group_flow_rate),
     LUMINANCE(res = R.string.unit_group_luminance),
-    FUEL_CONSUMPTION(res = R.string.unit_group_fuel_consumption)
+    FUEL_CONSUMPTION(res = R.string.unit_group_fuel_consumption),
 }

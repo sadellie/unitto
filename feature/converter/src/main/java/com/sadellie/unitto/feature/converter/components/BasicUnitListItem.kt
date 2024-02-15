@@ -69,23 +69,23 @@ internal fun BasicUnitListItem(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(),
-                onClick = onClick
+                onClick = onClick,
             )
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 12.dp),
     ) {
         Row(
             modifier = Modifier
                 .background(
                     if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-                    RoundedCornerShape(24.dp)
+                    RoundedCornerShape(24.dp),
                 )
                 .padding(paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp))
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Column(
-                Modifier.weight(1f),  // This makes additional composable to be seen
+                Modifier.weight(1f),
             ) {
                 Text(
                     modifier = Modifier
@@ -102,7 +102,7 @@ internal fun BasicUnitListItem(
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = itemColor
+                    color = itemColor,
                 )
             }
             AnimatedContent(
@@ -110,18 +110,18 @@ internal fun BasicUnitListItem(
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(false),
-                        onClick = favoriteUnit
+                        onClick = favoriteUnit,
                     ),
                 targetState = isFavorite,
                 transitionSpec = {
                     (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false))
                 },
-                label = "Favorite unit"
+                label = "Favorite unit",
             ) {
                 Icon(
                     imageVector = if (it) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                     contentDescription = stringResource(R.string.converter_favorite_button_description),
-                    tint = itemColor
+                    tint = itemColor,
                 )
             }
         }

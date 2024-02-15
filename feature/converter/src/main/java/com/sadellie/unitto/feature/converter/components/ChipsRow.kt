@@ -73,7 +73,7 @@ internal fun ChipsRow(
         targetState = expanded,
         transitionSpec = {
             expandVertically(expandFrom = Alignment.Top) { it } + fadeIn() togetherWith
-                    shrinkVertically(shrinkTowards = Alignment.Top) { it } + fadeOut()
+                shrinkVertically(shrinkTowards = Alignment.Top) { it } + fadeOut()
         },
         label = "Expand chips row",
     ) { isExpanded ->
@@ -86,9 +86,9 @@ internal fun ChipsRow(
                     FilterChip(
                         modifier = chipModifier,
                         isSelected = selected,
-                        onClick = { 
+                        onClick = {
                             selectAction(if (selected) null else item)
-                            expanded = false 
+                            expanded = false
                         },
                         label = stringResource(item.res),
                     )
@@ -98,7 +98,7 @@ internal fun ChipsRow(
                     modifier = chipModifier,
                     onClick = navigateToSettingsAction,
                     imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.open_settings_label)
+                    contentDescription = stringResource(R.string.open_settings_label),
                 )
 
                 if (expanded) {
@@ -106,7 +106,8 @@ internal fun ChipsRow(
                         modifier = chipModifier,
                         onClick = { expanded = false },
                         imageVector = Icons.Default.ExpandLess,
-                        contentDescription = "" // TODO
+                        // TODO
+                        contentDescription = "",
                     )
                 }
             },
@@ -115,7 +116,8 @@ internal fun ChipsRow(
                     modifier = chipModifier,
                     onClick = { expanded = true },
                     imageVector = Icons.Default.ExpandMore,
-                    contentDescription = "" // TODO
+                    // TODO
+                    contentDescription = "",
                 )
             },
         )
@@ -139,7 +141,7 @@ private fun FlexRow(
     expandContent: @Composable () -> Unit,
 ) {
     SubcomposeLayout(
-        modifier = modifier
+        modifier = modifier,
     ) { constraints ->
         val localConstraints = constraints.copy(minWidth = 0, minHeight = 0)
         val layoutWidth = localConstraints.maxWidth
@@ -147,7 +149,7 @@ private fun FlexRow(
         val mainMeasurables = subcompose(FlexRowSlots.Main, mainContent)
         val expandMeasurables = subcompose(
             slotId = FlexRowSlots.Expand,
-            content = { expandContent() }
+            content = { expandContent() },
         ).map {
             it.measure(localConstraints)
         }
@@ -163,7 +165,7 @@ private fun FlexRow(
             val lastAvailableRow = placeables.size >= maxRows
             val notLastItem = index < mainMeasurables.lastIndex
 
-			// count expandContent width only for last row and not last main placeable
+            // count expandContent width only for last row and not last main placeable
             val measuredWidth = if (lastAvailableRow and notLastItem) {
                 mainPlaceable.measuredWidth + expandContentWidth
             } else {

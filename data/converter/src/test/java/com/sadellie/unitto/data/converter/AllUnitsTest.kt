@@ -58,29 +58,29 @@ class AllUnitsTest {
 
     private var history: MutableMap<UnitGroup, Set<String>> = mutableMapOf()
     private val allUnits = lengthCollection +
-            currencyCollection +
-            massCollection +
-            speedCollection +
-            temperatureCollection +
-            areaCollection +
-            timeCollection +
-            volumeCollection +
-            dataCollection +
-            pressureCollection +
-            accelerationCollection +
-            energyCollection +
-            powerCollection +
-            angleCollection +
-            dataTransferCollection +
-            fluxCollection +
-            numberBaseCollection +
-            electrostaticCapacitance +
-            prefixCollection +
-            forceCollection +
-            torqueCollection +
-            flowRateCollection +
-            luminanceCollection +
-            fuelConsumptionCollection
+        currencyCollection +
+        massCollection +
+        speedCollection +
+        temperatureCollection +
+        areaCollection +
+        timeCollection +
+        volumeCollection +
+        dataCollection +
+        pressureCollection +
+        accelerationCollection +
+        energyCollection +
+        powerCollection +
+        angleCollection +
+        dataTransferCollection +
+        fluxCollection +
+        numberBaseCollection +
+        electrostaticCapacitance +
+        prefixCollection +
+        forceCollection +
+        torqueCollection +
+        flowRateCollection +
+        luminanceCollection +
+        fuelConsumptionCollection
 
     @Test
     fun testAcceleration() = testWithUnits {

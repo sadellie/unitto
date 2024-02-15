@@ -43,8 +43,8 @@ fun Header(
         start = 56.dp,
         end = 16.dp,
         top = 24.dp,
-        bottom = 12.dp
-    )
+        bottom = 12.dp,
+    ),
 ) {
     Text(
         modifier = modifier
@@ -53,6 +53,6 @@ fun Header(
             .fillMaxWidth(),
         text = text,
         style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.primary,
     )
 }

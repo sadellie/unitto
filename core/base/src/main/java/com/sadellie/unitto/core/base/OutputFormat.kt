@@ -24,8 +24,10 @@ package com.sadellie.unitto.core.base
 object OutputFormat {
     // Never use engineering notation
     const val PLAIN = 0
+
     // Use format that a lower API returns
     const val ALLOW_ENGINEERING = 1
+
     // App will try it's best to use engineering notation
     const val FORCE_ENGINEERING = 2
 }

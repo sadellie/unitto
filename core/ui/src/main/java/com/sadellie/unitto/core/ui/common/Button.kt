@@ -50,7 +50,7 @@ fun Button(
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Surface(
         modifier = modifier.squashable(
@@ -58,7 +58,7 @@ fun Button(
             onLongClick = onLongClick,
             interactionSource = interactionSource,
             cornerRadiusRange = 30..50,
-            enabled = enabled
+            enabled = enabled,
         ),
         color = containerColor,
         contentColor = contentColor,
@@ -70,12 +70,12 @@ fun Button(
                     Modifier
                         .defaultMinSize(
                             minWidth = ButtonDefaults.MinWidth,
-                            minHeight = ButtonDefaults.MinHeight
+                            minHeight = ButtonDefaults.MinHeight,
                         )
                         .padding(contentPadding),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    content = content
+                    content = content,
                 )
             }
         }

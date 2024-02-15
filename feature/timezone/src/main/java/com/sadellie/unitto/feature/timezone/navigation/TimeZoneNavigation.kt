@@ -40,7 +40,7 @@ private const val ADD_TIME_ZONE_ROUTE = "ADD_TIME_ZONE_ROUTE"
 private const val USER_TIME_ARG = "USER_TIME_ARG"
 
 private fun NavController.navigateToAddTimeZone(
-    userTime: ZonedDateTime
+    userTime: ZonedDateTime,
 ) {
     val formattedTime = userTime
         .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
@@ -57,8 +57,8 @@ fun NavGraphBuilder.timeZoneGraph(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
-            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
-        )
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" },
+        ),
     ) {
         unittoComposable(start) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -68,7 +68,7 @@ fun NavGraphBuilder.timeZoneGraph(
 
             TimeZoneRoute(
                 openDrawer = openDrawer,
-                navigateToAddTimeZone = navController::navigateToAddTimeZone
+                navigateToAddTimeZone = navController::navigateToAddTimeZone,
             )
         }
 
@@ -79,8 +79,8 @@ fun NavGraphBuilder.timeZoneGraph(
                     defaultValue = null
                     nullable = true
                     type = NavType.StringType
-                }
-            )
+                },
+            ),
         ) { stackEntry ->
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 EmptyScreen()
@@ -95,7 +95,7 @@ fun NavGraphBuilder.timeZoneGraph(
 
             AddTimeZoneRoute(
                 navigateUp = navController::navigateUp,
-                userTime = userTime
+                userTime = userTime,
             )
         }
     }

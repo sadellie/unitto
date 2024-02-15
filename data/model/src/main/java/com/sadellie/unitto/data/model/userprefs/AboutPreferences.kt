@@ -18,6 +18,6 @@
 
 package com.sadellie.unitto.data.model.userprefs
 
-interface AboutPreferences{
+interface AboutPreferences {
     val enableToolsExperiment: Boolean
 }

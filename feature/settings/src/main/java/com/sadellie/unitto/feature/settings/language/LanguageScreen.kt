@@ -36,8 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import com.sadellie.unitto.core.base.R
-import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ListItem
+import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.openLink
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
@@ -47,7 +47,7 @@ internal fun LanguageRoute(
     navigateUp: () -> Unit,
 ) {
     LanguageScreen(
-        navigateUp = navigateUp
+        navigateUp = navigateUp,
     )
 }
 
@@ -61,8 +61,11 @@ private fun LanguageScreen(
     }
 
     fun changeLanguage(langKey: String) {
-        val selectedLocale = if (langKey == "") LocaleListCompat.getEmptyLocaleList()
-        else LocaleListCompat.forLanguageTags(langKey)
+        val selectedLocale = if (langKey == "") {
+            LocaleListCompat.getEmptyLocaleList()
+        } else {
+            LocaleListCompat.forLanguageTags(langKey)
+        }
 
         AppCompatDelegate.setApplicationLocales(selectedLocale)
         navigateUp()
@@ -70,7 +73,7 @@ private fun LanguageScreen(
 
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_language),
-        navigationIcon = { NavigateUpButton(navigateUp) }
+        navigationIcon = { NavigateUpButton(navigateUp) },
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             item("translate") {
@@ -79,7 +82,7 @@ private fun LanguageScreen(
                     imageVector = Icons.Default.Translate,
                     imageVectorContentDescription = stringResource(R.string.settings_translate_app),
                     title = stringResource(R.string.settings_translate_app),
-                    support = stringResource(R.string.settings_translate_app_support)
+                    support = stringResource(R.string.settings_translate_app_support),
                 ) {
                     openLink(mContext, "https://poeditor.com/join/project/T4zjmoq8dx")
                 }
@@ -95,9 +98,9 @@ private fun LanguageScreen(
                         leadingContent = {
                             RadioButton(
                                 selected = currentLangKey == key,
-                                onClick = { changeLanguage(key) }
+                                onClick = { changeLanguage(key) },
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -109,6 +112,6 @@ private fun LanguageScreen(
 @Composable
 fun LanguageScreenPreview() {
     LanguageScreen(
-        navigateUp = {}
+        navigateUp = {},
     )
 }

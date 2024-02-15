@@ -25,9 +25,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class CleanAndFilterExpression {
-    
+
     private val formatterSymbols = FormatterSymbols(Token.COMMA, Token.PERIOD)
-    
+
     @Test
     fun noAdditionalSymbols() {
         assertEquals("123", "123".clearAndFilterExpression(formatterSymbols))

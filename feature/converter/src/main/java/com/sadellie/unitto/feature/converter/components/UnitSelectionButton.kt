@@ -49,7 +49,7 @@ internal fun UnitSelectionButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     label: String,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Button(
         modifier = modifier,
@@ -63,21 +63,21 @@ internal fun UnitSelectionButton(
             transitionSpec = {
                 if (targetState > initialState) {
                     (slideInVertically { height -> height } + fadeIn()) togetherWith
-                            slideOutVertically { height -> -height } + fadeOut()
+                        slideOutVertically { height -> -height } + fadeOut()
                 } else {
                     (slideInVertically { height -> -height } + fadeIn()) togetherWith
-                            slideOutVertically { height -> height } + fadeOut()
+                        slideOutVertically { height -> height } + fadeOut()
                 }.using(
-                    SizeTransform(clip = false)
+                    SizeTransform(clip = false),
                 )
             },
-            label = "Unit change"
+            label = "Unit change",
         ) {
             Text(
                 text = it,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
     }

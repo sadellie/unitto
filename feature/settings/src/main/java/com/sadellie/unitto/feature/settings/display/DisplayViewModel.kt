@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DisplayViewModel @Inject constructor(
-    private val userPrefsRepository: UserPreferencesRepository
+    private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
 
     val prefs = userPrefsRepository.displayPrefs

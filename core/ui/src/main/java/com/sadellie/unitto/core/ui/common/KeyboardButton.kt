@@ -64,15 +64,24 @@ fun BasicKeyboardButton(
     Box(
         modifier = modifier
             .squashable(
-                onClick = { onClick(); vibrate() },
-                onLongClick = if (onLongClick != null) { { onLongClick(); vibrate() } } else null,
+                onClick = {
+                    onClick()
+                    vibrate()
+                },
+                onLongClick = if (onLongClick != null) {
+                    {
+                        onLongClick()
+                        vibrate()
+                    }
+                } else {
+                    null
+                },
                 interactionSource = remember { MutableInteractionSource() },
                 cornerRadiusRange = 30..50,
-                animationSpec = tween(200)
+                animationSpec = tween(200),
             )
-            .background(containerColor)
-        ,
-        contentAlignment = Alignment.Center
+            .background(containerColor),
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             imageVector = icon,
@@ -84,7 +93,7 @@ fun BasicKeyboardButton(
                     scaleX = contentHeight
                     scaleY = contentHeight
                 },
-            tint = iconColor
+            tint = iconColor,
         )
     }
 }
@@ -173,22 +182,25 @@ fun KeyboardButtonTertiary(
     )
 }
 
-/**
- * Mostly for main button in portrait mode. Changes icon size inside.
- */
-const val KeyboardButtonContentHeightTall = 1.1f
+object KeyboardButtonToken {
 
-/**
- * Mostly for additional button in portrait mode. Changes icon size inside.
- */
-const val KeyboardButtonContentHeightTallAdditional = 1.6f
+    /**
+     * Mostly for main button in portrait mode. Changes icon size inside.
+     */
+    const val CONTENT_HEIGHT_TALL = 1.1f
 
-/**
- * Mostly for main button in landscape mode. Changes icon size inside.
- */
-const val KeyboardButtonContentHeightShort = 1.3f
+    /**
+     * Mostly for additional button in portrait mode. Changes icon size inside.
+     */
+    const val CONTENT_HEIGHT_TALL_ADDITIONAL = 1.6f
 
-/**
- * Mostly for additional button in landscape mode. Changes icon size inside.
- */
-const val KeyboardButtonContentHeightShortAdditional = 1.1f
+    /**
+     * Mostly for main button in landscape mode. Changes icon size inside.
+     */
+    const val CONTENT_HEIGHT_SHORT = 1.3f
+
+    /**
+     * Mostly for additional button in landscape mode. Changes icon size inside.
+     */
+    const val CONTENT_HEIGHT_SHORT_ADDITIONAL = 1.1f
+}

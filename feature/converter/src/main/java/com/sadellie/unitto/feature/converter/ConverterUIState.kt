@@ -97,7 +97,7 @@ internal sealed class ConverterResult {
 
 internal fun ConverterResult.Time.format(
     mContext: Context,
-    formatterSymbols: FormatterSymbols
+    formatterSymbols: FormatterSymbols,
 ): String {
     val result = mutableListOf<String>()
 
@@ -140,7 +140,7 @@ internal fun ConverterResult.FootInch.format(
     mContext: Context,
     scale: Int,
     outputFormat: Int,
-    formatterSymbols: FormatterSymbols
+    formatterSymbols: FormatterSymbols,
 ): String {
     var result = ""
     result += foot.format(scale, outputFormat).formatExpression(formatterSymbols)
@@ -161,29 +161,33 @@ internal fun formatTime(
     val negative = input < BigDecimal.ZERO
     val inputAbs = input.abs()
 
-    if (inputAbs.isLessThan(attosecondBasicUnit)) return ConverterResult.Time(
-        negative = negative,
-        day = BigDecimal.ZERO,
-        hour = BigDecimal.ZERO,
-        minute = BigDecimal.ZERO,
-        second = BigDecimal.ZERO,
-        millisecond = BigDecimal.ZERO,
-        microsecond = BigDecimal.ZERO,
-        nanosecond = BigDecimal.ZERO,
-        attosecond = inputAbs
-    )
+    if (inputAbs.isLessThan(attosecondBasicUnit)) {
+        return ConverterResult.Time(
+            negative = negative,
+            day = BigDecimal.ZERO,
+            hour = BigDecimal.ZERO,
+            minute = BigDecimal.ZERO,
+            second = BigDecimal.ZERO,
+            millisecond = BigDecimal.ZERO,
+            microsecond = BigDecimal.ZERO,
+            nanosecond = BigDecimal.ZERO,
+            attosecond = inputAbs,
+        )
+    }
 
-    if (inputAbs.isLessThan(nanosecondBasicUnit)) return ConverterResult.Time(
-        negative = negative,
-        day = BigDecimal.ZERO,
-        hour = BigDecimal.ZERO,
-        minute = BigDecimal.ZERO,
-        second = BigDecimal.ZERO,
-        millisecond = BigDecimal.ZERO,
-        microsecond = BigDecimal.ZERO,
-        nanosecond = BigDecimal.ZERO,
-        attosecond = inputAbs.trimZeros()
-    )
+    if (inputAbs.isLessThan(nanosecondBasicUnit)) {
+        return ConverterResult.Time(
+            negative = negative,
+            day = BigDecimal.ZERO,
+            hour = BigDecimal.ZERO,
+            minute = BigDecimal.ZERO,
+            second = BigDecimal.ZERO,
+            millisecond = BigDecimal.ZERO,
+            microsecond = BigDecimal.ZERO,
+            nanosecond = BigDecimal.ZERO,
+            attosecond = inputAbs.trimZeros(),
+        )
+    }
 
     // DAY
     var division = inputAbs.divideAndRemainder(dayBasicUnit)
@@ -225,7 +229,7 @@ internal fun formatTime(
         millisecond = millisecond,
         microsecond = microsecond,
         nanosecond = nanosecond,
-        attosecond = attosecond
+        attosecond = attosecond,
     )
 }
 
@@ -242,7 +246,7 @@ internal fun formatTime(
 internal fun formatFootInch(
     input: BigDecimal,
     footUnit: DefaultUnit,
-    inchUnit: DefaultUnit
+    inchUnit: DefaultUnit,
 ): ConverterResult.FootInch {
     val (integral, fractional) = input.divideAndRemainder(BigDecimal.ONE)
 

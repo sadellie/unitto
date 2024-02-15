@@ -59,8 +59,8 @@ class TimeZonesRepository @Inject constructor(
                     FavoriteZone(
                         timeZone = tz,
                         position = entity.position,
-                        label = entity.label
-                    )
+                        label = entity.label,
+                    ),
                 )
             }
 
@@ -146,8 +146,8 @@ class TimeZonesRepository @Inject constructor(
                             timeZone = it,
                             name = displayName,
                             region = regionName,
-                            rank = nameMatch
-                        )
+                            rank = nameMatch,
+                        ),
                     )
                     return@forEach
                 }
@@ -159,8 +159,8 @@ class TimeZonesRepository @Inject constructor(
                             timeZone = it,
                             name = displayName,
                             region = regionName,
-                            rank = regionMatch
-                        )
+                            rank = regionMatch,
+                        ),
                     )
                     return@forEach
                 }

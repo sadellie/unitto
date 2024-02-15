@@ -27,5 +27,5 @@ class CalculatorHistoryEntity(
     @PrimaryKey(autoGenerate = true) val entityId: Int = 0,
     @ColumnInfo(name = "timestamp") val timestamp: Long,
     @ColumnInfo(name = "expression") val expression: String,
-    @ColumnInfo(name = "result") val result: String
+    @ColumnInfo(name = "result") val result: String,
 )

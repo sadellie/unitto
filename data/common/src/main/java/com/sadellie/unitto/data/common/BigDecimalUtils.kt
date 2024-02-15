@@ -26,7 +26,7 @@ import kotlin.math.log10
 
 fun BigDecimal.format(
     scale: Int,
-    outputFormat: Int
+    outputFormat: Int,
 ): String {
     return this
         .setMinimumRequiredScale(scale)
@@ -85,9 +85,9 @@ internal fun BigDecimal.setMinimumRequiredScale(prefScale: Int): BigDecimal {
                 -floor(log10(this.abs().remainder(BigDecimal.ONE).toDouble())).toInt()
             } else {
                 0
-            }
+            },
         ),
-        RoundingMode.HALF_EVEN
+        RoundingMode.HALF_EVEN,
     )
 }
 

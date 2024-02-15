@@ -48,7 +48,7 @@ suspend fun Context.pushDynamicShortcut(
     val shortcutCompat = shortcutInfoCompat(
         context = context,
         route = drawerItem.graph,
-        shortcut = shortcut
+        shortcut = shortcut,
     )
 
     kotlin.runCatching {
@@ -71,7 +71,7 @@ fun Context.addShortcut(
     val shortcutCompat = shortcutInfoCompat(
         context = context,
         route = drawerItem.graph,
-        shortcut = shortcut
+        shortcut = shortcut,
     )
 
     val shortCutIntent = ShortcutManagerCompat.createShortcutResultIntent(context, shortcutCompat)
@@ -80,7 +80,7 @@ fun Context.addShortcut(
         ShortcutManagerCompat.requestPinShortcut(
             context,
             shortcutCompat,
-            PendingIntent.getBroadcast(context, 0, shortCutIntent, FLAG_IMMUTABLE).intentSender
+            PendingIntent.getBroadcast(context, 0, shortCutIntent, FLAG_IMMUTABLE).intentSender,
         )
     } catch (e: Exception) {
         showToast(context, e.message ?: "Error")
@@ -101,8 +101,8 @@ private fun Context.shortcutInfoCompat(
                 Intent.ACTION_VIEW,
                 Uri.parse("app://com.sadellie.unitto/$route"),
                 context,
-                context.javaClass
-            )
+                context.javaClass,
+            ),
         )
         .build()
 }

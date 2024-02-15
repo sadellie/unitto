@@ -22,7 +22,6 @@ import com.sadellie.unitto.core.base.Token
 import kotlin.math.abs
 
 fun String.fixCursor(pos: Int, grouping: String): Int {
-
     if (isEmpty()) return pos
 
     // Best position if we move cursor left
@@ -75,7 +74,7 @@ private fun Int.isAtToken(str: String, token: String): Boolean {
     return str
         .substring(
             startIndex = (this - checkBound).coerceAtLeast(0),
-            endIndex = (this + checkBound).coerceAtMost(str.length)
+            endIndex = (this + checkBound).coerceAtMost(str.length),
         )
         .contains(token)
 }
@@ -86,7 +85,6 @@ private fun Int.isAfterToken(str: String, token: String): Boolean {
         .contains(token)
 }
 
-
 // This can also make [TextFieldValue.addTokens] better by checking tokens both ways. Needs more tests
 fun String.tokenAfter(pos: Int): String {
     Token.Func.allWithOpeningBracket.forEach {
@@ -95,23 +93,6 @@ fun String.tokenAfter(pos: Int): String {
 
     return substring(pos, (pos + 1).coerceAtMost(this.length))
 }
-
-//private fun String.numberNearby(cursor: Int): String {
-//    val text = this
-//
-//    var aheadCursor = cursor
-//    var afterCursor = cursor
-//
-//    while (text.tokenAhead(aheadCursor) in Token.Digit.allWithDot) {
-//        aheadCursor--
-//    }
-//
-//    while (text.tokenAfter(afterCursor) in Token.Digit.allWithDot) {
-//        afterCursor++
-//    }
-//
-//    return text.substring(aheadCursor, afterCursor)
-//}
 
 private fun Int.isBeforeToken(str: String, token: String): Boolean {
     return str

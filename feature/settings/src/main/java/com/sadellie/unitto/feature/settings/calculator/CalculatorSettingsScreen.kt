@@ -64,7 +64,7 @@ private fun CalculatorSettingsScreen(
 ) {
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.calculator_title),
-        navigationIcon = { NavigateUpButton(navigateUpAction) }
+        navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { padding ->
         Column(Modifier.padding(padding)) {
             ListItem(
@@ -72,7 +72,7 @@ private fun CalculatorSettingsScreen(
                 icon = Icons.Default.Timer,
                 supportingText = stringResource(R.string.settings_partial_history_view_support),
                 switchState = prefs.partialHistoryView,
-                onSwitchChange = updatePartialHistoryView
+                onSwitchChange = updatePartialHistoryView,
             )
         }
     }
@@ -91,7 +91,7 @@ private fun PreviewCalculatorSettingsScreenStandard() {
             inverseMode = false,
             partialHistoryView = false,
             precision = 3,
-            outputFormat = OutputFormat.PLAIN
+            outputFormat = OutputFormat.PLAIN,
         ),
         navigateUpAction = {},
         updatePartialHistoryView = {},

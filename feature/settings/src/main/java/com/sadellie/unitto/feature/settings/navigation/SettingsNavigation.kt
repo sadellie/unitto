@@ -41,19 +41,19 @@ import io.github.sadellie.themmo.ThemmoController
 
 private val graph = DrawerItem.Settings.graph
 private val start = DrawerItem.Settings.start
-internal const val displayRoute = "display_route"
-internal const val languageRoute = "language_route"
-internal const val startingScreenRoute = "starting_screen_route"
-internal const val unitsGroupRoute = "units_group_route"
-internal const val thirdPartyRoute = "third_party_route"
-internal const val aboutRoute = "about_route"
-internal const val formattingRoute = "formatting_route"
-internal const val calculatorSettingsRoute = "calculator_settings_route"
-internal const val converterSettingsRoute = "converter_settings_route"
-internal const val bouncingEmoji = "bouncing_emoji_route"
+internal const val DISPLAY_ROUTE = "display_route"
+internal const val LANGUAGE_ROUTE = "language_route"
+internal const val STARTING_SCREEN_ROUTE = "starting_screen_route"
+internal const val UNITS_GROUP_ROUTE = "units_group_route"
+internal const val THIRD_PARTY_ROUTE = "third_party_route"
+internal const val ABOUT_ROUTE = "about_route"
+internal const val FORMATTING_ROUTE = "formatting_route"
+internal const val CALCULATOR_SETTINGS_ROUTE = "calculator_settings_route"
+internal const val CONVERTER_SETTINGS_ROUTE = "converter_settings_route"
+internal const val BOUNCING_EMOJI_ROUTE = "bouncing_emoji_route"
 
 fun NavController.navigateToUnitGroups() {
-    navigate(unitsGroupRoute)
+    navigate(UNITS_GROUP_ROUTE)
 }
 
 fun NavGraphBuilder.settingGraph(
@@ -65,78 +65,78 @@ fun NavGraphBuilder.settingGraph(
         startDestination = start,
         route = graph,
         deepLinks = listOf(
-            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" }
-        )
+            navDeepLink { uriPattern = "app://com.sadellie.unitto/$graph" },
+        ),
     ) {
         unittoComposable(start) {
             SettingsRoute(
                 openDrawer = openDrawer,
-                navControllerAction = navController::navigate
+                navControllerAction = navController::navigate,
             )
         }
 
-        unittoStackedComposable(displayRoute) {
+        unittoStackedComposable(DISPLAY_ROUTE) {
             DisplayRoute(
                 navigateUp = navController::navigateUp,
                 themmoController = themmoController,
-                navigateToLanguages = { navController.navigate(languageRoute) }
+                navigateToLanguages = { navController.navigate(LANGUAGE_ROUTE) },
             )
         }
 
-        unittoStackedComposable(languageRoute) {
+        unittoStackedComposable(LANGUAGE_ROUTE) {
             LanguageRoute(
                 navigateUp = navController::navigateUp,
             )
         }
 
-        unittoStackedComposable(startingScreenRoute) {
+        unittoStackedComposable(STARTING_SCREEN_ROUTE) {
             StartingScreenRoute(
                 navigateUp = navController::navigateUp,
             )
         }
 
-        unittoStackedComposable(formattingRoute) {
+        unittoStackedComposable(FORMATTING_ROUTE) {
             FormattingRoute(
-                navigateUpAction = navController::navigateUp
+                navigateUpAction = navController::navigateUp,
             )
         }
 
-        unittoStackedComposable(calculatorSettingsRoute) {
+        unittoStackedComposable(CALCULATOR_SETTINGS_ROUTE) {
             CalculatorSettingsRoute(
                 navigateUpAction = navController::navigateUp,
             )
         }
 
-        unittoStackedComposable(converterSettingsRoute) {
+        unittoStackedComposable(CONVERTER_SETTINGS_ROUTE) {
             ConverterSettingsRoute(
                 navigateUpAction = navController::navigateUp,
-                navigateToUnitsGroup = { navController.navigate(unitsGroupRoute) }
+                navigateToUnitsGroup = { navController.navigate(UNITS_GROUP_ROUTE) },
             )
         }
 
-        unittoStackedComposable(unitsGroupRoute) {
+        unittoStackedComposable(UNITS_GROUP_ROUTE) {
             UnitGroupsRoute(
                 navigateUpAction = navController::navigateUp,
             )
         }
 
-        unittoStackedComposable(aboutRoute) {
+        unittoStackedComposable(ABOUT_ROUTE) {
             AboutRoute(
                 navigateUpAction = navController::navigateUp,
-                navigateToThirdParty = { navController.navigate(thirdPartyRoute) },
-                navigateToEasterEgg = { navController.navigate(bouncingEmoji) },
+                navigateToThirdParty = { navController.navigate(THIRD_PARTY_ROUTE) },
+                navigateToEasterEgg = { navController.navigate(BOUNCING_EMOJI_ROUTE) },
             )
         }
 
-        unittoStackedComposable(thirdPartyRoute) {
+        unittoStackedComposable(THIRD_PARTY_ROUTE) {
             ThirdPartyLicensesScreen(
                 navigateUpAction = navController::navigateUp,
             )
         }
 
-        unittoStackedComposable(bouncingEmoji) {
+        unittoStackedComposable(BOUNCING_EMOJI_ROUTE) {
             BouncingEmojiRoute(
-                navigateUpAction = navController::navigateUp
+                navigateUpAction = navController::navigateUp,
             )
         }
     }

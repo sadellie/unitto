@@ -39,17 +39,19 @@ data class BackwardUnit(
         if (unitTo.basicUnit.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
 
         return when (unitTo) {
-            is NormalUnit -> this
-                .basicUnit
-                .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                .div(unitTo.basicUnit)
-                .div(value)
+            is NormalUnit ->
+                this
+                    .basicUnit
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .div(unitTo.basicUnit)
+                    .div(value)
 
-            is BackwardUnit -> unitTo
-                .basicUnit
-                .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
-                .multiply(value)
-                .div(this.basicUnit)
+            is BackwardUnit ->
+                unitTo
+                    .basicUnit
+                    .setScale(MAX_PRECISION, RoundingMode.HALF_EVEN)
+                    .multiply(value)
+                    .div(this.basicUnit)
 
             else -> BigDecimal.ZERO
         }

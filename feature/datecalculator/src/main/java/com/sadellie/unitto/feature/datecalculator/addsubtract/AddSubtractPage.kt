@@ -98,7 +98,7 @@ internal fun AddSubtractPage(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun AddSubtractView(
-    uiState: AddSubtractState,
+    uiState: AddSubtractUIState,
     updateStart: (ZonedDateTime) -> Unit,
     updateYears: (TextFieldValue) -> Unit,
     updateMonths: (TextFieldValue) -> Unit,
@@ -124,7 +124,7 @@ private fun AddSubtractView(
                 FloatingActionButton(
                     onClick = {
                         mContext.createEvent(uiState.start, uiState.result)
-                    }
+                    },
                 ) {
                     Icon(
                         imageVector = Icons.Default.Event,
@@ -132,7 +132,7 @@ private fun AddSubtractView(
                     )
                 }
             },
-            contentWindowInsets = WindowInsets(0, 0, 0, 0)
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
         ) {
             Column(
                 modifier = Modifier
@@ -140,17 +140,16 @@ private fun AddSubtractView(
                     .padding(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-
                 AnimatedContent(
                     targetState = showResult,
                     label = "Reveal result",
                     transitionSpec = { fadeIn() togetherWith fadeOut() using SizeTransform() },
-                    modifier = Modifier.clip(RoundedCornerShape(32.dp))
+                    modifier = Modifier.clip(RoundedCornerShape(32.dp)),
                 ) { show ->
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         DateTimeSelectorBlock(
                             modifier = Modifier
@@ -184,7 +183,7 @@ private fun AddSubtractView(
                         selected = uiState.addition,
                         onClick = { updateAddition(true) },
                         shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                        icon = {}
+                        icon = {},
                     ) {
                         Icon(Icons.Outlined.Add, stringResource(R.string.date_calculator_add))
                     }
@@ -192,11 +191,11 @@ private fun AddSubtractView(
                         selected = !uiState.addition,
                         onClick = { updateAddition(false) },
                         shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                        icon = {}
+                        icon = {},
                     ) {
                         Icon(
                             Icons.Outlined.Remove,
-                            stringResource(R.string.date_calculator_subtract)
+                            stringResource(R.string.date_calculator_subtract),
                         )
                     }
                 }
@@ -206,10 +205,10 @@ private fun AddSubtractView(
                         .fillMaxWidth()
                         .background(
                             MaterialTheme.colorScheme.secondaryContainer,
-                            RoundedCornerShape(32.dp)
+                            RoundedCornerShape(32.dp),
                         )
                         .padding(16.dp, 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     TimeUnitTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -221,7 +220,7 @@ private fun AddSubtractView(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         TimeUnitTextField(
                             modifier = Modifier.weight(1f),
@@ -242,7 +241,7 @@ private fun AddSubtractView(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         TimeUnitTextField(
                             modifier = Modifier.weight(1f),
@@ -258,7 +257,7 @@ private fun AddSubtractView(
                             onValueChange = updateMinutes,
                             label = stringResource(R.string.date_calculator_minutes),
                             expressionFormatter = expressionTransformer,
-                            imeAction = ImeAction.Done
+                            imeAction = ImeAction.Done,
                         )
                     }
                 }
@@ -296,10 +295,10 @@ private fun Context.createEvent(start: ZonedDateTime, end: ZonedDateTime) {
 @Composable
 fun AddSubtractViewPreview() {
     AddSubtractView(
-        uiState = AddSubtractState(
+        uiState = AddSubtractUIState(
             years = TextFieldValue("12"),
             start = ZonedDateTimeUtils.nowWithMinutes(),
-            result = ZonedDateTimeUtils.nowWithMinutes().plusSeconds(1)
+            result = ZonedDateTimeUtils.nowWithMinutes().plusSeconds(1),
         ),
         updateStart = {},
         updateYears = {},

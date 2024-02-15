@@ -129,7 +129,7 @@ internal fun Ready(
             initialValue = DragState.CLOSED,
             positionalThreshold = { 0f },
             velocityThreshold = { 0f },
-            animationSpec = tween()
+            animationSpec = tween(),
         )
     }
     val isOpen = dragState.currentValue == DragState.OPEN
@@ -145,13 +145,13 @@ internal fun Ready(
                     content = {
                         Icon(
                             Icons.Default.Delete,
-                            stringResource(R.string.clear_history_label)
+                            stringResource(R.string.clear_history_label),
                         )
                     },
-                    modifier = Modifier.semantics { testTag = "historyButton" }
+                    modifier = Modifier.semantics { testTag = "historyButton" },
                 )
             }
-        }
+        },
     ) { paddingValues ->
         BoxWithConstraints(
             modifier = Modifier.padding(paddingValues),
@@ -215,7 +215,7 @@ internal fun Ready(
                 formatterSymbols = uiState.formatterSymbols,
                 addTokens = onAddTokenClick,
                 onDelete = onDeleteHistoryItemClick,
-                showDeleteButtons = isOpen
+                showDeleteButtons = isOpen,
             )
 
             TextBox(
@@ -225,12 +225,12 @@ internal fun Ready(
                     .fillMaxWidth()
                     .anchoredDraggable(
                         state = dragState,
-                        orientation = Orientation.Vertical
+                        orientation = Orientation.Vertical,
                     ),
                 formatterSymbols = uiState.formatterSymbols,
                 input = uiState.input,
                 onValueChange = onInputChange,
-                output = uiState.output
+                output = uiState.output,
             )
 
             CalculatorKeyboard(
@@ -241,7 +241,7 @@ internal fun Ready(
                             x = 0,
                             y = (historyListHeight + textBoxHeight)
                                 .toPx()
-                                .roundToInt()
+                                .roundToInt(),
                         )
                     }
                     .height(keyboardHeight)
@@ -251,7 +251,10 @@ internal fun Ready(
                 onBracketsClick = onBracketsClick,
                 onDeleteClick = onDeleteClick,
                 onClearClick = onClearClick,
-                onEqualClick = { focusManager.clearFocus(); onEqualClick() },
+                onEqualClick = {
+                    focusManager.clearFocus()
+                    onEqualClick()
+                },
                 radianMode = uiState.radianMode,
                 onRadianModeClick = onRadianModeClick,
                 additionalButtons = uiState.additionalButtons,
@@ -281,19 +284,19 @@ internal fun Ready(
                     onClick = {
                         onClearHistoryClick()
                         showClearHistoryDialog = false
-                    }
+                    },
                 ) {
                     Text(stringResource(R.string.clear_label))
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = { showClearHistoryDialog = false }
+                    onClick = { showClearHistoryDialog = false },
                 ) {
                     Text(stringResource(R.string.cancel_label))
                 }
             },
-            onDismissRequest = { showClearHistoryDialog = false }
+            onDismissRequest = { showClearHistoryDialog = false },
         )
     }
 }
@@ -322,7 +325,7 @@ private fun PreviewCalculatorScreen() {
             id = it.hashCode(),
             date = dtf.parse(it)!!,
             expression = "12345".repeat(10),
-            result = "1234"
+            result = "1234",
         )
     }
 
@@ -339,7 +342,7 @@ private fun PreviewCalculatorScreen() {
             acButton = true,
             additionalButtons = false,
             inverseMode = false,
-            partialHistoryView = true
+            partialHistoryView = true,
         ),
         openDrawer = {},
         onInputChange = {},

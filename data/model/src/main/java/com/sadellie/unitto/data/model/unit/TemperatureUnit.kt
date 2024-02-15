@@ -30,8 +30,8 @@ data class TemperatureUnit(
     override val isFavorite: Boolean = false,
     override val pairId: String? = null,
     override val counter: Int = 0,
-    val customConvert: (unitTo: DefaultUnit, value: BigDecimal) -> BigDecimal
-): DefaultUnit {
+    val customConvert: (unitTo: DefaultUnit, value: BigDecimal) -> BigDecimal,
+) : DefaultUnit {
     override fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal = customConvert(unitTo, value)
 
     override fun clone(

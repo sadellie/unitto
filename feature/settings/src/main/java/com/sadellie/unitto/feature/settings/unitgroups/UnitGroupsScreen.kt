@@ -90,7 +90,7 @@ private fun UnitGroupsScreen(
 ) {
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_unit_groups_title),
-        navigationIcon = { NavigateUpButton(navigateUpAction) }
+        navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { paddingValues ->
         val copiedShownList = rememberUpdatedState(uiState.shownUnitGroups) as MutableState
         val state = rememberReorderableLazyListState(
@@ -109,19 +109,19 @@ private fun UnitGroupsScreen(
             onDragEnd = onDragEnd@{ from, to ->
                 if (from == to) return@onDragEnd
                 updateShownUnitGroups(copiedShownList.value)
-            }
+            },
         )
 
         LazyColumn(
             state = state.listState,
             modifier = Modifier
                 .padding(paddingValues)
-                .reorderable(state)
+                .reorderable(state),
         ) {
             item(key = "enabled") {
                 Header(
                     text = stringResource(R.string.enabled_label),
-                    paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+                    paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 )
             }
 
@@ -161,8 +161,8 @@ private fun UnitGroupsScreen(
                                 modifier = Modifier.clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = rememberRipple(false),
-                                    onClick = { removeShownUnitGroup(item) }
-                                )
+                                    onClick = { removeShownUnitGroup(item) },
+                                ),
                             )
                         },
                         trailingContent = {
@@ -173,9 +173,9 @@ private fun UnitGroupsScreen(
                                     .clickable(
                                         interactionSource = remember { MutableInteractionSource() },
                                         indication = rememberRipple(false),
-                                        onClick = {}
+                                        onClick = {},
                                     )
-                                    .detectReorder(state)
+                                    .detectReorder(state),
                             )
                         },
                     )
@@ -186,7 +186,7 @@ private fun UnitGroupsScreen(
                 Header(
                     text = stringResource(R.string.disabled_label),
                     modifier = Modifier.animateItemPlacement(),
-                    paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+                    paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 )
             }
 
@@ -205,10 +205,10 @@ private fun UnitGroupsScreen(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(false),
-                                onClick = { addShownUnitGroup(it) }
-                            )
+                                onClick = { addShownUnitGroup(it) },
+                            ),
                         )
-                    }
+                    },
                 )
             }
         }
@@ -223,7 +223,7 @@ private fun PreviewUnitGroupsScreen() {
     UnitGroupsScreen(
         uiState = UnitGroupsUIState.Ready(
             shownUnitGroups = shownUnitGroups,
-            hiddenUnitGroups = UnitGroup.entries - shownUnitGroups.toSet()
+            hiddenUnitGroups = UnitGroup.entries - shownUnitGroups.toSet(),
         ),
         navigateUpAction = {},
         updateShownUnitGroups = {},

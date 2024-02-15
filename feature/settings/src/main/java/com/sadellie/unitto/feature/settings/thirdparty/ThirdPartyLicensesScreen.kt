@@ -50,13 +50,13 @@ import com.sadellie.unitto.data.licenses.ALL_THIRD_PARTY
 @Stable
 @Composable
 internal fun ThirdPartyLicensesScreen(
-    navigateUpAction: () -> Unit = {}
+    navigateUpAction: () -> Unit = {},
 ) {
     val mContext = LocalContext.current
 
     ScaffoldWithLargeTopBar(
         title = stringResource(R.string.settings_third_party_licenses),
-        navigationIcon = { NavigateUpButton(navigateUpAction) }
+        navigationIcon = { NavigateUpButton(navigateUpAction) },
     ) { padding ->
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -64,35 +64,35 @@ internal fun ThirdPartyLicensesScreen(
                 start = 16.dp,
                 end = 16.dp,
                 top = padding.calculateTopPadding(),
-                bottom = 24.dp
-            )
+                bottom = 24.dp,
+            ),
         ) {
             items(ALL_THIRD_PARTY) {
                 OutlinedCard(
-                    Modifier.clickable { it.website?.let { url -> openLink(mContext, url) } }
+                    Modifier.clickable { it.website?.let { url -> openLink(mContext, url) } },
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp)
+                            .padding(12.dp),
                     ) {
                         Text(
                             text = it.name,
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleLarge,
                         )
                         Text(
                             modifier = Modifier.padding(top = 4.dp, bottom = 12.dp),
                             text = it.dev ?: "",
-                            style = MaterialTheme.typography.bodyLarge
+                            style = MaterialTheme.typography.bodyLarge,
                         )
                         Text(
                             text = it.description ?: "",
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                         Text(
                             modifier = Modifier.align(Alignment.End),
                             text = it.license ?: "",
-                            style = MaterialTheme.typography.labelLarge
+                            style = MaterialTheme.typography.labelLarge,
                         )
                     }
                 }

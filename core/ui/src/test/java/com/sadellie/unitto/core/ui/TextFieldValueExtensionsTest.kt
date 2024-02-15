@@ -332,7 +332,7 @@ class TextFieldValueExtensionsTest {
                 .replace("-", Token.Operator.minus)
                 .replace("/", Token.Operator.divide)
                 .replace("*", Token.Operator.multiply),
-            selection = TextRange(selectionStart, selectionEnd)
+            selection = TextRange(selectionStart, selectionEnd),
         )
     }
 }

@@ -38,18 +38,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class AddSubtractViewModel @Inject constructor(
-    userPreferencesRepository: UserPreferencesRepository
+    userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(AddSubtractState())
+    private val _uiState = MutableStateFlow(AddSubtractUIState())
 
-    val uiState: StateFlow<AddSubtractState> = _uiState
+    val uiState: StateFlow<AddSubtractUIState> = _uiState
         .combine(userPreferencesRepository.addSubtractPrefs) { uiState, userPrefs ->
             return@combine uiState.copy(
                 formatterSymbols = userPrefs.formatterSymbols,
             )
         }
         .onEach { updateResult() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), AddSubtractState())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), AddSubtractUIState())
 
     fun updateStart(newValue: ZonedDateTime) = _uiState.update { it.copy(start = newValue) }
 

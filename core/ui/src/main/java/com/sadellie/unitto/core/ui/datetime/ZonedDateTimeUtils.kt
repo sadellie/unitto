@@ -83,10 +83,11 @@ fun ZonedDateTime.formatTimeHours(
     locale: Locale,
     is24Hour: Boolean,
 ): String =
-    if (is24Hour)
+    if (is24Hour) {
         format(UnittoDateTimeFormatter.time24Hours(locale))
-    else
+    } else {
         format(UnittoDateTimeFormatter.time12Hours(locale))
+    }
 
 /**
  * @see UnittoDateTimeFormatter.timeMinutes
@@ -132,7 +133,7 @@ fun ZonedDateTime.formatDateDayMonthYear(
  * @see UnittoDateTimeFormatter.dateWeekDayMonthYear
  */
 fun LocalDate.formatDateWeekDayMonthYear(
-    locale: Locale
+    locale: Locale,
 ): String =
     format(UnittoDateTimeFormatter.dateWeekDayMonthYear(locale))
 
@@ -155,7 +156,6 @@ fun LocalDate.formatDateWeekDayMonthYear(
 fun ZonedDateTime.formatOffset(
     currentTime: ZonedDateTime,
 ): String? {
-
     val offsetFixed = ChronoUnit.SECONDS.between(currentTime, this)
 
     var resultBuffer = ""

@@ -22,10 +22,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.data.model.timezone.SearchResultZone
 
 sealed class AddTimeZoneUIState {
-    data object Loading: AddTimeZoneUIState()
+    data object Loading : AddTimeZoneUIState()
 
     data class Ready(
         val query: TextFieldValue,
         val list: List<SearchResultZone>,
-    ): AddTimeZoneUIState()
+    ) : AddTimeZoneUIState()
 }

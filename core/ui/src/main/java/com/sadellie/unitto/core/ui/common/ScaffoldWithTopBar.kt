@@ -59,7 +59,7 @@ fun ScaffoldWithTopBar(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -67,7 +67,7 @@ fun ScaffoldWithTopBar(
             AnimatedVisibility(
                 visible = LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact,
                 enter = slideInVertically() + fadeIn(),
-                exit = slideOutVertically() + fadeOut()
+                exit = slideOutVertically() + fadeOut(),
             ) {
                 CenterAlignedTopAppBar(
                     title = title,
@@ -84,6 +84,6 @@ fun ScaffoldWithTopBar(
         },
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
-        content = content
+        content = content,
     )
 }

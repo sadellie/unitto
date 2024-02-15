@@ -51,6 +51,6 @@ internal fun TimeUnitTextField(
                 unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ),
         expressionFormatter = expressionFormatter,
-        imeAction = imeAction
+        imeAction = imeAction,
     )
 }

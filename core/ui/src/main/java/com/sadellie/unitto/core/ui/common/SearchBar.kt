@@ -109,7 +109,7 @@ fun SearchBar(
         modifier = modifier
             .windowInsetsPadding(TopAppBarDefaults.windowInsets)
             .height(height),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Row(
             modifier = Modifier
@@ -121,10 +121,9 @@ fun SearchBar(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             ProvideColor(MaterialTheme.colorScheme.onSurface) {
-
                 NavigateButton { if (notEmpty) clear() else navigateUp() }
 
                 SearchTextField(
@@ -135,7 +134,7 @@ fun SearchBar(
                     value = query,
                     placeholder = stringResource(R.string.search_text_field_placeholder),
                     onValueChange = onQueryChange,
-                    onSearch = onSearch
+                    onSearch = onSearch,
                 )
 
                 ClearButton(notEmpty, ::clear)
@@ -152,7 +151,7 @@ private fun SearchTextField(
     value: TextFieldValue,
     placeholder: String,
     onValueChange: (TextFieldValue) -> Unit,
-    onSearch: KeyboardActionScope.() -> Unit
+    onSearch: KeyboardActionScope.() -> Unit,
 ) {
     BasicTextField(
         modifier = modifier,
@@ -171,33 +170,33 @@ private fun SearchTextField(
                     modifier = Modifier.alpha(0.7f),
                     text = placeholder,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
-        }
+        },
     )
 }
 
 @Composable
 private fun SearchButton(
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     SearchBarIconButton(onClick) {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = stringResource(R.string.search_button_description)
+            contentDescription = stringResource(R.string.search_button_description),
         )
     }
 }
 
 @Composable
 private fun NavigateButton(
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     SearchBarIconButton(onClick) {
         Icon(
             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-            contentDescription = stringResource(R.string.navigate_up_description)
+            contentDescription = stringResource(R.string.navigate_up_description),
         )
     }
 }
@@ -205,17 +204,17 @@ private fun NavigateButton(
 @Composable
 private fun ClearButton(
     visible: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(),
-        exit = fadeOut()
+        exit = fadeOut(),
     ) {
         SearchBarIconButton(onClick) {
             Icon(
                 imageVector = Icons.Outlined.Clear,
-                contentDescription = stringResource(R.string.clear_input_description)
+                contentDescription = stringResource(R.string.clear_input_description),
             )
         }
     }
@@ -224,7 +223,7 @@ private fun ClearButton(
 @Composable
 fun SearchBarIconButton(
     onClick: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -236,10 +235,10 @@ fun SearchBarIconButton(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = false,
-                    radius = 20.dp
-                )
+                    radius = 20.dp,
+                ),
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         content()
     }
@@ -259,6 +258,6 @@ fun UnittoSearchBarPreview() {
         query = TextFieldValue("test"),
         onQueryChange = {},
         navigateUp = {},
-        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
 }
