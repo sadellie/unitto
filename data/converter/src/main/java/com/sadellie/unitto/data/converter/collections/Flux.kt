@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val fluxCollection: List<AbstractUnit> by lazy {
+internal val fluxCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.maxwell,    BigDecimal("1"),                     UnitGroup.FLUX, R.string.unit_maxwell,       R.string.unit_maxwell_short),
         NormalUnit(UnitID.microweber, BigDecimal("100"),                   UnitGroup.FLUX, R.string.unit_microweber,    R.string.unit_microweber_short),

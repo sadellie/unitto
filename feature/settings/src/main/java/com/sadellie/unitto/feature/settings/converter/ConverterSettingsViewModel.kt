@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.converter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

@@ -23,83 +23,48 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.data.common.stateIn
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.repository.UnitsRepository
+import com.sadellie.unitto.data.converter.UnitSearchResultItem
+import com.sadellie.unitto.data.converter.UnitsRepositoryImpl
+import com.sadellie.unitto.data.model.converter.UnitGroup
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
-import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.feature.converter.navigation.INPUT_ARG
 import com.sadellie.unitto.feature.converter.navigation.UNIT_FROM_ID_ARG
 import com.sadellie.unitto.feature.converter.navigation.UNIT_GROUP_ARG
 import com.sadellie.unitto.feature.converter.navigation.UNIT_TO_ID_ARG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class UnitSelectorViewModel @Inject constructor(
+internal class UnitToSelectorViewModel @Inject constructor(
     private val userPrefsRepository: UserPreferencesRepository,
-    private val unitsRepo: UnitsRepository,
+    private val unitsRepo: UnitsRepositoryImpl,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private var searchJob: Job? = null
+
     private val query = MutableStateFlow(TextFieldValue())
-    private val searchResults = MutableStateFlow<UnitSearchResult>(UnitSearchResult.Loading)
+    private val searchResults = MutableStateFlow<Map<UnitGroup, List<UnitSearchResultItem>>?>(null)
     private val selectedUnitGroup = MutableStateFlow(savedStateHandle.get<UnitGroup>(UNIT_GROUP_ARG))
     private val unitFromId = savedStateHandle.get<String>(UNIT_FROM_ID_ARG)
     private val unitToId = savedStateHandle.get<String>(UNIT_TO_ID_ARG)
     private val input = savedStateHandle.get<String>(INPUT_ARG)
 
-    val unitFromUIState: StateFlow<UnitSelectorUIState> = combine(
-        query,
-        searchResults,
-        selectedUnitGroup,
-        userPrefsRepository.converterPrefs,
-    ) { query, searchResults, selectedUnitGroup, prefs ->
-        if (unitFromId.isNullOrEmpty()) return@combine UnitSelectorUIState.Loading
-
-        return@combine UnitSelectorUIState.UnitFrom(
-            query = query,
-            unitFrom = unitsRepo.getById(unitFromId),
-            shownUnitGroups = prefs.shownUnitGroups,
-            showFavoritesOnly = prefs.unitConverterFavoritesOnly,
-            units = searchResults,
-            selectedUnitGroup = selectedUnitGroup,
-            sorting = prefs.unitConverterSorting,
-        )
-    }
-        .mapLatest { ui ->
-            if (ui is UnitSelectorUIState.UnitFrom) {
-                searchResults.update {
-                    val result = unitsRepo.filterUnits(
-                        query = ui.query.text,
-                        unitGroup = ui.selectedUnitGroup,
-                        favoritesOnly = ui.showFavoritesOnly,
-                        hideBrokenUnits = false,
-                        sorting = ui.sorting,
-                        shownUnitGroups = ui.shownUnitGroups,
-                    )
-
-                    if (result.isEmpty()) UnitSearchResult.Empty else UnitSearchResult.Success(result)
-                }
-            }
-
-            ui
-        }
-        .stateIn(viewModelScope, UnitSelectorUIState.Loading)
-
     val unitToUIState: StateFlow<UnitSelectorUIState> = combine(
         query,
         searchResults,
         userPrefsRepository.converterPrefs,
-        unitsRepo.units,
-    ) { query, searchResults, prefs, _ ->
+    ) { query, searchResults, prefs ->
         if (unitFromId.isNullOrEmpty()) return@combine UnitSelectorUIState.Loading
         if (unitToId.isNullOrEmpty()) return@combine UnitSelectorUIState.Loading
+        if (searchResults == null) return@combine UnitSelectorUIState.Loading
 
         UnitSelectorUIState.UnitTo(
             query = query,
@@ -114,35 +79,46 @@ internal class UnitSelectorViewModel @Inject constructor(
             formatterSymbols = prefs.formatterSymbols,
         )
     }
-        .mapLatest { ui ->
-            if (ui is UnitSelectorUIState.UnitTo) {
-                searchResults.update {
-                    if (ui.unitFrom.group == UnitGroup.CURRENCY) unitsRepo.updateRates(ui.unitFrom)
-
-                    val result = unitsRepo.filterUnits(
-                        query = ui.query.text,
-                        unitGroup = ui.unitFrom.group,
-                        favoritesOnly = ui.showFavoritesOnly,
-                        hideBrokenUnits = true,
-                        sorting = ui.sorting,
-                    )
-
-                    if (result.isEmpty()) UnitSearchResult.Empty else UnitSearchResult.Success(result)
-                }
-            }
-            ui
-        }
         .stateIn(viewModelScope, UnitSelectorUIState.Loading)
 
-    fun updateSelectorQuery(value: TextFieldValue) = query.update { value }
+    fun updateSelectorQuery(value: TextFieldValue) {
+        query.update { value }
+        onSearch()
+    }
 
     fun updateShowFavoritesOnly(value: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateUnitConverterFavoritesOnly(value)
+        onSearch()
     }
 
-    fun updateSelectedUnitGroup(value: UnitGroup?) = selectedUnitGroup.update { value }
+    fun favoriteUnit(unit: UnitSearchResultItem) = viewModelScope.launch {
+        unitsRepo.favorite(unit.basicUnit.id)
+        onSearch()
+    }
 
-    fun favoriteUnit(unit: AbstractUnit) = viewModelScope.launch(Dispatchers.IO) {
-        unitsRepo.favorite(unit)
+    private fun onSearch() {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            val prefs = userPrefsRepository.converterPrefs.first()
+            val result = unitsRepo.filterUnitsAndBatchConvert(
+                query = query.value.text,
+                unitGroup = selectedUnitGroup.value ?: return@launch,
+                favoritesOnly = prefs.unitConverterFavoritesOnly,
+                sorting = prefs.unitConverterSorting,
+                unitFromId = unitFromId ?: return@launch,
+                input = input,
+            )
+
+            searchResults.update { result }
+        }
+    }
+
+    init {
+        onSearch()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
     }
 }

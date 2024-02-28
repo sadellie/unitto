@@ -30,7 +30,7 @@ import androidx.room.PrimaryKey
  * @param frequency Show the amount of time this unit was used
  */
 @Entity(tableName = "units")
-class UnitsEntity(
+data class UnitsEntity(
     @PrimaryKey val unitId: String,
     @ColumnInfo(name = "is_favorite") val isFavorite: Boolean = false,
     @ColumnInfo(name = "paired_unit_id") val pairedUnitId: String? = null,

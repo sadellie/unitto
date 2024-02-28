@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val energyCollection: List<AbstractUnit> by lazy {
+internal val energyCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.electron_volt,             BigDecimal("0.160217733"),   UnitGroup.ENERGY,   R.string.unit_electron_volt,             R.string.unit_electron_volt_short),
         NormalUnit(UnitID.attojoule,                 BigDecimal("1.00"),             UnitGroup.ENERGY,   R.string.unit_attojoule,                 R.string.unit_attojoule_short),

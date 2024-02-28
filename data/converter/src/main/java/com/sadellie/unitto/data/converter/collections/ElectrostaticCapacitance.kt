@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val electrostaticCapacitance: List<AbstractUnit> by lazy {
+internal val electrostaticCapacitance: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.attofarad,     BigDecimal("1"),              UnitGroup.ELECTROSTATIC_CAPACITANCE,    R.string.unit_attofarad,     R.string.unit_attofarad_short),
         NormalUnit(UnitID.picofarad,     BigDecimal("1000000"),           UnitGroup.ELECTROSTATIC_CAPACITANCE,    R.string.unit_picofarad,     R.string.unit_picofarad_short),

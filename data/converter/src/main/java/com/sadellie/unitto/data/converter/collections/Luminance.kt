@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-val luminanceCollection: List<AbstractUnit> by lazy {
+val luminanceCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.candela_per_square_meter,                     BigDecimal("31415926.5359"),      UnitGroup.LUMINANCE,    R.string.unit_candela_per_square_meter,                  R.string.unit_candela_per_square_meter_short),
         NormalUnit(UnitID.candela_per_square_centimeter,                BigDecimal("314159265359"),       UnitGroup.LUMINANCE,    R.string.unit_candela_per_square_centimeter,             R.string.unit_candela_per_square_centimeter_short),

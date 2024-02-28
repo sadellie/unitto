@@ -44,10 +44,9 @@ import com.sadellie.unitto.data.converter.collections.temperatureCollection
 import com.sadellie.unitto.data.converter.collections.timeCollection
 import com.sadellie.unitto.data.converter.collections.torqueCollection
 import com.sadellie.unitto.data.converter.collections.volumeCollection
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.DefaultUnit
-import com.sadellie.unitto.data.model.unit.NumberBaseUnit
-import com.sadellie.unitto.data.model.unit.ReverseUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NumberBaseUnit
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -595,13 +594,11 @@ class AllUnitsTest {
 
         val actual = when (unitFrom.group) {
             UnitGroup.NUMBER_BASE -> (unitFrom as NumberBaseUnit).convert((unitTo as NumberBaseUnit), value)
-            UnitGroup.FLOW_RATE -> (unitFrom as ReverseUnit)
-                .convert((unitTo as DefaultUnit), BigDecimal(value))
-                .format(5, OutputFormat.PLAIN)
-            else -> (unitFrom as DefaultUnit)
-                .convert((unitTo as DefaultUnit), BigDecimal(value))
+            else -> (unitFrom as BasicUnit.Default)
+                .convert((unitTo as BasicUnit.Default), BigDecimal(value))
                 .format(5, OutputFormat.PLAIN)
         }
+
         assertEquals("Failed at $this to $checkingId", expected, actual)
         println("PASSED: $this -> $expected == $actual")
         val content: Set<String> = history.getOrDefault(unitFrom.group, setOf())

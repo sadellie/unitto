@@ -16,10 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.unit
+package com.sadellie.unitto.data.model.converter.unit
 
+import androidx.annotation.StringRes
+import com.sadellie.unitto.data.model.converter.UnitGroup
 import java.math.BigDecimal
 
-interface DefaultUnit : AbstractUnit {
-    fun convert(unitTo: DefaultUnit, value: BigDecimal): BigDecimal
+sealed interface BasicUnit {
+
+    val id: String
+
+    val group: UnitGroup
+
+    @get:StringRes
+    val displayName: Int
+
+    @get:StringRes val shortName: Int
+
+    val factor: BigDecimal
+
+    interface NumberBase : BasicUnit {
+        fun convert(unitTo: NumberBase, value: String): String
+    }
+
+    interface Default : BasicUnit {
+        val backward: Boolean
+
+        fun convert(unitTo: Default, value: BigDecimal): BigDecimal
+    }
 }

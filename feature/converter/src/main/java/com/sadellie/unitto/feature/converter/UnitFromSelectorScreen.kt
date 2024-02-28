@@ -22,12 +22,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -39,10 +37,11 @@ import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.SearchBar
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.converter.UnitSearchResultItem
+import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import com.sadellie.unitto.feature.converter.components.ChipsRow
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.UnitsList
@@ -50,7 +49,7 @@ import java.math.BigDecimal
 
 @Composable
 internal fun UnitFromSelectorRoute(
-    unitSelectorViewModel: UnitSelectorViewModel,
+    unitSelectorViewModel: UnitFromSelectorViewModel,
     converterViewModel: ConverterViewModel,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
@@ -62,7 +61,7 @@ internal fun UnitFromSelectorRoute(
             uiState = uiState,
             onQueryChange = unitSelectorViewModel::updateSelectorQuery,
             toggleFavoritesOnly = unitSelectorViewModel::updateShowFavoritesOnly,
-            updateUnitFrom = converterViewModel::updateUnitFrom,
+            updateUnitFrom = converterViewModel::updateUnitFromId,
             updateUnitGroup = unitSelectorViewModel::updateSelectedUnitGroup,
             favoriteUnit = unitSelectorViewModel::favoriteUnit,
             navigateUp = navigateUp,
@@ -77,24 +76,13 @@ private fun UnitFromSelectorScreen(
     uiState: UnitSelectorUIState.UnitFrom,
     onQueryChange: (TextFieldValue) -> Unit,
     toggleFavoritesOnly: (Boolean) -> Unit,
-    updateUnitFrom: (AbstractUnit) -> Unit,
+    updateUnitFrom: (String) -> Unit,
     updateUnitGroup: (UnitGroup?) -> Unit,
-    favoriteUnit: (AbstractUnit) -> Unit,
+    favoriteUnit: (UnitSearchResultItem) -> Unit,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
-    val chipsRowLazyListState = rememberLazyListState()
-
-    LaunchedEffect(uiState.unitFrom, uiState.shownUnitGroups) {
-        kotlin.runCatching {
-            val groupToSelect = uiState.shownUnitGroups.indexOf(uiState.unitFrom.group)
-            if (groupToSelect > -1) {
-                chipsRowLazyListState.scrollToItem(groupToSelect)
-            }
-        }
-    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -127,15 +115,16 @@ private fun UnitFromSelectorScreen(
         },
     ) { paddingValues ->
         val resources = LocalContext.current.resources
+
         UnitsList(
             modifier = Modifier.padding(paddingValues),
             searchResult = uiState.units,
             navigateToUnitGroups = navigateToUnitGroups,
-            currentUnitId = uiState.unitFrom.id,
-            supportLabel = { resources.getString(it.shortName) },
+            currentUnitId = uiState.unitFromId,
+            supportLabel = { resources.getString(it.basicUnit.shortName) },
             onClick = {
                 onQueryChange(TextFieldValue())
-                updateUnitFrom(it)
+                updateUnitFrom(it.basicUnit.id)
                 navigateUp()
             },
             favoriteUnit = { favoriteUnit(it) },
@@ -146,7 +135,7 @@ private fun UnitFromSelectorScreen(
 @Preview
 @Composable
 private fun UnitFromSelectorScreenPreview() {
-    val units: Map<UnitGroup, List<AbstractUnit>> = mapOf(
+    val units: Map<UnitGroup, List<UnitSearchResultItem>> = mapOf(
         UnitGroup.LENGTH to listOf(
             NormalUnit(UnitID.meter, BigDecimal("1000000000000000000"), UnitGroup.LENGTH, R.string.unit_meter, R.string.unit_meter_short),
             NormalUnit(UnitID.kilometer, BigDecimal("1000000000000000000000"), UnitGroup.LENGTH, R.string.unit_kilometer, R.string.unit_kilometer_short),
@@ -155,14 +144,15 @@ private fun UnitFromSelectorScreenPreview() {
             NormalUnit(UnitID.foot, BigDecimal("304800000000000000"), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
             NormalUnit(UnitID.yard, BigDecimal("914400000000000000"), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
             NormalUnit(UnitID.mile, BigDecimal("1609344000000000000000"), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
-        ),
+        )
+            .map { UnitSearchResultItem(it, UnitsEntity(unitId = it.id), null) },
     )
 
     UnitFromSelectorScreen(
         uiState = UnitSelectorUIState.UnitFrom(
-            unitFrom = units.values.first().first(),
+            unitFromId = UnitID.kilometer,
             query = TextFieldValue("test"),
-            units = UnitSearchResult.Success(units),
+            units = units,
             selectedUnitGroup = UnitGroup.SPEED,
             shownUnitGroups = UnitGroup.entries,
             showFavoritesOnly = false,

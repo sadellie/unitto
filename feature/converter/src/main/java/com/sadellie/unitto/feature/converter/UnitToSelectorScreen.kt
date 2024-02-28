@@ -36,20 +36,21 @@ import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.SearchBar
 import com.sadellie.unitto.core.ui.common.textfield.formatExpression
 import com.sadellie.unitto.data.common.format
+import com.sadellie.unitto.data.converter.DefaultBatchConvertResult
+import com.sadellie.unitto.data.converter.NumberBaseBatchConvertResult
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.DefaultUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.data.model.unit.NumberBaseUnit
+import com.sadellie.unitto.data.converter.UnitSearchResultItem
+import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.UnitsList
 import java.math.BigDecimal
 
 @Composable
 internal fun UnitToSelectorRoute(
-    unitSelectorViewModel: UnitSelectorViewModel,
+    unitSelectorViewModel: UnitToSelectorViewModel,
     converterViewModel: ConverterViewModel,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
@@ -61,7 +62,7 @@ internal fun UnitToSelectorRoute(
             uiState = uiState,
             onQueryChange = unitSelectorViewModel::updateSelectorQuery,
             toggleFavoritesOnly = unitSelectorViewModel::updateShowFavoritesOnly,
-            updateUnitTo = converterViewModel::updateUnitTo,
+            updateUnitTo = converterViewModel::updateUnitToId,
             favoriteUnit = unitSelectorViewModel::favoriteUnit,
             navigateUp = navigateUp,
             navigateToUnitGroups = navigateToUnitGroups,
@@ -75,8 +76,8 @@ private fun UnitToSelectorScreen(
     uiState: UnitSelectorUIState.UnitTo,
     onQueryChange: (TextFieldValue) -> Unit,
     toggleFavoritesOnly: (Boolean) -> Unit,
-    updateUnitTo: (AbstractUnit) -> Unit,
-    favoriteUnit: (AbstractUnit) -> Unit,
+    updateUnitTo: (String) -> Unit,
+    favoriteUnit: (UnitSearchResultItem) -> Unit,
     navigateUp: () -> Unit,
     navigateToUnitGroups: () -> Unit,
 ) {
@@ -105,19 +106,25 @@ private fun UnitToSelectorScreen(
             navigateToUnitGroups = navigateToUnitGroups,
             currentUnitId = uiState.unitTo.id,
             supportLabel = {
-                formatUnitToSupportLabel(
-                    unitFrom = uiState.unitFrom,
-                    unitTo = it,
-                    input = uiState.input,
-                    shortName = resources.getString(it.shortName),
-                    scale = uiState.scale,
-                    outputFormat = uiState.outputFormat,
-                    formatterSymbols = uiState.formatterSymbols,
-                )
+                val label = resources.getString(it.basicUnit.shortName)
+
+                when (val conversion = it.conversion) {
+                    is DefaultBatchConvertResult -> {
+                        val formattedConversion = conversion.value
+                            .format(uiState.scale, uiState.outputFormat)
+                            .formatExpression(uiState.formatterSymbols)
+
+                        "$formattedConversion $label"
+                    }
+                    is NumberBaseBatchConvertResult -> {
+                        "${conversion.value} $label"
+                    }
+                    else -> label
+                }
             },
             onClick = {
                 onQueryChange(TextFieldValue())
-                updateUnitTo(it)
+                updateUnitTo(it.basicUnit.id)
                 navigateUp()
             },
             favoriteUnit = { favoriteUnit(it) },
@@ -125,49 +132,10 @@ private fun UnitToSelectorScreen(
     }
 }
 
-private fun formatUnitToSupportLabel(
-    unitFrom: AbstractUnit?,
-    unitTo: AbstractUnit?,
-    input: String?,
-    shortName: String,
-    scale: Int,
-    outputFormat: Int,
-    formatterSymbols: FormatterSymbols,
-): String {
-    if (input.isNullOrEmpty()) return shortName
-
-    try {
-        if ((unitFrom is DefaultUnit) and (unitTo is DefaultUnit)) {
-            unitFrom as DefaultUnit
-            unitTo as DefaultUnit
-
-            val conversion = unitFrom
-                .convert(unitTo, BigDecimal(input))
-                .format(scale, outputFormat)
-                .formatExpression(formatterSymbols)
-
-            return "$conversion $shortName"
-        }
-
-        if ((unitFrom is NumberBaseUnit) and (unitTo is NumberBaseUnit)) {
-            unitFrom as NumberBaseUnit
-            unitTo as NumberBaseUnit
-
-            val conversion = unitFrom.convert(unitTo, input).uppercase()
-
-            return "$conversion $shortName"
-        }
-    } catch (e: Exception) {
-        return shortName
-    }
-
-    return shortName
-}
-
 @Preview
 @Composable
 private fun UnitToSelectorPreview() {
-    val units: Map<UnitGroup, List<AbstractUnit>> = mapOf(
+    val units: Map<UnitGroup, List<UnitSearchResultItem>> = mapOf(
         UnitGroup.LENGTH to listOf(
             NormalUnit(UnitID.meter, BigDecimal("1000000000000000000"), UnitGroup.LENGTH, R.string.unit_meter, R.string.unit_meter_short),
             NormalUnit(UnitID.kilometer, BigDecimal("1000000000000000000000"), UnitGroup.LENGTH, R.string.unit_kilometer, R.string.unit_kilometer_short),
@@ -176,15 +144,16 @@ private fun UnitToSelectorPreview() {
             NormalUnit(UnitID.foot, BigDecimal("304800000000000000"), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
             NormalUnit(UnitID.yard, BigDecimal("914400000000000000"), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
             NormalUnit(UnitID.mile, BigDecimal("1609344000000000000000"), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
-        ),
+        )
+            .map { UnitSearchResultItem(it, UnitsEntity(unitId = it.id), null) },
     )
 
     UnitToSelectorScreen(
         uiState = UnitSelectorUIState.UnitTo(
-            unitFrom = units.values.first().first(),
-            unitTo = units.values.first().first(),
+            unitFrom = units.values.first().first().basicUnit,
+            unitTo = units.values.first().first().basicUnit,
             query = TextFieldValue("test"),
-            units = UnitSearchResult.Success(units),
+            units = units,
             showFavoritesOnly = false,
             sorting = UnitsListSorting.USAGE,
             input = "100",

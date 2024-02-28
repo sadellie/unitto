@@ -16,15 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.unitgroups
+package com.sadellie.unitto.data.model.converter.unit
 
 import com.sadellie.unitto.data.model.converter.UnitGroup
+import java.math.BigDecimal
 
-internal sealed class UnitGroupsUIState {
-    data object Loading : UnitGroupsUIState()
-
-    data class Ready(
-        val shownUnitGroups: List<UnitGroup>,
-        val hiddenUnitGroups: List<UnitGroup>,
-    ) : UnitGroupsUIState()
+data class NumberBaseUnit(
+    override val id: String,
+    override val factor: BigDecimal,
+    override val group: UnitGroup,
+    override val displayName: Int,
+    override val shortName: Int,
+) : BasicUnit.NumberBase {
+    override fun convert(unitTo: BasicUnit.NumberBase, value: String): String = value
+        .toBigInteger(factor.intValueExact())
+        .toString(unitTo.factor.intValueExact())
 }

@@ -42,8 +42,8 @@ import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.ListItem
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.ConverterPreferences
 import com.sadellie.unitto.data.userprefs.ConverterPreferencesImpl
 import com.sadellie.unitto.feature.settings.components.AlertDialogWithList

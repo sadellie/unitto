@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.converter.components
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,57 +31,55 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.SearchPlaceholder
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
-import com.sadellie.unitto.feature.converter.UnitSearchResult
+import com.sadellie.unitto.data.converter.UnitSearchResultItem
+import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
 @Composable
 internal fun UnitsList(
     modifier: Modifier,
-    searchResult: UnitSearchResult,
+    searchResult: Map<UnitGroup, List<UnitSearchResultItem>>,
     navigateToUnitGroups: () -> Unit,
     currentUnitId: String,
-    supportLabel: (AbstractUnit) -> String,
-    onClick: (AbstractUnit) -> Unit,
-    favoriteUnit: (AbstractUnit) -> Unit,
+    supportLabel: (UnitSearchResultItem) -> String,
+    onClick: (UnitSearchResultItem) -> Unit,
+    favoriteUnit: (UnitSearchResultItem) -> Unit,
 ) {
     Crossfade(
         modifier = modifier,
         targetState = searchResult,
         label = "Units list",
+        animationSpec = tween(200),
     ) { result ->
-        when (result) {
-            is UnitSearchResult.Success -> LazyColumn(
+        when {
+            result.isEmpty() -> SearchPlaceholder(
+                onButtonClick = navigateToUnitGroups,
+                supportText = stringResource(R.string.converter_no_results_support),
+                buttonLabel = stringResource(R.string.open_settings_label),
+            )
+            else -> LazyColumn(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                result.units.forEach { (group, units) ->
+                result.forEach { (group, units) ->
                     item(group.name) {
                         UnitGroupHeader(Modifier.animateItemPlacement(), group)
                     }
 
-                    items(units, { it.id }) {
+                    items(units, { it.basicUnit.id }) {
                         BasicUnitListItem(
                             modifier = Modifier.animateItemPlacement(),
-                            name = stringResource(it.displayName),
+                            name = stringResource(it.basicUnit.displayName),
                             supportLabel = supportLabel(it),
-                            isFavorite = it.isFavorite,
-                            isSelected = it.id == currentUnitId,
+                            isFavorite = it.stats.isFavorite,
+                            isSelected = it.basicUnit.id == currentUnitId,
                             onClick = { onClick(it) },
                             favoriteUnit = { favoriteUnit(it) },
                         )
                     }
                 }
             }
-
-            UnitSearchResult.Empty -> SearchPlaceholder(
-                onButtonClick = navigateToUnitGroups,
-                supportText = stringResource(R.string.converter_no_results_support),
-                buttonLabel = stringResource(R.string.open_settings_label),
-            )
-
-            UnitSearchResult.Loading -> Unit
         }
     }
 }
@@ -89,7 +88,7 @@ internal fun UnitsList(
 @Composable
 private fun PreviewUnitsList() {
     val resources = LocalContext.current.resources
-    val groupedUnits: Map<UnitGroup, List<AbstractUnit>> = mapOf(
+    val units: Map<UnitGroup, List<UnitSearchResultItem>> = mapOf(
         UnitGroup.LENGTH to listOf(
             NormalUnit(UnitID.meter, BigDecimal("1000000000000000000"), UnitGroup.LENGTH, R.string.unit_meter, R.string.unit_meter_short),
             NormalUnit(UnitID.kilometer, BigDecimal("1000000000000000000000"), UnitGroup.LENGTH, R.string.unit_kilometer, R.string.unit_kilometer_short),
@@ -98,15 +97,16 @@ private fun PreviewUnitsList() {
             NormalUnit(UnitID.foot, BigDecimal("304800000000000000"), UnitGroup.LENGTH, R.string.unit_foot, R.string.unit_foot_short),
             NormalUnit(UnitID.yard, BigDecimal("914400000000000000"), UnitGroup.LENGTH, R.string.unit_yard, R.string.unit_yard_short),
             NormalUnit(UnitID.mile, BigDecimal("1609344000000000000000"), UnitGroup.LENGTH, R.string.unit_mile, R.string.unit_mile_short),
-        ),
+        )
+            .map { UnitSearchResultItem(it, UnitsEntity(unitId = it.id), null) },
     )
 
     UnitsList(
         modifier = Modifier.fillMaxSize(),
-        searchResult = UnitSearchResult.Success(units = groupedUnits),
+        searchResult = units,
         navigateToUnitGroups = {},
         currentUnitId = UnitID.mile,
-        supportLabel = { resources.getString(it.shortName) },
+        supportLabel = { resources.getString(it.basicUnit.shortName) },
         onClick = {},
         favoriteUnit = {},
     )

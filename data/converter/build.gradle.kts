@@ -35,11 +35,13 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.org.robolectric.robolectric)
     implementation(libs.com.squareup.moshi.moshi.kotlin)
     implementation(libs.com.squareup.retrofit2.converter.moshi)
 
     implementation(project(":core:base"))
     implementation(project(":data:common"))
     implementation(project(":data:database"))
+    implementation(project(":data:evaluatto"))
     implementation(project(":data:model"))
 }

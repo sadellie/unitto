@@ -22,10 +22,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
 import com.sadellie.unitto.data.model.repository.UserPreferencesRepository
-import com.sadellie.unitto.data.model.unit.AbstractUnit
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
 import com.sadellie.unitto.data.model.userprefs.AddSubtractPreferences
 import com.sadellie.unitto.data.model.userprefs.AppPreferences
@@ -182,10 +181,10 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateLatestPairOfUnits(unitFrom: AbstractUnit, unitTo: AbstractUnit) {
+    override suspend fun updateLatestPairOfUnits(unitFrom: String, unitTo: String) {
         dataStore.edit { preferences ->
-            preferences[PrefsKeys.LATEST_LEFT_SIDE] = unitFrom.id
-            preferences[PrefsKeys.LATEST_RIGHT_SIDE] = unitTo.id
+            preferences[PrefsKeys.LATEST_LEFT_SIDE] = unitFrom
+            preferences[PrefsKeys.LATEST_RIGHT_SIDE] = unitTo
         }
     }
 

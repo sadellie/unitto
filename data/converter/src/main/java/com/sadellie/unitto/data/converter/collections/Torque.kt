@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-val torqueCollection: List<AbstractUnit> by lazy {
+val torqueCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.dyne_millimeter,           BigDecimal("1"),                      UnitGroup.TORQUE,   R.string.unit_dyne_millimeter,           R.string.unit_dyne_millimeter_short),
         NormalUnit(UnitID.dyne_centimeter,           BigDecimal("10"),                     UnitGroup.TORQUE,   R.string.unit_dyne_centimeter,           R.string.unit_dyne_centimeter_short),

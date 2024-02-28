@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val timeCollection: List<AbstractUnit> by lazy {
+internal val timeCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.attosecond,    BigDecimal("1"),                                  UnitGroup.TIME, R.string.unit_attosecond,    R.string.unit_attosecond_short),
         NormalUnit(UnitID.nanosecond,    BigDecimal("1000000000"),                      UnitGroup.TIME, R.string.unit_nanosecond,    R.string.unit_nanosecond_short),

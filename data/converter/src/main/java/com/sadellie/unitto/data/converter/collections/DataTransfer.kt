@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val dataTransferCollection: List<AbstractUnit> by lazy {
+internal val dataTransferCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.bit_per_second,        BigDecimal("1"),                          UnitGroup.DATA_TRANSFER, R.string.unit_bit_per_second,        R.string.unit_bit_per_second_short),
         NormalUnit(UnitID.kibibit_per_second,    BigDecimal("1024"),                      UnitGroup.DATA_TRANSFER, R.string.unit_kibibit_per_second,    R.string.unit_kibibit_per_second_short),

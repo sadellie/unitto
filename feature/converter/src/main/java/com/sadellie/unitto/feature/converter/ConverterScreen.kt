@@ -55,6 +55,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -83,24 +84,30 @@ import com.sadellie.unitto.core.ui.common.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.common.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.common.textfield.NumberBaseTextField
 import com.sadellie.unitto.core.ui.common.textfield.SimpleTextField
+import com.sadellie.unitto.core.ui.common.textfield.addBracket
+import com.sadellie.unitto.core.ui.common.textfield.addTokens
+import com.sadellie.unitto.core.ui.common.textfield.deleteTokens
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.data.common.format
+import com.sadellie.unitto.data.common.isEqualTo
+import com.sadellie.unitto.data.common.isExpression
+import com.sadellie.unitto.data.converter.ConverterResult
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
+import java.math.BigDecimal
 import java.util.Locale
 
 @Composable
 internal fun ConverterRoute(
     viewModel: ConverterViewModel = hiltViewModel(),
-    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
-    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
+    navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
+    navigateToRightScreen: (unitFromId: String, unitToId: String, group: UnitGroup, input: String) -> Unit,
     openDrawer: () -> Unit,
 ) {
-    val uiState = viewModel.converterUiState.collectAsStateWithLifecycle()
+    val uiState = viewModel.converterUIState.collectAsStateWithLifecycle()
 
     ConverterScreen(
         uiState = uiState.value,
@@ -108,30 +115,24 @@ internal fun ConverterRoute(
         navigateToRightScreen = navigateToRightScreen,
         openDrawer = openDrawer,
         swapUnits = viewModel::swapUnits,
-        processInput = viewModel::addTokens,
-        deleteDigit = viewModel::deleteTokens,
-        clearInput = viewModel::clearInput,
-        onValueChange = viewModel::updateInput,
-        onFocusOnInput2 = viewModel::updateFocused,
-        onErrorClick = viewModel::updateCurrencyRates,
-        addBracket = viewModel::addBracket,
+        updateInput1 = viewModel::updateInput1,
+        updateInput2 = viewModel::updateInput2,
+        convertDefault = viewModel::convertDefault,
+        convertNumberBase = viewModel::convertNumberBase,
     )
 }
 
 @Composable
 private fun ConverterScreen(
     uiState: UnitConverterUIState,
-    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
-    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
+    navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
+    navigateToRightScreen: (unitFromId: String, unitToId: String, group: UnitGroup, input: String) -> Unit,
     openDrawer: () -> Unit,
-    swapUnits: () -> Unit,
-    processInput: (String) -> Unit,
-    deleteDigit: () -> Unit,
-    clearInput: () -> Unit,
-    onValueChange: (TextFieldValue) -> Unit,
-    onFocusOnInput2: (Boolean) -> Unit,
-    onErrorClick: (AbstractUnit) -> Unit,
-    addBracket: () -> Unit,
+    swapUnits: (String, String) -> Unit,
+    updateInput1: (TextFieldValue) -> Unit,
+    updateInput2: (TextFieldValue) -> Unit,
+    convertDefault: () -> Unit,
+    convertNumberBase: () -> Unit,
 ) {
     when (uiState) {
         UnitConverterUIState.Loading -> EmptyScreen()
@@ -143,13 +144,11 @@ private fun ConverterScreen(
                 NumberBase(
                     modifier = Modifier.padding(it),
                     uiState = uiState,
-                    onValueChange = onValueChange,
-                    processInput = processInput,
-                    deleteDigit = deleteDigit,
+                    updateInput1 = updateInput1,
                     navigateToLeftScreen = navigateToLeftScreen,
                     swapUnits = swapUnits,
                     navigateToRightScreen = navigateToRightScreen,
-                    clearInput = clearInput,
+                    convert = convertNumberBase,
                 )
             }
         }
@@ -161,16 +160,12 @@ private fun ConverterScreen(
                 Default(
                     modifier = Modifier.padding(it),
                     uiState = uiState,
-                    onValueChange = onValueChange,
-                    onFocusOnInput2 = onFocusOnInput2,
-                    processInput = processInput,
-                    deleteDigit = deleteDigit,
+                    updateInput1 = updateInput1,
+                    updateInput2 = updateInput2,
                     navigateToLeftScreen = navigateToLeftScreen,
                     swapUnits = swapUnits,
                     navigateToRightScreen = navigateToRightScreen,
-                    clearInput = clearInput,
-                    refreshCurrencyRates = onErrorClick,
-                    addBracket = addBracket,
+                    convert = convertDefault,
                 )
             }
         }
@@ -194,14 +189,20 @@ private fun UnitConverterTopBar(
 private fun NumberBase(
     modifier: Modifier,
     uiState: UnitConverterUIState.NumberBase,
-    onValueChange: (TextFieldValue) -> Unit,
-    processInput: (String) -> Unit,
-    deleteDigit: () -> Unit,
-    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
-    swapUnits: () -> Unit,
-    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
-    clearInput: () -> Unit,
+    updateInput1: (TextFieldValue) -> Unit,
+    navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
+    swapUnits: (String, String) -> Unit,
+    navigateToRightScreen: (unitFromId: String, unitToId: String, group: UnitGroup, input: String) -> Unit,
+    convert: () -> Unit,
 ) {
+    LaunchedEffect(
+        uiState.input.text,
+        uiState.unitFrom.id,
+        uiState.unitTo.id,
+    ) {
+        convert()
+    }
+
     PortraitLandscape(
         modifier = modifier.fillMaxSize(),
         content1 = { contentModifier ->
@@ -213,7 +214,7 @@ private fun NumberBase(
                     minRatio = 0.7f,
                     placeholder = Token.Digit._0,
                     value = uiState.input,
-                    onValueChange = onValueChange,
+                    onValueChange = updateInput1,
                 )
                 AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
 
@@ -228,18 +229,27 @@ private fun NumberBase(
                 UnitSelectionButtons(
                     unitFromLabel = stringResource(uiState.unitFrom.displayName),
                     unitToLabel = stringResource(uiState.unitTo.displayName),
-                    swapUnits = swapUnits,
-                    navigateToLeftScreen = { navigateToLeftScreen(uiState) },
-                    navigateToRightScreen = { navigateToRightScreen(uiState) },
+                    swapUnits = { swapUnits(uiState.unitTo.id, uiState.unitFrom.id) },
+                    navigateToLeftScreen = {
+                        navigateToLeftScreen(uiState.unitFrom.id, uiState.unitFrom.group)
+                    },
+                    navigateToRightScreen = {
+                        navigateToRightScreen(
+                            uiState.unitFrom.id,
+                            uiState.unitTo.id,
+                            uiState.unitFrom.group,
+                            uiState.input.text,
+                        )
+                    },
                 )
             }
         },
-        content2 = {
+        content2 = { modifier2 ->
             NumberBaseKeyboard(
-                modifier = it,
-                addDigit = processInput,
-                deleteDigit = deleteDigit,
-                clearInput = clearInput,
+                modifier = modifier2,
+                addDigit = { updateInput1(uiState.input.addTokens(it)) },
+                deleteDigit = { updateInput1(uiState.input.deleteTokens()) },
+                clearInput = { updateInput1(TextFieldValue()) },
             )
         },
     )
@@ -249,22 +259,21 @@ private fun NumberBase(
 private fun Default(
     modifier: Modifier,
     uiState: UnitConverterUIState.Default,
-    onValueChange: (TextFieldValue) -> Unit,
-    onFocusOnInput2: (Boolean) -> Unit,
-    processInput: (String) -> Unit,
-    deleteDigit: () -> Unit,
-    navigateToLeftScreen: (uiState: UnitConverterUIState) -> Unit,
-    swapUnits: () -> Unit,
-    navigateToRightScreen: (uiState: UnitConverterUIState) -> Unit,
-    clearInput: () -> Unit,
-    refreshCurrencyRates: (AbstractUnit) -> Unit,
-    addBracket: () -> Unit,
+    updateInput1: (TextFieldValue) -> Unit,
+    updateInput2: (TextFieldValue) -> Unit,
+    navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
+    swapUnits: (String, String) -> Unit,
+    navigateToRightScreen: (unitFromId: String, unitToId: String, group: UnitGroup, input: String) -> Unit,
+    convert: () -> Unit,
 ) {
     val locale: Locale = LocalLocale.current
-    var calculation by remember(uiState.calculation) {
-        mutableStateOf(
-            TextFieldValue(uiState.calculation?.format(uiState.scale, uiState.outputFormat) ?: ""),
-        )
+    val showCalculation = remember(uiState.input1.text, uiState.result) {
+        if (uiState.input1.text.isExpression()) {
+            if (uiState.result is ConverterResult.Default) {
+                return@remember !uiState.result.calculation.isEqualTo(BigDecimal.ZERO)
+            }
+        }
+        false
     }
     val connection by connectivityState()
     val lastUpdate by remember(uiState.currencyRateUpdateState) {
@@ -273,12 +282,23 @@ private fun Default(
             uiState.currencyRateUpdateState.date.formatDateWeekDayMonthYear(locale)
         }
     }
+    var focusedOnInput1 by rememberSaveable { mutableStateOf(true) }
 
     LaunchedEffect(connection) {
-        if ((connection == ConnectionState.Available) and (uiState.result == ConverterResult.Error)) {
+        if ((connection == ConnectionState.Available) and (uiState.result is ConverterResult.Error)) {
             val unitFrom = uiState.unitFrom
-            if (unitFrom.group == UnitGroup.CURRENCY) refreshCurrencyRates(unitFrom)
+            if (unitFrom.group == UnitGroup.CURRENCY) convert()
         }
+    }
+
+    LaunchedEffect(
+        uiState.input1.text,
+        uiState.input2.text,
+        uiState.unitFrom.id,
+        uiState.unitTo.id,
+        uiState.formatTime,
+    ) {
+        convert()
     }
 
     PortraitLandscape(
@@ -322,7 +342,7 @@ private fun Default(
                                     .weight(1f),
                                 value = uiState.input1,
                                 minRatio = 0.7f,
-                                onValueChange = onValueChange,
+                                onValueChange = updateInput1,
                                 formatterSymbols = uiState.formatterSymbols,
                                 placeholder = Token.Digit._0,
                             )
@@ -340,10 +360,10 @@ private fun Default(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
-                                    .onFocusEvent { state -> onFocusOnInput2(state.hasFocus) },
+                                    .onFocusEvent { state -> focusedOnInput1 = !state.hasFocus },
                                 value = uiState.input2,
                                 minRatio = 0.7f,
-                                onValueChange = onValueChange,
+                                onValueChange = updateInput2,
                                 formatterSymbols = uiState.formatterSymbols,
                                 placeholder = Token.Digit._0,
                             )
@@ -355,21 +375,30 @@ private fun Default(
                         modifier = textFieldModifier,
                         value = uiState.input1,
                         minRatio = 0.7f,
-                        onValueChange = onValueChange,
+                        onValueChange = updateInput1,
                         formatterSymbols = uiState.formatterSymbols,
                         placeholder = Token.Digit._0,
                     )
                     AnimatedVisibility(
-                        visible = calculation.text.isNotEmpty(),
+                        visible = showCalculation,
                         modifier = Modifier.weight(1f),
                         enter = expandVertically(clip = false),
                         exit = shrinkVertically(clip = false),
                     ) {
+                        var calculationTextField by remember(uiState.result) {
+                            val text = if (uiState.result is ConverterResult.Default) {
+                                uiState.result.calculation
+                                    .format(uiState.scale, uiState.outputFormat)
+                            } else {
+                                ""
+                            }
+                            mutableStateOf(TextFieldValue(text))
+                        }
                         ExpressionTextField(
                             modifier = Modifier,
-                            value = calculation,
+                            value = calculationTextField,
                             minRatio = 0.7f,
-                            onValueChange = { calculation = it },
+                            onValueChange = { calculationTextField = it },
                             textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                             formatterSymbols = uiState.formatterSymbols,
                             readOnly = true,
@@ -384,14 +413,14 @@ private fun Default(
                     scale = uiState.scale,
                     outputFormat = uiState.outputFormat,
                     formatterSymbols = uiState.formatterSymbols,
-                    onErrorClick = { refreshCurrencyRates(uiState.unitFrom) },
+                    onErrorClick = convert,
                 )
                 AnimatedUnitShortName(
                     stringResource(
-                        if (uiState.result is ConverterResult.Error) {
-                            R.string.click_to_try_again_label
-                        } else {
-                            uiState.unitTo.shortName
+                        when (uiState.result) {
+                            // Currency conversion can be retried
+                            is ConverterResult.Error.Currency -> R.string.click_to_try_again_label
+                            else -> uiState.unitTo.shortName
                         },
                     ),
                 )
@@ -401,22 +430,58 @@ private fun Default(
                 UnitSelectionButtons(
                     unitFromLabel = stringResource(uiState.unitFrom.displayName),
                     unitToLabel = stringResource(uiState.unitTo.displayName),
-                    swapUnits = swapUnits,
-                    navigateToLeftScreen = { navigateToLeftScreen(uiState) },
-                    navigateToRightScreen = { navigateToRightScreen(uiState) },
+                    swapUnits = { swapUnits(uiState.unitTo.id, uiState.unitFrom.id) },
+                    navigateToLeftScreen = {
+                        navigateToLeftScreen(uiState.unitFrom.id, uiState.unitFrom.group)
+                    },
+                    navigateToRightScreen = {
+                        val input = if (uiState.result is ConverterResult.Default) {
+                            uiState.result.calculation.toPlainString()
+                        } else {
+                            uiState.input1.text
+                        }
+
+                        navigateToRightScreen(
+                            uiState.unitFrom.id,
+                            uiState.unitTo.id,
+                            uiState.unitFrom.group,
+                            input,
+                        )
+                    },
                 )
             }
         },
-        content2 = {
+        content2 = { modifier2 ->
             DefaultKeyboard(
-                modifier = it,
-                addDigit = processInput,
-                deleteDigit = deleteDigit,
-                clearInput = clearInput,
+                modifier = modifier2,
+                addDigit = {
+                    if (focusedOnInput1) {
+                        updateInput1(uiState.input1.addTokens(it))
+                    } else {
+                        updateInput2(uiState.input2.addTokens(it))
+                    }
+                },
+                deleteDigit = {
+                    if (focusedOnInput1) {
+                        updateInput1(uiState.input1.deleteTokens())
+                    } else {
+                        updateInput2(uiState.input2.deleteTokens())
+                    }
+                },
+                clearInput = {
+                    updateInput1(TextFieldValue())
+                    updateInput2(TextFieldValue())
+                },
                 fractional = uiState.formatterSymbols.fractional,
                 middleZero = uiState.middleZero,
                 acButton = uiState.acButton,
-                addBracket = addBracket,
+                addBracket = {
+                    if (focusedOnInput1) {
+                        updateInput1(uiState.input1.addBracket())
+                    } else {
+                        updateInput2(uiState.input2.addBracket())
+                    }
+                },
             )
         },
     )
@@ -451,6 +516,17 @@ private fun ConverterResultTextField(
                 onValueChange = {},
                 minRatio = 0.7f,
                 readOnly = true,
+            )
+        }
+
+        is ConverterResult.Error.DivideByZero -> {
+            SimpleTextField(
+                modifier = modifier,
+                value = TextFieldValue(stringResource(R.string.calculator_divide_by_zero_error)),
+                onValueChange = { onErrorClick() },
+                minRatio = 0.7f,
+                readOnly = true,
+                textColor = MaterialTheme.colorScheme.error,
             )
         }
 
@@ -578,16 +654,13 @@ private fun UnitSelectionButtons(
 private fun PreviewConverterScreen() {
     ConverterScreen(
         uiState = UnitConverterUIState.Loading,
-        navigateToLeftScreen = {},
-        navigateToRightScreen = {},
+        navigateToLeftScreen = { _, _ -> },
+        navigateToRightScreen = { _, _, _, _ -> },
         openDrawer = {},
-        swapUnits = {},
-        processInput = {},
-        deleteDigit = {},
-        clearInput = {},
-        onValueChange = {},
-        onFocusOnInput2 = {},
-        onErrorClick = {},
-        addBracket = {},
+        swapUnits = { _, _ -> },
+        updateInput1 = {},
+        updateInput2 = {},
+        convertDefault = {},
+        convertNumberBase = {},
     )
 }

@@ -24,8 +24,8 @@ import com.sadellie.unitto.core.base.OutputFormat
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.core.base.TopLevelDestinations
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 

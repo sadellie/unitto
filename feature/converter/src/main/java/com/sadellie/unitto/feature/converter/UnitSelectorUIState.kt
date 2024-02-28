@@ -20,43 +20,34 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.sadellie.unitto.core.base.FormatterSymbols
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.converter.UnitSearchResultItem
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
 
 internal sealed class UnitSelectorUIState {
     data object Loading : UnitSelectorUIState()
 
     data class UnitFrom(
         val query: TextFieldValue,
-        val unitFrom: AbstractUnit,
+        val unitFromId: String,
         val shownUnitGroups: List<UnitGroup>,
         val showFavoritesOnly: Boolean,
-        val units: UnitSearchResult,
+        val units: Map<UnitGroup, List<UnitSearchResultItem>>,
         val selectedUnitGroup: UnitGroup?,
         val sorting: UnitsListSorting,
     ) : UnitSelectorUIState()
 
     data class UnitTo(
         val query: TextFieldValue,
-        val unitFrom: AbstractUnit,
-        val unitTo: AbstractUnit,
+        val unitFrom: BasicUnit,
+        val unitTo: BasicUnit,
         val showFavoritesOnly: Boolean,
-        val units: UnitSearchResult,
+        val units: Map<UnitGroup, List<UnitSearchResultItem>>,
         val input: String?,
         val sorting: UnitsListSorting,
         val scale: Int,
         val outputFormat: Int,
         val formatterSymbols: FormatterSymbols,
     ) : UnitSelectorUIState()
-}
-
-internal sealed class UnitSearchResult {
-    data object Empty : UnitSearchResult()
-
-    data object Loading : UnitSearchResult()
-
-    data class Success(
-        val units: Map<UnitGroup, List<AbstractUnit>>,
-    ) : UnitSearchResult()
 }

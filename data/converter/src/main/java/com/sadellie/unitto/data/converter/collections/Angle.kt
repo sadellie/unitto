@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val angleCollection: List<AbstractUnit> by lazy {
+internal val angleCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.angle_second,  BigDecimal("1"),              UnitGroup.ANGLE,    R.string.unit_angle_second,  R.string.unit_angle_second_short),
         NormalUnit(UnitID.angle_minute,  BigDecimal("60"),             UnitGroup.ANGLE,    R.string.unit_angle_minute,  R.string.unit_angle_minute_short),

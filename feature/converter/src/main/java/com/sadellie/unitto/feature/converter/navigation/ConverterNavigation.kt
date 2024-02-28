@@ -28,11 +28,9 @@ import androidx.navigation.navDeepLink
 import com.sadellie.unitto.core.ui.model.DrawerItem
 import com.sadellie.unitto.core.ui.unittoComposable
 import com.sadellie.unitto.core.ui.unittoNavigation
-import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitGroup
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
-import com.sadellie.unitto.feature.converter.CurrencyRateUpdateState
-import com.sadellie.unitto.feature.converter.UnitConverterUIState
 import com.sadellie.unitto.feature.converter.UnitFromSelectorRoute
 import com.sadellie.unitto.feature.converter.UnitToSelectorRoute
 
@@ -47,7 +45,7 @@ internal const val UNIT_TO_ID_ARG = "unitToIdArg"
 internal const val INPUT_ARG = "inputArg"
 
 private const val UNIT_FROM_ROUTE = "$UNIT_FROM/{$UNIT_FROM_ID_ARG}/{$UNIT_GROUP_ARG}"
-private const val UNIT_TO_ROUTE = "$UNIT_TO/{$UNIT_FROM_ID_ARG}/{$UNIT_TO_ID_ARG}/{$INPUT_ARG}"
+private const val UNIT_TO_ROUTE = "$UNIT_TO/{$UNIT_FROM_ID_ARG}/{$UNIT_TO_ID_ARG}/{$UNIT_GROUP_ARG}/{$INPUT_ARG}"
 private fun NavHostController.navigateLeft(
     unitFromId: String,
     unitGroup: UnitGroup,
@@ -56,8 +54,9 @@ private fun NavHostController.navigateLeft(
 private fun NavHostController.navigateRight(
     unitFromId: String,
     unitToId: String,
-    input: String?,
-) = navigate("$UNIT_TO/$unitFromId/$unitToId/$input")
+    unitGroup: UnitGroup,
+    input: String,
+) = navigate("$UNIT_TO/$unitFromId/$unitToId/$unitGroup/${input.ifEmpty { null }}")
 
 fun NavGraphBuilder.converterGraph(
     openDrawer: () -> Unit,
@@ -80,54 +79,8 @@ fun NavGraphBuilder.converterGraph(
 
             ConverterRoute(
                 viewModel = parentViewModel,
-                // Navigation logic is here, but should actually be in ConverterScreen
-                navigateToLeftScreen = { uiState: UnitConverterUIState ->
-                    when (uiState) {
-                        is UnitConverterUIState.Default ->
-                            navController
-                                .navigateLeft(uiState.unitFrom.id, uiState.unitFrom.group)
-
-                        is UnitConverterUIState.NumberBase ->
-                            navController
-                                .navigateLeft(uiState.unitFrom.id, uiState.unitFrom.group)
-
-                        else -> Unit
-                    }
-                },
-                navigateToRightScreen = { uiState: UnitConverterUIState ->
-                    when (uiState) {
-                        is UnitConverterUIState.Default -> {
-                            // Don't allow converting if still loading currencies
-                            val convertingCurrencies = uiState.unitFrom.group == UnitGroup.CURRENCY
-                            val currenciesReady =
-                                uiState.currencyRateUpdateState is CurrencyRateUpdateState.Ready
-
-                            val input: String? = if (convertingCurrencies and !currenciesReady) {
-                                null
-                            } else {
-                                (uiState.calculation?.toPlainString() ?: uiState.input1.text)
-                                    .ifEmpty { null }
-                            }
-
-                            navController.navigateRight(
-                                uiState.unitFrom.id,
-                                uiState.unitTo.id,
-                                input,
-                            )
-                        }
-
-                        is UnitConverterUIState.NumberBase -> {
-                            val input = uiState.input.text.ifEmpty { null }
-                            navController.navigateRight(
-                                uiState.unitFrom.id,
-                                uiState.unitTo.id,
-                                input,
-                            )
-                        }
-
-                        UnitConverterUIState.Loading -> Unit
-                    }
-                },
+                navigateToLeftScreen = navController::navigateLeft,
+                navigateToRightScreen = navController::navigateRight,
                 openDrawer = openDrawer,
             )
         }
@@ -165,6 +118,9 @@ fun NavGraphBuilder.converterGraph(
                 },
                 navArgument(UNIT_TO_ID_ARG) {
                     type = NavType.StringType
+                },
+                navArgument(UNIT_GROUP_ARG) {
+                    type = NavType.EnumType(UnitGroup::class.java)
                 },
                 navArgument(INPUT_ARG) {
                     type = NavType.StringType

@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-val prefixCollection: List<AbstractUnit> by lazy {
+val prefixCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.prefix_quetta, BigDecimal("1000000000000000000000000000000"),  UnitGroup.PREFIX, R.string.unit_prefix_quetta,   R.string.unit_prefix_quetta_short),
         NormalUnit(UnitID.prefix_ronna,  BigDecimal("1000000000000000000000000000"),  UnitGroup.PREFIX, R.string.unit_prefix_ronna,    R.string.unit_prefix_ronna_short),

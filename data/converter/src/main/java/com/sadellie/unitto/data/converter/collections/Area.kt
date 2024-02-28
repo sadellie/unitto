@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val areaCollection: List<AbstractUnit> by lazy {
+internal val areaCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.cent,                      BigDecimal("6083246572000000000000000000000000"),        UnitGroup.AREA, R.string.unit_cent,                      R.string.unit_cent_short),
         NormalUnit(UnitID.acre,                      BigDecimal("60832465720000000000000000000000"),        UnitGroup.AREA, R.string.unit_acre,                      R.string.unit_acre_short),

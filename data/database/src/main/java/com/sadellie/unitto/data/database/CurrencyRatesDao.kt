@@ -30,8 +30,14 @@ interface CurrencyRatesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRates(currencyRates: List<CurrencyRatesEntity>)
 
+    @Query("SELECT DISTINCT timestamp FROM currency_rates WHERE base_unit_id = :baseId")
+    suspend fun getLatestRateTimeStamp(baseId: String): Long?
+
     @Query("SELECT DISTINCT * FROM currency_rates WHERE timestamp = (SELECT MAX(timestamp) FROM currency_rates) AND base_unit_id = :baseId")
     suspend fun getLatestRates(baseId: String): List<CurrencyRatesEntity>
+
+    @Query("SELECT DISTINCT * FROM currency_rates WHERE timestamp = (SELECT MAX(timestamp) FROM currency_rates) AND base_unit_id = :baseId AND pair_unit_id = :pairId")
+    suspend fun getLatestRate(baseId: String, pairId: String): CurrencyRatesEntity?
 
     @Query("SELECT COUNT(*) from currency_rates")
     fun size(): Flow<Int>

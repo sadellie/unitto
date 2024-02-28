@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,45 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model.unit
+package com.sadellie.unitto.data.converter
 
 import android.content.Context
 import com.sadellie.unitto.data.common.lev
 import com.sadellie.unitto.data.common.normalizeSuperscript
-import com.sadellie.unitto.data.model.UnitGroup
-import java.math.BigDecimal
+import com.sadellie.unitto.data.database.UnitsEntity
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
 
-interface AbstractUnit {
-    val id: String
-    val basicUnit: BigDecimal
-    val group: UnitGroup
-    val displayName: Int
-    val shortName: Int
-    val isFavorite: Boolean
-    val pairId: String?
-    val counter: Int
+data class UnitSearchResultItem(
+    val basicUnit: BasicUnit,
+    val stats: UnitsEntity,
+    val conversion: BatchConvertResult?,
+)
 
-    fun clone(
-        id: String = this.id,
-        basicUnit: BigDecimal = this.basicUnit,
-        group: UnitGroup = this.group,
-        displayName: Int = this.displayName,
-        shortName: Int = this.shortName,
-        isFavorite: Boolean = this.isFavorite,
-        pairId: String? = this.pairId,
-        counter: Int = this.counter,
-    ): AbstractUnit
-}
-
-fun Sequence<AbstractUnit>.filterByLev(stringA: String, context: Context): Sequence<AbstractUnit> {
+fun Sequence<UnitSearchResultItem>.filterByLev(
+    stringA: String,
+    context: Context,
+): Sequence<UnitSearchResultItem> {
     val stringToCompare = stringA.trim().lowercase()
     // We don't need units where name is too different, half of the symbols is wrong in this situation
     val threshold: Int = stringToCompare.length / 2
     // List of pair: Unit and it's levDist
-    val unitsWithDist = mutableListOf<Pair<AbstractUnit, Int>>()
+    val unitsWithDist = mutableListOf<Pair<UnitSearchResultItem, Int>>()
     this.forEach { unit ->
         val unitShortName: String = context
-            .getString(unit.shortName)
+            .getString(unit.basicUnit.shortName)
             .lowercase()
             .normalizeSuperscript()
         /**
@@ -67,7 +54,7 @@ fun Sequence<AbstractUnit>.filterByLev(stringA: String, context: Context): Seque
         }
 
         val unitFullName: String = context
-            .getString(unit.displayName)
+            .getString(unit.basicUnit.displayName)
             .lowercase()
             .normalizeSuperscript()
 

@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val lengthCollection: List<AbstractUnit> by lazy {
+internal val lengthCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.attometer,                 BigDecimal("1"),                             UnitGroup.LENGTH, R.string.unit_attometer,                 R.string.unit_attometer_short),
         NormalUnit(UnitID.nanometer,                 BigDecimal("1000000000"),                          UnitGroup.LENGTH, R.string.unit_nanometer,                 R.string.unit_nanometer_short),
@@ -55,3 +55,4 @@ internal val lengthCollection: List<AbstractUnit> by lazy {
         NormalUnit(UnitID.sun_equatorial_radius,     BigDecimal("695508000000000000000000000"),                     UnitGroup.LENGTH, R.string.unit_sun_equatorial_radius,     R.string.unit_sun_equatorial_radius_short),
     )
 }
+

@@ -18,9 +18,8 @@
 
 package com.sadellie.unitto.data.model.repository
 
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
-import com.sadellie.unitto.data.model.unit.AbstractUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
 import com.sadellie.unitto.data.model.userprefs.AddSubtractPreferences
 import com.sadellie.unitto.data.model.userprefs.AppPreferences
@@ -55,7 +54,7 @@ interface UserPreferencesRepository {
 
     suspend fun updateOutputFormat(outputFormat: Int)
 
-    suspend fun updateLatestPairOfUnits(unitFrom: AbstractUnit, unitTo: AbstractUnit)
+    suspend fun updateLatestPairOfUnits(unitFrom: String, unitTo: String)
 
     suspend fun updateThemingMode(themingMode: ThemingMode)
 

@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.data.model.userprefs
 
-import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitGroup
 
 interface UnitGroupsPreferences {
     val shownUnitGroups: List<UnitGroup>

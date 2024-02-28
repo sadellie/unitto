@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NumberBaseUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NumberBaseUnit
 import java.math.BigDecimal
 
-internal val numberBaseCollection: List<AbstractUnit> by lazy {
+internal val numberBaseCollection: List<BasicUnit> by lazy {
     listOf(
         NumberBaseUnit(UnitID.binary,        BigDecimal("2.0"),  UnitGroup.NUMBER_BASE,  R.string.unit_binary,        R.string.unit_binary_short),
         NumberBaseUnit(UnitID.ternary,       BigDecimal("3.0"),  UnitGroup.NUMBER_BASE,  R.string.unit_ternary,       R.string.unit_ternary_short),

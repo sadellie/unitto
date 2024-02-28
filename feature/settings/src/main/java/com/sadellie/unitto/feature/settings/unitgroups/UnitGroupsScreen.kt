@@ -56,7 +56,7 @@ import com.sadellie.unitto.core.ui.common.EmptyScreen
 import com.sadellie.unitto.core.ui.common.Header
 import com.sadellie.unitto.core.ui.common.NavigateUpButton
 import com.sadellie.unitto.core.ui.common.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitGroup
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress

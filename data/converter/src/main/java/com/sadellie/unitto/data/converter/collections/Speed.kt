@@ -20,13 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.BackwardUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val speedCollection: List<AbstractUnit> by lazy {
+internal val speedCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(  UnitID.millimeter_per_hour,         BigDecimal("1"),                      UnitGroup.SPEED,    R.string.unit_millimeter_per_hour,          R.string.unit_millimeter_per_hour_short),
         NormalUnit(  UnitID.millimeter_per_minute,       BigDecimal("60"),                     UnitGroup.SPEED,    R.string.unit_millimeter_per_minute,        R.string.unit_millimeter_per_minute_short),
@@ -49,10 +48,10 @@ internal val speedCollection: List<AbstractUnit> by lazy {
         NormalUnit(  UnitID.mile_per_hour,               BigDecimal("1609344"),              UnitGroup.SPEED,    R.string.unit_mile_per_hour,                R.string.unit_mile_per_hour_short),
         NormalUnit(  UnitID.mile_per_minute,             BigDecimal("96560640"),             UnitGroup.SPEED,    R.string.unit_mile_per_minute,              R.string.unit_mile_per_minute_short),
         NormalUnit(  UnitID.mile_per_second,             BigDecimal("5793638400"),          UnitGroup.SPEED,    R.string.unit_mile_per_second,              R.string.unit_mile_per_second_short),
-        BackwardUnit(UnitID.minute_per_kilometer,        BigDecimal("60000000"),             UnitGroup.SPEED,    R.string.unit_minute_per_kilometer,         R.string.unit_minute_per_kilometer_short),
-        BackwardUnit(UnitID.minute_per_mile,             BigDecimal("96560640"),             UnitGroup.SPEED,    R.string.unit_minute_per_mile,              R.string.unit_minute_per_mile_short),
-        BackwardUnit(UnitID.hour_per_kilometer,          BigDecimal("1000000"),              UnitGroup.SPEED,    R.string.unit_hour_per_kilometer,           R.string.unit_hour_per_kilometer_short),
-        BackwardUnit(UnitID.hour_per_mile,               BigDecimal("1609344"),              UnitGroup.SPEED,    R.string.unit_hour_per_mile,                R.string.unit_hour_per_mile_short),
+        NormalUnit(UnitID.minute_per_kilometer,        BigDecimal("60000000"),             UnitGroup.SPEED,    R.string.unit_minute_per_kilometer,         R.string.unit_minute_per_kilometer_short, true),
+        NormalUnit(UnitID.minute_per_mile,             BigDecimal("96560640"),             UnitGroup.SPEED,    R.string.unit_minute_per_mile,              R.string.unit_minute_per_mile_short, true),
+        NormalUnit(UnitID.hour_per_kilometer,          BigDecimal("1000000"),              UnitGroup.SPEED,    R.string.unit_hour_per_kilometer,           R.string.unit_hour_per_kilometer_short, true),
+        NormalUnit(UnitID.hour_per_mile,               BigDecimal("1609344"),              UnitGroup.SPEED,    R.string.unit_hour_per_mile,                R.string.unit_hour_per_mile_short, true),
         NormalUnit(  UnitID.knot,                        BigDecimal("1852000"),              UnitGroup.SPEED,    R.string.unit_knot,                         R.string.unit_knot_short),
         NormalUnit(  UnitID.velocity_of_light_in_vacuum, BigDecimal("1079252848799998"),  UnitGroup.SPEED,    R.string.unit_velocity_of_light_in_vacuum,  R.string.unit_velocity_of_light_in_vacuum_short),
         NormalUnit(  UnitID.cosmic_velocity_first,       BigDecimal("28440000000"),         UnitGroup.SPEED,    R.string.unit_cosmic_velocity_first,        R.string.unit_cosmic_velocity_first_short),

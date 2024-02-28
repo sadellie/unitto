@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.data.model
+package com.sadellie.unitto.data.model.converter
 
 import androidx.annotation.StringRes
 import com.sadellie.unitto.core.base.R

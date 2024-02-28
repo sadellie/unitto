@@ -20,12 +20,12 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-internal val pressureCollection: List<AbstractUnit> by lazy {
+internal val pressureCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(UnitID.attopascal,                            BigDecimal("1"),                      UnitGroup.PRESSURE, R.string.unit_attopascal,                           R.string.unit_attopascal_short),
         NormalUnit(UnitID.femtopascal,                           BigDecimal("1000"),                   UnitGroup.PRESSURE, R.string.unit_femtopascal,                          R.string.unit_femtopascal_short),

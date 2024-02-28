@@ -19,8 +19,8 @@
 package com.sadellie.unitto.data.userprefs
 
 import com.sadellie.unitto.core.base.FormatterSymbols
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.UnitsListSorting
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitsListSorting
 import com.sadellie.unitto.data.model.userprefs.AboutPreferences
 import com.sadellie.unitto.data.model.userprefs.AddSubtractPreferences
 import com.sadellie.unitto.data.model.userprefs.AppPreferences

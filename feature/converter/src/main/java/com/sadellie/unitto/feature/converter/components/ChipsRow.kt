@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.core.ui.common.AssistChip
 import com.sadellie.unitto.core.ui.common.FilterChip
-import com.sadellie.unitto.data.model.UnitGroup
+import com.sadellie.unitto.data.model.converter.UnitGroup
 
 /**
  * Row of chips with [UnitGroup]s. Temporary solution

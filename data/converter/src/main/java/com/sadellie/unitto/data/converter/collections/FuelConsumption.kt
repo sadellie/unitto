@@ -20,23 +20,22 @@ package com.sadellie.unitto.data.converter.collections
 
 import com.sadellie.unitto.core.base.R
 import com.sadellie.unitto.data.converter.UnitID
-import com.sadellie.unitto.data.model.UnitGroup
-import com.sadellie.unitto.data.model.unit.AbstractUnit
-import com.sadellie.unitto.data.model.unit.BackwardUnit
-import com.sadellie.unitto.data.model.unit.NormalUnit
+import com.sadellie.unitto.data.model.converter.UnitGroup
+import com.sadellie.unitto.data.model.converter.unit.BasicUnit
+import com.sadellie.unitto.data.model.converter.unit.NormalUnit
 import java.math.BigDecimal
 
-val fuelConsumptionCollection: List<AbstractUnit> by lazy {
+val fuelConsumptionCollection: List<BasicUnit> by lazy {
     listOf(
         NormalUnit(  UnitID.kilometer_per_liter,     BigDecimal("1"),              UnitGroup.FUEL_CONSUMPTION, R.string.unit_km_per_l,                 R.string.unit_km_per_l_short),
-        BackwardUnit(UnitID.liter_per_kilometer,     BigDecimal("1"),              UnitGroup.FUEL_CONSUMPTION, R.string.unit_l_per_km,                 R.string.unit_l_per_km_short),
-        BackwardUnit(UnitID.liter_per_100_kilometer, BigDecimal("100"),            UnitGroup.FUEL_CONSUMPTION, R.string.unit_l_per_100_km,             R.string.unit_l_per_100_km_short),
+        NormalUnit(UnitID.liter_per_kilometer,     BigDecimal("1"),              UnitGroup.FUEL_CONSUMPTION, R.string.unit_l_per_km,                 R.string.unit_l_per_km_short, true),
+        NormalUnit(UnitID.liter_per_100_kilometer, BigDecimal("100"),            UnitGroup.FUEL_CONSUMPTION, R.string.unit_l_per_100_km,             R.string.unit_l_per_100_km_short, true),
         NormalUnit(  UnitID.mile_per_gallon_uk,      BigDecimal("0.35400619"),     UnitGroup.FUEL_CONSUMPTION, R.string.unit_mi_per_gallon_uk,         R.string.unit_mi_per_gallon_uk_short),
         NormalUnit(  UnitID.mile_per_gallon_us,      BigDecimal("0.4251437075"),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_mi_per_gallon_us,         R.string.unit_mi_per_gallon_us_short),
         NormalUnit(  UnitID.mile_us_per_liter,       BigDecimal("1.609344"),       UnitGroup.FUEL_CONSUMPTION, R.string.unit_mi_us_per_l,              R.string.unit_mi_us_per_l_short),
-        BackwardUnit(UnitID.gallon_us_per_mile,      BigDecimal("0.4251437075"),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_us_per_mile,       R.string.unit_gallon_us_per_mile_short),
-        BackwardUnit(UnitID.gallon_uk_per_mile,      BigDecimal("0.35400619"),     UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_uk_per_mile,       R.string.unit_gallon_uk_per_mile_short),
-        BackwardUnit(UnitID.gallon_us_per_100_mile,  BigDecimal("42.51437075"),    UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_us_per_100_mile,   R.string.unit_gallon_us_per_100_mile_short),
-        BackwardUnit(UnitID.gallon_uk_per_100_mile,  BigDecimal("35.400618996"),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_uk_per_100_mile,   R.string.unit_gallon_uk_per_100_mile_short),
+        NormalUnit(UnitID.gallon_us_per_mile,      BigDecimal("0.4251437075"),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_us_per_mile,       R.string.unit_gallon_us_per_mile_short, true),
+        NormalUnit(UnitID.gallon_uk_per_mile,      BigDecimal("0.35400619"),     UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_uk_per_mile,       R.string.unit_gallon_uk_per_mile_short, true),
+        NormalUnit(UnitID.gallon_us_per_100_mile,  BigDecimal("42.51437075"),    UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_us_per_100_mile,   R.string.unit_gallon_us_per_100_mile_short, true),
+        NormalUnit(UnitID.gallon_uk_per_100_mile,  BigDecimal("35.400618996"),   UnitGroup.FUEL_CONSUMPTION, R.string.unit_gallon_uk_per_100_mile,   R.string.unit_gallon_uk_per_100_mile_short, true),
     )
 }
