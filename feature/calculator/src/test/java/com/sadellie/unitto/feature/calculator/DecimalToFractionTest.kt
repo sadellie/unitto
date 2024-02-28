@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigDecimal
@@ -25,60 +26,52 @@ import java.math.BigDecimal
 class DecimalToFractionTest {
     @Test
     fun testNoDecimal1() {
-        val bd = BigDecimal("100")
-        assertFractional("", bd.toFractionalString())
+        assertFractional("", "100")
     }
 
     @Test
     fun testNoDecimal2() {
-        val bd = BigDecimal("100.000000000")
-        assertFractional("", bd.toFractionalString())
+        assertFractional("", "100.000000000")
     }
 
     @Test
     fun testSimpleDecimal1() {
-        val bd = BigDecimal("0.25")
-        assertFractional("1/4", bd.toFractionalString())
+        assertFractional("1/4", "0.25")
     }
 
     @Test
     fun testSimpleDecimal2() {
-        val bd = BigDecimal("100.25")
-        assertFractional("100 1/4", bd.toFractionalString())
+        assertFractional("100 1/4", "100.25")
     }
 
     @Test
     fun testRepeating1() {
-        val bd = BigDecimal("0.666666666")
-        assertFractional("2/3", bd.toFractionalString())
+        assertFractional("2/3", "0.666666666")
     }
 
     @Test
     fun testRepeating2() {
-        val bd = BigDecimal("4.666666666")
-        assertFractional("4 2/3", bd.toFractionalString())
+        assertFractional("4 2/3", "4.666666666")
     }
 
     @Test
     fun testRepeating3() {
-        val bd = BigDecimal("0.78571428571428571428")
-        assertFractional("11/14", bd.toFractionalString())
+        assertFractional("11/14", "0.78571428571428571428")
     }
 
     @Test
     fun testRepeating4() {
-        val bd = BigDecimal("66.78571428571428571428")
-        assertFractional("66 11/14", bd.toFractionalString())
+        assertFractional("66 11/14", "66.78571428571428571428")
     }
 
     @Test
     fun testRepeating5() {
-        val bd = BigDecimal("0.666000")
-        assertFractional("333/500", bd.toFractionalString())
+        assertFractional("333/500", "0.666000")
     }
 
     private fun assertFractional(expected: String, actual: String) = assertEquals(
         expected,
-        actual.replace("⁄", "/"),
+        runBlocking { BigDecimal(actual).toFractionalString() }
+            .replace("⁄", "/"),
     )
 }

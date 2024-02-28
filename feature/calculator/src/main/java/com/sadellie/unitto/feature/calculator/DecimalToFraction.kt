@@ -20,6 +20,8 @@ package com.sadellie.unitto.feature.calculator
 
 import com.sadellie.unitto.core.base.Token
 import com.sadellie.unitto.data.common.isEqualTo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -36,13 +38,13 @@ import java.math.RoundingMode
  * @receiver [BigDecimal]. Scale doesn't matter, but should be `MAX_PRECISION`
  * @return
  */
-fun BigDecimal.toFractionalString(): String {
+suspend fun BigDecimal.toFractionalString(): String = withContext(Dispatchers.Default) {
     // https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-1
     // https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-2
-    val (integral, fractional) = this.divideAndRemainder(BigDecimal.ONE)
+    val (integral, fractional) = this@toFractionalString.divideAndRemainder(BigDecimal.ONE)
     val integralBI = integral.toBigInteger()
 
-    if (fractional.isEqualTo(BigDecimal.ZERO)) return ""
+    if (fractional.isEqualTo(BigDecimal.ZERO)) return@withContext ""
 
     val res: String = if (integral.isEqualTo(BigDecimal.ZERO)) "" else "$integralBI "
 
@@ -54,9 +56,9 @@ fun BigDecimal.toFractionalString(): String {
         fractional.repeatingFractional(repeatingDecimals.length)
     }
 
-    if (finalDenominator > maxDenominator) return ""
+    if (finalDenominator > maxDenominator) return@withContext ""
 
-    return "$res$finalNumerator⁄$finalDenominator"
+    return@withContext "$res$finalNumerator⁄$finalDenominator"
 }
 
 private fun BigDecimal.notRepeatingFractional(): Pair<BigInteger, BigInteger> {

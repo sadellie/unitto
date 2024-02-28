@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import java.util.Date
 import javax.inject.Inject
 
@@ -43,7 +44,7 @@ class CalculatorHistoryRepositoryImpl @Inject constructor(
     override suspend fun add(
         expression: String,
         result: String,
-    ) {
+    ) = withContext(Dispatchers.IO) {
         calculatorHistoryDao.insert(
             CalculatorHistoryEntity(
                 timestamp = System.currentTimeMillis(),
@@ -53,16 +54,16 @@ class CalculatorHistoryRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun delete(item: HistoryItem) {
+    override suspend fun delete(item: HistoryItem) = withContext(Dispatchers.IO) {
         calculatorHistoryDao.delete(item.id)
     }
 
-    override suspend fun clear() {
+    override suspend fun clear() = withContext(Dispatchers.IO) {
         calculatorHistoryDao.clear()
     }
 
-    private fun List<CalculatorHistoryEntity>.toHistoryItemList(): List<HistoryItem> {
-        return this.map {
+    private suspend fun List<CalculatorHistoryEntity>.toHistoryItemList(): List<HistoryItem> = withContext(Dispatchers.Default) {
+        this@toHistoryItemList.map {
             HistoryItem(
                 id = it.entityId,
                 date = Date(it.timestamp),

@@ -332,7 +332,7 @@ private fun PreviewCalculatorScreen() {
     Ready(
         uiState = CalculatorUIState.Ready(
             input = TextFieldValue("1.2345"),
-            output = CalculationResult.Default("1234"),
+            output = CalculationResult.Success("1234"),
             radianMode = false,
             precision = 3,
             outputFormat = OutputFormat.PLAIN,

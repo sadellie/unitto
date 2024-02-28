@@ -93,21 +93,7 @@ fun TextBox(
                     )
                 }
 
-                is CalculationResult.Default -> {
-                    var outputTF by remember(output) { mutableStateOf(TextFieldValue(output.text)) }
-
-                    ExpressionTextField(
-                        modifier = calculationResultModifier,
-                        value = outputTF,
-                        minRatio = 0.8f,
-                        onValueChange = { outputTF = it },
-                        textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
-                        formatterSymbols = formatterSymbols,
-                        readOnly = true,
-                    )
-                }
-
-                is CalculationResult.Fraction -> {
+                is CalculationResult.Success -> {
                     var outputTF by remember(output) { mutableStateOf(TextFieldValue(output.text)) }
 
                     ExpressionTextField(

@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -31,6 +30,7 @@ import com.sadellie.unitto.core.ui.common.textfield.getTextField
 import com.sadellie.unitto.core.ui.common.textfield.placeCursorAtTheEnd
 import com.sadellie.unitto.data.common.format
 import com.sadellie.unitto.data.common.isExpression
+import com.sadellie.unitto.data.common.isGreaterThan
 import com.sadellie.unitto.data.common.stateIn
 import com.sadellie.unitto.data.model.HistoryItem
 import com.sadellie.unitto.data.model.repository.CalculatorHistoryRepository
@@ -40,10 +40,10 @@ import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,13 +57,13 @@ internal class CalculatorViewModel @Inject constructor(
     private val calculatorHistoryRepository: CalculatorHistoryRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private var calculationJob: Job? = null
+
     private val inputKey = "CALCULATOR_INPUT"
     private val input = MutableStateFlow(savedStateHandle.getTextField(inputKey))
     private val result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
     private val equalClicked = MutableStateFlow(false)
-    private val prefs = userPrefsRepository.calculatorPrefs
-        .stateIn(viewModelScope, null)
-    private var fractionJob: Job? = null
+    private val prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
 
     val uiState: StateFlow<CalculatorUIState> = combine(
         input,
@@ -88,33 +88,6 @@ internal class CalculatorViewModel @Inject constructor(
             partialHistoryView = prefs.partialHistoryView,
         )
     }
-        .mapLatest { ui ->
-            if (ui !is CalculatorUIState.Ready) return@mapLatest ui
-            if (equalClicked.value) return@mapLatest ui
-
-            if (!ui.input.text.isExpression()) {
-                result.update { CalculationResult.Empty }
-                return@mapLatest ui
-            }
-
-            result.update {
-                try {
-                    CalculationResult.Default(
-                        calculate(
-                            input = ui.input.text,
-                            radianMode = ui.radianMode,
-                        )
-                            .format(ui.precision, ui.outputFormat),
-                    )
-                } catch (e: ExpressionException.DivideByZero) {
-                    CalculationResult.Empty
-                } catch (e: Exception) {
-                    CalculationResult.Empty
-                }
-            }
-
-            ui
-        }
         .stateIn(viewModelScope, CalculatorUIState.Loading)
 
     fun addTokens(tokens: String) {
@@ -150,14 +123,15 @@ internal class CalculatorViewModel @Inject constructor(
     fun clearInput() = updateInput(TextFieldValue())
 
     fun updateInput(value: TextFieldValue) {
-        fractionJob?.cancel()
         equalClicked.update { false }
         input.update { value }
         savedStateHandle[inputKey] = value.text
+        calculateInput()
     }
 
     fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {
         userPrefsRepository.updateRadianMode(newValue)
+        calculateInput()
     }
 
     fun updateAdditionalButtons(newValue: Boolean) = viewModelScope.launch {
@@ -168,54 +142,71 @@ internal class CalculatorViewModel @Inject constructor(
         userPrefsRepository.updateInverseMode(newValue)
     }
 
-    fun clearHistory() = viewModelScope.launch(Dispatchers.IO) {
+    fun clearHistory() = viewModelScope.launch {
         calculatorHistoryRepository.clear()
     }
 
-    fun deleteHistoryItem(item: HistoryItem) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteHistoryItem(item: HistoryItem) = viewModelScope.launch {
         calculatorHistoryRepository.delete(item)
     }
 
     fun equal() = viewModelScope.launch {
         val prefs = prefs.value ?: return@launch
+        val inputValue = input.value.text
         if (equalClicked.value) return@launch
-        if (!input.value.text.isExpression()) return@launch
+        if (!inputValue.isExpression()) return@launch
 
-        val result = try {
-            calculate(input.value.text, prefs.radianMode, RoundingMode.DOWN)
+        val calculated = try {
+            calculate(inputValue, prefs.radianMode, RoundingMode.HALF_EVEN)
+                .format(prefs.precision, prefs.outputFormat)
         } catch (e: ExpressionException.DivideByZero) {
-            equalClicked.update { true }
             result.update { CalculationResult.DivideByZeroError }
             return@launch
-        } catch (e: ExpressionException.FactorialCalculation) {
-            equalClicked.update { true }
-            result.update { CalculationResult.Error }
-            return@launch
         } catch (e: Exception) {
-            equalClicked.update { true }
             result.update { CalculationResult.Error }
             return@launch
         }
+
+        val fractional = try {
+            calculate(inputValue, prefs.radianMode, RoundingMode.DOWN)
+                .toFractionalString()
+        } catch (e: Exception) {
+            result.update { CalculationResult.Error }
+            return@launch
+        }
+
+        calculatorHistoryRepository.add(
+            expression = inputValue,
+            result = calculated,
+        )
 
         equalClicked.update { true }
+        input.update { TextFieldValue(calculated.replace("-", Token.Operator.minus)) }
+        result.update { CalculationResult.Success(fractional) }
+    }
 
-        val resultFormatted = result
-            .format(prefs.precision, prefs.outputFormat)
-            .replace("-", Token.Operator.minus)
+    private fun calculateInput() {
+        calculationJob?.cancel()
+        calculationJob = viewModelScope.launch {
+            if (!input.value.text.isExpression()) {
+                result.update { CalculationResult.Empty }
+                return@launch
+            }
 
-        withContext(Dispatchers.IO) {
-            calculatorHistoryRepository.add(
-                expression = input.value.text.replace("-", Token.Operator.minus),
-                result = resultFormatted,
-            )
-        }
-
-        fractionJob?.cancel()
-        fractionJob = launch(Dispatchers.Default) {
-            val fraction = result.toFractionalString()
-
-            input.update { TextFieldValue(resultFormatted, TextRange.Zero) }
-            this@CalculatorViewModel.result.update { CalculationResult.Fraction(fraction) }
+            val prefs = prefs.value ?: return@launch
+            val newResult = try {
+                val calculated = calculate(
+                    input = input.value.text,
+                    radianMode = prefs.radianMode,
+                    roundingMode = RoundingMode.HALF_EVEN,
+                )
+                CalculationResult.Success(
+                    calculated.format(prefs.precision, prefs.outputFormat),
+                )
+            } catch (e: Exception) {
+                CalculationResult.Empty
+            }
+            result.update { newResult }
         }
     }
 
@@ -227,7 +218,14 @@ internal class CalculatorViewModel @Inject constructor(
         Expression(input, radianMode, roundingMode)
             .calculate()
             .also {
-                if (it > BigDecimal.valueOf(Double.MAX_VALUE)) throw ExpressionException.TooBig()
+                if (it.isGreaterThan(maxCalculationResult)) throw ExpressionException.TooBig()
             }
+    }
+
+    private val maxCalculationResult = BigDecimal.valueOf(Double.MAX_VALUE)
+
+    override fun onCleared() {
+        viewModelScope.cancel()
+        super.onCleared()
     }
 }
