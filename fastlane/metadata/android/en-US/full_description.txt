@@ -1,4 +1,4 @@
-Calculator, converter and more.
+Superior tool to calculate and convert anything
 
 Look for <b>Calculator</b> on your home screen after installing the app.
 
@@ -7,14 +7,13 @@ Look for <b>Calculator</b> on your home screen after installing the app.
 • Open source
 
 <b>Calculator</b>
-
 • Copy, paste, save and share expression results
+• Home screen widget
 • Trigonometric functions
 • Fractional output
 
 <b>Unit converter</b>
-
-• 570 units
+• 597 units
 • Built-in currency converter
 • Favorite units
 • Organize unit groups
@@ -49,8 +48,4 @@ Not used explicitly. Added automatically by Widget feature.
 android.permission.FOREGROUND_SERVICE
 Not used explicitly. Added automatically by Widget feature.
 
-Non-free network service
-<i>Non-free</i> doesn't mean that you need to pay, put your credit card away. In this context it means that you can't host it on your machine.
-
-The app uses https://github.com/fawazahmed0/currency-api by https://github.com/fawazahmed0
-Requests are send to cdn.jsdelivr.net.
+The app uses https://github.com/fawazahmed0/exchange-api/ by https://github.com/fawazahmed0/ for currency rates. Requests are send to cdn.jsdelivr.net only when you select currencies.

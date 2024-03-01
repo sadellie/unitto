@@ -16,69 +16,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    `kotlin-dsl`
+  `kotlin-dsl`
 }
 
 group = "com.sadellie.unitto.buildlogic"
+java.sourceCompatibility = JavaVersion.VERSION_17
+java.targetCompatibility = JavaVersion.VERSION_17
+kotlin.compilerOptions.jvmTarget = JvmTarget.JVM_17
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
+tasks {
+  validatePlugins {
+    enableStricterValidation = true
+    failOnWarning = true
+  }
 }
 
 dependencies {
-    compileOnly(libs.android.gradlePlugin)
-    compileOnly(libs.kotlin.gradlePlugin)
-    compileOnly(libs.ksp.gradlePlugin)
+  compileOnly(libs.android.gradlePlugin)
+  compileOnly(libs.kotlin.gradlePlugin)
+  compileOnly(libs.ksp.gradlePlugin)
 }
 
 gradlePlugin {
-    plugins {
-        register("unittoHilt") {
-            id = "unitto.android.hilt"
-            implementationClass = "UnittoHiltPlugin"
-        }
-
-        register("unittoLibraryPlugin") {
-            id = "unitto.library"
-            implementationClass = "UnittoLibraryPlugin"
-        }
-
-        register("unittoLibraryFeaturePlugin") {
-            id = "unitto.library.feature"
-            implementationClass = "UnittoLibraryFeaturePlugin"
-        }
-
-        register("unittoLibraryComposePlugin") {
-            id = "unitto.library.compose"
-            implementationClass = "UnittoLibraryComposePlugin"
-        }
-
-        register("unittoRoomPlugin") {
-            id = "unitto.room"
-            implementationClass = "UnittoRoomPlugin"
-        }
-
-        register("unittoAndroidApplicationJacoco") {
-            id = "unitto.android.application.jacoco"
-            implementationClass = "UnittoAndroidApplicationJacocoPlugin"
-        }
-
-        register("unittoAndroidLibraryJacocoPlugin") {
-            id = "unitto.android.library.jacoco"
-            implementationClass = "UnittoAndroidLibraryJacocoPlugin"
-        }
-
-        register("unittoAndroidTestConventionPlugin") {
-            id = "unitto.android.test"
-            implementationClass = "UnittoAndroidTestConventionPlugin"
-        }
+  plugins {
+    register("unittoLibraryPlugin") {
+      id = "unitto.library"
+      implementationClass = "UnittoLibraryPlugin"
     }
+  }
 }

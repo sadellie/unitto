@@ -17,24 +17,43 @@
  */
 
 plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
+  id("unitto.library")
+
+  alias(libs.plugins.ksp)
+  alias(libs.plugins.hilt)
+  alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.serialization)
 }
 
-android.namespace = "com.sadellie.unitto.feature.timezone"
+android {
+  namespace = "com.sadellie.unitto.feature.timezone"
+  buildFeatures.compose = true
+  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+}
 
 dependencies {
-    testImplementation(libs.org.robolectric.robolectric)
+  implementation(project(":core:common"))
+  implementation(project(":core:ui"))
+  implementation(project(":core:navigation"))
+  implementation(project(":core:designsystem"))
+  implementation(project(":core:datastore"))
+  implementation(project(":core:data"))
+  implementation(project(":core:model"))
 
-    implementation(libs.org.burnoutcrew.composereorderable.reorderable)
-    implementation(libs.androidx.appcompat.appcompat)
+  implementation(libs.androidx.hilt.hilt.navigation.compose)
+  implementation(libs.com.google.dagger.android.hilt.android)
+  ksp(libs.com.google.dagger.dagger.android.processor)
+  ksp(libs.com.google.dagger.hilt.compiler)
 
-    implementation(project(":data:common"))
-    implementation(project(":data:database"))
-    implementation(project(":data:model"))
-    implementation(project(":data:timezone"))
-    implementation(project(":data:userprefs"))
+  implementation(libs.androidx.appcompat.appcompat)
+  implementation(libs.androidx.compose.foundation.foundation)
+  implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.compose.material3.window.size)
+  implementation(libs.androidx.compose.ui.tooling.preview)
+  implementation(libs.androidx.navigation.navigation.compose)
+
+  implementation(libs.sh.calvin.reorderable.reorderable)
+  implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
+
+  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }

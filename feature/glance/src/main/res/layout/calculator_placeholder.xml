@@ -106,12 +106,12 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_corners_rectangle_shape"
-            android:backgroundTint="@color/primaryContainer"
+            android:backgroundTint="@color/secondaryContainer"
             android:importantForAccessibility="no"
             android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/brackets"
-            android:tint="@color/onPrimaryContainer" />
+            android:tint="@color/onSecondaryContainer" />
 
         <ImageButton
             android:layout_width="0dp"
@@ -119,12 +119,12 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_corners_rectangle_shape"
-            android:backgroundTint="@color/primaryContainer"
+            android:backgroundTint="@color/secondaryContainer"
             android:importantForAccessibility="no"
             android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/percent"
-            android:tint="@color/onPrimaryContainer" />
+            android:tint="@color/onSecondaryContainer" />
 
         <ImageButton
             android:layout_width="0dp"
@@ -132,12 +132,12 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_corners_rectangle_shape"
-            android:backgroundTint="@color/primaryContainer"
+            android:backgroundTint="@color/secondaryContainer"
             android:importantForAccessibility="no"
             android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/divide"
-            android:tint="@color/onPrimaryContainer" />
+            android:tint="@color/onSecondaryContainer" />
     </LinearLayout>
 
     <LinearLayout
@@ -190,12 +190,12 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_corners_rectangle_shape"
-            android:backgroundTint="@color/primaryContainer"
+            android:backgroundTint="@color/secondaryContainer"
             android:importantForAccessibility="no"
             android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/multiply"
-            android:tint="@color/onPrimaryContainer" />
+            android:tint="@color/onSecondaryContainer" />
     </LinearLayout>
 
     <LinearLayout
@@ -248,12 +248,12 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_corners_rectangle_shape"
-            android:backgroundTint="@color/primaryContainer"
+            android:backgroundTint="@color/secondaryContainer"
             android:importantForAccessibility="no"
             android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/minus"
-            android:tint="@color/onPrimaryContainer" />
+            android:tint="@color/onSecondaryContainer" />
     </LinearLayout>
 
     <LinearLayout
@@ -306,12 +306,12 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_corners_rectangle_shape"
-            android:backgroundTint="@color/primaryContainer"
+            android:backgroundTint="@color/secondaryContainer"
             android:importantForAccessibility="no"
             android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/plus"
-            android:tint="@color/onPrimaryContainer" />
+            android:tint="@color/onSecondaryContainer" />
     </LinearLayout>
 
     <LinearLayout

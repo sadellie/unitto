@@ -17,29 +17,39 @@
  */
 
 plugins {
-    id("com.google.devtools.ksp")
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.library.feature")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
+  id("unitto.library")
+
+  alias(libs.plugins.ksp)
+  alias(libs.plugins.hilt)
+  alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.serialization)
 }
 
-android.namespace = "com.sadellie.unitto.feature.converter"
-android.testOptions.unitTests.isIncludeAndroidResources = true
+android {
+  namespace = "com.sadellie.unitto.feature.converter"
+  buildFeatures.compose = true
+  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+}
 
 dependencies {
-    testImplementation(libs.org.robolectric.robolectric)
-    testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
-    testImplementation(libs.androidx.room.runtime)
-    testImplementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-    testImplementation(libs.androidx.datastore.datastore.preferences)
+  implementation(project(":core:common"))
+  implementation(project(":core:ui"))
+  implementation(project(":core:navigation"))
+  implementation(project(":core:designsystem"))
+  implementation(project(":core:datastore"))
+  implementation(project(":core:evaluatto"))
+  implementation(project(":core:data"))
+  implementation(project(":core:model"))
 
-    implementation(project(":data:common"))
-    implementation(project(":data:database"))
-    implementation(project(":data:evaluatto"))
-    implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
-    implementation(project(":data:converter"))
+  implementation(libs.androidx.hilt.hilt.navigation.compose)
+  implementation(libs.com.google.dagger.android.hilt.android)
+  ksp(libs.com.google.dagger.dagger.android.processor)
+  ksp(libs.com.google.dagger.hilt.compiler)
+
+  implementation(libs.androidx.compose.foundation.foundation)
+  implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.compose.material3.window.size)
+  implementation(libs.androidx.compose.ui.tooling.preview)
+  implementation(libs.androidx.navigation.navigation.compose)
+  implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
 }

@@ -17,22 +17,29 @@
  */
 
 plugins {
-    id("unitto.library")
-    id("unitto.library.compose")
-    id("unitto.android.hilt")
-    id("unitto.android.library.jacoco")
+  id("unitto.library")
+  alias(libs.plugins.compose.compiler)
 }
 
-android.namespace = "com.sadellie.unitto.core.ui"
-// Workaround from https://github.com/robolectric/robolectric/pull/4736
-android.testOptions.unitTests.isIncludeAndroidResources = true
+android {
+  namespace = "com.sadellie.unitto.core.ui"
+  buildFeatures.compose = true
+  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+  testOptions.unitTests.isIncludeAndroidResources = true
+}
 
 dependencies {
-    testImplementation(libs.org.robolectric.robolectric)
+  implementation(project(":core:common"))
+  implementation(project(":core:navigation"))
+  implementation(project(":core:designsystem"))
 
-    implementation(libs.androidx.navigation.navigation.compose)
-    implementation(libs.androidx.browser.browser)
-    implementation(libs.androidx.window.window)
+  implementation(libs.androidx.compose.ui.tooling)
+  implementation(libs.androidx.compose.ui.tooling.preview)
+  implementation(libs.androidx.compose.foundation.foundation)
+  implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.activity.activity.compose)
+  implementation(libs.androidx.compose.material3.window.size)
 
-    implementation(project(":core:base"))
+  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+  testImplementation(libs.org.robolectric.robolectric)
 }

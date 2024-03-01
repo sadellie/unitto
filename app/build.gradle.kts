@@ -17,145 +17,106 @@
  */
 
 plugins {
-    // Basic stuff
-    id("com.android.application")
-    id("kotlin-android")
+  // Basic stuff
+  id("com.android.application")
+  id("kotlin-android")
 
-    id("unitto.android.application.jacoco")
-    id("jacoco")
-    id("unitto.android.hilt")
-    alias(libs.plugins.baselineprofile)
+  alias(libs.plugins.ksp)
+  alias(libs.plugins.hilt)
+  alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "com.sadellie.unitto"
-    compileSdk = 34
+  namespace = "com.sadellie.unitto"
+  compileSdk = 35
 
-    defaultConfig {
-        applicationId = "com.sadellie.unitto"
-        minSdk = 21
-        targetSdk = 34
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
-        resourceConfigurations += setOf(
-            "en",
-            "en-rGB",
-            "de",
-            "es",
-            "fr",
-            "hu",
-            "in",
-            "it",
-            "nl",
-            "pt-rBR",
-            "ru",
-            "tr",
-            "zh-rCN",
-        )
-    }
+  defaultConfig {
+    applicationId = "com.sadellie.unitto"
+    minSdk = 21
+    targetSdk = 35
+    versionCode = libs.versions.versionCode.get().toInt()
+    versionName = libs.versions.versionName.get()
+    resourceConfigurations +=
+      setOf(
+        "en",
+        "en-rGB",
+        "de",
+        "es",
+        "fr",
+        "hu",
+        "in",
+        "it",
+        "nl",
+        "pt-rBR",
+        "ru",
+        "tr",
+        "zh-rCN",
+      )
+  }
 
-    buildTypes {
-        debug {
-            isDebuggable = true
-            isMinifyEnabled = false
-            isShrinkResources = false
-            applicationIdSuffix = ".debug"
-            enableUnitTestCoverage = true
-        }
-        release {
-            initWith(getByName("debug"))
-            isDebuggable = false
-            isMinifyEnabled = true
-            isShrinkResources = true
-            applicationIdSuffix = ""
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-        create("benchmark") {
-            initWith(buildTypes.getByName("release"))
-            matchingFallbacks.add("release")
-            signingConfig = signingConfigs.getByName("debug")
-            // Only use benchmark proguard rules
-            proguardFiles("benchmark-rules.pro")
-            isMinifyEnabled = true
-        }
+  buildTypes {
+    debug {
+      isDebuggable = true
+      isMinifyEnabled = false
+      isShrinkResources = false
+      applicationIdSuffix = ".debug"
     }
+    release {
+      initWith(getByName("debug"))
+      isDebuggable = false
+      isMinifyEnabled = true
+      isShrinkResources = true
+      applicationIdSuffix = ""
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+  }
 
-    flavorDimensions += "mainFlavorDimension"
-    productFlavors {
-        create("playStore") {}
-        create("fdroid") {}
-    }
+  buildFeatures {
+    compose = true
+    aidl = false
+    renderScript = false
+    shaders = false
+    buildConfig = false
+    resValues = false
+  }
 
-    buildFeatures {
-        compose = true
-        aidl = false
-        renderScript = false
-        shaders = false
-        buildConfig = false
-        resValues = false
-    }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    isCoreLibraryDesugaringEnabled = true
+  }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-        isCoreLibraryDesugaringEnabled = true
-    }
-
-    packaging {
-        resources {
-            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
-        }
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
+  kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+  packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
 }
 
 dependencies {
-    implementation(libs.androidx.core.core.ktx)
-    implementation(libs.androidx.profileinstaller.profileinstaller)
-    coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs)
+  implementation(project(":core:navigation"))
+  implementation(project(":core:designsystem"))
+  implementation(project(":core:ui"))
+  implementation(project(":core:themmo"))
+  implementation(project(":core:datastore"))
+  implementation(project(":feature:bodymass"))
+  implementation(project(":feature:calculator"))
+  implementation(project(":feature:converter"))
+  implementation(project(":feature:datecalculator"))
+  implementation(project(":feature:glance"))
+  implementation(project(":feature:graphing"))
+  implementation(project(":feature:timezone"))
+  implementation(project(":feature:settings"))
 
-    implementation(libs.androidx.activity.activity.compose)
-    implementation(libs.androidx.appcompat.appcompat)
-    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.window.size)
-    implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.com.github.sadellie.themmo)
-    implementation(libs.androidx.datastore.datastore.preferences)
+  add("coreLibraryDesugaring", libs.com.android.tools.desugar.jdk.libs)
 
-    implementation(project(":feature:converter"))
-    implementation(project(":feature:calculator"))
-    implementation(project(":feature:settings"))
-    implementation(project(":feature:datecalculator"))
-    implementation(project(":feature:timezone"))
-    implementation(project(":feature:bodymass"))
-    implementation(project(":feature:glance"))
-    implementation(project(":data:model"))
-    implementation(project(":data:userprefs"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:base"))
+  implementation(libs.androidx.core.core.ktx)
+  implementation(libs.androidx.appcompat.appcompat)
+  implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
+  implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.compose.material3.window.size)
+  implementation(libs.androidx.navigation.navigation.compose)
 
-    baselineProfile(project(":benchmark"))
-}
-
-baselineProfile {
-    // Don't build on every iteration of a full assemble.
-    // Instead enable generation directly for the release build variant.
-    automaticGenerationDuringBuild = false
+  implementation(libs.androidx.hilt.hilt.navigation.compose)
+  implementation(libs.com.google.dagger.android.hilt.android)
+  ksp(libs.com.google.dagger.dagger.android.processor)
+  ksp(libs.com.google.dagger.hilt.compiler)
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>FunctionOnlyReturningConstant:CurrencyUnitResponse.kt$CurrencyAdapter$@Suppress("UNUSED", "UNUSED_PARAMETER", "SameReturnValue") @ToJson fun toJson(card: CurrencyUnitResponse): String?</ID>
+    <ID>LongMethod:DisplayScreen.kt$@Composable private fun DisplayScreen( navigateUp: () -&gt; Unit, currentThemingMode: ThemingMode, onThemeChange: (ThemingMode) -&gt; Unit, isDynamicThemeEnabled: Boolean, onDynamicThemeChange: (Boolean) -&gt; Unit, isAmoledThemeEnabled: Boolean, onAmoledThemeChange: (Boolean) -&gt; Unit, currentCustomColor: Color, onColorChange: (Color) -&gt; Unit, monetMode: MonetMode, onMonetModeChange: (MonetMode) -&gt; Unit, systemFont: Boolean, updateSystemFont: (Boolean) -&gt; Unit, acButton: Boolean, updateAcButton: (Boolean) -&gt; Unit, middleZero: Boolean, updateMiddleZero: (Boolean) -&gt; Unit, navigateToLanguages: () -&gt; Unit, )</ID>
+    <ID>LongMethod:SettingsScreen.kt$@Composable private fun SettingsScreen( uiState: SettingsUIState.Ready, openDrawer: () -&gt; Unit, navControllerAction: (Route) -&gt; Unit, updateLastReadChangelog: (String) -&gt; Unit, updateVibrations: (Boolean) -&gt; Unit, clearCache: () -&gt; Unit, )</ID>
+    <ID>LongMethod:Themmo.kt$@SuppressLint("NewApi") @Composable @Preview private fun PreviewThemmo()</ID>
+    <ID>LongParameterList:DisplayScreen.kt$( navigateUp: () -&gt; Unit, currentThemingMode: ThemingMode, onThemeChange: (ThemingMode) -&gt; Unit, isDynamicThemeEnabled: Boolean, onDynamicThemeChange: (Boolean) -&gt; Unit, isAmoledThemeEnabled: Boolean, onAmoledThemeChange: (Boolean) -&gt; Unit, currentCustomColor: Color, onColorChange: (Color) -&gt; Unit, monetMode: MonetMode, onMonetModeChange: (MonetMode) -&gt; Unit, systemFont: Boolean, updateSystemFont: (Boolean) -&gt; Unit, acButton: Boolean, updateAcButton: (Boolean) -&gt; Unit, middleZero: Boolean, updateMiddleZero: (Boolean) -&gt; Unit, navigateToLanguages: () -&gt; Unit, )</ID>
+    <ID>LongParameterList:ThemmoController.kt$ThemmoController$( val lightColorScheme: ColorScheme, val darkColorScheme: ColorScheme, themingMode: ThemingMode, dynamicThemeEnabled: Boolean, amoledThemeEnabled: Boolean, customColor: Color, monetMode: MonetMode, )</ID>
+    <ID>MagicNumber:ConfigureKotlinAndroid.kt$21</ID>
+    <ID>MagicNumber:ConfigureKotlinAndroid.kt$35</ID>
+    <ID>MagicNumber:DateTimeResultBlock.kt$3</ID>
+    <ID>MagicNumber:DateTimeResultBlock.kt$4</ID>
+    <ID>MagicNumber:DateTimeResultBlock.kt$5</ID>
+    <ID>MagicNumber:FlowUtils.kt$3</ID>
+    <ID>MagicNumber:FlowUtils.kt$4</ID>
+    <ID>MagicNumber:FlowUtils.kt$5</ID>
+    <ID>MagicNumber:FlowUtils.kt$6</ID>
+    <ID>ReturnCount:TextFieldStateExtensions.kt$fun TextFieldState.addBracket()</ID>
+    <ID>ReturnCount:TextFieldStateExtensions.kt$fun TextFieldState.addTokens(tokens: String)</ID>
+  </CurrentIssues>
+</SmellBaseline>

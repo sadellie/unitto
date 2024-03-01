@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Unitto is a calculator for Android
   ~ Copyright (c) 2024 Elshan Agaev
   ~
@@ -20,18 +19,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".UnittoApplication"
         android:icon="@mipmap/ic_launcher_icon"
         android:label="@string/calculator_title"
         android:localeConfig="@xml/locales_config"
         android:supportsRtl="false"
-        android:theme="@style/Theme.Unitto">
-        <profileable
-            android:shell="true"
-            tools:targetApi="UPSIDE_DOWN_CAKE" />
+        android:theme="@style/Theme.Unitto"
+        tools:targetApi="tiramisu">
 
         <activity
             android:name=".MainActivity"
@@ -59,7 +54,8 @@
             android:name=".UnittoTileService"
             android:exported="true"
             android:icon="@drawable/tile"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>

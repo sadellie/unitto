@@ -17,14 +17,16 @@
   -->
 
 <resources>
-    <color name="primary">#87d991</color>
-    <color name="onPrimary">#003911</color>
-    <color name="tertiaryContainer">#1f4d54</color>
-    <color name="onTertiaryContainer">#bceaf3</color>
-    <color name="primaryContainer">#00531d</color>
-    <color name="onPrimaryContainer">#a3f6ab</color>
-    <color name="surfaceVariant">#414940</color>
-    <color name="onSurfaceVariant">#c1c9be</color>
-    <color name="background">#161616</color>
-    <color name="inverseOnSurface">#1a1c19</color>
+    <color name="primary">#9CD49F</color>
+    <color name="onPrimary">#003914</color>
+    <color name="tertiaryContainer">#1F4D54</color>
+    <color name="onTertiaryContainer">#BDEAF3</color>
+    <color name="primaryContainer">#1D5128</color>
+    <color name="onPrimaryContainer">#B7F1BA</color>
+    <color name="secondaryContainer">#3A4B3A</color>
+    <color name="onSecondaryContainer">#D4E8D1</color>
+    <color name="surfaceVariant">#424940</color>
+    <color name="onSurfaceVariant">#C1C9BE</color>
+    <color name="background">#101510</color>
+    <color name="inverseOnSurface">#2D322C</color>
 </resources>

@@ -17,42 +17,45 @@
  */
 
 pluginManagement {
-    includeBuild("build-logic")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+  includeBuild("build-logic")
+  repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+  }
 }
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven(url = "https://jitpack.io")
-    }
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    google()
+    mavenCentral()
+    maven(url = "https://jitpack.io")
+  }
 }
+
 rootProject.name = "Unitto"
+
 include(":app")
-include(":benchmark")
-include(":core:base")
+include(":core:common")
+include(":core:model")
+include(":core:themmo")
+include(":core:navigation")
+include(":core:designsystem")
 include(":core:ui")
-include(":data:backup")
-include(":data:calculator")
-include(":data:common")
-include(":data:converter")
-include(":data:database")
-include(":data:evaluatto")
-include(":data:licenses")
-include(":data:model")
-include(":data:timezone")
-include(":data:userprefs")
+include(":core:database")
+include(":core:data")
+include(":core:remote")
+include(":core:evaluatto")
+include(":core:licenses")
+include(":core:backup")
+include(":core:datastore")
 include(":feature:bodymass")
 include(":feature:calculator")
 include(":feature:converter")
 include(":feature:datecalculator")
 include(":feature:glance")
-include(":feature:settings")
+include(":feature:graphing")
 include(":feature:timezone")
+include(":feature:settings")
