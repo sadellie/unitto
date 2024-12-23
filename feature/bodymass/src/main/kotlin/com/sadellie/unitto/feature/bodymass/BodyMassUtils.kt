@@ -32,10 +32,10 @@ import java.math.RoundingMode
  * @return BMI Value with [MAX_SCALE].
  */
 internal fun calculateMetric(heightCm: BigDecimal, weightKg: BigDecimal): BigDecimal {
-  if (heightCm.isLessThan(BigDecimal.ZERO) || heightCm.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO
-  if (weightKg.isLessThan(BigDecimal.ZERO) || weightKg.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO
+  if (heightCm.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
+  if (weightKg.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
+  if (heightCm.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
+  if (weightKg.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
 
   val heightMeters = heightCm.divide(cmToMFactor, MAX_SCALE, RoundingMode.HALF_EVEN)
 
@@ -55,12 +55,12 @@ internal fun calculateImperial(
   heightIn: BigDecimal,
   weightLbs: BigDecimal,
 ): BigDecimal {
-  if (heightFt.isLessThan(BigDecimal.ZERO) || heightFt.isEqualTo(BigDecimal.ZERO))
+  if (heightFt.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
+  if (heightIn.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
+  if (weightLbs.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
+  if (heightFt.isEqualTo(BigDecimal.ZERO) && heightIn.isEqualTo(BigDecimal.ZERO))
     return BigDecimal.ZERO
-  if (heightIn.isLessThan(BigDecimal.ZERO) || heightIn.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO
-  if (weightLbs.isLessThan(BigDecimal.ZERO) || weightLbs.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO
+  if (weightLbs.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
 
   val heightInches = heightFt.multiply(footToInchFactor).plus(heightIn)
 
@@ -100,10 +100,9 @@ internal fun calculateNormalWeightImperial(
   heightFt: BigDecimal,
   heightIn: BigDecimal,
 ): Pair<BigDecimal, BigDecimal> {
-  if (heightFt.isLessThan(BigDecimal.ZERO) || heightFt.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO to BigDecimal.ZERO
-
-  if (heightIn.isLessThan(BigDecimal.ZERO) || heightIn.isEqualTo(BigDecimal.ZERO))
+  if (heightFt.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO to BigDecimal.ZERO
+  if (heightIn.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO to BigDecimal.ZERO
+  if (heightFt.isEqualTo(BigDecimal.ZERO) && heightIn.isEqualTo(BigDecimal.ZERO))
     return BigDecimal.ZERO to BigDecimal.ZERO
 
   val heightInches2 =
