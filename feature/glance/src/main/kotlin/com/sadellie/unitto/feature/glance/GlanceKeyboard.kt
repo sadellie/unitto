@@ -22,9 +22,13 @@ import androidx.compose.runtime.Composable
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.action.Action
+import androidx.glance.action.action
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
+import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
+import androidx.glance.preview.ExperimentalGlancePreviewApi
+import androidx.glance.preview.Preview
 import com.sadellie.unitto.core.common.Token
 
 @Composable
@@ -245,4 +249,21 @@ private fun GlanceKeyboardRow5(
       onClick = equalAction(),
     )
   }
+}
+
+@OptIn(ExperimentalGlancePreviewApi::class)
+@Preview
+@Composable
+private fun PreviewKeyboard() {
+  val emptyAction = action {}
+  GlanceKeyboard(
+    modifier = GlanceModifier.fillMaxSize(),
+    addTokenAction = { emptyAction },
+    middleZero = true,
+    useDot = true,
+    addBracketAction = { emptyAction },
+    clearInputAction = { emptyAction },
+    equalAction = { emptyAction },
+    deleteTokenAction = { emptyAction },
+  )
 }

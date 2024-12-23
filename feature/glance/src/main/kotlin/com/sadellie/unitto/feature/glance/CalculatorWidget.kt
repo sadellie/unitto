@@ -246,7 +246,6 @@ private fun ColorProvider.withAlpha(alpha: Float): ColorProvider =
 @OptIn(ExperimentalGlancePreviewApi::class)
 @Composable
 @Preview
-@Suppress("UNUSED")
 private fun PreviewWidget() {
   ReadyUI(
     appPrefs =
@@ -262,7 +261,7 @@ private fun PreviewWidget() {
         additionalButtons = false,
         partialHistoryView = false,
       ),
-    input = "123",
-    output = "",
+    input = "123+456",
+    output = "789.012",
   )
 }
