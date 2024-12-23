@@ -69,6 +69,7 @@ android {
       applicationIdSuffix = ""
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
+    create("preview") { initWith(getByName("release")) }
   }
 
   buildFeatures {

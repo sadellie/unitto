@@ -35,14 +35,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
   commonExtension.apply {
     compileSdk = 35
-
     defaultConfig.minSdk = 21
-
-    compileOptions {
-      sourceCompatibility = JavaVersion.VERSION_11
-      targetCompatibility = JavaVersion.VERSION_11
-      isCoreLibraryDesugaringEnabled = true
-    }
 
     buildFeatures {
       compose = false
@@ -53,7 +46,15 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
       resValues = false
     }
 
+    buildTypes { create("preview") { initWith(getByName("release")) } }
+
     packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+
+    compileOptions {
+      sourceCompatibility = JavaVersion.VERSION_11
+      targetCompatibility = JavaVersion.VERSION_11
+      isCoreLibraryDesugaringEnabled = true
+    }
 
     configureKotlin<KotlinAndroidProjectExtension>()
   }
@@ -71,21 +72,22 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
     // Treat all Kotlin warnings as errors (disabled by default)
     // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
     val warningsAsErrors: String? by project
-    when (this) {
-      is KotlinAndroidProjectExtension -> compilerOptions
-      is KotlinJvmProjectExtension -> compilerOptions
-      else -> error("Unsupported project extension $this ${T::class}")
-    }.apply {
-      jvmTarget = JvmTarget.JVM_11
-      allWarningsAsErrors = warningsAsErrors.toBoolean()
-      freeCompilerArgs.addAll(
-        "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-        "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
-        "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-        "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-        "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
-        "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
-        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-      )
-    }
+    val compilerOptions =
+      when (this) {
+        is KotlinAndroidProjectExtension -> compilerOptions
+        is KotlinJvmProjectExtension -> compilerOptions
+        else -> error("Unsupported project extension $this ${T::class}")
+      }
+
+    compilerOptions.jvmTarget = JvmTarget.JVM_11
+    compilerOptions.allWarningsAsErrors = warningsAsErrors.toBoolean()
+    compilerOptions.freeCompilerArgs.addAll(
+      "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+      "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
+      "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+      "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+      "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+      "-opt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
+      "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+    )
   }
