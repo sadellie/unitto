@@ -22,29 +22,31 @@ import org.junit.Test
 
 class ExpressionSimpleTest {
 
-  @Test fun expression1() = assertExpr("789", "789")
+  @Test fun expression0() = assertExpr("", "0.0000000000")
 
-  @Test fun expression2() = assertExpr("0.1+0.2", "0.3")
+  @Test fun expression1() = assertExpr("789", "789.0000000000")
 
-  @Test fun expression3() = assertExpr(".1+.2", "0.3")
+  @Test fun expression2() = assertExpr("0.1+0.2", "0.3000000000")
 
-  @Test fun expression4() = assertExpr("789+200", "989")
+  @Test fun expression3() = assertExpr(".1+.2", "0.3000000000")
 
-  @Test fun expression5() = assertExpr("600×7.89", "4734")
+  @Test fun expression4() = assertExpr("789+200", "989.0000000000")
 
-  @Test fun expression6() = assertExpr("600÷7", "85.7142857143")
+  @Test fun expression5() = assertExpr("600×7.89", "4734.00000000000000000000")
 
-  @Test fun expression7() = assertExpr("(200+200)×200", "80000")
+  @Test fun expression6() = assertExpr("600÷7", "85.714285714285714286")
 
-  @Test fun expression8() = assertExpr("99^5", "9509900499")
+  @Test fun expression7() = assertExpr("(200+200)×200", "80000.00000000000000000000")
 
-  @Test fun expression9() = assertExpr("12!", "479001600")
+  @Test fun expression8() = assertExpr("99^5", "9509900499.0000000000")
 
-  @Test fun expression10() = assertExpr("12#5", "2")
+  @Test fun expression9() = assertExpr("12!", "479001600.0000000000")
 
-  @Test fun `125 plus 9 percent`() = assertExpr("125+9%", "136.25")
+  @Test fun expression10() = assertExpr("12#5", "2.0000000000")
 
-  @Test fun expression11() = assertExpr("12×√5", "26.8328157300")
+  @Test fun `125 plus 9 percent`() = assertExpr("125+9%", "136.250000000000")
+
+  @Test fun expression11() = assertExpr("12×√5", "26.83281572999747635680000000000")
 
   @Test fun expression12() = assertExpr("sin(42)", "-0.9165215479")
 
@@ -70,21 +72,21 @@ class ExpressionSimpleTest {
 
   @Test fun expression23() = assertExpr("tan⁻¹(.69)", "34.6056755516", radianMode = false)
 
-  @Test fun expression24() = assertExpr("ln(.69)", "-0.3710636814")
+  @Test fun expression24() = assertExpr("ln(.69)", "-0.37106368139083198583")
 
-  @Test fun expression25() = assertExpr("log(.69)", "-0.1611509093")
+  @Test fun expression25() = assertExpr("log(.69)", "-0.16115090926274468384")
 
-  @Test fun expression26() = assertExpr("exp(3)", "20.0855369232")
+  @Test fun expression26() = assertExpr("exp(3)", "20.085536923187667741")
 
-  @Test fun expression27() = assertExpr("π", "3.1415926536")
+  @Test fun expression27() = assertExpr("π", "3.1415926535897932385")
 
-  @Test fun expression28() = assertExpr("e", "2.7182818285")
+  @Test fun expression28() = assertExpr("e", "2.7182818284590452354")
 
   @Test fun expression29() = assertExpr("0!", "1")
 
-  @Test fun expression30() = assertExpr("cos(π)", "-1")
+  @Test fun expression30() = assertExpr("cos(π)", "-1.0000000000")
 
-  @Test fun expression31() = assertExpr("sin(2π)", "0", radianMode = true)
+  @Test fun expression31() = assertExpr("sin(2π)", "0.0000000000", radianMode = true)
 
-  @Test fun expression32() = assertExpr("tan(π)", "0", radianMode = true)
+  @Test fun expression32() = assertExpr("tan(π)", "0.0000000000", radianMode = true)
 }

@@ -23,10 +23,10 @@ import org.junit.Assert.assertThrows
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-fun assertExpr(expr: String, result: String, radianMode: Boolean = true) =
+fun assertExpr(expr: String, result: String, scale: Int = 10, radianMode: Boolean = true) =
   assertEquals(
-    BigDecimal(result).setScale(10, RoundingMode.HALF_EVEN),
-    Expression(expr, radianMode).calculate().setScale(10, RoundingMode.HALF_EVEN),
+    BigDecimal(result),
+    Expression(expr, radianMode, RoundingMode.HALF_EVEN, scale).calculate(),
   )
 
 fun <T : Throwable?> assertExprFail(

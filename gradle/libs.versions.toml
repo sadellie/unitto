@@ -1,5 +1,5 @@
 [versions]
-versionCode = "40"
+versionCode = "41"
 versionName = "Quick Silver"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser

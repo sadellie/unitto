@@ -44,7 +44,8 @@ class Expression(
   private val roundingMode: RoundingMode = RoundingMode.HALF_EVEN,
   private val scale: Int = MAX_SCALE,
 ) {
-  private val mathContext = MathContext(scale, roundingMode)
+  // double precision to have enough decimal points when formatting
+  private val mathContext = MathContext(scale * 2, roundingMode)
   private val tokens = input.tokenize()
   private var cursorPosition = 0
 
@@ -81,6 +82,8 @@ class Expression(
 
   // Expression := [ "-" ] Term { ("+" | "-") Term }
   private fun parseExpression(): BigDecimal {
+    if (tokens.isEmpty()) return BigDecimal.ZERO.setScale(scale)
+
     var expression = parseTerm()
 
     while (peek() in listOf(Token.Operator.PLUS, Token.Operator.MINUS)) {
@@ -178,32 +181,32 @@ class Expression(
 
     // sin
     if (moveIfMatched(Token.Func.SIN)) {
-      expr = parseFuncParentheses().sin(radianMode, mathContext)
+      expr = parseFuncParentheses().sin(radianMode, mathContext).rescaleTrig()
     }
 
     // cos
     if (moveIfMatched(Token.Func.COS)) {
-      expr = parseFuncParentheses().cos(radianMode, mathContext)
+      expr = parseFuncParentheses().cos(radianMode, mathContext).rescaleTrig()
     }
 
     // tan
     if (moveIfMatched(Token.Func.TAN)) {
-      expr = parseFuncParentheses().tan(radianMode, mathContext)
+      expr = parseFuncParentheses().tan(radianMode, mathContext).rescaleTrig()
     }
 
     // arsin
     if (moveIfMatched(Token.Func.ARSIN)) {
-      expr = parseFuncParentheses().arsin(radianMode, mathContext)
+      expr = parseFuncParentheses().arsin(radianMode, mathContext).rescaleTrig()
     }
 
     // arcos
     if (moveIfMatched(Token.Func.ARCOS)) {
-      expr = parseFuncParentheses().arcos(radianMode, mathContext)
+      expr = parseFuncParentheses().arcos(radianMode, mathContext).rescaleTrig()
     }
 
     // actan
     if (moveIfMatched(Token.Func.ACTAN)) {
-      expr = parseFuncParentheses().artan(radianMode, mathContext)
+      expr = parseFuncParentheses().artan(radianMode, mathContext).rescaleTrig()
     }
 
     // ln
@@ -245,4 +248,7 @@ class Expression(
 
     return expr
   }
+
+  // rescale to avoid precision loss when evaluating special cases in trigonometry
+  private fun BigDecimal.rescaleTrig(): BigDecimal = this.setScale(scale, RoundingMode.HALF_EVEN)
 }

@@ -20,7 +20,6 @@ package com.sadellie.unitto.core.data.converter
 
 import android.content.Context
 import android.util.Log
-import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isLessThan
 import com.sadellie.unitto.core.common.setMaxScale
@@ -499,7 +498,7 @@ constructor(
 
   private fun calculateInput(value: String): BigDecimal {
     // Calculate expression in first text field
-    val calculated = Expression(value.ifEmpty { Token.Digit.DIGIT_0 }).calculate()
+    val calculated = Expression(value).calculate()
     return calculated
   }
 
@@ -509,9 +508,9 @@ constructor(
     inchInput: String,
   ): BigDecimal {
     // Calculate expression in first text field
-    var calculated = Expression(footInput.ifEmpty { Token.Digit.DIGIT_0 }).calculate()
+    var calculated = Expression(footInput).calculate()
 
-    val calculatedInches = Expression(inchInput.ifEmpty { Token.Digit.DIGIT_0 }).calculate()
+    val calculatedInches = Expression(inchInput).calculate()
     // turn inches into feet so that it all comes down to converting from feet only
     val inches = getById(UnitID.inch) as BasicUnit.Default
     val feet = getById(UnitID.foot) as BasicUnit.Default
