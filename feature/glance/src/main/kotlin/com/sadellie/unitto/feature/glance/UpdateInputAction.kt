@@ -57,9 +57,7 @@ internal class AddTokenAction : ActionCallback {
       // Clear input if equal is clicked and new token is a Digit
       if (isEqualClicked && tokenToAdd in Token.Digit.allWithDot) {
         state[CalculatorWidget.inputStateKey] = ""
-        state[CalculatorWidget.equalClickedStateKey] = false
         state[CalculatorWidget.outputStateKey] = ""
-        return@updateAppWidgetState
       }
 
       val currentInput = state[CalculatorWidget.inputStateKey] ?: ""
@@ -69,6 +67,7 @@ internal class AddTokenAction : ActionCallback {
       val newOutput = calculate(newInput, precision, outputFormat)
       state[CalculatorWidget.inputStateKey] = newInput
       state[CalculatorWidget.outputStateKey] = newOutput
+      state[CalculatorWidget.equalClickedStateKey] = false
     }
     CalculatorWidget().update(context, glanceId)
   }
@@ -92,6 +91,7 @@ internal class AddBracketAction : ActionCallback {
       val newOutput = calculate(newInput, precision, outputFormat)
       state[CalculatorWidget.inputStateKey] = newInput
       state[CalculatorWidget.outputStateKey] = newOutput
+      state[CalculatorWidget.equalClickedStateKey] = false
     }
     CalculatorWidget().update(context, glanceId)
   }
@@ -115,6 +115,7 @@ internal class DeleteTokenAction : ActionCallback {
       val newOutput = calculate(newInput, precision, outputFormat)
       state[CalculatorWidget.inputStateKey] = newInput
       state[CalculatorWidget.outputStateKey] = newOutput
+      state[CalculatorWidget.equalClickedStateKey] = false
     }
     CalculatorWidget().update(context, glanceId)
   }
@@ -159,8 +160,8 @@ internal class ClearInputAction : ActionCallback {
   ) {
     updateAppWidgetState(context, glanceId) { state ->
       state[CalculatorWidget.inputStateKey] = ""
-      state[CalculatorWidget.equalClickedStateKey] = false
       state[CalculatorWidget.outputStateKey] = ""
+      state[CalculatorWidget.equalClickedStateKey] = false
     }
     CalculatorWidget().update(context, glanceId)
   }
