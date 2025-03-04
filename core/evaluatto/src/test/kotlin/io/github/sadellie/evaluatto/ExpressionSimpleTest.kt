@@ -34,7 +34,7 @@ class ExpressionSimpleTest {
 
   @Test fun expression5() = assertExpr("600×7.89", "4734.00000000000000000000")
 
-  @Test fun expression6() = assertExpr("600÷7", "85.714285714285714286")
+  @Test fun expression6() = assertExpr("600÷7", "85.7142857143")
 
   @Test fun expression7() = assertExpr("(200+200)×200", "80000.00000000000000000000")
 
@@ -44,7 +44,7 @@ class ExpressionSimpleTest {
 
   @Test fun expression10() = assertExpr("12#5", "2.0000000000")
 
-  @Test fun `125 plus 9 percent`() = assertExpr("125+9%", "136.250000000000")
+  @Test fun `125 plus 9 percent`() = assertExpr("125+9%", "136.25000000000000000000")
 
   @Test fun expression11() = assertExpr("12×√5", "26.83281572999747635680000000000")
 

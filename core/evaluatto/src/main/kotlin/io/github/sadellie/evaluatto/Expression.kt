@@ -19,7 +19,6 @@
 package io.github.sadellie.evaluatto
 
 import ch.obermuhlner.math.big.BigDecimalMath
-import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import java.math.BigDecimal
@@ -40,9 +39,9 @@ sealed class ExpressionException(override val message: String) : Exception(messa
 
 class Expression(
   input: String,
+  private val scale: Int,
   private val radianMode: Boolean = true,
   private val roundingMode: RoundingMode = RoundingMode.HALF_EVEN,
-  private val scale: Int = MAX_SCALE,
 ) {
   // double precision to have enough decimal points when formatting
   private val mathContext = MathContext(scale * 2, roundingMode)
@@ -109,7 +108,7 @@ class Expression(
           val divisor = parseFactor()
           if (divisor.isEqualTo(BigDecimal.ZERO)) throw ExpressionException.DivideByZero()
 
-          expression = expression.divide(divisor, mathContext)
+          expression = expression.divide(divisor, scale, roundingMode)
         }
       }
     }

@@ -29,6 +29,7 @@ android {
   namespace = "com.sadellie.unitto.feature.converter"
   buildFeatures.compose = true
   composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+  testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
@@ -52,4 +53,7 @@ dependencies {
   implementation(libs.androidx.compose.ui.tooling.preview)
   implementation(libs.androidx.navigation.navigation.compose)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
+
+  testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
+  testImplementation(libs.org.robolectric.robolectric)
 }

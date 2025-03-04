@@ -18,23 +18,24 @@
 
 package io.github.sadellie.evaluatto
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
 import java.math.BigDecimal
 import java.math.RoundingMode
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 
 fun assertExpr(expr: String, result: String, scale: Int = 10, radianMode: Boolean = true) =
   assertEquals(
     BigDecimal(result),
-    Expression(expr, radianMode, RoundingMode.HALF_EVEN, scale).calculate(),
+    Expression(expr, scale, radianMode, RoundingMode.HALF_EVEN).calculate(),
   )
 
 fun <T : Throwable?> assertExprFail(
   expectedThrowable: Class<T>?,
   expr: String,
+  scale: Int = 10,
   radianMode: Boolean = true,
 ) {
-  assertThrows(expectedThrowable) { Expression(expr, radianMode = radianMode).calculate() }
+  assertThrows(expectedThrowable) { Expression(expr, scale, radianMode = radianMode).calculate() }
 }
 
 fun assertLex(expected: List<String>, actual: String) = assertEquals(expected, actual.tokenize())

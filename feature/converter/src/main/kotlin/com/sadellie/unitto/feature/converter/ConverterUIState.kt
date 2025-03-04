@@ -19,10 +19,12 @@
 package com.sadellie.unitto.feature.converter
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isGreaterThan
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.data.converter.ConverterResult
@@ -123,14 +125,54 @@ internal fun ConverterResult.FootInch.format(
   outputFormat: Int,
   formatterSymbols: FormatterSymbols,
 ): String {
-  var result = ""
-  result += foot.toFormattedString(scale, outputFormat).formatExpression(formatterSymbols)
+  return formatConverterResultSplit(
+    mContext = mContext,
+    scale = scale,
+    outputFormat = outputFormat,
+    formatterSymbols = formatterSymbols,
+    output1 = foot,
+    output1Res = R.string.unit_foot_short,
+    output2 = inch,
+    output2Res = R.string.unit_inch_short,
+  )
+}
 
-  if (inch.isGreaterThan(BigDecimal.ZERO)) {
-    result += mContext.getString(R.string.unit_foot_short)
+internal fun ConverterResult.PoundOunce.format(
+  mContext: Context,
+  scale: Int,
+  outputFormat: Int,
+  formatterSymbols: FormatterSymbols,
+): String {
+  return formatConverterResultSplit(
+    mContext = mContext,
+    scale = scale,
+    outputFormat = outputFormat,
+    formatterSymbols = formatterSymbols,
+    output1 = pound,
+    output1Res = R.string.unit_pound_short,
+    output2 = ounce,
+    output2Res = R.string.unit_ounce_short,
+  )
+}
+
+private fun formatConverterResultSplit(
+  mContext: Context,
+  scale: Int,
+  outputFormat: Int,
+  formatterSymbols: FormatterSymbols,
+  output1: BigDecimal,
+  @StringRes output1Res: Int,
+  output2: BigDecimal,
+  @StringRes output2Res: Int,
+): String {
+  var result = ""
+  result += output1.toFormattedString(scale, outputFormat).formatExpression(formatterSymbols)
+
+  if (!output2.isEqualTo(BigDecimal.ZERO)) {
+    result += mContext.getString(output1Res)
     result += " "
-    result += inch.toFormattedString(scale, outputFormat).formatExpression(formatterSymbols)
-    result += mContext.getString(R.string.unit_inch_short)
+    result += output2.toFormattedString(scale, outputFormat).formatExpression(formatterSymbols)
+    result += mContext.getString(output2Res)
   }
 
   return result

@@ -348,7 +348,7 @@ private fun ToggleExpandedAdditionalKeysButton(
 ) {
   val expandRotation: Float by
     animateFloatAsState(
-      targetValue = if (expanded) 180f else 0f,
+      targetValue = if (expanded) 0f else 180f,
       animationSpec = tween(easing = FastOutSlowInEasing),
       label = "Rotate on expand",
     )

@@ -134,6 +134,7 @@ constructor(
           unitFromIdValue,
           unitToIdValue,
           converterPrefsValue.unitConverterFormatTime,
+          converterPrefsValue.precision,
         )
       }
       .collectLatest {}
@@ -141,12 +142,14 @@ constructor(
 
   fun retryConvert() {
     viewModelScope.launch {
+      val prefs = userPrefsRepository.converterPrefs.first()
       convert(
         _input1.text.toString(),
         _input2.text.toString(),
         _unitFromId.value,
         _unitToId.value,
-        userPrefsRepository.converterPrefs.first().unitConverterFormatTime,
+        prefs.unitConverterFormatTime,
+        prefs.precision,
       )
     }
   }
@@ -184,6 +187,7 @@ constructor(
     unitFromIdValue: String?,
     unitToIdValue: String?,
     formatTime: Boolean,
+    scale: Int,
   ) {
     _conversionJob?.cancel()
     _conversionJob =
@@ -196,6 +200,7 @@ constructor(
               value1 = input1Value,
               value2 = input2Value,
               formatTime = formatTime,
+              scale = scale,
             )
           } catch (e: ExpressionException) {
             return@launch

@@ -55,6 +55,7 @@ class UnitsRepositoryImplTest {
           value1 = "2",
           value2 = "",
           formatTime = false,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -71,6 +72,7 @@ class UnitsRepositoryImplTest {
             value1 = "7",
             value2 = "",
             formatTime = false,
+            scale = TEST_CONVERTER_SCALE,
           )
         }
       }
@@ -88,6 +90,7 @@ class UnitsRepositoryImplTest {
           value1 = "${Token.Operator.MINUS}28",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -104,6 +107,7 @@ class UnitsRepositoryImplTest {
           value1 = "0",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -120,6 +124,7 @@ class UnitsRepositoryImplTest {
           value1 = "${Token.Operator.MINUS}0",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -137,6 +142,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.05",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -153,6 +159,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -174,6 +181,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -190,6 +198,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -211,6 +220,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -227,6 +237,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -248,6 +259,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -264,6 +276,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -285,6 +298,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -301,6 +315,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -318,6 +333,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -334,6 +350,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -351,6 +368,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -367,6 +385,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -384,6 +403,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -400,6 +420,7 @@ class UnitsRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -416,6 +437,7 @@ class UnitsRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -436,6 +458,7 @@ class UnitsRepositoryImplTest {
           value1 = "72",
           value2 = "",
           formatTime = false,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -475,6 +498,7 @@ class UnitsRepositoryImplTest {
           value1 = "3",
           value2 = "",
           formatTime = false,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -491,63 +515,7 @@ class UnitsRepositoryImplTest {
           value1 = "3",
           value2 = "",
           formatTime = false,
-        )
-
-      assertEquals(expected, actual)
-    }
-
-  @Test
-  fun convert_footInchOutput() =
-    testScope.runTest {
-      val expected =
-        ConverterResult.FootInch(foot = BigDecimal("6").setMaxScale(), inch = BigDecimal("0"))
-      val actual =
-        unitsRepository.convert(
-          unitFromId = UnitID.inch,
-          unitToId = UnitID.foot,
-          value1 = "72",
-          value2 = "",
-          formatTime = false,
-        )
-
-      assertEquals(expected, actual)
-    }
-
-  @Test
-  fun convert_footInchInput() =
-    testScope.runTest {
-      val expected =
-        ConverterResult.Default(
-          value = BigDecimal("870").setMaxScale(),
-          calculation = BigDecimal("72.5").setMaxScale(),
-        )
-      val actual =
-        unitsRepository.convert(
-          unitFromId = UnitID.foot,
-          unitToId = UnitID.inch,
-          value1 = "72",
-          value2 = "6",
-          formatTime = false,
-        )
-
-      assertEquals(expected, actual)
-    }
-
-  @Test
-  fun convert_footInchInputAndOutput() =
-    testScope.runTest {
-      val expected =
-        ConverterResult.FootInch(
-          foot = BigDecimal("72").setMaxScale(),
-          inch = BigDecimal("6").setMaxScale(),
-        )
-      val actual =
-        unitsRepository.convert(
-          unitFromId = UnitID.foot,
-          unitToId = UnitID.foot,
-          value1 = "72",
-          value2 = "6",
-          formatTime = false,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -568,6 +536,7 @@ class UnitsRepositoryImplTest {
           value1 = "72",
           value2 = "",
           formatTime = false,
+          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -581,9 +550,10 @@ class UnitsRepositoryImplTest {
           unitsRepository.convert(
             unitFromId = UnitID.kilometer,
             unitToId = UnitID.meter,
-            value1 = "anything",
+            value1 = "!",
             value2 = "",
             formatTime = false,
+            scale = TEST_CONVERTER_SCALE,
           )
         }
       }

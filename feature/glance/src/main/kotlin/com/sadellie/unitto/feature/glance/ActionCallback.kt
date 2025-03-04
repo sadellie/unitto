@@ -212,7 +212,7 @@ private suspend fun calculate(input: String, precision: Int, outputFormat: Int):
     if (!input.isExpression()) return@withContext ""
 
     return@withContext try {
-      Expression(input).calculate().toFormattedString(precision, outputFormat)
+      Expression(input, scale = precision).calculate().toFormattedString(precision, outputFormat)
     } catch (e: Exception) {
       ""
     }

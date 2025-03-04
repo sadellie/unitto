@@ -46,5 +46,7 @@ sealed class ConverterResult {
 
   data class FootInch(val foot: BigDecimal, val inch: BigDecimal) : ConverterResult()
 
+  data class PoundOunce(val pound: BigDecimal, val ounce: BigDecimal) : ConverterResult()
+
   data object Loading : ConverterResult()
 }

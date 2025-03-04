@@ -22,7 +22,12 @@ import org.junit.Test
 
 class ExpressionComplexTest {
 
-  @Test fun expression1() = assertExpr("94×π×89×cos(0.5)−3!÷9^(2)×√8", "23064.9104581024275792240533984667610923103776000000000")
+  @Test
+  fun expression1() =
+    assertExpr(
+      "94×π×89×cos(0.5)−3!÷9^(2)×√8",
+      "23064.9104581023542496319301395807400000000000000000000",
+    )
 
   @Test fun expression2() = assertExpr("√(25)×2+10÷2", "15.00000000000")
 
@@ -34,7 +39,7 @@ class ExpressionComplexTest {
 
   @Test fun expression6() = assertExpr("(10−2)^2÷8+3×2", "14.00000000000000000000")
 
-  @Test fun expression7() = assertExpr("7!÷3!−5!÷2!", "780")
+  @Test fun expression7() = assertExpr("7!÷3!−5!÷2!", "780.0000000000")
 
   @Test fun expression8() = assertExpr("(2^2+3^3)÷5−√(16)×2", "-1.80000000000")
 
@@ -44,7 +49,7 @@ class ExpressionComplexTest {
 
   @Test fun expression11() = assertExpr("2^6−2^5+2^4−2^3+2^−2^1+2^0", "41.2500000000000000000")
 
-  @Test fun expression12() = assertExpr("2×(3+4)×(5−2)÷6", "7.0000000000000000000")
+  @Test fun expression12() = assertExpr("2×(3+4)×(5−2)÷6", "7.0000000000")
 
-  @Test fun expression13() = assertExpr("√64÷5", "1.6")
+  @Test fun expression13() = assertExpr("√64÷5", "1.6000000000")
 }

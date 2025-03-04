@@ -78,6 +78,7 @@ import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.model.converter.UnitGroup
+import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.PortraitLandscape
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
@@ -132,41 +133,49 @@ internal fun ConverterDefault(
           unitFromGroup = uiState.unitFrom.group,
         )
 
-        if (uiState.unitFrom.id == UnitID.foot) {
-          FootInchInputTextFields(
-            textFieldModifier = textFieldModifier,
-            input1 = uiState.input1,
-            formatterSymbols = uiState.formatterSymbols,
-            onFocusedOnInput1Changed = { focusedOnInput1 = it },
-            input2 = uiState.input2,
-          )
-        } else {
-          ExpressionTextField(
-            modifier = textFieldModifier,
-            state = uiState.input1,
-            minRatio = 0.7f,
-            formatterSymbols = uiState.formatterSymbols,
-            placeholder = Token.Digit.DIGIT_0,
-          )
-          CalculationResultTextField(
-            modifier = Modifier.weight(1f),
-            input1 = uiState.input1.text,
+        when (uiState.unitFrom.id) {
+          UnitID.foot ->
+            DoubleUnitInput(
+              modifier = textFieldModifier,
+              input1 = uiState.input1,
+              input2 = uiState.input2,
+              input1ShortName = stringResource(R.string.unit_foot_short),
+              input2ShortName = stringResource(R.string.unit_inch_short),
+              onFocusedOnInput1Changed = { focusedOnInput1 = it },
+              formatterSymbols = uiState.formatterSymbols,
+            )
+          UnitID.pound ->
+            DoubleUnitInput(
+              modifier = textFieldModifier,
+              input1 = uiState.input1,
+              input2 = uiState.input2,
+              input1ShortName = stringResource(R.string.unit_pound_short),
+              input2ShortName = stringResource(R.string.unit_ounce_short),
+              onFocusedOnInput1Changed = { focusedOnInput1 = it },
+              formatterSymbols = uiState.formatterSymbols,
+            )
+          else ->
+            SingleUnitInput(
+              modifier = textFieldModifier,
+              input = uiState.input1,
+              shortName = stringResource(uiState.unitFrom.shortName),
+              result = uiState.result,
+              scale = uiState.scale,
+              outputFormat = uiState.outputFormat,
+              formatterSymbols = uiState.formatterSymbols,
+            )
+        }
+
+        Column(textFieldModifier) {
+          ConverterResultTextField(
+            modifier = Modifier.fillMaxWidth().weight(1f),
             result = uiState.result,
             scale = uiState.scale,
             outputFormat = uiState.outputFormat,
             formatterSymbols = uiState.formatterSymbols,
           )
-          AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
+          AnimatedUnitShortName(stringResource(uiState.unitTo.shortName))
         }
-
-        ConverterResultTextField(
-          modifier = textFieldModifier,
-          result = uiState.result,
-          scale = uiState.scale,
-          outputFormat = uiState.outputFormat,
-          formatterSymbols = uiState.formatterSymbols,
-        )
-        AnimatedUnitShortName(stringResource(uiState.unitTo.shortName))
 
         Spacer(modifier = Modifier.height(boxWithConstraintsScope.maxHeight * SPACER_HEIGHT_FACTOR))
 
@@ -317,14 +326,46 @@ private fun CalculationResultTextField(
 }
 
 @Composable
-private fun FootInchInputTextFields(
-  textFieldModifier: Modifier,
-  input1: TextFieldState,
+private fun SingleUnitInput(
+  modifier: Modifier,
+  input: TextFieldState,
+  shortName: String,
+  result: ConverterResult,
+  scale: Int,
+  outputFormat: Int,
   formatterSymbols: FormatterSymbols,
-  onFocusedOnInput1Changed: (Boolean) -> Unit,
-  input2: TextFieldState,
 ) {
-  Row(modifier = textFieldModifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+  Column(modifier = modifier) {
+    ExpressionTextField(
+      modifier = Modifier.fillMaxWidth().weight(2f),
+      state = input,
+      minRatio = 0.7f,
+      formatterSymbols = formatterSymbols,
+      placeholder = Token.Digit.DIGIT_0,
+    )
+    CalculationResultTextField(
+      modifier = Modifier.fillMaxWidth().weight(1f),
+      input1 = input.text,
+      result = result,
+      scale = scale,
+      outputFormat = outputFormat,
+      formatterSymbols = formatterSymbols,
+    )
+    AnimatedUnitShortName(shortName)
+  }
+}
+
+@Composable
+private fun DoubleUnitInput(
+  modifier: Modifier,
+  input1: TextFieldState,
+  input2: TextFieldState,
+  input1ShortName: String,
+  input2ShortName: String,
+  onFocusedOnInput1Changed: (Boolean) -> Unit,
+  formatterSymbols: FormatterSymbols,
+) {
+  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
     Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
       ExpressionTextField(
         modifier = Modifier.fillMaxWidth().weight(1f),
@@ -333,7 +374,7 @@ private fun FootInchInputTextFields(
         formatterSymbols = formatterSymbols,
         placeholder = Token.Digit.DIGIT_0,
       )
-      AnimatedUnitShortName(stringResource(R.string.unit_foot_short))
+      AnimatedUnitShortName(input1ShortName)
     }
 
     VerticalDivider()
@@ -349,7 +390,7 @@ private fun FootInchInputTextFields(
         formatterSymbols = formatterSymbols,
         placeholder = Token.Digit.DIGIT_0,
       )
-      AnimatedUnitShortName(stringResource(R.string.unit_inch_short))
+      AnimatedUnitShortName(input2ShortName)
     }
   }
 }
@@ -429,6 +470,14 @@ private fun ConverterResultTextField(
       SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
     }
     is ConverterResult.FootInch -> {
+      val mContext = LocalContext.current
+      val state =
+        remember(result, scale, outputFormat, formatterSymbols) {
+          TextFieldState(result.format(mContext, scale, outputFormat, formatterSymbols))
+        }
+      SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
+    }
+    is ConverterResult.PoundOunce -> {
       val mContext = LocalContext.current
       val state =
         remember(result, scale, outputFormat, formatterSymbols) {
@@ -527,6 +576,47 @@ private fun PreviewCurrencyUpdateStatusBar() {
     modifier = Modifier,
     currencyRateUpdateState = CurrencyRateUpdateState.Ready(LocalDate.now()),
     unitFromGroup = UnitGroup.CURRENCY,
+  )
+}
+
+@Composable
+@Preview
+private fun PreviewConverterDefault() {
+  ConverterDefault(
+    modifier = Modifier.background(MaterialTheme.colorScheme.background),
+    convert = {},
+    uiState =
+      ConverterUIState.Default(
+        input1 = TextFieldState("123"),
+        input2 = TextFieldState("456"),
+        scale = 3,
+        middleZero = false,
+        unitFrom =
+          NormalUnit(
+            UnitID.meter,
+            BigDecimal("1000000000000000000"),
+            UnitGroup.LENGTH,
+            R.string.unit_meter,
+            R.string.unit_meter_short,
+          ),
+        unitTo =
+          NormalUnit(
+            UnitID.meter,
+            BigDecimal("1000000000000000000"),
+            UnitGroup.LENGTH,
+            R.string.unit_meter,
+            R.string.unit_meter_short,
+          ),
+        acButton = true,
+        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+        currencyRateUpdateState = CurrencyRateUpdateState.Nothing,
+        outputFormat = OutputFormat.PLAIN,
+        result = ConverterResult.Default(BigDecimal.ZERO, BigDecimal.ZERO),
+        formatTime = true,
+      ),
+    navigateToRightScreen = { _, _, _, _, _ -> },
+    navigateToLeftScreen = { _, _ -> },
+    swapUnits = { _, _ -> },
   )
 }
 
