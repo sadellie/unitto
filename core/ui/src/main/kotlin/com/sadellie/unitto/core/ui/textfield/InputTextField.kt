@@ -39,6 +39,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -51,7 +52,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.InterceptPlatformTextInput
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.text.AnnotatedString
@@ -88,7 +89,7 @@ fun ExpressionTextField(
       )
     }
 
-  CompositionLocalProvider(LocalClipboardManager provides clipboardManager) {
+  CompositionLocalProvider(LocalClipboard provides clipboardManager) {
     val displayedText =
       remember(state.text) {
         AnnotatedString(state.text.toString().formatExpression(formatterSymbols))
@@ -205,6 +206,12 @@ private fun AutoSizeTextField(
       val currentTextToolbar = LocalTextToolbar.current
       val style = LocalTextStyle.current
       val focusRequester = remember { FocusRequester() }
+
+      // Request focus so text field can scroll on user input
+      LaunchedEffect(state.text, readOnly, enabled) {
+        if (enabled && readOnly) return@LaunchedEffect
+        focusRequester.requestFocus()
+      }
 
       BasicTextField(
         state = state,

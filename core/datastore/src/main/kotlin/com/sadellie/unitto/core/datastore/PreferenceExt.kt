@@ -95,6 +95,14 @@ internal fun Preferences.getPartialHistoryView(): Boolean {
   return this[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: true
 }
 
+internal fun Preferences.getInitialPartialHistoryView(): Boolean {
+  return this[PrefsKeys.INITIAL_PARTIAL_HISTORY_VIEW] ?: false
+}
+
+internal fun Preferences.getOpenHistoryViewButton(): Boolean {
+  return this[PrefsKeys.OPEN_HISTORY_VIEW_BUTTON] ?: false
+}
+
 internal fun Preferences.getDigitsPrecision(): Int {
   return this[PrefsKeys.DIGITS_PRECISION] ?: DIGITS_PRECISION_DEFAULT
 }

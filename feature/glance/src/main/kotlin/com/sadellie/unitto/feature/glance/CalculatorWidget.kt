@@ -260,6 +260,8 @@ private fun PreviewWidget() {
         outputFormat = OutputFormat.PLAIN,
         additionalButtons = false,
         partialHistoryView = false,
+        initialPartialHistoryView = false,
+        openHistoryViewButton = false,
       ),
     input = "123+456",
     output = "789.012",

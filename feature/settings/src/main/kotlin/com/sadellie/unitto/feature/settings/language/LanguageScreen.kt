@@ -40,6 +40,7 @@ import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Translate
+import com.sadellie.unitto.feature.settings.BuildConfig
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 
 @Composable
@@ -72,7 +73,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
       item("translate") {
         AnnoyingBox(
           modifier = Modifier.padding(16.dp, 8.dp).fillMaxWidth(),
-          onClick = { openLink(mContext, "https://poeditor.com/join/project/T4zjmoq8dx") },
+          onClick = { openLink(mContext, BuildConfig.STORE_LINK) },
           imageVector = Symbols.Translate,
           imageVectorContentDescription = stringResource(R.string.settings_translate_app),
           title = stringResource(R.string.settings_translate_app),

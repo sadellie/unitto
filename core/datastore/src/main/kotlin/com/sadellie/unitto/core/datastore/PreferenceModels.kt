@@ -47,6 +47,8 @@ data class CalculatorPreferences(
   val additionalButtons: Boolean,
   val inverseMode: Boolean,
   val partialHistoryView: Boolean,
+  val initialPartialHistoryView: Boolean,
+  val openHistoryViewButton: Boolean,
   val fractionalOutput: Boolean,
   val precision: Int,
   val outputFormat: Int,

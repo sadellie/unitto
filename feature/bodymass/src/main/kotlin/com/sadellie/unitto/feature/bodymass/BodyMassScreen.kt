@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedButton
@@ -55,6 +54,7 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.openLink
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
@@ -140,8 +140,8 @@ private fun BodyMassInputBox(uiState: UIState.Ready, weightShortLabel: String) {
   Column(
     modifier =
       Modifier.fillMaxWidth()
-        .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(32.dp))
-        .padding(16.dp, 24.dp),
+        .background(MaterialTheme.colorScheme.secondaryContainer, M3Shapes.ExtraLarge)
+        .padding(M3Shapes.large, 24.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp),
   ) {
     Crossfade(targetState = uiState.isMetric, label = "Measurement system change") { isMetric ->

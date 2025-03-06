@@ -22,7 +22,6 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
@@ -30,6 +29,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.net.toUri
 import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.icons.symbols.AccessibilityNew
 import com.sadellie.unitto.core.designsystem.icons.symbols.Calculate
@@ -228,6 +228,6 @@ private fun Context.shortcutInfoCompat(graphRoute: Route, shortcut: Shortcut): S
     .setShortLabel(getString(shortcut.shortcutShortLabel))
     .setLongLabel(getString(shortcut.shortcutLongLabel))
     .setIcon(IconCompat.createWithResource(this, shortcut.shortcutDrawable))
-    .setIntent(Intent(Intent.ACTION_VIEW, Uri.parse(deepLink(graphRoute)), this, this.javaClass))
+    .setIntent(Intent(Intent.ACTION_VIEW, deepLink(graphRoute).toUri(), this, this.javaClass))
     .build()
 }

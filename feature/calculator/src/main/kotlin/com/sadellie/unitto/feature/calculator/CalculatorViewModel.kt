@@ -86,6 +86,8 @@ constructor(
           additionalButtons = prefs.additionalButtons,
           inverseMode = prefs.inverseMode,
           partialHistoryView = prefs.partialHistoryView,
+          initialPartialHistoryView = prefs.initialPartialHistoryView,
+          openHistoryViewButton = prefs.openHistoryViewButton,
         )
       }
       .stateIn(viewModelScope, CalculatorUIState.Loading)
@@ -148,6 +150,9 @@ constructor(
 
   fun updateInverseMode(newValue: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateInverseMode(newValue) }
+
+  fun updateInitialPartialHistoryView(newValue: Boolean) =
+    viewModelScope.launch { userPrefsRepository.updateInitialPartialHistoryView(newValue) }
 
   fun clearHistory() = viewModelScope.launch { calculatorHistoryRepository.clear() }
 

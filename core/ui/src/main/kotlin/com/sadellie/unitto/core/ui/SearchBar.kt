@@ -23,9 +23,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +30,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
@@ -42,11 +38,11 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -61,7 +57,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -81,7 +76,8 @@ fun SearchBar(
   focusManager: FocusManager = LocalFocusManager.current,
   onSearch: () -> Unit = { focusManager.clearFocus() },
   focusRequester: FocusRequester = remember { FocusRequester() },
-  trailingIcon: @Composable () -> Unit = { SearchButton { focusManager.clearFocus() } },
+  leadingIcon: @Composable () -> Unit = { NavigateButton(navigateUp) },
+  trailingIcon: @Composable () -> Unit = { SearchButton(focusManager::clearFocus) },
   scrollBehavior: TopAppBarScrollBehavior,
 ) {
   val notEmpty = remember(state.text) { state.text.isNotEmpty() }
@@ -117,12 +113,11 @@ fun SearchBar(
           .clip(CircleShape)
           .background(MaterialTheme.colorScheme.surfaceContainerHighest)
           .fillMaxWidth()
-          .padding(horizontal = 16.dp),
+          .padding(horizontal = 4.dp),
       verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       ProvideColor(MaterialTheme.colorScheme.onSurface) {
-        NavigateButton { if (notEmpty) clear() else navigateUp() }
+        if (notEmpty) NavigateButton(::clear) else leadingIcon()
 
         SearchTextField(
           modifier = Modifier.focusRequester(focusRequester).fillMaxWidth().weight(1f),
@@ -171,7 +166,7 @@ private fun SearchTextField(
 
 @Composable
 private fun SearchButton(onClick: () -> Unit) {
-  SearchBarIconButton(onClick) {
+  IconButton(onClick) {
     Icon(
       imageVector = Symbols.Search,
       contentDescription = stringResource(R.string.common_search_button_description),
@@ -181,7 +176,7 @@ private fun SearchButton(onClick: () -> Unit) {
 
 @Composable
 private fun NavigateButton(onClick: () -> Unit) {
-  SearchBarIconButton(onClick) {
+  IconButton(onClick) {
     Icon(
       imageVector = Symbols.ArrowBack,
       contentDescription = stringResource(R.string.common_navigate_up_description),
@@ -192,31 +187,12 @@ private fun NavigateButton(onClick: () -> Unit) {
 @Composable
 private fun ClearButton(visible: Boolean, onClick: () -> Unit) {
   AnimatedVisibility(visible = visible, enter = fadeIn(), exit = fadeOut()) {
-    SearchBarIconButton(onClick) {
+    IconButton(onClick) {
       Icon(
         imageVector = Symbols.Close,
         contentDescription = stringResource(R.string.common_clear_input_description),
       )
     }
-  }
-}
-
-/** Icon button to be placed in [SearchBar]. */
-@Composable
-fun SearchBarIconButton(onClick: () -> Unit, iconContent: @Composable () -> Unit) {
-  Box(
-    modifier =
-      Modifier.size(24.dp)
-        .clickable(
-          onClick = onClick,
-          enabled = true,
-          role = Role.Button,
-          interactionSource = remember { MutableInteractionSource() },
-          indication = ripple(bounded = false, radius = 20.dp),
-        ),
-    contentAlignment = Alignment.Center,
-  ) {
-    iconContent()
   }
 }
 

@@ -68,6 +68,8 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
         formatterSymbols = preferences.getFormatterSymbols(),
         middleZero = preferences.getMiddleZero(),
         partialHistoryView = preferences.getPartialHistoryView(),
+        initialPartialHistoryView = preferences.getInitialPartialHistoryView(),
+        openHistoryViewButton = preferences.getOpenHistoryViewButton(),
         precision = preferences.getDigitsPrecision(),
         outputFormat = preferences.getOutputFormat(),
         acButton = preferences.getAcButton(),
@@ -245,6 +247,14 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
 
   override suspend fun updatePartialHistoryView(enabled: Boolean) {
     dataStore.edit { preferences -> preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] = enabled }
+  }
+
+  override suspend fun updateInitialPartialHistoryView(enabled: Boolean) {
+    dataStore.edit { preferences -> preferences[PrefsKeys.INITIAL_PARTIAL_HISTORY_VIEW] = enabled }
+  }
+
+  override suspend fun updateOpenHistoryViewButton(enabled: Boolean) {
+    dataStore.edit { preferences -> preferences[PrefsKeys.OPEN_HISTORY_VIEW_BUTTON] = enabled }
   }
 
   override suspend fun updateFractionalOutput(enabled: Boolean) {

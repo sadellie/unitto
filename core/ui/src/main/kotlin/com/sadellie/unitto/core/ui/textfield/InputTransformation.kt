@@ -187,23 +187,28 @@ private fun TextFieldBuffer.transformInputWithReplacements(
   replacementMap: Map<String, String>,
 ) {
   if (length == 0) return
-  var cursor = 0
 
-  while (cursor < length) {
-    val charsLeft = length - cursor
+  val isTextChanged = this.toString() != originalText.toString()
+  if (isTextChanged) {
+    // process tokens
+    var cursor = 0
 
-    // try to match with replacement map
-    var matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
-    if (matched == null) {
-      // try to find legal token ahead
-      matched = matchLegalToken(cursor, charsLeft, legalTokens)
-    }
+    while (cursor < length) {
+      val charsLeft = length - cursor
 
-    if (matched == null) {
-      // illegal token
-      delete(cursor, cursor + 1)
-    } else {
-      cursor += matched.length
+      // try to match with replacement map
+      var matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
+      if (matched == null) {
+        // try to find legal token ahead
+        matched = matchLegalToken(cursor, charsLeft, legalTokens)
+      }
+
+      if (matched == null) {
+        // illegal token
+        delete(cursor, cursor + 1)
+      } else {
+        cursor += matched.length
+      }
     }
   }
 

@@ -143,7 +143,6 @@
     <string name="settings_period">Punt</string>
     <string name="settings_precision">Nauwkeurigheid</string>
     <string name="settings_precision_max">%1$s (Maximum)</string>
-    <string name="settings_precision_support">Aantal decimalen</string>
     <string name="settings_privacy_policy">Privacybeleid</string>
     <string name="settings_rate_this_app">Beoordeel deze app</string>
     <string name="settings_reorder_unit_group_description">Herschik eenheidsgroep</string>
@@ -163,7 +162,6 @@
     <string name="settings_third_party_licenses">Licenties van derden</string>
     <string name="settings_title">Instellingen</string>
     <string name="settings_translate_app">Vertaal deze app</string>
-    <string name="settings_translate_app_support">Word lid van het POEditor-project om te helpen</string>
     <string name="settings_unit_groups_support">Schakel eenheden uit en herschik ze</string>
     <string name="settings_unit_groups_title">Eenheidsgroepen</string>
     <string name="settings_units_sorting">Sorteer eenhedenlijst</string>

@@ -38,6 +38,8 @@ internal sealed class CalculatorUIState {
     val additionalButtons: Boolean,
     val inverseMode: Boolean,
     val partialHistoryView: Boolean,
+    val initialPartialHistoryView: Boolean,
+    val openHistoryViewButton: Boolean,
   ) : CalculatorUIState()
 }
 

@@ -35,6 +35,9 @@ constructor(private val userPrefsRepository: UserPreferencesRepository) : ViewMo
   fun updatePartialHistoryView(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updatePartialHistoryView(enabled) }
 
+  fun updateOpenHistoryViewButton(enabled: Boolean) =
+    viewModelScope.launch { userPrefsRepository.updateOpenHistoryViewButton(enabled) }
+
   fun updateFractionalOutput(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateFractionalOutput(enabled) }
 }

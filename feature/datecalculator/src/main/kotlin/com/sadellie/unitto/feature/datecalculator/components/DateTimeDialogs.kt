@@ -63,7 +63,7 @@ internal fun DateTimeDialogs(
 
     dateState -> {
       DatePickerDialog(
-        localDateTime = date,
+        zonedDateTime = date,
         onDismiss = { updateDialogState(DialogState.NONE) },
         onConfirm = {
           updateDate(it)

@@ -83,6 +83,10 @@ interface UserPreferencesRepository {
 
   suspend fun updatePartialHistoryView(enabled: Boolean)
 
+  suspend fun updateInitialPartialHistoryView(enabled: Boolean)
+
+  suspend fun updateOpenHistoryViewButton(enabled: Boolean)
+
   suspend fun updateFractionalOutput(enabled: Boolean)
 
   suspend fun updateAcButton(enabled: Boolean)

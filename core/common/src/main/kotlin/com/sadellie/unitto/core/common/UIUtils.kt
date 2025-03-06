@@ -20,15 +20,15 @@ package com.sadellie.unitto.core.common
 
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
 
 /** Open given link in browser */
 fun openLink(mContext: Context, url: String) =
   try {
-    CustomTabsIntent.Builder().build().launchUrl(mContext, Uri.parse(url))
+    CustomTabsIntent.Builder().build().launchUrl(mContext, url.toUri())
   } catch (e: ActivityNotFoundException) {
     Log.d("UIUtils", "Failed to open link", e)
     showToast(mContext, mContext.getString(R.string.common_error))

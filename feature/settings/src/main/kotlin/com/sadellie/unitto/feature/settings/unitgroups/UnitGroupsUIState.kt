@@ -23,6 +23,16 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 internal sealed class UnitGroupsUIState {
   data object Loading : UnitGroupsUIState()
 
-  data class Ready(val shownUnitGroups: List<UnitGroup>, val hiddenUnitGroups: List<UnitGroup>) :
-    UnitGroupsUIState()
+  data class Ready(
+    val shownUnitGroups: List<UnitGroup>,
+    val hiddenUnitGroups: List<UnitGroup>,
+    val isAutoSortEnabled: Boolean,
+    val autoSortDialogState: AutoSortDialogState,
+  ) : UnitGroupsUIState()
+}
+
+internal enum class AutoSortDialogState {
+  NONE,
+  SHOW,
+  IN_PROGRESS,
 }

@@ -344,7 +344,7 @@ private val UnittoModalDrawerMaxWidth = 360.dp
 private fun PreviewUnittoModalNavigationDrawer() {
   val corScope = rememberCoroutineScope()
   val drawerState = rememberUnittoDrawerState(UnittoDrawerValue.Closed)
-  val clicked = remember { mutableIntStateOf(0) }
+  var clicked by remember { mutableIntStateOf(0) }
 
   NavigationDrawer(
     modifier = Modifier,
@@ -356,9 +356,9 @@ private fun PreviewUnittoModalNavigationDrawer() {
     onItemClick = {},
     content = {
       Column {
-        Text(text = "Clicked: ${clicked.intValue}")
+        Text(text = "Clicked: $clicked")
         Button(onClick = { corScope.launch { drawerState.open() } }) { Text(text = "Open drawer") }
-        Button(onClick = { clicked.value += 1 }) { Text(text = "Click") }
+        Button(onClick = { clicked += 1 }) { Text(text = "Click") }
       }
     },
   )

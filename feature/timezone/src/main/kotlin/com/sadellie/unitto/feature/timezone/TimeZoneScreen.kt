@@ -27,7 +27,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.animateInt
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -72,6 +71,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -198,7 +198,10 @@ private fun TimeZoneScreen(
               if (it) MaterialTheme.colorScheme.surfaceContainerHighest
               else MaterialTheme.colorScheme.surfaceContainer
             }
-          val cornerRadius by transition.animateInt(label = "cornerRadius") { if (it) 25 else 15 }
+          val cornerRadius by
+            transition.animateDp(label = "cornerRadius") {
+              if (it) M3Shapes.extraLarge else M3Shapes.medium
+            }
 
           FavoriteTimeZoneItem(
             modifier =

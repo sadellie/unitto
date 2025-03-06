@@ -143,7 +143,6 @@
     <string name="settings_period">Punto</string>
     <string name="settings_precision">Precisión</string>
     <string name="settings_precision_max">%1$s (Max)</string>
-    <string name="settings_precision_support">Número de espacio decimales</string>
     <string name="settings_privacy_policy">Política de privacidad</string>
     <string name="settings_rate_this_app">Califica esta app</string>
     <string name="settings_reorder_unit_group_description">Reordenar grupo de unidades</string>
@@ -163,7 +162,6 @@
     <string name="settings_third_party_licenses">Licencias de terceros</string>
     <string name="settings_title">Configuración</string>
     <string name="settings_translate_app">Traducir esta app</string>
-    <string name="settings_translate_app_support">Únete a POEditor para ayudar al proyecto</string>
     <string name="settings_unit_groups_support">Deshabilitar y reordenar unidades</string>
     <string name="settings_unit_groups_title">Grupos de Unidades</string>
     <string name="settings_units_sorting">Units list sorting</string>

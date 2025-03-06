@@ -19,39 +19,43 @@
 package com.sadellie.unitto.core.ui.textfield
 
 import android.content.ClipData
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.text.AnnotatedString
+import android.os.Build
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.Clipboard
+import androidx.compose.ui.platform.NativeClipboard
+import androidx.compose.ui.platform.toClipEntry
 import com.sadellie.unitto.core.common.FormatterSymbols
 
 /**
  * Removes grouping symbols when copying expression to clipboard.
  *
  * @property formatterSymbols Current [FormatterSymbols].
- * @property clipboardManager [android.content.ClipboardManager] provided by system.
+ * @property nativeClipboard [NativeClipboard] provided by system.
  */
 internal class ExpressionClipboardManager(
-    private val formatterSymbols: FormatterSymbols,
-    private val clipboardManager: android.content.ClipboardManager,
-) : ClipboardManager {
-  override fun setText(annotatedString: AnnotatedString) {
-    clipboardManager.setPrimaryClip(
-      ClipData.newPlainText(
-        PLAIN_TEXT_LABEL,
-        annotatedString.text.replace(formatterSymbols.grouping, ""),
-      )
-    )
-  }
+  private val formatterSymbols: FormatterSymbols,
+  override val nativeClipboard: NativeClipboard,
+) : Clipboard {
+  override suspend fun getClipEntry(): ClipEntry? = nativeClipboard.primaryClip?.toClipEntry()
 
-  override fun getText(): AnnotatedString? {
-    val primaryClip = clipboardManager.primaryClip ?: return null
-    if (primaryClip.itemCount <= 0) return null
-    val clipText = primaryClip.getItemAt(0)?.text ?: return null
-    return clipText.toString().toAnnotatedString()
-  }
+  override suspend fun setClipEntry(clipEntry: ClipEntry?) {
+    if (clipEntry == null) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        nativeClipboard.clearPrimaryClip()
+      } else {
+        nativeClipboard.setPrimaryClip(ClipData.newPlainText("", ""))
+      }
+      return
+    }
+    if (clipEntry.clipData.itemCount < 1) return
 
-  override fun hasText() = clipboardManager.primaryClipDescription?.hasMimeType("text/*") ?: false
+    // Always only 1 item
+    val firstClipDataItem = clipEntry.clipData.getItemAt(0)
+    val firstClipDataItemText = firstClipDataItem.text.toString()
+    val clearedClipDataItem = firstClipDataItemText.replace(formatterSymbols.grouping, "")
+
+    nativeClipboard.setPrimaryClip(ClipData.newPlainText(PLAIN_TEXT_LABEL, clearedClipDataItem))
+  }
 }
 
-internal const val PLAIN_TEXT_LABEL = "Expression"
-
-private fun CharSequence.toAnnotatedString(): AnnotatedString = AnnotatedString(this.toString())
+private const val PLAIN_TEXT_LABEL = "Expression"

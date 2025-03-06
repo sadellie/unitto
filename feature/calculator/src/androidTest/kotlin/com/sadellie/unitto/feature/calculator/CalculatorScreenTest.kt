@@ -55,6 +55,8 @@ class CalculatorScreenTest {
               additionalButtons = false,
               inverseMode = false,
               partialHistoryView = true,
+              initialPartialHistoryView = false,
+              openHistoryViewButton = false,
             ),
           openDrawer = {},
           onAddTokenClick = {},
@@ -67,6 +69,7 @@ class CalculatorScreenTest {
           onInverseModeClick = {},
           onClearHistoryClick = {},
           onDeleteHistoryItemClick = {},
+          updateInitialPartialHistoryView = {},
         )
       }
 
@@ -93,6 +96,8 @@ class CalculatorScreenTest {
               additionalButtons = false,
               inverseMode = false,
               partialHistoryView = true,
+              initialPartialHistoryView = false,
+              openHistoryViewButton = false,
             ),
           openDrawer = {},
           onAddTokenClick = {},
@@ -105,6 +110,7 @@ class CalculatorScreenTest {
           onInverseModeClick = {},
           onClearHistoryClick = {},
           onDeleteHistoryItemClick = {},
+          updateInitialPartialHistoryView = {},
         )
       }
 

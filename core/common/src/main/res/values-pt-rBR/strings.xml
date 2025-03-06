@@ -99,7 +99,6 @@
     <string name="settings_period">Periodo</string>
     <string name="settings_precision">Precisão</string>
     <string name="settings_precision_max">%1$s (Máximo)</string>
-    <string name="settings_precision_support">Número de casas decimais</string>
     <string name="settings_privacy_policy">Política de Privacidade</string>
     <string name="settings_rate_this_app">Avalie o aplicativo</string>
     <string name="settings_reorder_unit_group_description">Reordenar grupo de unidades</string>
@@ -118,7 +117,6 @@
     <string name="settings_third_party_licenses">Licenças de terceiros</string>
     <string name="settings_title">Configurações</string>
     <string name="settings_translate_app">Traduzir este aplicativo</string>
-    <string name="settings_translate_app_support">Junte-se ao projeto POEditor para ajudar</string>
     <string name="settings_unit_groups_support">Desativar e reorganizar unidades</string>
     <string name="settings_unit_groups_title">Grupos de unidades</string>
     <string name="settings_units_sorting">Ordem da lista de unidades</string>

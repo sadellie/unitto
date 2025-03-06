@@ -30,22 +30,28 @@ fun compareTextStates(expected: String, input: String, action: (TextFieldState) 
   Assert.assertEquals(expectedState.selection, actualState.selection)
 }
 
-// Use [] for selection
-private fun textState(text: String = ""): TextFieldState {
+/** Use [] for selection */
+internal fun textState(text: String): TextFieldState =
+  TextFieldState(
+    initialText = textStateInitialText(text),
+    initialSelection = textStateInitialSelection(text),
+  )
+
+/** Use [] for selection */
+internal fun textStateInitialText(text: String): String =
+  text
+    .replace("[", "")
+    .replace("]", "")
+    .replace("-", Token.Operator.MINUS)
+    .replace("/", Token.Operator.DIVIDE)
+    .replace("*", Token.Operator.MULTIPLY)
+
+/** Use [] for selection */
+internal fun textStateInitialSelection(text: String): TextRange {
   val selectionStart = text.indexOf("[")
   val selectionEnd = text.indexOf("]") - 1
-
   if (selectionStart < 0) throw Exception("forgot selectionStart")
   if (selectionEnd < 0) throw Exception("forgot selectionEnd")
 
-  return TextFieldState(
-    initialText =
-      text
-        .replace("[", "")
-        .replace("]", "")
-        .replace("-", Token.Operator.MINUS)
-        .replace("/", Token.Operator.DIVIDE)
-        .replace("*", Token.Operator.MULTIPLY),
-    initialSelection = TextRange(selectionStart, selectionEnd),
-  )
+  return TextRange(selectionStart, selectionEnd)
 }

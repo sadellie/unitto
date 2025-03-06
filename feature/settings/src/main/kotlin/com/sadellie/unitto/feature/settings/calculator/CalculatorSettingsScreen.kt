@@ -33,6 +33,7 @@ import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Fraction
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
+import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Timer
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -53,6 +54,7 @@ internal fun CalculatorSettingsRoute(
         navigateUpAction = navigateUpAction,
         updatePartialHistoryView = viewModel::updatePartialHistoryView,
         updateFractionalOutput = viewModel::updateFractionalOutput,
+        updateOpenHistoryViewButton = viewModel::updateOpenHistoryViewButton,
       )
     }
   }
@@ -63,6 +65,7 @@ private fun CalculatorSettingsScreen(
   prefs: CalculatorPreferences,
   navigateUpAction: () -> Unit,
   updatePartialHistoryView: (Boolean) -> Unit,
+  updateOpenHistoryViewButton: (Boolean) -> Unit,
   updateFractionalOutput: (Boolean) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
@@ -71,11 +74,11 @@ private fun CalculatorSettingsScreen(
   ) { padding ->
     Column(Modifier.padding(padding)) {
       ListItem(
-        headlineText = stringResource(R.string.settings_partial_history_view),
-        icon = Symbols.Timer,
-        supportingText = stringResource(R.string.settings_partial_history_view_support),
-        switchState = prefs.partialHistoryView,
-        onSwitchChange = updatePartialHistoryView,
+        headlineText = stringResource(R.string.settings_history_view_button),
+        icon = Symbols.History,
+        supportingText = stringResource(R.string.settings_history_view_button_support),
+        switchState = prefs.openHistoryViewButton,
+        onSwitchChange = updateOpenHistoryViewButton,
       )
 
       ListItem(
@@ -84,6 +87,14 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(R.string.settings_fractional_output_support),
         switchState = prefs.fractionalOutput,
         onSwitchChange = updateFractionalOutput,
+      )
+
+      ListItem(
+        headlineText = stringResource(R.string.settings_partial_history_view),
+        icon = Symbols.Timer,
+        supportingText = stringResource(R.string.settings_partial_history_view_support),
+        switchState = prefs.partialHistoryView,
+        onSwitchChange = updatePartialHistoryView,
       )
     }
   }
@@ -102,6 +113,8 @@ private fun PreviewCalculatorSettingsScreenStandard() {
         additionalButtons = false,
         inverseMode = false,
         partialHistoryView = false,
+        initialPartialHistoryView = false,
+        openHistoryViewButton = false,
         precision = 3,
         outputFormat = OutputFormat.PLAIN,
         fractionalOutput = true,
@@ -109,5 +122,6 @@ private fun PreviewCalculatorSettingsScreenStandard() {
     navigateUpAction = {},
     updatePartialHistoryView = {},
     updateFractionalOutput = {},
+    updateOpenHistoryViewButton = {},
   )
 }

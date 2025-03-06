@@ -18,10 +18,12 @@
 
 package com.sadellie.unitto.core.ui.textfield
 
+import android.content.ClipData
 import android.content.Context
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.platform.toClipEntry
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,12 +40,12 @@ class ExpressionClipboardManagerTest {
     ExpressionClipboardManager(formatterSymbols, systemClipboardManager)
 
   @Test
-  fun setTextGetText_test() {
+  fun setTextGetText_test() = runBlocking {
     // will be formatted to 123.456,789
     val textToCopy = "123456.789".formatExpression(formatterSymbols)
-    clipboardManager.setText(AnnotatedString(textToCopy))
+    clipboardManager.setClipEntry(ClipData.newPlainText("label", textToCopy).toClipEntry())
 
     // when copying grouping symbol should be deleted
-    assertEquals(AnnotatedString("123456,789"), clipboardManager.getText())
+    assertEquals("123456,789", clipboardManager.getClipEntry()?.clipData?.getItemAt(0)?.text)
   }
 }

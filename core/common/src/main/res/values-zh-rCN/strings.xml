@@ -103,7 +103,6 @@
     <string name="settings_note">备注</string>
     <string name="settings_precision">精度</string>
     <string name="settings_precision_max">%1$s (大)</string>
-    <string name="settings_precision_support">小数点后位数</string>
     <string name="settings_privacy_policy">隐私政策</string>
     <string name="settings_rate_this_app">评价此应用</string>
     <string name="settings_reorder_unit_group_description">重排序单位组</string>
@@ -117,7 +116,6 @@
     <string name="settings_third_party_licenses">第三方许可</string>
     <string name="settings_title">设置</string>
     <string name="settings_translate_app">翻译此应用</string>
-    <string name="settings_translate_app_support">加入 POEditor 帮助翻译</string>
     <string name="settings_unit_groups_support">禁用和重新排列单位</string>
     <string name="settings_unit_groups_title">单位组</string>
     <string name="settings_units_sorting">单位列表排序</string>

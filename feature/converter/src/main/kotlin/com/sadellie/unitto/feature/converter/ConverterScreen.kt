@@ -20,7 +20,7 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -105,7 +105,7 @@ private fun UnitConverterTopBar(
   ScaffoldWithTopBar(
     title = {},
     navigationIcon = { DrawerButton(openDrawer) },
-    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
+    colors = topAppBarColors(containerColor = Color.Transparent),
     content = { content(it) },
   )
 }

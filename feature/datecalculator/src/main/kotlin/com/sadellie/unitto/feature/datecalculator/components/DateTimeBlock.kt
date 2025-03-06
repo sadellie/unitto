@@ -35,7 +35,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,12 +43,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.ProvideColor
-import com.sadellie.unitto.core.ui.squashable
 import com.sadellie.unitto.core.designsystem.LocalLocale
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
 import com.sadellie.unitto.core.ui.datetime.formatTimeShort
+import com.sadellie.unitto.core.ui.squashable
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
@@ -74,23 +74,16 @@ internal fun DateTimeBlock(
             onClick = onClick,
             onLongClick = onLongClick,
             interactionSource = remember { MutableInteractionSource() },
-            cornerRadiusRange = 8.dp..32.dp,
+            cornerRadiusRange = M3Shapes.small..M3Shapes.extraLarge,
           )
           .background(containerColor)
           .then(modifier)
-          .padding(16.dp),
+          .padding(M3Shapes.medium),
       horizontalAlignment = Alignment.Start,
     ) {
       Text(text = title, style = MaterialTheme.typography.labelMedium, maxLines = 1)
 
-      Column(
-        modifier =
-          Modifier.clickable(
-            indication = ripple(),
-            interactionSource = remember { MutableInteractionSource() },
-            onClick = onTimeClick,
-          )
-      ) {
+      Column(modifier = Modifier.clickable(onClick = onTimeClick)) {
         AnimatedContent(
           targetState = dateTime,
           transitionSpec = {
@@ -136,14 +129,9 @@ internal fun DateTimeBlock(
         label = "Animated date",
       ) { date ->
         Text(
-          modifier =
-            Modifier.clickable(
-              indication = ripple(),
-              interactionSource = remember { MutableInteractionSource() },
-              onClick = onDateClick,
-            ),
+          modifier = Modifier.clickable(onClick = onDateClick),
           text = date.formatDateWeekDayMonthYear(locale),
-          style = MaterialTheme.typography.bodySmall,
+          style = MaterialTheme.typography.bodyMedium,
           maxLines = 1,
         )
       }

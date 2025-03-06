@@ -41,6 +41,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +49,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isTraversalGroup
@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.Keyboard
 import com.sadellie.unitto.core.designsystem.icons.symbols.Schedule
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -76,7 +77,6 @@ fun TimePickerDialog(
       initialMinute = minute,
       is24Hour = DateFormat.is24HourFormat(LocalContext.current),
     )
-  val configuration = LocalConfiguration.current
   var showingPicker by rememberSaveable { mutableStateOf(true) }
 
   BasicAlertDialog(
@@ -94,7 +94,9 @@ fun TimePickerDialog(
             color = MaterialTheme.colorScheme.surface,
           ),
     ) {
-      if (configuration.screenHeightDp > EXPANDED_HEIGHT_DP) {
+      val isTallWindow = LocalWindowSize.current.heightSizeClass >= WindowHeightSizeClass.Medium
+
+      if (isTallWindow) {
         // Make this take the entire viewport. This will guarantee that Screen readers
         // focus the toggle first.
         Box(Modifier.fillMaxSize().semantics { isTraversalGroup = true }) {
@@ -132,7 +134,7 @@ fun TimePickerDialog(
           text = stringResource(R.string.common_select_time),
           style = MaterialTheme.typography.labelMedium,
         )
-        if (showingPicker && configuration.screenHeightDp > EXPANDED_HEIGHT_DP) {
+        if (showingPicker && isTallWindow) {
           TimePicker(state = pickerState)
         } else {
           TimeInput(state = pickerState)
@@ -149,5 +151,4 @@ fun TimePickerDialog(
   }
 }
 
-private const val EXPANDED_HEIGHT_DP = 400
 private const val TOGGLE_BUTTON_Z_INDEX = 5f

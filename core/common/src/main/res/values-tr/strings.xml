@@ -94,7 +94,6 @@
     <string name="settings_period">Nokta</string>
     <string name="settings_precision">Hassasiyet</string>
     <string name="settings_precision_max">%1$s (Maks)</string>
-    <string name="settings_precision_support">Ondalık basamak sayısı</string>
     <string name="settings_privacy_policy">Gizlilik Politikası</string>
     <string name="settings_rate_this_app">Bu uygulamayı oyla</string>
     <string name="settings_reorder_unit_group_description">Birim grubunu yeniden sırala</string>
@@ -113,7 +112,6 @@
     <string name="settings_third_party_licenses">Üçüncü taraf lisansları</string>
     <string name="settings_title">Ayarlar</string>
     <string name="settings_translate_app">Bu uygulamayı çevir</string>
-    <string name="settings_translate_app_support">Yardım etmek için POEditor projesine katılın</string>
     <string name="settings_unit_groups_support">Birimleri devre dışı bırakın ve yeniden düzenleyin</string>
     <string name="settings_unit_groups_title">Birim grupları</string>
     <string name="settings_units_sorting">Birim listesi sıralaması</string>

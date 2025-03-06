@@ -19,7 +19,6 @@
 package com.sadellie.unitto.feature.settings.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,9 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -102,13 +99,7 @@ private fun CustomDialogContentListItem(
   onClick: () -> Unit,
 ) {
   Row(
-    modifier =
-      Modifier.fillMaxWidth()
-        .clickable(
-          interactionSource = remember { MutableInteractionSource() },
-          indication = ripple(),
-          onClick = onClick,
-        ),
+    modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
     verticalAlignment = Alignment.CenterVertically,
   ) {
     RadioButton(selected, onClick)

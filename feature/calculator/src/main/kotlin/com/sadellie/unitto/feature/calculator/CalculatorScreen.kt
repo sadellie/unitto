@@ -23,7 +23,12 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -56,6 +61,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
@@ -76,7 +82,9 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.LocalHapticPreference
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
+import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
+import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.vibrate
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
@@ -90,6 +98,7 @@ import com.sadellie.unitto.feature.calculator.components.TextBox
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -115,6 +124,7 @@ internal fun CalculatorRoute(
         onInverseModeClick = viewModel::updateInverseMode,
         onClearHistoryClick = viewModel::clearHistory,
         onDeleteHistoryItemClick = viewModel::deleteHistoryItem,
+        updateInitialPartialHistoryView = viewModel::updateInitialPartialHistoryView,
       )
   }
 }
@@ -133,10 +143,16 @@ internal fun Ready(
   onInverseModeClick: (Boolean) -> Unit,
   onClearHistoryClick: () -> Unit,
   onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
+  updateInitialPartialHistoryView: (Boolean) -> Unit,
 ) {
   val focusManager = LocalFocusManager.current
   var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
-  val dragState = remember { AnchoredDraggableState(initialValue = DragState.CLOSED) }
+  val dragState = remember {
+      val initialValue =
+        if (uiState.partialHistoryView && uiState.initialPartialHistoryView) DragState.PARTIAL
+        else DragState.CLOSED
+      AnchoredDraggableState(initialValue)
+    }
   val isOpen = dragState.currentValue == DragState.OPEN
   val draggableScope = rememberCoroutineScope()
   LaunchedEffect(dragState.offset) { focusManager.clearFocus() }
@@ -148,7 +164,20 @@ internal fun Ready(
     title = {},
     navigationIcon = { DrawerButton(openDrawer) },
     colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
-    actions = { CalculatorHistoryButton({ showClearHistoryDialog = true }, isOpen) },
+    actions = {
+      ClearHistoryButton({ showClearHistoryDialog = true }, isOpen)
+
+      if (uiState.openHistoryViewButton) {
+        OpenHistoryViewButton(
+          onClick = {
+            draggableScope.launch {
+              dragState.animateTo(if (isOpen) DragState.CLOSED else DragState.OPEN)
+            }
+          },
+          isOpen = isOpen,
+        )
+      }
+    },
   ) { paddingValues ->
     LiquidCalculatorView(
       modifier = Modifier.padding(paddingValues),
@@ -169,6 +198,23 @@ internal fun Ready(
         val view = LocalView.current
         val allowVibration = LocalHapticPreference.current
         val vibrationScope = rememberCoroutineScope()
+
+        LaunchedEffect(dragState.currentValue) {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            vibrate(
+              view,
+              vibrationScope,
+              allowVibration,
+              HapticFeedbackConstants.GESTURE_THRESHOLD_ACTIVATE,
+            )
+          }
+        }
+
+        LaunchedEffect(dragState.settledValue) {
+          // save partial history view state
+          delay(REMEMBER_PARTIAL_HISTORY_VIEW_STATE_DELAY_MS)
+          updateInitialPartialHistoryView(dragState.settledValue == DragState.PARTIAL)
+        }
 
         TextBox(
           modifier =
@@ -265,7 +311,7 @@ private fun LiquidCalculatorView(
           if (partialHistoryView) {
             DraggableAnchors {
               DragState.CLOSED at 0f
-              DragState.SMALL at HistoryItemHeight.toPx()
+              DragState.PARTIAL at HistoryItemHeight.toPx()
               DragState.OPEN at (maxHeight - textBoxHeight).toPx()
             }
           } else {
@@ -330,8 +376,13 @@ private fun liquidFlingBehaviour(dragState: AnchoredDraggableState<DragState>) =
   )
 
 @Composable
-private fun CalculatorHistoryButton(onClick: () -> Unit, isOpen: Boolean) {
-  AnimatedVisibility(isOpen, label = "Clear button reveal") {
+private fun ClearHistoryButton(onClick: () -> Unit, isOpen: Boolean) {
+  AnimatedVisibility(
+    visible = isOpen,
+    label = "Clear history button reveal",
+    enter = fadeIn() + expandHorizontally(),
+    exit = fadeOut() + shrinkHorizontally(),
+  ) {
     IconButton(
       onClick = onClick,
       content = { Icon(Symbols.Delete, stringResource(R.string.calculator_clear_history)) },
@@ -340,8 +391,26 @@ private fun CalculatorHistoryButton(onClick: () -> Unit, isOpen: Boolean) {
   }
 }
 
+@Composable
+private fun OpenHistoryViewButton(onClick: () -> Unit, isOpen: Boolean) {
+  IconButton(onClick = onClick) {
+    val rotation =
+      animateFloatAsState(
+        targetValue = if (isOpen) 360f else 0f,
+        animationSpec = defaultIconAnimationSpec(),
+        label = "Open history view",
+      )
+    Icon(
+      imageVector = Symbols.History,
+      contentDescription = stringResource(R.string.settings_history_view_button),
+      modifier = Modifier.rotate(rotation.value),
+    )
+  }
+}
+
 private const val TEXT_BOX_HEIGHT_FACTOR_COMPACT = 0.4f
 private const val TEXT_BOX_HEIGHT_FACTOR_EXPANDED = 0.25f
+private const val REMEMBER_PARTIAL_HISTORY_VIEW_STATE_DELAY_MS = 1_000L
 
 @Preview(widthDp = 432, heightDp = 1008, device = "spec:parent=pixel_5,orientation=portrait")
 @Preview(widthDp = 432, heightDp = 864, device = "spec:parent=pixel_5,orientation=portrait")
@@ -388,6 +457,8 @@ private fun PreviewCalculatorScreen() {
         additionalButtons = false,
         inverseMode = false,
         partialHistoryView = true,
+        initialPartialHistoryView = false,
+        openHistoryViewButton = true,
       ),
     openDrawer = {},
     onAddTokenClick = {},
@@ -400,5 +471,6 @@ private fun PreviewCalculatorScreen() {
     onInverseModeClick = {},
     onClearHistoryClick = {},
     onDeleteHistoryItemClick = {},
+    updateInitialPartialHistoryView = {},
   )
 }

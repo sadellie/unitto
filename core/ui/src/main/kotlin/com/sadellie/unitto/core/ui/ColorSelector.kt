@@ -36,7 +36,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -52,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Check
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import com.sadellie.unitto.core.designsystem.theme.isDark
 
 @Composable
@@ -86,7 +86,7 @@ private fun ColorCheckbox(color: Color, selected: Boolean, onClick: () -> Unit) 
   Box(
     modifier =
       Modifier.size(72.dp)
-        .clip(RoundedCornerShape(16.dp))
+        .clip(M3Shapes.Large)
         .clickable(onClick = onClick)
         .background(MaterialTheme.colorScheme.surfaceContainer),
     contentAlignment = Alignment.Center,
@@ -102,12 +102,8 @@ private fun ColorCheckbox(color: Color, selected: Boolean, onClick: () -> Unit) 
     )
     AnimatedVisibility(
       visible = selected,
-      enter =
-        fadeIn(tween(FADE_DURATION_MS)) +
-          scaleIn(tween(SCALE_DURATION_MS)),
-      exit =
-        fadeOut(tween(FADE_DURATION_MS)) +
-          scaleOut(tween(SCALE_DURATION_MS)),
+      enter = fadeIn(tween(FADE_DURATION_MS)) + scaleIn(tween(SCALE_DURATION_MS)),
+      exit = fadeOut(tween(FADE_DURATION_MS)) + scaleOut(tween(SCALE_DURATION_MS)),
     ) {
       Icon(
         imageVector = Symbols.Check,

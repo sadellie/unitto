@@ -100,7 +100,6 @@
     <string name="settings_period">Period</string>
     <string name="settings_precision">Precision</string>
     <string name="settings_precision_max">%1$s (Max)</string>
-    <string name="settings_precision_support">Number of decimal places</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_rate_this_app">Rate this app</string>
     <string name="settings_reorder_unit_group_description">Reorder unit group</string>
@@ -120,7 +119,6 @@
     <string name="settings_third_party_licenses">Third party licenses</string>
     <string name="settings_title">Settings</string>
     <string name="settings_translate_app">Translate this app</string>
-    <string name="settings_translate_app_support">Join POEditor project to help</string>
     <string name="settings_unit_groups_support">Disable and rearrange units</string>
     <string name="settings_unit_groups_title">Unit groups</string>
     <string name="settings_units_sorting">Units list sorting</string>

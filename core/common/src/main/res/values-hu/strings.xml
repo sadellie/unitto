@@ -63,7 +63,6 @@
     <string name="settings_period">Periódus</string>
     <string name="settings_precision">Pontosság</string>
     <string name="settings_precision_max">%1$s (Max)</string>
-    <string name="settings_precision_support">Tizedesjegyek száma</string>
     <string name="settings_privacy_policy">Adatvédelmi Nyilatkozat</string>
     <string name="settings_rate_this_app">Értékeld az alkalmazást</string>
     <string name="settings_reorder_unit_group_description">Mértékegység-csoportok átrendezése</string>
@@ -73,7 +72,6 @@
     <string name="settings_third_party_licenses">Külső licenszek</string>
     <string name="settings_title">Beállítások</string>
     <string name="settings_translate_app">Fordítsd le ezt az appot</string>
-    <string name="settings_translate_app_support">Csatlakozz a POEditoron a projekthez</string>
     <string name="settings_unit_groups_support">Mértékegységek kikapcsolása és átrendezése</string>
     <string name="settings_unit_groups_title">Egységcsoportok</string>
     <string name="settings_version_name">Verzió neve</string>

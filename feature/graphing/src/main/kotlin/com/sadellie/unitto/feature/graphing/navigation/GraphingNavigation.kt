@@ -36,7 +36,6 @@ import com.sadellie.unitto.feature.graphing.GraphFunction
 import com.sadellie.unitto.feature.graphing.GraphingRoute
 import com.sadellie.unitto.feature.graphing.GraphingViewModel
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 fun NavGraphBuilder.graphingGraph(openDrawer: () -> Unit, navController: NavHostController) {

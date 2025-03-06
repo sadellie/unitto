@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.calculator
+package com.sadellie.unitto.core.designsystem.shapes
 
-internal enum class DragState {
-  CLOSED,
-  PARTIAL,
-  OPEN,
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
+
+object M3Shapes {
+  /** 28.dp */
+  val extraLarge = 28.dp
+  /** 16.dp */
+  val large = 16.dp
+  /** 14.dp */
+  val medium = 14.dp
+  /** 8.dp */
+  val small = 8.dp
+
+  /** 4.dp */
+  val extraSmall = 4.dp
+
+  val ExtraLarge = RoundedCornerShape(extraLarge)
+  val Large = RoundedCornerShape(large)
+  val Medium = RoundedCornerShape(medium)
+  val Small = RoundedCornerShape(small)
 }

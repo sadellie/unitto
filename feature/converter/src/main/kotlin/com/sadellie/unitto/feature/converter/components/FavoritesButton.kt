@@ -24,20 +24,24 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.Favorite
 import com.sadellie.unitto.core.designsystem.icons.symbols.FavoriteFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.ui.SearchBarIconButton
 
 @Composable
 internal fun FavoritesButton(state: Boolean, onClick: () -> Unit) {
-  SearchBarIconButton(onClick = onClick) {
+  IconButton(onClick = onClick) {
     AnimatedContent(
       targetState = state,
-      transitionSpec = { (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false)) },
+      transitionSpec = {
+        (scaleIn(defaultIconAnimationSpec()) togetherWith scaleOut(defaultIconAnimationSpec()))
+          .using(SizeTransform(clip = false))
+      },
       label = "Animated click",
     ) {
       Icon(

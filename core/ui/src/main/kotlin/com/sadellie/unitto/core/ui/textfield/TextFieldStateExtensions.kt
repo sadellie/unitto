@@ -157,4 +157,4 @@ private fun TextFieldState.deleteAheadAndAdd(tokens: String) {
   this.addTokens(tokens)
 }
 
-private const val TEXT_FIELD_STATE_DEBOUNCE_MS = 100L
+private const val TEXT_FIELD_STATE_DEBOUNCE_MS = 50L

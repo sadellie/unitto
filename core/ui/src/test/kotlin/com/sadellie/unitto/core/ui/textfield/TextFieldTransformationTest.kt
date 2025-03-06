@@ -20,8 +20,10 @@ package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
+import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TextFieldTransformationTest {
@@ -126,19 +128,39 @@ class TextFieldTransformationTest {
     inputTransformation: InputTransformation,
     expected: String,
     input: String,
-  ) {
-    compareTextStates(expected, input) { textFieldState ->
-      with(inputTransformation) { textFieldState.edit { this.transformInput() } }
+  ) =
+    with(inputTransformation) {
+      val expectedTextState = textState(expected)
+      // Start with clean state since all states are always originally empty
+      // Transformation will skip processing tokens if it doesn't notice text changes
+      val actualTextState = TextFieldState()
+      actualTextState.edit {
+        append(textStateInitialText(input))
+        selection = textStateInitialSelection(input)
+        this.transformInput()
+      }
+
+      assertEquals(expectedTextState.text, actualTextState.text)
+      assertEquals(expectedTextState.selection, actualTextState.selection)
     }
-  }
 
   private fun assertOutputTransformation(
     outputTransformation: OutputTransformation,
     expected: String,
     input: String,
-  ) {
-    compareTextStates(expected, input) { textFieldState ->
-      with(outputTransformation) { textFieldState.edit { this.transformOutput() } }
+  ) =
+    with(outputTransformation) {
+      val expectedTextState = textState(expected)
+      // Start with clean state since all states are always originally empty
+      // Transformation will skip processing tokens if it doesn't notice text changes
+      val actualTextState = TextFieldState()
+      actualTextState.edit {
+        append(textStateInitialText(input))
+        selection = textStateInitialSelection(input)
+        this.transformOutput()
+      }
+
+      assertEquals(expectedTextState.text, actualTextState.text)
+      assertEquals(expectedTextState.selection, actualTextState.selection)
     }
-  }
 }

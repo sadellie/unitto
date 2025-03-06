@@ -18,35 +18,26 @@
 
 package com.sadellie.unitto.feature.converter.components
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -57,12 +48,9 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
-import com.sadellie.unitto.core.designsystem.icons.symbols.Favorite
-import com.sadellie.unitto.core.designsystem.icons.symbols.FavoriteFill
-import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import com.sadellie.unitto.core.ui.Header
 import com.sadellie.unitto.core.ui.SearchPlaceholder
 import java.math.BigDecimal
 
@@ -92,11 +80,18 @@ internal fun UnitsList(
     } else {
       LazyColumn(modifier = Modifier.fillMaxSize()) {
         searchResult.forEach { (group, units) ->
-          item(group.name) { UnitGroupHeader(Modifier.animateItem(), group) }
+          item(group.name) {
+            Text(
+              modifier = Modifier.animateItem().padding(M3Shapes.medium, M3Shapes.small),
+              text = stringResource(group.res),
+              style = MaterialTheme.typography.titleSmall,
+              color = MaterialTheme.colorScheme.primary,
+            )
+          }
 
           items(units, { it.basicUnit.id }) {
             BasicUnitListItem(
-              modifier = Modifier.animateItem(),
+              modifier = Modifier.animateItem().padding(horizontal = M3Shapes.medium),
               name = stringResource(it.basicUnit.displayName),
               supportLabel = supportLabel(it),
               isFavorite = it.stats.isFavorite,
@@ -109,15 +104,6 @@ internal fun UnitsList(
       }
     }
   }
-}
-
-@Composable
-private fun UnitGroupHeader(modifier: Modifier, unitGroup: UnitGroup) {
-  Header(
-    modifier = modifier,
-    text = stringResource(unitGroup.res),
-    paddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
-  )
 }
 
 @Composable
@@ -137,21 +123,21 @@ private fun BasicUnitListItem(
   Box(
     modifier =
       modifier
+        .clip(M3Shapes.Large)
         .background(MaterialTheme.colorScheme.surface)
-        .clickable(
-          interactionSource = remember { MutableInteractionSource() },
-          indication = ripple(),
-          onClick = onClick,
-        )
-        .padding(horizontal = 12.dp)
+        .clickable(onClick = onClick)
   ) {
     Row(
       modifier =
         Modifier.background(
-            if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-            RoundedCornerShape(24.dp),
+            if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
           )
-          .padding(paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp))
+          .padding(
+            start = M3Shapes.medium,
+            top = M3Shapes.extraSmall,
+            bottom = M3Shapes.extraSmall,
+            end = M3Shapes.extraSmall,
+          )
           .fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -173,23 +159,8 @@ private fun BasicUnitListItem(
           color = itemColor,
         )
       }
-      AnimatedContent(
-        modifier =
-          Modifier.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = ripple(false),
-            onClick = favoriteUnit,
-          ),
-        targetState = isFavorite,
-        transitionSpec = { (scaleIn() togetherWith scaleOut()).using(SizeTransform(clip = false)) },
-        label = "Favorite unit",
-      ) {
-        Icon(
-          imageVector = if (it) Symbols.FavoriteFill else Symbols.Favorite,
-          contentDescription = stringResource(R.string.converter_favorite_button_description),
-          tint = itemColor,
-        )
-      }
+
+      FavoritesButton(state = isFavorite, onClick = favoriteUnit)
     }
   }
 }

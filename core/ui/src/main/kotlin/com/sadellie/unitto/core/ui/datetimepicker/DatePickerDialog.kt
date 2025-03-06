@@ -29,13 +29,13 @@ import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.common.R
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 @Composable
 fun DatePickerDialog(
   modifier: Modifier = Modifier,
-  localDateTime: ZonedDateTime,
+  zonedDateTime: ZonedDateTime,
   confirmLabel: String = stringResource(R.string.common_ok),
   dismissLabel: String = stringResource(R.string.common_cancel),
   onDismiss: () -> Unit = {},
@@ -43,7 +43,8 @@ fun DatePickerDialog(
 ) {
   val pickerState =
     rememberDatePickerState(
-      initialSelectedDateMillis = localDateTime.toEpochSecond() * 1_000,
+      initialSelectedDateMillis =
+        zonedDateTime.withZoneSameLocal(ZoneOffset.UTC).toEpochSecond() * 1_000,
       yearRange = 0..9_999,
     )
 
@@ -54,10 +55,10 @@ fun DatePickerDialog(
       TextButton(
         onClick = {
           val millis = pickerState.selectedDateMillis ?: return@TextButton
-          val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.systemDefault())
+          val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC)
 
           onConfirm(
-            localDateTime
+            zonedDateTime
               .withYear(date.year)
               .withMonth(date.monthValue)
               .withDayOfMonth(date.dayOfMonth)

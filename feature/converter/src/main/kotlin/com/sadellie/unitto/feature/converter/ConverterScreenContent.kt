@@ -21,9 +21,7 @@ package com.sadellie.unitto.feature.converter
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -38,7 +36,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.Icon
@@ -75,8 +72,10 @@ import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.CurrencyRateUpdateState
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.designsystem.LocalLocale
+import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.ColumnWithConstraints
@@ -424,7 +423,7 @@ private fun CurrencyUpdateStatusBar(
     Text(
       modifier =
         modifier
-          .clip(RoundedCornerShape(16.dp))
+          .clip(M3Shapes.Medium)
           .background(MaterialTheme.colorScheme.inverseOnSurface)
           .fillMaxWidth(),
       text = lastUpdate.orEmpty(),
@@ -539,7 +538,7 @@ private fun UnitSelectionButtons(
   val swapButtonRotation: Float by
     animateFloatAsState(
       targetValue = if (swapped) 0f else 180f,
-      animationSpec = tween(easing = FastOutSlowInEasing),
+      animationSpec = defaultIconAnimationSpec(),
       label = "Swap button rotation",
     )
 

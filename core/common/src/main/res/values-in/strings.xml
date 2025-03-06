@@ -92,7 +92,6 @@
     <string name="settings_period">Titik</string>
     <string name="settings_precision">Presisi</string>
     <string name="settings_precision_max">%1$s (Maks)</string>
-    <string name="settings_precision_support">Jumlah bilangan desimal</string>
     <string name="settings_privacy_policy">Kebijakan Privasi</string>
     <string name="settings_rate_this_app">Nilai aplikasi ini</string>
     <string name="settings_reorder_unit_group_description">Urutkan grup unit</string>
@@ -111,7 +110,6 @@
     <string name="settings_third_party_licenses">Lisensi pihak ketiga</string>
     <string name="settings_title">Pengaturan</string>
     <string name="settings_translate_app">Terjemahkan apl ini</string>
-    <string name="settings_translate_app_support">Gabung proyek POEditor untuk membantu</string>
     <string name="settings_unit_groups_support">Nonaktifkan dan urutkan ulang unit</string>
     <string name="settings_unit_groups_title">Grup unit</string>
     <string name="settings_units_sorting">Urutan daftar unit</string>

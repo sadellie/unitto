@@ -121,8 +121,14 @@ fun FormattingScreen(
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { paddingValues ->
     Column(modifier = Modifier.padding(paddingValues)) {
-      PreviewBox(uiState.precision, uiState.outputFormat, uiState.formatterSymbols)
+      PreviewBox(
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        scale = uiState.precision,
+        outputFormat = uiState.outputFormat,
+        formatterSymbols = uiState.formatterSymbols,
+      )
 
+      // Precision
       ListItem(
         leadingContent = {
           Icon(Symbols.Architecture, stringResource(R.string.settings_precision))
@@ -146,6 +152,7 @@ fun FormattingScreen(
         onValueChange = { onPrecisionChange(it.roundToInt()) },
       )
 
+      // Thousands separator
       ListItem(
         leadingContent = {
           Icon(Symbols._123, stringResource(R.string.settings_thousands_separator))
@@ -155,6 +162,7 @@ fun FormattingScreen(
 
       GroupingSymbolSelector(updateFormatterSymbols, uiState.formatterSymbols)
 
+      // Decimal separator
       AnimatedVisibility(
         visible = uiState.formatterSymbols.grouping == Token.SPACE,
         enter = expandVertically() + fadeIn(),
@@ -163,6 +171,7 @@ fun FormattingScreen(
         FractionalSymbolSelector(updateFormatterSymbols, uiState.formatterSymbols)
       }
 
+      // Precision
       ListItem(
         leadingContent = { Icon(Symbols.EMobileData, stringResource(R.string.settings_precision)) },
         headlineContent = { Text(stringResource(R.string.settings_exponential_notation)) },
@@ -195,8 +204,13 @@ fun FormattingScreen(
 }
 
 @Composable
-private fun PreviewBox(scale: Int, outputFormat: Int, formatterSymbols: FormatterSymbols) {
-  PagedIsland(modifier = Modifier.fillMaxWidth().padding(16.dp), pageCount = 2) { currentPage ->
+private fun PreviewBox(
+  modifier: Modifier,
+  scale: Int,
+  outputFormat: Int,
+  formatterSymbols: FormatterSymbols,
+) {
+  PagedIsland(modifier = modifier, pageCount = 2) { currentPage ->
     val preview =
       when (currentPage) {
           0 -> "123456.${"789123456".repeat(ceil(scale.toDouble() / 9.0).toInt())}"

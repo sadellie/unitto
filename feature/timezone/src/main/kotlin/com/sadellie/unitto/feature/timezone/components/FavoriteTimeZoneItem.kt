@@ -41,7 +41,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -70,6 +69,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
 import com.sadellie.unitto.core.designsystem.icons.symbols.Edit
 import com.sadellie.unitto.core.designsystem.icons.symbols.Schedule
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.ProvideStyle
@@ -186,7 +186,7 @@ private fun TimeZoneOption(
   ProvideColor(MaterialTheme.colorScheme.onSurfaceVariant) {
     Row(
       modifier =
-        Modifier.clip(RoundedCornerShape(4.dp))
+        Modifier.clip(M3Shapes.Small)
           .clickable { onClick() }
           .fillMaxWidth()
           .padding(horizontal = 8.dp, vertical = 12.dp),

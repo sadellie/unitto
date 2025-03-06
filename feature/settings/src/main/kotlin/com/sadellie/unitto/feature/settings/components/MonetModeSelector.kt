@@ -35,7 +35,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -53,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Check
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
@@ -104,7 +104,7 @@ private fun MonetModeCheckbox(selected: Boolean, onClick: () -> Unit) {
   Box(
     modifier =
       Modifier.size(72.dp)
-        .clip(RoundedCornerShape(16.dp))
+        .clip(M3Shapes.Large)
         .clickable(onClick = onClick)
         .background(MaterialTheme.colorScheme.surfaceContainer),
     contentAlignment = Alignment.Center,
@@ -136,7 +136,7 @@ private fun MonetModeCheckbox(selected: Boolean, onClick: () -> Unit) {
         visible = selected,
         enter = fadeIn(tween(FADE_DURATION_MS)) + scaleIn(tween(SCALE_DURATION_MS)),
         exit = fadeOut(tween(FADE_DURATION_MS)) + scaleOut(tween(SCALE_DURATION_MS)),
-        modifier = Modifier.align(Alignment.Center)
+        modifier = Modifier.align(Alignment.Center),
       ) {
         Icon(
           imageVector = Symbols.Check,
@@ -156,10 +156,7 @@ private const val SCALE_DURATION_MS = 150
 @Composable
 @Preview
 private fun PreviewMMonetModeCheckbox() {
-  MonetModeCheckbox(
-    selected = true,
-    onClick = {}
-  )
+  MonetModeCheckbox(selected = true, onClick = {})
 }
 
 @Composable

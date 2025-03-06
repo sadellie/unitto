@@ -41,7 +41,7 @@ object PrefsKeys {
 
   // FORMATTER
   val DIGITS_PRECISION = intPreferencesKey("DIGITS_PRECISION_PREF_KEY")
-  val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
+  // val SEPARATOR = intPreferencesKey("SEPARATOR_PREF_KEY")
   val FORMATTER_GROUPING = stringPreferencesKey("FORMATTER_GROUPING_PREF_KEY")
   val FORMATTER_FRACTIONAL = stringPreferencesKey("FORMATTER_FRACTIONAL_PREF_KEY")
   val OUTPUT_FORMAT = intPreferencesKey("OUTPUT_FORMAT_PREF_KEY")
@@ -49,6 +49,8 @@ object PrefsKeys {
   // CALCULATOR
   val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
   val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
+  val OPEN_HISTORY_VIEW_BUTTON = booleanPreferencesKey("OPEN_HISTORY_VIEW_BUTTON_PREF_KEY")
+  val INITIAL_PARTIAL_HISTORY_VIEW = booleanPreferencesKey("INITIAL_PARTIAL_HISTORY_VIEW_PREF_KEY")
   val FRACTIONAL_OUTPUT = booleanPreferencesKey("FRACTIONAL_OUTPUT_PREF_KEY")
   val ADDITIONAL_BUTTONS = booleanPreferencesKey("ADDITIONAL_BUTTONS_PREF_KEY")
   val INVERSE_MODE = booleanPreferencesKey("INVERSE_MODE_PREF_KEY")

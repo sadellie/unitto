@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +41,7 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
+import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import java.math.BigDecimal
 
@@ -79,9 +79,9 @@ internal fun BodyMassResult(
   Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
     Column(
       modifier =
-        Modifier.clip(RoundedCornerShape(32.dp))
+        Modifier.clip(M3Shapes.ExtraLarge)
           .background(classification.color)
-          .padding(16.dp, 32.dp)
+          .padding(M3Shapes.large)
           .fillMaxWidth()
     ) {
       Text(
@@ -98,9 +98,9 @@ internal fun BodyMassResult(
 
     Column(
       modifier =
-        Modifier.clip(RoundedCornerShape(32.dp))
+        Modifier.clip(M3Shapes.ExtraLarge)
           .background(MaterialTheme.colorScheme.secondaryContainer)
-          .padding(16.dp, 32.dp)
+          .padding(M3Shapes.large)
           .fillMaxWidth()
     ) {
       Text(

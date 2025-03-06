@@ -270,8 +270,8 @@ constructor(
     formatTime: Boolean,
     scale: Int,
   ): ConverterResult {
-    val unitFrom = getById(unitFromId) as BasicUnit.Default
-    val unitTo = getById(unitToId) as BasicUnit.Default
+    val unitFrom = getById(unitFromId)
+    val unitTo = getById(unitToId)
 
     return when {
       unitFrom.group == UnitGroup.NUMBER_BASE && unitTo.group == UnitGroup.NUMBER_BASE ->
@@ -283,21 +283,21 @@ constructor(
 
       unitFrom.group == UnitGroup.TIME && unitTo.group == UnitGroup.TIME && formatTime ->
         convertTimeAndFormatToHumanReadable(
-          unitFrom = unitFrom,
+          unitFrom = unitFrom as BasicUnit.Default,
           value = calculateInput(value1, scale),
         )
 
       unitFrom.group == UnitGroup.CURRENCY && unitTo.group == UnitGroup.CURRENCY ->
         convertCurrencies(
-          unitFrom = unitFrom,
-          unitTo = unitTo,
+          unitFrom = unitFrom as BasicUnit.Default,
+          unitTo = unitTo as BasicUnit.Default,
           value = calculateInput(value1, scale),
         )
 
       // foot and inches output and input
       unitTo.id == UnitID.foot && unitFrom.id == UnitID.foot ->
         convertFoot(
-          footUnit = unitTo,
+          footUnit = unitTo as BasicUnit.Default,
           inchUnit = getById(UnitID.inch) as BasicUnit.Default,
           feetInput = calculateFootAndInchesInput(value1, value2, scale),
         )
@@ -305,23 +305,23 @@ constructor(
       // foot and inches output
       unitTo.id == UnitID.foot ->
         convertFoot(
-          footUnit = unitTo,
+          footUnit = unitTo as BasicUnit.Default,
           inchUnit = getById(UnitID.inch) as BasicUnit.Default,
-          feetInput = unitFrom.convert(unitTo, calculateInput(value1, scale)),
+          feetInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1, scale)),
         )
 
       // foot and inches input
       unitFrom.id == UnitID.foot ->
         convertDefault(
-          unitFrom = unitFrom,
-          unitTo = unitTo,
+          unitFrom = unitFrom as BasicUnit.Default,
+          unitTo = unitTo as BasicUnit.Default,
           value = calculateFootAndInchesInput(value1, value2, scale),
         )
 
       // pound and ounces output and input
       unitTo.id == UnitID.pound && unitFrom.id == UnitID.pound ->
         convertPound(
-          poundUnit = unitTo,
+          poundUnit = unitTo as BasicUnit.Default,
           ounceUnit = getById(UnitID.ounce) as BasicUnit.Default,
           poundsInput = calculatePoundAndOuncesInput(value1, value2, scale),
         )
@@ -329,21 +329,26 @@ constructor(
       // pound and ounces output
       unitTo.id == UnitID.pound ->
         convertPound(
-          poundUnit = unitTo,
+          poundUnit = unitTo as BasicUnit.Default,
           ounceUnit = getById(UnitID.ounce) as BasicUnit.Default,
-          poundsInput = unitFrom.convert(unitTo, calculateInput(value1, scale)),
+          poundsInput =
+            (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1, scale)),
         )
 
       // pound and ounces input
       unitFrom.id == UnitID.pound ->
         convertDefault(
-          unitFrom = unitFrom,
-          unitTo = unitTo,
+          unitFrom = unitFrom as BasicUnit.Default,
+          unitTo = unitTo as BasicUnit.Default,
           value = calculatePoundAndOuncesInput(value1, value2, scale),
         )
 
       else ->
-        convertDefault(unitFrom = unitFrom, unitTo = unitTo, value = calculateInput(value1, scale))
+        convertDefault(
+          unitFrom = unitFrom as BasicUnit.Default,
+          unitTo = unitTo as BasicUnit.Default,
+          value = calculateInput(value1, scale),
+        )
     }
   }
 

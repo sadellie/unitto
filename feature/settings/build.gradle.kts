@@ -40,6 +40,7 @@ dependencies {
   implementation(project(":core:ui"))
   implementation(project(":core:navigation"))
   implementation(project(":core:designsystem"))
+  implementation(project(":core:data"))
   implementation(project(":core:datastore"))
   implementation(project(":core:database"))
   implementation(project(":core:backup"))
@@ -61,6 +62,8 @@ dependencies {
 
   implementation(libs.sh.calvin.reorderable.reorderable)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
+  testImplementation(libs.junit.junit)
+  testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
 }
 
 fun com.android.build.api.dsl.VariantDimension.stringConfigField(name: String, url: String) {
