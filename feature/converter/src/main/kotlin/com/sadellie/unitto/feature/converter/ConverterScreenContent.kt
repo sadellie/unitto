@@ -75,7 +75,7 @@ import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.ColumnWithConstraints
@@ -423,7 +423,7 @@ private fun CurrencyUpdateStatusBar(
     Text(
       modifier =
         modifier
-          .clip(M3Shapes.Medium)
+          .clip(Shapes.Medium)
           .background(MaterialTheme.colorScheme.inverseOnSurface)
           .fillMaxWidth(),
       text = lastUpdate.orEmpty(),

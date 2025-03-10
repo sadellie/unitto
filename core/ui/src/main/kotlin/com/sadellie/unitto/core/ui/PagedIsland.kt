@@ -42,7 +42,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import kotlinx.coroutines.launch
 
 /**
@@ -74,7 +75,7 @@ fun PagedIsland(
     Column(
       modifier =
         modifier
-          .clip(M3Shapes.ExtraLarge)
+          .clip(Shapes.ExtraLarge)
           .clickable {
             onClick()
             val targetPage = pagerState.currentPage + 1
@@ -87,7 +88,7 @@ fun PagedIsland(
             }
           }
           .background(backgroundColor)
-          .padding(M3Shapes.large)
+          .padding(Sizes.large)
     ) {
       Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),

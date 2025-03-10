@@ -670,7 +670,7 @@ constructor(
         if (query.isEmpty()) {
           units.sortedByDescending { it.stats.isFavorite }
         } else {
-          units.filterByLev(query, mContext)
+          units.filterAndSortByLev(query, mContext)
         }
       return@withContext units
     }

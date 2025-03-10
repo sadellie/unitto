@@ -58,7 +58,8 @@ import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.icons.symbols.FileSave
 import com.sadellie.unitto.core.designsystem.icons.symbols.RestorePage
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItem
 import com.sadellie.unitto.core.ui.NavigateUpButton
@@ -146,7 +147,7 @@ private fun BackupRestoreControls(
     }
 
   Row(
-    modifier = Modifier.fillMaxWidth().padding(M3Shapes.large).clip(M3Shapes.ExtraLarge),
+    modifier = Modifier.fillMaxWidth().padding(Sizes.large).clip(Shapes.ExtraLarge),
     horizontalArrangement = Arrangement.spacedBy(2.dp),
   ) {
     BackupRestoreButton(

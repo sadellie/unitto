@@ -44,7 +44,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.LocalLocale
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
@@ -74,11 +74,11 @@ internal fun DateTimeBlock(
             onClick = onClick,
             onLongClick = onLongClick,
             interactionSource = remember { MutableInteractionSource() },
-            cornerRadiusRange = M3Shapes.small..M3Shapes.extraLarge,
+            cornerRadiusRange = Sizes.small..Sizes.extraLarge,
           )
           .background(containerColor)
           .then(modifier)
-          .padding(M3Shapes.medium),
+          .padding(Sizes.medium),
       horizontalAlignment = Alignment.Start,
     ) {
       Text(text = title, style = MaterialTheme.typography.labelMedium, maxLines = 1)

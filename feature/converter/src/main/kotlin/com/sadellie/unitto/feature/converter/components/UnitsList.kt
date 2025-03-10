@@ -48,7 +48,8 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.SearchPlaceholder
@@ -82,7 +83,7 @@ internal fun UnitsList(
         searchResult.forEach { (group, units) ->
           item(group.name) {
             Text(
-              modifier = Modifier.animateItem().padding(M3Shapes.medium, M3Shapes.small),
+              modifier = Modifier.animateItem().padding(Sizes.medium, Sizes.small),
               text = stringResource(group.res),
               style = MaterialTheme.typography.titleSmall,
               color = MaterialTheme.colorScheme.primary,
@@ -91,7 +92,7 @@ internal fun UnitsList(
 
           items(units, { it.basicUnit.id }) {
             BasicUnitListItem(
-              modifier = Modifier.animateItem().padding(horizontal = M3Shapes.medium),
+              modifier = Modifier.animateItem().padding(horizontal = Sizes.medium),
               name = stringResource(it.basicUnit.displayName),
               supportLabel = supportLabel(it),
               isFavorite = it.stats.isFavorite,
@@ -123,7 +124,7 @@ private fun BasicUnitListItem(
   Box(
     modifier =
       modifier
-        .clip(M3Shapes.Large)
+        .clip(Shapes.Large)
         .background(MaterialTheme.colorScheme.surface)
         .clickable(onClick = onClick)
   ) {
@@ -133,10 +134,10 @@ private fun BasicUnitListItem(
             if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
           )
           .padding(
-            start = M3Shapes.medium,
-            top = M3Shapes.extraSmall,
-            bottom = M3Shapes.extraSmall,
-            end = M3Shapes.extraSmall,
+            start = Sizes.medium,
+            top = Sizes.extraSmall,
+            bottom = Sizes.extraSmall,
+            end = Sizes.extraSmall,
           )
           .fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,

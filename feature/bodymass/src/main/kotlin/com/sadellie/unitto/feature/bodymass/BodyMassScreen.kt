@@ -54,7 +54,8 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.openLink
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
@@ -140,8 +141,8 @@ private fun BodyMassInputBox(uiState: UIState.Ready, weightShortLabel: String) {
   Column(
     modifier =
       Modifier.fillMaxWidth()
-        .background(MaterialTheme.colorScheme.secondaryContainer, M3Shapes.ExtraLarge)
-        .padding(M3Shapes.large, 24.dp),
+        .background(MaterialTheme.colorScheme.secondaryContainer, Shapes.ExtraLarge)
+        .padding(Sizes.large, 24.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp),
   ) {
     Crossfade(targetState = uiState.isMetric, label = "Measurement system change") { isMetric ->

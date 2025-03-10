@@ -24,7 +24,7 @@ internal val brandColor = Color(0xFF186c31)
 
 internal val colorSchemes: List<Color> by lazy {
   listOf(
-    brandColor, // Brand color
+    brandColor,
     Color(0xFFe8f8f5),
     Color(0xFFd1f2eb),
     Color(0xFFa3e4d7),

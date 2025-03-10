@@ -20,7 +20,6 @@ package com.sadellie.unitto.feature.calculator
 
 import android.os.Build
 import android.view.HapticFeedbackConstants
-import android.view.View
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -36,7 +35,6 @@ import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.animateTo
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -62,7 +60,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
@@ -97,7 +94,6 @@ import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
 import com.sadellie.unitto.feature.calculator.components.TextBox
 import java.text.SimpleDateFormat
 import java.util.Locale
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -148,11 +144,11 @@ internal fun Ready(
   val focusManager = LocalFocusManager.current
   var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
   val dragState = remember {
-      val initialValue =
-        if (uiState.partialHistoryView && uiState.initialPartialHistoryView) DragState.PARTIAL
-        else DragState.CLOSED
-      AnchoredDraggableState(initialValue)
-    }
+    val initialValue =
+      if (uiState.partialHistoryView && uiState.initialPartialHistoryView) DragState.PARTIAL
+      else DragState.CLOSED
+    AnchoredDraggableState(initialValue)
+  }
   val isOpen = dragState.currentValue == DragState.OPEN
   val draggableScope = rememberCoroutineScope()
   LaunchedEffect(dragState.offset) { focusManager.clearFocus() }
@@ -184,7 +180,7 @@ internal fun Ready(
       calculatorHistory = { height ->
         CalculatorHistoryList(
           modifier =
-            Modifier.background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh)
               .fillMaxWidth()
               .height(height),
           calculatorHistoryItems = uiState.history,
@@ -195,33 +191,11 @@ internal fun Ready(
         )
       },
       textBox = { offset, height ->
-        val view = LocalView.current
-        val allowVibration = LocalHapticPreference.current
-        val vibrationScope = rememberCoroutineScope()
-
-        LaunchedEffect(dragState.currentValue) {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            vibrate(
-              view,
-              vibrationScope,
-              allowVibration,
-              HapticFeedbackConstants.GESTURE_THRESHOLD_ACTIVATE,
-            )
-          }
-        }
-
-        LaunchedEffect(dragState.settledValue) {
-          // save partial history view state
-          delay(REMEMBER_PARTIAL_HISTORY_VIEW_STATE_DELAY_MS)
-          updateInitialPartialHistoryView(dragState.settledValue == DragState.PARTIAL)
-        }
-
         TextBox(
           modifier =
             Modifier.offset(offset)
               .height(height)
               .fillMaxWidth()
-              .vibrateOnPress(view, vibrationScope, allowVibration)
               .anchoredDraggable(
                 state = dragState,
                 orientation = Orientation.Vertical,
@@ -260,6 +234,7 @@ internal fun Ready(
         )
       },
       partialHistoryView = uiState.partialHistoryView,
+      updateInitialPartialHistoryView = updateInitialPartialHistoryView,
       dragState = dragState,
     )
   }
@@ -282,17 +257,17 @@ private fun LiquidCalculatorView(
   textBox: @Composable (offset: Density.() -> IntOffset, height: Dp) -> Unit,
   keyboard: @Composable (offset: Density.() -> IntOffset, height: Dp) -> Unit,
   partialHistoryView: Boolean,
+  updateInitialPartialHistoryView: (Boolean) -> Unit,
   dragState: AnchoredDraggableState<DragState>,
 ) =
   BoxWithConstraints(modifier) {
     val density = LocalDensity.current
     val textBoxHeight =
-      if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
+      if (LocalWindowSize.current.heightSizeClass == WindowHeightSizeClass.Compact) {
         maxHeight * TEXT_BOX_HEIGHT_FACTOR_COMPACT
       } else {
         maxHeight * TEXT_BOX_HEIGHT_FACTOR_EXPANDED
       }
-
     var historyListHeight by remember { mutableStateOf(0.dp) }
     val keyboardHeight by
       remember(historyListHeight, textBoxHeight) {
@@ -332,6 +307,29 @@ private fun LiquidCalculatorView(
       }
     }
 
+    val view = LocalView.current
+    val enableHapticFeedback = LocalHapticPreference.current
+    val vibrationScope = rememberCoroutineScope()
+    LaunchedEffect(dragState.targetValue, dragState.settledValue) {
+      if (
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+          dragState.targetValue != dragState.settledValue
+      ) {
+        vibrate(
+          view,
+          vibrationScope,
+          enableHapticFeedback,
+          HapticFeedbackConstants.GESTURE_THRESHOLD_ACTIVATE,
+        )
+      }
+    }
+
+    LaunchedEffect(dragState.settledValue) {
+      // save partial history view state
+      delay(REMEMBER_PARTIAL_HISTORY_VIEW_STATE_DELAY_MS)
+      updateInitialPartialHistoryView(dragState.settledValue == DragState.PARTIAL)
+    }
+
     calculatorHistory(historyListHeight)
     textBox({ IntOffset(0, historyListHeight.roundToPx()) }, textBoxHeight)
     keyboard({ IntOffset(0, (historyListHeight + textBoxHeight).roundToPx()) }, keyboardHeight)
@@ -352,20 +350,6 @@ private fun ClearHistoryDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     onDismissRequest = onDismiss,
   )
 }
-
-private fun Modifier.vibrateOnPress(
-  view: View,
-  vibrationScope: CoroutineScope,
-  enabled: Boolean,
-): Modifier =
-  this.pointerInput(Unit) {
-    detectTapGestures(
-      onPress = {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) return@detectTapGestures
-        vibrate(view, vibrationScope, enabled, HapticFeedbackConstants.DRAG_START)
-      }
-    )
-  }
 
 @Composable
 private fun liquidFlingBehaviour(dragState: AnchoredDraggableState<DragState>) =

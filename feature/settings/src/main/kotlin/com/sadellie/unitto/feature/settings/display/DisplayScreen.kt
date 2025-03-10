@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.datastore.DisplayPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ClearBold
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
 import com.sadellie.unitto.core.designsystem.icons.symbols.Colorize
@@ -80,71 +81,53 @@ internal fun DisplayRoute(
 ) {
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
     null -> EmptyScreen()
-    else -> {
+    else ->
       DisplayScreen(
         navigateUp = navigateUp,
-        currentThemingMode = themmoController.currentThemingMode,
+        prefs = prefs,
+        controller = themmoController,
         onThemeChange = { newValue ->
           themmoController.setThemingMode(newValue)
           viewModel.updateThemingMode(newValue)
         },
-        isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
         onDynamicThemeChange = { newValue ->
-          // Prevent old devices from using other monet modes when dynamic theming is on
-          if (newValue) {
-            themmoController.setMonetMode(MonetMode.TonalSpot)
-            viewModel.updateMonetMode(MonetMode.TonalSpot)
-          }
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             themmoController.enableDynamicTheme(newValue)
             viewModel.updateDynamicTheme(newValue)
           }
         },
-        isAmoledThemeEnabled = themmoController.isAmoledThemeEnabled,
         onAmoledThemeChange = { newValue ->
           themmoController.enableAmoledTheme(newValue)
           viewModel.updateAmoledTheme(newValue)
         },
-        currentCustomColor = themmoController.currentCustomColor,
         onColorChange = { newValue ->
           themmoController.setCustomColor(newValue)
           viewModel.updateCustomColor(newValue)
         },
-        monetMode = themmoController.currentMonetMode,
         onMonetModeChange = { newValue ->
           themmoController.setMonetMode(newValue)
           viewModel.updateMonetMode(newValue)
         },
-        systemFont = prefs.systemFont,
         updateSystemFont = viewModel::updateSystemFont,
-        acButton = prefs.acButton,
         updateAcButton = viewModel::updateAcButton,
-        middleZero = prefs.middleZero,
         updateMiddleZero = viewModel::updateMiddleZero,
         navigateToLanguages = navigateToLanguages,
       )
-    }
   }
 }
 
 @Composable
 private fun DisplayScreen(
   navigateUp: () -> Unit,
-  currentThemingMode: ThemingMode,
+  prefs: DisplayPreferences,
+  controller: ThemmoController,
   onThemeChange: (ThemingMode) -> Unit,
-  isDynamicThemeEnabled: Boolean,
   onDynamicThemeChange: (Boolean) -> Unit,
-  isAmoledThemeEnabled: Boolean,
   onAmoledThemeChange: (Boolean) -> Unit,
-  currentCustomColor: Color,
   onColorChange: (Color) -> Unit,
-  monetMode: MonetMode,
   onMonetModeChange: (MonetMode) -> Unit,
-  systemFont: Boolean,
   updateSystemFont: (Boolean) -> Unit,
-  acButton: Boolean,
   updateAcButton: (Boolean) -> Unit,
-  middleZero: Boolean,
   updateMiddleZero: (Boolean) -> Unit,
   navigateToLanguages: () -> Unit,
 ) {
@@ -161,10 +144,10 @@ private fun DisplayScreen(
         supportingContent = { Text(stringResource(R.string.settings_color_theme_support)) },
       )
 
-      ThemingModeSelector(onThemeChange, currentThemingMode)
+      ThemingModeSelector(onThemeChange, controller.currentThemingMode)
 
       AnimatedVisibility(
-        visible = currentThemingMode != ThemingMode.FORCE_LIGHT,
+        visible = controller.currentThemingMode != ThemingMode.FORCE_LIGHT,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
       ) {
@@ -172,7 +155,7 @@ private fun DisplayScreen(
           icon = Symbols.DarkModeFill,
           headlineText = stringResource(R.string.settings_amoled_dark),
           supportingText = stringResource(R.string.settings_amoled_dark_support),
-          switchState = isAmoledThemeEnabled,
+          switchState = controller.isAmoledThemeEnabled,
           onSwitchChange = onAmoledThemeChange,
         )
       }
@@ -182,12 +165,12 @@ private fun DisplayScreen(
           icon = Symbols.Colorize,
           headlineText = stringResource(R.string.settings_dynamic_colors),
           supportingText = stringResource(R.string.settings_dynamic_colors_support),
-          switchState = isDynamicThemeEnabled,
+          switchState = controller.isDynamicThemeEnabled,
           onSwitchChange = onDynamicThemeChange,
         )
 
         AnimatedVisibility(
-          visible = !isDynamicThemeEnabled,
+          visible = !controller.isDynamicThemeEnabled,
           enter = expandVertically() + fadeIn(),
           exit = shrinkVertically() + fadeOut(),
         ) {
@@ -196,9 +179,10 @@ private fun DisplayScreen(
             supportingContent = {
               ColorSelector(
                 modifier = Modifier.padding(top = 12.dp),
-                // Brand color is Color.Unspecified to override dynamic theming with brand scheme
                 currentColor =
-                  if (currentCustomColor == Color.Unspecified) brandColor else currentCustomColor,
+                  // Disable custom color and use brand color scheme
+                  if (controller.currentCustomColor == Color.Unspecified) brandColor
+                  else controller.currentCustomColor,
                 onColorClick = { onColorChange(if (it == brandColor) Color.Unspecified else it) },
                 colors = colorSchemes,
               )
@@ -208,7 +192,9 @@ private fun DisplayScreen(
         }
 
         AnimatedVisibility(
-          visible = (!isDynamicThemeEnabled) and (currentCustomColor != Color.Unspecified),
+          visible =
+            (!controller.isDynamicThemeEnabled) and
+              (controller.currentCustomColor != Color.Unspecified),
           enter = expandVertically() + fadeIn(),
           exit = shrinkVertically() + fadeOut(),
         ) {
@@ -217,10 +203,10 @@ private fun DisplayScreen(
             supportingContent = {
               MonetModeSelector(
                 modifier = Modifier.padding(top = 12.dp),
-                selected = monetMode,
+                selected = controller.currentMonetMode,
                 onItemClick = onMonetModeChange,
-                customColor = currentCustomColor,
-                themingMode = currentThemingMode,
+                customColor = controller.currentCustomColor,
+                themingMode = controller.currentThemingMode,
               )
             },
             modifier = Modifier.padding(start = 40.dp),
@@ -234,7 +220,7 @@ private fun DisplayScreen(
         icon = Symbols.FontDownload,
         headlineText = stringResource(R.string.settings_system_font),
         supportingText = stringResource(R.string.settings_system_font_support),
-        switchState = systemFont,
+        switchState = prefs.systemFont,
         onSwitchChange = updateSystemFont,
       )
 
@@ -242,7 +228,7 @@ private fun DisplayScreen(
         icon = IconPack.ClearBold,
         headlineText = stringResource(R.string.settings_ac_button),
         supportingText = stringResource(R.string.settings_ac_button_support),
-        switchState = acButton,
+        switchState = prefs.acButton,
         onSwitchChange = updateAcButton,
       )
 
@@ -250,7 +236,7 @@ private fun DisplayScreen(
         icon = Symbols.ExposureZero,
         headlineText = stringResource(R.string.settings_middle_zero),
         supportingText = stringResource(R.string.settings_middle_zero_support),
-        switchState = middleZero,
+        switchState = prefs.middleZero,
         onSwitchChange = updateMiddleZero,
       )
 
@@ -300,21 +286,15 @@ private fun Preview() {
   Themmo { themmoController ->
     DisplayScreen(
       navigateUp = {},
-      currentThemingMode = themmoController.currentThemingMode,
+      controller = themmoController,
+      prefs = DisplayPreferences(systemFont = false, middleZero = true, acButton = true),
       onThemeChange = themmoController::setThemingMode,
-      isDynamicThemeEnabled = themmoController.isDynamicThemeEnabled,
       onDynamicThemeChange = themmoController::enableDynamicTheme,
-      isAmoledThemeEnabled = themmoController.isAmoledThemeEnabled,
       onAmoledThemeChange = themmoController::enableAmoledTheme,
-      currentCustomColor = themmoController.currentCustomColor,
       onColorChange = themmoController::setCustomColor,
-      monetMode = themmoController.currentMonetMode,
       onMonetModeChange = themmoController::setMonetMode,
-      systemFont = false,
       updateSystemFont = {},
-      acButton = false,
       updateAcButton = {},
-      middleZero = false,
       updateMiddleZero = {},
       navigateToLanguages = {},
     )

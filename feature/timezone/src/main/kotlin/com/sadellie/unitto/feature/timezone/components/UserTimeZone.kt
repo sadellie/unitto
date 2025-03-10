@@ -52,7 +52,7 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.datetime.formatDateDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
 import com.sadellie.unitto.core.ui.datetime.formatTimeHours
@@ -78,7 +78,7 @@ internal fun UserTimeZone(
         .squashable(
           onClick = onClick,
           onLongClick = onResetClick,
-          cornerRadiusRange = M3Shapes.small..M3Shapes.extraLarge,
+          cornerRadiusRange = Sizes.small..Sizes.extraLarge,
           interactionSource = remember { MutableInteractionSource() },
         )
         .background(MaterialTheme.colorScheme.tertiaryContainer)

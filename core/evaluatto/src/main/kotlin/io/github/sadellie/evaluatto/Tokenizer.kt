@@ -80,7 +80,7 @@ private fun MutableList<String>.repairLexicon(): List<String> {
     // input like 80%80% should be treated as 80%*80%.
     // After unpacking we get (80/100)(80/100), the multiply is missing (!!!)
     // No, we can't unpack before fixing missing multiply.
-    // Ideally we we need to add missing multiply for 80%80%
+    // Ideally we need to add missing multiply for 80%80%
     // In that case unpackAllPercents gets input with all operators 80%*80% in this case
     // Can't be done right now since missingMultiply checks for tokens in front only
     .missingMultiply()

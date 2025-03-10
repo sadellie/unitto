@@ -18,15 +18,17 @@
 
 package com.sadellie.unitto.core.designsystem.shapes
 
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
 
-object Shapes {
-  /** @see Sizes.extraLarge */
-  val ExtraLarge = RoundedCornerShape(Sizes.extraLarge)
-  /** @see Sizes.large */
-  val Large = RoundedCornerShape(Sizes.large)
-  /** @see Sizes.medium */
-  val Medium = RoundedCornerShape(Sizes.medium)
-  /** @see Sizes.small */
-  val Small = RoundedCornerShape(Sizes.small)
+object Sizes {
+  /** 28.dp */
+  val extraLarge = 28.dp
+  /** 16.dp */
+  val large = 16.dp
+  /** 14.dp */
+  val medium = 14.dp
+  /** 8.dp */
+  val small = 8.dp
+  /** 4.dp */
+  val extraSmall = 4.dp
 }

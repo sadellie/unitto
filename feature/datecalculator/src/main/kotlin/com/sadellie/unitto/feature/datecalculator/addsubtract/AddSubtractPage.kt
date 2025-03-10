@@ -69,7 +69,8 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Event
 import com.sadellie.unitto.core.designsystem.icons.symbols.Remove
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
@@ -120,14 +121,14 @@ private fun AddSubtractView(
         modifier =
           Modifier.padding(paddingValues)
             .verticalScroll(rememberScrollState())
-            .padding(M3Shapes.large),
+            .padding(Sizes.large),
         verticalArrangement = Arrangement.spacedBy(12.dp),
       ) {
         AnimatedContent(
           targetState = showResult,
           label = "Reveal result",
           transitionSpec = { fadeIn() togetherWith fadeOut() using SizeTransform() },
-          modifier = Modifier.clip(M3Shapes.ExtraLarge),
+          modifier = Modifier.clip(Shapes.ExtraLarge),
         ) { show ->
           FlowRow(
             modifier = Modifier.fillMaxWidth(),
@@ -215,8 +216,8 @@ private fun InputTextFieldsBox(
   Column(
     modifier =
       Modifier.fillMaxWidth()
-        .background(MaterialTheme.colorScheme.secondaryContainer, M3Shapes.ExtraLarge)
-        .padding(M3Shapes.large, 24.dp),
+        .background(MaterialTheme.colorScheme.secondaryContainer, Shapes.ExtraLarge)
+        .padding(Sizes.large, 24.dp),
     verticalArrangement = Arrangement.spacedBy(4.dp),
   ) {
     TimeUnitTextField(

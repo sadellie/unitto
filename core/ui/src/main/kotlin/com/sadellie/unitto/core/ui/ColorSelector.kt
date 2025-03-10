@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Check
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.theme.isDark
 
 @Composable
@@ -86,7 +86,7 @@ private fun ColorCheckbox(color: Color, selected: Boolean, onClick: () -> Unit) 
   Box(
     modifier =
       Modifier.size(72.dp)
-        .clip(M3Shapes.Large)
+        .clip(Shapes.Large)
         .clickable(onClick = onClick)
         .background(MaterialTheme.colorScheme.surfaceContainer),
     contentAlignment = Alignment.Center,

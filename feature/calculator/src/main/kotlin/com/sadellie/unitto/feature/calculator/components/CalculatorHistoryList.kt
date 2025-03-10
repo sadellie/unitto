@@ -209,9 +209,7 @@ private fun PreviewCalculatorHistoryList() {
       }
 
   CalculatorHistoryList(
-    modifier =
-      Modifier.background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-        .fillMaxSize(),
+    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh).fillMaxSize(),
     calculatorHistoryItems = calculatorHistoryItems,
     formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
     addTokens = {},

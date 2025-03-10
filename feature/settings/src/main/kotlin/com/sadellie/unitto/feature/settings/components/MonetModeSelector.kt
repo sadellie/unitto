@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Check
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
@@ -104,7 +104,7 @@ private fun MonetModeCheckbox(selected: Boolean, onClick: () -> Unit) {
   Box(
     modifier =
       Modifier.size(72.dp)
-        .clip(M3Shapes.Large)
+        .clip(Shapes.Large)
         .clickable(onClick = onClick)
         .background(MaterialTheme.colorScheme.surfaceContainer),
     contentAlignment = Alignment.Center,

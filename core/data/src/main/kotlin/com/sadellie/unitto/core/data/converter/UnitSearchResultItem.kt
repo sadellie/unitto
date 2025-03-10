@@ -29,7 +29,7 @@ data class UnitSearchResultItem(
   val conversion: ConverterResult?,
 )
 
-fun Sequence<UnitSearchResultItem>.filterByLev(
+fun Sequence<UnitSearchResultItem>.filterAndSortByLev(
   stringA: String,
   context: Context,
 ): Sequence<UnitSearchResultItem> {

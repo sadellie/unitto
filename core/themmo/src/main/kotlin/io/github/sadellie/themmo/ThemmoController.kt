@@ -128,14 +128,14 @@ class ThemmoController(
           }
           Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val keyColor = colorResource(android.R.color.system_accent1_500)
-            dynamicColorScheme(keyColor = keyColor, isDark = false, style = currentMonetMode)
+            dynamicColorScheme(keyColor = keyColor, isDark = false, style = MonetMode.TonalSpot)
           }
           Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> {
             val keyColor = extractWallpaperPrimary(context)
             if (keyColor == null) {
               lightColorScheme
             } else {
-              dynamicColorScheme(keyColor = keyColor, isDark = false, style = currentMonetMode)
+              dynamicColorScheme(keyColor = keyColor, isDark = false, style = MonetMode.TonalSpot)
             }
           }
           else -> lightColorScheme
@@ -159,14 +159,14 @@ class ThemmoController(
             }
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
               val keyColor = colorResource(android.R.color.system_accent1_500)
-              dynamicColorScheme(keyColor = keyColor, isDark = true, style = currentMonetMode)
+              dynamicColorScheme(keyColor = keyColor, isDark = true, style = MonetMode.TonalSpot)
             }
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> {
               val keyColor = extractWallpaperPrimary(context)
               if (keyColor == null) {
                 darkColorScheme
               } else {
-                dynamicColorScheme(keyColor = keyColor, isDark = true, style = currentMonetMode)
+                dynamicColorScheme(keyColor = keyColor, isDark = true, style = MonetMode.TonalSpot)
               }
             }
             else -> darkColorScheme
@@ -180,7 +180,7 @@ class ThemmoController(
 
     // Turning into amoled if needed
     return if (isAmoledThemeEnabled) {
-      darkColorScheme.copy(
+      ColorScheme(
         primary = darkColorScheme.primary.darken(AMOLED_MAIN_FACTOR),
         onPrimary = darkColorScheme.onPrimary.darken(AMOLED_TEXT_FACTOR),
         primaryContainer = darkColorScheme.primaryContainer.darken(AMOLED_MAIN_FACTOR),

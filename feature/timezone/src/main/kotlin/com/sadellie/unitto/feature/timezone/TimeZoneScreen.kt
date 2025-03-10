@@ -71,7 +71,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.M3Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -200,7 +200,7 @@ private fun TimeZoneScreen(
             }
           val cornerRadius by
             transition.animateDp(label = "cornerRadius") {
-              if (it) M3Shapes.extraLarge else M3Shapes.medium
+              if (it) Sizes.extraLarge else Sizes.medium
             }
 
           FavoriteTimeZoneItem(
