@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.data.converter
 
+import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.database.UnitsEntity
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -35,13 +36,14 @@ class UnitRepositorySetPairTest {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun setPair_createNewEntry() =
     testScope.runTest {
-      unitsRepository.setPair(UnitID.kilometer, UnitID.mile)
+      unitConverterRepo.setPair(UnitID.kilometer, UnitID.mile)
 
       val expected = UnitsEntity(unitId = UnitID.kilometer, pairedUnitId = UnitID.mile)
       val actual = fakeUnitsDao.getById(UnitID.kilometer)
@@ -52,8 +54,8 @@ class UnitRepositorySetPairTest {
   @Test
   fun setPair_updateExisting() =
     testScope.runTest {
-      unitsRepository.setPair(UnitID.kilometer, UnitID.inch)
-      unitsRepository.setPair(UnitID.kilometer, UnitID.mile)
+      unitConverterRepo.setPair(UnitID.kilometer, UnitID.inch)
+      unitConverterRepo.setPair(UnitID.kilometer, UnitID.mile)
 
       val expected = UnitsEntity(unitId = UnitID.kilometer, pairedUnitId = UnitID.mile)
       val actual = fakeUnitsDao.getById(UnitID.kilometer)

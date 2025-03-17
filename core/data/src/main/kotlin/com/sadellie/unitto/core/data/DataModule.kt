@@ -23,8 +23,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepository
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepositoryImpl
-import com.sadellie.unitto.core.data.converter.UnitsRepository
-import com.sadellie.unitto.core.data.converter.UnitsRepositoryImpl
+import com.sadellie.unitto.core.data.converter.UnitConverterRepository
+import com.sadellie.unitto.core.data.converter.UnitConverterRepositoryImpl
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepositoryImpl
 import com.sadellie.unitto.core.database.CalculatorHistoryDao
@@ -49,10 +49,15 @@ class DataModule {
   @Provides
   fun provideUnitsRepository(
     unitsDao: UnitsDao,
-    currencyRatesDao: CurrencyRatesDao,
     @ApplicationContext mContext: Context,
-  ): UnitsRepository =
-    UnitsRepositoryImpl(unitsDao, currencyRatesDao, CurrencyApi.service, mContext)
+  ): UnitsRepository = UnitsRepository(unitsDao, mContext)
+
+  @Provides
+  fun provideUnitConverterRepository(
+    unitsRepository: UnitsRepository,
+    currencyRatesDao: CurrencyRatesDao,
+  ): UnitConverterRepository =
+    UnitConverterRepositoryImpl(unitsRepository, currencyRatesDao, CurrencyApi.service)
 
   @RequiresApi(Build.VERSION_CODES.N)
   @Provides

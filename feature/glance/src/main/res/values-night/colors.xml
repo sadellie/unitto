@@ -28,5 +28,7 @@
     <color name="surfaceVariant">#424940</color>
     <color name="onSurfaceVariant">#C1C9BE</color>
     <color name="background">#101510</color>
+    <color name="onBackground">#E0E4DB</color>
     <color name="inverseOnSurface">#2D322C</color>
+    <color name="outline">#8B9389</color>
 </resources>

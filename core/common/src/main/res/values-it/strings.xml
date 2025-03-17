@@ -135,8 +135,6 @@
     <string name="settings_space">Spazio</string>
     <string name="settings_starting_screen">Schermata iniziale</string>
     <string name="settings_system">Sistema</string>
-    <string name="settings_system_font">Font di sistema</string>
-    <string name="settings_system_font_support">Usa font di sistema per i testi nell\'app</string>
     <string name="settings_terms_and_conditions">Termini e condizioni</string>
     <string name="settings_third_party_licenses">Licenze terze parti</string>
     <string name="settings_title">Impostazioni</string>

@@ -1,6 +1,6 @@
 [versions]
-versionCode = "45"
-versionName = "Quick Silver"
+versionCode = "47"
+versionName = "Red Salsa"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
 androidxBrowserBrowser = "1.8.0"
@@ -11,11 +11,11 @@ androidxActivityActivityCompose = "1.10.1"
 # https://mvnrepository.com/artifact/androidx.appcompat/appcompat
 androidxAppCompatAppCompat = "1.7.0"
 # https://developer.android.com/jetpack/androidx/releases/compose
-androidxCompose = "1.8.0-beta03"
+androidxCompose = "1.8.0-rc01"
 # https://developer.android.com/jetpack/androidx/releases/compose
 androidxComposeCompiler = "1.5.15"
 # https://developer.android.com/jetpack/androidx/releases/compose
-androidxComposeMaterial3 = "1.4.0-alpha09"
+androidxComposeMaterial3 = "1.4.0-alpha10"
 # https://mvnrepository.com/artifact/androidx.core/core-ktx
 androidxCoreCoreKts = "1.15.0"
 # https://mvnrepository.com/artifact/androidx.glance/glance-appwidget
@@ -27,7 +27,7 @@ androidxHiltHiltNavigationCompose = "1.2.0"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-compose
 androidxLifecycleLifecycleRuntimeCompose = "2.8.7"
 # https://developer.android.com/jetpack/androidx/releases/navigation
-androidxNavigationNavigationCompose = "2.8.8"
+androidxNavigationNavigationCompose = "2.8.9"
 # https://mvnrepository.com/artifact/androidx.room/room-runtime
 androidxRoom = "2.6.1"
 # https://mvnrepository.com/artifact/androidx.test/core
@@ -64,7 +64,7 @@ kotlinx-serialization = "1.8.0"
 # https://github.com/eobermuhlner/big-math/releases
 bigMath = "2.3.2"
 # https://github.com/iurysza/module-graph/releases
-devIurysouzaModulegraph = "0.10.1"
+devIurysouzaModulegraph = "0.12.0"
 # https://github.com/detekt/detekt/releases
 detekt = "1.23.8"
 

@@ -48,7 +48,6 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
         monetMode = preferences.getMonetMode(),
         startingScreen = preferences.getStartingScreen(),
         enableToolsExperiment = preferences.getEnableToolsExperiment(),
-        systemFont = preferences.getSystemFont(),
         enableVibrations = preferences.getEnableVibrations(),
       )
     }
@@ -100,7 +99,6 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
   override val displayPrefs: Flow<DisplayPreferences> =
     data.map { preferences ->
       DisplayPreferences(
-        systemFont = preferences.getSystemFont(),
         middleZero = preferences.getMiddleZero(),
         acButton = preferences.getAcButton(),
       )
@@ -239,10 +237,6 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
 
   override suspend fun updateUnitConverterSorting(sorting: UnitsListSorting) {
     dataStore.edit { preferences -> preferences[PrefsKeys.UNIT_CONVERTER_SORTING] = sorting.name }
-  }
-
-  override suspend fun updateSystemFont(enabled: Boolean) {
-    dataStore.edit { preferences -> preferences[PrefsKeys.SYSTEM_FONT] = enabled }
   }
 
   override suspend fun updatePartialHistoryView(enabled: Boolean) {

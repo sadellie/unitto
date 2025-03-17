@@ -156,8 +156,6 @@
     <string name="settings_space">Пробел</string>
     <string name="settings_starting_screen">Начальный экран</string>
     <string name="settings_system">Системный</string>
-    <string name="settings_system_font">Системный шрифт</string>
-    <string name="settings_system_font_support">Использовать системный шрифт для текстов в приложении</string>
     <string name="settings_terms_and_conditions">Условия и положения</string>
     <string name="settings_third_party_licenses">Лицензии третьих лиц</string>
     <string name="settings_title">Настройки</string>

@@ -18,21 +18,11 @@
 
 package com.sadellie.unitto.core.designsystem.theme
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.Typography
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.designsystem.R
 
@@ -42,16 +32,6 @@ data class NumberTypography(
   val displayMedium: TextStyle,
   val displaySmall: TextStyle,
 )
-
-/** Default typography using system font. */
-val NumberTypographySystem by lazy {
-  val typography = Typography()
-  NumberTypography(
-    displayLarge = typography.displayLarge,
-    displayMedium = typography.displayMedium,
-    displaySmall = typography.displaySmall,
-  )
-}
 
 /** Branded typography using Lato font. */
 val NumberTypographyUnitto by lazy {
@@ -83,33 +63,5 @@ val NumberTypographyUnitto by lazy {
   )
 }
 
-/** Typography for big text fields with numbers. */
-val LocalNumberTypography = staticCompositionLocalOf { NumberTypographySystem }
-
 private val FontFamily.Companion.lato: FontFamily
   get() = FontFamily(Font(R.font.lato_regular, weight = FontWeight.Normal))
-
-@Preview(widthDp = 480)
-@Composable
-private fun PreviewNumberTypography() {
-  CompositionLocalProvider(LocalNumberTypography provides NumberTypographyUnitto) {
-    val textStyles =
-      mapOf(
-        "displayLarge" to LocalNumberTypography.current.displayLarge,
-        "displayMedium" to LocalNumberTypography.current.displayMedium,
-        "displaySmall" to LocalNumberTypography.current.displaySmall,
-      )
-
-    LazyColumn(Modifier.background(MaterialTheme.colorScheme.background)) {
-      textStyles.forEach { (label, style) ->
-        item {
-          Text(
-            text = "$label 123 Error 7 1⁄2",
-            style = style,
-            color = MaterialTheme.colorScheme.onBackground,
-          )
-        }
-      }
-    }
-  }
-}

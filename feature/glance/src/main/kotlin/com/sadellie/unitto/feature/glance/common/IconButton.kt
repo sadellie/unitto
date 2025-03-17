@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.glance
+package com.sadellie.unitto.feature.glance.common
 
 import android.content.Context
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,9 @@ import androidx.glance.layout.Box
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.layout.size
 import androidx.glance.unit.ColorProvider
+import com.sadellie.unitto.feature.glance.R
 
 @Composable
 internal fun IconButton(
@@ -57,12 +60,39 @@ internal fun IconButton(
       modifier =
         GlanceModifier.fillMaxWidth()
           .clickable(onClick)
-          .cornerRadius(
+          .cornerRadiusWithBackground(
             context = LocalContext.current,
             cornerRadius = 24.dp,
             color = containerColor,
           )
           .padding(horizontal = 16.dp, vertical = 8.dp),
+      provider = ImageProvider(iconRes),
+      contentDescription = null,
+      colorFilter = ColorFilter.tint(contentColor),
+    )
+  }
+}
+
+@Composable
+internal fun FloatingActionButton(
+  glanceModifier: GlanceModifier,
+  containerColor: ColorProvider = GlanceTheme.colors.primaryContainer,
+  @DrawableRes iconRes: Int,
+  contentColor: ColorProvider = GlanceTheme.colors.contentColorFor(containerColor),
+  onClick: Action,
+) {
+  Box(modifier = glanceModifier.size(40.dp), contentAlignment = Alignment.Center) {
+    Image(
+      modifier =
+        GlanceModifier
+          .clickable(onClick)
+          .cornerRadiusWithBackground(
+            context = LocalContext.current,
+            cornerRadius = 12.dp,
+            color = containerColor,
+          )
+          .padding(8.dp)
+      ,
       provider = ImageProvider(iconRes),
       contentDescription = null,
       colorFilter = ColorFilter.tint(contentColor),
@@ -80,7 +110,7 @@ private fun ColorProviders.contentColorFor(backgroundColor: ColorProvider): Colo
     else -> onBackground
   }
 
-fun GlanceModifier.cornerRadius(
+internal fun GlanceModifier.cornerRadiusWithBackground(
   context: Context,
   cornerRadius: Dp,
   color: ColorProvider,
@@ -95,7 +125,7 @@ fun GlanceModifier.cornerRadius(
           // is
           IconCompat
             // so
-            .createWithResource(context, R.drawable.rounded_corners_rectangle_shape)
+            .createWithResource(context, roundedCornerShape(cornerRadius.value))
             // fucking
             .toIcon(context)
             // stupid
@@ -104,3 +134,11 @@ fun GlanceModifier.cornerRadius(
       )
     else -> this.background(color)
   }
+
+// Not dp to avoid boxing
+@Stable
+private fun roundedCornerShape(dpSize: Float) = when (dpSize) {
+  8f -> R.drawable.rounded_corners_rectangle_shape_8dp
+  12f -> R.drawable.rounded_corners_rectangle_shape_12dp
+  else -> R.drawable.rounded_corners_rectangle_shape_24dp
+}

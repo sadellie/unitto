@@ -24,8 +24,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.sadellie.unitto.core.common.stateIn
+import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
-import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
@@ -48,7 +48,7 @@ internal class UnitToSelectorViewModel
 @Inject
 constructor(
   private val userPrefsRepository: UserPreferencesRepository,
-  private val unitsRepo: UnitsRepository,
+  private val unitsRepo: UnitConverterRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
   private var _searchJob: Job? = null

@@ -21,8 +21,8 @@ package com.sadellie.unitto.feature.settings.unitgroups
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
+import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
-import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
@@ -42,7 +42,7 @@ internal class UnitGroupsViewModel
 @Inject
 constructor(
   private val userPrefsRepository: UserPreferencesRepository,
-  private val unitsRepository: UnitsRepository,
+  private val unitConverterRepository: UnitConverterRepository,
 ) : ViewModel() {
   private var _autoSortJob: Job? = null
   private val _autoSortDialogState = MutableStateFlow(AutoSortDialogState.NONE)
@@ -97,7 +97,7 @@ constructor(
 
         val unitGroups = _shownUnitGroups.value ?: emptyList()
         val units =
-          unitsRepository.filterUnits(
+          unitConverterRepository.filterUnits(
             query = "",
             unitGroups = unitGroups,
             favoritesOnly = false,

@@ -111,8 +111,6 @@
     <string name="settings_space">Espaço</string>
     <string name="settings_starting_screen">Starting screen</string>
     <string name="settings_system">Sistema</string>
-    <string name="settings_system_font">Fonte do sistema</string>
-    <string name="settings_system_font_support">Usar a fonte do sistema para textos no aplicativo</string>
     <string name="settings_terms_and_conditions">Termos e Condições</string>
     <string name="settings_third_party_licenses">Licenças de terceiros</string>
     <string name="settings_title">Configurações</string>

@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.setMaxScale
+import com.sadellie.unitto.core.data.UnitsRepository
 import java.math.BigDecimal
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -36,8 +37,9 @@ class UnitRepositoryConvertFootInch {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun convert_footInchOutput() =
@@ -45,7 +47,7 @@ class UnitRepositoryConvertFootInch {
       val expected =
         ConverterResult.FootInch(foot = BigDecimal("6").setMaxScale(), inch = BigDecimal("0"))
       val actual =
-        unitsRepository.convert(
+        unitConverterRepo.convert(
           unitFromId = UnitID.inch,
           unitToId = UnitID.foot,
           value1 = "72",
@@ -66,7 +68,7 @@ class UnitRepositoryConvertFootInch {
           calculation = BigDecimal("72.5").setMaxScale(),
         )
       val actual =
-        unitsRepository.convert(
+        unitConverterRepo.convert(
           unitFromId = UnitID.foot,
           unitToId = UnitID.inch,
           value1 = "72",
@@ -87,7 +89,7 @@ class UnitRepositoryConvertFootInch {
           inch = BigDecimal("6").setMaxScale(),
         )
       val actual =
-        unitsRepository.convert(
+        unitConverterRepo.convert(
           unitFromId = UnitID.foot,
           unitToId = UnitID.foot,
           value1 = "72",

@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.data.converter
 
+import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.database.UnitsEntity
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -35,13 +36,14 @@ class UnitRepositoryIncrementCounterTest {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun incrementCounter_createNewEntry() =
     testScope.runTest {
-      unitsRepository.incrementCounter(UnitID.kilometer)
+      unitConverterRepo.incrementCounter(UnitID.kilometer)
 
       val expected = UnitsEntity(unitId = UnitID.kilometer, frequency = 1)
       val actual = fakeUnitsDao.getById(UnitID.kilometer)
@@ -52,9 +54,9 @@ class UnitRepositoryIncrementCounterTest {
   @Test
   fun incrementCounter_updateExisting() =
     testScope.runTest {
-      unitsRepository.incrementCounter(UnitID.kilometer)
-      unitsRepository.incrementCounter(UnitID.kilometer)
-      unitsRepository.incrementCounter(UnitID.kilometer)
+      unitConverterRepo.incrementCounter(UnitID.kilometer)
+      unitConverterRepo.incrementCounter(UnitID.kilometer)
+      unitConverterRepo.incrementCounter(UnitID.kilometer)
       val expected = UnitsEntity(unitId = UnitID.kilometer, frequency = 3)
       val actual = fakeUnitsDao.getById(UnitID.kilometer)
 

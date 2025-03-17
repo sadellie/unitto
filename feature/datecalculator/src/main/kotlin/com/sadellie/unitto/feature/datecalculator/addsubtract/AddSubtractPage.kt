@@ -31,7 +31,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -72,6 +71,9 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.TextFieldBox
+import com.sadellie.unitto.core.ui.TextFieldBoxDefaults
+import com.sadellie.unitto.core.ui.TextFieldRow
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
@@ -213,22 +215,23 @@ private fun InputTextFieldsBox(
   hours: TextFieldState,
   minutes: TextFieldState,
 ) {
-  Column(
+  TextFieldBox(
     modifier =
-      Modifier.fillMaxWidth()
-        .background(MaterialTheme.colorScheme.secondaryContainer, Shapes.ExtraLarge)
-        .padding(Sizes.large, 24.dp),
-    verticalArrangement = Arrangement.spacedBy(4.dp),
+      Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
+        .padding(TextFieldBoxDefaults.Padding)
+        .fillMaxWidth()
   ) {
-    TimeUnitTextField(
-      modifier = Modifier.fillMaxWidth(),
-      state = years,
-      label = stringResource(R.string.date_calculator_years),
-      maxValue = 9_999.0,
-      formatterSymbols = formatterSymbols,
-    )
+    TextFieldRow {
+      TimeUnitTextField(
+        modifier = Modifier.fillMaxWidth(),
+        state = years,
+        label = stringResource(R.string.date_calculator_years),
+        maxValue = 9_999.0,
+        formatterSymbols = formatterSymbols,
+      )
+    }
 
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    TextFieldRow {
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
         state = months,
@@ -246,7 +249,7 @@ private fun InputTextFieldsBox(
       )
     }
 
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    TextFieldRow {
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
         state = hours,

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.glance
+package com.sadellie.unitto.feature.glance.converter
 
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.ui.text.TextRange
-import com.sadellie.unitto.core.ui.textfield.addBracket
-import com.sadellie.unitto.core.ui.textfield.addTokens
+import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
-internal fun String.addToken(token: String): String =
-  TextFieldState(this, TextRange(length)).apply { this.addTokens(token) }.text.toString()
-
-internal fun String.addBracket(): String =
-  TextFieldState(this, TextRange(length)).apply { this.addBracket() }.text.toString()
+class ConverterWidgetReceiver : GlanceAppWidgetReceiver() {
+  override val glanceAppWidget: GlanceAppWidget = ConverterWidget()
+}

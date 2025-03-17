@@ -33,7 +33,6 @@ data class AppPreferences(
   val monetMode: MonetMode,
   val startingScreen: Route,
   val enableToolsExperiment: Boolean,
-  val systemFont: Boolean,
   val enableVibrations: Boolean,
 )
 
@@ -70,7 +69,6 @@ data class ConverterPreferences(
 )
 
 data class DisplayPreferences(
-  val systemFont: Boolean,
   val middleZero: Boolean,
   val acButton: Boolean,
 )

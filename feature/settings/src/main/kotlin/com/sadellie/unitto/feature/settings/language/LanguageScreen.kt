@@ -35,11 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.openLink
+import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.icons.symbols.Translate
 import com.sadellie.unitto.core.ui.ListItem
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.icons.symbols.Translate
 import com.sadellie.unitto.feature.settings.BuildConfig
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 
@@ -70,7 +70,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
     navigationIcon = { NavigateUpButton(navigateUp) },
   ) { padding ->
     LazyColumn(contentPadding = padding) {
-      item("translate") {
+      item(key = "translate", contentType = ContentType.ANNOYING_BOX) {
         AnnoyingBox(
           modifier = Modifier.padding(16.dp, 8.dp).fillMaxWidth(),
           onClick = { openLink(mContext, BuildConfig.STORE_LINK) },
@@ -82,7 +82,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
       }
 
       languages.forEach { (key, res) ->
-        item(key) {
+        item(key = key, contentType = ContentType.ITEM) {
           ListItem(
             modifier = Modifier.clickable { changeLanguage(key) },
             headlineContent = { Text(stringResource(res)) },
@@ -94,6 +94,11 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
       }
     }
   }
+}
+
+private enum class ContentType {
+  ANNOYING_BOX,
+  ITEM,
 }
 
 @Preview

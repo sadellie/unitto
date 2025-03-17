@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.glance
+package com.sadellie.unitto.feature.glance.calculator
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Context
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.ui.text.TextRange
 import androidx.glance.GlanceId
 import androidx.glance.action.Action
 import androidx.glance.action.ActionParameters
@@ -34,6 +36,8 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.toFormattedString
+import com.sadellie.unitto.core.ui.textfield.addBracket
+import com.sadellie.unitto.core.ui.textfield.addTokens
 import io.github.sadellie.evaluatto.Expression
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -190,7 +194,7 @@ internal class CopyResultAction : ActionCallback {
   }
 }
 
-internal class RestartWidget : ActionCallback {
+internal class RestartCalculatorWidget : ActionCallback {
   override suspend fun onAction(
     context: Context,
     glanceId: GlanceId,
@@ -217,3 +221,9 @@ private suspend fun calculate(input: String, precision: Int, outputFormat: Int):
       ""
     }
   }
+
+private fun String.addToken(token: String): String =
+  TextFieldState(this, TextRange(length)).apply { this.addTokens(token) }.text.toString()
+
+private fun String.addBracket(): String =
+  TextFieldState(this, TextRange(length)).apply { this.addBracket() }.text.toString()

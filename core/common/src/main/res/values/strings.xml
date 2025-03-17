@@ -69,6 +69,12 @@
     <string name="converter_no_results_support">Make sure there are no typos, try different filters or check for disabled unit groups.</string>
     <string name="converter_swap_units_description">Swap units</string>
     <string name="converter_title">Unit converter</string>
+    <string name="converter_widget_configure_create_pair">Create new pair</string>
+    <string name="converter_widget_configure_left_unit">Left unit</string>
+    <string name="converter_widget_configure_list_placeholder">Click add button to create a new unit pair</string>
+    <string name="converter_widget_configure_not_selected">Not selected</string>
+    <string name="converter_widget_configure_right_unit">Right unit</string>
+    <string name="converter_widget_configure_select_pairs">Select unit pairs</string>
     <string name="date_calculator_add">Add</string>
     <string name="date_calculator_create_event">Create event</string>
     <string name="date_calculator_days">Days</string>
@@ -192,8 +198,6 @@
     <string name="settings_starting_screen">Starting screen</string>
     <string name="settings_starting_screen_support">Starting screen and shortcuts</string>
     <string name="settings_system">System</string>
-    <string name="settings_system_font">System font</string>
-    <string name="settings_system_font_support">Use system font for texts in app</string>
     <string name="settings_terms_and_conditions">Terms and Conditions</string>
     <string name="settings_third_party_licenses">Third party licenses</string>
     <string name="settings_thousands_separator">Thousands separator</string>

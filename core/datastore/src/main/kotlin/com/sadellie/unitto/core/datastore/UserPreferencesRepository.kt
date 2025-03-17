@@ -79,8 +79,6 @@ interface UserPreferencesRepository {
 
   suspend fun updateUnitConverterSorting(sorting: UnitsListSorting)
 
-  suspend fun updateSystemFont(enabled: Boolean)
-
   suspend fun updatePartialHistoryView(enabled: Boolean)
 
   suspend fun updateInitialPartialHistoryView(enabled: Boolean)

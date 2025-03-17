@@ -151,14 +151,18 @@ private fun UnitGroupsScreen(
       )
 
     LazyColumn(state = lazyListState, modifier = Modifier.padding(paddingValues)) {
-      item(key = "enabled") {
+      item(key = "enabled", contentType = ContentType.HEADER) {
         Header(
           text = stringResource(R.string.common_enabled),
           paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         )
       }
 
-      items(copiedShownList.value, { it }) { unitGroup ->
+      items(
+        items = copiedShownList.value,
+        key = { it },
+        contentType = { ContentType.ENABLED_ITEM },
+      ) { unitGroup ->
         EnabledUnitGroupItem(
           reorderableLazyListState = reorderableLazyListState,
           unitGroup = unitGroup,
@@ -167,7 +171,7 @@ private fun UnitGroupsScreen(
         )
       }
 
-      item(key = "disabled") {
+      item(key = "disabled", contentType = ContentType.HEADER) {
         Header(
           text = stringResource(R.string.common_disabled),
           modifier = Modifier.animateItem(),
@@ -175,7 +179,11 @@ private fun UnitGroupsScreen(
         )
       }
 
-      items(uiState.hiddenUnitGroups, { it }) { unitGroup ->
+      items(
+        items = uiState.hiddenUnitGroups,
+        key = { it },
+        contentType = { ContentType.DISABLED_ITEM },
+      ) { unitGroup ->
         DisabledUnitGroupItem({ addShownUnitGroup(unitGroup) }, unitGroup)
       }
     }
@@ -275,6 +283,12 @@ private fun LazyItemScope.DisabledUnitGroupItem(onClick: () -> Unit, unitGroup: 
       )
     },
   )
+}
+
+private enum class ContentType {
+  HEADER,
+  ENABLED_ITEM,
+  DISABLED_ITEM,
 }
 
 @Preview

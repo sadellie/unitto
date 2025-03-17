@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Unitto is a calculator for Android
   ~ Copyright (c) 2024 Elshan Agaev
   ~
@@ -18,9 +17,11 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <application>
-        <receiver android:name="com.sadellie.unitto.feature.glance.CalculatorWidgetReceiver"
-            android:exported="true">
+        <receiver
+            android:name=".calculator.CalculatorWidgetReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -28,5 +29,23 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/unitto_calculator_widget_info" />
         </receiver>
+        <receiver
+            android:name=".converter.ConverterWidgetReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/unitto_converter_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".converter.ConverterWidgetConfigureActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

@@ -18,44 +18,17 @@
 
 package com.sadellie.unitto.core.data.converter
 
-import android.content.Context
 import android.util.Log
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isLessThan
 import com.sadellie.unitto.core.common.setMaxScale
-import com.sadellie.unitto.core.data.converter.collections.accelerationCollection
-import com.sadellie.unitto.core.data.converter.collections.angleCollection
-import com.sadellie.unitto.core.data.converter.collections.areaCollection
-import com.sadellie.unitto.core.data.converter.collections.currencyCollection
-import com.sadellie.unitto.core.data.converter.collections.dataCollection
-import com.sadellie.unitto.core.data.converter.collections.dataTransferCollection
-import com.sadellie.unitto.core.data.converter.collections.electrostaticCapacitance
-import com.sadellie.unitto.core.data.converter.collections.energyCollection
-import com.sadellie.unitto.core.data.converter.collections.flowRateCollection
-import com.sadellie.unitto.core.data.converter.collections.fluxCollection
-import com.sadellie.unitto.core.data.converter.collections.forceCollection
-import com.sadellie.unitto.core.data.converter.collections.fuelConsumptionCollection
-import com.sadellie.unitto.core.data.converter.collections.lengthCollection
-import com.sadellie.unitto.core.data.converter.collections.luminanceCollection
-import com.sadellie.unitto.core.data.converter.collections.massCollection
-import com.sadellie.unitto.core.data.converter.collections.numberBaseCollection
-import com.sadellie.unitto.core.data.converter.collections.powerCollection
-import com.sadellie.unitto.core.data.converter.collections.prefixCollection
-import com.sadellie.unitto.core.data.converter.collections.pressureCollection
-import com.sadellie.unitto.core.data.converter.collections.speedCollection
-import com.sadellie.unitto.core.data.converter.collections.temperatureCollection
-import com.sadellie.unitto.core.data.converter.collections.timeCollection
-import com.sadellie.unitto.core.data.converter.collections.torqueCollection
-import com.sadellie.unitto.core.data.converter.collections.volumeCollection
+import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.database.CurrencyRatesEntity
-import com.sadellie.unitto.core.database.UnitsDao
-import com.sadellie.unitto.core.database.UnitsEntity
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.remote.CurrencyApiService
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.sadellie.evaluatto.Expression
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -66,116 +39,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 
-class UnitsRepositoryImpl
+class UnitConverterRepositoryImpl
 @Inject
 constructor(
-  private val unitsDao: UnitsDao,
+  private val unitsRepo: UnitsRepository,
   private val currencyRatesDao: CurrencyRatesDao,
   private val currencyApiService: CurrencyApiService,
-  @ApplicationContext private val mContext: Context,
-) : UnitsRepository {
-  private val inMemory =
-    lengthCollection +
-      currencyCollection +
-      massCollection +
-      speedCollection +
-      temperatureCollection +
-      areaCollection +
-      timeCollection +
-      volumeCollection +
-      dataCollection +
-      pressureCollection +
-      accelerationCollection +
-      energyCollection +
-      powerCollection +
-      angleCollection +
-      dataTransferCollection +
-      fluxCollection +
-      numberBaseCollection +
-      electrostaticCapacitance +
-      prefixCollection +
-      forceCollection +
-      torqueCollection +
-      flowRateCollection +
-      luminanceCollection +
-      fuelConsumptionCollection
+) : UnitConverterRepository {
 
   override val currencyRateUpdateState =
     MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
 
-  override suspend fun getById(id: String): BasicUnit =
-    withContext(Dispatchers.Default) { inMemory.first { it.id == id } }
+  override suspend fun getById(id: String): BasicUnit = unitsRepo.getById(id)
 
-  override suspend fun getPairId(id: String): String =
-    withContext(Dispatchers.IO) {
-      val basedUnitPair = getUnitStats(id).pairedUnitId
-      if (basedUnitPair != null) return@withContext basedUnitPair
+  override suspend fun getPairId(id: String): String = unitsRepo.getPairId(id)
 
-      // unit has no pair, get most popular unit
-      val unit = getById(id)
-      // same group, except for unit itself
-      val potentialPairIds = inMemory.filter { it.group == unit.group && it.id != id }.map { it.id }
-      val unitsStatsForUnitsInUnitGroup =
-        unitsDao.getByIdsSortedByFavoriteAndFrequencyDesc(potentialPairIds)
+  override suspend fun incrementCounter(id: String) = unitsRepo.incrementCounter(id)
 
-      // fallback in specific order
-      // most popular favorite, just popular or first in collection
-      return@withContext unitsStatsForUnitsInUnitGroup?.unitId ?: potentialPairIds.first()
-    }
+  override suspend fun setPair(id: String, pairId: String) = unitsRepo.setPair(id, pairId)
 
-  override suspend fun incrementCounter(id: String) =
-    withContext(Dispatchers.IO) {
-      val basedUnit = unitsDao.getById(id)
-
-      if (basedUnit == null) {
-        unitsDao.insertUnit(UnitsEntity(unitId = id, frequency = 1))
-      } else {
-        unitsDao.insertUnit(
-          UnitsEntity(
-            unitId = basedUnit.unitId,
-            isFavorite = basedUnit.isFavorite,
-            pairedUnitId = basedUnit.pairedUnitId,
-            frequency = basedUnit.frequency + 1,
-          )
-        )
-      }
-    }
-
-  override suspend fun setPair(id: String, pairId: String) =
-    withContext(Dispatchers.IO) {
-      val basedUnit = unitsDao.getById(id)
-
-      if (basedUnit == null) {
-        unitsDao.insertUnit(UnitsEntity(unitId = id, pairedUnitId = pairId))
-      } else {
-        unitsDao.insertUnit(
-          UnitsEntity(
-            unitId = basedUnit.unitId,
-            isFavorite = basedUnit.isFavorite,
-            pairedUnitId = pairId,
-            frequency = basedUnit.frequency,
-          )
-        )
-      }
-    }
-
-  override suspend fun favorite(id: String) =
-    withContext(Dispatchers.IO) {
-      val basedUnit = unitsDao.getById(id)
-
-      if (basedUnit == null) {
-        unitsDao.insertUnit(UnitsEntity(unitId = id, isFavorite = true))
-      } else {
-        unitsDao.insertUnit(
-          UnitsEntity(
-            unitId = basedUnit.unitId,
-            isFavorite = !basedUnit.isFavorite,
-            pairedUnitId = basedUnit.pairedUnitId,
-            frequency = basedUnit.frequency,
-          )
-        )
-      }
-    }
+  override suspend fun favorite(id: String) = unitsRepo.favorite(id)
 
   override suspend fun filterUnits(
     query: String,
@@ -184,7 +67,8 @@ constructor(
     sorting: UnitsListSorting,
   ): Map<UnitGroup, List<UnitSearchResultItem>> =
     withContext(Dispatchers.IO) {
-      return@withContext filterUnitCollections(
+      return@withContext unitsRepo
+        .filter(
           query = query,
           unitGroups = unitGroups,
           favoritesOnly = favoritesOnly,
@@ -206,7 +90,7 @@ constructor(
     withContext(Dispatchers.IO) {
       val unitFrom = getById(unitFromId)
       val units =
-        filterUnitCollections(
+        unitsRepo.filter(
           query = query,
           unitGroups = listOf(unitGroup),
           favoritesOnly = favoritesOnly,
@@ -255,7 +139,7 @@ constructor(
               )
           }
         } catch (e: Exception) {
-          Log.e("UnitsRepositoryImpl", "Failed to batch convert: $e")
+          Log.e(LOG_TAG, "Failed to batch convert: $e")
           units.toList()
         }
 
@@ -350,17 +234,6 @@ constructor(
           value = calculateInput(value1, scale),
         )
     }
-  }
-
-  private suspend fun getUnitStats(id: String): UnitStats {
-    val unitStatsFromDatabase = withContext(Dispatchers.IO) { unitsDao.getById(id) }
-    return unitStatsFromDatabase?.toUnitStats() ?: UnitStats(id)
-  }
-
-  private suspend fun getUnitStats(ids: List<String>): List<UnitStats> {
-    val unitStatsFromDatabase = withContext(Dispatchers.IO) { unitsDao.getByIds(ids) }
-    if (unitStatsFromDatabase.isEmpty()) return emptyList()
-    return unitStatsFromDatabase.map { it.toUnitStats() }
   }
 
   private suspend fun convertNumberBaseBatch(
@@ -633,52 +506,14 @@ constructor(
             }
           currencyRatesDao.insertRates(rates)
         } catch (e: Exception) {
-          Log.d("UnitsRepositoryImpl", "Skipped update: $e")
+          Log.d(LOG_TAG, "Skipped update: $e")
         }
       }
     }
-
-  private suspend fun filterUnitCollections(
-    query: String,
-    unitGroups: List<UnitGroup>,
-    favoritesOnly: Boolean,
-    sorting: UnitsListSorting,
-  ): Sequence<UnitSearchResultItem> =
-    withContext(Dispatchers.IO) {
-      val unitsInUnitGroup = inMemory.filter { it.group in unitGroups }
-      val unitStats = getUnitStats(unitsInUnitGroup.map { it.id }).toSet()
-      val initialUnitSearchResult = mutableListOf<UnitSearchResultItem>()
-      for (unit in unitsInUnitGroup) {
-        val stats = unitStats.firstOrNull { it.id == unit.id } ?: UnitStats(unit.id)
-        val unitSearchResultItem = UnitSearchResultItem(unit, stats, null)
-        initialUnitSearchResult.add(unitSearchResultItem)
-      }
-
-      var units = initialUnitSearchResult.asSequence()
-      if (favoritesOnly) {
-        units = units.filter { it.stats.isFavorite }
-      }
-      units =
-        when (sorting) {
-          UnitsListSorting.USAGE -> units.sortedByDescending { it.stats.frequency }
-          UnitsListSorting.ALPHABETICAL ->
-            units.sortedBy { mContext.getString(it.basicUnit.displayName) }
-          UnitsListSorting.SCALE_ASC -> units.sortedBy { it.basicUnit.factor }
-          UnitsListSorting.SCALE_DESC -> units.sortedByDescending { it.basicUnit.factor }
-        }
-      units =
-        if (query.isEmpty()) {
-          units.sortedByDescending { it.stats.isFavorite }
-        } else {
-          units.filterAndSortByLev(query, mContext)
-        }
-      return@withContext units
-    }
-
-  private fun UnitsEntity.toUnitStats(): UnitStats =
-    UnitStats(unitId, isFavorite, pairedUnitId, frequency)
 }
 
+internal const val BATCH_CURRENCY_CONVERSION_SCALE = 10
+private const val LOG_TAG = "UnitConverterRepo"
 private val dayBasicUnit by lazy { BigDecimal("86400000000000000000000") }
 private val hourBasicUnit by lazy { BigDecimal("3600000000000000000000") }
 private val minuteBasicUnit by lazy { BigDecimal("60000000000000000000") }
@@ -686,4 +521,3 @@ private val secondBasicUnit by lazy { BigDecimal("1000000000000000000") }
 private val millisecondBasicUnit by lazy { BigDecimal("1000000000000000") }
 private val microsecondBasicUnit by lazy { BigDecimal("1000000000000") }
 private val nanosecondBasicUnit by lazy { BigDecimal("1000000000") }
-internal const val BATCH_CURRENCY_CONVERSION_SCALE = 10

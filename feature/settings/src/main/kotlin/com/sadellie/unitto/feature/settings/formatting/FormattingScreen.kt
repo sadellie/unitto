@@ -59,7 +59,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Architecture
 import com.sadellie.unitto.core.designsystem.icons.symbols.EMobileData
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols._123
-import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.NumberTypographyUnitto
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItem
 import com.sadellie.unitto.core.ui.NavigateUpButton
@@ -222,7 +222,7 @@ private fun PreviewBox(
 
     Text(
       text = preview,
-      style = LocalNumberTypography.current.displayMedium,
+      style = NumberTypographyUnitto.displayMedium,
       maxLines = 1,
       modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
       textAlign = TextAlign.End,

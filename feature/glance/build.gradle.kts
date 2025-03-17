@@ -22,6 +22,7 @@ plugins {
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.serialization)
 }
 
 android {
@@ -32,19 +33,28 @@ android {
 
 dependencies {
   implementation(project(":core:common"))
-  implementation(project(":core:ui"))
-  implementation(project(":core:designsystem"))
+  implementation(project(":core:data"))
+  implementation(project(":core:database"))
   implementation(project(":core:datastore"))
+  implementation(project(":core:designsystem"))
   implementation(project(":core:evaluatto"))
+  implementation(project(":core:model"))
+  implementation(project(":core:navigation"))
+  implementation(project(":core:themmo"))
+  implementation(project(":core:ui"))
 
   implementation(libs.androidx.hilt.hilt.navigation.compose)
   implementation(libs.com.google.dagger.android.hilt.android)
   ksp(libs.com.google.dagger.dagger.android.processor)
   ksp(libs.com.google.dagger.hilt.compiler)
 
+  implementation(libs.androidx.appcompat.appcompat)
   implementation(libs.androidx.compose.foundation.foundation)
   implementation(libs.androidx.compose.ui.ui)
   implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.compose.ui.tooling.preview)
+  implementation(libs.androidx.navigation.navigation.compose)
+  implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
   implementation(libs.androidx.glance.glance)
   implementation(libs.androidx.glance.glance.appwidget)
   implementation(libs.androidx.glance.glance.appwidget.preview)

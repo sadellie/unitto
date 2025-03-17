@@ -81,7 +81,7 @@ internal fun UnitsList(
     } else {
       LazyColumn(modifier = Modifier.fillMaxSize()) {
         searchResult.forEach { (group, units) ->
-          item(group.name) {
+          item(key = group.name, contentType = ContentType.HEADER) {
             Text(
               modifier = Modifier.animateItem().padding(Sizes.medium, Sizes.small),
               text = stringResource(group.res),
@@ -90,7 +90,7 @@ internal fun UnitsList(
             )
           }
 
-          items(units, { it.basicUnit.id }) {
+          items(items = units, key = { it.basicUnit.id }, contentType = { ContentType.ITEM }) {
             BasicUnitListItem(
               modifier = Modifier.animateItem().padding(horizontal = Sizes.medium),
               name = stringResource(it.basicUnit.displayName),
@@ -164,6 +164,11 @@ private fun BasicUnitListItem(
       FavoritesButton(state = isFavorite, onClick = favoriteUnit)
     }
   }
+}
+
+private enum class ContentType {
+  HEADER,
+  ITEM,
 }
 
 private const val UNIT_LIST_CROSS_FADE_DURATION_MS = 150

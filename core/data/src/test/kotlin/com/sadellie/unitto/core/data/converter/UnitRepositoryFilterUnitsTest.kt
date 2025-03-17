@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.data.converter
 
+import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.collections.accelerationCollection
 import com.sadellie.unitto.core.data.converter.collections.angleCollection
 import com.sadellie.unitto.core.data.converter.collections.areaCollection
@@ -60,8 +61,9 @@ class UnitRepositoryFilterUnitsTest {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun filterUnits_getAll() =
@@ -93,10 +95,12 @@ class UnitRepositoryFilterUnitsTest {
             UnitGroup.LUMINANCE to luminanceCollection,
             UnitGroup.FUEL_CONSUMPTION to fuelConsumptionCollection,
           )
-          .mapValues { (_, v) -> v.map { unit -> UnitSearchResultItem(unit, UnitStats(unit.id), null) } }
+          .mapValues { (_, v) ->
+            v.map { unit -> UnitSearchResultItem(unit, UnitStats(unit.id), null) }
+          }
 
       val actual =
-        unitsRepository.filterUnits(
+        unitConverterRepo.filterUnits(
           query = "",
           unitGroups =
             listOf(
@@ -136,15 +140,15 @@ class UnitRepositoryFilterUnitsTest {
   fun filterUnits_verySpecific() =
     testScope.runTest {
       // fill database with some garbage
-      unitsRepository.incrementCounter(UnitID.mile)
-      unitsRepository.incrementCounter(UnitID.mile)
-      unitsRepository.incrementCounter(UnitID.mile)
-      unitsRepository.incrementCounter(UnitID.kilometer)
-      unitsRepository.incrementCounter(UnitID.kilometer)
-      unitsRepository.incrementCounter(UnitID.meter)
-      unitsRepository.incrementCounter(UnitID.meter)
-      unitsRepository.favorite(UnitID.meter)
-      unitsRepository.incrementCounter(UnitID.attometer)
+      unitConverterRepo.incrementCounter(UnitID.mile)
+      unitConverterRepo.incrementCounter(UnitID.mile)
+      unitConverterRepo.incrementCounter(UnitID.mile)
+      unitConverterRepo.incrementCounter(UnitID.kilometer)
+      unitConverterRepo.incrementCounter(UnitID.kilometer)
+      unitConverterRepo.incrementCounter(UnitID.meter)
+      unitConverterRepo.incrementCounter(UnitID.meter)
+      unitConverterRepo.favorite(UnitID.meter)
+      unitConverterRepo.incrementCounter(UnitID.attometer)
 
       val expected =
         mapOf(
@@ -159,7 +163,7 @@ class UnitRepositoryFilterUnitsTest {
         )
 
       val actual =
-        unitsRepository.filterUnits(
+        unitConverterRepo.filterUnits(
           // intentional typo in query
           query = "meteer",
           unitGroups = listOf(UnitGroup.LENGTH),

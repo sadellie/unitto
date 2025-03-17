@@ -89,8 +89,21 @@ tasks.register("detektProjectBaseline", DetektCreateBaselineTask::class) {
 // Use createModuleGraph
 moduleGraphConfig {
   readmePath.set("./ARCHITECTURE.md")
-  heading = "## Module Graph"
+  heading = "## Module ~~spaghetti~~ Graph"
   theme.set(Theme.DARK)
+
+  val modules = allprojects.filter { "Unitto" !in it.name }
+  modules.forEach { project: Project ->
+    val readmePath = "${project.projectDir.path}/README.md"
+    graph(readmePath, "## Graph") {
+      focusedModulesRegex = ".*(${project.name}).*"
+      // exception to exclude datastore and database
+      if (project.name == "data") {
+        focusedModulesRegex = ".*(${project.name})"
+      }
+      theme = Theme.DARK
+    }
+  }
 }
 
 tasks.register("clean", Delete::class) { delete(rootProject.layout.buildDirectory) }

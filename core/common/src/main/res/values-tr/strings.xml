@@ -106,8 +106,6 @@
     <string name="settings_space">Boşluk</string>
     <string name="settings_starting_screen">Başlangıç ekranı</string>
     <string name="settings_system">Sistem</string>
-    <string name="settings_system_font">Sistem yazı tipi</string>
-    <string name="settings_system_font_support">Uygulamadaki metinler için sistem yazı tipini kullan</string>
     <string name="settings_terms_and_conditions">Şartlar ve Koşullar</string>
     <string name="settings_third_party_licenses">Üçüncü taraf lisansları</string>
     <string name="settings_title">Ayarlar</string>

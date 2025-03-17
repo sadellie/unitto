@@ -23,7 +23,7 @@ import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import kotlinx.coroutines.flow.MutableStateFlow
 
-interface UnitsRepository {
+interface UnitConverterRepository {
   val currencyRateUpdateState: MutableStateFlow<CurrencyRateUpdateState>
 
   suspend fun getById(id: String): BasicUnit

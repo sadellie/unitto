@@ -56,10 +56,6 @@ constructor(private val userPrefsRepository: UserPreferencesRepository) : ViewMo
     viewModelScope.launch { userPrefsRepository.updateMonetMode(monetMode) }
   }
 
-  fun updateSystemFont(enabled: Boolean) {
-    viewModelScope.launch { userPrefsRepository.updateSystemFont(enabled) }
-  }
-
   fun updateAcButton(enabled: Boolean) {
     viewModelScope.launch { userPrefsRepository.updateAcButton(enabled) }
   }

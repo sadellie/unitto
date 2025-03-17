@@ -33,7 +33,7 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.NumberTypographyUnitto
 
 @Composable
 fun FixedExpressionInputTextField(
@@ -62,10 +62,7 @@ fun FixedExpressionInputTextField(
         modifier = Modifier.fillMaxWidth(),
         text = value.formatExpression(formatterSymbols),
         style =
-          LocalNumberTypography.current.displaySmall.copy(
-            color = textColor,
-            textAlign = TextAlign.End,
-          ),
+          NumberTypographyUnitto.displaySmall.copy(color = textColor, textAlign = TextAlign.End),
       )
     }
   }

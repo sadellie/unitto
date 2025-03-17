@@ -29,11 +29,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -73,16 +73,21 @@ fun ColorSelector(
     state = listState,
     horizontalArrangement = Arrangement.spacedBy(8.dp),
   ) {
-    colors.forEach {
-      item(it.value.toLong()) {
-        ColorCheckbox(color = it, selected = it == currentColor, onClick = { onColorClick(it) })
-      }
+    items(colors, { it.value.toLong() }) {
+      ColorCheckbox(color = it, selected = it == currentColor, onClick = { onColorClick(it) })
     }
   }
 }
 
 @Composable
-private fun ColorCheckbox(color: Color, selected: Boolean, onClick: () -> Unit) {
+fun BasicColoredCheckbox(
+  selected: Boolean,
+  onClick: () -> Unit,
+  color: Color,
+  checkIconColor: Color,
+  checkBackgroundColor: Color,
+  content: @Composable BoxScope.() -> Unit,
+) {
   Box(
     modifier =
       Modifier.size(72.dp)
@@ -93,25 +98,39 @@ private fun ColorCheckbox(color: Color, selected: Boolean, onClick: () -> Unit) 
   ) {
     Box(
       modifier =
-        Modifier.fillMaxSize()
-          .aspectRatio(1f)
-          .padding(8.dp)
+        Modifier.size(56.dp)
           .clip(CircleShape)
           .background(color)
           .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
-    )
-    AnimatedVisibility(
-      visible = selected,
-      enter = fadeIn(tween(FADE_DURATION_MS)) + scaleIn(tween(SCALE_DURATION_MS)),
-      exit = fadeOut(tween(FADE_DURATION_MS)) + scaleOut(tween(SCALE_DURATION_MS)),
     ) {
-      Icon(
-        imageVector = Symbols.Check,
-        contentDescription = stringResource(R.string.common_selected_item),
-        tint = if (color.isDark()) Color.White else Color.Black,
-      )
+      content()
+      AnimatedVisibility(
+        visible = selected,
+        enter = fadeIn(tween(FADE_DURATION_MS)) + scaleIn(tween(SCALE_DURATION_MS)),
+        exit = fadeOut(tween(FADE_DURATION_MS)) + scaleOut(tween(SCALE_DURATION_MS)),
+        modifier = Modifier.align(Alignment.Center),
+      ) {
+        Icon(
+          imageVector = Symbols.Check,
+          contentDescription = stringResource(R.string.common_selected_item),
+          tint = checkIconColor,
+          modifier = Modifier.background(checkBackgroundColor, CircleShape).padding(4.dp),
+        )
+      }
     }
   }
+}
+
+@Composable
+private fun ColorCheckbox(color: Color, selected: Boolean, onClick: () -> Unit) {
+  BasicColoredCheckbox(
+    selected = selected,
+    onClick = onClick,
+    color = color,
+    checkIconColor = if (color.isDark()) Color.White else Color.Black,
+    checkBackgroundColor = Color.Transparent,
+    content = {},
+  )
 }
 
 private const val FADE_DURATION_MS = 250
@@ -122,7 +141,7 @@ private const val SCALE_DURATION_MS = 150
 private fun PreviewColorSelector() {
   ColorSelector(
     modifier = Modifier.background(MaterialTheme.colorScheme.background),
-    currentColor = Color(0xFF186c31),
+    currentColor = Color.Red,
     colors =
       remember {
         listOf(Color.Red, Color.Yellow, Color.Blue, Color.Green, Color.Magenta, Color.LightGray)

@@ -27,6 +27,7 @@ import com.sadellie.unitto.core.designsystem.unittoComposable
 import com.sadellie.unitto.core.designsystem.unittoNavigation
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.navigation.ConverterGraphRoute
+import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.navigation.deepLink
 import com.sadellie.unitto.feature.converter.ConverterRoute
@@ -44,7 +45,9 @@ fun NavGraphBuilder.converterGraph(
     startDestination = ConverterStartRoute::class,
     deepLinks = listOf(navDeepLink { uriPattern = deepLink(ConverterGraphRoute) }),
   ) {
-    unittoComposable<ConverterStartRoute> { backStackEntry ->
+    unittoComposable<ConverterStartRoute>(
+      deepLinks = listOf(navDeepLink<ConverterStartRoute>(ConverterStartRoute.BASE_PATH))
+    ) { backStackEntry ->
       val parentEntry =
         remember(backStackEntry) { navController.getBackStackEntry(ConverterGraphRoute) }
 
@@ -95,11 +98,6 @@ fun NavGraphBuilder.converterGraph(
       )
     }
   }
-}
-
-@Serializable
-private data object ConverterStartRoute : Route {
-  override val id = "converter_start"
 }
 
 @Serializable

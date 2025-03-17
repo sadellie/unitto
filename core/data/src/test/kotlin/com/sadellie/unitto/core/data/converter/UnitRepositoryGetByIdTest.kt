@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import java.math.BigDecimal
@@ -40,8 +41,9 @@ class UnitRepositoryGetByIdTest {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun getById_findRealUnit() =
@@ -54,7 +56,7 @@ class UnitRepositoryGetByIdTest {
           R.string.unit_attometer,
           R.string.unit_attometer_short,
         )
-      val actual = unitsRepository.getById(UnitID.attometer)
+      val actual = unitConverterRepo.getById(UnitID.attometer)
 
       assertEquals(expected, actual)
     }
@@ -63,7 +65,7 @@ class UnitRepositoryGetByIdTest {
   fun getById_failToFind() =
     testScope.runTest {
       assertThrows(NoSuchElementException::class.java) {
-        runBlocking { unitsRepository.getById("") }
+        runBlocking { unitConverterRepo.getById("") }
       }
     }
 }

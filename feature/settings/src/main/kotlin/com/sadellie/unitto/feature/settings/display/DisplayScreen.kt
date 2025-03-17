@@ -52,7 +52,6 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Colorize
 import com.sadellie.unitto.core.designsystem.icons.symbols.DarkMode
 import com.sadellie.unitto.core.designsystem.icons.symbols.DarkModeFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.ExposureZero
-import com.sadellie.unitto.core.designsystem.icons.symbols.FontDownload
 import com.sadellie.unitto.core.designsystem.icons.symbols.HdrAuto
 import com.sadellie.unitto.core.designsystem.icons.symbols.Language
 import com.sadellie.unitto.core.designsystem.icons.symbols.LightMode
@@ -108,7 +107,6 @@ internal fun DisplayRoute(
           themmoController.setMonetMode(newValue)
           viewModel.updateMonetMode(newValue)
         },
-        updateSystemFont = viewModel::updateSystemFont,
         updateAcButton = viewModel::updateAcButton,
         updateMiddleZero = viewModel::updateMiddleZero,
         navigateToLanguages = navigateToLanguages,
@@ -126,7 +124,6 @@ private fun DisplayScreen(
   onAmoledThemeChange: (Boolean) -> Unit,
   onColorChange: (Color) -> Unit,
   onMonetModeChange: (MonetMode) -> Unit,
-  updateSystemFont: (Boolean) -> Unit,
   updateAcButton: (Boolean) -> Unit,
   updateMiddleZero: (Boolean) -> Unit,
   navigateToLanguages: () -> Unit,
@@ -217,14 +214,6 @@ private fun DisplayScreen(
       Header(stringResource(R.string.settings_additional))
 
       ListItem(
-        icon = Symbols.FontDownload,
-        headlineText = stringResource(R.string.settings_system_font),
-        supportingText = stringResource(R.string.settings_system_font_support),
-        switchState = prefs.systemFont,
-        onSwitchChange = updateSystemFont,
-      )
-
-      ListItem(
         icon = IconPack.ClearBold,
         headlineText = stringResource(R.string.settings_ac_button),
         supportingText = stringResource(R.string.settings_ac_button_support),
@@ -286,14 +275,13 @@ private fun Preview() {
   Themmo { themmoController ->
     DisplayScreen(
       navigateUp = {},
+      prefs = DisplayPreferences(middleZero = true, acButton = true),
       controller = themmoController,
-      prefs = DisplayPreferences(systemFont = false, middleZero = true, acButton = true),
       onThemeChange = themmoController::setThemingMode,
       onDynamicThemeChange = themmoController::enableDynamicTheme,
       onAmoledThemeChange = themmoController::enableAmoledTheme,
       onColorChange = themmoController::setCustomColor,
       onMonetModeChange = themmoController::setMonetMode,
-      updateSystemFont = {},
       updateAcButton = {},
       updateMiddleZero = {},
       navigateToLanguages = {},

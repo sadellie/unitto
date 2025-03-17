@@ -60,10 +60,6 @@ internal fun Preferences.getEnableToolsExperiment(): Boolean {
   return this[PrefsKeys.ENABLE_TOOLS_EXPERIMENT] ?: false
 }
 
-internal fun Preferences.getSystemFont(): Boolean {
-  return this[PrefsKeys.SYSTEM_FONT] ?: false
-}
-
 internal fun Preferences.getLastReadChangelog(): String {
   return this[PrefsKeys.LAST_READ_CHANGELOG] ?: ""
 }

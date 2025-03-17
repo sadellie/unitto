@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,21 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.glance
+package com.sadellie.unitto.core.database
 
-import android.os.Build
-import androidx.compose.runtime.Composable
-import androidx.glance.GlanceTheme
-import androidx.glance.material3.ColorProviders
-import com.sadellie.unitto.core.designsystem.theme.DarkThemeColors
-import com.sadellie.unitto.core.designsystem.theme.LightThemeColors
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Composable
-internal fun WidgetTheme(content: @Composable () -> Unit) =
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-    GlanceTheme { content() }
-  } else {
-    GlanceTheme(colors = ColorProviders(light = LightThemeColors, dark = DarkThemeColors)) {
-      content()
-    }
-  }
+@Entity(tableName = "converter_widget_unit_pair")
+data class ConverterWidgetUnitPairEntity(
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val entityId: Int = 0,
+  @ColumnInfo(name = "appWidgetId") val appWidgetId: Int,
+  @ColumnInfo(name = "unitFromId") val unitFromId: String,
+  @ColumnInfo(name = "unitToId") val unitToId: String,
+  @ColumnInfo(name = "position") val position: Int,
+)

@@ -128,7 +128,7 @@ private fun AboutScreen(
         ListItem(
           icon = Symbols.Info,
           headlineText = stringResource(R.string.settings_version_name),
-          supportingText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+          supportingText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) ${BuildConfig.BUILD_TYPE}",
           modifier =
             Modifier.combinedClickable {
               val clicksToOpenEasterEgg = 5

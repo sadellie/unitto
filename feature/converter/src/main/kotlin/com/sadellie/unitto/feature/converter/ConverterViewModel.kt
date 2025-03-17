@@ -21,12 +21,14 @@ package com.sadellie.unitto.feature.converter
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.converter.ConverterResult
-import com.sadellie.unitto.core.data.converter.UnitsRepository
+import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
+import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.core.ui.textfield.getTextFieldState
 import com.sadellie.unitto.core.ui.textfield.observe
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +53,7 @@ internal class ConverterViewModel
 @Inject
 constructor(
   private val userPrefsRepository: UserPreferencesRepository,
-  private val unitsRepo: UnitsRepository,
+  private val unitsRepo: UnitConverterRepository,
   private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
   private var _conversionJob: Job? = null
@@ -115,6 +117,10 @@ constructor(
         return@combine ConverterUIState.Loading
       }
       .stateIn(viewModelScope, ConverterUIState.Loading)
+
+  init {
+    loadInitialUnits()
+  }
 
   suspend fun observeInput() {
     val input1Flow =
@@ -213,9 +219,15 @@ constructor(
 
   private fun loadInitialUnits() =
     viewModelScope.launch {
-      val prefs = userPrefsRepository.converterPrefs.first()
-      _unitFromId.update { prefs.latestLeftSideUnit }
-      _unitToId.update { prefs.latestRightSideUnit }
+      val args = savedStateHandle.toRoute<ConverterStartRoute>()
+      if (args.unitFromId != null && args.unitToId != null) {
+        _unitFromId.update { args.unitFromId }
+        _unitToId.update { args.unitToId }
+      } else {
+        val prefs = userPrefsRepository.converterPrefs.first()
+        _unitFromId.update { prefs.latestLeftSideUnit }
+        _unitToId.update { prefs.latestRightSideUnit }
+      }
     }
 
   private fun setPair() =
@@ -248,10 +260,6 @@ constructor(
     block: (v1: T, v2: T) -> Unit,
   ) {
     if ((value1 is T) and (value2 is T)) block(value1 as T, value2 as T)
-  }
-
-  init {
-    loadInitialUnits()
   }
 
   override fun onCleared() {

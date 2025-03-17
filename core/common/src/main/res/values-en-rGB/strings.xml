@@ -113,8 +113,6 @@
     <string name="settings_space">Space</string>
     <string name="settings_starting_screen">Starting screen</string>
     <string name="settings_system">System</string>
-    <string name="settings_system_font">System font</string>
-    <string name="settings_system_font_support">Use system font for texts in app</string>
     <string name="settings_terms_and_conditions">Terms and Conditions</string>
     <string name="settings_third_party_licenses">Third party licenses</string>
     <string name="settings_title">Settings</string>

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.glance
+package com.sadellie.unitto.feature.glance.calculator
 
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceModifier
@@ -30,9 +30,11 @@ import androidx.glance.layout.fillMaxWidth
 import androidx.glance.preview.ExperimentalGlancePreviewApi
 import androidx.glance.preview.Preview
 import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.feature.glance.R
+import com.sadellie.unitto.feature.glance.common.IconButton
 
 @Composable
-internal fun GlanceKeyboard(
+internal fun CalculatorKeyboard(
   modifier: GlanceModifier,
   addTokenAction: (String) -> Action,
   clearInputAction: () -> Action,
@@ -45,16 +47,16 @@ internal fun GlanceKeyboard(
   Column(modifier = modifier) {
     val rowModifier = GlanceModifier.fillMaxWidth()
 
-    GlanceKeyboardRow1(
+    KeyboardRow1(
       rowModifier = rowModifier,
       clearInputAction = clearInputAction,
       addBracketAction = addBracketAction,
       addTokenAction = addTokenAction,
     )
-    GlanceKeyboardRow2(rowModifier = rowModifier, addTokenAction = addTokenAction)
-    GlanceKeyboardRow3(rowModifier = rowModifier, addTokenAction = addTokenAction)
-    GlanceKeyboardRow4(rowModifier = rowModifier, addTokenAction = addTokenAction)
-    GlanceKeyboardRow5(
+    KeyboardRow2(rowModifier = rowModifier, addTokenAction = addTokenAction)
+    KeyboardRow3(rowModifier = rowModifier, addTokenAction = addTokenAction)
+    KeyboardRow4(rowModifier = rowModifier, addTokenAction = addTokenAction)
+    KeyboardRow5(
       rowModifier = rowModifier,
       middleZero = middleZero,
       useDot = useDot,
@@ -65,7 +67,7 @@ internal fun GlanceKeyboard(
   }
 
 @Composable
-private fun GlanceKeyboardRow1(
+private fun KeyboardRow1(
   rowModifier: GlanceModifier,
   clearInputAction: () -> Action,
   addBracketAction: () -> Action,
@@ -102,7 +104,7 @@ private fun GlanceKeyboardRow1(
 }
 
 @Composable
-private fun GlanceKeyboardRow2(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
+private fun KeyboardRow2(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
   Row(rowModifier) {
     val buttonModifier = GlanceModifier.defaultWeight()
 
@@ -134,7 +136,7 @@ private fun GlanceKeyboardRow2(rowModifier: GlanceModifier, addTokenAction: (Str
 }
 
 @Composable
-private fun GlanceKeyboardRow3(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
+private fun KeyboardRow3(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
   Row(rowModifier) {
     val buttonModifier = GlanceModifier.defaultWeight()
 
@@ -166,7 +168,7 @@ private fun GlanceKeyboardRow3(rowModifier: GlanceModifier, addTokenAction: (Str
 }
 
 @Composable
-private fun GlanceKeyboardRow4(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
+private fun KeyboardRow4(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
   Row(rowModifier) {
     val buttonModifier = GlanceModifier.defaultWeight()
 
@@ -198,7 +200,7 @@ private fun GlanceKeyboardRow4(rowModifier: GlanceModifier, addTokenAction: (Str
 }
 
 @Composable
-private fun GlanceKeyboardRow5(
+private fun KeyboardRow5(
   rowModifier: GlanceModifier,
   middleZero: Boolean,
   useDot: Boolean,
@@ -254,9 +256,9 @@ private fun GlanceKeyboardRow5(
 @OptIn(ExperimentalGlancePreviewApi::class)
 @Preview
 @Composable
-private fun PreviewKeyboard() {
+private fun PreviewCalculatorKeyboard() {
   val emptyAction = action {}
-  GlanceKeyboard(
+  CalculatorKeyboard(
     modifier = GlanceModifier.fillMaxSize(),
     addTokenAction = { emptyAction },
     middleZero = true,

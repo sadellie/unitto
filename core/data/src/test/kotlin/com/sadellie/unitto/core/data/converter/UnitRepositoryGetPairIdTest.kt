@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.data.converter
 
+import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.database.UnitsEntity
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -35,8 +36,9 @@ class UnitRepositoryGetPairIdTest {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun getPairId_useDatabaseInfo() =
@@ -46,7 +48,7 @@ class UnitRepositoryGetPairIdTest {
 
       // now try to find via repository
       val expected = UnitID.kilometer
-      val actual = unitsRepository.getPairId(UnitID.attometer)
+      val actual = unitConverterRepo.getPairId(UnitID.attometer)
       assertEquals(expected, actual)
     }
 
@@ -55,7 +57,7 @@ class UnitRepositoryGetPairIdTest {
     testScope.runTest {
       // first in lengthCollection
       val expected = UnitID.attometer
-      val actual = unitsRepository.getPairId(UnitID.kilometer)
+      val actual = unitConverterRepo.getPairId(UnitID.kilometer)
       assertEquals(expected, actual)
     }
 
@@ -73,7 +75,7 @@ class UnitRepositoryGetPairIdTest {
 
       // Fallback to most popular
       val expected = UnitID.kilometer
-      val actual = unitsRepository.getPairId(UnitID.attometer)
+      val actual = unitConverterRepo.getPairId(UnitID.attometer)
       assertEquals(expected, actual)
     }
 
@@ -91,7 +93,7 @@ class UnitRepositoryGetPairIdTest {
 
       // Fallback to most popular and favorite
       val expected = UnitID.inch
-      val actual = unitsRepository.getPairId(UnitID.attometer)
+      val actual = unitConverterRepo.getPairId(UnitID.attometer)
       assertEquals(expected, actual)
     }
 }

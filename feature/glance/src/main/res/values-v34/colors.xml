@@ -28,5 +28,7 @@
     <color name="surfaceVariant">@android:color/system_surface_variant_light</color>
     <color name="onSurfaceVariant">@android:color/system_on_surface_variant_light</color>
     <color name="background">@android:color/system_background_light</color>
+    <color name="onBackground">@android:color/system_on_background_light</color>
     <color name="inverseOnSurface">@android:color/system_text_primary_inverse_light</color>
+    <color name="outline">@android:color/system_outline_light</color>
 </resources>

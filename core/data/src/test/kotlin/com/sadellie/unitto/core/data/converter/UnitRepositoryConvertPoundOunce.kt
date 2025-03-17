@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.setMaxScale
+import com.sadellie.unitto.core.data.UnitsRepository
 import java.math.BigDecimal
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -36,8 +37,9 @@ class UnitRepositoryConvertPoundOunce {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun convert_poundOunceOutput() =
@@ -48,7 +50,7 @@ class UnitRepositoryConvertPoundOunce {
           ounce = BigDecimal("8").setMaxScale(),
         )
       val actual =
-        unitsRepository.convert(
+        unitConverterRepo.convert(
           unitFromId = UnitID.ounce,
           unitToId = UnitID.pound,
           value1 = "72",
@@ -69,7 +71,7 @@ class UnitRepositoryConvertPoundOunce {
           calculation = BigDecimal("2.5").setMaxScale(),
         )
       val actual =
-        unitsRepository.convert(
+        unitConverterRepo.convert(
           unitFromId = UnitID.pound,
           unitToId = UnitID.ounce,
           value1 = "2",
@@ -90,7 +92,7 @@ class UnitRepositoryConvertPoundOunce {
           ounce = BigDecimal("8").setMaxScale(),
         )
       val actual =
-        unitsRepository.convert(
+        unitConverterRepo.convert(
           unitFromId = UnitID.pound,
           unitToId = UnitID.pound,
           value1 = "2",

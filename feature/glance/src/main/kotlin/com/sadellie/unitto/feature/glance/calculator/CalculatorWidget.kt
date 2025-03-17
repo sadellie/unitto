@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.glance
+package com.sadellie.unitto.feature.glance.calculator
 
 import android.content.Context
 import android.util.Log
@@ -44,7 +44,6 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
-import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
@@ -63,6 +62,10 @@ import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.formatExpression
+import com.sadellie.unitto.feature.glance.R
+import com.sadellie.unitto.feature.glance.common.IconButton
+import com.sadellie.unitto.feature.glance.common.LoadingUI
+import com.sadellie.unitto.feature.glance.common.WidgetTheme
 import dagger.hilt.EntryPoint
 import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
@@ -92,54 +95,37 @@ class CalculatorWidget : GlanceAppWidget() {
   }
 
   override suspend fun provideGlance(context: Context, id: GlanceId) {
-    val userPrefsRepository =
-      try {
+    try {
+      val userPrefsRepository =
         EntryPoints.get(context, UserPrefEntryPoint::class.java).userPrefRep()
-      } catch (e: Exception) {
-        Log.e("CalculatorWidget", "Error: $e")
-        provideContent { LoadingUI() } // everything after is unreachable, no need for return
-      }
+      provideContent {
+        val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
 
-    provideContent {
-      val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
-
-      LaunchedEffect(appPrefs) {
-        updateAppWidgetState(context, id) { state ->
-          state[precisionStateKey] = appPrefs?.precision ?: DEFAULT_PRECISION
-          state[outputFormatStateKey] = appPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
+        LaunchedEffect(appPrefs) {
+          updateAppWidgetState(context, id) { state ->
+            state[precisionStateKey] = appPrefs?.precision ?: DEFAULT_PRECISION
+            state[outputFormatStateKey] = appPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
+          }
+          this@CalculatorWidget.update(context, id)
         }
-        this@CalculatorWidget.update(context, id)
-      }
 
-      WidgetTheme {
-        if (appPrefs == null) {
-          LoadingUI()
-        } else {
-          val state = currentState<Preferences>()
-          ReadyUI(
-            appPrefs = appPrefs,
-            input = state[inputStateKey] ?: "",
-            output = state[outputStateKey] ?: "",
-          )
+        WidgetTheme {
+          if (appPrefs == null) {
+            LoadingUI(actionRunCallback<RestartCalculatorWidget>())
+          } else {
+            val state = currentState<Preferences>()
+            ReadyUI(
+              appPrefs = appPrefs,
+              input = state[inputStateKey] ?: "",
+              output = state[outputStateKey] ?: "",
+            )
+          }
         }
       }
+    } catch (e: Exception) {
+      Log.e("CalculatorWidget", "Error: $e")
+      provideContent { LoadingUI(actionRunCallback<RestartCalculatorWidget>()) }
     }
-  }
-}
-
-@Composable
-private fun LoadingUI() {
-  Box(
-    modifier =
-      GlanceModifier.appWidgetBackground().background(GlanceTheme.colors.background).fillMaxSize(),
-    contentAlignment = Alignment.Center,
-  ) {
-    IconButton(
-      glanceModifier = GlanceModifier,
-      containerColor = GlanceTheme.colors.primary,
-      iconRes = R.drawable.refresh,
-      onClick = actionRunCallback<RestartWidget>(),
-    )
   }
 }
 
@@ -167,7 +153,7 @@ private fun ReadyUI(appPrefs: CalculatorPreferences, input: String, output: Stri
       output = output,
     )
 
-    GlanceKeyboard(
+    CalculatorKeyboard(
       modifier = uiSectionModifier,
       addTokenAction = AddTokenAction.Companion::create,
       clearInputAction = ClearInputAction.Companion::create,

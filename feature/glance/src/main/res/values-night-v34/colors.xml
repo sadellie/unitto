@@ -28,5 +28,7 @@
     <color name="surfaceVariant">@android:color/system_surface_variant_dark</color>
     <color name="onSurfaceVariant">@android:color/system_on_surface_variant_dark</color>
     <color name="background">@android:color/system_background_dark</color>
+    <color name="onBackground">@android:color/system_on_background_dark</color>
     <color name="inverseOnSurface">@android:color/system_surface_container_highest_dark</color>
+    <color name="outline">@android:color/system_outline_dark</color>
 </resources>

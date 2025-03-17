@@ -65,6 +65,13 @@ class UnittoDatabaseModule {
   }
 
   @Provides
+  fun provideConverterWidgetUnitsPairDao(
+    unittoDatabase: UnittoDatabase
+  ): ConverterWidgetUnitPairDao {
+    return unittoDatabase.converterWidgetUnitsPairDao()
+  }
+
+  @Provides
   fun provideAppStatsDao(unittoDatabase: UnittoDatabase): AppStatsDao {
     return unittoDatabase.appStatsDao()
   }

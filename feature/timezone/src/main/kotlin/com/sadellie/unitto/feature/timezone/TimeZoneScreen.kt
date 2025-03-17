@@ -178,7 +178,7 @@ private fun TimeZoneScreen(
       contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 124.dp),
       verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-      item("user time") {
+      item(key = "user time", contentType = ContentType.USER_TIME) {
         UserTimeZone(
           modifier = Modifier.fillMaxWidth().padding(8.dp),
           userTime = currentUserTime,
@@ -188,7 +188,11 @@ private fun TimeZoneScreen(
         )
       }
 
-      items(mutableFavorites, { it.timeZone.id }) { item ->
+      items(
+        items = mutableFavorites,
+        key = { it.timeZone.id },
+        contentType = { ContentType.ITEM },
+      ) { item ->
         ReorderableItem(reorderableLazyListState, item.timeZone.id) { isDragging ->
           val isSelected = uiState.selectedTimeZone == item
           val transition = updateTransition(isDragging, label = "draggedTransition")
@@ -316,6 +320,11 @@ private fun TimeZoneDialog(
 
     TimeZoneDialogState.Nothing -> Unit
   }
+}
+
+private enum class ContentType {
+  USER_TIME,
+  ITEM,
 }
 
 private const val USER_TIME_UPDATE_FREQUENCY_MS = 5_000L

@@ -156,8 +156,6 @@
     <string name="settings_space">Spatie</string>
     <string name="settings_starting_screen">Startscherm</string>
     <string name="settings_system">Systeem</string>
-    <string name="settings_system_font">Systeemlettertype</string>
-    <string name="settings_system_font_support">Gebruik systeemlettertype voor tekst in de app</string>
     <string name="settings_terms_and_conditions">Voorwaarden</string>
     <string name="settings_third_party_licenses">Licenties van derden</string>
     <string name="settings_title">Instellingen</string>

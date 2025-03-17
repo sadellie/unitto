@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.setMaxScale
+import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.collections.currencyCollection
 import com.sadellie.unitto.core.data.converter.collections.lengthCollection
 import com.sadellie.unitto.core.model.converter.UnitGroup
@@ -41,13 +42,14 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
   private val fakeUnitsDao = FakeUnitsDao()
-  private val unitsRepository =
-    UnitsRepositoryImpl(fakeUnitsDao, fakeCurrencyRatesDao, fakeCurrencyApiService, context)
+  private val unitsRepository = UnitsRepository(fakeUnitsDao, context)
+  private val unitConverterRepo =
+    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
   fun filterUnitsAndBatchConvert_convertWithoutIssues() =
     testScope.runTest {
-      unitsRepository.favorite(UnitID.meter)
+      unitConverterRepo.favorite(UnitID.meter)
 
       val expected =
         mapOf(
@@ -65,7 +67,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
         )
 
       val actual =
-        unitsRepository.filterUnitsAndBatchConvert(
+        unitConverterRepo.filterUnitsAndBatchConvert(
           query = "",
           unitGroup = UnitGroup.LENGTH,
           favoritesOnly = true,
@@ -82,7 +84,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
   @Test
   fun filterUnitsAndBatchConvert_convertCurrency() =
     testScope.runTest {
-      unitsRepository.favorite(UnitID.currency_usd)
+      unitConverterRepo.favorite(UnitID.currency_usd)
 
       val expected =
         mapOf(
@@ -102,7 +104,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
         )
 
       val actual =
-        unitsRepository.filterUnitsAndBatchConvert(
+        unitConverterRepo.filterUnitsAndBatchConvert(
           query = "",
           unitGroup = UnitGroup.CURRENCY,
           favoritesOnly = true,
@@ -119,7 +121,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
   @Test
   fun filterUnitsAndBatchConvert_brokenInput() =
     testScope.runTest {
-      unitsRepository.favorite(UnitID.meter)
+      unitConverterRepo.favorite(UnitID.meter)
 
       val expected =
         mapOf(
@@ -134,7 +136,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
         )
 
       val actual =
-        unitsRepository.filterUnitsAndBatchConvert(
+        unitConverterRepo.filterUnitsAndBatchConvert(
           query = "",
           unitGroup = UnitGroup.LENGTH,
           favoritesOnly = true,
@@ -151,13 +153,13 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
   @Test
   fun filterUnitsAndBatchConvert_brokenCurrenciesApi() =
     testScope.runTest {
-      unitsRepository.favorite(UnitID.currency_eth)
+      unitConverterRepo.favorite(UnitID.currency_eth)
 
       // do not return units if they can't be converted
       val expected = emptyMap<UnitSearchResultItem, ConverterResult>()
 
       val actual =
-        unitsRepository.filterUnitsAndBatchConvert(
+        unitConverterRepo.filterUnitsAndBatchConvert(
           query = "",
           unitGroup = UnitGroup.CURRENCY,
           favoritesOnly = true,
@@ -174,7 +176,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
   @Test
   fun filterUnitsAndBatchConvert_convertFootInchInput() =
     testScope.runTest {
-      unitsRepository.favorite(UnitID.inch)
+      unitConverterRepo.favorite(UnitID.inch)
 
       val expected =
         mapOf(
@@ -192,7 +194,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
         )
 
       val actual =
-        unitsRepository.filterUnitsAndBatchConvert(
+        unitConverterRepo.filterUnitsAndBatchConvert(
           query = "",
           unitGroup = UnitGroup.LENGTH,
           favoritesOnly = true,

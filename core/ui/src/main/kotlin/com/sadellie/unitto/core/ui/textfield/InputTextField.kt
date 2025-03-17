@@ -66,7 +66,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.NumberTypographyUnitto
 import com.sadellie.unitto.core.ui.autosize.AutoSizeTextStyleBox
 import kotlinx.coroutines.awaitCancellation
 
@@ -100,7 +100,7 @@ fun ExpressionTextField(
       modifier = modifier,
       readOnly = readOnly,
       inputTransformation = ExpressionInputTransformation(formatterSymbols),
-      textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
+      textStyle = NumberTypographyUnitto.displayLarge.copy(textColor),
       lineLimits = TextFieldLineLimits.SingleLine,
       cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
       outputTransformation = ExpressionOutputTransformation(formatterSymbols),
@@ -126,7 +126,7 @@ fun NumberBaseTextField(
     readOnly = readOnly,
     inputTransformation = NumberBaseInputTransformation,
     outputTransformation = NumberBaseOutputTransformation,
-    textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
+    textStyle = NumberTypographyUnitto.displayLarge.copy(textColor),
     lineLimits = TextFieldLineLimits.SingleLine,
     cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
     minRatio = minRatio,
@@ -147,7 +147,7 @@ fun SimpleTextField(
     state = state,
     modifier = modifier,
     readOnly = readOnly,
-    textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
+    textStyle = NumberTypographyUnitto.displayLarge.copy(textColor),
     lineLimits = TextFieldLineLimits.SingleLine,
     cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
     minRatio = minRatio,

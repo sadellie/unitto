@@ -26,7 +26,7 @@
 </p>
 
 1. Code contributions are **NOT** accepted at the moment
-2. Translations are accepted
+2. Translations are **NOT** accepted due to some issues
 3. Hard forks and alterations of Unitto are **NOT** welcomed. Use a _Fork_ button so that commits' author is not lost
 4. Do **NOT** use branding materials (app name, icons, descriptions, screenshots and other materials)
 
