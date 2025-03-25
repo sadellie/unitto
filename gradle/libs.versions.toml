@@ -1,5 +1,5 @@
 [versions]
-versionCode = "47"
+versionCode = "48"
 versionName = "Red Salsa"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
@@ -42,10 +42,8 @@ androidxWorkWorkRuntimeKtx = "2.10.0"
 comAndroidToolsDesugarJdkLibs = "2.1.5"
 # https://mvnrepository.com/artifact/com.google.dagger/dagger
 comGoogleDagger = "2.53.1"
-# https://mvnrepository.com/artifact/com.squareup.moshi/moshi-kotlin
-comSquareupMoshiMoshiKotlin = "1.15.2"
-# https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-moshi
-comSquareupRetrofit2ConverterMoshi = "2.11.0"
+# https://github.com/ktorio/ktor/releases
+ktor="3.1.1"
 junitJunit = "4.13.2"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "2.1.10"
@@ -101,8 +99,10 @@ com-android-tools-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_l
 com-google-dagger-android-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "comGoogleDagger" }
 com-google-dagger-dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "comGoogleDagger" }
 com-google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "comGoogleDagger" }
-com-squareup-moshi-moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "comSquareupMoshiMoshiKotlin" }
-com-squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "comSquareupRetrofit2ConverterMoshi" }
+io-ktor-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+io-ktor-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+io-ktor-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+io-ktor-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 junit-junit = { module = "junit:junit", version.ref = "junitJunit" }
 sh-calvin-reorderable-reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 org-jetbrains-kotlinx-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "orgJetbrainsKotlinxKotlinxCoroutinesTest" }

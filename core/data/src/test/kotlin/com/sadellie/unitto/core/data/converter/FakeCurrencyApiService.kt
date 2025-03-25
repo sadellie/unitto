@@ -18,11 +18,11 @@
 
 package com.sadellie.unitto.core.data.converter
 
+import com.sadellie.unitto.core.remote.CurrencyApiResponse
 import com.sadellie.unitto.core.remote.CurrencyApiService
-import com.sadellie.unitto.core.remote.CurrencyUnitResponse
 
 class FakeCurrencyApiService : CurrencyApiService {
-  override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyUnitResponse {
+  override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse {
     val currencyMap =
       when (baseCurrency) {
         UnitID.currency_usd ->
@@ -45,6 +45,6 @@ class FakeCurrencyApiService : CurrencyApiService {
           )
         else -> error("nope")
       }
-    return CurrencyUnitResponse("", currencyMap)
+    return CurrencyApiResponse("", currencyMap)
   }
 }

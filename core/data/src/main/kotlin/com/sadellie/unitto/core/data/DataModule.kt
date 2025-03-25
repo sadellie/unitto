@@ -31,7 +31,7 @@ import com.sadellie.unitto.core.database.CalculatorHistoryDao
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.database.TimeZoneDao
 import com.sadellie.unitto.core.database.UnitsDao
-import com.sadellie.unitto.core.remote.CurrencyApi
+import com.sadellie.unitto.core.remote.CurrencyApiServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,7 +57,7 @@ class DataModule {
     unitsRepository: UnitsRepository,
     currencyRatesDao: CurrencyRatesDao,
   ): UnitConverterRepository =
-    UnitConverterRepositoryImpl(unitsRepository, currencyRatesDao, CurrencyApi.service)
+    UnitConverterRepositoryImpl(unitsRepository, currencyRatesDao, CurrencyApiServiceImpl)
 
   @RequiresApi(Build.VERSION_CODES.N)
   @Provides

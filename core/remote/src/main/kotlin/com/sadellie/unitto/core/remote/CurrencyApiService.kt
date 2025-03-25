@@ -18,35 +18,27 @@
 
 package com.sadellie.unitto.core.remote
 
-import com.squareup.moshi.Moshi
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
-import retrofit2.http.GET
-import retrofit2.http.Path
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.JsonElement
 
 private const val BASE_URL =
-  "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/"
+  "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies"
 
-private val moshi = Moshi.Builder().add(CurrencyAdapter()).build()
-
-private val retrofit =
-  Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(BASE_URL)
-    .build()
+private val client by lazy { HttpClient(CIO) { install(ContentNegotiation) { json() } } }
 
 interface CurrencyApiService {
-  /**
-   * Gets paired currencies for the given currency
-   *
-   * @param baseCurrency Left side unit
-   * @return Call response with date and currencies
-   */
-  @GET("{baseCurrency}.json")
-  suspend fun getCurrencyPairs(@Path("baseCurrency") baseCurrency: String): CurrencyUnitResponse
+  suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse
 }
 
-object CurrencyApi {
-  val service: CurrencyApiService by lazy { retrofit.create() }
+object CurrencyApiServiceImpl : CurrencyApiService {
+  override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse {
+    val response = client.get("$BASE_URL/${baseCurrency}.json").body<JsonElement>()
+    val currencyApiResponse = CurrencyApiResponse.fromJsonElement(response, baseCurrency)
+    return currencyApiResponse
+  }
 }

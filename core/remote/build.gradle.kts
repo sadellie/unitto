@@ -16,11 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins { id("unitto.library") }
+plugins {
+  id("unitto.library")
+
+  alias(libs.plugins.serialization)
+}
 
 android.namespace = "com.sadellie.unitto.core.remote"
 
 dependencies {
-  implementation(libs.com.squareup.moshi.moshi.kotlin)
-  implementation(libs.com.squareup.retrofit2.converter.moshi)
+  implementation(libs.io.ktor.ktor.client.core)
+  implementation(libs.io.ktor.ktor.client.cio)
+  implementation(libs.io.ktor.ktor.serialization.kotlinx.json)
+  implementation(libs.io.ktor.ktor.client.content.negotiation)
 }

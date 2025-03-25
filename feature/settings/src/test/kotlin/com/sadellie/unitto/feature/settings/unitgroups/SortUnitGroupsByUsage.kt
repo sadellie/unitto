@@ -32,13 +32,13 @@ import org.junit.Test
 class SortUnitGroupsByUsage {
   private val testScope = TestScope(UnconfinedTestDispatcher())
 
-  private fun unitWithFrequency(value: Int): UnitSearchResultItem {
+  private fun unitWithFrequency(group: UnitGroup, value: Int): UnitSearchResultItem {
     // sorting algorithm cares about frequency only, group is taken from map
     val unit =
       NormalUnit(
         id = "unit",
         factor = BigDecimal.ZERO,
-        group = UnitGroup.LENGTH,
+        group = group,
         displayName = -1,
         shortName = -1,
         backward = false,
@@ -54,7 +54,7 @@ class SortUnitGroupsByUsage {
   @Test
   fun sortUnitGroupsByUsage_empty() =
     testScope.runTest {
-      val units = emptyMap<UnitGroup, List<UnitSearchResultItem>>()
+      val units = emptySequence<UnitSearchResultItem>()
       val actual = sortUnitGroupsByUsage(units)
       val expected = emptyList<UnitGroup>()
 
@@ -65,15 +65,13 @@ class SortUnitGroupsByUsage {
   fun autoSortUnitGroups_single() =
     testScope.runTest {
       val units =
-        mapOf(
-          UnitGroup.LENGTH to
-            listOf(
-              unitWithFrequency(10),
-              unitWithFrequency(8),
-              unitWithFrequency(6),
-              unitWithFrequency(4),
-            )
-        )
+        listOf(
+            unitWithFrequency(UnitGroup.LENGTH, 10),
+            unitWithFrequency(UnitGroup.LENGTH, 8),
+            unitWithFrequency(UnitGroup.LENGTH, 6),
+            unitWithFrequency(UnitGroup.LENGTH, 4),
+          )
+          .asSequence()
       val actual = sortUnitGroupsByUsage(units)
       val expected = listOf(UnitGroup.LENGTH)
 
@@ -84,28 +82,19 @@ class SortUnitGroupsByUsage {
   fun sortUnitGroupsByUsage_multiple() =
     testScope.runTest {
       val units =
-        mapOf(
-          UnitGroup.LENGTH to
-            listOf(
-              unitWithFrequency(10),
-              unitWithFrequency(8),
-              unitWithFrequency(6),
-              unitWithFrequency(4),
-            ),
-          UnitGroup.AREA to
-            listOf(
-              unitWithFrequency(4),
-              unitWithFrequency(3),
-              unitWithFrequency(2),
-              unitWithFrequency(1),
-            ),
-          UnitGroup.DATA to
-            listOf(
-              unitWithFrequency(100),
-              unitWithFrequency(80),
-              unitWithFrequency(60),
-              unitWithFrequency(40),
-            ),
+        sequenceOf(
+          unitWithFrequency(UnitGroup.LENGTH, 10),
+          unitWithFrequency(UnitGroup.LENGTH, 8),
+          unitWithFrequency(UnitGroup.LENGTH, 6),
+          unitWithFrequency(UnitGroup.LENGTH, 4),
+          unitWithFrequency(UnitGroup.AREA, 4),
+          unitWithFrequency(UnitGroup.AREA, 3),
+          unitWithFrequency(UnitGroup.AREA, 2),
+          unitWithFrequency(UnitGroup.AREA, 1),
+          unitWithFrequency(UnitGroup.DATA, 100),
+          unitWithFrequency(UnitGroup.DATA, 80),
+          unitWithFrequency(UnitGroup.DATA, 60),
+          unitWithFrequency(UnitGroup.DATA, 40),
         )
       val actual = sortUnitGroupsByUsage(units)
       val expected = listOf(UnitGroup.DATA, UnitGroup.LENGTH, UnitGroup.AREA)

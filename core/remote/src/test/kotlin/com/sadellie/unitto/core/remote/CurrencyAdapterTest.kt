@@ -18,34 +18,56 @@
 
 package com.sadellie.unitto.core.remote
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonUnquotedLiteral
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@OptIn(ExperimentalSerializationApi::class)
 class CurrencyAdapterTest {
-  private val currencyAdapter = CurrencyAdapter()
 
   @Test
   fun fromJson_validShouldPass() {
-    val response =
-      mapOf(
-        "date" to "some date",
-        "eur" to mapOf("usd" to 123.456, "btc" to 0.01, "eth" to 777, "eur" to 1.0),
+    val currencyCode = "usd"
+    val jsonElement =
+      JsonObject(
+        mapOf(
+          "date" to JsonUnquotedLiteral("2025-03-17"),
+          "usd" to
+            JsonObject(
+              mapOf(
+                "usd" to JsonUnquotedLiteral("1.0"),
+                "btc" to JsonUnquotedLiteral("0.01"),
+                "eth" to JsonUnquotedLiteral("777.0"),
+                "eur" to JsonUnquotedLiteral("1.0"),
+              )
+            ),
+        )
       )
+
+    val actual = CurrencyApiResponse.fromJsonElement(jsonElement, currencyCode)
     val expected =
-      CurrencyUnitResponse(
-        date = "some date",
-        currency = mapOf("usd" to 123.456, "btc" to 0.01, "eth" to 777.0, "eur" to 1.0),
+      CurrencyApiResponse(
+        date = "2025-03-17",
+        currency = mapOf("usd" to 1.0, "btc" to 0.01, "eth" to 777.0, "eur" to 1.0),
       )
-    val actual = currencyAdapter.fromJson(response)
 
     assertEquals(expected, actual)
   }
 
   @Test
   fun fromJson_invalidShouldFail() {
-    val response = mapOf("date" to "some date", "eur" to mapOf("usd" to "undefined"))
-    val expected = CurrencyUnitResponse(date = "some date", currency = emptyMap())
-    val actual = currencyAdapter.fromJson(response)
+    val currencyCode = "usd"
+    val jsonElement =
+      JsonObject(
+        mapOf(
+          "date" to JsonUnquotedLiteral("some date"),
+          "usd" to JsonObject(mapOf("usd" to JsonUnquotedLiteral("undefined"))),
+        )
+      )
+    val actual = CurrencyApiResponse.fromJsonElement(jsonElement, currencyCode)
+    val expected = CurrencyApiResponse(date = "some date", currency = emptyMap())
 
     assertEquals(expected, actual)
   }
