@@ -30,6 +30,7 @@ android {
   defaultConfig.stringConfigField("VERSION_NAME", libs.versions.versionName.get())
   defaultConfig.stringConfigField("VERSION_CODE", libs.versions.versionCode.get())
   defaultConfig.stringConfigField("STORE_LINK", "https://github.com/sadellie/unitto")
+  buildTypes.getByName("cancer").stringConfigField("STORE_LINK", "https://play.google.com/store/apps/details?id=com.sadellie.unitto")
   buildFeatures.compose = true
   buildFeatures.buildConfig = true
   composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()

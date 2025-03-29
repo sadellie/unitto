@@ -36,7 +36,7 @@ android {
     targetSdk = 35
     versionCode = libs.versions.versionCode.get().toInt()
     versionName = libs.versions.versionName.get()
-    resourceConfigurations +=
+    androidResources.localeFilters +=
       setOf(
         "en",
         "en-rGB",
@@ -52,6 +52,12 @@ android {
         "tr",
         "zh-rCN",
       )
+  }
+
+  flavorDimensions += "distribution"
+  productFlavors {
+    create("boring") {}
+    create("thriving") { this.applicationId = "io.github.sadellie" }
   }
 
   buildTypes {
@@ -70,6 +76,7 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
     create("preview") { initWith(getByName("release")) }
+    create("cancer") { initWith(getByName("release")) }
   }
 
   buildFeatures {

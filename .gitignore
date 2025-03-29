@@ -2,7 +2,6 @@
 build/
 .idea/
 .kotlin/
-/app/release
 
 local.properties
 

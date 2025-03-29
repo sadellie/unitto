@@ -46,7 +46,16 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
       resValues = false
     }
 
-    buildTypes { create("preview") { initWith(getByName("release")) } }
+    buildTypes {
+      create("preview") { initWith(getByName("release")) }
+      create("cancer") { initWith(getByName("release")) }
+    }
+
+    flavorDimensions += "distribution"
+    productFlavors {
+      create("boring") {}
+      create("thriving") {}
+    }
 
     packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
 
