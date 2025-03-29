@@ -27,10 +27,9 @@ Also available in ***Play Store*** (link will not be provided, search in store)
     <a href="https://github.com/sadellie/unitto/discussions/new/choose"><img alt="Discussions" src="./content/discussion.svg" height="60"/></a>
 </p>
 
-1. Code contributions are **NOT** accepted at the moment
-2. Translations are **NOT** accepted due to some issues
-3. Hard forks and alterations of Unitto are **NOT** welcomed. Use a _Fork_ button so that commits' author is not lost
-4. Do **NOT** use branding materials (app name, icons, descriptions, screenshots and other materials)
+1. Read [CONTRIBUTING.md](./CONTRIBUTING.md)
+2. Hard forks and alterations of Unitto are **NOT** welcomed. Use a _Fork_ button so that commits' author is not lost
+3. Do **NOT** use branding materials (app name, icons, descriptions, screenshots and other materials)
 
 # ⚠ Security
 Read [this](./SECURITY.md).
