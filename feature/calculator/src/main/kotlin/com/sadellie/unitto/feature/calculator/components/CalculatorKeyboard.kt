@@ -229,8 +229,8 @@ private fun ExpandedKeyboard(
         KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
         KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
       } else {
-        KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
         KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
+        KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
       }
 
       KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)

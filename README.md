@@ -34,6 +34,8 @@ Also available in ***Play Store*** (link will not be provided, search in store)
 # ⚠ Security
 Read [this](./SECURITY.md).
 
+SHA-256 digest: b2d9938c97fa77df78142c311d234aae9e706f10ccba167f2a2a3e33528c1dcf 
+
 <sup>TL;DR: the app is legit, no cap fr fr</sup>
 
 ## 🤖 Custom ROM developers
