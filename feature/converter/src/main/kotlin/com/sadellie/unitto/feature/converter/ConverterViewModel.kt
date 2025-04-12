@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.converter
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -212,6 +213,9 @@ constructor(
             return@launch
           } catch (e: NumberFormatException) {
             return@launch
+          } catch (e: Exception) {
+            Log.w(TAG, "Failed to convert: ${e.message}")
+            return@launch
           }
         _output.update { result }
       }
@@ -267,3 +271,5 @@ constructor(
     viewModelScope.cancel()
   }
 }
+
+private const val TAG = "ConverterViewModel"
