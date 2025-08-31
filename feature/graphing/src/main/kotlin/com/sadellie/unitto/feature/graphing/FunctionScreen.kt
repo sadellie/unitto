@@ -518,7 +518,7 @@ internal fun isValidFunctionExpression(input: String): Boolean {
   val isValid =
     try {
       // This will tokenize sample input
-      Expression(sampleInput, 10).calculate()
+      Expression(sampleInput).calculate()
       true
     } catch (e: Exception) {
       // can be invalid for this sample x, but valid for others

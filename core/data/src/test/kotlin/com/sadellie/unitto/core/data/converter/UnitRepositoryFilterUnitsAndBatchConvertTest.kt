@@ -75,7 +75,6 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
           unitFromId = UnitID.kilometer,
           input1 = "12",
           input2 = "",
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -112,7 +111,6 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
           unitFromId = UnitID.currency_eur,
           input1 = "12",
           input2 = "",
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -144,7 +142,6 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
           unitFromId = UnitID.kilometer,
           input1 = "!!!",
           input2 = "",
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -156,7 +153,7 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
       unitConverterRepo.favorite(UnitID.currency_eth)
 
       // do not return units if they can't be converted
-      val expected = emptyMap<UnitSearchResultItem, ConverterResult>()
+      val expected = emptyMap<UnitGroup, List<UnitSearchResultItem>>()
 
       val actual =
         unitConverterRepo.filterUnitsAndBatchConvert(
@@ -167,7 +164,6 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
           unitFromId = UnitID.currency_eth,
           input1 = "12",
           input2 = "",
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -202,7 +198,6 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
           unitFromId = UnitID.foot,
           input1 = "10",
           input2 = "6",
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)

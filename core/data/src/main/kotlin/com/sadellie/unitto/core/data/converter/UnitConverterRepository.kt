@@ -51,7 +51,6 @@ interface UnitConverterRepository {
     unitFromId: String,
     input1: String,
     input2: String,
-    scale: Int,
   ): Map<UnitGroup, List<UnitSearchResultItem>>
 
   suspend fun convert(
@@ -60,6 +59,5 @@ interface UnitConverterRepository {
     value1: String,
     value2: String,
     formatTime: Boolean,
-    scale: Int,
   ): ConverterResult
 }

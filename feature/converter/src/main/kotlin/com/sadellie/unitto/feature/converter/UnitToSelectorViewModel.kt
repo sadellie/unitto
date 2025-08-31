@@ -111,7 +111,6 @@ constructor(
             unitFromId = _args.unitFromId,
             input1 = _args.input1,
             input2 = _args.input2,
-            scale = prefs.precision,
           )
 
         _searchResults.update { result }

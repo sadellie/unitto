@@ -57,7 +57,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "2",
           value2 = "",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -74,7 +73,6 @@ class UnitConverterRepositoryImplTest {
             value1 = "7",
             value2 = "",
             formatTime = false,
-            scale = TEST_CONVERTER_SCALE,
           )
         }
       }
@@ -92,7 +90,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "${Token.Operator.MINUS}28",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -109,7 +106,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -126,7 +122,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "${Token.Operator.MINUS}0",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -144,7 +139,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.05",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -161,7 +155,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -183,7 +176,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -200,7 +192,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -222,7 +213,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -239,7 +229,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -261,7 +250,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -278,7 +266,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -300,7 +287,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -317,7 +303,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -335,7 +320,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -352,7 +336,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -370,7 +353,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -387,7 +369,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -405,7 +386,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -422,7 +402,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "0.5",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -439,7 +418,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "90.005",
           value2 = "",
           formatTime = true,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -460,7 +438,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "72",
           value2 = "",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -500,7 +477,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "3",
           value2 = "",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -517,7 +493,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "3",
           value2 = "",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -538,7 +513,6 @@ class UnitConverterRepositoryImplTest {
           value1 = "72",
           value2 = "",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -555,7 +529,6 @@ class UnitConverterRepositoryImplTest {
             value1 = "!",
             value2 = "",
             formatTime = false,
-            scale = TEST_CONVERTER_SCALE,
           )
         }
       }

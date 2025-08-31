@@ -129,19 +129,20 @@ constructor(userPreferencesRepository: UserPreferencesRepository) : ViewModel() 
 
           try {
             while (currentX <= maxX) {
-              val xValue = currentX
-                // Avoid engineering string
-                .toBigDecimal()
-                .toPlainString()
-                // Fix minus sign for evaluatto
-                .replace("-", Token.Operator.MINUS)
+              val xValue =
+                currentX
+                  // Avoid engineering string
+                  .toBigDecimal()
+                  .toPlainString()
+                  // Fix minus sign for evaluatto
+                  .replace("-", Token.Operator.MINUS)
               val replacedX =
                 function.expression
                   .replace(Token.Func.EXP, "EXP")
                   .replace("x", xValue)
                   .replace("EXP", Token.Func.EXP)
 
-              val y = Expression(replacedX, scale = Y_COORDINATE_PRECISION).calculate()
+              val y = Expression(replacedX).calculate()
               offsets.add(Offset(currentX, y.toFloat()))
 
               currentX += stepInX

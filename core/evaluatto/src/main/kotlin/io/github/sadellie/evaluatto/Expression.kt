@@ -19,6 +19,7 @@
 package io.github.sadellie.evaluatto
 
 import ch.obermuhlner.math.big.BigDecimalMath
+import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import java.math.BigDecimal
@@ -39,12 +40,11 @@ sealed class ExpressionException(override val message: String) : Exception(messa
 
 class Expression(
   input: String,
-  private val scale: Int,
   private val radianMode: Boolean = true,
   private val roundingMode: RoundingMode = RoundingMode.HALF_EVEN,
 ) {
-  // double precision to have enough decimal points when formatting
-  private val mathContext = MathContext(scale * 2, roundingMode)
+  private val scale = MAX_SCALE
+  private val mathContext = MathContext(TRIG_SCALE, roundingMode)
   private val tokens = input.tokenize()
   private var cursorPosition = 0
 
@@ -249,5 +249,8 @@ class Expression(
   }
 
   // rescale to avoid precision loss when evaluating special cases in trigonometry
-  private fun BigDecimal.rescaleTrig(): BigDecimal = this.setScale(scale, RoundingMode.HALF_EVEN)
+  private fun BigDecimal.rescaleTrig(): BigDecimal =
+    this.setScale(mathContext.precision, RoundingMode.HALF_EVEN)
 }
+
+private const val TRIG_SCALE = 100

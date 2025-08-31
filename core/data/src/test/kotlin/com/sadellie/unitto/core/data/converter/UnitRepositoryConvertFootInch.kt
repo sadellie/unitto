@@ -53,7 +53,6 @@ class UnitRepositoryConvertFootInch {
           value1 = "72",
           value2 = "",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -74,7 +73,6 @@ class UnitRepositoryConvertFootInch {
           value1 = "72",
           value2 = "6",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -95,7 +93,6 @@ class UnitRepositoryConvertFootInch {
           value1 = "72",
           value2 = "6",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)

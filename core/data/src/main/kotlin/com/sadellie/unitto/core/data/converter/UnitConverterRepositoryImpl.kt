@@ -85,7 +85,6 @@ constructor(
     unitFromId: String,
     input1: String,
     input2: String,
-    scale: Int,
   ): Map<UnitGroup, List<UnitSearchResultItem>> =
     withContext(Dispatchers.IO) {
       val unitFrom = getById(unitFromId)
@@ -112,13 +111,12 @@ constructor(
                 input = input1,
                 unitSearchResultItems = units,
                 unitFrom = unitFrom as BasicUnit.Default,
-                scale = scale,
               )
 
             // foot and inches input
             unitFrom.id == UnitID.foot ->
               convertDefaultBatch(
-                input = calculateFootAndInchesInput(input1, input2, scale),
+                input = calculateFootAndInchesInput(input1, input2),
                 unitSearchResultItems = units,
                 unitFrom = unitFrom as BasicUnit.Default,
               )
@@ -126,14 +124,14 @@ constructor(
             // pound and ounces input
             unitFrom.id == UnitID.pound ->
               convertDefaultBatch(
-                input = calculatePoundAndOuncesInput(input1, input2, scale),
+                input = calculatePoundAndOuncesInput(input1, input2),
                 unitSearchResultItems = units,
                 unitFrom = unitFrom as BasicUnit.Default,
               )
 
             else ->
               convertDefaultBatch(
-                input = calculateInput(input1, scale),
+                input = calculateInput(input1),
                 unitSearchResultItems = units,
                 unitFrom = unitFrom as BasicUnit.Default,
               )
@@ -152,7 +150,6 @@ constructor(
     value1: String,
     value2: String,
     formatTime: Boolean,
-    scale: Int,
   ): ConverterResult {
     val unitFrom = getById(unitFromId)
     val unitTo = getById(unitToId)
@@ -168,14 +165,14 @@ constructor(
       unitFrom.group == UnitGroup.TIME && unitTo.group == UnitGroup.TIME && formatTime ->
         convertTimeAndFormatToHumanReadable(
           unitFrom = unitFrom as BasicUnit.Default,
-          value = calculateInput(value1, scale),
+          value = calculateInput(value1),
         )
 
       unitFrom.group == UnitGroup.CURRENCY && unitTo.group == UnitGroup.CURRENCY ->
         convertCurrencies(
           unitFrom = unitFrom as BasicUnit.Default,
           unitTo = unitTo as BasicUnit.Default,
-          value = calculateInput(value1, scale),
+          value = calculateInput(value1),
         )
 
       // foot and inches output and input
@@ -183,7 +180,7 @@ constructor(
         convertFoot(
           footUnit = unitTo as BasicUnit.Default,
           inchUnit = getById(UnitID.inch) as BasicUnit.Default,
-          feetInput = calculateFootAndInchesInput(value1, value2, scale),
+          feetInput = calculateFootAndInchesInput(value1, value2),
         )
 
       // foot and inches output
@@ -191,7 +188,7 @@ constructor(
         convertFoot(
           footUnit = unitTo as BasicUnit.Default,
           inchUnit = getById(UnitID.inch) as BasicUnit.Default,
-          feetInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1, scale)),
+          feetInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1)),
         )
 
       // foot and inches input
@@ -199,7 +196,7 @@ constructor(
         convertDefault(
           unitFrom = unitFrom as BasicUnit.Default,
           unitTo = unitTo as BasicUnit.Default,
-          value = calculateFootAndInchesInput(value1, value2, scale),
+          value = calculateFootAndInchesInput(value1, value2),
         )
 
       // pound and ounces output and input
@@ -207,7 +204,7 @@ constructor(
         convertPound(
           poundUnit = unitTo as BasicUnit.Default,
           ounceUnit = getById(UnitID.ounce) as BasicUnit.Default,
-          poundsInput = calculatePoundAndOuncesInput(value1, value2, scale),
+          poundsInput = calculatePoundAndOuncesInput(value1, value2),
         )
 
       // pound and ounces output
@@ -215,8 +212,7 @@ constructor(
         convertPound(
           poundUnit = unitTo as BasicUnit.Default,
           ounceUnit = getById(UnitID.ounce) as BasicUnit.Default,
-          poundsInput =
-            (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1, scale)),
+          poundsInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1)),
         )
 
       // pound and ounces input
@@ -224,14 +220,14 @@ constructor(
         convertDefault(
           unitFrom = unitFrom as BasicUnit.Default,
           unitTo = unitTo as BasicUnit.Default,
-          value = calculatePoundAndOuncesInput(value1, value2, scale),
+          value = calculatePoundAndOuncesInput(value1, value2),
         )
 
       else ->
         convertDefault(
           unitFrom = unitFrom as BasicUnit.Default,
           unitTo = unitTo as BasicUnit.Default,
-          value = calculateInput(value1, scale),
+          value = calculateInput(value1),
         )
     }
   }
@@ -257,12 +253,11 @@ constructor(
 
   private suspend fun convertCurrenciesBatch(
     input: String,
-    scale: Int,
     unitSearchResultItems: Sequence<UnitSearchResultItem>,
     unitFrom: BasicUnit.Default,
   ) =
     withContext(Dispatchers.Default) {
-      val calculatedInput = calculateInput(input, scale)
+      val calculatedInput = calculateInput(input)
       if (calculatedInput.isEqualTo(BigDecimal.ZERO))
         return@withContext unitSearchResultItems.toList()
 
@@ -417,9 +412,9 @@ constructor(
     return ConverterResult.PoundOunce(integral, fractionInOunces)
   }
 
-  private fun calculateInput(value: String, scale: Int): BigDecimal {
+  private fun calculateInput(value: String): BigDecimal {
     // Calculate expression in first text field
-    val calculated = Expression(value, scale).calculate()
+    val calculated = Expression(value).calculate()
     return calculated
   }
 
@@ -427,12 +422,11 @@ constructor(
   private suspend fun calculateFootAndInchesInput(
     footInput: String,
     inchInput: String,
-    scale: Int,
   ): BigDecimal {
     // Calculate expression in first text field
-    var calculated = Expression(footInput, scale).calculate()
+    var calculated = Expression(footInput).calculate()
 
-    val calculatedInches = Expression(inchInput, scale).calculate()
+    val calculatedInches = Expression(inchInput).calculate()
     // turn inches into feet so that it all comes down to converting from feet only
     val inches = getById(UnitID.inch) as BasicUnit.Default
     val feet = getById(UnitID.foot) as BasicUnit.Default
@@ -446,12 +440,11 @@ constructor(
   private suspend fun calculatePoundAndOuncesInput(
     poundInput: String,
     ounceInput: String,
-    scale: Int,
   ): BigDecimal {
     // Calculate expression in first text field
-    var calculated = Expression(poundInput, scale).calculate()
+    var calculated = Expression(poundInput).calculate()
 
-    val calculatedOunces = Expression(ounceInput, scale).calculate()
+    val calculatedOunces = Expression(ounceInput).calculate()
     // turn ounces into pounds so that it all comes down to converting from pounds only
     val ounce = getById(UnitID.ounce) as BasicUnit.Default
     val pound = getById(UnitID.pound) as BasicUnit.Default

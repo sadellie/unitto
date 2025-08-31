@@ -56,7 +56,6 @@ class UnitRepositoryConvertPoundOunce {
           value1 = "72",
           value2 = "",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -77,7 +76,6 @@ class UnitRepositoryConvertPoundOunce {
           value1 = "2",
           value2 = "8",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
@@ -98,7 +96,6 @@ class UnitRepositoryConvertPoundOunce {
           value1 = "2",
           value2 = "8",
           formatTime = false,
-          scale = TEST_CONVERTER_SCALE,
         )
 
       assertEquals(expected, actual)
