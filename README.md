@@ -1,10 +1,10 @@
 <p align="middle">
-    <img src="./fastlane/metadata/android/en-US/images/featureGraphic.png" width="97%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone1.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone2.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone3.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone4.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone5.png" width="19%" />
+    <img src="./content/featureGraphic.png" width="97%" />
+    <img src="./content/phone1.png" width="19%" />
+    <img src="./content/phone2.png" width="19%" />
+    <img src="./content/phone3.png" width="19%" />
+    <img src="./content/phone4.png" width="19%" />
+    <img src="./content/phone5.png" width="19%" />
 </p>
 
 # 📲 Download

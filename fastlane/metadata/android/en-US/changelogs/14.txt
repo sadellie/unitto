@@ -1,8 +1,0 @@
-Amazing new features:
-1. Number base converter. Enable it: Settings > Unit groups
-2. Flux converter
-3. New font
-4. Search by unit short names
-5. French and German translations
-
-https://sadellie.github.io/unitto

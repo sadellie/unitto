@@ -1,7 +1,0 @@
-"Electric purple" update:
-1. You can now control which unit groups will be seen in your app
-2. Updated visuals for unit selection screens
-3. Application stability and performance improvements
-4. Visual tweaks
-
-Roadmap: https://trello.com/b/cxAbRlvu/unitto

@@ -1,4 +1,0 @@
-- Fixed calculator formatting issues
-- Fixed feet and inches formatting
-
-Thank you for reporting this issues
