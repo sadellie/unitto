@@ -1,5 +1,0 @@
-Fixed crashes and Dynamic Colors.
-
-Tip: Setting > Themes > Dynamic colors.
-
-Thank you for using Unitto!

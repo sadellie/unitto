@@ -1,8 +1,0 @@
-"Quick Silver" update:
-
-- Calculator widget
-- Body mass calculator
-- Back up and restore data
-- Feet and inches input and output
-- Pace units
-- Chinese (Simplified) language

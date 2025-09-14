@@ -1,7 +1,0 @@
-"Nadeshiko Pink" update:
-
-- Language picker
-- System font option
-- Improved currency converter
-- Added new translations
-- Very small quality of life improvements

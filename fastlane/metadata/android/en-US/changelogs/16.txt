@@ -1,7 +1,0 @@
-Hot magenta update:
-1. Added more Pressure units
-2. Better formatting for time. Tap the output to switch formatting.
-3. Button vibrations. dzzz-dzzz…
-4. Improved animations
-
-https://sadellie.github.io/unitto

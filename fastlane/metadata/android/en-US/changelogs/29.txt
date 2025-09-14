@@ -1,7 +1,0 @@
-"Olive Green" update:
-
-- Time zone converter
-- AC Button
-- New search experience
-- No more Montserrat, only Lato and system font
-- Removed Herobrine
