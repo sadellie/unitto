@@ -39,6 +39,7 @@ internal fun TimeUnitTextField(
     formatterSymbols: FormatterSymbols,
     maxValue: Double,
     imeAction: ImeAction = ImeAction.Next,
+    allowFraction: Boolean = true,
 ) {
   OutlinedDecimalTextField(
     modifier = modifier,
@@ -50,7 +51,7 @@ internal fun TimeUnitTextField(
         unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
       ),
     outputTransformation = ExpressionOutputTransformation(formatterSymbols),
-    inputTransformation = UnexpectedDigitsInputTransformation(maxValue, true),
+    inputTransformation = UnexpectedDigitsInputTransformation(maxValue, allowFraction),
     imeAction = imeAction,
   )
 }

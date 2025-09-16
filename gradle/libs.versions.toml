@@ -1,5 +1,5 @@
 [versions]
-versionCode = "53"
+versionCode = "54"
 versionName = "Red Salsa"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser

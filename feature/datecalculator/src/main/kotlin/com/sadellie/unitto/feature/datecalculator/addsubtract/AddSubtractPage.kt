@@ -18,10 +18,10 @@
 
 package com.sadellie.unitto.feature.datecalculator.addsubtract
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -228,6 +228,7 @@ private fun InputTextFieldsBox(
         label = stringResource(R.string.date_calculator_years),
         maxValue = 9_999.0,
         formatterSymbols = formatterSymbols,
+        allowFraction = false,
       )
     }
 
@@ -238,6 +239,7 @@ private fun InputTextFieldsBox(
         label = stringResource(R.string.date_calculator_months),
         maxValue = 9_999.0,
         formatterSymbols = formatterSymbols,
+        allowFraction = false,
       )
 
       TimeUnitTextField(
@@ -246,6 +248,7 @@ private fun InputTextFieldsBox(
         label = stringResource(R.string.date_calculator_days),
         maxValue = 99_999.0,
         formatterSymbols = formatterSymbols,
+        allowFraction = false,
       )
     }
 
@@ -256,6 +259,7 @@ private fun InputTextFieldsBox(
         label = stringResource(R.string.date_calculator_hours),
         maxValue = 9_999_999.0,
         formatterSymbols = formatterSymbols,
+        allowFraction = false,
       )
 
       TimeUnitTextField(
@@ -265,6 +269,7 @@ private fun InputTextFieldsBox(
         formatterSymbols = formatterSymbols,
         maxValue = 99_999_999.0,
         imeAction = ImeAction.Done,
+        allowFraction = false,
       )
     }
   }
@@ -282,7 +287,8 @@ private fun Context.createEvent(start: ZonedDateTime, end: ZonedDateTime) {
       .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
   try {
     startActivity(intent)
-  } catch (e: ActivityNotFoundException) {
+  } catch (e: Exception) {
+    Log.e("AddSubtractPage", "Failed to create event", e)
     showToast(this, this.getString(R.string.common_error))
   }
 }

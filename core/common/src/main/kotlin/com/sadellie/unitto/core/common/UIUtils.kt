@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.core.common
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -29,8 +28,8 @@ import androidx.core.net.toUri
 fun openLink(mContext: Context, url: String) =
   try {
     CustomTabsIntent.Builder().build().launchUrl(mContext, url.toUri())
-  } catch (e: ActivityNotFoundException) {
-    Log.d("UIUtils", "Failed to open link", e)
+  } catch (e: Exception) {
+    Log.e("UIUtils", "Failed to open link", e)
     showToast(mContext, mContext.getString(R.string.common_error))
   }
 
