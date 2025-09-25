@@ -62,6 +62,7 @@ object UnitID {
   const val metric_ton = "metric_ton"
   const val imperial_ton = "imperial_ton"
   const val pound = "pound"
+  const val stone_uk = "stone_uk"
   const val ounce = "ounce"
   const val carat = "carat"
   const val mercury_mass = "mercury_mass"

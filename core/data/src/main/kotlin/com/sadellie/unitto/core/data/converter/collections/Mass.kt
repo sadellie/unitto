@@ -112,6 +112,13 @@ internal val massCollection: List<BasicUnit> by lazy {
       R.string.unit_pound_short,
     ),
     NormalUnit(
+      UnitID.stone_uk,
+      BigDecimal("6350.29318"),
+      UnitGroup.MASS,
+      R.string.unit_stone_uk,
+      R.string.unit_stone_uk_short,
+    ),
+    NormalUnit(
       UnitID.mercury_mass,
       BigDecimal("330104000000000000000000000"),
       UnitGroup.MASS,

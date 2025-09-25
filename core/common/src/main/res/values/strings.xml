@@ -1366,6 +1366,8 @@
     <string name="unit_statfarad_short">stF</string>
     <string name="unit_stilb">Stilb</string>
     <string name="unit_stilb_short">sb</string>
+    <string name="unit_stone_uk">Stone (UK)</string>
+    <string name="unit_stone_uk_short">stone</string>
     <string name="unit_sun_equatorial_radius">Sun equatorial radius</string>
     <string name="unit_sun_equatorial_radius_short">Sun R</string>
     <string name="unit_sun_mass">Sun mass</string>

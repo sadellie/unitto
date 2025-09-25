@@ -245,6 +245,7 @@ class AllUnitsTest {
     ounce.checkWith(pound, "1500", "93.75")
     carat.checkWith(pound, "1500", "0.66139")
     pound.checkWith(kilogram, "1500", "680.38856")
+    stone_uk.checkWith(pound, "1500", "21000")
     mercury_mass.checkWith(kilogram, "1", "330104000000000000000000")
     venus_mass.checkWith(kilogram, "1", "4867320000000000000000000")
     earth_mass.checkWith(kilogram, "1", "5972190000000000000000000")
