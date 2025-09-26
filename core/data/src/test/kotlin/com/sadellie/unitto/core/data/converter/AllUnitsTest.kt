@@ -121,6 +121,7 @@ class AllUnitsTest {
   @Test
   fun testArea() = testWithUnits {
     cent.checkWith(acre, "75.9", "0.759")
+    are.checkWith(hectare, "75.9", "0.759")
     acre.checkWith(square_kilometer, "75.9", "0.30716")
     hectare.checkWith(square_foot, "75.9", "8169808.00628")
     square_foot.checkWith(square_decimeter, "75.9", "705.13407")

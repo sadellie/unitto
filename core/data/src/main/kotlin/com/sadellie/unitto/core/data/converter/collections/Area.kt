@@ -35,6 +35,13 @@ internal val areaCollection: List<BasicUnit> by lazy {
       R.string.unit_cent_short,
     ),
     NormalUnit(
+      UnitID.are,
+      BigDecimal("100000000000000"),
+      UnitGroup.AREA,
+      R.string.unit_are,
+      R.string.unit_are_short,
+    ),
+    NormalUnit(
       UnitID.acre,
       BigDecimal("4046856422399924"),
       UnitGroup.AREA,
