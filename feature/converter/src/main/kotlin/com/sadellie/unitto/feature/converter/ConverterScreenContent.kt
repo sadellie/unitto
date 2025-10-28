@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,10 +36,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -76,6 +79,7 @@ import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Shapes
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.ColumnWithConstraints
@@ -179,6 +183,7 @@ internal fun ConverterDefault(
         Spacer(modifier = Modifier.height(boxWithConstraintsScope.maxHeight * SPACER_HEIGHT_FACTOR))
 
         UnitSelectionButtons(
+          modifier = Modifier.fillMaxWidth(),
           unitFromLabel = stringResource(uiState.unitFrom.displayName),
           unitToLabel = stringResource(uiState.unitTo.displayName),
           swapUnits = { swapUnits(uiState.unitTo.id, uiState.unitFrom.id) },
@@ -250,6 +255,7 @@ internal fun NumberBase(
         Spacer(modifier = Modifier.height(it.maxHeight * SPACER_HEIGHT_FACTOR))
 
         UnitSelectionButtons(
+          modifier = Modifier.fillMaxWidth(),
           unitFromLabel = stringResource(uiState.unitFrom.displayName),
           unitToLabel = stringResource(uiState.unitTo.displayName),
           swapUnits = { swapUnits(uiState.unitTo.id, uiState.unitFrom.id) },
@@ -526,13 +532,15 @@ private fun AnimatedUnitShortName(label: String = stringResource(R.string.common
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun UnitSelectionButtons(
-  unitFromLabel: String = stringResource(R.string.common_loading),
-  unitToLabel: String = stringResource(R.string.common_loading),
-  swapUnits: () -> Unit = {},
-  navigateToLeftScreen: () -> Unit = {},
-  navigateToRightScreen: () -> Unit = {},
+  modifier: Modifier,
+  unitFromLabel: String,
+  unitToLabel: String,
+  swapUnits: () -> Unit,
+  navigateToLeftScreen: () -> Unit,
+  navigateToRightScreen: () -> Unit,
 ) {
   var swapped by remember { mutableStateOf(false) }
   val swapButtonRotation: Float by
@@ -542,9 +550,13 @@ private fun UnitSelectionButtons(
       label = "Swap button rotation",
     )
 
-  Row(verticalAlignment = Alignment.CenterVertically) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(Sizes.small),
+  ) {
     UnitSelectionButton(
-      modifier = Modifier.fillMaxWidth().weight(1f),
+      modifier = Modifier.weight(1f),
       label = unitFromLabel,
       onClick = navigateToLeftScreen,
     )
@@ -552,16 +564,21 @@ private fun UnitSelectionButtons(
       onClick = {
         swapUnits()
         swapped = !swapped
-      }
+      },
+      shapes = IconButtonDefaults.shapes(),
+      modifier =
+        Modifier.size(
+          IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Uniform)
+        ),
     ) {
       Icon(
-        modifier = Modifier.rotate(swapButtonRotation),
+        modifier = Modifier.rotate(swapButtonRotation).size(IconButtonDefaults.mediumIconSize),
         imageVector = Symbols.SwapHoriz,
         contentDescription = stringResource(R.string.converter_swap_units_description),
       )
     }
     UnitSelectionButton(
-      modifier = Modifier.fillMaxWidth().weight(1f),
+      modifier = Modifier.weight(1f),
       label = unitToLabel,
       onClick = navigateToRightScreen,
     )

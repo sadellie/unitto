@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ package com.sadellie.unitto.core.model.converter
 import androidx.annotation.StringRes
 import com.sadellie.unitto.core.common.R
 
-enum class UnitGroup(@StringRes val res: Int) {
+enum class UnitGroup(@param:StringRes val res: Int) {
   // NOTE: This order is used as default for new users
   LENGTH(res = R.string.unit_group_length),
   CURRENCY(res = R.string.unit_group_currency),

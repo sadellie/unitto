@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -339,6 +340,7 @@ private fun ExpandedAdditionalKeyboard(
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ToggleExpandedAdditionalKeysButton(
   modifier: Modifier,
@@ -358,8 +360,17 @@ private fun ToggleExpandedAdditionalKeysButton(
         IconButtonDefaults.iconButtonColors(
           containerColor = MaterialTheme.colorScheme.inverseOnSurface
         ),
+      shapes = IconButtonDefaults.shapes(),
+      modifier =
+        Modifier.size(
+          IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Uniform)
+        ),
     ) {
-      Icon(Symbols.KeyboardArrowUp, null, Modifier.rotate(expandRotation))
+      Icon(
+        imageVector = Symbols.KeyboardArrowUp,
+        contentDescription = null,
+        modifier = Modifier.rotate(expandRotation).size(IconButtonDefaults.mediumIconSize),
+      )
     }
   }
 }

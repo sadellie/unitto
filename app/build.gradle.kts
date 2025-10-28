@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@ plugins {
 
 android {
   namespace = "com.sadellie.unitto"
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "com.sadellie.unitto"
-    minSdk = 21
-    targetSdk = 35
+    minSdk = 23
+    targetSdk = 36
     versionCode = libs.versions.versionCode.get().toInt()
     versionName = libs.versions.versionName.get()
     androidResources.localeFilters +=
@@ -93,8 +93,7 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
     isCoreLibraryDesugaringEnabled = true
   }
-
-  kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+  kotlin.jvmToolchain(11)
   composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
   packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
 }
@@ -110,7 +109,6 @@ dependencies {
   implementation(project(":feature:converter"))
   implementation(project(":feature:datecalculator"))
   implementation(project(":feature:glance"))
-  implementation(project(":feature:graphing"))
   implementation(project(":feature:timezone"))
   implementation(project(":feature:settings"))
 

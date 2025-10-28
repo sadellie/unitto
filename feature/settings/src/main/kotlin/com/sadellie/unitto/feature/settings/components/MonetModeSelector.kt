@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.settings.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -49,6 +50,7 @@ internal fun MonetModeSelector(
   onItemClick: (MonetMode) -> Unit,
   customColor: Color,
   themingMode: ThemingMode,
+  paddingValues: PaddingValues = PaddingValues(0.dp),
 ) {
   val listState = rememberLazyListState()
 
@@ -61,6 +63,7 @@ internal fun MonetModeSelector(
     modifier = modifier,
     state = listState,
     horizontalArrangement = Arrangement.spacedBy(8.dp),
+    contentPadding = paddingValues,
   ) {
     items(MonetMode.entries) { monetMode ->
       Themmo(

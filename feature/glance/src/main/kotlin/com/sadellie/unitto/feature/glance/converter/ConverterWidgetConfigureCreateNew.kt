@@ -26,8 +26,14 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -42,21 +48,26 @@ import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
+import com.sadellie.unitto.core.ui.singleShape
 import com.sadellie.unitto.feature.glance.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.math.BigDecimal
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import javax.inject.Inject
 
 @Composable
 internal fun ConverterWidgetConfigureCreateNewRoute(
@@ -80,6 +91,7 @@ internal fun ConverterWidgetConfigureCreateNewRoute(
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ConverterWidgetConfigureCreateNewScreen(
   uiState: ConverterWidgetConfigureCreateNewUIState,
@@ -99,21 +111,37 @@ private fun ConverterWidgetConfigureCreateNewScreen(
     title = stringResource(R.string.converter_widget_configure_create_pair),
     navigationIcon = { NavigateUpButton(navigateUp) },
     actions = {
-      IconButton(
-        onClick = {
-          if (uiState.unitFrom == null) return@IconButton
-          if (uiState.unitTo == null) return@IconButton
-          onAdd(uiState.unitFrom.id, uiState.unitTo.id)
-        },
+      FilledIconButton(
+        onClick = onClick@{
+            if (uiState.unitFrom == null || uiState.unitTo == null) return@onClick
+            onAdd(uiState.unitFrom.id, uiState.unitTo.id)
+          },
         enabled = isAddEnabled,
+        shapes = IconButtonDefaults.shapes(),
+        modifier =
+          Modifier.size(
+            IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)
+          ),
       ) {
-        Icon(imageVector = Symbols.Add, contentDescription = stringResource(R.string.common_add))
+        Icon(
+          imageVector = Symbols.Add,
+          contentDescription = stringResource(R.string.common_add),
+          modifier = Modifier.size(IconButtonDefaults.smallIconSize),
+        )
       }
     },
   ) { paddingValues ->
-    Column(modifier = Modifier.padding(paddingValues)) {
-      ListItem(
+    Column(
+      modifier =
+        Modifier.verticalScroll(rememberScrollState())
+          .padding(paddingValues)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
+      ListItemExpressive(
         modifier = Modifier.clickable { navigateToSelectFrom() },
+        shape =
+          if (isUnitFromSelected) ListItemDefaults.firstShape else ListItemDefaults.singleShape,
         headlineContent = { Text(stringResource(R.string.converter_widget_configure_left_unit)) },
         supportingContent = {
           Text(
@@ -129,11 +157,12 @@ private fun ConverterWidgetConfigureCreateNewScreen(
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
       ) {
-        ListItem(
+        ListItemExpressive(
           modifier =
             Modifier.clickable(enabled = isUnitFromSelected) {
               if (uiState.unitFrom != null) navigateToSelectTo(uiState.unitFrom.id)
             },
+          shape = ListItemDefaults.lastShape,
           headlineContent = {
             Text(stringResource(R.string.converter_widget_configure_right_unit))
           },

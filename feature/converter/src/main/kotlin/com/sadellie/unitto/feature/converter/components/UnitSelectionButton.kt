@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,8 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,11 +44,12 @@ import com.sadellie.unitto.core.ui.Button
  * @param onClick Function to call when button is clicked (navigate to a unit selection screen)
  * @param label Text on button
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @SuppressLint("UnusedContentLambdaTargetStateParameter")
 @Composable
 internal fun UnitSelectionButton(
-  modifier: Modifier = Modifier,
-  onClick: () -> Unit = {},
+  modifier: Modifier,
+  onClick: () -> Unit,
   label: String,
   enabled: Boolean = true,
 ) {
@@ -55,7 +57,7 @@ internal fun UnitSelectionButton(
     modifier = modifier,
     onClick = onClick,
     enabled = enabled,
-    containerColor = MaterialTheme.colorScheme.primaryContainer,
+    shapes = ButtonDefaults.shapes(),
     contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
   ) {
     AnimatedContent(
@@ -72,12 +74,7 @@ internal fun UnitSelectionButton(
       },
       label = "Unit change",
     ) {
-      Text(
-        text = it,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.onPrimaryContainer,
-      )
+      Text(text = it, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
   }
 }

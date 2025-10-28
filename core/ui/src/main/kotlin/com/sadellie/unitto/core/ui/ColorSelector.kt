@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -60,6 +61,7 @@ fun ColorSelector(
   currentColor: Color,
   onColorClick: (Color) -> Unit,
   colors: List<Color>,
+  contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
   val listState = rememberLazyListState()
 
@@ -72,6 +74,7 @@ fun ColorSelector(
     modifier = modifier,
     state = listState,
     horizontalArrangement = Arrangement.spacedBy(8.dp),
+    contentPadding = contentPadding,
   ) {
     items(colors, { it.value.toLong() }) {
       ColorCheckbox(color = it, selected = it == currentColor, onClick = { onColorClick(it) })

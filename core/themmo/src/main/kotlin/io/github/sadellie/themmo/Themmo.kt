@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -61,22 +63,23 @@ import io.github.sadellie.themmo.core.ThemingMode
  * @param themmoController [ThemmoController] that is used to provide current theming state and
  *   methods to change theming states.
  * @param typography Your app's typography.
- * @param animationSpec Animation that will be applied when theming option changes.
+ * @param colorAnimationSpec Animation that will be applied when theming option changes.
  * @param content Provided composables will be colored according to [ThemmoController] states..
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun Themmo(
   themmoController: ThemmoController = rememberThemmoController(),
   typography: Typography = Typography(),
-  animationSpec: AnimationSpec<Color> = tween(durationMillis = 150),
+  colorAnimationSpec: AnimationSpec<Color> = tween(durationMillis = 150),
   content: @Composable (ThemmoController) -> Unit,
 ) {
   val context = LocalContext.current
   val generatedColors: ColorScheme =
     themmoController.provideColorScheme(context = context, isSystemDark = isSystemInDarkTheme())
 
-  MaterialTheme(
-    colorScheme = generatedColors.animateAllColors(animationSpec),
+  MaterialExpressiveTheme(
+    colorScheme = generatedColors.animateAllColors(colorAnimationSpec),
     typography = typography,
     content = { content(themmoController) },
   )
@@ -129,6 +132,27 @@ private fun ColorScheme.animateAllColors(animationSpec: AnimationSpec<Color>): C
     errorContainer = errorContainer.animateColor(),
     onErrorContainer = onErrorContainer.animateColor(),
     outline = outline.animateColor(),
+    outlineVariant = outlineVariant.animateColor(),
+    scrim = scrim.animateColor(),
+    surfaceBright = surfaceBright.animateColor(),
+    surfaceDim = surfaceDim.animateColor(),
+    surfaceContainer = surfaceContainer.animateColor(),
+    surfaceContainerHigh = surfaceContainerHigh.animateColor(),
+    surfaceContainerHighest = surfaceContainerHighest.animateColor(),
+    surfaceContainerLow = surfaceContainerLow.animateColor(),
+    surfaceContainerLowest = surfaceContainerLowest.animateColor(),
+    primaryFixed = primaryFixed.animateColor(),
+    primaryFixedDim = primaryFixedDim.animateColor(),
+    onPrimaryFixed = onPrimaryFixed.animateColor(),
+    onPrimaryFixedVariant = onPrimaryFixedVariant.animateColor(),
+    secondaryFixed = secondaryFixed.animateColor(),
+    secondaryFixedDim = secondaryFixedDim.animateColor(),
+    onSecondaryFixed = onSecondaryFixed.animateColor(),
+    onSecondaryFixedVariant = onSecondaryFixedVariant.animateColor(),
+    tertiaryFixed = tertiaryFixed.animateColor(),
+    tertiaryFixedDim = tertiaryFixedDim.animateColor(),
+    onTertiaryFixed = onTertiaryFixed.animateColor(),
+    onTertiaryFixedVariant = onTertiaryFixedVariant.animateColor(),
   )
 }
 

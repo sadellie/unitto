@@ -79,7 +79,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import java.math.BigDecimal
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.runBlocking
 
 internal class ConverterWidget : GlanceAppWidget() {
   override val sizeMode: SizeMode = SizeMode.Responsive(setOf(smallSizeMode, mediumSizeMode))
@@ -105,11 +104,10 @@ internal class ConverterWidget : GlanceAppWidget() {
     val db = dbModule.provideUnittoDatabase(context)
     val dao = dbModule.provideConverterWidgetUnitsPairDao(db)
 
-    runBlocking {
-      val manager = GlanceAppWidgetManager(context)
-      val appWidgetId = manager.getAppWidgetId(glanceId)
-      dao.deleteByAppWidgetId(appWidgetId)
-    }
+    val manager = GlanceAppWidgetManager(context)
+    val appWidgetId = manager.getAppWidgetId(glanceId)
+    dao.deleteByAppWidgetId(appWidgetId)
+
     super.onDelete(context, glanceId)
   }
 

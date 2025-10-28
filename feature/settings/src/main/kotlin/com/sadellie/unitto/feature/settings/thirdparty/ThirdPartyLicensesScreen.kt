@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,28 +19,28 @@
 package com.sadellie.unitto.feature.settings.thirdparty
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.openLink
-import com.sadellie.unitto.core.licenses.ALL_THIRD_PARTY
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.licenses.ThirdParty
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.listedShaped
 
 /**
  * Screen with used third party libraries
@@ -56,34 +56,31 @@ internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
     title = stringResource(R.string.settings_third_party_licenses),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
+    val allThirdParty = remember { ThirdParty.allThirdParty() }
     LazyColumn(
-      verticalArrangement = Arrangement.spacedBy(16.dp),
-      contentPadding =
-        PaddingValues(
-          start = 16.dp,
-          end = 16.dp,
-          top = padding.calculateTopPadding(),
-          bottom = 24.dp,
-        ),
+      verticalArrangement = ListArrangement,
+      contentPadding = padding,
+      modifier = Modifier.padding(horizontal = Sizes.large),
     ) {
-      items(ALL_THIRD_PARTY) {
-        OutlinedCard(Modifier.clickable { it.website?.let { url -> openLink(mContext, url) } }) {
-          Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
-            Text(text = it.name, style = MaterialTheme.typography.titleLarge)
-            Text(
-              modifier = Modifier.padding(top = 4.dp, bottom = 12.dp),
-              text = it.dev ?: "",
-              style = MaterialTheme.typography.bodyLarge,
-            )
-            Text(text = it.description ?: "", style = MaterialTheme.typography.bodyMedium)
-            Text(
-              modifier = Modifier.align(Alignment.End),
-              text = it.license ?: "",
-              style = MaterialTheme.typography.labelLarge,
-            )
-          }
-        }
+      itemsIndexed(allThirdParty) { index, item ->
+        ListItemExpressive(
+          modifier = Modifier.clickable { openLink(mContext, item.website) },
+          shape = ListItemDefaults.listedShaped(index, allThirdParty.size),
+          headlineContent = { Text("${item.name} (${item.license})") },
+          supportingContent = {
+            Column {
+              Text(item.dev)
+              Text(item.description)
+            }
+          },
+        )
       }
     }
   }
+}
+
+@Composable
+@Preview
+private fun PreviewThirdPartyLicensesScreen() {
+  ThirdPartyLicensesScreen(navigateUpAction = {})
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,12 @@ package com.sadellie.unitto.feature.settings.calculator
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
@@ -36,10 +37,15 @@ import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Timer
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
+import com.sadellie.unitto.core.ui.middleShape
 
 @Composable
 internal fun CalculatorSettingsRoute(
@@ -72,29 +78,37 @@ private fun CalculatorSettingsScreen(
     title = stringResource(R.string.calculator_title),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
-    Column(Modifier.padding(padding)) {
-      ListItem(
+    Column(
+      modifier =
+        Modifier.padding(padding)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
+      ListItemExpressive(
         headlineText = stringResource(R.string.settings_history_view_button),
         icon = Symbols.History,
         supportingText = stringResource(R.string.settings_history_view_button_support),
         switchState = prefs.openHistoryViewButton,
         onSwitchChange = updateOpenHistoryViewButton,
+        shape = ListItemDefaults.firstShape,
       )
 
-      ListItem(
+      ListItemExpressive(
         headlineText = stringResource(R.string.settings_fractional_output),
         icon = IconPack.Fraction,
         supportingText = stringResource(R.string.settings_fractional_output_support),
         switchState = prefs.fractionalOutput,
         onSwitchChange = updateFractionalOutput,
+        shape = ListItemDefaults.middleShape,
       )
 
-      ListItem(
+      ListItemExpressive(
         headlineText = stringResource(R.string.settings_partial_history_view),
         icon = Symbols.Timer,
         supportingText = stringResource(R.string.settings_partial_history_view_support),
         switchState = prefs.partialHistoryView,
         onSwitchChange = updatePartialHistoryView,
+        shape = ListItemDefaults.lastShape,
       )
     }
   }

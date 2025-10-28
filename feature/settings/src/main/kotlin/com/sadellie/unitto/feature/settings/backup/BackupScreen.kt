@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -49,10 +50,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.icons.symbols.FileSave
@@ -61,9 +63,13 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
+import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.feature.settings.R
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -73,13 +79,14 @@ internal fun BackupRoute(
   viewModel: BackupViewModel = hiltViewModel(),
   navigateUpAction: () -> Unit,
 ) {
-  val mContext = LocalContext.current
+  val context = LocalContext.current
+  val resources = LocalResources.current
   val uiState: BackupUIState = viewModel.uiState.collectAsStateWithLifecycle().value
   val showErrorToast: Boolean =
     viewModel.showErrorToast.collectAsStateWithLifecycle(initialValue = false).value
 
   LaunchedEffect(showErrorToast) {
-    if (showErrorToast) showToast(mContext, mContext.resources.getString(R.string.common_error))
+    if (showErrorToast) showToast(context, resources.getString(R.string.common_error))
   }
 
   when (uiState) {
@@ -107,23 +114,37 @@ private fun BackupScreenReady(
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { paddingValues ->
     val scrollState = rememberScrollState()
-    Column(Modifier.verticalScroll(scrollState).padding(paddingValues)) {
-      BackupRestoreControls(onBackup, onRestore)
-      ListItem(
+    Column(
+      modifier =
+        Modifier.verticalScroll(scrollState)
+          .padding(paddingValues)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
+      BackupRestoreControls(
+        modifier = Modifier.padding(vertical = Sizes.large),
+        onBackup = onBackup,
+        onRestore = onRestore,
+      )
+      ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_saved_expressions)) },
         supportingContent = { Text("${uiState.savedExpressions}") },
+        shape = ListItemDefaults.firstShape,
       )
-      ListItem(
+      ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_favorite_units)) },
         supportingContent = { Text("${uiState.favoriteUnits}") },
+        shape = ListItemDefaults.middleShape,
       )
-      ListItem(
+      ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_used_units)) },
         supportingContent = { Text("${uiState.usedUnits}") },
+        shape = ListItemDefaults.middleShape,
       )
-      ListItem(
+      ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_favorite_time_zones)) },
         supportingContent = { Text("${uiState.favoriteTimeZones}") },
+        shape = ListItemDefaults.lastShape,
       )
     }
   }
@@ -131,6 +152,7 @@ private fun BackupScreenReady(
 
 @Composable
 private fun BackupRestoreControls(
+  modifier: Modifier,
   onBackup: (Context, Uri) -> Unit,
   onRestore: (Context, Uri) -> Unit,
 ) {
@@ -147,7 +169,7 @@ private fun BackupRestoreControls(
     }
 
   Row(
-    modifier = Modifier.fillMaxWidth().padding(Sizes.large).clip(Shapes.ExtraLarge),
+    modifier = modifier.fillMaxWidth().clip(Shapes.ExtraLarge),
     horizontalArrangement = Arrangement.spacedBy(2.dp),
   ) {
     BackupRestoreButton(
@@ -199,7 +221,7 @@ private fun BackupRestoreButton(
 private fun <T> ActivityResultLauncher<T>.launchSafely(input: T) {
   try {
     this.launch(input)
-  } catch (e: ActivityNotFoundException) {
+  } catch (_: ActivityNotFoundException) {
     Log.e("SettingsScreen", "launchSafely: ActivityNotFoundException")
   }
 }

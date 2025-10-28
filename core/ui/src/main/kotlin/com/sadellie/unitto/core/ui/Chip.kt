@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ fun FilterChip(
   val transition = updateTransition(targetState = isSelected, label = "Selected transition")
   val backgroundColor =
     transition.animateColor(label = "Background color") {
-      if (it) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
+      if (it) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
     }
   val borderColor =
     transition.animateColor(label = "Border color") {
@@ -98,7 +98,6 @@ fun AssistChip(
         .padding(vertical = 8.dp)
         .clip(FilterChipDefaults.shape)
         .clickable { onClick() }
-        .background(MaterialTheme.colorScheme.surface)
         .border(
           width = 1.dp,
           color = MaterialTheme.colorScheme.outline,

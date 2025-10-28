@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,50 +26,58 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.datastore.DisplayPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ClearBold
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
 import com.sadellie.unitto.core.designsystem.icons.symbols.Colorize
-import com.sadellie.unitto.core.designsystem.icons.symbols.DarkMode
 import com.sadellie.unitto.core.designsystem.icons.symbols.DarkModeFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.ExposureZero
-import com.sadellie.unitto.core.designsystem.icons.symbols.HdrAuto
 import com.sadellie.unitto.core.designsystem.icons.symbols.Language
-import com.sadellie.unitto.core.designsystem.icons.symbols.LightMode
 import com.sadellie.unitto.core.designsystem.icons.symbols.Palette
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.ColorSelector
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.Header
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListHeader
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.SegmentedButton
-import com.sadellie.unitto.core.ui.SegmentedButtonsRow
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
+import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.feature.settings.components.MonetModeSelector
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
+import io.github.sadellie.themmo.rememberThemmoController
 
 @Composable
 internal fun DisplayRoute(
@@ -133,49 +141,84 @@ private fun DisplayScreen(
     navigationIcon = { NavigateUpButton(navigateUp) },
   ) { paddingValues ->
     Column(
-      modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(paddingValues)
+      modifier =
+        Modifier.fillMaxSize()
+          .verticalScroll(rememberScrollState())
+          .padding(paddingValues)
+          .padding(horizontal = Sizes.large),
+      verticalArrangement = ListArrangement,
     ) {
-      ListItem(
+      val isColorSelectedEnabled =
+        remember(controller.isDynamicThemeEnabled) { !controller.isDynamicThemeEnabled }
+      val isStyleSelectorEnabled =
+        remember(controller.isDynamicThemeEnabled, controller.currentCustomColor) {
+          (!controller.isDynamicThemeEnabled) and
+            (controller.currentCustomColor != Color.Unspecified)
+        }
+
+      ListItemExpressive(
+        shape = ListItemDefaults.firstShape,
         leadingContent = { Icon(Symbols.Palette, stringResource(R.string.settings_color_theme)) },
         headlineContent = { Text(stringResource(R.string.settings_color_theme)) },
         supportingContent = { Text(stringResource(R.string.settings_color_theme_support)) },
+        secondaryContent = {
+          ThemingModeSelector(
+            modifier = Modifier.fillMaxWidth(),
+            onThemeChange = onThemeChange,
+            currentThemingMode = controller.currentThemingMode,
+          )
+        },
       )
-
-      ThemingModeSelector(onThemeChange, controller.currentThemingMode)
 
       AnimatedVisibility(
         visible = controller.currentThemingMode != ThemingMode.FORCE_LIGHT,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
       ) {
-        ListItem(
+        ListItemExpressive(
           icon = Symbols.DarkModeFill,
           headlineText = stringResource(R.string.settings_amoled_dark),
           supportingText = stringResource(R.string.settings_amoled_dark_support),
           switchState = controller.isAmoledThemeEnabled,
           onSwitchChange = onAmoledThemeChange,
+          shape = ListItemDefaults.middleShape,
         )
       }
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-        ListItem(
+        val dynamicColorListItemShape =
+          remember(isColorSelectedEnabled) {
+            if (isColorSelectedEnabled) ListItemDefaults.middleShape else ListItemDefaults.lastShape
+          }
+        ListItemExpressive(
           icon = Symbols.Colorize,
           headlineText = stringResource(R.string.settings_dynamic_colors),
           supportingText = stringResource(R.string.settings_dynamic_colors_support),
           switchState = controller.isDynamicThemeEnabled,
           onSwitchChange = onDynamicThemeChange,
+          shape = dynamicColorListItemShape,
         )
 
         AnimatedVisibility(
-          visible = !controller.isDynamicThemeEnabled,
+          visible = isColorSelectedEnabled,
           enter = expandVertically() + fadeIn(),
           exit = shrinkVertically() + fadeOut(),
         ) {
-          ListItem(
+          val shape =
+            remember(isStyleSelectorEnabled) {
+              if (isStyleSelectorEnabled) ListItemDefaults.middleShape
+              else ListItemDefaults.lastShape
+            }
+          ListItemExpressive(
+            shape = shape,
+            leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
             headlineContent = { Text(stringResource(R.string.settings_selected_color)) },
-            supportingContent = {
+            secondaryContentPadding = PaddingValues(0.dp),
+            secondaryContent = {
               ColorSelector(
-                modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding =
+                  PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
                 currentColor =
                   // Disable custom color and use brand color scheme
                   if (controller.currentCustomColor == Color.Unspecified) brandColor
@@ -184,86 +227,93 @@ private fun DisplayScreen(
                 colors = colorSchemes,
               )
             },
-            modifier = Modifier.padding(start = 40.dp),
           )
         }
 
         AnimatedVisibility(
-          visible =
-            (!controller.isDynamicThemeEnabled) and
-              (controller.currentCustomColor != Color.Unspecified),
+          visible = isStyleSelectorEnabled,
           enter = expandVertically() + fadeIn(),
           exit = shrinkVertically() + fadeOut(),
         ) {
-          ListItem(
+          ListItemExpressive(
+            shape = ListItemDefaults.lastShape,
+            leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
             headlineContent = { Text(stringResource(R.string.settings_selected_style)) },
-            supportingContent = {
+            secondaryContentPadding = PaddingValues(0.dp),
+            secondaryContent = {
               MonetModeSelector(
-                modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier.fillMaxWidth(),
                 selected = controller.currentMonetMode,
                 onItemClick = onMonetModeChange,
                 customColor = controller.currentCustomColor,
                 themingMode = controller.currentThemingMode,
+                paddingValues =
+                  PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
               )
             },
-            modifier = Modifier.padding(start = 40.dp),
           )
         }
       }
 
-      Header(stringResource(R.string.settings_additional))
+      ListHeader(stringResource(R.string.settings_additional))
 
-      ListItem(
+      ListItemExpressive(
         icon = IconPack.ClearBold,
         headlineText = stringResource(R.string.settings_ac_button),
         supportingText = stringResource(R.string.settings_ac_button_support),
         switchState = prefs.acButton,
         onSwitchChange = updateAcButton,
+        shape = ListItemDefaults.firstShape,
       )
 
-      ListItem(
+      ListItemExpressive(
         icon = Symbols.ExposureZero,
         headlineText = stringResource(R.string.settings_middle_zero),
         supportingText = stringResource(R.string.settings_middle_zero_support),
         switchState = prefs.middleZero,
         onSwitchChange = updateMiddleZero,
+        shape = ListItemDefaults.middleShape,
       )
 
-      ListItem(
+      ListItemExpressive(
         icon = Symbols.Language,
         headlineText = stringResource(R.string.settings_language),
         supportingText = stringResource(R.string.settings_language_support),
         modifier = Modifier.clickable { navigateToLanguages() },
+        shape = ListItemDefaults.lastShape,
       )
     }
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ThemingModeSelector(
+  modifier: Modifier,
   onThemeChange: (ThemingMode) -> Unit,
   currentThemingMode: ThemingMode,
 ) {
-  Row(Modifier.horizontalScroll(rememberScrollState()).wrapContentWidth()) {
-    SegmentedButtonsRow(modifier = Modifier.padding(56.dp, 8.dp, 24.dp, 2.dp)) {
-      SegmentedButton(
-        label = stringResource(R.string.settings_auto),
-        onClick = { onThemeChange(ThemingMode.AUTO) },
-        selected = ThemingMode.AUTO == currentThemingMode,
-        icon = Symbols.HdrAuto,
-      )
-      SegmentedButton(
-        label = stringResource(R.string.settings_light_mode),
-        onClick = { onThemeChange(ThemingMode.FORCE_LIGHT) },
-        selected = ThemingMode.FORCE_LIGHT == currentThemingMode,
-        icon = Symbols.LightMode,
-      )
-      SegmentedButton(
-        label = stringResource(R.string.settings_dark_mode),
-        onClick = { onThemeChange(ThemingMode.FORCE_DARK) },
-        selected = ThemingMode.FORCE_DARK == currentThemingMode,
-        icon = Symbols.DarkMode,
-      )
+  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.small)) {
+    ToggleButton(
+      onCheckedChange = { onThemeChange(ThemingMode.AUTO) },
+      checked = ThemingMode.AUTO == currentThemingMode,
+      modifier = Modifier.weight(1f),
+    ) {
+      Text(stringResource(R.string.settings_auto))
+    }
+    ToggleButton(
+      onCheckedChange = { onThemeChange(ThemingMode.FORCE_LIGHT) },
+      checked = ThemingMode.FORCE_LIGHT == currentThemingMode,
+      modifier = Modifier.weight(1f),
+    ) {
+      Text(stringResource(R.string.settings_light_mode))
+    }
+    ToggleButton(
+      onCheckedChange = { onThemeChange(ThemingMode.FORCE_DARK) },
+      checked = ThemingMode.FORCE_DARK == currentThemingMode,
+      modifier = Modifier.weight(1f),
+    ) {
+      Text(stringResource(R.string.settings_dark_mode))
     }
   }
 }
@@ -272,7 +322,10 @@ private fun ThemingModeSelector(
 @Preview
 @Composable
 private fun Preview() {
-  Themmo { themmoController ->
+  Themmo(
+    themmoController =
+      rememberThemmoController(dynamicThemeEnabled = false, customColor = colorSchemes[1])
+  ) { themmoController ->
     DisplayScreen(
       navigateUp = {},
       prefs = DisplayPreferences(middleZero = true, acButton = true),

@@ -84,15 +84,13 @@ internal fun FloatingActionButton(
   Box(modifier = glanceModifier.size(40.dp), contentAlignment = Alignment.Center) {
     Image(
       modifier =
-        GlanceModifier
-          .clickable(onClick)
+        GlanceModifier.clickable(onClick)
           .cornerRadiusWithBackground(
             context = LocalContext.current,
             cornerRadius = 12.dp,
             color = containerColor,
           )
-          .padding(8.dp)
-      ,
+          .padding(8.dp),
       provider = ImageProvider(iconRes),
       contentDescription = null,
       colorFilter = ColorFilter.tint(contentColor),
@@ -115,30 +113,29 @@ internal fun GlanceModifier.cornerRadiusWithBackground(
   cornerRadius: Dp,
   color: ColorProvider,
 ): GlanceModifier =
-  when {
-    Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
-      this.background(color).cornerRadius(cornerRadius)
-    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
-      this.background(
-        // This
-        ImageProvider(
-          // is
-          IconCompat
-            // so
-            .createWithResource(context, roundedCornerShape(cornerRadius.value))
-            // fucking
-            .toIcon(context)
-            // stupid
-            .setTint(color.getColor(context).toArgb())
-        )
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    this.background(color).cornerRadius(cornerRadius)
+  } else {
+    this.background(
+      // This
+      ImageProvider(
+        // is
+        IconCompat
+          // so
+          .createWithResource(context, roundedCornerShape(cornerRadius.value))
+          // fucking
+          .toIcon(context)
+          // stupid
+          .setTint(color.getColor(context).toArgb())
       )
-    else -> this.background(color)
+    )
   }
 
 // Not dp to avoid boxing
 @Stable
-private fun roundedCornerShape(dpSize: Float) = when (dpSize) {
-  8f -> R.drawable.rounded_corners_rectangle_shape_8dp
-  12f -> R.drawable.rounded_corners_rectangle_shape_12dp
-  else -> R.drawable.rounded_corners_rectangle_shape_24dp
-}
+private fun roundedCornerShape(dpSize: Float) =
+  when (dpSize) {
+    8f -> R.drawable.rounded_corners_rectangle_shape_8dp
+    12f -> R.drawable.rounded_corners_rectangle_shape_12dp
+    else -> R.drawable.rounded_corners_rectangle_shape_24dp
+  }

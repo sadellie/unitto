@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import com.sadellie.unitto.feature.bodymass.navigation.bodyMassGraph
 import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
 import com.sadellie.unitto.feature.converter.navigation.converterGraph
 import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorGraph
-import com.sadellie.unitto.feature.graphing.navigation.graphingGraph
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
 import com.sadellie.unitto.feature.settings.navigation.settingGraph
 import com.sadellie.unitto.feature.timezone.navigation.timeZoneGraph
@@ -47,13 +46,11 @@ internal fun UnittoNavigation(
   NavHost(
     navController = navController,
     startDestination = startDestination::class,
-    modifier = Modifier.background(MaterialTheme.colorScheme.background),
+    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
     enterTransition = { fadeIn() },
     exitTransition = { fadeOut() },
   ) {
     calculatorGraph(openDrawer = openDrawer)
-
-    graphingGraph(openDrawer = openDrawer, navController = navController)
 
     converterGraph(
       openDrawer = openDrawer,

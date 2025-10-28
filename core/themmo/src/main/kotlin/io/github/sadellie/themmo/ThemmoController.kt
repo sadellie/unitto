@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -218,6 +218,18 @@ class ThemmoController(
           darkColorScheme.surfaceContainerHighest.darken(AMOLED_MAIN_FACTOR),
         surfaceContainerLow = darkColorScheme.surfaceContainerLow.darken(AMOLED_MAIN_FACTOR),
         surfaceContainerLowest = darkColorScheme.surfaceContainerLowest.darken(AMOLED_MAIN_FACTOR),
+        primaryFixed = darkColorScheme.primaryFixed.darken(AMOLED_MAIN_FACTOR),
+        primaryFixedDim = darkColorScheme.primaryFixedDim.darken(AMOLED_MAIN_FACTOR),
+        onPrimaryFixed = darkColorScheme.onPrimaryFixed.darken(AMOLED_TEXT_FACTOR),
+        onPrimaryFixedVariant = darkColorScheme.onPrimaryFixedVariant,
+        secondaryFixed = darkColorScheme.secondaryFixed.darken(AMOLED_MAIN_FACTOR),
+        secondaryFixedDim = darkColorScheme.secondaryFixedDim.darken(AMOLED_MAIN_FACTOR),
+        onSecondaryFixed = darkColorScheme.onSecondaryFixed.darken(AMOLED_TEXT_FACTOR),
+        onSecondaryFixedVariant = darkColorScheme.onSecondaryFixedVariant,
+        tertiaryFixed = darkColorScheme.tertiaryFixed.darken(AMOLED_MAIN_FACTOR),
+        tertiaryFixedDim = darkColorScheme.tertiaryFixedDim.darken(AMOLED_MAIN_FACTOR),
+        onTertiaryFixed = darkColorScheme.onTertiaryFixed.darken(AMOLED_TEXT_FACTOR),
+        onTertiaryFixedVariant = darkColorScheme.onTertiaryFixedVariant.darken(AMOLED_TEXT_FACTOR),
       )
     } else {
       darkColorScheme

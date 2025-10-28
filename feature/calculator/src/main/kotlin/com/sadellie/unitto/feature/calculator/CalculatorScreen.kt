@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,10 +40,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -71,7 +74,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
@@ -158,10 +161,10 @@ internal fun Ready(
 
   ScaffoldWithTopBar(
     title = {},
-    navigationIcon = { DrawerButton(openDrawer) },
+    navigationIcon = { DrawerButton(onClick = openDrawer) },
     colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
     actions = {
-      ClearHistoryButton({ showClearHistoryDialog = true }, isOpen)
+      ClearHistoryButton(onClick = { showClearHistoryDialog = true }, isOpen = isOpen)
 
       if (uiState.openHistoryViewButton) {
         OpenHistoryViewButton(
@@ -359,6 +362,7 @@ private fun liquidFlingBehaviour(dragState: AnchoredDraggableState<DragState>) =
     animationSpec = tween(),
   )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ClearHistoryButton(onClick: () -> Unit, isOpen: Boolean) {
   AnimatedVisibility(
@@ -369,8 +373,19 @@ private fun ClearHistoryButton(onClick: () -> Unit, isOpen: Boolean) {
   ) {
     IconButton(
       onClick = onClick,
-      content = { Icon(Symbols.Delete, stringResource(R.string.calculator_clear_history)) },
-      modifier = Modifier.semantics { testTag = "historyButton" },
+      shapes = IconButtonDefaults.shapes(),
+      content = {
+        Icon(
+          imageVector = Symbols.Delete,
+          contentDescription = stringResource(R.string.calculator_clear_history),
+          modifier = Modifier.size(IconButtonDefaults.mediumIconSize),
+        )
+      },
+      modifier =
+        Modifier.semantics { testTag = "historyButton" }
+          .size(
+            IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Uniform)
+          ),
     )
   }
 }

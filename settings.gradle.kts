@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,6 @@ include(":feature:calculator")
 include(":feature:converter")
 include(":feature:datecalculator")
 include(":feature:glance")
-include(":feature:graphing")
+// include(":feature:graphing")
 include(":feature:timezone")
 include(":feature:settings")

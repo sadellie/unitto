@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,14 @@
 
 package com.sadellie.unitto.core.ui
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.sadellie.unitto.core.designsystem.icons.symbols.Menu
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -30,12 +35,25 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
  *
  * @param onClick Action to be called when button is clicked.
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun DrawerButton(onClick: () -> Unit) {
-  IconButton(onClick = onClick) {
+fun DrawerButton(
+  onClick: () -> Unit,
+  colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
+) {
+  IconButton(
+    onClick = onClick,
+    shapes = IconButtonDefaults.shapes(),
+    colors = colors,
+    modifier =
+      Modifier.size(
+        IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Uniform)
+      ),
+  ) {
     Icon(
       imageVector = Symbols.Menu,
       contentDescription = stringResource(R.string.common_open_menu_description),
+      modifier = Modifier.size(IconButtonDefaults.smallIconSize),
     )
   }
 }

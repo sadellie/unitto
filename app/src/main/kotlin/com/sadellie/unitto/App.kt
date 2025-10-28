@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,9 +71,9 @@ internal fun ComponentActivity.App(prefs: AppPreferences?) {
 
   BackHandler(drawerState.isOpen) { drawerScope.launch { drawerState.close() } }
 
-  Themmo(themmoController = themmoController, animationSpec = tween(THEME_CHANGE_DURATION)) {
+  Themmo(themmoController = themmoController, colorAnimationSpec = tween(THEME_CHANGE_DURATION)) {
     val mContext = LocalContext.current
-    val backgroundColor = MaterialTheme.colorScheme.background
+    val backgroundColor = MaterialTheme.colorScheme.surfaceContainer
     val isDarkThemeEnabled = remember(backgroundColor) { backgroundColor.isDark() }
 
     NavigationDrawer(

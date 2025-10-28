@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.glance.converter
 
-import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
@@ -33,7 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.glance.appwidget.GlanceAppWidgetManager
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -88,7 +87,7 @@ internal class ConverterWidgetConfigureActivity : AppCompatActivity() {
             val widget = ConverterWidget()
             coroutineScope.launch { widget.update(context, glanceId) }
             val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            setResult(Activity.RESULT_OK, resultValue)
+            setResult(RESULT_OK, resultValue)
             finish()
           },
         )
@@ -99,7 +98,7 @@ internal class ConverterWidgetConfigureActivity : AppCompatActivity() {
   private fun setCancellationResult() {
     // Cancel widget placement in case user leaves this activity
     val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-    setResult(Activity.RESULT_CANCELED, resultValue)
+    setResult(RESULT_CANCELED, resultValue)
   }
 
   private fun extractAppWidgetId(): Int {

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,21 +39,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.SearchPlaceholder
+import com.sadellie.unitto.core.ui.listedShaped
 import java.math.BigDecimal
 
 @Composable
@@ -79,26 +81,36 @@ internal fun UnitsList(
         buttonLabel = stringResource(R.string.common_open_settings),
       )
     } else {
-      LazyColumn(modifier = Modifier.fillMaxSize()) {
+      LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = ListArrangement) {
         searchResult.forEach { (group, units) ->
           item(key = group.name, contentType = ContentType.HEADER) {
-            Text(
-              modifier = Modifier.animateItem().padding(Sizes.medium, Sizes.small),
+            ListHeader(
+              modifier =
+                Modifier.animateItem()
+                  .padding(
+                    start = Sizes.large,
+                    end = Sizes.large,
+                    top = Sizes.large,
+                    bottom = Sizes.small,
+                  ),
               text = stringResource(group.res),
-              style = MaterialTheme.typography.titleSmall,
-              color = MaterialTheme.colorScheme.primary,
             )
           }
 
-          items(items = units, key = { it.basicUnit.id }, contentType = { ContentType.ITEM }) {
-            BasicUnitListItem(
-              modifier = Modifier.animateItem().padding(horizontal = Sizes.medium),
-              name = stringResource(it.basicUnit.displayName),
-              supportLabel = supportLabel(it),
-              isFavorite = it.stats.isFavorite,
-              isSelected = it.basicUnit.id == selectedUnitId,
-              onClick = { onClick(it) },
-              favoriteUnit = { favoriteUnit(it) },
+          itemsIndexed(
+            items = units,
+            key = { index, item -> item.basicUnit.id },
+            contentType = { _, _ -> ContentType.ITEM },
+          ) { index, item ->
+            UnitListItem(
+              modifier = Modifier.animateItem().padding(horizontal = Sizes.medium).fillMaxWidth(),
+              unselectedShape = ListItemDefaults.listedShaped(index, units.size),
+              name = stringResource(item.basicUnit.displayName),
+              supportLabel = supportLabel(item),
+              isFavorite = item.stats.isFavorite,
+              isSelected = item.basicUnit.id == selectedUnitId,
+              onClick = { onClick(item) },
+              favoriteUnit = { favoriteUnit(item) },
             )
           }
         }
@@ -108,61 +120,56 @@ internal fun UnitsList(
 }
 
 @Composable
-private fun BasicUnitListItem(
+private fun UnitListItem(
   modifier: Modifier,
   name: String,
   supportLabel: String,
   isFavorite: Boolean,
   isSelected: Boolean,
+  unselectedShape: Shape,
   onClick: () -> Unit,
   favoriteUnit: () -> Unit,
 ) {
-  val itemColor =
-    if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-    else MaterialTheme.colorScheme.onSurfaceVariant
-
-  Box(
+  Row(
     modifier =
-      modifier
-        .clip(Shapes.Large)
-        .background(MaterialTheme.colorScheme.surface)
-        .clickable(onClick = onClick)
+      Modifier.clickable(onClick = onClick)
+        .then(modifier)
+        .clip(if (isSelected) RoundedCornerShape(50) else unselectedShape)
+        .background(
+          if (isSelected) MaterialTheme.colorScheme.primaryContainer
+          else MaterialTheme.colorScheme.surfaceBright
+        )
+        .padding(
+          start = Sizes.medium,
+          top = Sizes.extraSmall,
+          bottom = Sizes.extraSmall,
+          end = Sizes.extraSmall,
+        ),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(Sizes.large),
   ) {
-    Row(
-      modifier =
-        Modifier.background(
-            if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
-          )
-          .padding(
-            start = Sizes.medium,
-            top = Sizes.extraSmall,
-            bottom = Sizes.extraSmall,
-            end = Sizes.extraSmall,
-          )
-          .fillMaxWidth(),
-      verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-      Column(Modifier.weight(1f)) {
-        Text(
-          modifier = Modifier.fillMaxWidth(),
-          text = name,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          color = itemColor,
-        )
-        Text(
-          modifier = Modifier.fillMaxWidth(),
-          text = supportLabel,
-          style = MaterialTheme.typography.bodySmall,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          color = itemColor,
-        )
-      }
-
-      FavoritesButton(state = isFavorite, onClick = favoriteUnit)
+    Column(Modifier.weight(1f)) {
+      val itemColor =
+        if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
+        else MaterialTheme.colorScheme.onSurfaceVariant
+      Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = name,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        color = itemColor,
+      )
+      Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = supportLabel,
+        style = MaterialTheme.typography.bodySmall,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        color = itemColor,
+      )
     }
+
+    FavoritesButton(state = isFavorite, onClick = favoriteUnit)
   }
 }
 
@@ -176,7 +183,7 @@ private const val UNIT_LIST_CROSS_FADE_DURATION_MS = 150
 @Preview
 @Composable
 private fun PreviewUnitsList() {
-  val resources = LocalContext.current.resources
+  val resources = LocalResources.current
   val units: Map<UnitGroup, List<UnitSearchResultItem>> =
     mapOf(
       UnitGroup.LENGTH to
@@ -235,10 +242,10 @@ private fun PreviewUnitsList() {
     )
 
   UnitsList(
-    modifier = Modifier.fillMaxSize(),
+    modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainer),
     searchResult = units,
     navigateToUnitGroups = {},
-    selectedUnitId = UnitID.mile,
+    selectedUnitId = UnitID.yard,
     supportLabel = { resources.getString(it.basicUnit.shortName) },
     onClick = {},
     favoriteUnit = {},

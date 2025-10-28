@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.glance.converter
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -29,7 +30,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -51,21 +52,25 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Check
 import com.sadellie.unitto.core.designsystem.icons.symbols.ChevronRight
 import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
+import com.sadellie.unitto.core.ui.listedShaped
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
 
 @Composable
 internal fun ConverterWidgetConfigureRoute(
@@ -124,20 +129,29 @@ private fun MainScreen(
         modifier = Modifier.padding(paddingValues).fillMaxSize(),
         contentAlignment = Alignment.Center,
       ) {
-        Text(text = stringResource(R.string.converter_widget_configure_list_placeholder))
+        Text(stringResource(R.string.converter_widget_configure_list_placeholder))
       }
 
       return@ScaffoldWithTopBar
     }
 
-    LazyColumn(modifier = Modifier.padding(paddingValues)) {
+    LazyColumn(
+      modifier =
+        Modifier.padding(paddingValues)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
       itemsIndexed(uiState.selectedUnits) { index, selectedUnit ->
-        ListItem(
+        ListItemExpressive(
+          shape = ListItemDefaults.listedShaped(index, uiState.selectedUnits.size),
           headlineContent = {
-            Row(modifier = Modifier.height(IntrinsicSize.Max)) {
-              Text(text = stringResource(selectedUnit.from.displayName))
+            Row(
+              modifier = Modifier.height(IntrinsicSize.Max),
+              horizontalArrangement = Arrangement.spacedBy(Sizes.small),
+            ) {
+              Text(stringResource(selectedUnit.from.displayName))
               Icon(Symbols.ChevronRight, null)
-              Text(text = stringResource(selectedUnit.to.displayName))
+              Text(stringResource(selectedUnit.to.displayName))
             }
           },
           trailingContent = {

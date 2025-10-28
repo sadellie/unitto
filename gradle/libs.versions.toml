@@ -3,66 +3,66 @@ versionCode = "55"
 versionName = "Red Salsa"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
-androidxBrowserBrowser = "1.8.0"
+androidxBrowserBrowser = "1.9.0"
 # https://developer.android.com/reference/tools/gradle-api
-androidGradlePlugin = "8.9.0"
+androidGradlePlugin = "8.13.0"
 # https://mvnrepository.com/artifact/androidx.activity/activity-compose
-androidxActivityActivityCompose = "1.10.1"
+androidxActivityActivityCompose = "1.11.0"
 # https://mvnrepository.com/artifact/androidx.appcompat/appcompat
-androidxAppCompatAppCompat = "1.7.0"
+androidxAppCompatAppCompat = "1.7.1"
 # https://developer.android.com/jetpack/androidx/releases/compose
-androidxCompose = "1.8.0-rc01"
+androidxCompose = "1.9.3"
 # https://developer.android.com/jetpack/androidx/releases/compose
 androidxComposeCompiler = "1.5.15"
 # https://developer.android.com/jetpack/androidx/releases/compose
-androidxComposeMaterial3 = "1.4.0-alpha10"
+androidxComposeMaterial3 = "1.5.0-alpha06"
 # https://mvnrepository.com/artifact/androidx.core/core-ktx
-androidxCoreCoreKts = "1.15.0"
+androidxCoreCoreKts = "1.17.0"
 # https://mvnrepository.com/artifact/androidx.glance/glance-appwidget
 androidxGlanceGlance = "1.1.1"
 # https://developer.android.com/jetpack/androidx/releases/datastore
-androidxDatastoreDatastorePreferences = "1.1.3"
+androidxDatastoreDatastorePreferences = "1.1.7"
 # https://mvnrepository.com/artifact/androidx.hilt/hilt-navigation-compose
-androidxHiltHiltNavigationCompose = "1.2.0"
+androidxHiltHiltNavigationCompose = "1.3.0"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-compose
-androidxLifecycleLifecycleRuntimeCompose = "2.8.7"
+androidxLifecycleLifecycleRuntimeCompose = "2.9.4"
 # https://developer.android.com/jetpack/androidx/releases/navigation
-androidxNavigationNavigationCompose = "2.8.9"
+androidxNavigationNavigationCompose = "2.9.5"
 # https://mvnrepository.com/artifact/androidx.room/room-runtime
-androidxRoom = "2.6.1"
+androidxRoom = "2.8.2"
 # https://mvnrepository.com/artifact/androidx.test/core
-androidxTest = "1.6.1"
+androidxTest = "1.7.0"
 # https://mvnrepository.com/artifact/androidx.test.ext/junit-ktx
-androidxTestExtJunitKtx = "1.2.1"
+androidxTestExtJunitKtx = "1.3.0"
 # https://mvnrepository.com/artifact/androidx.test/runner
-androidxTestRunner = "1.6.2"
+androidxTestRunner = "1.7.0"
 # https://mvnrepository.com/artifact/androidx.work/work-runtime-ktx
-androidxWorkWorkRuntimeKtx = "2.10.0"
+androidxWorkWorkRuntimeKtx = "2.10.5"
 # https://mvnrepository.com/artifact/com.android.tools/desugar_jdk_libs
 comAndroidToolsDesugarJdkLibs = "2.1.5"
 # https://mvnrepository.com/artifact/com.google.dagger/dagger
-comGoogleDagger = "2.53.1"
+comGoogleDagger = "2.57.2"
 # https://github.com/ktorio/ktor/releases
-ktor="3.1.1"
+ktor="3.3.1"
 junitJunit = "4.13.2"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "2.1.10"
+kotlin = "2.2.20"
 # https://github.com/google/ksp/releases
-ksp = "2.1.10-1.0.31"
+ksp = "2.2.20-2.0.4"
 # https://github.com/Calvin-LL/Reorderable/releases
-reorderable = "2.4.3"
+reorderable = "3.0.0"
 # https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-test
-orgJetbrainsKotlinxKotlinxCoroutinesTest = "1.10.1"
+orgJetbrainsKotlinxKotlinxCoroutinesTest = "1.10.2"
 # https://github.com/robolectric/robolectric/releases
-orgRobolectricRobolectric = "4.14.1"
+orgRobolectricRobolectric = "4.16"
 # https://github.com/Kyant0/m3color/releases
-comGithubKyant0m3color = "2024.6"
+comGithubKyant0m3color = "2025.4"
 # https://github.com/Kotlin/kotlinx.serialization/releases
-kotlinx-serialization = "1.8.0"
+kotlinx-serialization = "1.9.0"
 # https://github.com/eobermuhlner/big-math/releases
 bigMath = "2.3.2"
 # https://github.com/iurysza/module-graph/releases
-devIurysouzaModulegraph = "0.12.0"
+devIurysouzaModulegraph = "0.13.0"
 # https://github.com/detekt/detekt/releases
 detekt = "1.23.8"
 

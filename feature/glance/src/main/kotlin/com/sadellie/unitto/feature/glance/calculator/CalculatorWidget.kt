@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.glance.calculator
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -225,6 +226,7 @@ private fun TextFields(
   }
 }
 
+@SuppressLint("RestrictedApi") // rip glance
 @Composable
 private fun ColorProvider.withAlpha(alpha: Float): ColorProvider =
   ColorProvider(this.getColor(LocalContext.current).copy(alpha = alpha))

@@ -18,13 +18,15 @@
 
 package com.sadellie.unitto.feature.glance.converter
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,10 +34,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,12 +55,15 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.SearchBar
+import com.sadellie.unitto.core.ui.listedShaped
 import com.sadellie.unitto.core.ui.textfield.observe
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import java.math.BigDecimal
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -95,6 +101,7 @@ private fun ConverterWidgetConfigureSelectorScreen(
 
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    containerColor = MaterialTheme.colorScheme.surfaceContainer,
     topBar = {
       SearchBar(state = uiState.query, navigateUp = navigateUp, scrollBehavior = scrollBehavior)
     },
@@ -103,8 +110,10 @@ private fun ConverterWidgetConfigureSelectorScreen(
       EmptyScreen()
     } else {
       ConverterWidgetUnitList(
-        modifier = Modifier.padding(paddingValues),
-        units = uiState.result,
+        modifier =
+          Modifier.padding(paddingValues)
+            .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+        groupedUnits = uiState.result,
         onClick = onClick,
       )
     }
@@ -114,26 +123,27 @@ private fun ConverterWidgetConfigureSelectorScreen(
 @Composable
 private fun ConverterWidgetUnitList(
   modifier: Modifier,
-  units: Map<UnitGroup, List<UnitSearchResultItem>>,
+  groupedUnits: Map<UnitGroup, List<UnitSearchResultItem>>,
   onClick: (unitId: String) -> Unit,
 ) {
-  LazyColumn(modifier = modifier) {
-    units.forEach { (group, units) ->
-      item(group.name, ContentType.HEADER) {
-        Text(
-          text = stringResource(group.res),
-          color = MaterialTheme.colorScheme.primary,
-          style = MaterialTheme.typography.titleSmall,
-          modifier = Modifier.fillMaxWidth().padding(Sizes.small),
-        )
-      }
+  LazyColumn(modifier = modifier, verticalArrangement = ListArrangement) {
+    groupedUnits.forEach { (group, units) ->
+      item(group.name, ContentType.HEADER) { ListHeader(text = stringResource(group.res)) }
 
-      items(items = units, key = { it.basicUnit.id }, contentType = { ContentType.ITEM }) { unit ->
+      itemsIndexed(
+        items = units,
+        key = { index, item -> item.basicUnit.id },
+        contentType = { _, _ -> ContentType.ITEM },
+      ) { index, unit ->
         Text(
           text = stringResource(unit.basicUnit.displayName),
           style = MaterialTheme.typography.bodyMedium,
           modifier =
-            Modifier.clickable { onClick(unit.basicUnit.id) }.fillMaxWidth().padding(Sizes.medium),
+            Modifier.clip(ListItemDefaults.listedShaped(index, units.size))
+              .clickable { onClick(unit.basicUnit.id) }
+              .background(MaterialTheme.colorScheme.surfaceBright)
+              .padding(Sizes.medium)
+              .fillMaxWidth(),
         )
       }
     }

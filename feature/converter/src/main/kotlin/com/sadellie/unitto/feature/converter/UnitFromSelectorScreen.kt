@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -87,8 +87,9 @@ private fun UnitFromSelectorScreen(
 
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    containerColor = MaterialTheme.colorScheme.surfaceContainer,
     topBar = {
-      Column(Modifier.background(MaterialTheme.colorScheme.surface)) {
+      Column(Modifier.background(MaterialTheme.colorScheme.surfaceContainer)) {
         SearchBar(
           state = uiState.query,
           navigateUp = navigateUp,
@@ -111,7 +112,7 @@ private fun UnitFromSelectorScreen(
     },
   ) { paddingValues ->
     if (uiState.units != null) {
-      val resources = LocalContext.current.resources
+      val resources = LocalResources.current
       UnitsList(
         modifier = Modifier.padding(paddingValues),
         searchResult = uiState.units,

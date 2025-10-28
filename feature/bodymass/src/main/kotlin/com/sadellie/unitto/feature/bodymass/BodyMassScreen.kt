@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,42 +24,44 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.openLink
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
-import com.sadellie.unitto.core.ui.SegmentedButton
-import com.sadellie.unitto.core.ui.SegmentedButtonsRow
 import com.sadellie.unitto.core.ui.TextFieldBox
-import com.sadellie.unitto.core.ui.TextFieldBoxDefaults
 import com.sadellie.unitto.core.ui.TextFieldRow
 import com.sadellie.unitto.feature.bodymass.components.BodyMassResult
 import com.sadellie.unitto.feature.bodymass.components.BodyMassTextField
@@ -80,16 +82,18 @@ internal fun BodyMassRoute(openDrawer: () -> Unit, viewModel: BodyMassViewModel 
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun BodyMassScreen(
   uiState: UIState.Ready,
   updateIsMetric: (Boolean) -> Unit,
   openDrawer: () -> Unit,
 ) {
-  val mContext = LocalContext.current
+  val context = LocalContext.current
+  val resources = LocalResources.current
   val weightShortLabel =
     remember(uiState.isMetric) {
-      mContext.resources.getString(
+      resources.getString(
         if (uiState.isMetric) R.string.unit_kilogram_short else R.string.unit_pound_short
       )
     }
@@ -107,9 +111,17 @@ private fun BodyMassScreen(
       verticalArrangement = Arrangement.spacedBy(16.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      BodyMassInputModeSelector(updateIsMetric, uiState.isMetric)
+      BodyMassInputModeSelector(
+        modifier = Modifier.fillMaxWidth(),
+        updateIsMetric = updateIsMetric,
+        isMetric = uiState.isMetric,
+      )
 
-      BodyMassInputBox(uiState, weightShortLabel)
+      BodyMassInputBox(
+        modifier = Modifier.fillMaxWidth(),
+        uiState = uiState,
+        weightShortLabel = weightShortLabel,
+      )
 
       AnimatedContent(
         modifier = Modifier.fillMaxWidth(),
@@ -127,23 +139,24 @@ private fun BodyMassScreen(
         )
       }
 
-      ElevatedButton(
-        onClick = { openLink(mContext, "https://sadellie.github.io/unitto/help#body-mass-index") }
+      OutlinedButton(
+        onClick = { openLink(context, "https://sadellie.github.io/unitto/help#body-mass-index") },
+        shapes = ButtonDefaults.shapes(),
+        contentPadding = ButtonDefaults.SmallContentPadding,
+        modifier = Modifier.height(ButtonDefaults.MinHeight),
       ) {
-        Text(text = stringResource(R.string.common_read_article))
+        Text(
+          text = stringResource(R.string.common_read_article),
+          style = ButtonDefaults.textStyleFor(ButtonDefaults.MinHeight),
+        )
       }
     }
   }
 }
 
 @Composable
-private fun BodyMassInputBox(uiState: UIState.Ready, weightShortLabel: String) {
-  TextFieldBox(
-    modifier =
-      Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
-        .padding(TextFieldBoxDefaults.Padding)
-        .fillMaxWidth()
-  ) {
+private fun BodyMassInputBox(modifier: Modifier, uiState: UIState.Ready, weightShortLabel: String) {
+  TextFieldBox(modifier = modifier) {
     Crossfade(targetState = uiState.isMetric, label = "Measurement system change") { isMetric ->
       if (isMetric) {
         TextFieldRow {
@@ -187,21 +200,28 @@ private fun BodyMassInputBox(uiState: UIState.Ready, weightShortLabel: String) {
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun BodyMassInputModeSelector(updateIsMetric: (Boolean) -> Unit, isMetric: Boolean) {
-  SegmentedButtonsRow(modifier = Modifier.fillMaxWidth()) {
-    SegmentedButton(
-      label = stringResource(R.string.body_mass_metric),
-      onClick = { updateIsMetric(true) },
-      selected = isMetric,
+private fun BodyMassInputModeSelector(
+  modifier: Modifier,
+  updateIsMetric: (Boolean) -> Unit,
+  isMetric: Boolean,
+) {
+  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.large)) {
+    ToggleButton(
+      onCheckedChange = { updateIsMetric(true) },
+      checked = isMetric,
       modifier = Modifier.weight(1f),
-    )
-    SegmentedButton(
-      label = stringResource(R.string.body_mass_imperial),
-      onClick = { updateIsMetric(false) },
-      selected = !isMetric,
+    ) {
+      Text(stringResource(R.string.body_mass_metric))
+    }
+    ToggleButton(
+      onCheckedChange = { updateIsMetric(false) },
+      checked = !isMetric,
       modifier = Modifier.weight(1f),
-    )
+    ) {
+      Text(stringResource(R.string.body_mass_imperial))
+    }
   }
 }
 

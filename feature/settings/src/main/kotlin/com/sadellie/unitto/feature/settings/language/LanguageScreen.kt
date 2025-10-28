@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,11 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.openLink
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Translate
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.listedShaped
 import com.sadellie.unitto.feature.settings.BuildConfig
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 
@@ -69,10 +74,14 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
     title = stringResource(R.string.settings_language),
     navigationIcon = { NavigateUpButton(navigateUp) },
   ) { padding ->
-    LazyColumn(contentPadding = padding) {
+    LazyColumn(
+      modifier = Modifier.padding(horizontal = Sizes.large),
+      contentPadding = padding,
+      verticalArrangement = ListArrangement,
+    ) {
       item(key = "translate", contentType = ContentType.ANNOYING_BOX) {
         AnnoyingBox(
-          modifier = Modifier.padding(16.dp, 8.dp).fillMaxWidth(),
+          modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth(),
           onClick = { openLink(mContext, BuildConfig.STORE_LINK) },
           imageVector = Symbols.Translate,
           imageVectorContentDescription = stringResource(R.string.settings_translate_app),
@@ -81,14 +90,15 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
         )
       }
 
-      languages.forEach { (key, res) ->
+      languages.forEachIndexed { index, (key, res) ->
         item(key = key, contentType = ContentType.ITEM) {
-          ListItem(
+          ListItemExpressive(
             modifier = Modifier.clickable { changeLanguage(key) },
             headlineContent = { Text(stringResource(res)) },
             leadingContent = {
               RadioButton(selected = currentLangKey == key, onClick = { changeLanguage(key) })
             },
+            shape = ListItemDefaults.listedShaped(index, languages.size),
           )
         }
       }
@@ -103,6 +113,4 @@ private enum class ContentType {
 
 @Preview
 @Composable
-fun LanguageScreenPreview() {
-  LanguageScreen(navigateUp = {})
-}
+fun LanguageScreenPreview() = ExpressivePreview { LanguageScreen(navigateUp = {}) }

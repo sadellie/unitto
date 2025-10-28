@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,14 @@ package com.sadellie.unitto.core.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,6 +40,7 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.SearchOff
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SearchPlaceholder(onButtonClick: () -> Unit, supportText: String, buttonLabel: String) {
   Column(
@@ -59,6 +63,13 @@ fun SearchPlaceholder(onButtonClick: () -> Unit, supportText: String, buttonLabe
       textAlign = TextAlign.Center,
       style = MaterialTheme.typography.bodySmall,
     )
-    ElevatedButton(onClick = onButtonClick) { Text(text = buttonLabel) }
+    OutlinedButton(
+      onClick = onButtonClick,
+      shapes = ButtonDefaults.shapes(),
+      contentPadding = ButtonDefaults.SmallContentPadding,
+      modifier = Modifier.height(ButtonDefaults.MinHeight),
+    ) {
+      Text(text = buttonLabel, style = ButtonDefaults.textStyleFor(ButtonDefaults.MinHeight))
+    }
   }
 }

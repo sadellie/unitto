@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,6 @@ import com.sadellie.unitto.core.model.timezone.SearchResultZone
 sealed class AddTimeZoneUIState {
   data object Loading : AddTimeZoneUIState()
 
-  data class Ready(val query: TextFieldState, val list: List<SearchResultZone>) :
+  data class Ready(val query: TextFieldState, val searchResults: List<SearchResultZone>) :
     AddTimeZoneUIState()
 }

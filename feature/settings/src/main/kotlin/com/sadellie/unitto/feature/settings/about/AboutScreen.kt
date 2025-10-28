@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,13 @@ package com.sadellie.unitto.feature.settings.about
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -43,9 +48,14 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Info
 import com.sadellie.unitto.core.designsystem.icons.symbols.Policy
 import com.sadellie.unitto.core.designsystem.icons.symbols.PrivacyTip
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
+import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.feature.settings.BuildConfig
 
 @Composable
@@ -75,71 +85,62 @@ private fun AboutScreen(
     title = stringResource(R.string.settings_about_unitto),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
-    LazyColumn(contentPadding = padding) {
-      // CURRENCY RATE NOTE
-      item {
-        ListItem(
-          icon = Symbols.Help,
-          headlineText = stringResource(R.string.settings_currency_rates_note_title),
-          modifier = Modifier.clickable { showDialog = true },
-        )
-      }
-
-      // TERMS AND CONDITIONS
-      item {
-        ListItem(
-          icon = Symbols.PrivacyTip,
-          headlineText = stringResource(R.string.settings_terms_and_conditions),
-          modifier =
-            Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/terms") },
-        )
-      }
-
-      // PRIVACY POLICY
-      item {
-        ListItem(
-          icon = Symbols.Policy,
-          headlineText = stringResource(R.string.settings_privacy_policy),
-          modifier =
-            Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/privacy") },
-        )
-      }
-
-      // OPEN SOURCE
-      item {
-        ListItem(
-          icon = Symbols.Code,
-          headlineText = stringResource(R.string.settings_view_source_code),
-          modifier = Modifier.clickable { openLink(mContext, "https://github.com/sadellie/unitto") },
-        )
-      }
-
-      // THIRD PARTY
-      item {
-        ListItem(
-          icon = Symbols.Copyright,
-          headlineText = stringResource(R.string.settings_third_party_licenses),
-          modifier = Modifier.clickable { navigateToThirdParty() },
-        )
-      }
-
-      // APP VERSION
-      item {
-        ListItem(
-          icon = Symbols.Info,
-          headlineText = stringResource(R.string.settings_version_name),
-          supportingText = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) ${BuildConfig.BUILD_TYPE}",
-          modifier =
-            Modifier.combinedClickable {
-              val clicksToOpenEasterEgg = 5
-              aboutItemClick++
-              if (aboutItemClick > clicksToOpenEasterEgg) {
-                aboutItemClick = 0
-                navigateToEasterEgg()
-              }
-            },
-        )
-      }
+    Column(
+      modifier =
+        Modifier.fillMaxSize()
+          .verticalScroll(rememberScrollState())
+          .padding(padding)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
+      ListItemExpressive(
+        icon = Symbols.Help,
+        headlineText = stringResource(R.string.settings_currency_rates_note_title),
+        modifier = Modifier.clickable { showDialog = true },
+        shape = ListItemDefaults.firstShape,
+      )
+      ListItemExpressive(
+        icon = Symbols.PrivacyTip,
+        headlineText = stringResource(R.string.settings_terms_and_conditions),
+        modifier =
+          Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/terms") },
+        shape = ListItemDefaults.middleShape,
+      )
+      ListItemExpressive(
+        icon = Symbols.Policy,
+        headlineText = stringResource(R.string.settings_privacy_policy),
+        modifier =
+          Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/privacy") },
+        shape = ListItemDefaults.middleShape,
+      )
+      ListItemExpressive(
+        icon = Symbols.Code,
+        headlineText = stringResource(R.string.settings_view_source_code),
+        modifier = Modifier.clickable { openLink(mContext, "https://github.com/sadellie/unitto") },
+        shape = ListItemDefaults.middleShape,
+      )
+      ListItemExpressive(
+        icon = Symbols.Copyright,
+        headlineText = stringResource(R.string.settings_third_party_licenses),
+        modifier = Modifier.clickable { navigateToThirdParty() },
+        shape = ListItemDefaults.middleShape,
+      )
+      ListItemExpressive(
+        icon = Symbols.Info,
+        headlineText = stringResource(R.string.settings_version_name),
+        supportingText =
+          "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) ${BuildConfig.BUILD_TYPE}",
+        modifier =
+          Modifier.combinedClickable {
+            val clicksToOpenEasterEgg = 5
+            aboutItemClick++
+            if (aboutItemClick > clicksToOpenEasterEgg) {
+              aboutItemClick = 0
+              navigateToEasterEgg()
+            }
+          },
+        shape = ListItemDefaults.lastShape,
+      )
     }
   }
 

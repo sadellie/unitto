@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DismissibleNavigationDrawer
 import androidx.compose.material3.DrawerDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.PermanentDrawerSheet
@@ -91,7 +92,9 @@ fun NavigationDrawer(
       modifier = modifier,
       drawerContent = {
         PermanentDrawerSheet(
-          modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState())
+          modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState()),
+          drawerContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+          drawerContentColor = MaterialTheme.colorScheme.onSurface,
         ) {
           SheetContent(
             mainTabs = mainTabs,
@@ -108,7 +111,9 @@ fun NavigationDrawer(
       modifier = modifier,
       drawerContent = {
         ModalDrawerSheet(
-          modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState())
+          modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState()),
+          drawerContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+          drawerContentColor = MaterialTheme.colorScheme.onSurface,
         ) {
           SheetContent(
             mainTabs = mainTabs,

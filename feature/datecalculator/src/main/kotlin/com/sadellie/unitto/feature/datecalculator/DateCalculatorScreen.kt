@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -64,7 +65,11 @@ internal fun DateCalculatorScreen(openDrawer: () -> Unit) {
     navigationIcon = { DrawerButton(openDrawer) },
   ) { paddingValues ->
     Column(Modifier.consumeWindowInsets(paddingValues).padding(paddingValues)) {
-      PrimaryTabRow(selectedTabIndex = pagerState.currentPage) {
+      PrimaryTabRow(
+        selectedTabIndex = pagerState.currentPage,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        contentColor = MaterialTheme.colorScheme.primary,
+      ) {
         allTabs.forEachIndexed { index, tab ->
           Tab(
             selected = index == pagerState.currentPage,

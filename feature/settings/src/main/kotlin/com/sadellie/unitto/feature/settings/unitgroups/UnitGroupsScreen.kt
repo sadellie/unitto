@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,17 +28,15 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -51,10 +49,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.AddCircle
@@ -63,11 +62,15 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.DragHandle
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapVert
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Undo
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.Header
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListHeader
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.listedShaped
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.ReorderableLazyListState
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -150,41 +153,59 @@ private fun UnitGroupsScreen(
         },
       )
 
-    LazyColumn(state = lazyListState, modifier = Modifier.padding(paddingValues)) {
+    val headerModifier =
+      Modifier.padding(
+        start = Sizes.small,
+        end = Sizes.small,
+        top = Sizes.large,
+        bottom = Sizes.small,
+      )
+
+    LazyColumn(
+      state = lazyListState,
+      modifier =
+        Modifier.padding(paddingValues)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
       item(key = "enabled", contentType = ContentType.HEADER) {
-        Header(
+        ListHeader(
+          modifier = Modifier.animateItem().then(headerModifier),
           text = stringResource(R.string.common_enabled),
-          paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         )
       }
 
-      items(
+      itemsIndexed(
         items = copiedShownList.value,
-        key = { it },
-        contentType = { ContentType.ENABLED_ITEM },
-      ) { unitGroup ->
+        key = { _, item -> item },
+        contentType = { index, item -> ContentType.ENABLED_ITEM },
+      ) { index, unitGroup ->
         EnabledUnitGroupItem(
           reorderableLazyListState = reorderableLazyListState,
           unitGroup = unitGroup,
           removeShownUnitGroup = removeShownUnitGroup,
           onDragStopped = { updateShownUnitGroups(copiedShownList.value) },
+          shape = ListItemDefaults.listedShaped(index, copiedShownList.value.size),
         )
       }
 
       item(key = "disabled", contentType = ContentType.HEADER) {
-        Header(
+        ListHeader(
           text = stringResource(R.string.common_disabled),
-          modifier = Modifier.animateItem(),
-          paddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+          modifier = Modifier.animateItem().then(headerModifier),
         )
       }
 
-      items(
+      itemsIndexed(
         items = uiState.hiddenUnitGroups,
-        key = { it },
-        contentType = { ContentType.DISABLED_ITEM },
-      ) { unitGroup ->
-        DisabledUnitGroupItem({ addShownUnitGroup(unitGroup) }, unitGroup)
+        key = { index, item -> item },
+        contentType = { index, item -> ContentType.DISABLED_ITEM },
+      ) { index, unitGroup ->
+        DisabledUnitGroupItem(
+          onClick = { addShownUnitGroup(unitGroup) },
+          unitGroup = unitGroup,
+          shape = ListItemDefaults.listedShaped(index, uiState.hiddenUnitGroups.size),
+        )
       }
     }
   }
@@ -218,24 +239,28 @@ private fun LazyItemScope.EnabledUnitGroupItem(
   unitGroup: UnitGroup,
   removeShownUnitGroup: (UnitGroup) -> Unit,
   onDragStopped: () -> Unit,
+  shape: Shape,
 ) {
   ReorderableItem(reorderableLazyListState, unitGroup) { isDragging ->
     val transition = updateTransition(isDragging, label = "draggedTransition")
     val background by
       transition.animateColor(label = "background") {
         if (it) MaterialTheme.colorScheme.surfaceContainerHighest
-        else MaterialTheme.colorScheme.surface
+        else MaterialTheme.colorScheme.surfaceBright
       }
-    val itemPadding by transition.animateDp(label = "itemPadding") { if (it) 16.dp else 0.dp }
+    val itemPadding by transition.animateDp(label = "itemPadding") { if (it) Sizes.large else 0.dp }
+    val cornerRadius by
+      transition.animateDp(label = "cornerRadius") { if (it) Sizes.large else 0.dp }
 
-    ListItem(
+    ListItemExpressive(
       headlineContent = { Text(stringResource(unitGroup.res)) },
       modifier =
         Modifier.padding(horizontal = itemPadding)
-          .clip(CircleShape)
+          .clip(RoundedCornerShape(cornerRadius.value))
           .clickable { removeShownUnitGroup(unitGroup) }
           .longPressDraggableHandle(onDragStopped = onDragStopped),
       colors = ListItemDefaults.colors(containerColor = background),
+      shape = shape,
       leadingContent = {
         Icon(
           imageVector = Symbols.Cancel,
@@ -266,9 +291,14 @@ private fun LazyItemScope.EnabledUnitGroupItem(
 }
 
 @Composable
-private fun LazyItemScope.DisabledUnitGroupItem(onClick: () -> Unit, unitGroup: UnitGroup) {
-  ListItem(
+private fun LazyItemScope.DisabledUnitGroupItem(
+  onClick: () -> Unit,
+  unitGroup: UnitGroup,
+  shape: Shape,
+) {
+  ListItemExpressive(
     modifier = Modifier.animateItem().clickable(onClick = onClick),
+    shape = shape,
     headlineContent = { Text(stringResource(unitGroup.res)) },
     trailingContent = {
       Icon(

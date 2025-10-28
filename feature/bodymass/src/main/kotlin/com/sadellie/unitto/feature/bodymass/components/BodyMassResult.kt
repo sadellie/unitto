@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,7 +122,7 @@ internal fun BodyMassResult(
 private data class BodyMassData(
   val minValue: BigDecimal,
   val color: Color,
-  @StringRes val classification: Int,
+  @param:StringRes val classification: Int,
 )
 
 @Stable

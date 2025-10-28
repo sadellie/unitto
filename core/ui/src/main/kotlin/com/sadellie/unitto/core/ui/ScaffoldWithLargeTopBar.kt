@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,10 @@ package com.sadellie.unitto.core.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -36,6 +39,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
  * @param navigationIcon See [LargeTopAppBar]
  * @param content See [Scaffold]
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ScaffoldWithLargeTopBar(
   title: String,
@@ -45,13 +49,18 @@ fun ScaffoldWithLargeTopBar(
 ) {
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
   Scaffold(
+    containerColor = MaterialTheme.colorScheme.surfaceContainer,
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
-      LargeTopAppBar(
+      LargeFlexibleTopAppBar(
         title = { Text(text = title) },
         navigationIcon = navigationIcon,
         scrollBehavior = scrollBehavior,
         actions = actions,
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
+          ),
       )
     },
     content = content,

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,14 +29,13 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
@@ -45,6 +44,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -66,7 +66,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
@@ -75,8 +75,10 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.datetimepicker.TimePickerDialog
+import com.sadellie.unitto.core.ui.listedShaped
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
 import java.time.ZonedDateTime
@@ -175,12 +177,12 @@ private fun TimeZoneScreen(
     LazyColumn(
       state = lazyListState,
       modifier = Modifier.fillMaxSize().padding(padding),
-      contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 124.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
+      contentPadding = PaddingValues(start = Sizes.large, end = Sizes.large, bottom = 124.dp),
+      verticalArrangement = ListArrangement,
     ) {
       item(key = "user time", contentType = ContentType.USER_TIME) {
         UserTimeZone(
-          modifier = Modifier.fillMaxWidth().padding(8.dp),
+          modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
           userTime = currentUserTime,
           onClick = { setDialogState(TimeZoneDialogState.UserTimePicker(currentUserTime)) },
           onResetClick = setCurrentTime,
@@ -188,11 +190,11 @@ private fun TimeZoneScreen(
         )
       }
 
-      items(
+      itemsIndexed(
         items = mutableFavorites,
-        key = { it.timeZone.id },
-        contentType = { ContentType.ITEM },
-      ) { item ->
+        key = { index, item -> item.timeZone.id },
+        contentType = { _, _ -> ContentType.ITEM },
+      ) { index, item ->
         ReorderableItem(reorderableLazyListState, item.timeZone.id) { isDragging ->
           val isSelected = uiState.selectedTimeZone == item
           val transition = updateTransition(isDragging, label = "draggedTransition")
@@ -200,17 +202,16 @@ private fun TimeZoneScreen(
           val background by
             transition.animateColor(label = "background") {
               if (it) MaterialTheme.colorScheme.surfaceContainerHighest
-              else MaterialTheme.colorScheme.surfaceContainer
+              else MaterialTheme.colorScheme.surfaceBright
             }
           val cornerRadius by
-            transition.animateDp(label = "cornerRadius") {
-              if (it) Sizes.extraLarge else Sizes.medium
-            }
+            transition.animateDp(label = "cornerRadius") { if (it) Sizes.large else 0.dp }
 
           FavoriteTimeZoneItem(
             modifier =
               Modifier.padding(itemPadding)
                 .clip(RoundedCornerShape(cornerRadius))
+                .clip(ListItemDefaults.listedShaped(index, mutableFavorites.size))
                 .background(background)
                 .longPressDraggableHandle(onDragStopped = { onDragEnd(mutableFavorites, item) }),
             item = item,

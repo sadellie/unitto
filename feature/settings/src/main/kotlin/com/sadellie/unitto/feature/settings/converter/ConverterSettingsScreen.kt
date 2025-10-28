@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,16 +19,21 @@
 package com.sadellie.unitto.feature.settings.converter
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
@@ -39,13 +44,17 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Rule
 import com.sadellie.unitto.core.designsystem.icons.symbols.Sort
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Timer
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.feature.settings.components.AlertDialogWithList
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
+import com.sadellie.unitto.core.ui.middleShape
 
 @Composable
 internal fun ConverterSettingsRoute(
@@ -67,6 +76,7 @@ internal fun ConverterSettingsRoute(
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ConverterSettingsScreen(
   prefs: ConverterPreferences,
@@ -75,57 +85,69 @@ private fun ConverterSettingsScreen(
   updateUnitConverterFormatTime: (Boolean) -> Unit,
   updateUnitConverterSorting: (UnitsListSorting) -> Unit,
 ) {
-  var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
-
   ScaffoldWithLargeTopBar(
     title = stringResource(R.string.converter_title),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
-    LazyColumn(contentPadding = padding) {
-      item("unit group") {
-        ListItem(
-          icon = Symbols.Rule,
-          headlineText = stringResource(R.string.settings_unit_groups_title),
-          supportingText = stringResource(R.string.settings_unit_groups_support),
-          modifier = Modifier.clickable { navigateToUnitsGroup() },
-        )
-      }
-
-      item("units sorting") {
-        ListItem(
-          icon = Symbols.Sort,
-          headlineText = stringResource(R.string.settings_units_sorting),
-          supportingText = stringResource(R.string.settings_units_sorting_support),
-          modifier = Modifier.clickable { showDialog = true },
-        )
-      }
-
-      item("format time") {
-        ListItem(
-          icon = Symbols.Timer,
-          headlineText = stringResource(R.string.settings_format_time),
-          supportingText = stringResource(R.string.settings_format_time_support),
-          switchState = prefs.unitConverterFormatTime,
-          onSwitchChange = updateUnitConverterFormatTime,
-        )
-      }
+    Column(
+      modifier =
+        Modifier.padding(padding)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
+      ListItemExpressive(
+        icon = Symbols.Rule,
+        headlineText = stringResource(R.string.settings_unit_groups_title),
+        supportingText = stringResource(R.string.settings_unit_groups_support),
+        modifier = Modifier.clickable { navigateToUnitsGroup() },
+        shape = ListItemDefaults.firstShape,
+      )
+      ListItemExpressive(
+        shape = ListItemDefaults.middleShape,
+        icon = Symbols.Sort,
+        headlineText = stringResource(R.string.settings_units_sorting),
+        supportingText = stringResource(R.string.settings_units_sorting_support),
+        secondaryContent = {
+          Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(Sizes.small),
+          ) {
+            ToggleButton(
+              checked = prefs.unitConverterSorting == UnitsListSorting.USAGE,
+              onCheckedChange = { updateUnitConverterSorting(UnitsListSorting.USAGE) },
+            ) {
+              Text(stringResource(R.string.settings_sort_by_usage))
+            }
+            ToggleButton(
+              checked = prefs.unitConverterSorting == UnitsListSorting.ALPHABETICAL,
+              onCheckedChange = { updateUnitConverterSorting(UnitsListSorting.ALPHABETICAL) },
+            ) {
+              Text(stringResource(R.string.settings_sort_by_alphabetical))
+            }
+            ToggleButton(
+              checked = prefs.unitConverterSorting == UnitsListSorting.SCALE_DESC,
+              onCheckedChange = { updateUnitConverterSorting(UnitsListSorting.SCALE_DESC) },
+            ) {
+              Text(stringResource(R.string.settings_sort_by_scale_desc))
+            }
+            ToggleButton(
+              checked = prefs.unitConverterSorting == UnitsListSorting.SCALE_ASC,
+              onCheckedChange = { updateUnitConverterSorting(UnitsListSorting.SCALE_ASC) },
+            ) {
+              Text(stringResource(R.string.settings_sort_by_scale_asc))
+            }
+          }
+        },
+      )
+      ListItemExpressive(
+        icon = Symbols.Timer,
+        headlineText = stringResource(R.string.settings_format_time),
+        supportingText = stringResource(R.string.settings_format_time_support),
+        switchState = prefs.unitConverterFormatTime,
+        onSwitchChange = updateUnitConverterFormatTime,
+        shape = ListItemDefaults.lastShape,
+      )
     }
-  }
-
-  if (showDialog) {
-    AlertDialogWithList(
-      title = stringResource(R.string.settings_units_sorting),
-      listItems =
-        mapOf(
-          UnitsListSorting.USAGE to R.string.settings_sort_by_usage,
-          UnitsListSorting.ALPHABETICAL to R.string.settings_sort_by_alphabetical,
-          UnitsListSorting.SCALE_DESC to R.string.settings_sort_by_scale_desc,
-          UnitsListSorting.SCALE_ASC to R.string.settings_sort_by_scale_asc,
-        ),
-      selectedItemIndex = prefs.unitConverterSorting,
-      selectAction = updateUnitConverterSorting,
-      dismissAction = { showDialog = false },
-    )
   }
 }
 

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,11 +27,13 @@ import android.text.format.DateFormat.is24HourFormat
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -44,20 +46,23 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.displayName
 import com.sadellie.unitto.core.common.offset
 import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.common.regionName
-import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.designsystem.LocalLocale
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.SearchPlaceholder
+import com.sadellie.unitto.core.ui.datetime.formatTime
+import com.sadellie.unitto.core.ui.listedShaped
 import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -93,6 +98,7 @@ fun AddTimeZoneScreen(
 
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    containerColor = MaterialTheme.colorScheme.surfaceContainer,
     topBar = {
       SearchBar(state = uiState.query, navigateUp = navigateUp, scrollBehavior = scrollBehavior)
     },
@@ -100,7 +106,7 @@ fun AddTimeZoneScreen(
     val mContext = LocalContext.current
     Crossfade(
       modifier = Modifier.padding(paddingValues),
-      targetState = uiState.list.isEmpty() and uiState.query.text.isNotEmpty(),
+      targetState = uiState.searchResults.isEmpty() and uiState.query.text.isNotEmpty(),
       label = "Placeholder",
     ) { empty ->
       if (empty) {
@@ -115,19 +121,25 @@ fun AddTimeZoneScreen(
         val locale = LocalLocale.current
         val is24Hour = is24HourFormat(mContext)
 
-        LazyColumn(Modifier.fillMaxSize()) {
-          items(uiState.list, { it.timeZone.id }) {
-            ListItem(
+        LazyColumn(
+          modifier = Modifier.fillMaxSize(),
+          contentPadding =
+            PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+          verticalArrangement = ListArrangement,
+        ) {
+          itemsIndexed(uiState.searchResults, { index, item -> item.timeZone.id }) { index, item ->
+            ListItemExpressive(
+              shape = ListItemDefaults.listedShaped(index, uiState.searchResults.size),
               modifier =
                 Modifier.animateItem().clickable {
-                  addToFavorites(it.timeZone)
+                  addToFavorites(item.timeZone)
                   navigateUp()
                 },
-              headlineContent = { Text(it.name) },
-              supportingContent = { Text(it.region) },
+              headlineContent = { Text(item.name) },
+              supportingContent = { Text(item.region) },
               trailingContent = {
                 Text(
-                  text = it.timeZone.offset(userTime).formatTime(locale, is24Hour),
+                  text = item.timeZone.offset(userTime).formatTime(locale, is24Hour),
                   style = MaterialTheme.typography.headlineSmall,
                 )
               },
@@ -151,7 +163,7 @@ fun PreviewAddTimeZoneScreen() {
     uiState =
       AddTimeZoneUIState.Ready(
         query = TextFieldState(),
-        list =
+        searchResults =
           listOf("UTC", "Africa/Addis_Ababa", "ACT").map {
             val zone = TimeZone.getTimeZone(it)
             SearchResultZone(

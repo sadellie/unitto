@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,19 @@
 
 package com.sadellie.unitto.feature.settings.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.icons.symbols.Help
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.singleShape
 import com.sadellie.unitto.core.ui.squashable
 
 @Composable
@@ -49,38 +42,26 @@ internal fun AnnoyingBox(
   title: String,
   support: String,
 ) {
-  Row(
+  ListItemExpressive(
+    headlineText = title,
+    supportingText = support,
+    icon = imageVector,
+    iconDescription = imageVectorContentDescription,
+    shape = ListItemDefaults.singleShape,
     modifier =
-      modifier
-        .squashable(
-          onClick = onClick,
-          interactionSource = remember { MutableInteractionSource() },
-          cornerRadiusRange = 15..25,
-        )
-        .background(MaterialTheme.colorScheme.secondaryContainer)
-        .padding(16.dp, 8.dp),
-    horizontalArrangement = Arrangement.spacedBy(16.dp),
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    Icon(
-      modifier = Modifier.size(24.dp),
-      imageVector = imageVector,
-      contentDescription = imageVectorContentDescription,
-      tint = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
-    Column(modifier = Modifier.weight(1f).padding(vertical = 8.dp)) {
-      Text(
-        text = title,
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onSecondaryContainer,
-      )
-      Text(
-        text = support,
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSecondaryContainer,
-      )
-    }
-  }
+      modifier.squashable(
+        onClick = onClick,
+        interactionSource = remember { MutableInteractionSource() },
+        cornerRadiusRange = 15..25,
+      ),
+    colors =
+      ListItemDefaults.colors(
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        leadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        headlineColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        supportingColor = MaterialTheme.colorScheme.onSecondaryContainer,
+      ),
+  )
 }
 
 @Preview

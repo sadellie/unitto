@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,5 +116,17 @@ internal fun dynamicColorScheme(
     surfaceContainerHighest = Color(colors.surfaceContainerHighest().getArgb(scheme)),
     surfaceContainerLow = Color(colors.surfaceContainerLow().getArgb(scheme)),
     surfaceContainerLowest = Color(colors.surfaceContainerLowest().getArgb(scheme)),
+    primaryFixed = Color(colors.primaryFixed().getArgb(scheme)),
+    primaryFixedDim = Color(colors.primaryFixedDim().getArgb(scheme)),
+    onPrimaryFixed = Color(colors.onPrimaryFixed().getArgb(scheme)),
+    onPrimaryFixedVariant = Color(colors.onPrimaryFixedVariant().getArgb(scheme)),
+    secondaryFixed = Color(colors.secondaryFixed().getArgb(scheme)),
+    secondaryFixedDim = Color(colors.secondaryFixedDim().getArgb(scheme)),
+    onSecondaryFixed = Color(colors.onSecondaryFixed().getArgb(scheme)),
+    onSecondaryFixedVariant = Color(colors.onSecondaryFixedVariant().getArgb(scheme)),
+    tertiaryFixed = Color(colors.tertiaryFixed().getArgb(scheme)),
+    tertiaryFixedDim = Color(colors.tertiaryFixedDim().getArgb(scheme)),
+    onTertiaryFixed = Color(colors.onTertiaryFixed().getArgb(scheme)),
+    onTertiaryFixedVariant = Color(colors.onTertiaryFixedVariant().getArgb(scheme)),
   )
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,12 @@ package com.sadellie.unitto.feature.settings.startingscreen
 
 import android.os.Build
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,17 +33,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.AppShortcut
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.navigation.ConverterGraphRoute
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListItem
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.listedShaped
 
 @Composable
 internal fun StartingScreenRoute(
@@ -71,10 +76,17 @@ private fun StartingScreenScreen(
     navigationIcon = { NavigateUpButton(navigateUp) },
   ) { padding ->
     val mContext = LocalContext.current
-    LazyColumn(contentPadding = padding) {
-      items(mainDrawerItems, { it.graphRoute.id }) { destination ->
-        ListItem(
+    LazyColumn(
+      contentPadding = padding,
+      modifier = Modifier.padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      verticalArrangement = ListArrangement,
+    ) {
+      itemsIndexed(mainDrawerItems, { _, destination -> destination.graphRoute.id }) {
+        index,
+        destination ->
+        ListItemExpressive(
           modifier = Modifier.clickable { updateStartingScreen(destination.graphRoute.id) },
+          shape = ListItemDefaults.listedShaped(index, mainDrawerItems.size),
           headlineContent = { Text(stringResource(destination.name)) },
           leadingContent = {
             RadioButton(
@@ -84,7 +96,6 @@ private fun StartingScreenScreen(
           },
           trailingContent = trail@{
               if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return@trail
-
               IconButton(onClick = { destination.addShortcut(mContext) }) {
                 Icon(Symbols.AppShortcut, null)
               }
