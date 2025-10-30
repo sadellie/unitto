@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,65 +18,43 @@
 
 package io.github.sadellie.themmo
 
-import android.app.WallpaperColors
-import android.app.WallpaperManager
-import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.kyant.m3color.dynamiccolor.MaterialDynamicColors
-import com.kyant.m3color.hct.Hct
-import com.kyant.m3color.scheme.SchemeContent
-import com.kyant.m3color.scheme.SchemeExpressive
-import com.kyant.m3color.scheme.SchemeFidelity
-import com.kyant.m3color.scheme.SchemeFruitSalad
-import com.kyant.m3color.scheme.SchemeMonochrome
-import com.kyant.m3color.scheme.SchemeNeutral
-import com.kyant.m3color.scheme.SchemeRainbow
-import com.kyant.m3color.scheme.SchemeTonalSpot
-import com.kyant.m3color.scheme.SchemeVibrant
+import com.materialkolor.dynamiccolor.ColorSpec
+import com.materialkolor.dynamiccolor.MaterialDynamicColors
+import com.materialkolor.hct.Hct
+import com.materialkolor.scheme.SchemeContent
+import com.materialkolor.scheme.SchemeExpressive
+import com.materialkolor.scheme.SchemeFidelity
+import com.materialkolor.scheme.SchemeFruitSalad
+import com.materialkolor.scheme.SchemeMonochrome
+import com.materialkolor.scheme.SchemeNeutral
+import com.materialkolor.scheme.SchemeRainbow
+import com.materialkolor.scheme.SchemeTonalSpot
+import com.materialkolor.scheme.SchemeVibrant
 import io.github.sadellie.themmo.core.MonetMode
 
-/**
- * Extract primary color from device wallpaper.
- *
- * @param context Context
- * @return Primary color of current wallpaper image.
- */
-@RequiresApi(Build.VERSION_CODES.O_MR1)
-internal fun extractWallpaperPrimary(context: Context): Color? {
-  val wallpaperColors: WallpaperColors =
-    WallpaperManager.getInstance(context).getWallpaperColors(WallpaperManager.FLAG_SYSTEM)
-      ?: return null
-
-  return Color(
-    red = wallpaperColors.primaryColor.red(),
-    green = wallpaperColors.primaryColor.green(),
-    blue = wallpaperColors.primaryColor.blue(),
-  )
-}
-
-internal fun dynamicColorScheme(
+internal fun generateColorScheme(
   keyColor: Color,
   isDark: Boolean,
-  style: MonetMode = MonetMode.TonalSpot,
+  style: MonetMode,
   contrastLevel: Double = 0.0,
+  specVersion: ColorSpec.SpecVersion = ColorSpec.SpecVersion.SPEC_2025,
 ): ColorScheme {
   val hct = Hct.fromInt(keyColor.toArgb())
   val colors = MaterialDynamicColors()
   val scheme =
     when (style) {
-      MonetMode.TonalSpot -> SchemeTonalSpot(hct, isDark, contrastLevel)
-      MonetMode.Neutral -> SchemeNeutral(hct, isDark, contrastLevel)
-      MonetMode.Vibrant -> SchemeVibrant(hct, isDark, contrastLevel)
-      MonetMode.Expressive -> SchemeExpressive(hct, isDark, contrastLevel)
-      MonetMode.Rainbow -> SchemeRainbow(hct, isDark, contrastLevel)
-      MonetMode.FruitSalad -> SchemeFruitSalad(hct, isDark, contrastLevel)
-      MonetMode.Monochrome -> SchemeMonochrome(hct, isDark, contrastLevel)
-      MonetMode.Fidelity -> SchemeFidelity(hct, isDark, contrastLevel)
-      MonetMode.Content -> SchemeContent(hct, isDark, contrastLevel)
+      MonetMode.Content -> SchemeContent(hct, isDark, contrastLevel, specVersion)
+      MonetMode.Expressive -> SchemeExpressive(hct, isDark, contrastLevel, specVersion)
+      MonetMode.Fidelity -> SchemeFidelity(hct, isDark, contrastLevel, specVersion)
+      MonetMode.FruitSalad -> SchemeFruitSalad(hct, isDark, contrastLevel, specVersion)
+      MonetMode.Monochrome -> SchemeMonochrome(hct, isDark, contrastLevel, specVersion)
+      MonetMode.Neutral -> SchemeNeutral(hct, isDark, contrastLevel, specVersion)
+      MonetMode.Rainbow -> SchemeRainbow(hct, isDark, contrastLevel, specVersion)
+      MonetMode.TonalSpot -> SchemeTonalSpot(hct, isDark, contrastLevel, specVersion)
+      MonetMode.Vibrant -> SchemeVibrant(hct, isDark, contrastLevel, specVersion)
     }
 
   return ColorScheme(

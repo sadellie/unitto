@@ -35,7 +35,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
@@ -68,15 +67,12 @@ import com.sadellie.unitto.core.designsystem.icons.symbols._123
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.designsystem.theme.NumberTypographyUnitto
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.PagedIsland
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.Slider
-import com.sadellie.unitto.core.ui.firstShape
-import com.sadellie.unitto.core.ui.lastShape
-import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -117,7 +113,7 @@ fun FormattingScreen(
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
           .padding(horizontal = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       val precisions: ClosedFloatingPointRange<Float> = 0f..MAX_SCALE_ALIAS
       val resources = LocalResources.current
@@ -147,7 +143,7 @@ fun FormattingScreen(
 
       // Precision
       ListItemExpressive(
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
         leadingContent = {
           Icon(Symbols.Architecture, stringResource(R.string.settings_precision))
         },
@@ -175,7 +171,7 @@ fun FormattingScreen(
 
       // Thousands separator
       ListItemExpressive(
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
         leadingContent = {
           Icon(Symbols._123, stringResource(R.string.settings_thousands_separator))
         },
@@ -196,7 +192,7 @@ fun FormattingScreen(
         exit = shrinkVertically() + fadeOut(),
       ) {
         ListItemExpressive(
-          shape = ListItemDefaults.middleShape,
+          shape = ListItemExpressiveDefaults.middleShape,
           leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
           headlineContent = { Text(stringResource(R.string.settings_decimal_separator)) },
           secondaryContent = {
@@ -211,7 +207,7 @@ fun FormattingScreen(
 
       // Output format
       ListItemExpressive(
-        shape = ListItemDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.lastShape,
         leadingContent = {
           Icon(Symbols.EMobileData, stringResource(R.string.settings_exponential_notation))
         },

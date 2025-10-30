@@ -30,8 +30,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,10 +49,10 @@ import com.sadellie.unitto.core.data.converter.UnitStats
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
+import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.SearchPlaceholder
-import com.sadellie.unitto.core.ui.listedShaped
 import java.math.BigDecimal
 
 @Composable
@@ -81,7 +79,10 @@ internal fun UnitsList(
         buttonLabel = stringResource(R.string.common_open_settings),
       )
     } else {
-      LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = ListArrangement) {
+      LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      ) {
         searchResult.forEach { (group, units) ->
           item(key = group.name, contentType = ContentType.HEADER) {
             ListHeader(
@@ -104,7 +105,7 @@ internal fun UnitsList(
           ) { index, item ->
             UnitListItem(
               modifier = Modifier.animateItem().padding(horizontal = Sizes.medium).fillMaxWidth(),
-              unselectedShape = ListItemDefaults.listedShaped(index, units.size),
+              shape = ListItemExpressiveDefaults.listedShaped(index, units.size),
               name = stringResource(item.basicUnit.displayName),
               supportLabel = supportLabel(item),
               isFavorite = item.stats.isFavorite,
@@ -126,7 +127,7 @@ private fun UnitListItem(
   supportLabel: String,
   isFavorite: Boolean,
   isSelected: Boolean,
-  unselectedShape: Shape,
+  shape: Shape,
   onClick: () -> Unit,
   favoriteUnit: () -> Unit,
 ) {
@@ -134,7 +135,7 @@ private fun UnitListItem(
     modifier =
       Modifier.clickable(onClick = onClick)
         .then(modifier)
-        .clip(if (isSelected) RoundedCornerShape(50) else unselectedShape)
+        .clip(shape)
         .background(
           if (isSelected) MaterialTheme.colorScheme.primaryContainer
           else MaterialTheme.colorScheme.surfaceBright
@@ -148,10 +149,10 @@ private fun UnitListItem(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(Sizes.large),
   ) {
+    val itemColor =
+      if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
+      else MaterialTheme.colorScheme.onSurfaceVariant
     Column(Modifier.weight(1f)) {
-      val itemColor =
-        if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-        else MaterialTheme.colorScheme.onSurfaceVariant
       Text(
         modifier = Modifier.fillMaxWidth(),
         text = name,
@@ -169,7 +170,7 @@ private fun UnitListItem(
       )
     }
 
-    FavoritesButton(state = isFavorite, onClick = favoriteUnit)
+    ProvideColor(itemColor) { FavoritesButton(state = isFavorite, onClick = favoriteUnit) }
   }
 }
 

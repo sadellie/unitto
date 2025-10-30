@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -37,12 +38,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.BasicColoredCheckbox
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 internal fun MonetModeSelector(
   modifier: Modifier = Modifier,
@@ -62,7 +65,7 @@ internal fun MonetModeSelector(
   LazyRow(
     modifier = modifier,
     state = listState,
-    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    horizontalArrangement = Arrangement.spacedBy(Sizes.extraSmall),
     contentPadding = paddingValues,
   ) {
     items(MonetMode.entries) { monetMode ->
@@ -92,8 +95,6 @@ private fun MonetModeCheckbox(selected: Boolean, onClick: () -> Unit) {
     selected = selected,
     onClick = onClick,
     color = MaterialTheme.colorScheme.secondary,
-    checkIconColor = MaterialTheme.colorScheme.inverseOnSurface,
-    checkBackgroundColor = MaterialTheme.colorScheme.inverseSurface,
   ) {
     Box(
       Modifier.fillMaxSize(0.5f)

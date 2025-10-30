@@ -25,6 +25,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,6 +56,7 @@ import kotlinx.serialization.json.Json
 internal class ConverterWidgetConfigureActivity : AppCompatActivity() {
   private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
+  @OptIn(ExperimentalMaterial3ExpressiveApi::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)

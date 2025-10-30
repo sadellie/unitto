@@ -1,5 +1,5 @@
 [versions]
-versionCode = "56"
+versionCode = "57"
 versionName = "Slimy green"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
@@ -55,8 +55,6 @@ reorderable = "3.0.0"
 orgJetbrainsKotlinxKotlinxCoroutinesTest = "1.10.2"
 # https://github.com/robolectric/robolectric/releases
 orgRobolectricRobolectric = "4.16"
-# https://github.com/Kyant0/m3color/releases
-comGithubKyant0m3color = "2025.4"
 # https://github.com/Kotlin/kotlinx.serialization/releases
 kotlinx-serialization = "1.9.0"
 # https://github.com/eobermuhlner/big-math/releases
@@ -65,6 +63,8 @@ bigMath = "2.3.2"
 devIurysouzaModulegraph = "0.13.0"
 # https://github.com/detekt/detekt/releases
 detekt = "1.23.8"
+# https://github.com/jordond/MaterialKolor/releases
+materialKolor = "3.0.1"
 
 [libraries]
 androidx-activity-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityActivityCompose" }
@@ -107,8 +107,8 @@ junit-junit = { module = "junit:junit", version.ref = "junitJunit" }
 sh-calvin-reorderable-reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 org-jetbrains-kotlinx-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "orgJetbrainsKotlinxKotlinxCoroutinesTest" }
 org-robolectric-robolectric = { module = "org.robolectric:robolectric", version.ref = "orgRobolectricRobolectric" }
-com-github-kyant0-m3color = { module = "com.github.Kyant0:m3color", version.ref = "comGithubKyant0m3color" }
 org-jetbrains-kotlinx-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+com-materialkolor-material-color-utilities = { module = "com.materialkolor:material-color-utilities", version.ref = "materialKolor" }
 
 # build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

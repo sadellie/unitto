@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,11 +41,10 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.navigation.ConverterGraphRoute
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.listedShaped
 
 @Composable
 internal fun StartingScreenRoute(
@@ -79,14 +77,14 @@ private fun StartingScreenScreen(
     LazyColumn(
       contentPadding = padding,
       modifier = Modifier.padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       itemsIndexed(mainDrawerItems, { _, destination -> destination.graphRoute.id }) {
         index,
         destination ->
         ListItemExpressive(
           modifier = Modifier.clickable { updateStartingScreen(destination.graphRoute.id) },
-          shape = ListItemDefaults.listedShaped(index, mainDrawerItems.size),
+          shape = ListItemExpressiveDefaults.listedShaped(index, mainDrawerItems.size),
           headlineContent = { Text(stringResource(destination.name)) },
           leadingContent = {
             RadioButton(

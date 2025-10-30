@@ -33,7 +33,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -57,12 +56,11 @@ import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.SearchPlaceholder
 import com.sadellie.unitto.core.ui.datetime.formatTime
-import com.sadellie.unitto.core.ui.listedShaped
 import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -125,11 +123,11 @@ fun AddTimeZoneScreen(
           modifier = Modifier.fillMaxSize(),
           contentPadding =
             PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-          verticalArrangement = ListArrangement,
+          verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
         ) {
           itemsIndexed(uiState.searchResults, { index, item -> item.timeZone.id }) { index, item ->
             ListItemExpressive(
-              shape = ListItemDefaults.listedShaped(index, uiState.searchResults.size),
+              shape = ListItemExpressiveDefaults.listedShaped(index, uiState.searchResults.size),
               modifier =
                 Modifier.animateItem().clickable {
                   addToFavorites(item.timeZone)

@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -36,11 +35,10 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.licenses.ThirdParty
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.listedShaped
 
 /**
  * Screen with used third party libraries
@@ -58,14 +56,14 @@ internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
   ) { padding ->
     val allThirdParty = remember { ThirdParty.allThirdParty() }
     LazyColumn(
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
       contentPadding = padding,
       modifier = Modifier.padding(horizontal = Sizes.large),
     ) {
       itemsIndexed(allThirdParty) { index, item ->
         ListItemExpressive(
           modifier = Modifier.clickable { openLink(mContext, item.website) },
-          shape = ListItemDefaults.listedShaped(index, allThirdParty.size),
+          shape = ListItemExpressiveDefaults.listedShaped(index, allThirdParty.size),
           headlineContent = { Text("${item.name} (${item.license})") },
           supportingContent = {
             Column {

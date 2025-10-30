@@ -39,7 +39,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
@@ -64,14 +63,11 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.ColorSelector
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.firstShape
-import com.sadellie.unitto.core.ui.lastShape
-import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.feature.settings.components.MonetModeSelector
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
@@ -146,7 +142,7 @@ private fun DisplayScreen(
           .verticalScroll(rememberScrollState())
           .padding(paddingValues)
           .padding(horizontal = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       val isColorSelectedEnabled =
         remember(controller.isDynamicThemeEnabled) { !controller.isDynamicThemeEnabled }
@@ -157,7 +153,7 @@ private fun DisplayScreen(
         }
 
       ListItemExpressive(
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
         leadingContent = { Icon(Symbols.Palette, stringResource(R.string.settings_color_theme)) },
         headlineContent = { Text(stringResource(R.string.settings_color_theme)) },
         supportingContent = { Text(stringResource(R.string.settings_color_theme_support)) },
@@ -181,14 +177,15 @@ private fun DisplayScreen(
           supportingText = stringResource(R.string.settings_amoled_dark_support),
           switchState = controller.isAmoledThemeEnabled,
           onSwitchChange = onAmoledThemeChange,
-          shape = ListItemDefaults.middleShape,
+          shape = ListItemExpressiveDefaults.middleShape,
         )
       }
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
         val dynamicColorListItemShape =
           remember(isColorSelectedEnabled) {
-            if (isColorSelectedEnabled) ListItemDefaults.middleShape else ListItemDefaults.lastShape
+            if (isColorSelectedEnabled) ListItemExpressiveDefaults.middleShape
+            else ListItemExpressiveDefaults.lastShape
           }
         ListItemExpressive(
           icon = Symbols.Colorize,
@@ -206,8 +203,8 @@ private fun DisplayScreen(
         ) {
           val shape =
             remember(isStyleSelectorEnabled) {
-              if (isStyleSelectorEnabled) ListItemDefaults.middleShape
-              else ListItemDefaults.lastShape
+              if (isStyleSelectorEnabled) ListItemExpressiveDefaults.middleShape
+              else ListItemExpressiveDefaults.lastShape
             }
           ListItemExpressive(
             shape = shape,
@@ -236,7 +233,7 @@ private fun DisplayScreen(
           exit = shrinkVertically() + fadeOut(),
         ) {
           ListItemExpressive(
-            shape = ListItemDefaults.lastShape,
+            shape = ListItemExpressiveDefaults.lastShape,
             leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
             headlineContent = { Text(stringResource(R.string.settings_selected_style)) },
             secondaryContentPadding = PaddingValues(0.dp),
@@ -263,7 +260,7 @@ private fun DisplayScreen(
         supportingText = stringResource(R.string.settings_ac_button_support),
         switchState = prefs.acButton,
         onSwitchChange = updateAcButton,
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
       )
 
       ListItemExpressive(
@@ -272,7 +269,7 @@ private fun DisplayScreen(
         supportingText = stringResource(R.string.settings_middle_zero_support),
         switchState = prefs.middleZero,
         onSwitchChange = updateMiddleZero,
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
 
       ListItemExpressive(
@@ -280,7 +277,7 @@ private fun DisplayScreen(
         headlineText = stringResource(R.string.settings_language),
         supportingText = stringResource(R.string.settings_language_support),
         modifier = Modifier.clickable { navigateToLanguages() },
-        shape = ListItemDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.lastShape,
       )
     }
   }
@@ -318,6 +315,7 @@ private fun ThemingModeSelector(
   }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @RequiresApi(Build.VERSION_CODES.O_MR1)
 @Preview
 @Composable

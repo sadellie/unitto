@@ -30,7 +30,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,13 +64,10 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.firstShape
-import com.sadellie.unitto.core.ui.lastShape
-import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 import com.sadellie.unitto.feature.settings.navigation.AboutRoute
 import com.sadellie.unitto.feature.settings.navigation.BackupRoute
@@ -135,7 +131,7 @@ private fun SettingsScreen(
           .verticalScroll(rememberScrollState())
           .padding(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       AnimatedVisibility(
         modifier = Modifier.fillMaxWidth(),
@@ -162,35 +158,35 @@ private fun SettingsScreen(
         headlineText = stringResource(R.string.settings_display),
         supportingText = stringResource(R.string.settings_display_support),
         modifier = Modifier.clickable { navControllerAction(DisplayRoute) },
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         icon = Symbols.Home,
         headlineText = stringResource(R.string.settings_starting_screen),
         supportingText = stringResource(R.string.settings_starting_screen_support),
         modifier = Modifier.clickable { navControllerAction(StartingScreenRoute) },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols._123,
         headlineText = stringResource(R.string.settings_formatting),
         supportingText = stringResource(R.string.settings_formatting_support),
         modifier = Modifier.clickable { navControllerAction(FormattingRoute) },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Calculate,
         headlineText = stringResource(R.string.calculator_title),
         supportingText = stringResource(R.string.settings_calculator_support),
         modifier = Modifier.clickable { navControllerAction(CalculatorSettingsRoute) },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.SwapHoriz,
         headlineText = stringResource(R.string.converter_title),
         supportingText = stringResource(R.string.settings_converter_support),
         modifier = Modifier.clickable { navControllerAction(ConverterSettingsRoute) },
-        shape = ListItemDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.lastShape,
       )
       ListHeader(stringResource(R.string.settings_additional))
       ListItemExpressive(
@@ -199,14 +195,14 @@ private fun SettingsScreen(
         supportingText = stringResource(R.string.settings_vibrations_support),
         switchState = uiState.enableVibrations,
         onSwitchChange = updateVibrations,
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         icon = Symbols.RestorePage,
         headlineText = stringResource(R.string.settings_backup),
         supportingText = stringResource(R.string.settings_backup_support),
         modifier = Modifier.clickable { navControllerAction(BackupRoute) },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       AnimatedVisibility(
         visible = uiState.cacheSize > 0,
@@ -222,7 +218,7 @@ private fun SettingsScreen(
               clearCache()
               showToast(mContext, "👌")
             },
-          shape = ListItemDefaults.middleShape,
+          shape = ListItemExpressiveDefaults.middleShape,
         )
       }
       if (BuildConfig.STORE_LINK.isNotEmpty()) {
@@ -231,7 +227,7 @@ private fun SettingsScreen(
           icon = Symbols.RateReview,
           headlineText = stringResource(R.string.settings_rate_this_app),
           modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) },
-          shape = ListItemDefaults.middleShape,
+          shape = ListItemExpressiveDefaults.middleShape,
         )
       }
       ListItemExpressive(
@@ -239,7 +235,7 @@ private fun SettingsScreen(
         headlineText = stringResource(R.string.settings_about_unitto),
         supportingText = stringResource(R.string.settings_about_unitto_support),
         modifier = Modifier.clickable { navControllerAction(AboutRoute) },
-        shape = ListItemDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.lastShape,
       )
     }
   }

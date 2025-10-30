@@ -54,6 +54,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.icons.symbols.Check
@@ -111,7 +113,6 @@ fun ListItemExpressive(
         imageVector = icon,
         contentDescription = iconDescription,
         modifier = Modifier.size(24.dp),
-        tint = MaterialTheme.colorScheme.onSurfaceVariant,
       )
     },
     trailingContent = trailingContent,
@@ -221,7 +222,7 @@ fun ListItemExpressive(
     Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
       ProvideStyle(
         color = colors.headlineColor,
-        textStyle = MaterialTheme.typography.bodyLarge,
+        textStyle = ListItemExpressiveDefaults.headlineTextStyle,
         content = headlineContent,
       )
       supportingContent?.let {
@@ -236,49 +237,55 @@ fun ListItemExpressive(
   }
 }
 
-fun ListItemDefaults.listedShaped(indexInList: Int, listSize: Int): Shape {
-  val isFirst = indexInList == 0
-  val isLast = indexInList == listSize - 1
-  return when {
-    isFirst && isLast -> singleShape
-    isFirst -> firstShape
-    isLast -> lastShape
-    else -> middleShape
+object ListItemExpressiveDefaults {
+  val headlineTextStyle: TextStyle
+    @Stable
+    @Composable
+    get() =
+      MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight(HEADLINE_TEXT_FONT_WEIGHT))
+
+  private const val HEADLINE_TEXT_FONT_WEIGHT = 450
+
+  fun listedShaped(indexInList: Int, listSize: Int): Shape {
+    val isFirst = indexInList == 0
+    val isLast = indexInList == listSize - 1
+    return when {
+      isFirst && isLast -> singleShape
+      isFirst -> firstShape
+      isLast -> lastShape
+      else -> middleShape
+    }
   }
+
+  val ListArrangement = Arrangement.spacedBy(2.dp)
+
+  @Stable
+  val firstShape: Shape
+    get() = RoundedCornerShape(Sizes.large, Sizes.large, Sizes.extraSmall, Sizes.extraSmall)
+
+  @Stable
+  val middleShape: Shape
+    get() = RoundedCornerShape(Sizes.extraSmall)
+
+  @Stable
+  val lastShape: Shape
+    get() = RoundedCornerShape(Sizes.extraSmall, Sizes.extraSmall, Sizes.large, Sizes.large)
+
+  @Stable
+  val singleShape: Shape
+    get() = RoundedCornerShape(Sizes.large)
 }
-
-val ListArrangement = Arrangement.spacedBy(2.dp)
-
-@Suppress("UnusedReceiverParameter")
-@Stable
-val ListItemDefaults.firstShape: Shape
-  get() = RoundedCornerShape(Sizes.large, Sizes.large, Sizes.extraSmall, Sizes.extraSmall)
-
-@Suppress("UnusedReceiverParameter")
-@Stable
-val ListItemDefaults.middleShape: Shape
-  get() = RoundedCornerShape(Sizes.extraSmall)
-
-@Suppress("UnusedReceiverParameter")
-@Stable
-val ListItemDefaults.lastShape: Shape
-  get() = RoundedCornerShape(Sizes.extraSmall, Sizes.extraSmall, Sizes.large, Sizes.large)
-
-@Suppress("UnusedReceiverParameter")
-@Stable
-val ListItemDefaults.singleShape: Shape
-  get() = RoundedCornerShape(Sizes.large)
 
 @Preview
 @Composable
 fun PreviewListItem1() {
-  Column {
+  Column(verticalArrangement = ListItemExpressiveDefaults.ListArrangement) {
     ListItemExpressive(
       modifier = Modifier,
       headlineContent = { Text("Headline") },
       supportingContent = { Text("Support") },
       leadingContent = { Icon(imageVector = Symbols.Help, contentDescription = null) },
-      shape = ListItemDefaults.firstShape,
+      shape = ListItemExpressiveDefaults.firstShape,
     )
 
     var radioState by rememberSaveable { mutableStateOf(false) }
@@ -288,7 +295,7 @@ fun PreviewListItem1() {
       leadingContent = {
         RadioButton(selected = radioState, onClick = { radioState = !radioState })
       },
-      shape = ListItemDefaults.middleShape,
+      shape = ListItemExpressiveDefaults.middleShape,
     )
 
     ListItemExpressive(
@@ -298,7 +305,7 @@ fun PreviewListItem1() {
       modifier = Modifier,
       trailingContent = {},
       iconDescription = "",
-      shape = ListItemDefaults.middleShape,
+      shape = ListItemExpressiveDefaults.middleShape,
     )
 
     var switchState by rememberSaveable { mutableStateOf(false) }
@@ -309,7 +316,7 @@ fun PreviewListItem1() {
       modifier = Modifier,
       onSwitchChange = { switchState = !switchState },
       switchState = switchState,
-      shape = ListItemDefaults.lastShape,
+      shape = ListItemExpressiveDefaults.lastShape,
     )
   }
 }

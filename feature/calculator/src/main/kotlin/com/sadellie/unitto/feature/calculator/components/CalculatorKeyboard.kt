@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.calculator.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -46,6 +47,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowUp
@@ -358,7 +360,8 @@ private fun ToggleExpandedAdditionalKeysButton(
       onClick = { onClick(!expanded) },
       colors =
         IconButtonDefaults.iconButtonColors(
-          containerColor = MaterialTheme.colorScheme.inverseOnSurface
+          containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+          contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
       shapes = IconButtonDefaults.shapes(),
       modifier =
@@ -585,9 +588,14 @@ private const val SPACER_HEIGHT_FACTOR = 0.025f
 private const val EXPANDED_ADDITIONAL_BUTTON_HEIGHT_FACTOR = 0.09f
 private const val EXPANDED_ADDITIONAL_ROWS_COUNT = 3
 
-@Preview(device = "spec:width=400dp,height=600dp,dpi=440")
+@Preview(
+  device = "spec:width=400dp,height=600dp,dpi=440",
+  showSystemUi = false,
+  showBackground = false,
+  uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
 @Composable
-private fun PreviewExpandedKeyboard() {
+private fun PreviewExpandedKeyboard() = ExpressivePreview {
   var additionalButtons by remember { mutableStateOf(false) }
   ExpandedKeyboard(
     modifier = Modifier.fillMaxHeight(),
@@ -608,9 +616,14 @@ private fun PreviewExpandedKeyboard() {
   )
 }
 
-@Preview(device = "spec:width=600dp,height=300dp,dpi=440")
+@Preview(
+  device = "spec:width=600dp,height=300dp,dpi=440",
+  showSystemUi = false,
+  showBackground = false,
+  uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
 @Composable
-private fun PreviewCompactKeyboard() {
+private fun PreviewCompactKeyboard() = ExpressivePreview {
   CompactKeyboard(
     modifier = Modifier.fillMaxHeight(),
     onAddTokenClick = {},

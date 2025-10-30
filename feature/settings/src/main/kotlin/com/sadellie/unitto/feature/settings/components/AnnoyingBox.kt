@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Help
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.singleShape
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.squashable
 
 @Composable
@@ -47,7 +47,7 @@ internal fun AnnoyingBox(
     supportingText = support,
     icon = imageVector,
     iconDescription = imageVectorContentDescription,
-    shape = ListItemDefaults.singleShape,
+    shape = ListItemExpressiveDefaults.singleShape,
     modifier =
       modifier.squashable(
         onClick = onClick,
@@ -57,7 +57,7 @@ internal fun AnnoyingBox(
     colors =
       ListItemDefaults.colors(
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        leadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        leadingIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
         headlineColor = MaterialTheme.colorScheme.onSecondaryContainer,
         supportingColor = MaterialTheme.colorScheme.onSecondaryContainer,
       ),

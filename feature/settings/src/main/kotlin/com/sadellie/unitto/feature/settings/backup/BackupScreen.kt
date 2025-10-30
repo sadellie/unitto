@@ -26,8 +26,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,41 +35,38 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.icons.symbols.FileSave
 import com.sadellie.unitto.core.designsystem.icons.symbols.RestorePage
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.firstShape
-import com.sadellie.unitto.core.ui.lastShape
-import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.feature.settings.R
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -119,7 +116,7 @@ private fun BackupScreenReady(
         Modifier.verticalScroll(scrollState)
           .padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       BackupRestoreControls(
         modifier = Modifier.padding(vertical = Sizes.large),
@@ -129,22 +126,22 @@ private fun BackupScreenReady(
       ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_saved_expressions)) },
         supportingContent = { Text("${uiState.savedExpressions}") },
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_favorite_units)) },
         supportingContent = { Text("${uiState.favoriteUnits}") },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_used_units)) },
         supportingContent = { Text("${uiState.usedUnits}") },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_favorite_time_zones)) },
         supportingContent = { Text("${uiState.favoriteTimeZones}") },
-        shape = ListItemDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.lastShape,
       )
     }
   }
@@ -168,18 +165,15 @@ private fun BackupRestoreControls(
       if (pickedUri != null) onRestore(mContext, pickedUri)
     }
 
-  Row(
-    modifier = modifier.fillMaxWidth().clip(Shapes.ExtraLarge),
-    horizontalArrangement = Arrangement.spacedBy(2.dp),
-  ) {
+  Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
     BackupRestoreButton(
-      modifier = Modifier.weight(1f),
+      modifier = Modifier,
       onClick = { backupLauncher.launchSafely(backupFileName()) },
       imageVector = Symbols.FileSave,
       label = stringResource(R.string.settings_back_up),
     )
     BackupRestoreButton(
-      modifier = Modifier.weight(1f),
+      modifier = Modifier,
       onClick = { restoreLauncher.launchSafely(arrayOf(BACKUP_MIME_TYPE)) },
       imageVector = Symbols.RestorePage,
       label = stringResource(R.string.settings_restore),
@@ -190,9 +184,9 @@ private fun BackupRestoreControls(
 @Composable
 private fun BackupScreenInProgress() {
   BackHandler {}
-  Scaffold { padding ->
+  Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer) { padding ->
     Box(modifier = Modifier.padding(padding).fillMaxSize(), contentAlignment = Alignment.Center) {
-      CircularProgressIndicator()
+      CircularWavyProgressIndicator()
     }
   }
 }
@@ -204,16 +198,32 @@ private fun BackupRestoreButton(
   imageVector: ImageVector,
   label: String,
 ) {
+  val interactionSource = remember { MutableInteractionSource() }
   Column(
     modifier =
-      modifier
-        .clickable(onClick = onClick)
-        .background(MaterialTheme.colorScheme.surfaceVariant)
-        .padding(16.dp),
+      modifier.clickable(
+        onClick = onClick,
+        indication = null,
+        interactionSource = interactionSource,
+      ),
     horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.spacedBy(4.dp),
+    verticalArrangement = Arrangement.spacedBy(Sizes.small),
   ) {
-    Icon(imageVector, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+    FilledIconButton(
+      onClick = onClick,
+      shapes = IconButtonDefaults.shapes(),
+      interactionSource = interactionSource,
+      modifier =
+        Modifier.size(
+          IconButtonDefaults.mediumContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)
+        ),
+    ) {
+      Icon(
+        imageVector = imageVector,
+        contentDescription = label,
+        modifier = Modifier.size(IconButtonDefaults.mediumIconSize),
+      )
+    }
     Text(label, color = MaterialTheme.colorScheme.onSurfaceVariant)
   }
 }
@@ -249,4 +259,10 @@ private fun PreviewBackupScreenReady() {
     onBackup = { _, _ -> },
     onRestore = { _, _ -> },
   )
+}
+
+@Composable
+@Preview
+private fun PreviewBackupScreenInProgress() {
+  BackupScreenInProgress()
 }

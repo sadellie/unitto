@@ -33,7 +33,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -53,21 +52,18 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.firstShape
-import com.sadellie.unitto.core.ui.lastShape
-import com.sadellie.unitto.core.ui.singleShape
 import com.sadellie.unitto.feature.glance.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.math.BigDecimal
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
-import javax.inject.Inject
 
 @Composable
 internal fun ConverterWidgetConfigureCreateNewRoute(
@@ -136,12 +132,13 @@ private fun ConverterWidgetConfigureCreateNewScreen(
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       ListItemExpressive(
         modifier = Modifier.clickable { navigateToSelectFrom() },
         shape =
-          if (isUnitFromSelected) ListItemDefaults.firstShape else ListItemDefaults.singleShape,
+          if (isUnitFromSelected) ListItemExpressiveDefaults.firstShape
+          else ListItemExpressiveDefaults.singleShape,
         headlineContent = { Text(stringResource(R.string.converter_widget_configure_left_unit)) },
         supportingContent = {
           Text(
@@ -162,7 +159,7 @@ private fun ConverterWidgetConfigureCreateNewScreen(
             Modifier.clickable(enabled = isUnitFromSelected) {
               if (uiState.unitFrom != null) navigateToSelectTo(uiState.unitFrom.id)
             },
-          shape = ListItemDefaults.lastShape,
+          shape = ListItemExpressiveDefaults.lastShape,
           headlineContent = {
             Text(stringResource(R.string.converter_widget_configure_right_unit))
           },

@@ -18,9 +18,12 @@
 
 package com.sadellie.unitto.core.model.converter
 
-enum class UnitsListSorting {
-  USAGE,
-  ALPHABETICAL,
-  SCALE_DESC,
-  SCALE_ASC,
+import androidx.annotation.StringRes
+import com.sadellie.unitto.core.common.R
+
+enum class UnitsListSorting(@param:StringRes val res: Int) {
+  USAGE(R.string.settings_sort_by_usage),
+  ALPHABETICAL(R.string.settings_sort_by_alphabetical),
+  SCALE_DESC(R.string.settings_sort_by_scale_desc),
+  SCALE_ASC(R.string.settings_sort_by_scale_asc),
 }

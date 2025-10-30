@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.converter.components
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -30,6 +29,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,7 +45,6 @@ import com.sadellie.unitto.core.ui.Button
  * @param label Text on button
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @Composable
 internal fun UnitSelectionButton(
   modifier: Modifier,
@@ -58,6 +57,11 @@ internal fun UnitSelectionButton(
     onClick = onClick,
     enabled = enabled,
     shapes = ButtonDefaults.shapes(),
+    colors =
+      ButtonDefaults.buttonColors(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+      ),
     contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
   ) {
     AnimatedContent(

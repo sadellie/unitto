@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,5 +30,5 @@ dependencies {
   implementation(libs.androidx.compose.ui.tooling.preview)
   implementation(libs.androidx.compose.foundation.foundation)
   implementation(libs.androidx.compose.material3)
-  implementation(libs.com.github.kyant0.m3color)
+  implementation(libs.com.materialkolor.material.color.utilities)
 }

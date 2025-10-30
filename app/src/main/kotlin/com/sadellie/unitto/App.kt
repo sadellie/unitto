@@ -22,8 +22,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.core.tween
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -52,6 +53,7 @@ import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 internal fun ComponentActivity.App(prefs: AppPreferences?) {
   val navController = rememberNavController()
@@ -71,7 +73,7 @@ internal fun ComponentActivity.App(prefs: AppPreferences?) {
 
   BackHandler(drawerState.isOpen) { drawerScope.launch { drawerState.close() } }
 
-  Themmo(themmoController = themmoController, colorAnimationSpec = tween(THEME_CHANGE_DURATION)) {
+  Themmo(themmoController = themmoController, motionScheme = MotionScheme.expressive()) {
     val mContext = LocalContext.current
     val backgroundColor = MaterialTheme.colorScheme.surfaceContainer
     val isDarkThemeEnabled = remember(backgroundColor) { backgroundColor.isDark() }
@@ -138,9 +140,9 @@ private fun navigateToTab(destination: DrawerItem, navController: NavHostControl
 private fun ComponentActivity.applyEdgeToEdgeTheming(isDarkThemeEnabled: Boolean) {
   enableEdgeToEdge(
     statusBarStyle =
-    SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT) {
-      isDarkThemeEnabled
-    },
+      SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT) {
+        isDarkThemeEnabled
+      },
     navigationBarStyle = SystemBarStyle.auto(lightScrim, darkScrim) { isDarkThemeEnabled },
   )
 }
@@ -153,11 +155,10 @@ private fun ComponentActivity.applyEdgeToEdgeTheming(isDarkThemeEnabled: Boolean
 private fun Long.toColorOrUnspecified(): Color =
   try {
     Color(this.toULong())
-  } catch (e: Exception) {
+  } catch (_: Exception) {
     Color.Unspecified
   }
 
 // The default scrims, as defined by androidx and the platform
 private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
 private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
-private const val THEME_CHANGE_DURATION = 250

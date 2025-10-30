@@ -23,7 +23,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,11 +39,10 @@ import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Translate
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.listedShaped
 import com.sadellie.unitto.feature.settings.BuildConfig
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 
@@ -77,7 +75,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
     LazyColumn(
       modifier = Modifier.padding(horizontal = Sizes.large),
       contentPadding = padding,
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       item(key = "translate", contentType = ContentType.ANNOYING_BOX) {
         AnnoyingBox(
@@ -98,7 +96,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
             leadingContent = {
               RadioButton(selected = currentLangKey == key, onClick = { changeLanguage(key) })
             },
-            shape = ListItemDefaults.listedShaped(index, languages.size),
+            shape = ListItemExpressiveDefaults.listedShaped(index, languages.size),
           )
         }
       }

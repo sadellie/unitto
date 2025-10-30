@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -49,13 +48,10 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Policy
 import com.sadellie.unitto.core.designsystem.icons.symbols.PrivacyTip
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.firstShape
-import com.sadellie.unitto.core.ui.lastShape
-import com.sadellie.unitto.core.ui.middleShape
 import com.sadellie.unitto.feature.settings.BuildConfig
 
 @Composable
@@ -91,39 +87,39 @@ private fun AboutScreen(
           .verticalScroll(rememberScrollState())
           .padding(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       ListItemExpressive(
         icon = Symbols.Help,
         headlineText = stringResource(R.string.settings_currency_rates_note_title),
         modifier = Modifier.clickable { showDialog = true },
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         icon = Symbols.PrivacyTip,
         headlineText = stringResource(R.string.settings_terms_and_conditions),
         modifier =
           Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/terms") },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Policy,
         headlineText = stringResource(R.string.settings_privacy_policy),
         modifier =
           Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/privacy") },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Code,
         headlineText = stringResource(R.string.settings_view_source_code),
         modifier = Modifier.clickable { openLink(mContext, "https://github.com/sadellie/unitto") },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Copyright,
         headlineText = stringResource(R.string.settings_third_party_licenses),
         modifier = Modifier.clickable { navigateToThirdParty() },
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Info,
@@ -139,7 +135,7 @@ private fun AboutScreen(
               navigateToEasterEgg()
             }
           },
-        shape = ListItemDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.lastShape,
       )
     }
   }

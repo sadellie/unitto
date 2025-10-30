@@ -30,7 +30,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -56,10 +55,9 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
-import com.sadellie.unitto.core.ui.listedShaped
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -139,11 +137,11 @@ private fun MainScreen(
       modifier =
         Modifier.padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       itemsIndexed(uiState.selectedUnits) { index, selectedUnit ->
         ListItemExpressive(
-          shape = ListItemDefaults.listedShaped(index, uiState.selectedUnits.size),
+          shape = ListItemExpressiveDefaults.listedShaped(index, uiState.selectedUnits.size),
           headlineContent = {
             Row(
               modifier = Modifier.height(IntrinsicSize.Max),

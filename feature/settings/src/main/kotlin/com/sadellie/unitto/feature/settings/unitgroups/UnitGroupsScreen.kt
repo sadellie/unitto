@@ -65,12 +65,11 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Undo
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.listedShaped
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.ReorderableLazyListState
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -166,7 +165,7 @@ private fun UnitGroupsScreen(
       modifier =
         Modifier.padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       item(key = "enabled", contentType = ContentType.HEADER) {
         ListHeader(
@@ -185,7 +184,7 @@ private fun UnitGroupsScreen(
           unitGroup = unitGroup,
           removeShownUnitGroup = removeShownUnitGroup,
           onDragStopped = { updateShownUnitGroups(copiedShownList.value) },
-          shape = ListItemDefaults.listedShaped(index, copiedShownList.value.size),
+          shape = ListItemExpressiveDefaults.listedShaped(index, copiedShownList.value.size),
         )
       }
 
@@ -204,7 +203,7 @@ private fun UnitGroupsScreen(
         DisabledUnitGroupItem(
           onClick = { addShownUnitGroup(unitGroup) },
           unitGroup = unitGroup,
-          shape = ListItemDefaults.listedShaped(index, uiState.hiddenUnitGroups.size),
+          shape = ListItemExpressiveDefaults.listedShaped(index, uiState.hiddenUnitGroups.size),
         )
       }
     }

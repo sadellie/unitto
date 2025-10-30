@@ -26,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -55,10 +54,9 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.SearchBar
-import com.sadellie.unitto.core.ui.listedShaped
 import com.sadellie.unitto.core.ui.textfield.observe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
@@ -126,7 +124,10 @@ private fun ConverterWidgetUnitList(
   groupedUnits: Map<UnitGroup, List<UnitSearchResultItem>>,
   onClick: (unitId: String) -> Unit,
 ) {
-  LazyColumn(modifier = modifier, verticalArrangement = ListArrangement) {
+  LazyColumn(
+    modifier = modifier,
+    verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+  ) {
     groupedUnits.forEach { (group, units) ->
       item(group.name, ContentType.HEADER) { ListHeader(text = stringResource(group.res)) }
 
@@ -139,7 +140,7 @@ private fun ConverterWidgetUnitList(
           text = stringResource(unit.basicUnit.displayName),
           style = MaterialTheme.typography.bodyMedium,
           modifier =
-            Modifier.clip(ListItemDefaults.listedShaped(index, units.size))
+            Modifier.clip(ListItemExpressiveDefaults.listedShaped(index, units.size))
               .clickable { onClick(unit.basicUnit.id) }
               .background(MaterialTheme.colorScheme.surfaceBright)
               .padding(Sizes.medium)

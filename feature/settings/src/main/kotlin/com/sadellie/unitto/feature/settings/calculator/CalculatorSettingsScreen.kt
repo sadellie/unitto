@@ -20,7 +20,6 @@ package com.sadellie.unitto.feature.settings.calculator
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -39,13 +38,10 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Timer
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.firstShape
-import com.sadellie.unitto.core.ui.lastShape
-import com.sadellie.unitto.core.ui.middleShape
 
 @Composable
 internal fun CalculatorSettingsRoute(
@@ -82,7 +78,7 @@ private fun CalculatorSettingsScreen(
       modifier =
         Modifier.padding(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       ListItemExpressive(
         headlineText = stringResource(R.string.settings_history_view_button),
@@ -90,7 +86,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(R.string.settings_history_view_button_support),
         switchState = prefs.openHistoryViewButton,
         onSwitchChange = updateOpenHistoryViewButton,
-        shape = ListItemDefaults.firstShape,
+        shape = ListItemExpressiveDefaults.firstShape,
       )
 
       ListItemExpressive(
@@ -99,7 +95,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(R.string.settings_fractional_output_support),
         switchState = prefs.fractionalOutput,
         onSwitchChange = updateFractionalOutput,
-        shape = ListItemDefaults.middleShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
 
       ListItemExpressive(
@@ -108,7 +104,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(R.string.settings_partial_history_view_support),
         switchState = prefs.partialHistoryView,
         onSwitchChange = updatePartialHistoryView,
-        shape = ListItemDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.lastShape,
       )
     }
   }

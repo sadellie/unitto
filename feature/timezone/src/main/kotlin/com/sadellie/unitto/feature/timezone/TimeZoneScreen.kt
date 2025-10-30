@@ -44,7 +44,6 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -75,10 +74,9 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.datetimepicker.TimePickerDialog
-import com.sadellie.unitto.core.ui.listedShaped
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
 import java.time.ZonedDateTime
@@ -178,7 +176,7 @@ private fun TimeZoneScreen(
       state = lazyListState,
       modifier = Modifier.fillMaxSize().padding(padding),
       contentPadding = PaddingValues(start = Sizes.large, end = Sizes.large, bottom = 124.dp),
-      verticalArrangement = ListArrangement,
+      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       item(key = "user time", contentType = ContentType.USER_TIME) {
         UserTimeZone(
@@ -211,7 +209,7 @@ private fun TimeZoneScreen(
             modifier =
               Modifier.padding(itemPadding)
                 .clip(RoundedCornerShape(cornerRadius))
-                .clip(ListItemDefaults.listedShaped(index, mutableFavorites.size))
+                .clip(ListItemExpressiveDefaults.listedShaped(index, mutableFavorites.size))
                 .background(background)
                 .longPressDraggableHandle(onDragStopped = { onDragEnd(mutableFavorites, item) }),
             item = item,

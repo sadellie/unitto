@@ -92,6 +92,7 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
     compilerOptions.allWarningsAsErrors = warningsAsErrors.toBoolean()
     compilerOptions.freeCompilerArgs.addAll(
       "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+      "-opt-in=androidx.compose.material3.ExperimentalMaterial3ExpressiveApi",
       "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
       "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
       "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",

@@ -18,12 +18,9 @@
 
 package com.sadellie.unitto.core.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateInt
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,29 +28,27 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.common.R
-import com.sadellie.unitto.core.designsystem.icons.symbols.Check
-import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
-import com.sadellie.unitto.core.designsystem.theme.isDark
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 
 @Composable
 fun ColorSelector(
@@ -73,7 +68,7 @@ fun ColorSelector(
   LazyRow(
     modifier = modifier,
     state = listState,
-    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    horizontalArrangement = Arrangement.spacedBy(Sizes.extraSmall),
     contentPadding = contentPadding,
   ) {
     items(colors, { it.value.toLong() }) {
@@ -87,68 +82,43 @@ fun BasicColoredCheckbox(
   selected: Boolean,
   onClick: () -> Unit,
   color: Color,
-  checkIconColor: Color,
-  checkBackgroundColor: Color,
+  borderColor: Color = MaterialTheme.colorScheme.primary,
   content: @Composable BoxScope.() -> Unit,
 ) {
+  val transition = updateTransition(selected, "selected")
+  val cornerRadius by
+    transition.animateInt(transitionSpec = { MaterialTheme.motionScheme.defaultSpatialSpec() }) {
+      if (it) 35 else 50
+    }
+  val borderColor by
+    transition.animateColor(transitionSpec = { MaterialTheme.motionScheme.defaultSpatialSpec() }) {
+      if (it) borderColor else Color.Transparent
+    }
+  val shape = RoundedCornerShape(cornerRadius)
   Box(
     modifier =
-      Modifier.size(72.dp)
-        .clip(Shapes.Large)
-        .clickable(onClick = onClick)
-        .background(MaterialTheme.colorScheme.surfaceContainer),
-    contentAlignment = Alignment.Center,
+      Modifier.size(48.dp).clip(shape).clickable { onClick() }.border(2.dp, borderColor, shape)
   ) {
-    Box(
-      modifier =
-        Modifier.size(56.dp)
-          .clip(CircleShape)
-          .background(color)
-          .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
-    ) {
-      content()
-      AnimatedVisibility(
-        visible = selected,
-        enter = fadeIn(tween(FADE_DURATION_MS)) + scaleIn(tween(SCALE_DURATION_MS)),
-        exit = fadeOut(tween(FADE_DURATION_MS)) + scaleOut(tween(SCALE_DURATION_MS)),
-        modifier = Modifier.align(Alignment.Center),
-      ) {
-        Icon(
-          imageVector = Symbols.Check,
-          contentDescription = stringResource(R.string.common_selected_item),
-          tint = checkIconColor,
-          modifier = Modifier.background(checkBackgroundColor, CircleShape).padding(4.dp),
-        )
-      }
-    }
+    Box(modifier = Modifier.fillMaxSize().padding(4.dp).clip(shape).background(color)) { content() }
   }
 }
 
 @Composable
-private fun ColorCheckbox(color: Color, selected: Boolean, onClick: () -> Unit) {
-  BasicColoredCheckbox(
-    selected = selected,
-    onClick = onClick,
-    color = color,
-    checkIconColor = if (color.isDark()) Color.White else Color.Black,
-    checkBackgroundColor = Color.Transparent,
-    content = {},
-  )
+private fun ColorCheckbox(selected: Boolean, onClick: () -> Unit, color: Color) {
+  BasicColoredCheckbox(selected = selected, onClick = onClick, color = color, content = {})
 }
-
-private const val FADE_DURATION_MS = 250
-private const val SCALE_DURATION_MS = 150
 
 @Preview
 @Composable
-private fun PreviewColorSelector() {
+private fun PreviewColorSelector() = ExpressivePreview {
+  var selectedColor by remember { mutableStateOf(Color.Red) }
   ColorSelector(
     modifier = Modifier.background(MaterialTheme.colorScheme.background),
-    currentColor = Color.Red,
+    currentColor = selectedColor,
     colors =
       remember {
         listOf(Color.Red, Color.Yellow, Color.Blue, Color.Green, Color.Magenta, Color.LightGray)
       },
-    onColorClick = {},
+    onColorClick = { selectedColor = it },
   )
 }
