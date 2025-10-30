@@ -82,7 +82,6 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.LocalHapticPreference
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
-import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -162,7 +161,8 @@ internal fun Ready(
   ScaffoldWithTopBar(
     title = {},
     navigationIcon = { DrawerButton(onClick = openDrawer) },
-    colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceVariant),
+    colors =
+      TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     actions = {
       ClearHistoryButton(onClick = { showClearHistoryDialog = true }, isOpen = isOpen)
 
@@ -237,6 +237,7 @@ internal fun Ready(
         )
       },
       partialHistoryView = uiState.partialHistoryView,
+      steppedPartialHistoryView = uiState.steppedPartialHistoryView,
       updateInitialPartialHistoryView = updateInitialPartialHistoryView,
       dragState = dragState,
     )
@@ -260,6 +261,7 @@ private fun LiquidCalculatorView(
   textBox: @Composable (offset: Density.() -> IntOffset, height: Dp) -> Unit,
   keyboard: @Composable (offset: Density.() -> IntOffset, height: Dp) -> Unit,
   partialHistoryView: Boolean,
+  steppedPartialHistoryView: Boolean,
   updateInitialPartialHistoryView: (Boolean) -> Unit,
   dragState: AnchoredDraggableState<DragState>,
 ) =
@@ -283,22 +285,16 @@ private fun LiquidCalculatorView(
         }
       }
 
-    LaunchedEffect(partialHistoryView, textBoxHeight) {
+    LaunchedEffect(partialHistoryView, textBoxHeight, dragState.settledValue) {
       val anchors: DraggableAnchors<DragState> =
-        with(density) {
-          if (partialHistoryView) {
-            DraggableAnchors {
-              DragState.CLOSED at 0f
-              DragState.PARTIAL at HistoryItemHeight.toPx()
-              DragState.OPEN at (maxHeight - textBoxHeight).toPx()
-            }
-          } else {
-            DraggableAnchors {
-              DragState.CLOSED at 0f
-              DragState.OPEN at (maxHeight - textBoxHeight).toPx()
-            }
-          }
-        }
+        updateDraggableAnchors(
+          density = density,
+          partialHistoryView = partialHistoryView,
+          steppedPartialHistoryView = steppedPartialHistoryView,
+          textBoxHeight = textBoxHeight,
+          maxHeight = maxHeight,
+          settledValue = dragState.settledValue,
+        )
       dragState.updateAnchors(anchors)
     }
 
@@ -354,6 +350,50 @@ private fun ClearHistoryDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
   )
 }
 
+private fun updateDraggableAnchors(
+  density: Density,
+  partialHistoryView: Boolean,
+  steppedPartialHistoryView: Boolean,
+  textBoxHeight: Dp,
+  maxHeight: Dp,
+  settledValue: DragState,
+): DraggableAnchors<DragState> =
+  with(density) {
+    DraggableAnchors {
+      when {
+        partialHistoryView && steppedPartialHistoryView ->
+          when (settledValue) {
+            DragState.CLOSED -> {
+              DragState.CLOSED at 0f
+              DragState.PARTIAL at HistoryItemHeight.toPx()
+            }
+
+            DragState.PARTIAL -> {
+              DragState.CLOSED at 0f
+              DragState.PARTIAL at HistoryItemHeight.toPx()
+              DragState.OPEN at (maxHeight - textBoxHeight).toPx()
+            }
+
+            DragState.OPEN -> {
+              DragState.PARTIAL at HistoryItemHeight.toPx()
+              DragState.OPEN at (maxHeight - textBoxHeight).toPx()
+            }
+          }
+
+        partialHistoryView -> {
+          DragState.CLOSED at 0f
+          DragState.OPEN at (maxHeight - textBoxHeight).toPx()
+        }
+
+        else -> {
+          DragState.CLOSED at 0f
+          DragState.PARTIAL at HistoryItemHeight.toPx()
+          DragState.OPEN at (maxHeight - textBoxHeight).toPx()
+        }
+      }
+    }
+  }
+
 @Composable
 private fun liquidFlingBehaviour(dragState: AnchoredDraggableState<DragState>) =
   AnchoredDraggableDefaults.flingBehavior(
@@ -396,7 +436,7 @@ private fun OpenHistoryViewButton(onClick: () -> Unit, isOpen: Boolean) {
     val rotation =
       animateFloatAsState(
         targetValue = if (isOpen) 360f else 0f,
-        animationSpec = defaultIconAnimationSpec(),
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
         label = "Open history view",
       )
     Icon(
@@ -456,6 +496,7 @@ private fun PreviewCalculatorScreen() {
         additionalButtons = false,
         inverseMode = false,
         partialHistoryView = true,
+        steppedPartialHistoryView = true,
         initialPartialHistoryView = false,
         openHistoryViewButton = true,
       ),

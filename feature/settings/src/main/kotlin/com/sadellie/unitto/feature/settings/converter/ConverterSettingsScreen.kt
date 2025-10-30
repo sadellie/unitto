@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.converter
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -103,7 +102,7 @@ private fun ConverterSettingsScreen(
         icon = Symbols.Rule,
         headlineText = stringResource(R.string.settings_unit_groups_title),
         supportingText = stringResource(R.string.settings_unit_groups_support),
-        modifier = Modifier.clickable { navigateToUnitsGroup() },
+        onClick = { navigateToUnitsGroup() },
         shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(

@@ -123,6 +123,7 @@ private fun UnitToSelectorScreen(
           navigateUp()
         },
         favoriteUnit = { favoriteUnit(it) },
+        contentPadding = paddingValues,
       )
     }
   }

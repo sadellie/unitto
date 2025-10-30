@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,6 +68,10 @@ internal fun Preferences.getEnableVibrations(): Boolean {
   return this[PrefsKeys.ENABLE_VIBRATIONS] ?: true
 }
 
+internal fun Preferences.getEnableKeepScreenOn(): Boolean {
+  return this[PrefsKeys.ENABLE_KEEP_SCREEN_ON] ?: false
+}
+
 internal fun Preferences.getRadianMode(): Boolean {
   return this[PrefsKeys.RADIAN_MODE] ?: true
 }
@@ -89,6 +93,10 @@ internal fun Preferences.getMiddleZero(): Boolean {
 
 internal fun Preferences.getPartialHistoryView(): Boolean {
   return this[PrefsKeys.PARTIAL_HISTORY_VIEW] ?: true
+}
+
+internal fun Preferences.getSteppedPartialHistoryView(): Boolean {
+  return this[PrefsKeys.STEPPED_PARTIAL_HISTORY_VIEW] ?: true
 }
 
 internal fun Preferences.getInitialPartialHistoryView(): Boolean {

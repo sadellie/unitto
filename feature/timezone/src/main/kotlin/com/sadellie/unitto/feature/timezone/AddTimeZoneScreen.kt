@@ -26,7 +26,6 @@ import android.os.Build
 import android.text.format.DateFormat.is24HourFormat
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -53,6 +52,7 @@ import com.sadellie.unitto.core.common.offset
 import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.common.regionName
 import com.sadellie.unitto.core.designsystem.LocalLocale
+import com.sadellie.unitto.core.designsystem.plus
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -103,12 +103,13 @@ fun AddTimeZoneScreen(
   ) { paddingValues ->
     val mContext = LocalContext.current
     Crossfade(
-      modifier = Modifier.padding(paddingValues),
+      modifier = Modifier.fillMaxSize(),
       targetState = uiState.searchResults.isEmpty() and uiState.query.text.isNotEmpty(),
       label = "Placeholder",
     ) { empty ->
       if (empty) {
         SearchPlaceholder(
+          modifier = Modifier.padding(paddingValues),
           onButtonClick = {
             openLink(mContext, "https://sadellie.github.io/unitto/help#add-time-zones")
           },
@@ -122,17 +123,18 @@ fun AddTimeZoneScreen(
         LazyColumn(
           modifier = Modifier.fillMaxSize(),
           contentPadding =
-            PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+            paddingValues +
+              PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
           verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
         ) {
           itemsIndexed(uiState.searchResults, { index, item -> item.timeZone.id }) { index, item ->
             ListItemExpressive(
               shape = ListItemExpressiveDefaults.listedShaped(index, uiState.searchResults.size),
-              modifier =
-                Modifier.animateItem().clickable {
-                  addToFavorites(item.timeZone)
-                  navigateUp()
-                },
+              modifier = Modifier.animateItem(),
+              onClick = {
+                addToFavorites(item.timeZone)
+                navigateUp()
+              },
               headlineContent = { Text(item.name) },
               supportingContent = { Text(item.region) },
               trailingContent = {

@@ -25,7 +25,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -276,7 +275,7 @@ private fun DisplayScreen(
         icon = Symbols.Language,
         headlineText = stringResource(R.string.settings_language),
         supportingText = stringResource(R.string.settings_language_support),
-        modifier = Modifier.clickable { navigateToLanguages() },
+        onClick = { navigateToLanguages() },
         shape = ListItemExpressiveDefaults.lastShape,
       )
     }

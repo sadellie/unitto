@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,6 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
 import com.sadellie.unitto.core.designsystem.icons.symbols.Edit
 import com.sadellie.unitto.core.designsystem.icons.symbols.Schedule
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.ProvideStyle
@@ -186,7 +185,7 @@ private fun TimeZoneOption(
   ProvideColor(MaterialTheme.colorScheme.onSurfaceVariant) {
     Row(
       modifier =
-        Modifier.clip(Shapes.Small)
+        Modifier.clip(MaterialTheme.shapes.small)
           .clickable { onClick() }
           .fillMaxWidth()
           .padding(horizontal = 8.dp, vertical = 12.dp),

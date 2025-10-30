@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,14 @@ data class AppPreferences(
   val startingScreen: Route,
   val enableToolsExperiment: Boolean,
   val enableVibrations: Boolean,
+  val enableKeepScreenOn: Boolean,
 )
 
-data class GeneralPreferences(val lastReadChangelog: String, val enableVibrations: Boolean)
+data class GeneralPreferences(
+  val lastReadChangelog: String,
+  val enableVibrations: Boolean,
+  val enableKeepScreenOn: Boolean,
+)
 
 data class CalculatorPreferences(
   val radianMode: Boolean,
@@ -46,6 +51,7 @@ data class CalculatorPreferences(
   val additionalButtons: Boolean,
   val inverseMode: Boolean,
   val partialHistoryView: Boolean,
+  val steppedPartialHistoryView: Boolean,
   val initialPartialHistoryView: Boolean,
   val openHistoryViewButton: Boolean,
   val fractionalOutput: Boolean,
@@ -68,10 +74,7 @@ data class ConverterPreferences(
   val latestRightSideUnit: String,
 )
 
-data class DisplayPreferences(
-  val middleZero: Boolean,
-  val acButton: Boolean,
-)
+data class DisplayPreferences(val middleZero: Boolean, val acButton: Boolean)
 
 data class FormattingPreferences(
   val digitsPrecision: Int,

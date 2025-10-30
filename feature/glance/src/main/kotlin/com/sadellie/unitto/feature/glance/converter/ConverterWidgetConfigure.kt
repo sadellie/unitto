@@ -142,6 +142,7 @@ private fun MainScreen(
       itemsIndexed(uiState.selectedUnits) { index, selectedUnit ->
         ListItemExpressive(
           shape = ListItemExpressiveDefaults.listedShaped(index, uiState.selectedUnits.size),
+          onClick = null,
           headlineContent = {
             Row(
               modifier = Modifier.height(IntrinsicSize.Max),

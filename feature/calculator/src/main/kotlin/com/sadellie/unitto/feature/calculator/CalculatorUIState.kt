@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ internal sealed class CalculatorUIState {
     val additionalButtons: Boolean,
     val inverseMode: Boolean,
     val partialHistoryView: Boolean,
+    val steppedPartialHistoryView: Boolean,
     val initialPartialHistoryView: Boolean,
     val openHistoryViewButton: Boolean,
   ) : CalculatorUIState()

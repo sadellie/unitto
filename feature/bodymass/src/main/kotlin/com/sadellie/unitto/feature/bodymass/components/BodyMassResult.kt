@@ -41,7 +41,6 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import java.math.BigDecimal
@@ -80,7 +79,7 @@ internal fun BodyMassResult(
   Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
     Column(
       modifier =
-        Modifier.clip(Shapes.ExtraLarge)
+        Modifier.clip(MaterialTheme.shapes.extraLarge)
           .background(classification.color)
           .padding(Sizes.large)
           .fillMaxWidth()
@@ -99,7 +98,7 @@ internal fun BodyMassResult(
 
     Column(
       modifier =
-        Modifier.clip(Shapes.ExtraLarge)
+        Modifier.clip(MaterialTheme.shapes.extraLarge)
           .background(MaterialTheme.colorScheme.secondaryContainer)
           .padding(Sizes.large)
           .fillMaxWidth()

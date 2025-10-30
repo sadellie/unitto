@@ -73,7 +73,6 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Event
 import com.sadellie.unitto.core.designsystem.icons.symbols.Remove
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.TextFieldBox
@@ -128,7 +127,7 @@ private fun AddSubtractView(
           targetState = showResult,
           label = "Reveal result",
           transitionSpec = { fadeIn() togetherWith fadeOut() using SizeTransform() },
-          modifier = Modifier.clip(Shapes.ExtraLarge),
+          modifier = Modifier.clip(MaterialTheme.shapes.extraLarge),
         ) { show ->
           FlowRow(
             modifier = Modifier.fillMaxWidth(),

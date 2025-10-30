@@ -114,7 +114,7 @@ private fun UnitFromSelectorScreen(
     if (uiState.units != null) {
       val resources = LocalResources.current
       UnitsList(
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier,
         searchResult = uiState.units,
         navigateToUnitGroups = navigateToUnitGroups,
         selectedUnitId = uiState.unitFromId,
@@ -125,6 +125,7 @@ private fun UnitFromSelectorScreen(
           navigateUp()
         },
         favoriteUnit = { favoriteUnit(it) },
+        contentPadding = paddingValues,
       )
     }
   }

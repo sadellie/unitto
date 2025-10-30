@@ -29,12 +29,14 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 
@@ -72,13 +74,15 @@ fun ScaffoldWithTopBar(
         enter = slideInVertically() + fadeIn(),
         exit = slideOutVertically() + fadeOut(),
       ) {
-        CenterAlignedTopAppBar(
+        TopAppBar(
           title = title,
+          subtitle = {},
           navigationIcon = {
             if (LocalWindowSize.current.widthSizeClass != WindowWidthSizeClass.Expanded) {
               navigationIcon()
             }
           },
+          titleHorizontalAlignment = Alignment.CenterHorizontally,
           actions = actions,
           colors = colors,
           scrollBehavior = scrollBehavior,

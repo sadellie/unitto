@@ -70,6 +70,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.plus
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.DrawerButton
@@ -174,8 +175,9 @@ private fun TimeZoneScreen(
   ) { padding ->
     LazyColumn(
       state = lazyListState,
-      modifier = Modifier.fillMaxSize().padding(padding),
-      contentPadding = PaddingValues(start = Sizes.large, end = Sizes.large, bottom = 124.dp),
+      modifier = Modifier.fillMaxSize(),
+      contentPadding =
+        padding + PaddingValues(start = Sizes.large, end = Sizes.large, bottom = 124.dp),
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       item(key = "user time", contentType = ContentType.USER_TIME) {

@@ -19,12 +19,14 @@
 package com.sadellie.unitto
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.os.ConfigurationCompat
@@ -50,6 +52,15 @@ internal class MainActivity : AppCompatActivity() {
     setContent {
       val configuration = LocalConfiguration.current
       val prefs = userPrefsRepository.appPrefs.collectAsStateWithLifecycle(null).value
+
+      LaunchedEffect(prefs?.enableKeepScreenOn) {
+        val enableKeepScreenOn = prefs?.enableKeepScreenOn ?: return@LaunchedEffect
+        if (enableKeepScreenOn) {
+          this@MainActivity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } else {
+          this@MainActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+      }
 
       val locale =
         remember(configuration) {

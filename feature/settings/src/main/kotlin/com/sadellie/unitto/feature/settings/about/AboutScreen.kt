@@ -18,8 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.about
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -91,34 +89,32 @@ private fun AboutScreen(
     ) {
       ListItemExpressive(
         icon = Symbols.Help,
+        onClick = { showDialog = true },
         headlineText = stringResource(R.string.settings_currency_rates_note_title),
-        modifier = Modifier.clickable { showDialog = true },
         shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         icon = Symbols.PrivacyTip,
         headlineText = stringResource(R.string.settings_terms_and_conditions),
-        modifier =
-          Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/terms") },
+        onClick = { openLink(mContext, "https://sadellie.github.io/unitto/terms") },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Policy,
         headlineText = stringResource(R.string.settings_privacy_policy),
-        modifier =
-          Modifier.clickable { openLink(mContext, "https://sadellie.github.io/unitto/privacy") },
+        onClick = { openLink(mContext, "https://sadellie.github.io/unitto/privacy") },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Code,
         headlineText = stringResource(R.string.settings_view_source_code),
-        modifier = Modifier.clickable { openLink(mContext, "https://github.com/sadellie/unitto") },
+        onClick = { openLink(mContext, "https://github.com/sadellie/unitto") },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Copyright,
         headlineText = stringResource(R.string.settings_third_party_licenses),
-        modifier = Modifier.clickable { navigateToThirdParty() },
+        onClick = { navigateToThirdParty() },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
@@ -126,15 +122,14 @@ private fun AboutScreen(
         headlineText = stringResource(R.string.settings_version_name),
         supportingText =
           "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) ${BuildConfig.BUILD_TYPE}",
-        modifier =
-          Modifier.combinedClickable {
-            val clicksToOpenEasterEgg = 5
-            aboutItemClick++
-            if (aboutItemClick > clicksToOpenEasterEgg) {
-              aboutItemClick = 0
-              navigateToEasterEgg()
-            }
-          },
+        onClick = {
+          val clicksToOpenEasterEgg = 5
+          aboutItemClick++
+          if (aboutItemClick > clicksToOpenEasterEgg) {
+            aboutItemClick = 0
+            navigateToEasterEgg()
+          }
+        },
         shape = ListItemExpressiveDefaults.lastShape,
       )
     }

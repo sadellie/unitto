@@ -24,6 +24,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,6 +43,7 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
@@ -64,6 +66,7 @@ internal fun UnitsList(
   supportLabel: (UnitSearchResultItem) -> String,
   onClick: (UnitSearchResultItem) -> Unit,
   favoriteUnit: (UnitSearchResultItem) -> Unit,
+  contentPadding: PaddingValues,
 ) {
   val isSearchEmpty = remember(searchResult) { searchResult.isEmpty() }
   Crossfade(
@@ -74,6 +77,7 @@ internal fun UnitsList(
   ) { isEmpty ->
     if (isEmpty) {
       SearchPlaceholder(
+        modifier = Modifier.padding(contentPadding),
         onButtonClick = navigateToUnitGroups,
         supportText = stringResource(R.string.converter_no_results_support),
         buttonLabel = stringResource(R.string.common_open_settings),
@@ -82,6 +86,7 @@ internal fun UnitsList(
       LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+        contentPadding = contentPadding,
       ) {
         searchResult.forEach { (group, units) ->
           item(key = group.name, contentType = ContentType.HEADER) {
@@ -250,5 +255,6 @@ private fun PreviewUnitsList() {
     supportLabel = { resources.getString(it.basicUnit.shortName) },
     onClick = {},
     favoriteUnit = {},
+    contentPadding = PaddingValues(0.dp),
   )
 }

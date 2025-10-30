@@ -28,6 +28,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -62,6 +64,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.DragHandle
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapVert
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Undo
+import com.sadellie.unitto.core.designsystem.plus
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -162,10 +165,10 @@ private fun UnitGroupsScreen(
 
     LazyColumn(
       state = lazyListState,
-      modifier =
-        Modifier.padding(paddingValues)
-          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      modifier = Modifier.fillMaxSize(),
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      contentPadding =
+        paddingValues + PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
     ) {
       item(key = "enabled", contentType = ContentType.HEADER) {
         ListHeader(
@@ -253,10 +256,10 @@ private fun LazyItemScope.EnabledUnitGroupItem(
 
     ListItemExpressive(
       headlineContent = { Text(stringResource(unitGroup.res)) },
+      onClick = { removeShownUnitGroup(unitGroup) },
       modifier =
         Modifier.padding(horizontal = itemPadding)
           .clip(RoundedCornerShape(cornerRadius.value))
-          .clickable { removeShownUnitGroup(unitGroup) }
           .longPressDraggableHandle(onDragStopped = onDragStopped),
       colors = ListItemDefaults.colors(containerColor = background),
       shape = shape,
@@ -296,7 +299,8 @@ private fun LazyItemScope.DisabledUnitGroupItem(
   shape: Shape,
 ) {
   ListItemExpressive(
-    modifier = Modifier.animateItem().clickable(onClick = onClick),
+    modifier = Modifier.animateItem(),
+    onClick = onClick,
     shape = shape,
     headlineContent = { Text(stringResource(unitGroup.res)) },
     trailingContent = {

@@ -23,7 +23,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,6 +47,7 @@ import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
+import com.sadellie.unitto.core.designsystem.icons.symbols.BacklightHigh
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cached
 import com.sadellie.unitto.core.designsystem.icons.symbols.Calculate
 import com.sadellie.unitto.core.designsystem.icons.symbols.Home
@@ -103,6 +103,7 @@ internal fun SettingsRoute(
         navControllerAction = navControllerAction,
         updateLastReadChangelog = viewModel::updateLastReadChangelog,
         updateVibrations = viewModel::updateVibrations,
+        updateKeepScreenOn = viewModel::updateEnableKeepScreenOn,
         clearCache = viewModel::clearCache,
       )
   }
@@ -115,6 +116,7 @@ private fun SettingsScreen(
   navControllerAction: (Route) -> Unit,
   updateLastReadChangelog: (String) -> Unit,
   updateVibrations: (Boolean) -> Unit,
+  updateKeepScreenOn: (Boolean) -> Unit,
   clearCache: () -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
@@ -157,35 +159,35 @@ private fun SettingsScreen(
         icon = Symbols.Palette,
         headlineText = stringResource(R.string.settings_display),
         supportingText = stringResource(R.string.settings_display_support),
-        modifier = Modifier.clickable { navControllerAction(DisplayRoute) },
+        onClick = { navControllerAction(DisplayRoute) },
         shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         icon = Symbols.Home,
         headlineText = stringResource(R.string.settings_starting_screen),
         supportingText = stringResource(R.string.settings_starting_screen_support),
-        modifier = Modifier.clickable { navControllerAction(StartingScreenRoute) },
+        onClick = { navControllerAction(StartingScreenRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols._123,
         headlineText = stringResource(R.string.settings_formatting),
         supportingText = stringResource(R.string.settings_formatting_support),
-        modifier = Modifier.clickable { navControllerAction(FormattingRoute) },
+        onClick = { navControllerAction(FormattingRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Calculate,
         headlineText = stringResource(R.string.calculator_title),
         supportingText = stringResource(R.string.settings_calculator_support),
-        modifier = Modifier.clickable { navControllerAction(CalculatorSettingsRoute) },
+        onClick = { navControllerAction(CalculatorSettingsRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.SwapHoriz,
         headlineText = stringResource(R.string.converter_title),
         supportingText = stringResource(R.string.settings_converter_support),
-        modifier = Modifier.clickable { navControllerAction(ConverterSettingsRoute) },
+        onClick = { navControllerAction(ConverterSettingsRoute) },
         shape = ListItemExpressiveDefaults.lastShape,
       )
       ListHeader(stringResource(R.string.settings_additional))
@@ -198,10 +200,18 @@ private fun SettingsScreen(
         shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
+        icon = Symbols.BacklightHigh,
+        headlineText = stringResource(R.string.settings_keep_screen_on),
+        supportingText = stringResource(R.string.settings_keep_screen_on_support),
+        switchState = uiState.enableKeepScreenOn,
+        onSwitchChange = updateKeepScreenOn,
+        shape = ListItemExpressiveDefaults.middleShape,
+      )
+      ListItemExpressive(
         icon = Symbols.RestorePage,
         headlineText = stringResource(R.string.settings_backup),
         supportingText = stringResource(R.string.settings_backup_support),
-        modifier = Modifier.clickable { navControllerAction(BackupRoute) },
+        onClick = { navControllerAction(BackupRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       AnimatedVisibility(
@@ -213,11 +223,10 @@ private fun SettingsScreen(
         ListItemExpressive(
           headlineText = stringResource(R.string.settings_clear_cache),
           icon = Symbols.Cached,
-          modifier =
-            Modifier.clickable {
-              clearCache()
-              showToast(mContext, "👌")
-            },
+          onClick = {
+            clearCache()
+            showToast(mContext, "👌")
+          },
           shape = ListItemExpressiveDefaults.middleShape,
         )
       }
@@ -226,7 +235,7 @@ private fun SettingsScreen(
         ListItemExpressive(
           icon = Symbols.RateReview,
           headlineText = stringResource(R.string.settings_rate_this_app),
-          modifier = Modifier.clickable { openLink(mContext, BuildConfig.STORE_LINK) },
+          onClick = { openLink(mContext, BuildConfig.STORE_LINK) },
           shape = ListItemExpressiveDefaults.middleShape,
         )
       }
@@ -234,7 +243,7 @@ private fun SettingsScreen(
         icon = Symbols.Info,
         headlineText = stringResource(R.string.settings_about_unitto),
         supportingText = stringResource(R.string.settings_about_unitto_support),
-        modifier = Modifier.clickable { navControllerAction(AboutRoute) },
+        onClick = { navControllerAction(AboutRoute) },
         shape = ListItemExpressiveDefaults.lastShape,
       )
     }
@@ -246,7 +255,12 @@ private fun SettingsScreen(
 private fun PreviewSettingsScreen() {
   var uiState by remember {
     mutableStateOf(
-      SettingsUIState.Ready(enableVibrations = false, cacheSize = 2, showUpdateChangelog = true)
+      SettingsUIState.Ready(
+        enableVibrations = false,
+        cacheSize = 2,
+        showUpdateChangelog = true,
+        enableKeepScreenOn = false,
+      )
     )
   }
 
@@ -255,7 +269,8 @@ private fun PreviewSettingsScreen() {
     openDrawer = {},
     navControllerAction = {},
     updateLastReadChangelog = { uiState = uiState.copy(showUpdateChangelog = false) },
-    updateVibrations = {},
+    updateVibrations = { uiState = uiState.copy(enableVibrations = it) },
+    updateKeepScreenOn = { uiState = uiState.copy(enableKeepScreenOn = it) },
     clearCache = { uiState = uiState.copy(cacheSize = 0) },
   )
 }

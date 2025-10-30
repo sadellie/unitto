@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,6 +49,7 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
         startingScreen = preferences.getStartingScreen(),
         enableToolsExperiment = preferences.getEnableToolsExperiment(),
         enableVibrations = preferences.getEnableVibrations(),
+        enableKeepScreenOn = preferences.getEnableKeepScreenOn(),
       )
     }
 
@@ -57,6 +58,7 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
       GeneralPreferences(
         lastReadChangelog = preferences.getLastReadChangelog(),
         enableVibrations = preferences.getEnableVibrations(),
+        enableKeepScreenOn = preferences.getEnableKeepScreenOn(),
       )
     }
 
@@ -67,6 +69,7 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
         formatterSymbols = preferences.getFormatterSymbols(),
         middleZero = preferences.getMiddleZero(),
         partialHistoryView = preferences.getPartialHistoryView(),
+        steppedPartialHistoryView = preferences.getSteppedPartialHistoryView(),
         initialPartialHistoryView = preferences.getInitialPartialHistoryView(),
         openHistoryViewButton = preferences.getOpenHistoryViewButton(),
         precision = preferences.getDigitsPrecision(),
@@ -215,6 +218,10 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
     dataStore.edit { preferences -> preferences[PrefsKeys.ENABLE_VIBRATIONS] = enabled }
   }
 
+  override suspend fun updateEnableKeepScreenOn(enabled: Boolean) {
+    dataStore.edit { preferences -> preferences[PrefsKeys.ENABLE_KEEP_SCREEN_ON] = enabled }
+  }
+
   override suspend fun updateMiddleZero(enabled: Boolean) {
     dataStore.edit { preferences -> preferences[PrefsKeys.MIDDLE_ZERO] = enabled }
   }
@@ -241,6 +248,10 @@ constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepo
 
   override suspend fun updatePartialHistoryView(enabled: Boolean) {
     dataStore.edit { preferences -> preferences[PrefsKeys.PARTIAL_HISTORY_VIEW] = enabled }
+  }
+
+  override suspend fun updateSteppedPartialHistoryView(enabled: Boolean) {
+    dataStore.edit { preferences -> preferences[PrefsKeys.STEPPED_PARTIAL_HISTORY_VIEW] = enabled }
   }
 
   override suspend fun updateInitialPartialHistoryView(enabled: Boolean) {

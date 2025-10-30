@@ -56,6 +56,7 @@ private fun PreviewListHeader() {
     item { ListHeader("Text") }
     items(10) {
       ListItemExpressive(
+        onClick = null,
         headlineContent = { Text("Item $it") },
         shape = ListItemExpressiveDefaults.listedShaped(it, 10),
       )

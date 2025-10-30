@@ -52,6 +52,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
+import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.textfield.FixedExpressionInputTextField
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -93,8 +94,13 @@ private fun HistoryListPlaceholder(modifier: Modifier) {
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      Icon(Symbols.History, stringResource(R.string.calculator_no_history))
-      Text(stringResource(R.string.calculator_no_history))
+      ProvideColor(MaterialTheme.colorScheme.onSurfaceVariant) {
+        Icon(
+          imageVector = Symbols.History,
+          contentDescription = stringResource(R.string.calculator_no_history),
+        )
+        Text(stringResource(R.string.calculator_no_history))
+      }
     }
   }
 }
@@ -182,6 +188,12 @@ private fun HistoryListItem(
 }
 
 internal val HistoryItemHeight = 108.dp
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewHistoryListPlaceholder() {
+  HistoryListPlaceholder(modifier = Modifier.fillMaxSize())
+}
 
 @Preview(showBackground = true)
 @Composable

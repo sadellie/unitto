@@ -75,10 +75,8 @@ import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.CurrencyRateUpdateState
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.designsystem.LocalLocale
-import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
@@ -429,7 +427,7 @@ private fun CurrencyUpdateStatusBar(
     Text(
       modifier =
         modifier
-          .clip(Shapes.Medium)
+          .clip(MaterialTheme.shapes.medium)
           .background(MaterialTheme.colorScheme.inverseOnSurface)
           .fillMaxWidth(),
       text = lastUpdate.orEmpty(),
@@ -546,7 +544,7 @@ private fun UnitSelectionButtons(
   val swapButtonRotation: Float by
     animateFloatAsState(
       targetValue = if (swapped) 0f else 180f,
-      animationSpec = defaultIconAnimationSpec(),
+      animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
       label = "Swap button rotation",
     )
 

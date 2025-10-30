@@ -45,6 +45,7 @@ constructor(
     combine(userPrefsRepository.generalPrefs, currencyRatesDao.size()) { prefs, cacheSize ->
         SettingsUIState.Ready(
           enableVibrations = prefs.enableVibrations,
+          enableKeepScreenOn = prefs.enableKeepScreenOn,
           cacheSize = cacheSize,
           showUpdateChangelog = prefs.lastReadChangelog != BuildConfig.VERSION_CODE,
         )
@@ -58,6 +59,10 @@ constructor(
   /** @see UserPreferencesRepository.updateVibrations */
   fun updateVibrations(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateVibrations(enabled) }
+
+  /** @see UserPreferencesRepository.updateEnableKeepScreenOn */
+  fun updateEnableKeepScreenOn(enabled: Boolean) =
+    viewModelScope.launch { userPrefsRepository.updateEnableKeepScreenOn(enabled) }
 
   fun clearCache() = viewModelScope.launch(Dispatchers.IO) { currencyRatesDao.clear() }
 }

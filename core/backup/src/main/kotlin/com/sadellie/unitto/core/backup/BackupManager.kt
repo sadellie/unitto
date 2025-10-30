@@ -24,7 +24,6 @@ import android.content.Intent
 import android.net.Uri
 import com.sadellie.unitto.core.database.DATABASE_NAME
 import com.sadellie.unitto.core.database.UnittoDatabase
-import com.sadellie.unitto.core.database.checkpoint
 import com.sadellie.unitto.core.datastore.USER_PREFERENCES
 import java.io.File
 import java.io.FileNotFoundException
@@ -44,7 +43,7 @@ class BackupManager {
           context.datastoreFile.writeToZip(zipOutputStream, DATASTORE_FILE_NAME)
 
           // Database
-          database.checkpoint()
+          database.rawDao().walCheckpoint()
           database.file.writeToZip(zipOutputStream, DATABASE_FILE_NAME)
         }
       }
@@ -63,7 +62,7 @@ class BackupManager {
               }
 
               DATABASE_FILE_NAME -> {
-                database.checkpoint()
+                database.rawDao().walCheckpoint()
                 database.close()
                 database.file.writeFromZip(zipInputStream)
               }

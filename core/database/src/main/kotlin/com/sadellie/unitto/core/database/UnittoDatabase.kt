@@ -58,7 +58,5 @@ abstract class UnittoDatabase : RoomDatabase() {
 
   abstract fun appStatsDao(): AppStatsDao
 
-  internal abstract fun rawDao(): RawDao
+  abstract fun rawDao(): RawDao
 }
-
-suspend fun UnittoDatabase.checkpoint() = this.rawDao().walCheckpoint()

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.designsystem.shapes.Shapes
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import kotlinx.coroutines.launch
 
@@ -75,7 +74,7 @@ fun PagedIsland(
     Column(
       modifier =
         modifier
-          .clip(Shapes.ExtraLarge)
+          .clip(MaterialTheme.shapes.extraLarge)
           .clickable {
             onClick()
             val targetPage = pagerState.currentPage + 1

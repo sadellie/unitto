@@ -19,7 +19,6 @@
 package com.sadellie.unitto.feature.settings.language
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -91,7 +90,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
       languages.forEachIndexed { index, (key, res) ->
         item(key = key, contentType = ContentType.ITEM) {
           ListItemExpressive(
-            modifier = Modifier.clickable { changeLanguage(key) },
+            onClick = { changeLanguage(key) },
             headlineContent = { Text(stringResource(res)) },
             leadingContent = {
               RadioButton(selected = currentLangKey == key, onClick = { changeLanguage(key) })

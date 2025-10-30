@@ -18,12 +18,10 @@
 
 package com.sadellie.unitto.feature.settings.components
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +29,6 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Help
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
-import com.sadellie.unitto.core.ui.squashable
 
 @Composable
 internal fun AnnoyingBox(
@@ -48,12 +45,8 @@ internal fun AnnoyingBox(
     icon = imageVector,
     iconDescription = imageVectorContentDescription,
     shape = ListItemExpressiveDefaults.singleShape,
-    modifier =
-      modifier.squashable(
-        onClick = onClick,
-        interactionSource = remember { MutableInteractionSource() },
-        cornerRadiusRange = 15..25,
-      ),
+    onClick = onClick,
+    modifier = modifier,
     colors =
       ListItemDefaults.colors(
         containerColor = MaterialTheme.colorScheme.secondaryContainer,

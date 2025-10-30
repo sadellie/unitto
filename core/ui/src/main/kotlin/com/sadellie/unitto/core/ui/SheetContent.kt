@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,17 @@
 package com.sadellie.unitto.core.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemColors
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,10 +39,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.navigation.ConverterGraphRoute
 import com.sadellie.unitto.core.navigation.DrawerItem
 import com.sadellie.unitto.core.navigation.Route
@@ -82,6 +88,11 @@ internal fun ColumnScope.SheetContent(
     )
   }
 
+  val navigationDrawerItemColors =
+    NavigationDrawerItemDefaults.colors(
+      unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+      unselectedTextColor = MaterialTheme.colorScheme.onSurface,
+    )
   mainTabs.forEach { drawerItem ->
     val selected = drawerItem.graphRoute == currentDestination
     DrawerItem(
@@ -90,6 +101,7 @@ internal fun ColumnScope.SheetContent(
       icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
       selected = selected,
       onClick = { onItemClick(drawerItem) },
+      colors = navigationDrawerItemColors,
     )
   }
 
@@ -103,16 +115,36 @@ internal fun ColumnScope.SheetContent(
       icon = if (selected) drawerItem.selectedIcon else drawerItem.defaultIcon,
       selected = selected,
       onClick = { onItemClick(drawerItem) },
+      colors = navigationDrawerItemColors,
     )
   }
+}
+
+@Composable
+private fun DrawerItem(
+  modifier: Modifier = Modifier,
+  destination: DrawerItem,
+  icon: ImageVector,
+  selected: Boolean,
+  onClick: () -> Unit,
+  colors: NavigationDrawerItemColors,
+) {
+  NavigationDrawerItem(
+    modifier = modifier,
+    label = { Text(stringResource(destination.name)) },
+    icon = { Icon(icon, stringResource(destination.name)) },
+    selected = selected,
+    onClick = onClick,
+    colors = colors,
+  )
 }
 
 private const val HELLO_DURATION_MS = 2_000L
 
 @Preview
 @Composable
-private fun PreviewDrawerSheet() {
-  Column {
+private fun PreviewDrawerSheet() = ExpressivePreview {
+  Column(Modifier.background(MaterialTheme.colorScheme.surfaceContainer)) {
     SheetContent(
       mainTabs = mainDrawerItems,
       additionalTabs = additionalDrawerItems,

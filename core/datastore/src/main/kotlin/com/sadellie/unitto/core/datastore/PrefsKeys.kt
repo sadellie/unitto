@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ object PrefsKeys {
   // val SYSTEM_FONT = booleanPreferencesKey("SYSTEM_FONT_PREF_KEY")
   val LAST_READ_CHANGELOG = stringPreferencesKey("LAST_READ_CHANGELOG_PREF_KEY")
   val ENABLE_VIBRATIONS = booleanPreferencesKey("ENABLE_VIBRATIONS_PREF_KEY")
+  val ENABLE_KEEP_SCREEN_ON = booleanPreferencesKey("ENABLE_KEEP_SCREEN_ON_PREF_KEY")
   val MIDDLE_ZERO = booleanPreferencesKey("MIDDLE_ZERO_PREF_KEY")
   val AC_BUTTON = booleanPreferencesKey("AC_BUTTON_PREF_KEY")
   // val RPN_MODE = booleanPreferencesKey("RPN_MODE_PREF_KEY")
@@ -49,6 +50,7 @@ object PrefsKeys {
   // CALCULATOR
   val RADIAN_MODE = booleanPreferencesKey("RADIAN_MODE_PREF_KEY")
   val PARTIAL_HISTORY_VIEW = booleanPreferencesKey("PARTIAL_HISTORY_VIEW_PREF_KEY")
+  val STEPPED_PARTIAL_HISTORY_VIEW = booleanPreferencesKey("STEPPED_PARTIAL_HISTORY_VIEW_PREF_KEY")
   val OPEN_HISTORY_VIEW_BUTTON = booleanPreferencesKey("OPEN_HISTORY_VIEW_BUTTON_PREF_KEY")
   val INITIAL_PARTIAL_HISTORY_VIEW = booleanPreferencesKey("INITIAL_PARTIAL_HISTORY_VIEW_PREF_KEY")
   val FRACTIONAL_OUTPUT = booleanPreferencesKey("FRACTIONAL_OUTPUT_PREF_KEY")

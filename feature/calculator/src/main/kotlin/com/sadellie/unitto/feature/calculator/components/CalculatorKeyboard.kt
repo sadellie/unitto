@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.Dp
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
-import com.sadellie.unitto.core.designsystem.defaultIconAnimationSpec
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowUp
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.ui.ColumnWithConstraints
@@ -352,7 +351,7 @@ private fun ToggleExpandedAdditionalKeysButton(
   val expandRotation: Float by
     animateFloatAsState(
       targetValue = if (expanded) 0f else 180f,
-      animationSpec = defaultIconAnimationSpec(),
+      animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
       label = "Rotate on expand",
     )
   Box(modifier = modifier, contentAlignment = Alignment.Center) {

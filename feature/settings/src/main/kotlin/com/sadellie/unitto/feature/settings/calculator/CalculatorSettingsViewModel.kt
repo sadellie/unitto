@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class CalculatorSettingsViewModel
@@ -34,6 +34,9 @@ constructor(private val userPrefsRepository: UserPreferencesRepository) : ViewMo
 
   fun updatePartialHistoryView(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updatePartialHistoryView(enabled) }
+
+  fun updateSteppedPartialHistoryView(enabled: Boolean) =
+    viewModelScope.launch { userPrefsRepository.updateSteppedPartialHistoryView(enabled) }
 
   fun updateOpenHistoryViewButton(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateOpenHistoryViewButton(enabled) }

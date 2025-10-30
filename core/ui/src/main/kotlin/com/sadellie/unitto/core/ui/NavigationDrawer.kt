@@ -241,9 +241,8 @@ class UnittoDrawerState(initialValue: UnittoDrawerValue) {
  * @param initialValue The initial value of the state.
  */
 @Composable
-fun rememberUnittoDrawerState(initialValue: UnittoDrawerValue): UnittoDrawerState {
-  return rememberSaveable(saver = UnittoDrawerState.saver()) { UnittoDrawerState(initialValue) }
-}
+fun rememberUnittoDrawerState(initialValue: UnittoDrawerValue): UnittoDrawerState =
+  rememberSaveable(saver = UnittoDrawerState.saver()) { UnittoDrawerState(initialValue) }
 
 /** Compost team should be deprecated and replaced with Gemini. */
 @Composable
@@ -348,7 +347,7 @@ private val UnittoModalDrawerMaxWidth = 360.dp
 @Composable
 private fun PreviewUnittoModalNavigationDrawer() {
   val corScope = rememberCoroutineScope()
-  val drawerState = rememberUnittoDrawerState(UnittoDrawerValue.Closed)
+  val drawerState = rememberUnittoDrawerState(UnittoDrawerValue.Open)
   var clicked by remember { mutableIntStateOf(0) }
 
   NavigationDrawer(

@@ -42,9 +42,14 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun SearchPlaceholder(onButtonClick: () -> Unit, supportText: String, buttonLabel: String) {
+fun SearchPlaceholder(
+  modifier: Modifier = Modifier,
+  onButtonClick: () -> Unit,
+  supportText: String,
+  buttonLabel: String,
+) {
   Column(
-    modifier = Modifier.fillMaxWidth().padding(16.dp),
+    modifier = modifier.fillMaxWidth().padding(16.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {

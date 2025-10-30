@@ -23,7 +23,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -135,7 +134,7 @@ private fun ConverterWidgetConfigureCreateNewScreen(
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       ListItemExpressive(
-        modifier = Modifier.clickable { navigateToSelectFrom() },
+        onClick = { navigateToSelectFrom() },
         shape =
           if (isUnitFromSelected) ListItemExpressiveDefaults.firstShape
           else ListItemExpressiveDefaults.singleShape,
@@ -155,10 +154,7 @@ private fun ConverterWidgetConfigureCreateNewScreen(
         exit = shrinkVertically() + fadeOut(),
       ) {
         ListItemExpressive(
-          modifier =
-            Modifier.clickable(enabled = isUnitFromSelected) {
-              if (uiState.unitFrom != null) navigateToSelectTo(uiState.unitFrom.id)
-            },
+          onClick = { if (uiState.unitFrom != null) navigateToSelectTo(uiState.unitFrom.id) },
           shape = ListItemExpressiveDefaults.lastShape,
           headlineContent = {
             Text(stringResource(R.string.converter_widget_configure_right_unit))

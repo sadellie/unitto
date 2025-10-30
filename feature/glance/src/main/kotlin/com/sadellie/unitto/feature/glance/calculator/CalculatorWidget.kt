@@ -248,6 +248,7 @@ private fun PreviewWidget() {
         outputFormat = OutputFormat.PLAIN,
         additionalButtons = false,
         partialHistoryView = false,
+        steppedPartialHistoryView = false,
         initialPartialHistoryView = false,
         openHistoryViewButton = false,
       ),

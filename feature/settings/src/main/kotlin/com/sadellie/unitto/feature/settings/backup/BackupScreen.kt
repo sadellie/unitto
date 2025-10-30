@@ -127,21 +127,25 @@ private fun BackupScreenReady(
         headlineContent = { Text(stringResource(R.string.settings_saved_expressions)) },
         supportingContent = { Text("${uiState.savedExpressions}") },
         shape = ListItemExpressiveDefaults.firstShape,
+        onClick = null,
       )
       ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_favorite_units)) },
         supportingContent = { Text("${uiState.favoriteUnits}") },
         shape = ListItemExpressiveDefaults.middleShape,
+        onClick = null,
       )
       ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_used_units)) },
         supportingContent = { Text("${uiState.usedUnits}") },
         shape = ListItemExpressiveDefaults.middleShape,
+        onClick = null,
       )
       ListItemExpressive(
         headlineContent = { Text(stringResource(R.string.settings_favorite_time_zones)) },
         supportingContent = { Text("${uiState.favoriteTimeZones}") },
         shape = ListItemExpressiveDefaults.lastShape,
+        onClick = null,
       )
     }
   }
@@ -213,6 +217,11 @@ private fun BackupRestoreButton(
       onClick = onClick,
       shapes = IconButtonDefaults.shapes(),
       interactionSource = interactionSource,
+      colors =
+        IconButtonDefaults.filledIconButtonColors(
+          containerColor = MaterialTheme.colorScheme.primaryContainer,
+          contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
       modifier =
         Modifier.size(
           IconButtonDefaults.mediumContainerSize(IconButtonDefaults.IconButtonWidthOption.Wide)
@@ -224,7 +233,11 @@ private fun BackupRestoreButton(
         modifier = Modifier.size(IconButtonDefaults.mediumIconSize),
       )
     }
-    Text(label, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text(
+      text = label,
+      color = MaterialTheme.colorScheme.onSurface,
+      style = MaterialTheme.typography.labelLarge,
+    )
   }
 }
 

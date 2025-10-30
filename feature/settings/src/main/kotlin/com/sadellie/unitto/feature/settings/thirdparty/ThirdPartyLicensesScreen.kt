@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.thirdparty
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -62,7 +61,7 @@ internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
     ) {
       itemsIndexed(allThirdParty) { index, item ->
         ListItemExpressive(
-          modifier = Modifier.clickable { openLink(mContext, item.website) },
+          onClick = { openLink(mContext, item.website) },
           shape = ListItemExpressiveDefaults.listedShaped(index, allThirdParty.size),
           headlineContent = { Text("${item.name} (${item.license})") },
           supportingContent = {
