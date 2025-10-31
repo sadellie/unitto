@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.settings.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,22 +27,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.designsystem.theme.DarkThemeColors
+import com.sadellie.unitto.core.designsystem.theme.LightThemeColors
 import com.sadellie.unitto.core.ui.BasicColoredCheckbox
-import io.github.sadellie.themmo.Themmo
-import io.github.sadellie.themmo.ThemmoController
+import io.github.sadellie.themmo.commonProvideColorScheme
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 
@@ -56,6 +55,7 @@ internal fun MonetModeSelector(
   paddingValues: PaddingValues = PaddingValues(0.dp),
 ) {
   val listState = rememberLazyListState()
+  val isSystemInDarkTheme = isSystemInDarkTheme()
 
   LaunchedEffect(Unit) {
     val index = MonetMode.entries.indexOf(selected)
@@ -69,41 +69,33 @@ internal fun MonetModeSelector(
     contentPadding = paddingValues,
   ) {
     items(MonetMode.entries) { monetMode ->
-      Themmo(
-        themmoController =
-          remember(customColor, themingMode) {
-            ThemmoController(
-              lightColorScheme = lightColorScheme(),
-              darkColorScheme = darkColorScheme(),
-              themingMode = themingMode,
-              dynamicThemeEnabled = false,
-              amoledThemeEnabled = false,
-              customColor = customColor,
-              monetMode = monetMode,
-            )
-          }
-      ) {
-        MonetModeCheckbox(selected = monetMode == selected, onClick = { onItemClick(monetMode) })
-      }
+      val colorScheme =
+        commonProvideColorScheme(
+          isSystemDark = isSystemInDarkTheme,
+          currentThemingMode = themingMode,
+          isDynamicThemeEnabled = false,
+          currentCustomColor = customColor,
+          currentMonetMode = monetMode,
+          lightColorScheme = LightThemeColors,
+          darkColorScheme = DarkThemeColors,
+          isAmoledThemeEnabled = false,
+        )
+      MonetModeCheckbox(
+        selected = monetMode == selected,
+        onClick = { onItemClick(monetMode) },
+        colorScheme = colorScheme,
+      )
     }
   }
 }
 
 @Composable
-private fun MonetModeCheckbox(selected: Boolean, onClick: () -> Unit) {
-  BasicColoredCheckbox(
-    selected = selected,
-    onClick = onClick,
-    color = MaterialTheme.colorScheme.secondary,
-  ) {
+private fun MonetModeCheckbox(selected: Boolean, onClick: () -> Unit, colorScheme: ColorScheme) {
+  BasicColoredCheckbox(selected = selected, onClick = onClick, color = colorScheme.secondary) {
+    Box(Modifier.fillMaxSize(0.5f).background(colorScheme.primary).align(Alignment.BottomStart))
     Box(
       Modifier.fillMaxSize(0.5f)
-        .background(MaterialTheme.colorScheme.primary)
-        .align(Alignment.BottomStart)
-    )
-    Box(
-      Modifier.fillMaxSize(0.5f)
-        .background(MaterialTheme.colorScheme.secondaryContainer)
+        .background(colorScheme.secondaryContainer)
         .align(Alignment.BottomEnd)
     )
   }
@@ -112,7 +104,7 @@ private fun MonetModeCheckbox(selected: Boolean, onClick: () -> Unit) {
 @Composable
 @Preview
 private fun PreviewMMonetModeCheckbox() {
-  MonetModeCheckbox(selected = true, onClick = {})
+  MonetModeCheckbox(selected = true, onClick = {}, colorScheme = LightThemeColors)
 }
 
 @Composable

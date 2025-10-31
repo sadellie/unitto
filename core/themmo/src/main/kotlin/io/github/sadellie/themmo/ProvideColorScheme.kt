@@ -27,6 +27,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.isSpecified
@@ -96,7 +97,9 @@ private fun provideLightColorScheme(
     isDynamicThemeEnabled ->
       provideDynamicColorScheme(isDark = false, defaultColorScheme = lightColorScheme)
     currentCustomColor.isSpecified ->
-      generateColorScheme(keyColor = currentCustomColor, isDark = false, style = currentMonetMode)
+      remember(currentCustomColor, currentMonetMode) {
+        generateColorScheme(keyColor = currentCustomColor, isDark = false, style = currentMonetMode)
+      }
     else -> lightColorScheme
   }
 }
@@ -114,7 +117,13 @@ private fun provideDarkColorScheme(
       isDynamicThemeEnabled ->
         provideDynamicColorScheme(isDark = true, defaultColorScheme = darkColorScheme)
       currentCustomColor.isSpecified ->
-        generateColorScheme(keyColor = currentCustomColor, isDark = true, style = currentMonetMode)
+        remember(currentCustomColor, currentMonetMode) {
+          generateColorScheme(
+            keyColor = currentCustomColor,
+            isDark = true,
+            style = currentMonetMode,
+          )
+        }
       else -> darkColorScheme
     }
 
