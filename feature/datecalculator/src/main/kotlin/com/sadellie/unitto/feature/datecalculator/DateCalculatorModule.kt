@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-  id("unitto.library")
+package com.sadellie.unitto.feature.datecalculator
 
-  alias(libs.plugins.ksp)
-  alias(libs.plugins.room)
-}
+import com.sadellie.unitto.feature.datecalculator.addsubtract.AddSubtractViewModel
+import com.sadellie.unitto.feature.datecalculator.difference.DateDifferenceViewModel
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.lazyModule
 
-android.namespace = "com.sadellie.unitto.core.database"
-
-room {
-  val schemaLocation = "$projectDir/schemas"
-  schemaDirectory(schemaLocation)
-  println("Exported Database schema to $schemaLocation")
-}
-
-dependencies {
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.android)
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-
-  implementation(libs.androidx.room.runtime)
-  implementation(libs.androidx.room.ktx)
-  ksp(libs.androidx.room.compiler)
+val dateCalculatorModule = lazyModule {
+  viewModelOf(::AddSubtractViewModel)
+  viewModelOf(::DateDifferenceViewModel)
 }

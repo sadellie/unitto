@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,78 +18,24 @@
 
 package com.sadellie.unitto.core.database
 
-import android.content.Context
 import androidx.room.Room
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.lazyModule
 
 const val DATABASE_NAME = "unitto_database"
 
-/** Module for database. Used to access same instance of database */
-@InstallIn(SingletonComponent::class)
-@Module
-class UnittoDatabaseModule {
-  @Provides
-  fun provideRawDao(unittoDatabase: UnittoDatabase): RawDao {
-    return unittoDatabase.rawDao()
-  }
-
-  @Provides
-  fun provideUnitsDao(unittoDatabase: UnittoDatabase): UnitsDao {
-    return unittoDatabase.unitsDao()
-  }
-
-  @Provides
-  fun provideCalculatorHistoryDao(unittoDatabase: UnittoDatabase): CalculatorHistoryDao {
-    return unittoDatabase.calculatorHistoryDao()
-  }
-
-  /**
-   * Tells Hilt to use this method to get [TimeZoneDao]
-   *
-   * @param unittoDatabase Database for which we need DAO
-   * @return Singleton of [TimeZoneDao]
-   */
-  @Provides
-  fun provideTimeZoneDao(unittoDatabase: UnittoDatabase): TimeZoneDao {
-    return unittoDatabase.timeZoneDao()
-  }
-
-  @Provides
-  fun provideCurrencyRatesDao(unittoDatabase: UnittoDatabase): CurrencyRatesDao {
-    return unittoDatabase.currencyRatesDao()
-  }
-
-  @Provides
-  fun provideConverterWidgetUnitsPairDao(
-    unittoDatabase: UnittoDatabase
-  ): ConverterWidgetUnitPairDao {
-    return unittoDatabase.converterWidgetUnitsPairDao()
-  }
-
-  @Provides
-  fun provideAppStatsDao(unittoDatabase: UnittoDatabase): AppStatsDao {
-    return unittoDatabase.appStatsDao()
-  }
-
-  /**
-   * Tells Hilt to use this method to get [UnittoDatabase]
-   *
-   * @param appContext Context
-   * @return Singleton of [UnittoDatabase]
-   */
-  @Provides
-  @Singleton
-  fun provideUnittoDatabase(@ApplicationContext appContext: Context): UnittoDatabase {
-    return Room.databaseBuilder(
-        appContext.applicationContext,
-        UnittoDatabase::class.java,
-        DATABASE_NAME,
-      )
+val unittoDatabaseModule = lazyModule {
+  single<UnittoDatabase> {
+    val appContext = androidContext()
+    Room.databaseBuilder(appContext.applicationContext, UnittoDatabase::class.java, DATABASE_NAME)
       .build()
   }
+
+  factory<RawDao> { get<UnittoDatabase>().rawDao() }
+  factory<UnitsDao> { get<UnittoDatabase>().unitsDao() }
+  factory<CalculatorHistoryDao> { get<UnittoDatabase>().calculatorHistoryDao() }
+  factory<TimeZoneDao> { get<UnittoDatabase>().timeZoneDao() }
+  factory<CurrencyRatesDao> { get<UnittoDatabase>().currencyRatesDao() }
+  factory<ConverterWidgetUnitPairDao> { get<UnittoDatabase>().converterWidgetUnitsPairDao() }
+  factory<AppStatsDao> { get<UnittoDatabase>().appStatsDao() }
 }

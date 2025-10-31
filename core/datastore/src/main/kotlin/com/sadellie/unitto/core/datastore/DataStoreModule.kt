@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,48 +18,25 @@
 
 package com.sadellie.unitto.core.datastore
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.lazyModule
 
 // DON'T TOUCH!!!
 const val USER_PREFERENCES = "settings"
 
-/** This module is for DataStore dependency injection */
-@Module
-@InstallIn(SingletonComponent::class)
-class DataStoreModule {
-  /**
-   * Tells Hilt to use this method to get [DataStore]
-   *
-   * @param appContext
-   * @return Singleton of [DataStore]
-   */
-  @Provides
-  @Singleton
-  fun provideUserPreferencesDataStore(
-    @ApplicationContext appContext: Context
-  ): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.create(
+val dataStoreModule = lazyModule {
+  single<DataStore<Preferences>> {
+    PreferenceDataStoreFactory.create(
       corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-      produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) },
+      produceFile = { androidContext().preferencesDataStoreFile(USER_PREFERENCES) },
     )
   }
 
-  @Provides
-  fun provideUserPreferencesRepository(
-    dataStore: DataStore<Preferences>
-  ): UserPreferencesRepository {
-    return UserPreferencesRepositoryImpl(dataStore)
-  }
+  factory<UserPreferencesRepository> { UserPreferencesRepositoryImpl(dataStore = get()) }
 }

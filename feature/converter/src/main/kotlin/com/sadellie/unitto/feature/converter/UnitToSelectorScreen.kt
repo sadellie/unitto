@@ -104,7 +104,7 @@ private fun UnitToSelectorScreen(
     if (uiState.units != null) {
       val resources = LocalResources.current
       UnitsList(
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier,
         searchResult = uiState.units,
         navigateToUnitGroups = navigateToUnitGroups,
         selectedUnitId = uiState.unitTo.id,

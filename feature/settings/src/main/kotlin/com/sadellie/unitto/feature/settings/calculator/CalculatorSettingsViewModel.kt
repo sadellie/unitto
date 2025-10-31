@@ -22,14 +22,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-internal class CalculatorSettingsViewModel
-@Inject
-constructor(private val userPrefsRepository: UserPreferencesRepository) : ViewModel() {
+internal class CalculatorSettingsViewModel(
+  private val userPrefsRepository: UserPreferencesRepository
+) : ViewModel() {
   val prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
 
   fun updatePartialHistoryView(enabled: Boolean) =

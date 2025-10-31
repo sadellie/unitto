@@ -27,14 +27,12 @@ import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 import java.io.IOException
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
-class UserPreferencesRepositoryImpl
-@Inject
-constructor(private val dataStore: DataStore<Preferences>) : UserPreferencesRepository {
+class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences>) :
+  UserPreferencesRepository {
   private val data =
     dataStore.data.catch { if (it is IOException) emit(emptyPreferences()) else throw it }
 

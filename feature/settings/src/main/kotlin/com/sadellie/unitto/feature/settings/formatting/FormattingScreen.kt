@@ -52,7 +52,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.MAX_SCALE
@@ -76,10 +75,11 @@ import com.sadellie.unitto.core.ui.Slider
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import kotlin.math.ceil
 import kotlin.math.roundToInt
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FormattingRoute(
-  viewModel: FormattingViewModel = hiltViewModel(),
+  viewModel: FormattingViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
 ) {
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {

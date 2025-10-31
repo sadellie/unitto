@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,15 +33,12 @@ import io.github.sadellie.evaluatto.Expression
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 
-class UnitConverterRepositoryImpl
-@Inject
-constructor(
+class UnitConverterRepositoryImpl(
   private val unitsRepo: UnitsRepository,
   private val currencyRatesDao: CurrencyRatesDao,
   private val currencyApiService: CurrencyApiService,

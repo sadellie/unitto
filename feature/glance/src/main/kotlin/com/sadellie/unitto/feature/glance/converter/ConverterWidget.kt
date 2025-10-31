@@ -65,7 +65,6 @@ import androidx.glance.text.TextStyle
 import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
-import com.sadellie.unitto.core.database.UnittoDatabaseModule
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
@@ -73,14 +72,12 @@ import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.FloatingActionButton
 import com.sadellie.unitto.feature.glance.common.cornerRadiusWithBackground
-import dagger.hilt.EntryPoint
-import dagger.hilt.EntryPoints
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import java.math.BigDecimal
 import kotlinx.coroutines.flow.mapLatest
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-internal class ConverterWidget : GlanceAppWidget() {
+internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
   override val sizeMode: SizeMode = SizeMode.Responsive(setOf(smallSizeMode, mediumSizeMode))
   override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
 
@@ -90,20 +87,8 @@ internal class ConverterWidget : GlanceAppWidget() {
     internal val mediumSizeMode = DpSize(200.dp, 0.dp)
   }
 
-  @EntryPoint
-  @InstallIn(SingletonComponent::class)
-  interface WidgetEntryPoint {
-    fun converterWidgetUnitsPairDao(): ConverterWidgetUnitPairDao
-
-    fun unitsRepository(): UnitsRepository
-  }
-
   override suspend fun onDelete(context: Context, glanceId: GlanceId) {
-    // provided context doesn't work hilt when deleting
-    val dbModule = UnittoDatabaseModule()
-    val db = dbModule.provideUnittoDatabase(context)
-    val dao = dbModule.provideConverterWidgetUnitsPairDao(db)
-
+    val dao by inject<ConverterWidgetUnitPairDao>()
     val manager = GlanceAppWidgetManager(context)
     val appWidgetId = manager.getAppWidgetId(glanceId)
     dao.deleteByAppWidgetId(appWidgetId)
@@ -112,9 +97,8 @@ internal class ConverterWidget : GlanceAppWidget() {
   }
 
   override suspend fun provideGlance(context: Context, id: GlanceId) {
-    val entryPoint = EntryPoints.get(context, WidgetEntryPoint::class.java)
-    val dao = entryPoint.converterWidgetUnitsPairDao()
-    val unitsRepo = entryPoint.unitsRepository()
+    val dao by inject<ConverterWidgetUnitPairDao>()
+    val unitsRepo by inject<UnitsRepository>()
     val manager = GlanceAppWidgetManager(context)
     val appWidgetId = manager.getAppWidgetId(id)
 

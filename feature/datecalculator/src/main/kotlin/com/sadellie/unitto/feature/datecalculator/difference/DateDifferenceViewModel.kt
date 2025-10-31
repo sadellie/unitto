@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,7 @@ import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.ZonedDateTime
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,10 +33,8 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-internal class DateDifferenceViewModel
-@Inject
-constructor(userPrefsRepository: UserPreferencesRepository) : ViewModel() {
+internal class DateDifferenceViewModel(userPrefsRepository: UserPreferencesRepository) :
+  ViewModel() {
   private val start = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
   private val end = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
   private val result = MutableStateFlow<ZonedDateTimeDifference>(ZonedDateTimeDifference.Zero)

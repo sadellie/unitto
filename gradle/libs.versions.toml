@@ -1,5 +1,5 @@
 [versions]
-versionCode = "57"
+versionCode = "58"
 versionName = "Slimy green"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
@@ -22,8 +22,8 @@ androidxCoreCoreKts = "1.17.0"
 androidxGlanceGlance = "1.1.1"
 # https://developer.android.com/jetpack/androidx/releases/datastore
 androidxDatastoreDatastorePreferences = "1.1.7"
-# https://mvnrepository.com/artifact/androidx.hilt/hilt-navigation-compose
-androidxHiltHiltNavigationCompose = "1.3.0"
+# https://github.com/InsertKoinIO/koin/releases
+koin = "4.1.1"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-compose
 androidxLifecycleLifecycleRuntimeCompose = "2.9.4"
 # https://developer.android.com/jetpack/androidx/releases/navigation
@@ -40,8 +40,6 @@ androidxTestRunner = "1.7.0"
 androidxWorkWorkRuntimeKtx = "2.11.0"
 # https://mvnrepository.com/artifact/com.android.tools/desugar_jdk_libs
 comAndroidToolsDesugarJdkLibs = "2.1.5"
-# https://mvnrepository.com/artifact/com.google.dagger/dagger
-comGoogleDagger = "2.57.2"
 # https://github.com/ktorio/ktor/releases
 ktor="3.3.1"
 junitJunit = "4.13.2"
@@ -84,7 +82,13 @@ androidx-glance-glance-appwidget-preview = { module = "androidx.glance:glance-ap
 androidx-glance-glance-preview = { module = "androidx.glance:glance-preview", version.ref = "androidxGlanceGlance" }
 androidx-glance-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "androidxGlanceGlance" }
 androidx-datastore-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastoreDatastorePreferences" }
-androidx-hilt-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltHiltNavigationCompose" }
+io-insert-koin-koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
+io-insert-koin-koin-core = { module = "io.insert-koin:koin-core" }
+io-insert-koin-koin-android = { module = "io.insert-koin:koin-android" }
+io-insert-koin-koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines" }
+io-insert-koin-koin-compose = { module = "io.insert-koin:koin-compose" }
+io-insert-koin-koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+io-insert-koin-koin-androidx-startup = { module = "io.insert-koin:koin-androidx-startup" }
 androidx-lifecycle-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycleLifecycleRuntimeCompose" }
 androidx-navigation-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigationNavigationCompose" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
@@ -96,9 +100,6 @@ androidx-test-runner = { module = "androidx.test:runner", version.ref = "android
 androidx-work-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidxWorkWorkRuntimeKtx" }
 big-math = { module = "ch.obermuhlner:big-math", version.ref = "bigMath" }
 com-android-tools-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "comAndroidToolsDesugarJdkLibs" }
-com-google-dagger-android-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "comGoogleDagger" }
-com-google-dagger-dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "comGoogleDagger" }
-com-google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "comGoogleDagger" }
 io-ktor-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 io-ktor-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 io-ktor-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
@@ -118,7 +119,6 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 [plugins]
 android-gradlePlugin = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "comGoogleDagger" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "androidxRoom" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

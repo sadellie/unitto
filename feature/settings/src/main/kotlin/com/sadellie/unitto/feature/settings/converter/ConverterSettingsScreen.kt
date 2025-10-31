@@ -35,7 +35,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
@@ -58,10 +57,11 @@ import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.core.ThemingMode
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ConverterSettingsRoute(
-  viewModel: ConverterSettingsViewModel = hiltViewModel(),
+  viewModel: ConverterSettingsViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
   navigateToUnitsGroup: () -> Unit,
 ) {

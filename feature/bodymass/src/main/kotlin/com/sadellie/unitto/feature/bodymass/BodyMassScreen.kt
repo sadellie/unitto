@@ -50,7 +50,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.R
@@ -66,9 +65,10 @@ import com.sadellie.unitto.core.ui.TextFieldRow
 import com.sadellie.unitto.feature.bodymass.components.BodyMassResult
 import com.sadellie.unitto.feature.bodymass.components.BodyMassTextField
 import java.math.BigDecimal
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal fun BodyMassRoute(openDrawer: () -> Unit, viewModel: BodyMassViewModel = hiltViewModel()) {
+internal fun BodyMassRoute(openDrawer: () -> Unit, viewModel: BodyMassViewModel = koinViewModel()) {
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {

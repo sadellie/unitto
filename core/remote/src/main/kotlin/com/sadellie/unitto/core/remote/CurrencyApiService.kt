@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ interface CurrencyApiService {
   suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse
 }
 
+// TODO di module
 object CurrencyApiServiceImpl : CurrencyApiService {
   override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse {
     val response = client.get("$BASE_URL/${baseCurrency}.json").body<JsonElement>()

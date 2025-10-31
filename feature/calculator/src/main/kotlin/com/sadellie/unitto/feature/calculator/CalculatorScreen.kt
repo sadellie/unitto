@@ -74,7 +74,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
@@ -98,11 +97,12 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun CalculatorRoute(
   openDrawer: () -> Unit,
-  viewModel: CalculatorViewModel = hiltViewModel(),
+  viewModel: CalculatorViewModel = koinViewModel(),
 ) {
   LaunchedEffect(Unit) { viewModel.observeInput() }
 

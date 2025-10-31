@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
@@ -53,10 +52,11 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun CalculatorSettingsRoute(
-  viewModel: CalculatorSettingsViewModel = hiltViewModel(),
+  viewModel: CalculatorSettingsViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
 ) {
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
@@ -129,9 +129,9 @@ private fun CalculatorSettingsScreen(
         modifier = Modifier.fillMaxWidth(),
       ) {
         ListItemExpressive(
-          headlineText = stringResource(R.string.settings_stepped_drags),
+          headlineText = stringResource(R.string.settings_stepped_drag_gesture),
           icon = Symbols.MoveSelectionDown,
-          supportingText = stringResource(R.string.settings_stepped_drags_support),
+          supportingText = stringResource(R.string.settings_stepped_drag_gesture_support),
           switchState = prefs.steppedPartialHistoryView,
           onSwitchChange = updateSteppedPartialHistoryView,
           shape = ListItemExpressiveDefaults.lastShape,

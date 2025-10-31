@@ -199,8 +199,8 @@
     <string name="settings_space">Space</string>
     <string name="settings_starting_screen">Starting screen</string>
     <string name="settings_starting_screen_support">Starting screen and shortcuts</string>
-    <string name="settings_stepped_drags">Stepped drags</string>
-    <string name="settings_stepped_drags_support">Do not skip partial history view when dragging to much</string>
+    <string name="settings_stepped_drag_gesture">Stepped drag gesture</string>
+    <string name="settings_stepped_drag_gesture_support">Do not skip partial history view when dragging to much</string>
     <string name="settings_system">System</string>
     <string name="settings_terms_and_conditions">Terms and Conditions</string>
     <string name="settings_third_party_licenses">Third party licenses</string>

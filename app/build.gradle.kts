@@ -21,8 +21,6 @@ plugins {
   id("com.android.application")
   id("kotlin-android")
 
-  alias(libs.plugins.ksp)
-  alias(libs.plugins.hilt)
   alias(libs.plugins.compose.compiler)
 }
 
@@ -100,6 +98,8 @@ android {
 
 dependencies {
   implementation(project(":core:navigation"))
+  implementation(project(":core:database"))
+  implementation(project(":core:data"))
   implementation(project(":core:designsystem"))
   implementation(project(":core:ui"))
   implementation(project(":core:themmo"))
@@ -121,8 +121,7 @@ dependencies {
   implementation(libs.androidx.compose.material3.window.size)
   implementation(libs.androidx.navigation.navigation.compose)
 
-  implementation(libs.androidx.hilt.hilt.navigation.compose)
-  implementation(libs.com.google.dagger.android.hilt.android)
-  ksp(libs.com.google.dagger.dagger.android.processor)
-  ksp(libs.com.google.dagger.hilt.compiler)
+  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+  implementation(libs.io.insert.koin.koin.androidx.startup)
+  implementation(libs.io.insert.koin.koin.core.coroutines)
 }

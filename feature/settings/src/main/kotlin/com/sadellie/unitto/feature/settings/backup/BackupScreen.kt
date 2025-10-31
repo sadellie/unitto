@@ -55,7 +55,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.icons.symbols.FileSave
@@ -70,10 +69,11 @@ import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.feature.settings.R
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun BackupRoute(
-  viewModel: BackupViewModel = hiltViewModel(),
+  viewModel: BackupViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
 ) {
   val context = LocalContext.current

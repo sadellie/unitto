@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,39 @@
 package com.sadellie.unitto
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.sadellie.unitto.core.data.dataModule
+import com.sadellie.unitto.core.database.unittoDatabaseModule
+import com.sadellie.unitto.core.datastore.dataStoreModule
+import com.sadellie.unitto.feature.bodymass.bodyMassModule
+import com.sadellie.unitto.feature.calculator.calculatorModule
+import com.sadellie.unitto.feature.converter.converterModule
+import com.sadellie.unitto.feature.datecalculator.dateCalculatorModule
+import com.sadellie.unitto.feature.glance.converter.converterWidgetModule
+import com.sadellie.unitto.feature.settings.settingsModule
+import com.sadellie.unitto.feature.timezone.timeZoneModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.androix.startup.KoinStartup
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.lazyModules
+import org.koin.dsl.koinConfiguration
 
-@HiltAndroidApp internal class UnittoApplication : Application()
+@OptIn(KoinExperimentalAPI::class)
+internal class UnittoApplication : Application(), KoinStartup {
+  override fun onKoinStartup() = koinConfiguration {
+    androidContext(this@UnittoApplication)
+    lazyModules(
+      listOf(
+        unittoDatabaseModule,
+        dataModule,
+        dataStoreModule,
+        bodyMassModule,
+        calculatorModule,
+        converterModule,
+        dateCalculatorModule,
+        settingsModule,
+        timeZoneModule,
+        converterWidgetModule,
+      )
+    )
+  }
+}

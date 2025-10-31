@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,18 +23,13 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-internal class SettingsViewModel
-@Inject
-constructor(
+internal class SettingsViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val currencyRatesDao: CurrencyRatesDao,
 ) : ViewModel() {

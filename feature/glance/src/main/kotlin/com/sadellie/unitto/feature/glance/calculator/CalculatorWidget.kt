@@ -67,19 +67,10 @@ import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.IconButton
 import com.sadellie.unitto.feature.glance.common.LoadingUI
 import com.sadellie.unitto.feature.glance.common.WidgetTheme
-import dagger.hilt.EntryPoint
-import dagger.hilt.EntryPoints
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class CalculatorWidget : GlanceAppWidget() {
-
-  @EntryPoint
-  @InstallIn(SingletonComponent::class)
-  interface UserPrefEntryPoint {
-    fun userPrefRep(): UserPreferencesRepository
-  }
-
+class CalculatorWidget : GlanceAppWidget(), KoinComponent {
   override val sizeMode = SizeMode.Responsive(setOf(SMALL, BIG))
 
   override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
@@ -97,8 +88,7 @@ class CalculatorWidget : GlanceAppWidget() {
 
   override suspend fun provideGlance(context: Context, id: GlanceId) {
     try {
-      val userPrefsRepository =
-        EntryPoints.get(context, UserPrefEntryPoint::class.java).userPrefRep()
+      val userPrefsRepository by inject<UserPreferencesRepository>()
       provideContent {
         val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
 

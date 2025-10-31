@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,6 @@ import com.sadellie.unitto.core.common.regionName
 import com.sadellie.unitto.core.database.TimeZoneDao
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -39,9 +37,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 @RequiresApi(Build.VERSION_CODES.N)
-@Singleton
-class TimeZonesRepositoryImpl @Inject constructor(private val dao: TimeZoneDao) :
-  TimeZonesRepository {
+class TimeZonesRepositoryImpl(private val dao: TimeZoneDao) : TimeZonesRepository {
   override val favoriteTimeZones: Flow<List<FavoriteZone>> =
     dao.getFavorites().map { list ->
       val favorites = mutableListOf<FavoriteZone>()

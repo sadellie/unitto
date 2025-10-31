@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,6 @@ import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.ui.textfield.observe
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -41,10 +39,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.N)
-@HiltViewModel
-class AddTimeZoneViewModel
-@Inject
-constructor(private val timezonesRepository: TimeZonesRepository) : ViewModel() {
+class AddTimeZoneViewModel(private val timezonesRepository: TimeZonesRepository) : ViewModel() {
   private var _searchJob: Job? = null
   private val _locale =
     ULocale.forLanguageTag(AppCompatDelegate.getApplicationLocales().toLanguageTags())

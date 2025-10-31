@@ -58,10 +58,6 @@ import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -172,19 +168,11 @@ internal data class ConverterWidgetConfigureMainUIState(
   val submitProgress: ConverterWidgetConfigureSubmitProgress,
 )
 
-@HiltViewModel(assistedFactory = ConverterWidgetConfigureViewModel.Factory::class)
-internal class ConverterWidgetConfigureViewModel
-@AssistedInject
-constructor(
+internal class ConverterWidgetConfigureViewModel(
   private val converterWidgetUnitPairDao: ConverterWidgetUnitPairDao,
   private val unitsRepo: UnitsRepository,
-  @Assisted private val appWidgetId: Int,
+  private val appWidgetId: Int,
 ) : ViewModel() {
-  @AssistedFactory
-  interface Factory {
-    fun create(appWidgetId: Int): ConverterWidgetConfigureViewModel
-  }
-
   private val _inMemoryPairs = MutableStateFlow<List<SelectedUnitPair>?>(null)
   val submitProgress = MutableStateFlow(ConverterWidgetConfigureSubmitProgress.NONE)
 

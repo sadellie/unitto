@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,8 +31,6 @@ import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.feature.converter.navigation.UnitToRoute
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,10 +41,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-internal class UnitToSelectorViewModel
-@Inject
-constructor(
+internal class UnitToSelectorViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val unitsRepo: UnitConverterRepository,
   savedStateHandle: SavedStateHandle,

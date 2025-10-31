@@ -44,7 +44,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.displayName
@@ -62,11 +61,12 @@ import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.SearchPlaceholder
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import java.time.ZonedDateTime
+import org.koin.compose.viewmodel.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun AddTimeZoneRoute(
-  viewModel: AddTimeZoneViewModel = hiltViewModel(),
+  viewModel: AddTimeZoneViewModel = koinViewModel(),
   navigateUp: () -> Unit,
   userTime: ZonedDateTime,
 ) {

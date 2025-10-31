@@ -26,16 +26,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ConverterRoute(
-  viewModel: ConverterViewModel = hiltViewModel(),
+  viewModel: ConverterViewModel = koinViewModel(),
   navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
   navigateToRightScreen:
     (

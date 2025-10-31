@@ -37,12 +37,10 @@ import com.sadellie.unitto.core.ui.textfield.deleteTokens
 import com.sadellie.unitto.core.ui.textfield.getTextFieldState
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.core.ui.textfield.placeCursorAtTheEnd
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException
 import java.math.BigDecimal
 import java.math.RoundingMode
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
@@ -54,10 +52,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@HiltViewModel
-internal class CalculatorViewModel
-@Inject
-constructor(
+internal class CalculatorViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val calculatorHistoryRepository: CalculatorHistoryRepository,
   private val savedStateHandle: SavedStateHandle,

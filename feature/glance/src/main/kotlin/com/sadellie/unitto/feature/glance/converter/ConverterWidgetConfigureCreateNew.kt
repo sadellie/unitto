@@ -56,9 +56,7 @@ import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.feature.glance.R
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
@@ -177,10 +175,8 @@ internal data class ConverterWidgetConfigureCreateNewUIState(
   val unitTo: BasicUnit?,
 )
 
-@HiltViewModel
-internal class ConverterWidgetConfigureCreateNewViewModel
-@Inject
-constructor(private val unitsRepo: UnitsRepository) : ViewModel() {
+internal class ConverterWidgetConfigureCreateNewViewModel(private val unitsRepo: UnitsRepository) :
+  ViewModel() {
   private val _unitFrom = MutableStateFlow<BasicUnit?>(null)
   private val _unitTo = MutableStateFlow<BasicUnit?>(null)
 

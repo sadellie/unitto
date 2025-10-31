@@ -51,14 +51,10 @@ import com.sadellie.unitto.core.database.UnitsEntity
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class UnitsRepository
-@Inject
-constructor(private val unitsDao: UnitsDao, @ApplicationContext private val mContext: Context) {
+class UnitsRepository(private val unitsDao: UnitsDao, private val mContext: Context) {
   private val allUnits =
     lengthCollection +
       currencyCollection +

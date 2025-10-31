@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.openLink
@@ -76,10 +75,11 @@ import com.sadellie.unitto.feature.settings.navigation.ConverterSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.DisplayRoute
 import com.sadellie.unitto.feature.settings.navigation.FormattingRoute
 import com.sadellie.unitto.feature.settings.navigation.StartingScreenRoute
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun SettingsRoute(
-  viewModel: SettingsViewModel = hiltViewModel(),
+  viewModel: SettingsViewModel = koinViewModel(),
   openDrawer: () -> Unit,
   navControllerAction: (route: Route) -> Unit,
 ) {

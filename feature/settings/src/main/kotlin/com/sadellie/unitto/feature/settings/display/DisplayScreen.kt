@@ -47,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.datastore.DisplayPreferences
@@ -73,10 +72,11 @@ import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 import io.github.sadellie.themmo.rememberThemmoController
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun DisplayRoute(
-  viewModel: DisplayViewModel = hiltViewModel(),
+  viewModel: DisplayViewModel = koinViewModel(),
   navigateUp: () -> Unit = {},
   themmoController: ThemmoController,
   navigateToLanguages: () -> Unit,

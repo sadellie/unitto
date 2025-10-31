@@ -19,7 +19,6 @@
 package com.sadellie.unitto.feature.converter.navigation
 
 import androidx.compose.runtime.remember
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
@@ -35,6 +34,7 @@ import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.UnitFromSelectorRoute
 import com.sadellie.unitto.feature.converter.UnitToSelectorRoute
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.converterGraph(
   openDrawer: () -> Unit,
@@ -50,8 +50,7 @@ fun NavGraphBuilder.converterGraph(
     ) { backStackEntry ->
       val parentEntry =
         remember(backStackEntry) { navController.getBackStackEntry(ConverterGraphRoute) }
-
-      val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
+      val parentViewModel = koinViewModel<ConverterViewModel>(viewModelStoreOwner = parentEntry)
 
       ConverterRoute(
         viewModel = parentViewModel,
@@ -73,11 +72,10 @@ fun NavGraphBuilder.converterGraph(
     unittoComposable<UnitFromRoute> { backStackEntry ->
       val parentEntry =
         remember(backStackEntry) { navController.getBackStackEntry(ConverterGraphRoute) }
-
-      val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
+      val parentViewModel = koinViewModel<ConverterViewModel>(viewModelStoreOwner = parentEntry)
 
       UnitFromSelectorRoute(
-        unitSelectorViewModel = hiltViewModel(),
+        unitSelectorViewModel = koinViewModel(),
         converterViewModel = parentViewModel,
         navigateUp = navController::navigateUp,
         navigateToUnitGroups = navigateToUnitGroups,
@@ -87,11 +85,10 @@ fun NavGraphBuilder.converterGraph(
     unittoComposable<UnitToRoute> { backStackEntry ->
       val parentEntry =
         remember(backStackEntry) { navController.getBackStackEntry(ConverterGraphRoute) }
-
-      val parentViewModel = hiltViewModel<ConverterViewModel>(parentEntry)
+      val parentViewModel = koinViewModel<ConverterViewModel>(viewModelStoreOwner = parentEntry)
 
       UnitToSelectorRoute(
-        unitSelectorViewModel = hiltViewModel(),
+        unitSelectorViewModel = koinViewModel(),
         converterViewModel = parentViewModel,
         navigateUp = navController::navigateUp,
         navigateToUnitGroups = navigateToUnitGroups,

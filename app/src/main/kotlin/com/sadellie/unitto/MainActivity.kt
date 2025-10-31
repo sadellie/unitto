@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,19 +35,17 @@ import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.designsystem.LocalHapticPreference
 import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
-import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
-import javax.inject.Inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-@AndroidEntryPoint
-internal class MainActivity : AppCompatActivity() {
-
-  @Inject lateinit var userPrefsRepository: UserPreferencesRepository
+internal class MainActivity : AppCompatActivity(), KoinComponent {
 
   @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
+    val userPrefsRepository by inject<UserPreferencesRepository>()
 
     setContent {
       val configuration = LocalConfiguration.current

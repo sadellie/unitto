@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -58,9 +57,7 @@ import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.textfield.observe
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,13 +65,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ConverterWidgetConfigureSelectorRoute(
   navigateUp: () -> Unit,
   onClick: (unitId: String) -> Unit,
 ) {
-  val viewModel = hiltViewModel<ConverterWidgetConfigureSelectorViewModel>()
+  val viewModel = koinViewModel<ConverterWidgetConfigureSelectorViewModel>()
   LaunchedEffect(Unit) { viewModel.observeFilter() }
 
   val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -161,11 +159,10 @@ internal data class ConverterWidgetConfigureSelectorUIState(
   val result: Map<UnitGroup, List<UnitSearchResultItem>>?,
 )
 
-@HiltViewModel
-internal class ConverterWidgetConfigureSelectorViewModel
-@Inject
-constructor(private val unitsRepo: UnitsRepository, savedStateHandle: SavedStateHandle) :
-  ViewModel() {
+internal class ConverterWidgetConfigureSelectorViewModel(
+  private val unitsRepo: UnitsRepository,
+  savedStateHandle: SavedStateHandle,
+) : ViewModel() {
   private val args = savedStateHandle.toRoute<ConverterWidgetConfigureSelectorRoute>()
   private var job: Job? = null
   private val _query = TextFieldState()

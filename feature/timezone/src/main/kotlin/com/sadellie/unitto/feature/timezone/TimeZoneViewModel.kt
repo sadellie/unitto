@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,19 +26,15 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.ZonedDateTime
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.N)
-@HiltViewModel
-internal class TimeZoneViewModel
-@Inject
-constructor(private val timezonesRepository: TimeZonesRepository) : ViewModel() {
+internal class TimeZoneViewModel(private val timezonesRepository: TimeZonesRepository) :
+  ViewModel() {
   private val userTimeZone = MutableStateFlow(TimeZone.getDefault())
   private val customUserTime = MutableStateFlow<ZonedDateTime?>(null)
   private val selectedTimeZone = MutableStateFlow<FavoriteZone?>(null)

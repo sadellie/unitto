@@ -33,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.glance.appwidget.GlanceAppWidgetManager
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -45,14 +44,14 @@ import com.sadellie.unitto.core.designsystem.unittoComposable
 import com.sadellie.unitto.core.designsystem.unittoNavigation
 import com.sadellie.unitto.core.designsystem.unittoStackedComposable
 import com.sadellie.unitto.core.navigation.Route
-import dagger.hilt.android.AndroidEntryPoint
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
-@AndroidEntryPoint
 internal class ConverterWidgetConfigureActivity : AppCompatActivity() {
   private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
@@ -131,13 +130,9 @@ private fun ConverterWidgetConfigureNavigation(
             navController.getBackStackEntry(ConverterWidgetConfigureGraphRoute)
           }
         val viewModel =
-          hiltViewModel<
-            ConverterWidgetConfigureViewModel,
-            ConverterWidgetConfigureViewModel.Factory,
-          >(
-            viewModelStoreOwner = parentEntry,
-            creationCallback = { factory -> factory.create(appWidgetId) },
-          )
+          koinViewModel<ConverterWidgetConfigureViewModel>(viewModelStoreOwner = parentEntry) {
+            parametersOf(appWidgetId)
+          }
 
         // listen for result when adding unit pair
         val selectUnitPairResult =
@@ -153,7 +148,6 @@ private fun ConverterWidgetConfigureNavigation(
         }
 
         val submitProgress = viewModel.submitProgress.collectAsStateWithLifecycle()
-
         LaunchedEffect(submitProgress.value) {
           if (submitProgress.value == ConverterWidgetConfigureSubmitProgress.FINISHED) {
             onDone()
@@ -173,7 +167,7 @@ private fun ConverterWidgetConfigureNavigation(
       }
 
       unittoStackedComposable<ConverterWidgetConfigureCreateNewRoute> { backStackEntry ->
-        val viewModel = hiltViewModel<ConverterWidgetConfigureCreateNewViewModel>()
+        val viewModel = koinViewModel<ConverterWidgetConfigureCreateNewViewModel>()
 
         val selectFromResult =
           backStackEntry.savedStateHandle

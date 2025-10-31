@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,7 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.observe
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,10 +36,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-internal class BodyMassViewModel
-@Inject
-constructor(userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
+internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepository) :
+  ViewModel() {
   private var _calculateJob: Job? = null
   private val _isMetric = MutableStateFlow(getInitialIsMetric())
   private val _height1 = TextFieldState()

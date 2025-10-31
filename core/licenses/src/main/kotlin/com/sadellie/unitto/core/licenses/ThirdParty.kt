@@ -73,20 +73,6 @@ data class ThirdParty(
           description = "Compose Material You Design Components library",
         ),
         ThirdParty(
-          name = "Navigation Compose Hilt Integration",
-          dev = "The Android Open Source Project",
-          website = "https://developer.android.com/jetpack/androidx/releases/hilt",
-          license = "Apache-2.0",
-          description = "Navigation Compose Hilt Integration",
-        ),
-        ThirdParty(
-          name = "Hilt Android",
-          dev = "The Android Open Source Project",
-          website = "https://github.com/google/dagger",
-          license = "Apache-2.0",
-          description = "A fast dependency injector for Android and Java.",
-        ),
-        ThirdParty(
           name = "Material Symbols",
           dev = "Google Fonts",
           website = "https://fonts.google.com/",

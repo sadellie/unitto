@@ -40,25 +40,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.R
-import com.sadellie.unitto.core.ui.textfield.formatExpression
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
+import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
+import com.sadellie.unitto.core.ui.textfield.formatExpression
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
+import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeResultBlock
-import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal fun DateDifferencePage(viewModel: DateDifferenceViewModel = hiltViewModel()) {
+internal fun DateDifferencePage(viewModel: DateDifferenceViewModel = koinViewModel()) {
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     DifferenceUIState.Loading -> Unit
     is DifferenceUIState.Ready ->
@@ -72,9 +72,9 @@ internal fun DateDifferencePage(viewModel: DateDifferenceViewModel = hiltViewMod
 
 @Composable
 private fun DateDifferenceView(
-    uiState: DifferenceUIState.Ready,
-    setStartDate: (ZonedDateTime) -> Unit,
-    setEndDate: (ZonedDateTime) -> Unit,
+  uiState: DifferenceUIState.Ready,
+  setStartDate: (ZonedDateTime) -> Unit,
+  setEndDate: (ZonedDateTime) -> Unit,
 ) {
   var dialogState by remember { mutableStateOf(DialogState.NONE) }
 

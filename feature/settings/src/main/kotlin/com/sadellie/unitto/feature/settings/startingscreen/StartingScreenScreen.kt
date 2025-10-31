@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.AppShortcut
@@ -44,10 +43,11 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun StartingScreenRoute(
-  viewModel: StartingScreenViewModel = hiltViewModel(),
+  viewModel: StartingScreenViewModel = koinViewModel(),
   navigateUp: () -> Unit,
 ) {
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 plugins {
   alias(libs.plugins.android.gradlePlugin) apply false
   alias(libs.plugins.kotlin.jvm) apply false
-  alias(libs.plugins.hilt) apply false
   alias(libs.plugins.ksp) apply false
   alias(libs.plugins.room) apply false
   alias(libs.plugins.compose.compiler) apply false

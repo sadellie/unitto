@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,7 @@ import com.sadellie.unitto.core.common.combineBig
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.observe
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.ZonedDateTime
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,10 +35,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-internal class AddSubtractViewModel
-@Inject
-constructor(userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
+internal class AddSubtractViewModel(userPreferencesRepository: UserPreferencesRepository) :
+  ViewModel() {
   private val _initialDateTime = ZonedDateTime.now()
   private var _calculateJob: Job? = null
   private val _result = MutableStateFlow(_initialDateTime)

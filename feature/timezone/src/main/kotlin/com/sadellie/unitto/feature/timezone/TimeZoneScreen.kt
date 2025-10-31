@@ -65,7 +65,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
@@ -84,13 +83,14 @@ import java.time.ZonedDateTime
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import org.koin.compose.viewmodel.koinViewModel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun TimeZoneRoute(
-  viewModel: TimeZoneViewModel = hiltViewModel(),
+  viewModel: TimeZoneViewModel = koinViewModel(),
   openDrawer: () -> Unit,
   navigateToAddTimeZone: (ZonedDateTime) -> Unit,
 ) {

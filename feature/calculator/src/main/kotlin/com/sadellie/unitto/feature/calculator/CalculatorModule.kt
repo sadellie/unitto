@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.graphing
+package com.sadellie.unitto.feature.calculator
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.lazyModule
 
-class IsValidFunctionExpressionTest {
-  @Test
-  fun passValid() {
-    val input = "cos(x)789+exp(1)"
-    assertEquals(true, isValidFunctionExpression(input))
-  }
-
-  @Test
-  fun failInvalid1() {
-    val input = "cos()"
-    assertEquals(false, isValidFunctionExpression(input))
-  }
-
-  @Test
-  fun failInvalid2() {
-    val input = "x÷0"
-    assertEquals(true, isValidFunctionExpression(input))
-  }
-}
+val calculatorModule = lazyModule { viewModelOf(::CalculatorViewModel) }

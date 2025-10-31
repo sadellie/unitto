@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,14 @@ import com.sadellie.unitto.core.database.CalculatorHistoryDao
 import com.sadellie.unitto.core.database.CalculatorHistoryEntity
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
 import java.util.Date
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class CalculatorHistoryRepositoryImpl
-@Inject
-constructor(private val calculatorHistoryDao: CalculatorHistoryDao) : CalculatorHistoryRepository {
+class CalculatorHistoryRepositoryImpl(private val calculatorHistoryDao: CalculatorHistoryDao) :
+  CalculatorHistoryRepository {
   override val historyFlow: Flow<List<CalculatorHistoryItem>> =
     calculatorHistoryDao.getAllDescending().map { it.toHistoryItemList() }.flowOn(Dispatchers.IO)
 

@@ -63,7 +63,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.R
@@ -83,9 +82,10 @@ import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
 import com.sadellie.unitto.feature.datecalculator.components.TimeUnitTextField
 import java.time.ZonedDateTime
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal fun AddSubtractPage(viewModel: AddSubtractViewModel = hiltViewModel()) {
+internal fun AddSubtractPage(viewModel: AddSubtractViewModel = koinViewModel()) {
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
