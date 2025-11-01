@@ -35,12 +35,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
@@ -58,13 +57,23 @@ import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
-import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_add
+import unitto.core.common.generated.resources.common_confirm
+import unitto.core.common.generated.resources.common_delete
+import unitto.core.common.generated.resources.converter_widget_configure_list_placeholder
+import unitto.core.common.generated.resources.converter_widget_configure_select_pairs
+import unitto.core.common.generated.resources.unit_kilometer
+import unitto.core.common.generated.resources.unit_kilometer_short
+import unitto.core.common.generated.resources.unit_meter
+import unitto.core.common.generated.resources.unit_meter_short
 
 @Composable
 internal fun ConverterWidgetConfigureRoute(
@@ -105,16 +114,16 @@ private fun MainScreen(
     }
 
   ScaffoldWithTopBar(
-    title = { Text(stringResource(R.string.converter_widget_configure_select_pairs)) },
+    title = { Text(stringResource(Res.string.converter_widget_configure_select_pairs)) },
     navigationIcon = {},
     actions = {
       IconButton(onDone, enabled = enableSubmitButton) {
-        Icon(Symbols.Check, stringResource(R.string.common_confirm))
+        Icon(Symbols.Check, stringResource(Res.string.common_confirm))
       }
     },
     floatingActionButton = {
       FloatingActionButton(onClick = navigateToSelectFrom) {
-        Icon(imageVector = Symbols.Add, contentDescription = stringResource(R.string.common_add))
+        Icon(imageVector = Symbols.Add, contentDescription = stringResource(Res.string.common_add))
       }
     },
   ) { paddingValues ->
@@ -123,7 +132,7 @@ private fun MainScreen(
         modifier = Modifier.padding(paddingValues).fillMaxSize(),
         contentAlignment = Alignment.Center,
       ) {
-        Text(stringResource(R.string.converter_widget_configure_list_placeholder))
+        Text(stringResource(Res.string.converter_widget_configure_list_placeholder))
       }
 
       return@ScaffoldWithTopBar
@@ -153,7 +162,7 @@ private fun MainScreen(
             IconButton(onClick = { onRemove(index) }, enabled = isNotSubmitting) {
               Icon(
                 imageVector = Symbols.Close,
-                contentDescription = stringResource(R.string.common_delete),
+                contentDescription = stringResource(Res.string.common_delete),
               )
             }
           },
@@ -258,18 +267,18 @@ private fun PreviewMainScreen() {
               from =
                 NormalUnit(
                   UnitID.meter,
-                  BigDecimal("2"),
+                  KBigDecimal("2"),
                   UnitGroup.LENGTH,
-                  R.string.unit_meter,
-                  R.string.unit_meter_short,
+                  Res.string.unit_meter,
+                  Res.string.unit_meter_short,
                 ),
               to =
                 NormalUnit(
                   UnitID.kilometer,
-                  BigDecimal("2"),
+                  KBigDecimal("2"),
                   UnitGroup.LENGTH,
-                  R.string.unit_kilometer,
-                  R.string.unit_kilometer_short,
+                  Res.string.unit_kilometer,
+                  Res.string.unit_kilometer_short,
                 ),
             )
           ),

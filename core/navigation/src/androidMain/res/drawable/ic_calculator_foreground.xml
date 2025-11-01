@@ -1,0 +1,30 @@
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2023-2025 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <group>
+        <clip-path android:pathData="M0,0h24v24h-24z" />
+        <path
+            android:fillColor="@color/ic_shortcut_foreground"
+            android:pathData="M8,18H9.5V16H11.5V14.5H9.5V12.5H8V14.5H6V16H8V18ZM13,17.25H18V15.75H13V17.25ZM13,14.75H18V13.25H13V14.75ZM14.1,10.95L15.5,9.55L16.9,10.95L17.95,9.9L16.55,8.45L17.95,7.05L16.9,6L15.5,7.4L14.1,6L13.05,7.05L14.45,8.45L13.05,9.9L14.1,10.95ZM6.25,9.2H11.25V7.7H6.25V9.2ZM5,21C4.45,21 3.979,20.804 3.588,20.413C3.196,20.021 3,19.55 3,19V5C3,4.45 3.196,3.979 3.588,3.588C3.979,3.196 4.45,3 5,3H19C19.55,3 20.021,3.196 20.413,3.588C20.804,3.979 21,4.45 21,5V19C21,19.55 20.804,20.021 20.413,20.413C20.021,20.804 19.55,21 19,21H5ZM5,19H19V5H5V19Z" />
+    </group>
+</vector>

@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.bodymass.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,23 +32,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.textfield.formatExpression
-import java.math.BigDecimal
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.body_mass_normal
+import unitto.core.common.generated.resources.body_mass_normal_weight
+import unitto.core.common.generated.resources.body_mass_obese_1
+import unitto.core.common.generated.resources.body_mass_obese_2
+import unitto.core.common.generated.resources.body_mass_obese_3
+import unitto.core.common.generated.resources.body_mass_overweight
+import unitto.core.common.generated.resources.body_mass_underweight
 
 @Composable
 internal fun BodyMassResult(
   modifier: Modifier = Modifier,
-  value: BigDecimal,
-  range: Pair<BigDecimal, BigDecimal>,
+  value: KBigDecimal,
+  range: Pair<KBigDecimal, KBigDecimal>,
   rangeSuffix: String,
   formatterSymbols: FormatterSymbols,
 ) {
@@ -109,7 +116,7 @@ internal fun BodyMassResult(
         color = MaterialTheme.colorScheme.onSecondaryContainer,
       )
       Text(
-        text = stringResource(R.string.body_mass_normal_weight),
+        text = stringResource(Res.string.body_mass_normal_weight),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSecondaryContainer,
       )
@@ -119,46 +126,46 @@ internal fun BodyMassResult(
 
 @Immutable
 private data class BodyMassData(
-  val minValue: BigDecimal,
+  val minValue: KBigDecimal,
   val color: Color,
-  @param:StringRes val classification: Int,
+  val classification: StringResource,
 )
 
 @Stable
-private fun getBodyMassData(value: BigDecimal): BodyMassData =
+private fun getBodyMassData(value: KBigDecimal): BodyMassData =
   indexes.first { value >= it.minValue }
 
 private val indexes by lazy {
   listOf(
     BodyMassData(
-      minValue = BigDecimal("40"),
+      minValue = KBigDecimal("40"),
       color = Color(0x80FF2323),
-      classification = R.string.body_mass_obese_3,
+      classification = Res.string.body_mass_obese_3,
     ),
     BodyMassData(
-      minValue = BigDecimal("35"),
+      minValue = KBigDecimal("35"),
       color = Color(0x80F85F31),
-      classification = R.string.body_mass_obese_2,
+      classification = Res.string.body_mass_obese_2,
     ),
     BodyMassData(
-      minValue = BigDecimal("30"),
+      minValue = KBigDecimal("30"),
       color = Color(0x80FF9634),
-      classification = R.string.body_mass_obese_1,
+      classification = Res.string.body_mass_obese_1,
     ),
     BodyMassData(
-      minValue = BigDecimal("25"),
+      minValue = KBigDecimal("25"),
       color = Color(0x80DBEC18),
-      classification = R.string.body_mass_overweight,
+      classification = Res.string.body_mass_overweight,
     ),
     BodyMassData(
-      minValue = BigDecimal("18.5"),
+      minValue = KBigDecimal("18.5"),
       color = Color(0x805BF724),
-      classification = R.string.body_mass_normal,
+      classification = Res.string.body_mass_normal,
     ),
     BodyMassData(
-      minValue = BigDecimal("0"),
+      minValue = KBigDecimal("0"),
       color = Color(0x800EACDD),
-      classification = R.string.body_mass_underweight,
+      classification = Res.string.body_mass_underweight,
     ),
   )
 }
@@ -169,8 +176,8 @@ private const val BODY_MASS_RANGE_SCALE = 0
 @Composable
 fun PreviewBodyMassResult() {
   BodyMassResult(
-    value = BigDecimal(18.5),
-    range = BigDecimal(50) to BigDecimal(80),
+    value = KBigDecimal(18.5),
+    range = KBigDecimal(50) to KBigDecimal(80),
     rangeSuffix = "kg",
     formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
   )

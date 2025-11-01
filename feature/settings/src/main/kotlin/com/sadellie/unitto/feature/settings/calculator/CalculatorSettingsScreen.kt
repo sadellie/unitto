@@ -32,12 +32,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Fraction
@@ -52,7 +50,18 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.calculator_title
+import unitto.core.common.generated.resources.settings_fractional_output
+import unitto.core.common.generated.resources.settings_fractional_output_support
+import unitto.core.common.generated.resources.settings_history_view_button
+import unitto.core.common.generated.resources.settings_history_view_button_support
+import unitto.core.common.generated.resources.settings_partial_history_view
+import unitto.core.common.generated.resources.settings_partial_history_view_support
+import unitto.core.common.generated.resources.settings_stepped_drag_gesture
+import unitto.core.common.generated.resources.settings_stepped_drag_gesture_support
 
 @Composable
 internal fun CalculatorSettingsRoute(
@@ -84,7 +93,7 @@ private fun CalculatorSettingsScreen(
   updateFractionalOutput: (Boolean) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.calculator_title),
+    title = stringResource(Res.string.calculator_title),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
     Column(
@@ -94,27 +103,27 @@ private fun CalculatorSettingsScreen(
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       ListItemExpressive(
-        headlineText = stringResource(R.string.settings_history_view_button),
+        headlineText = stringResource(Res.string.settings_history_view_button),
         icon = Symbols.History,
-        supportingText = stringResource(R.string.settings_history_view_button_support),
+        supportingText = stringResource(Res.string.settings_history_view_button_support),
         switchState = prefs.openHistoryViewButton,
         onSwitchChange = updateOpenHistoryViewButton,
         shape = ListItemExpressiveDefaults.firstShape,
       )
 
       ListItemExpressive(
-        headlineText = stringResource(R.string.settings_fractional_output),
+        headlineText = stringResource(Res.string.settings_fractional_output),
         icon = IconPack.Fraction,
-        supportingText = stringResource(R.string.settings_fractional_output_support),
+        supportingText = stringResource(Res.string.settings_fractional_output_support),
         switchState = prefs.fractionalOutput,
         onSwitchChange = updateFractionalOutput,
         shape = ListItemExpressiveDefaults.middleShape,
       )
 
       ListItemExpressive(
-        headlineText = stringResource(R.string.settings_partial_history_view),
+        headlineText = stringResource(Res.string.settings_partial_history_view),
         icon = Symbols.SplitscreenBottom,
-        supportingText = stringResource(R.string.settings_partial_history_view_support),
+        supportingText = stringResource(Res.string.settings_partial_history_view_support),
         switchState = prefs.partialHistoryView,
         onSwitchChange = updatePartialHistoryView,
         shape =
@@ -129,9 +138,9 @@ private fun CalculatorSettingsScreen(
         modifier = Modifier.fillMaxWidth(),
       ) {
         ListItemExpressive(
-          headlineText = stringResource(R.string.settings_stepped_drag_gesture),
+          headlineText = stringResource(Res.string.settings_stepped_drag_gesture),
           icon = Symbols.MoveSelectionDown,
-          supportingText = stringResource(R.string.settings_stepped_drag_gesture_support),
+          supportingText = stringResource(Res.string.settings_stepped_drag_gesture_support),
           switchState = prefs.steppedPartialHistoryView,
           onSwitchChange = updateSteppedPartialHistoryView,
           shape = ListItemExpressiveDefaults.lastShape,

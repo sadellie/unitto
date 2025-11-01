@@ -42,16 +42,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.displayName
 import com.sadellie.unitto.core.common.offset
 import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.common.regionName
 import com.sadellie.unitto.core.designsystem.LocalLocale
-import com.sadellie.unitto.core.designsystem.plus
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -60,8 +57,13 @@ import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.SearchPlaceholder
 import com.sadellie.unitto.core.ui.datetime.formatTime
-import java.time.ZonedDateTime
+import com.sadellie.unitto.core.ui.plus
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_read_article
+import unitto.core.common.generated.resources.time_zone_no_results_support
+import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -113,8 +115,8 @@ fun AddTimeZoneScreen(
           onButtonClick = {
             openLink(mContext, "https://sadellie.github.io/unitto/help#add-time-zones")
           },
-          supportText = stringResource(R.string.time_zone_no_results_support),
-          buttonLabel = stringResource(R.string.common_read_article),
+          supportText = stringResource(Res.string.time_zone_no_results_support),
+          buttonLabel = stringResource(Res.string.common_read_article),
         )
       } else {
         val locale = LocalLocale.current

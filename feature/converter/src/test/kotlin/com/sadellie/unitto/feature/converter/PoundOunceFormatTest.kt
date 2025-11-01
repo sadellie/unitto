@@ -19,19 +19,14 @@
 package com.sadellie.unitto.feature.converter
 
 import com.sadellie.unitto.core.common.FormatterSymbols
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.data.converter.ConverterResult
-import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
-@RunWith(RobolectricTestRunner::class)
 class PoundOunceFormatTest {
-  private val context = RuntimeEnvironment.getApplication().applicationContext
   private val scale = 3
   private val outputFormat = OutputFormat.PLAIN
   private val formatterSymbols = FormatterSymbols(Token.PERIOD, Token.COMMA)
@@ -39,45 +34,80 @@ class PoundOunceFormatTest {
   @Test
   fun testNegative() {
     val converterResult =
-      ConverterResult.PoundOunce(pound = BigDecimal("-1"), ounce = BigDecimal("-2"))
+      ConverterResult.PoundOunce(pound = KBigDecimal("-1"), ounce = KBigDecimal("-2"))
     val expected = "−1lbs −2oz"
-    val actual = converterResult.format(context, scale, outputFormat, formatterSymbols)
+    val actual =
+      converterResult.format(
+        poundLabel = "lbs",
+        ounceLabel = "oz",
+        scale = scale,
+        outputFormat = outputFormat,
+        formatterSymbols = formatterSymbols,
+      )
     assertEquals(expected, actual)
   }
 
   @Test
   fun testZeroBoth() {
     val converterResult =
-      ConverterResult.PoundOunce(pound = BigDecimal.ZERO, ounce = BigDecimal.ZERO)
+      ConverterResult.PoundOunce(pound = KBigDecimal.ZERO, ounce = KBigDecimal.ZERO)
     val expected = "0"
-    val actual = converterResult.format(context, scale, outputFormat, formatterSymbols)
+    val actual =
+      converterResult.format(
+        poundLabel = "lbs",
+        ounceLabel = "oz",
+        scale = scale,
+        outputFormat = outputFormat,
+        formatterSymbols = formatterSymbols,
+      )
     assertEquals(expected, actual)
   }
 
   @Test
   fun testZeroPound() {
     val converterResult =
-      ConverterResult.PoundOunce(pound = BigDecimal.ZERO, ounce = BigDecimal("123"))
+      ConverterResult.PoundOunce(pound = KBigDecimal.ZERO, ounce = KBigDecimal("123"))
     val expected = "0lbs 123oz"
-    val actual = converterResult.format(context, scale, outputFormat, formatterSymbols)
+    val actual =
+      converterResult.format(
+        poundLabel = "lbs",
+        ounceLabel = "oz",
+        scale = scale,
+        outputFormat = outputFormat,
+        formatterSymbols = formatterSymbols,
+      )
     assertEquals(expected, actual)
   }
 
   @Test
   fun testZeroOunce() {
     val converterResult =
-      ConverterResult.PoundOunce(pound = BigDecimal("123"), ounce = BigDecimal.ZERO)
+      ConverterResult.PoundOunce(pound = KBigDecimal("123"), ounce = KBigDecimal.ZERO)
     val expected = "123"
-    val actual = converterResult.format(context, scale, outputFormat, formatterSymbols)
+    val actual =
+      converterResult.format(
+        poundLabel = "lbs",
+        ounceLabel = "oz",
+        scale = scale,
+        outputFormat = outputFormat,
+        formatterSymbols = formatterSymbols,
+      )
     assertEquals(expected, actual)
   }
 
   @Test
   fun testBothPositive() {
     val converterResult =
-      ConverterResult.PoundOunce(pound = BigDecimal("123"), ounce = BigDecimal("456"))
+      ConverterResult.PoundOunce(pound = KBigDecimal("123"), ounce = KBigDecimal("456"))
     val expected = "123lbs 456oz"
-    val actual = converterResult.format(context, scale, outputFormat, formatterSymbols)
+    val actual =
+      converterResult.format(
+        poundLabel = "lbs",
+        ounceLabel = "oz",
+        scale = scale,
+        outputFormat = outputFormat,
+        formatterSymbols = formatterSymbols,
+      )
     assertEquals(expected, actual)
   }
 }

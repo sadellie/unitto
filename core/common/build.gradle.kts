@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins { id("unitto.library") }
+plugins {
+  id("unitto.multiplatform.library")
+  alias(libs.plugins.compose)
+  alias(libs.plugins.compose.compiler)
+}
+
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(libs.org.jetbrains.compose.foundation.foundation)
+    implementation(libs.org.jetbrains.compose.components.components.resources)
+    implementation(libs.co.touchlab.kermit)
+  }
+  sourceSets.androidMain.dependencies {
+    implementation(libs.big.math)
+    implementation(libs.androidx.core.core.ktx)
+    implementation(libs.androidx.browser.browser)
+  }
+  // do not mix native BigDecimal binding from kt-math and pure java BigDecimal
+  sourceSets.wasmJsMain.dependencies { implementation(project(":kt-math")) }
+  sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
+}
+
+compose.resources { publicResClass = true }
 
 android {
   namespace = "com.sadellie.unitto.core.common"
   lint.warning.add("MissingTranslation")
+  compileOptions.isCoreLibraryDesugaringEnabled = true
 }
 
-dependencies { implementation(libs.androidx.browser.browser) }
+dependencies { coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs) }

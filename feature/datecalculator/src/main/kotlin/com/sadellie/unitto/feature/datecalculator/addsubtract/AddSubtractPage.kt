@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.datecalculator.addsubtract
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -29,10 +28,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,8 +42,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
@@ -57,17 +52,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.common.showToast
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Event
 import com.sadellie.unitto.core.designsystem.icons.symbols.Remove
@@ -82,7 +75,19 @@ import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
 import com.sadellie.unitto.feature.datecalculator.components.TimeUnitTextField
 import java.time.ZonedDateTime
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.date_calculator_add
+import unitto.core.common.generated.resources.date_calculator_create_event
+import unitto.core.common.generated.resources.date_calculator_days
+import unitto.core.common.generated.resources.date_calculator_end
+import unitto.core.common.generated.resources.date_calculator_hours
+import unitto.core.common.generated.resources.date_calculator_minutes
+import unitto.core.common.generated.resources.date_calculator_months
+import unitto.core.common.generated.resources.date_calculator_start
+import unitto.core.common.generated.resources.date_calculator_subtract
+import unitto.core.common.generated.resources.date_calculator_years
 
 @Composable
 internal fun AddSubtractPage(viewModel: AddSubtractViewModel = koinViewModel()) {
@@ -108,88 +113,72 @@ private fun AddSubtractView(
 ) {
   val mContext = LocalContext.current
   var dialogState by remember { mutableStateOf(DialogState.NONE) }
-
   val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
 
-  Column(Modifier.fillMaxSize()) {
-    Scaffold(
-      modifier = Modifier.fillMaxHeight().weight(1f),
-      containerColor = MaterialTheme.colorScheme.surfaceContainer,
-    ) { paddingValues ->
-      Column(
-        modifier =
-          Modifier.padding(paddingValues)
-            .verticalScroll(rememberScrollState())
-            .padding(Sizes.large),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+  Column(
+    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Sizes.large),
+    verticalArrangement = Arrangement.spacedBy(12.dp),
+  ) {
+    AnimatedContent(
+      targetState = showResult,
+      label = "Reveal result",
+      transitionSpec = { fadeIn() togetherWith fadeOut() using SizeTransform() },
+    ) { show ->
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(Sizes.small),
       ) {
-        AnimatedContent(
-          targetState = showResult,
-          label = "Reveal result",
-          transitionSpec = { fadeIn() togetherWith fadeOut() using SizeTransform() },
-          modifier = Modifier.clip(MaterialTheme.shapes.extraLarge),
-        ) { show ->
-          FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-          ) {
-            DateTimeBlock(
-              modifier = Modifier.weight(1f),
-              containerColor = MaterialTheme.colorScheme.secondaryContainer,
-              title = stringResource(R.string.date_calculator_start),
-              dateTime = uiState.start,
-              onLongClick = { updateStart(ZonedDateTimeUtils.nowWithMinutes()) },
-              onClick = { dialogState = DialogState.FROM },
-              onTimeClick = { dialogState = DialogState.FROM_TIME },
-              onDateClick = { dialogState = DialogState.FROM_DATE },
-            )
-
-            if (show) {
-              DateTimeBlock(
-                modifier = Modifier.weight(1f),
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                title = stringResource(R.string.date_calculator_end),
-                dateTime = uiState.result,
-              )
-            }
-          }
-        }
-
-        OperationSelector(
-          modifier = Modifier.fillMaxWidth(),
-          updateAddition = updateAddition,
-          addition = uiState.addition,
+        DateTimeBlock(
+          modifier = Modifier.weight(1f),
+          title = stringResource(Res.string.date_calculator_start),
+          onTimeClick = { dialogState = DialogState.FROM_TIME },
+          onDateClick = { dialogState = DialogState.FROM_DATE },
+          onLongClick = { updateStart(ZonedDateTimeUtils.nowWithMinutes()) },
+          dateTime = uiState.start,
         )
 
-        InputTextFieldsBox(
-          modifier = Modifier.fillMaxWidth(),
-          formatterSymbols = uiState.formatterSymbols,
-          years = uiState.years,
-          months = uiState.months,
-          days = uiState.days,
-          hours = uiState.hours,
-          minutes = uiState.minutes,
-        )
-
-        Button(
-          onClick = { mContext.createEvent(uiState.start, uiState.result) },
-          shapes = ButtonDefaults.shapes(),
-          modifier = Modifier.fillMaxWidth().height(ButtonDefaults.MediumContainerHeight),
-          contentPadding = ButtonDefaults.TextButtonWithIconContentPadding,
-        ) {
-          Icon(
-            imageVector = Symbols.Event,
-            contentDescription = stringResource(R.string.date_calculator_create_event),
-            modifier = Modifier.size(ButtonDefaults.MediumIconSize),
-          )
-          Spacer(Modifier.size(ButtonDefaults.MediumIconSpacing))
-          Text(
-            text = stringResource(R.string.date_calculator_create_event),
-            style = ButtonDefaults.textStyleFor(ButtonDefaults.MediumContainerHeight),
+        if (show) {
+          DateTimeBlock(
+            modifier = Modifier.weight(1f),
+            title = stringResource(Res.string.date_calculator_end),
+            dateTime = uiState.result,
           )
         }
       }
+    }
+
+    OperationSelector(
+      modifier = Modifier.fillMaxWidth(),
+      updateAddition = updateAddition,
+      addition = uiState.addition,
+    )
+
+    InputTextFieldsBox(
+      modifier = Modifier.fillMaxWidth(),
+      formatterSymbols = uiState.formatterSymbols,
+      years = uiState.years,
+      months = uiState.months,
+      days = uiState.days,
+      hours = uiState.hours,
+      minutes = uiState.minutes,
+    )
+
+    Button(
+      onClick = { mContext.createEvent(uiState.start, uiState.result) },
+      shapes = ButtonDefaults.shapes(),
+      modifier = Modifier.fillMaxWidth().height(ButtonDefaults.MediumContainerHeight),
+      contentPadding = ButtonDefaults.TextButtonWithIconContentPadding,
+    ) {
+      Icon(
+        imageVector = Symbols.Event,
+        contentDescription = stringResource(Res.string.date_calculator_create_event),
+        modifier = Modifier.size(ButtonDefaults.MediumIconSize),
+      )
+      Spacer(Modifier.size(ButtonDefaults.MediumIconSpacing))
+      Text(
+        text = stringResource(Res.string.date_calculator_create_event),
+        style = ButtonDefaults.textStyleFor(ButtonDefaults.MediumContainerHeight),
+      )
     }
   }
 
@@ -198,7 +187,6 @@ private fun AddSubtractView(
     updateDialogState = { dialogState = it },
     date = uiState.start,
     updateDate = updateStart,
-    bothState = DialogState.FROM,
     timeState = DialogState.FROM_TIME,
     dateState = DialogState.FROM_DATE,
   )
@@ -218,7 +206,7 @@ private fun OperationSelector(
       shapes = ToggleButtonDefaults.shapes(),
       modifier = Modifier.weight(1f),
     ) {
-      Icon(Symbols.Add, stringResource(R.string.date_calculator_add))
+      Icon(Symbols.Add, stringResource(Res.string.date_calculator_add))
     }
     ToggleButton(
       checked = !addition,
@@ -226,7 +214,7 @@ private fun OperationSelector(
       shapes = ToggleButtonDefaults.shapes(),
       modifier = Modifier.weight(1f),
     ) {
-      Icon(Symbols.Remove, stringResource(R.string.date_calculator_subtract))
+      Icon(Symbols.Remove, stringResource(Res.string.date_calculator_subtract))
     }
   }
 }
@@ -246,7 +234,7 @@ private fun InputTextFieldsBox(
       TimeUnitTextField(
         modifier = Modifier.fillMaxWidth(),
         state = years,
-        label = stringResource(R.string.date_calculator_years),
+        label = stringResource(Res.string.date_calculator_years),
         maxValue = 9_999.0,
         formatterSymbols = formatterSymbols,
         allowFraction = false,
@@ -257,7 +245,7 @@ private fun InputTextFieldsBox(
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
         state = months,
-        label = stringResource(R.string.date_calculator_months),
+        label = stringResource(Res.string.date_calculator_months),
         maxValue = 9_999.0,
         formatterSymbols = formatterSymbols,
         allowFraction = false,
@@ -266,7 +254,7 @@ private fun InputTextFieldsBox(
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
         state = days,
-        label = stringResource(R.string.date_calculator_days),
+        label = stringResource(Res.string.date_calculator_days),
         maxValue = 99_999.0,
         formatterSymbols = formatterSymbols,
         allowFraction = false,
@@ -277,7 +265,7 @@ private fun InputTextFieldsBox(
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
         state = hours,
-        label = stringResource(R.string.date_calculator_hours),
+        label = stringResource(Res.string.date_calculator_hours),
         maxValue = 9_999_999.0,
         formatterSymbols = formatterSymbols,
         allowFraction = false,
@@ -286,7 +274,7 @@ private fun InputTextFieldsBox(
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
         state = minutes,
-        label = stringResource(R.string.date_calculator_minutes),
+        label = stringResource(Res.string.date_calculator_minutes),
         formatterSymbols = formatterSymbols,
         maxValue = 99_999_999.0,
         imeAction = ImeAction.Done,
@@ -309,14 +297,15 @@ private fun Context.createEvent(start: ZonedDateTime, end: ZonedDateTime) {
   try {
     startActivity(intent)
   } catch (e: Exception) {
-    Log.e("AddSubtractPage", "Failed to create event", e)
-    showToast(this, this.getString(R.string.common_error))
+    Logger.e(e, TAG) { "Failed to create event" }
   }
 }
 
+private const val TAG = "AddSubtractPage"
+
 @Preview
 @Composable
-fun AddSubtractViewPreview() {
+fun AddSubtractViewPreview() = ExpressivePreview {
   AddSubtractView(
     uiState =
       AddSubtractUIState.Ready(

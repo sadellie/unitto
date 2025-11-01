@@ -16,25 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins { id("unitto.library") }
+plugins {
+  id("unitto.multiplatform.library")
+  alias(libs.plugins.compose)
+  alias(libs.plugins.compose.compiler)
+}
+
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(project(":core:model"))
+    implementation(project(":core:common"))
+    implementation(project(":core:themmo"))
+    implementation(project(":core:evaluatto"))
+    implementation(project(":core:database"))
+    implementation(libs.org.jetbrains.compose.runtime.runtime)
+    implementation(libs.org.jetbrains.compose.components.components.resources)
+    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+    implementation(libs.io.insert.koin.koin.core)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
+  }
+  sourceSets.androidMain.dependencies {
+    implementation(project(":core:remote"))
+    implementation(libs.io.insert.koin.koin.android)
+    implementation(libs.io.insert.koin.koin.core.coroutines)
+  }
+  sourceSets.commonTest.dependencies {
+    implementation(libs.org.jetbrains.kotlin.kotlin.test)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
+  }
+  sourceSets.androidUnitTest.dependencies { implementation(libs.org.robolectric.robolectric) }
+}
 
 android {
   namespace = "com.sadellie.unitto.core.data"
   testOptions.unitTests.isIncludeAndroidResources = true
-}
-
-dependencies {
-  implementation(project(":core:model"))
-  implementation(project(":core:common"))
-  implementation(project(":core:remote"))
-  implementation(project(":core:evaluatto"))
-  implementation(project(":core:database"))
-  implementation(project(":core:themmo"))
-
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.android)
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-
-  testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
-  testImplementation(libs.org.robolectric.robolectric)
 }

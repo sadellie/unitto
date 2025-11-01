@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2024-2025 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="calculator_title">计算器</string>
+    <string name="converter_title">单位换算器</string>
+    <string name="unit_currency_eur">欧元</string>
+    <string name="unit_gram">克</string>
+    <string name="unit_kilogram">千克</string>
+    <string name="unit_kilometer">千米</string>
+    <string name="unit_mile">英里</string>
+    <string name="unit_ounce">盎司</string>
+    <string name="unit_pound">镑</string>
+</resources>

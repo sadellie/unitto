@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
 
 package com.sadellie.unitto.feature.datecalculator
 
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.feature.datecalculator.difference.ZonedDateTimeDifference
 import com.sadellie.unitto.feature.datecalculator.difference.minus
-import java.math.BigDecimal
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class ZonedDateTimeDifferenceKtTest {
   private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
@@ -52,11 +52,11 @@ class ZonedDateTimeDifferenceKtTest {
         days = 1,
         hours = 0,
         minutes = 0,
-        sumYears = BigDecimal("0.003"),
-        sumMonths = BigDecimal("0.033"),
-        sumDays = BigDecimal("1.000"),
-        sumHours = BigDecimal("24.000"),
-        sumMinutes = BigDecimal("1440.000"),
+        sumYears = KBigDecimal("0.003"),
+        sumMonths = KBigDecimal("0.033"),
+        sumDays = KBigDecimal("1.000"),
+        sumHours = KBigDecimal("24.000"),
+        sumMinutes = KBigDecimal("1440.000"),
       ),
       date1.minus(date2, 3),
     )
@@ -76,11 +76,11 @@ class ZonedDateTimeDifferenceKtTest {
         days = 0,
         hours = 0,
         minutes = 0,
-        sumYears = BigDecimal("0.085"),
-        sumMonths = BigDecimal("1.019"),
-        sumDays = BigDecimal("31.000"),
-        sumHours = BigDecimal("744.000"),
-        sumMinutes = BigDecimal("44640.000"),
+        sumYears = KBigDecimal("0.085"),
+        sumMonths = KBigDecimal("1.019"),
+        sumDays = KBigDecimal("31.000"),
+        sumHours = KBigDecimal("744.000"),
+        sumMinutes = KBigDecimal("44640.000"),
       ),
       date1.minus(date2, 3),
     )
@@ -100,11 +100,11 @@ class ZonedDateTimeDifferenceKtTest {
         days = 1,
         hours = 0,
         minutes = 0,
-        sumYears = BigDecimal("0.003"),
-        sumMonths = BigDecimal("0.033"),
-        sumDays = BigDecimal("1.000"),
-        sumHours = BigDecimal("24.000"),
-        sumMinutes = BigDecimal("1440.000"),
+        sumYears = KBigDecimal("0.003"),
+        sumMonths = KBigDecimal("0.033"),
+        sumDays = KBigDecimal("1.000"),
+        sumHours = KBigDecimal("24.000"),
+        sumMinutes = KBigDecimal("1440.000"),
       ),
       date1.minus(date2, 3),
     )
@@ -124,11 +124,11 @@ class ZonedDateTimeDifferenceKtTest {
         days = 30,
         hours = 23,
         minutes = 0,
-        sumYears = BigDecimal("0.085"),
-        sumMonths = BigDecimal("1.019"),
-        sumDays = BigDecimal("31.000"),
-        sumHours = BigDecimal("744.000"),
-        sumMinutes = BigDecimal("44640.000"),
+        sumYears = KBigDecimal("0.085"),
+        sumMonths = KBigDecimal("1.019"),
+        sumDays = KBigDecimal("31.000"),
+        sumHours = KBigDecimal("744.000"),
+        sumMinutes = KBigDecimal("44640.000"),
       ),
       date1.minus(date2, 3),
     )
@@ -148,11 +148,11 @@ class ZonedDateTimeDifferenceKtTest {
         days = 0,
         hours = 0,
         minutes = 0,
-        sumYears = BigDecimal("0.082"),
-        sumMonths = BigDecimal("0.986"),
-        sumDays = BigDecimal("30.000"),
-        sumHours = BigDecimal("720.000"),
-        sumMinutes = BigDecimal("43200.000"),
+        sumYears = KBigDecimal("0.082"),
+        sumMonths = KBigDecimal("0.986"),
+        sumDays = KBigDecimal("30.000"),
+        sumHours = KBigDecimal("720.000"),
+        sumMinutes = KBigDecimal("43200.000"),
       ),
       date1.minus(date2, 3),
     )
@@ -172,11 +172,11 @@ class ZonedDateTimeDifferenceKtTest {
         days = 0,
         hours = 0,
         minutes = 0,
-        sumYears = BigDecimal("3.000"),
-        sumMonths = BigDecimal("36.000"),
-        sumDays = BigDecimal("1095.000"),
-        sumHours = BigDecimal("26280.000"),
-        sumMinutes = BigDecimal("1576800.000"),
+        sumYears = KBigDecimal("3.000"),
+        sumMonths = KBigDecimal("36.000"),
+        sumDays = KBigDecimal("1095.000"),
+        sumHours = KBigDecimal("26280.000"),
+        sumMinutes = KBigDecimal("1576800.000"),
       ),
       date1.minus(date2, 3),
     )

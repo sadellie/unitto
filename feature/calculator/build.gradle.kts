@@ -17,38 +17,48 @@
  */
 
 plugins {
-  id("unitto.library")
-
+  id("unitto.multiplatform.library")
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
+}
+
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:evaluatto"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:data"))
+    implementation(libs.org.jetbrains.compose.components.components.resources)
+    implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
+    implementation(libs.org.jetbrains.compose.foundation.foundation)
+    implementation(libs.org.jetbrains.compose.material3.material3)
+    implementation(libs.org.jetbrains.compose.material3.material3.window.size)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
+    implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
+    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+    implementation(libs.io.insert.koin.koin.compose.viewmodel)
+  }
+  sourceSets.androidMain.dependencies {
+    implementation(libs.org.jetbrains.compose.ui.ui.tooling)
+    implementation(libs.io.insert.koin.koin.core.coroutines)
+  }
+  sourceSets.commonTest.dependencies {
+    implementation(libs.org.jetbrains.kotlin.kotlin.test)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
+  }
+  sourceSets.androidInstrumentedTest.dependencies {
+    implementation(libs.androidx.compose.ui.test.junit4)
+  }
 }
 
 android {
   namespace = "com.sadellie.unitto.feature.calculator"
   buildFeatures.compose = true
   composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-}
-
-dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:ui"))
-  implementation(project(":core:navigation"))
-  implementation(project(":core:designsystem"))
-  implementation(project(":core:datastore"))
-  implementation(project(":core:evaluatto"))
-  implementation(project(":core:data"))
-  implementation(project(":core:model"))
-
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.compose.viewmodel)
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-
-  implementation(libs.androidx.compose.foundation.foundation)
-  implementation(libs.androidx.compose.material3)
-  implementation(libs.androidx.compose.material3.window.size)
-  implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.navigation.navigation.compose)
-  implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
-
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,10 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowDown
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowUp
 import com.sadellie.unitto.core.designsystem.icons.symbols.Settings
@@ -49,6 +47,11 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.AssistChip
 import com.sadellie.unitto.core.ui.FilterChip
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_expand_less_description
+import unitto.core.common.generated.resources.common_expand_more_description
+import unitto.core.common.generated.resources.common_open_settings
 
 /**
  * Row of chips with [UnitGroup]s. Temporary solution
@@ -98,7 +101,7 @@ internal fun ChipsRow(
           modifier = chipModifier,
           onClick = navigateToSettingsAction,
           imageVector = Symbols.Settings,
-          contentDescription = stringResource(R.string.common_open_settings),
+          contentDescription = stringResource(Res.string.common_open_settings),
         )
 
         if (expanded) {
@@ -106,7 +109,7 @@ internal fun ChipsRow(
             modifier = chipModifier,
             onClick = { expanded = false },
             imageVector = Symbols.KeyboardArrowUp,
-            contentDescription = stringResource(R.string.common_expand_less_description),
+            contentDescription = stringResource(Res.string.common_expand_less_description),
           )
         }
       },
@@ -115,7 +118,7 @@ internal fun ChipsRow(
           modifier = chipModifier,
           onClick = { expanded = true },
           imageVector = Symbols.KeyboardArrowDown,
-          contentDescription = stringResource(R.string.common_expand_more_description),
+          contentDescription = stringResource(Res.string.common_expand_more_description),
         )
       },
     )

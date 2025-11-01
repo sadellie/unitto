@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,9 @@
 
 package com.sadellie.unitto.feature.converter
 
-import android.content.Context
-import androidx.annotation.StringRes
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isGreaterThan
@@ -31,7 +29,6 @@ import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.CurrencyRateUpdateState
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.ui.textfield.formatExpression
-import java.math.BigDecimal
 
 internal sealed class ConverterUIState {
   data object Loading : ConverterUIState()
@@ -60,57 +57,56 @@ internal sealed class ConverterUIState {
 }
 
 internal fun ConverterResult.Time.format(
-  mContext: Context,
   formatterSymbols: FormatterSymbols,
+  dayLabel: String,
+  hourLabel: String,
+  minuteLabel: String,
+  secondLabel: String,
+  millisecondLabel: String,
+  microsecondLabel: String,
+  nanosecondLabel: String,
+  attosecondLabel: String,
 ): String {
   val result = mutableListOf<String>()
 
-  if (day.isGreaterThan(BigDecimal.ZERO)) {
+  if (day.isGreaterThan(KBigDecimal.ZERO)) {
     val value = day.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_day_short)
-    result += "$value$label"
+    result += "$value$dayLabel"
   }
 
-  if (hour.isGreaterThan(BigDecimal.ZERO)) {
+  if (hour.isGreaterThan(KBigDecimal.ZERO)) {
     val value = hour.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_hour_short)
-    result += "$value$label"
+    result += "$value$hourLabel"
   }
 
-  if (minute.isGreaterThan(BigDecimal.ZERO)) {
+  if (minute.isGreaterThan(KBigDecimal.ZERO)) {
     val value = minute.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_minute_short)
-    result += "$value$label"
+    result += "$value$minuteLabel"
   }
 
-  if (second.isGreaterThan(BigDecimal.ZERO)) {
+  if (second.isGreaterThan(KBigDecimal.ZERO)) {
     val value = second.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_second_short)
-    result += "$value$label"
+    result += "$value$secondLabel"
   }
 
-  if (millisecond.isGreaterThan(BigDecimal.ZERO)) {
+  if (millisecond.isGreaterThan(KBigDecimal.ZERO)) {
     val value = millisecond.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_millisecond_short)
-    result += "$value$label"
+    result += "$value$millisecondLabel"
   }
 
-  if (microsecond.isGreaterThan(BigDecimal.ZERO)) {
+  if (microsecond.isGreaterThan(KBigDecimal.ZERO)) {
     val value = microsecond.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_microsecond_short)
-    result += "$value$label"
+    result += "$value$microsecondLabel"
   }
 
-  if (nanosecond.isGreaterThan(BigDecimal.ZERO)) {
+  if (nanosecond.isGreaterThan(KBigDecimal.ZERO)) {
     val value = nanosecond.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_nanosecond_short)
-    result += "$value$label"
+    result += "$value$nanosecondLabel"
   }
 
-  if (attosecond.isGreaterThan(BigDecimal.ZERO)) {
+  if (attosecond.isGreaterThan(KBigDecimal.ZERO)) {
     val value = attosecond.toPlainString().formatExpression(formatterSymbols)
-    val label = mContext.getString(R.string.unit_attosecond_short)
-    result += "$value$label"
+    result += "$value$attosecondLabel"
   }
 
   if (result.isEmpty()) return Token.Digit.DIGIT_0
@@ -120,59 +116,58 @@ internal fun ConverterResult.Time.format(
 }
 
 internal fun ConverterResult.FootInch.format(
-  mContext: Context,
+  footLabel: String,
+  inchLabel: String,
   scale: Int,
   outputFormat: Int,
   formatterSymbols: FormatterSymbols,
 ): String {
   return formatConverterResultSplit(
-    mContext = mContext,
     scale = scale,
     outputFormat = outputFormat,
     formatterSymbols = formatterSymbols,
     output1 = foot,
-    output1Res = R.string.unit_foot_short,
+    output1Label = footLabel,
     output2 = inch,
-    output2Res = R.string.unit_inch_short,
+    output2Label = inchLabel,
   )
 }
 
 internal fun ConverterResult.PoundOunce.format(
-  mContext: Context,
+  poundLabel: String,
+  ounceLabel: String,
   scale: Int,
   outputFormat: Int,
   formatterSymbols: FormatterSymbols,
 ): String {
   return formatConverterResultSplit(
-    mContext = mContext,
     scale = scale,
     outputFormat = outputFormat,
     formatterSymbols = formatterSymbols,
     output1 = pound,
-    output1Res = R.string.unit_pound_short,
+    output1Label = poundLabel,
     output2 = ounce,
-    output2Res = R.string.unit_ounce_short,
+    output2Label = ounceLabel,
   )
 }
 
 private fun formatConverterResultSplit(
-  mContext: Context,
   scale: Int,
   outputFormat: Int,
   formatterSymbols: FormatterSymbols,
-  output1: BigDecimal,
-  @StringRes output1Res: Int,
-  output2: BigDecimal,
-  @StringRes output2Res: Int,
+  output1: KBigDecimal,
+  output1Label: String,
+  output2: KBigDecimal,
+  output2Label: String,
 ): String {
   var result = ""
   result += output1.toFormattedString(scale, outputFormat).formatExpression(formatterSymbols)
 
-  if (!output2.isEqualTo(BigDecimal.ZERO)) {
-    result += mContext.getString(output1Res)
+  if (!output2.isEqualTo(KBigDecimal.ZERO)) {
+    result += output1Label
     result += " "
     result += output2.toFormattedString(scale, outputFormat).formatExpression(formatterSymbols)
-    result += mContext.getString(output2Res)
+    result += output2Label
   }
 
   return result

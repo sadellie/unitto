@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 
 package com.sadellie.unitto.feature.bodymass
 
+import com.sadellie.unitto.core.common.KBigDecimal
+import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isLessThan
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 /**
  * Calculates BMI value for metric system.
@@ -31,15 +31,15 @@ import java.math.RoundingMode
  * @param weightKg Weight in kilograms.
  * @return BMI Value with [MAX_SCALE].
  */
-internal fun calculateMetric(heightCm: BigDecimal, weightKg: BigDecimal): BigDecimal {
-  if (heightCm.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
-  if (weightKg.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
-  if (heightCm.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
-  if (weightKg.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
+internal fun calculateMetric(heightCm: KBigDecimal, weightKg: KBigDecimal): KBigDecimal {
+  if (heightCm.isLessThan(KBigDecimal.ZERO)) return KBigDecimal.ZERO
+  if (weightKg.isLessThan(KBigDecimal.ZERO)) return KBigDecimal.ZERO
+  if (heightCm.isEqualTo(KBigDecimal.ZERO)) return KBigDecimal.ZERO
+  if (weightKg.isEqualTo(KBigDecimal.ZERO)) return KBigDecimal.ZERO
 
-  val heightMeters = heightCm.divide(cmToMFactor, MAX_SCALE, RoundingMode.HALF_EVEN)
+  val heightMeters = heightCm.divide(cmToMFactor, MAX_SCALE, KRoundingMode.HALF_EVEN)
 
-  return weightKg.divide(heightMeters.pow(2), MAX_SCALE, RoundingMode.HALF_EVEN)
+  return weightKg.divide(heightMeters.pow(2), MAX_SCALE, KRoundingMode.HALF_EVEN)
 }
 
 /**
@@ -48,24 +48,24 @@ internal fun calculateMetric(heightCm: BigDecimal, weightKg: BigDecimal): BigDec
  * @param heightFt Height in feet.
  * @param heightIn Height in inches.
  * @param weightLbs Weight in pounds.
- * @return BMI Value with [MAX_SCALE] or [BigDecimal.ZERO] if input is negative or zero.
+ * @return BMI Value with [MAX_SCALE] or [KBigDecimal.ZERO] if input is negative or zero.
  */
 internal fun calculateImperial(
-  heightFt: BigDecimal,
-  heightIn: BigDecimal,
-  weightLbs: BigDecimal,
-): BigDecimal {
-  if (heightFt.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
-  if (heightIn.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
-  if (weightLbs.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO
-  if (heightFt.isEqualTo(BigDecimal.ZERO) && heightIn.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO
-  if (weightLbs.isEqualTo(BigDecimal.ZERO)) return BigDecimal.ZERO
+  heightFt: KBigDecimal,
+  heightIn: KBigDecimal,
+  weightLbs: KBigDecimal,
+): KBigDecimal {
+  if (heightFt.isLessThan(KBigDecimal.ZERO)) return KBigDecimal.ZERO
+  if (heightIn.isLessThan(KBigDecimal.ZERO)) return KBigDecimal.ZERO
+  if (weightLbs.isLessThan(KBigDecimal.ZERO)) return KBigDecimal.ZERO
+  if (heightFt.isEqualTo(KBigDecimal.ZERO) && heightIn.isEqualTo(KBigDecimal.ZERO))
+    return KBigDecimal.ZERO
+  if (weightLbs.isEqualTo(KBigDecimal.ZERO)) return KBigDecimal.ZERO
 
   val heightInches = heightFt.multiply(footToInchFactor).plus(heightIn)
 
   return weightLbs
-    .divide(heightInches.pow(2), MAX_SCALE, RoundingMode.HALF_EVEN)
+    .divide(heightInches.pow(2), MAX_SCALE, KRoundingMode.HALF_EVEN)
     .multiply(metricToImperialFactor) // Approximate lbs/inch^2 to kg/m^2
 }
 
@@ -73,14 +73,14 @@ internal fun calculateImperial(
  * Calculates weight (kilograms) range for normal BMI values.
  *
  * @param heightCm Height in centimeters.
- * @return [Pair] of [BigDecimal]. First value is lowest weight. Second value is highest value. If
+ * @return [Pair] of [KBigDecimal]. First value is lowest weight. Second value is highest value. If
  *   input is negative or zero, will return range of zeros.
  */
-internal fun calculateNormalWeightMetric(heightCm: BigDecimal): Pair<BigDecimal, BigDecimal> {
-  if (heightCm.isLessThan(BigDecimal.ZERO) || heightCm.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO to BigDecimal.ZERO
+internal fun calculateNormalWeightMetric(heightCm: KBigDecimal): Pair<KBigDecimal, KBigDecimal> {
+  if (heightCm.isLessThan(KBigDecimal.ZERO) || heightCm.isEqualTo(KBigDecimal.ZERO))
+    return KBigDecimal.ZERO to KBigDecimal.ZERO
 
-  val heightMetres2 = heightCm.divide(cmToMFactor, MAX_SCALE, RoundingMode.HALF_EVEN).pow(2)
+  val heightMetres2 = heightCm.divide(cmToMFactor, MAX_SCALE, KRoundingMode.HALF_EVEN).pow(2)
 
   val lowest = lowestNormalIndex.multiply(heightMetres2)
   val highest = highestNormalIndex.multiply(heightMetres2)
@@ -93,24 +93,24 @@ internal fun calculateNormalWeightMetric(heightCm: BigDecimal): Pair<BigDecimal,
  *
  * @param heightFt Height in feet.
  * @param heightIn Height in inches.
- * @return [Pair] of [BigDecimal]. First value is lowest weight. Second value is highest value. If
+ * @return [Pair] of [KBigDecimal]. First value is lowest weight. Second value is highest value. If
  *   input is negative or zero, will return range of zeros.
  */
 internal fun calculateNormalWeightImperial(
-  heightFt: BigDecimal,
-  heightIn: BigDecimal,
-): Pair<BigDecimal, BigDecimal> {
-  if (heightFt.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO to BigDecimal.ZERO
-  if (heightIn.isLessThan(BigDecimal.ZERO)) return BigDecimal.ZERO to BigDecimal.ZERO
-  if (heightFt.isEqualTo(BigDecimal.ZERO) && heightIn.isEqualTo(BigDecimal.ZERO))
-    return BigDecimal.ZERO to BigDecimal.ZERO
+  heightFt: KBigDecimal,
+  heightIn: KBigDecimal,
+): Pair<KBigDecimal, KBigDecimal> {
+  if (heightFt.isLessThan(KBigDecimal.ZERO)) return KBigDecimal.ZERO to KBigDecimal.ZERO
+  if (heightIn.isLessThan(KBigDecimal.ZERO)) return KBigDecimal.ZERO to KBigDecimal.ZERO
+  if (heightFt.isEqualTo(KBigDecimal.ZERO) && heightIn.isEqualTo(KBigDecimal.ZERO))
+    return KBigDecimal.ZERO to KBigDecimal.ZERO
 
   val heightInches2 =
     heightFt
       .multiply(footToInchFactor)
       .plus(heightIn)
       .pow(2)
-      .divide(metricToImperialFactor, MAX_SCALE, RoundingMode.HALF_EVEN)
+      .divide(metricToImperialFactor, MAX_SCALE, KRoundingMode.HALF_EVEN)
 
   val lowest = lowestNormalIndex.multiply(heightInches2)
   val highest = highestNormalIndex.multiply(heightInches2)
@@ -118,9 +118,9 @@ internal fun calculateNormalWeightImperial(
   return lowest to highest
 }
 
-private val cmToMFactor = BigDecimal("100")
-private val footToInchFactor = BigDecimal("12")
-private val metricToImperialFactor = BigDecimal("703")
+private val cmToMFactor = KBigDecimal("100")
+private val footToInchFactor = KBigDecimal("12")
+private val metricToImperialFactor = KBigDecimal("703")
 
-private val lowestNormalIndex = BigDecimal("18.5")
-private val highestNormalIndex = BigDecimal("25")
+private val lowestNormalIndex = KBigDecimal("18.5")
+private val highestNormalIndex = KBigDecimal("25")

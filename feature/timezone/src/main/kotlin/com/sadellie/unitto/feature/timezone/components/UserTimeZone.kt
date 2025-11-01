@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,11 +44,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -60,6 +58,9 @@ import com.sadellie.unitto.core.ui.datetime.formatTimeMinutes
 import com.sadellie.unitto.core.ui.datetime.formatZone
 import com.sadellie.unitto.core.ui.squashable
 import java.time.ZonedDateTime
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.time_zone_reset
 
 @Composable
 internal fun UserTimeZone(
@@ -115,7 +116,7 @@ internal fun UserTimeZone(
       IconButton(onResetClick) {
         Icon(
           imageVector = Symbols.History,
-          contentDescription = stringResource(R.string.time_zone_reset),
+          contentDescription = stringResource(Res.string.time_zone_reset),
           tint = MaterialTheme.colorScheme.onTertiaryContainer,
         )
       }

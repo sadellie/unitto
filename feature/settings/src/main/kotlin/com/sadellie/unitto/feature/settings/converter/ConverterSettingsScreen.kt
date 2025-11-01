@@ -33,12 +33,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.designsystem.icons.symbols.Rule
@@ -57,7 +55,16 @@ import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.core.ThemingMode
 import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.converter_title
+import unitto.core.common.generated.resources.settings_format_time
+import unitto.core.common.generated.resources.settings_format_time_support
+import unitto.core.common.generated.resources.settings_unit_groups_support
+import unitto.core.common.generated.resources.settings_unit_groups_title
+import unitto.core.common.generated.resources.settings_units_sorting
+import unitto.core.common.generated.resources.settings_units_sorting_support
 
 @Composable
 internal fun ConverterSettingsRoute(
@@ -89,7 +96,7 @@ private fun ConverterSettingsScreen(
   updateUnitConverterSorting: (UnitsListSorting) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.converter_title),
+    title = stringResource(Res.string.converter_title),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
     Column(
@@ -100,16 +107,16 @@ private fun ConverterSettingsScreen(
     ) {
       ListItemExpressive(
         icon = Symbols.Rule,
-        headlineText = stringResource(R.string.settings_unit_groups_title),
-        supportingText = stringResource(R.string.settings_unit_groups_support),
+        headlineText = stringResource(Res.string.settings_unit_groups_title),
+        supportingText = stringResource(Res.string.settings_unit_groups_support),
         onClick = { navigateToUnitsGroup() },
         shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         shape = ListItemExpressiveDefaults.middleShape,
         icon = Symbols.Sort,
-        headlineText = stringResource(R.string.settings_units_sorting),
-        supportingText = stringResource(R.string.settings_units_sorting_support),
+        headlineText = stringResource(Res.string.settings_units_sorting),
+        supportingText = stringResource(Res.string.settings_units_sorting_support),
         secondaryContent = {
           UnitListSortingSetting(
             modifier = Modifier.fillMaxWidth(),
@@ -120,8 +127,8 @@ private fun ConverterSettingsScreen(
       )
       ListItemExpressive(
         icon = Symbols.Timer,
-        headlineText = stringResource(R.string.settings_format_time),
-        supportingText = stringResource(R.string.settings_format_time_support),
+        headlineText = stringResource(Res.string.settings_format_time),
+        supportingText = stringResource(Res.string.settings_format_time_support),
         switchState = prefs.unitConverterFormatTime,
         onSwitchChange = updateUnitConverterFormatTime,
         shape = ListItemExpressiveDefaults.lastShape,

@@ -1,0 +1,66 @@
+<!--
+  ~ Unitto is a calculator for Android
+  ~ Copyright (c) 2023-2025 Elshan Agaev
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <group
+        android:scaleX="0.5445"
+        android:scaleY="0.5445"
+        android:translateX="116.608"
+        android:translateY="116.608">
+        <path
+            android:fillColor="@color/ic_shortcut_foreground"
+            android:pathData="M357,269L357,269A88,88 0,0 1,445 357L445,357A88,88 0,0 1,357 445L357,445A88,88 0,0 1,269 357L269,357A88,88 0,0 1,357 269z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M307,357C307,350.37 312.37,345 319,345H395C401.63,345 407,350.37 407,357C407,363.63 401.63,369 395,369H319C312.37,369 307,363.63 307,357Z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M345,321C345,314.37 350.37,309 357,309C363.63,309 369,314.37 369,321C369,327.63 363.63,333 357,333C350.37,333 345,327.63 345,321Z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M345,393C345,386.37 350.37,381 357,381C363.63,381 369,386.37 369,393C369,399.63 363.63,405 357,405C350.37,405 345,399.63 345,393Z" />
+        <path
+            android:fillColor="@color/ic_shortcut_foreground"
+            android:pathData="M155,269L155,269A88,88 0,0 1,243 357L243,357A88,88 0,0 1,155 445L155,445A88,88 0,0 1,67 357L67,357A88,88 0,0 1,155 269z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M115.15,317.15C119.35,312.95 126.17,312.95 130.37,317.15L195.62,382.4C199.82,386.6 199.82,393.42 195.62,397.62C191.42,401.82 184.6,401.82 180.4,397.62L115.15,332.37C110.95,328.17 110.95,321.35 115.15,317.15Z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M195.62,317.15C199.82,321.35 199.82,328.17 195.62,332.37L130.37,397.62C126.17,401.82 119.35,401.82 115.15,397.62C110.95,393.42 110.95,386.6 115.15,382.4L180.4,317.15C184.6,312.95 191.42,312.95 195.62,317.15Z" />
+        <path
+            android:fillColor="@color/ic_shortcut_foreground"
+            android:pathData="M357,67L357,67A88,88 0,0 1,445 155L445,155A88,88 0,0 1,357 243L357,243A88,88 0,0 1,269 155L269,155A88,88 0,0 1,357 67z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M307,155C307,148.37 312.37,143 319,143H395C401.63,143 407,148.37 407,155C407,161.63 401.63,167 395,167H319C312.37,167 307,161.63 307,155Z" />
+        <path
+            android:fillColor="@color/ic_shortcut_foreground"
+            android:pathData="M155,67L155,67A88,88 0,0 1,243 155L243,155A88,88 0,0 1,155 243L155,243A88,88 0,0 1,67 155L67,155A88,88 0,0 1,155 67z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M105,155C105,148.37 110.37,143 117,143H193C199.63,143 205,148.37 205,155C205,161.63 199.63,167 193,167H117C110.37,167 105,161.63 105,155Z" />
+        <path
+            android:fillColor="@color/ic_launcher_icon_background"
+            android:pathData="M155,105C161.63,105 167,110.37 167,117L167,193C167,199.63 161.63,205 155,205C148.37,205 143,199.63 143,193L143,117C143,110.37 148.37,105 155,105Z" />
+    </group>
+</vector>

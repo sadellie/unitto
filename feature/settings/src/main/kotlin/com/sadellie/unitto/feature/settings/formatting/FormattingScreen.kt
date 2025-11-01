@@ -47,16 +47,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.designsystem.icons.symbols.Architecture
@@ -64,7 +62,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.EMobileData
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols._123
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.designsystem.theme.NumberTypographyUnitto
+import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
@@ -75,7 +73,23 @@ import com.sadellie.unitto.core.ui.Slider
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import kotlin.math.ceil
 import kotlin.math.roundToInt
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_comma
+import unitto.core.common.generated.resources.common_disabled
+import unitto.core.common.generated.resources.common_enabled
+import unitto.core.common.generated.resources.settings_auto
+import unitto.core.common.generated.resources.settings_decimal_separator
+import unitto.core.common.generated.resources.settings_exponential_notation
+import unitto.core.common.generated.resources.settings_exponential_notation_support
+import unitto.core.common.generated.resources.settings_formatting
+import unitto.core.common.generated.resources.settings_period
+import unitto.core.common.generated.resources.settings_precision
+import unitto.core.common.generated.resources.settings_precision_max
+import unitto.core.common.generated.resources.settings_precision_support
+import unitto.core.common.generated.resources.settings_space
+import unitto.core.common.generated.resources.settings_thousands_separator
 
 @Composable
 fun FormattingRoute(
@@ -105,7 +119,7 @@ fun FormattingScreen(
   onOutputFormatChange: (Int) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.settings_formatting),
+    title = stringResource(Res.string.settings_formatting),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { paddingValues ->
     Column(
@@ -116,19 +130,16 @@ fun FormattingScreen(
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       val precisions: ClosedFloatingPointRange<Float> = 0f..MAX_SCALE_ALIAS
-      val resources = LocalResources.current
       var scale by rememberSaveable(uiState.precision) { mutableIntStateOf(uiState.precision) }
+      val maxPrecisionNumber =
+        remember(uiState.formatterSymbols) {
+          MAX_SCALE.toString().formatExpression(uiState.formatterSymbols)
+        }
+      val maxPrecisionLabel = stringResource(Res.string.settings_precision_max, maxPrecisionNumber)
       val precisionText: String by
         remember(scale, uiState.formatterSymbols) {
           derivedStateOf {
-            return@derivedStateOf if (scale >= precisions.endInclusive) {
-              resources.getString(
-                R.string.settings_precision_max,
-                MAX_SCALE.toString().formatExpression(uiState.formatterSymbols),
-              )
-            } else {
-              scale.toString()
-            }
+            if (scale >= precisions.endInclusive) maxPrecisionLabel else scale.toString()
           }
         }
 
@@ -145,18 +156,18 @@ fun FormattingScreen(
       ListItemExpressive(
         shape = ListItemExpressiveDefaults.firstShape,
         leadingContent = {
-          Icon(Symbols.Architecture, stringResource(R.string.settings_precision))
+          Icon(Symbols.Architecture, stringResource(Res.string.settings_precision))
         },
         headlineContent = {
           Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth(),
           ) {
-            Text(stringResource(R.string.settings_precision))
+            Text(stringResource(Res.string.settings_precision))
             Text(precisionText)
           }
         },
-        supportingContent = { Text(stringResource(R.string.settings_precision_support)) },
+        supportingContent = { Text(stringResource(Res.string.settings_precision_support)) },
         secondaryContent = {
           Slider(
             modifier = supportingItemModifier,
@@ -173,9 +184,9 @@ fun FormattingScreen(
       ListItemExpressive(
         shape = ListItemExpressiveDefaults.middleShape,
         leadingContent = {
-          Icon(Symbols._123, stringResource(R.string.settings_thousands_separator))
+          Icon(Symbols._123, stringResource(Res.string.settings_thousands_separator))
         },
-        headlineContent = { Text(stringResource(R.string.settings_thousands_separator)) },
+        headlineContent = { Text(stringResource(Res.string.settings_thousands_separator)) },
         secondaryContent = {
           GroupingSymbolSelector(
             modifier = supportingItemModifier,
@@ -194,7 +205,7 @@ fun FormattingScreen(
         ListItemExpressive(
           shape = ListItemExpressiveDefaults.middleShape,
           leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
-          headlineContent = { Text(stringResource(R.string.settings_decimal_separator)) },
+          headlineContent = { Text(stringResource(Res.string.settings_decimal_separator)) },
           secondaryContent = {
             FractionalSymbolSelector(
               modifier = supportingItemModifier,
@@ -209,11 +220,11 @@ fun FormattingScreen(
       ListItemExpressive(
         shape = ListItemExpressiveDefaults.lastShape,
         leadingContent = {
-          Icon(Symbols.EMobileData, stringResource(R.string.settings_exponential_notation))
+          Icon(Symbols.EMobileData, stringResource(Res.string.settings_exponential_notation))
         },
-        headlineContent = { Text(stringResource(R.string.settings_exponential_notation)) },
+        headlineContent = { Text(stringResource(Res.string.settings_exponential_notation)) },
         supportingContent = {
-          Text(stringResource(R.string.settings_exponential_notation_support))
+          Text(stringResource(Res.string.settings_exponential_notation_support))
         },
         secondaryContent = {
           OutputFormatSelector(
@@ -236,17 +247,23 @@ private fun PreviewBox(
 ) {
   PagedIsland(modifier = modifier, pageCount = 2) { currentPage ->
     val preview =
-      when (currentPage) {
-          0 -> "123456.${"789123456".repeat(ceil(scale.toDouble() / 9.0).toInt())}"
-          else -> "0.${"1".padStart(scale, '0')}"
+      remember(currentPage, scale, outputFormat, formatterSymbols) {
+        val decimalString =
+          if (currentPage == 0) "123456.${"789123456".repeat(ceil(scale.toDouble() / 9.0).toInt())}"
+          else "0.${"1".padStart(scale, '0')}"
+
+        try {
+          KBigDecimal(decimalString)
+            .toFormattedString(scale, outputFormat)
+            .formatExpression(formatterSymbols)
+        } catch (_: Exception) {
+          ""
         }
-        .toBigDecimalOrNull()
-        ?.toFormattedString(scale, outputFormat)
-        ?.formatExpression(formatterSymbols) ?: ""
+      }
 
     Text(
       text = preview,
-      style = NumberTypographyUnitto.displayMedium,
+      style = LocalNumberTypography.current.displayMedium,
       maxLines = 1,
       modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
       textAlign = TextAlign.End,
@@ -268,14 +285,14 @@ private fun FractionalSymbolSelector(
       onCheckedChange = { updateFormatterSymbols(Token.SPACE, Token.PERIOD) },
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.settings_period))
+      Text(stringResource(Res.string.settings_period))
     }
     ToggleButton(
       checked = formatterSymbols.fractional == Token.COMMA,
       onCheckedChange = { updateFormatterSymbols(Token.SPACE, Token.COMMA) },
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.common_comma))
+      Text(stringResource(Res.string.common_comma))
     }
   }
 }
@@ -293,21 +310,21 @@ private fun GroupingSymbolSelector(
       onCheckedChange = { updateFormatterSymbols(Token.SPACE, formatterSymbols.fractional) },
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.settings_space))
+      Text(stringResource(Res.string.settings_space))
     }
     ToggleButton(
       checked = formatterSymbols.grouping == Token.PERIOD,
       onCheckedChange = { updateFormatterSymbols(Token.PERIOD, Token.COMMA) },
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.settings_period))
+      Text(stringResource(Res.string.settings_period))
     }
     ToggleButton(
       checked = formatterSymbols.grouping == Token.COMMA,
       onCheckedChange = { updateFormatterSymbols(Token.COMMA, Token.PERIOD) },
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.common_comma))
+      Text(stringResource(Res.string.common_comma))
     }
   }
 }
@@ -325,21 +342,21 @@ private fun OutputFormatSelector(
       checked = OutputFormat.ALLOW_ENGINEERING == outputFormat,
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.settings_auto))
+      Text(stringResource(Res.string.settings_auto))
     }
     ToggleButton(
       onCheckedChange = { onOutputFormatChange(OutputFormat.FORCE_ENGINEERING) },
       checked = OutputFormat.FORCE_ENGINEERING == outputFormat,
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.common_enabled))
+      Text(stringResource(Res.string.common_enabled))
     }
     ToggleButton(
       onCheckedChange = { onOutputFormatChange(OutputFormat.PLAIN) },
       checked = OutputFormat.PLAIN == outputFormat,
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.common_disabled))
+      Text(stringResource(Res.string.common_disabled))
     }
   }
 }

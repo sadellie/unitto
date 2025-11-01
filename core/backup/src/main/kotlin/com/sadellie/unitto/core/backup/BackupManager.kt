@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.sadellie.unitto.core.database.DATABASE_NAME
-import com.sadellie.unitto.core.database.UnittoDatabase
+import com.sadellie.unitto.core.database.UnittoDatabaseAndroid
 import com.sadellie.unitto.core.datastore.USER_PREFERENCES
 import java.io.File
 import java.io.FileNotFoundException
@@ -34,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class BackupManager {
-  suspend fun backup(context: Context, backupFileUri: Uri, database: UnittoDatabase) =
+  suspend fun backup(context: Context, backupFileUri: Uri, database: UnittoDatabaseAndroid) =
     withContext(Dispatchers.IO) {
       context.applicationContext.contentResolver.openOutputStream(backupFileUri)?.use {
         backupFileOutputStream ->
@@ -49,7 +49,7 @@ class BackupManager {
       }
     }
 
-  suspend fun restore(context: Context, backupFileUri: Uri, database: UnittoDatabase) =
+  suspend fun restore(context: Context, backupFileUri: Uri, database: UnittoDatabaseAndroid) =
     withContext(Dispatchers.IO) {
       context.applicationContext.contentResolver.openInputStream(backupFileUri)?.use {
         backupFileInputStream ->
@@ -91,7 +91,7 @@ private fun Context.restartActivity() {
   Runtime.getRuntime().exit(0)
 }
 
-private val UnittoDatabase.file: File
+private val UnittoDatabaseAndroid.file: File
   get() = File(this.openHelper.writableDatabase.path!!) // Will be caught on higher level if null
 
 /**

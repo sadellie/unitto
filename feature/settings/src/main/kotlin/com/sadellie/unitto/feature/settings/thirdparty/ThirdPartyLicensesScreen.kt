@@ -28,9 +28,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.licenses.ThirdParty
@@ -38,6 +36,9 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.settings_third_party_licenses
 
 /**
  * Screen with used third party libraries
@@ -50,7 +51,7 @@ internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
   val mContext = LocalContext.current
 
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.settings_third_party_licenses),
+    title = stringResource(Res.string.settings_third_party_licenses),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
     val allThirdParty = remember { ThirdParty.allThirdParty() }

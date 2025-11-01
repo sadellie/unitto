@@ -36,11 +36,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
@@ -55,12 +55,21 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.feature.glance.R
-import java.math.BigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_add
+import unitto.core.common.generated.resources.converter_widget_configure_create_pair
+import unitto.core.common.generated.resources.converter_widget_configure_left_unit
+import unitto.core.common.generated.resources.converter_widget_configure_not_selected
+import unitto.core.common.generated.resources.converter_widget_configure_right_unit
+import unitto.core.common.generated.resources.unit_kilometer
+import unitto.core.common.generated.resources.unit_kilometer_short
+import unitto.core.common.generated.resources.unit_meter
+import unitto.core.common.generated.resources.unit_meter_short
 
 @Composable
 internal fun ConverterWidgetConfigureCreateNewRoute(
@@ -101,7 +110,7 @@ private fun ConverterWidgetConfigureCreateNewScreen(
   val isUnitFromSelected = remember(uiState.unitFrom) { uiState.unitFrom != null }
 
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.converter_widget_configure_create_pair),
+    title = stringResource(Res.string.converter_widget_configure_create_pair),
     navigationIcon = { NavigateUpButton(navigateUp) },
     actions = {
       FilledIconButton(
@@ -118,7 +127,7 @@ private fun ConverterWidgetConfigureCreateNewScreen(
       ) {
         Icon(
           imageVector = Symbols.Add,
-          contentDescription = stringResource(R.string.common_add),
+          contentDescription = stringResource(Res.string.common_add),
           modifier = Modifier.size(IconButtonDefaults.smallIconSize),
         )
       }
@@ -136,11 +145,11 @@ private fun ConverterWidgetConfigureCreateNewScreen(
         shape =
           if (isUnitFromSelected) ListItemExpressiveDefaults.firstShape
           else ListItemExpressiveDefaults.singleShape,
-        headlineContent = { Text(stringResource(R.string.converter_widget_configure_left_unit)) },
+        headlineContent = { Text(stringResource(Res.string.converter_widget_configure_left_unit)) },
         supportingContent = {
           Text(
             stringResource(
-              uiState.unitFrom?.displayName ?: R.string.converter_widget_configure_not_selected
+              uiState.unitFrom?.displayName ?: Res.string.converter_widget_configure_not_selected
             )
           )
         },
@@ -155,12 +164,12 @@ private fun ConverterWidgetConfigureCreateNewScreen(
           onClick = { if (uiState.unitFrom != null) navigateToSelectTo(uiState.unitFrom.id) },
           shape = ListItemExpressiveDefaults.lastShape,
           headlineContent = {
-            Text(stringResource(R.string.converter_widget_configure_right_unit))
+            Text(stringResource(Res.string.converter_widget_configure_right_unit))
           },
           supportingContent = {
             Text(
               stringResource(
-                uiState.unitTo?.displayName ?: R.string.converter_widget_configure_not_selected
+                uiState.unitTo?.displayName ?: Res.string.converter_widget_configure_not_selected
               )
             )
           },
@@ -214,18 +223,18 @@ private fun PreviewConverterWidgetConfigureCreateNewScreen() {
         unitFrom =
           NormalUnit(
             UnitID.meter,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_meter,
-            com.sadellie.unitto.core.common.R.string.unit_meter_short,
+            Res.string.unit_meter,
+            Res.string.unit_meter_short,
           ),
         unitTo =
           NormalUnit(
             UnitID.kilometer,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer_short,
+            Res.string.unit_kilometer,
+            Res.string.unit_kilometer_short,
           ),
       ),
     navigateUp = {},

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,18 @@ package com.sadellie.unitto.feature.bodymass
 
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
-import java.math.BigDecimal
+import com.sadellie.unitto.core.common.KBigDecimal
 
 internal sealed class UIState {
   data object Loading : UIState()
 
   data class Ready(
-      val isMetric: Boolean,
-      val height1: TextFieldState,
-      val height2: TextFieldState,
-      val weight: TextFieldState,
-      val normalWeightRange: Pair<BigDecimal, BigDecimal>,
-      val result: BigDecimal,
-      val formatterSymbols: FormatterSymbols,
+    val isMetric: Boolean,
+    val height1: TextFieldState,
+    val height2: TextFieldState,
+    val weight: TextFieldState,
+    val normalWeightRange: Pair<KBigDecimal, KBigDecimal>,
+    val result: KBigDecimal,
+    val formatterSymbols: FormatterSymbols,
   ) : UIState()
 }

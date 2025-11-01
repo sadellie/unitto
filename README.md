@@ -45,3 +45,4 @@ Leave.
 - Terms and Conditions: https://sadellie.github.io/unitto/terms
 - Privacy Policy: https://sadellie.github.io/unitto/privacy
 - Help: https://sadellie.github.io/unitto/help
+- Web version of this application uses ported [kt-math](https://github.com/gciatto/kt-math) with additional fixes. Files in `kt-math` folder are [licensed under GPL-2.0](./kt-math/LICENSE-kt-math)

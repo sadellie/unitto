@@ -17,18 +17,22 @@
  */
 
 plugins {
-  id("unitto.library")
+  id("unitto.multiplatform.library")
+  alias(libs.plugins.compose)
   alias(libs.plugins.compose.compiler)
 }
 
-android.namespace = "com.sadellie.unitto.core.themmo"
-android.buildFeatures.compose = true
-android.composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
+    implementation(libs.org.jetbrains.compose.foundation.foundation)
+    implementation(libs.org.jetbrains.compose.material3.material3)
+    implementation(libs.com.materialkolor.material.color.utilities)
+  }
+}
 
-dependencies {
-  implementation(libs.androidx.compose.ui.tooling)
-  implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.compose.foundation.foundation)
-  implementation(libs.androidx.compose.material3)
-  implementation(libs.com.materialkolor.material.color.utilities)
+android {
+  namespace = "io.github.sadellie.themmo"
+  buildFeatures.compose = true
+  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
 }

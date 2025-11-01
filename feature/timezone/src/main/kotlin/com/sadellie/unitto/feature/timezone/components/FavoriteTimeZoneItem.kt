@@ -55,13 +55,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.offset
 import com.sadellie.unitto.core.common.regionName
 import com.sadellie.unitto.core.designsystem.LocalLocale
@@ -76,6 +74,15 @@ import com.sadellie.unitto.core.ui.datetime.formatOffset
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_add
+import unitto.core.common.generated.resources.common_delete
+import unitto.core.common.generated.resources.common_select_time
+import unitto.core.common.generated.resources.common_tomorrow
+import unitto.core.common.generated.resources.common_yesterday
+import unitto.core.common.generated.resources.unit_hour_short
+import unitto.core.common.generated.resources.unit_minute_short
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -109,7 +116,14 @@ internal fun FavoriteTimeZoneItem(
     }
 
   val offsetTime = remember(fromTime) { item.timeZone.offset(fromTime) }
-  val offsetTimeFormatted = offsetTime.formatOffset(context, fromTime)
+  val hourLabel = stringResource(Res.string.unit_hour_short)
+  val minuteLabel = stringResource(Res.string.unit_minute_short)
+  val tomorrowLabel = stringResource(Res.string.common_tomorrow)
+  val yesterdayLabel = stringResource(Res.string.common_yesterday)
+  val offsetTimeFormatted =
+    remember(offsetTime) {
+      offsetTime.formatOffset(fromTime, hourLabel, minuteLabel, tomorrowLabel, yesterdayLabel)
+    }
 
   Column(
     modifier =
@@ -159,15 +173,15 @@ internal fun FavoriteTimeZoneItem(
     AnimatedVisibility(visible = expanded) {
       Column {
         TimeZoneOption(
-          title = stringResource(R.string.common_select_time),
+          title = stringResource(Res.string.common_select_time),
           icon = Symbols.Schedule,
-          contentDescription = stringResource(R.string.common_select_time),
+          contentDescription = stringResource(Res.string.common_select_time),
           onClick = { onPrimaryClick(offsetTime) },
         )
         TimeZoneOption(
-          title = stringResource(R.string.common_delete),
+          title = stringResource(Res.string.common_delete),
           icon = Symbols.Delete,
-          contentDescription = stringResource(R.string.common_delete),
+          contentDescription = stringResource(Res.string.common_delete),
           onClick = { deleteAnimationRunning = true },
         )
       }
@@ -217,7 +231,7 @@ private fun TimeZoneLabel(label: String, expanded: Boolean, onLabelClick: () -> 
               contentDescription = null,
               modifier = Modifier.padding(end = 8.dp),
             )
-            Text(text = stringResource(R.string.common_add))
+            Text(text = stringResource(Res.string.common_add))
           }
         }
       } else {

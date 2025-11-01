@@ -61,15 +61,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.designsystem.plus
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.DrawerButton
@@ -77,15 +74,23 @@ import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.datetimepicker.TimePickerDialog
+import com.sadellie.unitto.core.ui.plus
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
-import java.time.ZonedDateTime
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_cancel
+import unitto.core.common.generated.resources.common_label
+import unitto.core.common.generated.resources.common_ok
+import unitto.core.common.generated.resources.time_zone_add_title
+import unitto.core.common.generated.resources.time_zone_title
+import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -159,13 +164,13 @@ private fun TimeZoneScreen(
     )
 
   ScaffoldWithTopBar(
-    title = { Text(stringResource(R.string.time_zone_title)) },
+    title = { Text(stringResource(Res.string.time_zone_title)) },
     navigationIcon = { DrawerButton(openDrawer) },
     floatingActionButton = {
       LargeFloatingActionButton(onClick = { navigateToAddTimeZone(currentUserTime) }) {
         Icon(
           imageVector = Symbols.Add,
-          contentDescription = stringResource(R.string.time_zone_add_title),
+          contentDescription = stringResource(Res.string.time_zone_add_title),
           modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
         )
       }
@@ -292,7 +297,7 @@ private fun TimeZoneDialog(
           )
         }
       AlertDialog(
-        title = { Text(text = stringResource(R.string.common_label)) },
+        title = { Text(text = stringResource(Res.string.common_label)) },
         text = {
           OutlinedTextField(state = tfv, modifier = Modifier.focusRequester(focusRequester))
           LaunchedEffect(Unit) {
@@ -306,13 +311,13 @@ private fun TimeZoneDialog(
               setDialogState(TimeZoneDialogState.Nothing)
               updateLabel(dialogState.timeZone, tfv.text.toString())
             },
-            content = { Text(text = stringResource(R.string.common_ok)) },
+            content = { Text(text = stringResource(Res.string.common_ok)) },
           )
         },
         dismissButton = {
           TextButton(
             onClick = { setDialogState(TimeZoneDialogState.Nothing) },
-            content = { Text(text = stringResource(R.string.common_cancel)) },
+            content = { Text(text = stringResource(Res.string.common_cancel)) },
           )
         },
         onDismissRequest = { setDialogState(TimeZoneDialogState.Nothing) },

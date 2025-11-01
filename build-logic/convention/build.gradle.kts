@@ -46,5 +46,9 @@ gradlePlugin {
       id = "unitto.library"
       implementationClass = "UnittoLibraryPlugin"
     }
+    register("unittoMultiplatformLibraryPlugin") {
+      id = "unitto.multiplatform.library"
+      implementationClass = "UnittoMultiplatformLibraryPlugin"
+    }
   }
 }

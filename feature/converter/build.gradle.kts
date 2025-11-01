@@ -20,6 +20,7 @@ plugins {
   id("unitto.library")
 
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
 }
 
@@ -40,6 +41,7 @@ dependencies {
   implementation(project(":core:data"))
   implementation(project(":core:model"))
 
+  implementation(libs.org.jetbrains.compose.components.components.resources)
   implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
   implementation(libs.io.insert.koin.koin.compose.viewmodel)
   implementation(libs.io.insert.koin.koin.core.coroutines)
@@ -48,7 +50,7 @@ dependencies {
   implementation(libs.androidx.compose.material3)
   implementation(libs.androidx.compose.material3.window.size)
   implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.navigation.navigation.compose)
+  implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
 
   testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)

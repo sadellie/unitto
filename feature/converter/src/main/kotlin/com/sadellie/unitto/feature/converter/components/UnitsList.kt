@@ -39,12 +39,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
@@ -55,7 +53,24 @@ import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.SearchPlaceholder
-import java.math.BigDecimal
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_open_settings
+import unitto.core.common.generated.resources.converter_no_results_support
+import unitto.core.common.generated.resources.unit_foot
+import unitto.core.common.generated.resources.unit_foot_short
+import unitto.core.common.generated.resources.unit_inch
+import unitto.core.common.generated.resources.unit_inch_short
+import unitto.core.common.generated.resources.unit_kilometer
+import unitto.core.common.generated.resources.unit_kilometer_short
+import unitto.core.common.generated.resources.unit_meter
+import unitto.core.common.generated.resources.unit_meter_short
+import unitto.core.common.generated.resources.unit_mile
+import unitto.core.common.generated.resources.unit_mile_short
+import unitto.core.common.generated.resources.unit_nautical_mile
+import unitto.core.common.generated.resources.unit_nautical_mile_short
+import unitto.core.common.generated.resources.unit_yard
+import unitto.core.common.generated.resources.unit_yard_short
 
 @Composable
 internal fun UnitsList(
@@ -63,7 +78,7 @@ internal fun UnitsList(
   searchResult: Map<UnitGroup, List<UnitSearchResultItem>>,
   navigateToUnitGroups: () -> Unit,
   selectedUnitId: String,
-  supportLabel: (UnitSearchResultItem) -> String,
+  supportLabel: @Composable (UnitSearchResultItem) -> String,
   onClick: (UnitSearchResultItem) -> Unit,
   favoriteUnit: (UnitSearchResultItem) -> Unit,
   contentPadding: PaddingValues,
@@ -79,8 +94,8 @@ internal fun UnitsList(
       SearchPlaceholder(
         modifier = Modifier.padding(contentPadding),
         onButtonClick = navigateToUnitGroups,
-        supportText = stringResource(R.string.converter_no_results_support),
-        buttonLabel = stringResource(R.string.common_open_settings),
+        supportText = stringResource(Res.string.converter_no_results_support),
+        buttonLabel = stringResource(Res.string.common_open_settings),
       )
     } else {
       LazyColumn(
@@ -189,59 +204,58 @@ private const val UNIT_LIST_CROSS_FADE_DURATION_MS = 150
 @Preview
 @Composable
 private fun PreviewUnitsList() {
-  val resources = LocalResources.current
   val units: Map<UnitGroup, List<UnitSearchResultItem>> =
     mapOf(
       UnitGroup.LENGTH to
         listOf(
             NormalUnit(
               UnitID.meter,
-              BigDecimal("1000000000000000000"),
+              KBigDecimal("1000000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_meter,
-              R.string.unit_meter_short,
+              Res.string.unit_meter,
+              Res.string.unit_meter_short,
             ),
             NormalUnit(
               UnitID.kilometer,
-              BigDecimal("1000000000000000000000"),
+              KBigDecimal("1000000000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_kilometer,
-              R.string.unit_kilometer_short,
+              Res.string.unit_kilometer,
+              Res.string.unit_kilometer_short,
             ),
             NormalUnit(
               UnitID.nautical_mile,
-              BigDecimal("1852000000000000000000"),
+              KBigDecimal("1852000000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_nautical_mile,
-              R.string.unit_nautical_mile_short,
+              Res.string.unit_nautical_mile,
+              Res.string.unit_nautical_mile_short,
             ),
             NormalUnit(
               UnitID.inch,
-              BigDecimal("25400000000000000"),
+              KBigDecimal("25400000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_inch,
-              R.string.unit_inch_short,
+              Res.string.unit_inch,
+              Res.string.unit_inch_short,
             ),
             NormalUnit(
               UnitID.foot,
-              BigDecimal("304800000000000000"),
+              KBigDecimal("304800000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_foot,
-              R.string.unit_foot_short,
+              Res.string.unit_foot,
+              Res.string.unit_foot_short,
             ),
             NormalUnit(
               UnitID.yard,
-              BigDecimal("914400000000000000"),
+              KBigDecimal("914400000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_yard,
-              R.string.unit_yard_short,
+              Res.string.unit_yard,
+              Res.string.unit_yard_short,
             ),
             NormalUnit(
               UnitID.mile,
-              BigDecimal("1609344000000000000000"),
+              KBigDecimal("1609344000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_mile,
-              R.string.unit_mile_short,
+              Res.string.unit_mile,
+              Res.string.unit_mile_short,
             ),
           )
           .map { UnitSearchResultItem(it, UnitStats(it.id), null) }
@@ -252,7 +266,7 @@ private fun PreviewUnitsList() {
     searchResult = units,
     navigateToUnitGroups = {},
     selectedUnitId = UnitID.yard,
-    supportLabel = { resources.getString(it.basicUnit.shortName) },
+    supportLabel = { stringResource(it.basicUnit.shortName) },
     onClick = {},
     favoriteUnit = {},
     contentPadding = PaddingValues(0.dp),

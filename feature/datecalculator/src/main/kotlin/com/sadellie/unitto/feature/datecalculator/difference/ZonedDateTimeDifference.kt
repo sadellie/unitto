@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,24 @@
 
 package com.sadellie.unitto.feature.datecalculator.difference
 
-import java.math.BigDecimal
-import java.math.RoundingMode
+import com.sadellie.unitto.core.common.KBigDecimal
+import com.sadellie.unitto.core.common.KRoundingMode
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 internal sealed class ZonedDateTimeDifference {
+  // TODO long to KBigDecimal
   data class Default(
     val years: Long,
     val months: Long,
     val days: Long,
     val hours: Long,
     val minutes: Long,
-    val sumYears: BigDecimal,
-    val sumMonths: BigDecimal,
-    val sumDays: BigDecimal,
-    val sumHours: BigDecimal,
-    val sumMinutes: BigDecimal,
+    val sumYears: KBigDecimal,
+    val sumMonths: KBigDecimal,
+    val sumDays: KBigDecimal,
+    val sumHours: KBigDecimal,
+    val sumMinutes: KBigDecimal,
   ) : ZonedDateTimeDifference()
 
   data object Zero : ZonedDateTimeDifference()
@@ -60,8 +61,8 @@ internal fun ZonedDateTime.minus(
 
   var fromDateTime: ZonedDateTime = this
   var toDateTime: ZonedDateTime = zonedDateTime
-  val epSeconds: BigDecimal =
-    (this.toEpochSecond() - zonedDateTime.toEpochSecond()).toBigDecimal().abs()
+  val epSeconds: KBigDecimal =
+    KBigDecimal.valueOf(this.toEpochSecond() - zonedDateTime.toEpochSecond()).abs()
 
   // Swap to avoid negative
   if (this > zonedDateTime) {
@@ -93,16 +94,16 @@ internal fun ZonedDateTime.minus(
     days = days,
     hours = hours,
     minutes = minutes,
-    sumYears = epSeconds.divide(secondsInYear, scale, RoundingMode.HALF_EVEN),
-    sumMonths = epSeconds.divide(secondsInMonth, scale, RoundingMode.HALF_EVEN),
-    sumDays = epSeconds.divide(secondsInDay, scale, RoundingMode.HALF_EVEN),
-    sumHours = epSeconds.divide(secondsInHour, scale, RoundingMode.HALF_EVEN),
-    sumMinutes = epSeconds.divide(secondsInMinute, scale, RoundingMode.HALF_EVEN),
+    sumYears = epSeconds.divide(secondsInYear, scale, KRoundingMode.HALF_EVEN),
+    sumMonths = epSeconds.divide(secondsInMonth, scale, KRoundingMode.HALF_EVEN),
+    sumDays = epSeconds.divide(secondsInDay, scale, KRoundingMode.HALF_EVEN),
+    sumHours = epSeconds.divide(secondsInHour, scale, KRoundingMode.HALF_EVEN),
+    sumMinutes = epSeconds.divide(secondsInMinute, scale, KRoundingMode.HALF_EVEN),
   )
 }
 
-private val secondsInYear by lazy { BigDecimal("31536000") }
-private val secondsInMonth by lazy { BigDecimal("2628000") }
-private val secondsInDay by lazy { BigDecimal("86400") }
-private val secondsInHour by lazy { BigDecimal("3600") }
-private val secondsInMinute by lazy { BigDecimal("60") }
+private val secondsInYear by lazy { KBigDecimal("31536000") }
+private val secondsInMonth by lazy { KBigDecimal("2628000") }
+private val secondsInDay by lazy { KBigDecimal("86400") }
+private val secondsInHour by lazy { KBigDecimal("3600") }
+private val secondsInMinute by lazy { KBigDecimal("60") }

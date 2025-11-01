@@ -44,11 +44,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.datastore.DisplayPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ClearBold
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
@@ -72,7 +70,28 @@ import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 import io.github.sadellie.themmo.rememberThemmoController
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.settings_ac_button
+import unitto.core.common.generated.resources.settings_ac_button_support
+import unitto.core.common.generated.resources.settings_additional
+import unitto.core.common.generated.resources.settings_amoled_dark
+import unitto.core.common.generated.resources.settings_amoled_dark_support
+import unitto.core.common.generated.resources.settings_auto
+import unitto.core.common.generated.resources.settings_color_theme
+import unitto.core.common.generated.resources.settings_color_theme_support
+import unitto.core.common.generated.resources.settings_dark_mode
+import unitto.core.common.generated.resources.settings_display
+import unitto.core.common.generated.resources.settings_dynamic_colors
+import unitto.core.common.generated.resources.settings_dynamic_colors_support
+import unitto.core.common.generated.resources.settings_language
+import unitto.core.common.generated.resources.settings_language_support
+import unitto.core.common.generated.resources.settings_light_mode
+import unitto.core.common.generated.resources.settings_middle_zero
+import unitto.core.common.generated.resources.settings_middle_zero_support
+import unitto.core.common.generated.resources.settings_selected_color
+import unitto.core.common.generated.resources.settings_selected_style
 
 @Composable
 internal fun DisplayRoute(
@@ -132,7 +151,7 @@ private fun DisplayScreen(
   navigateToLanguages: () -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.settings_display),
+    title = stringResource(Res.string.settings_display),
     navigationIcon = { NavigateUpButton(navigateUp) },
   ) { paddingValues ->
     Column(
@@ -153,9 +172,9 @@ private fun DisplayScreen(
 
       ListItemExpressive(
         shape = ListItemExpressiveDefaults.firstShape,
-        leadingContent = { Icon(Symbols.Palette, stringResource(R.string.settings_color_theme)) },
-        headlineContent = { Text(stringResource(R.string.settings_color_theme)) },
-        supportingContent = { Text(stringResource(R.string.settings_color_theme_support)) },
+        leadingContent = { Icon(Symbols.Palette, stringResource(Res.string.settings_color_theme)) },
+        headlineContent = { Text(stringResource(Res.string.settings_color_theme)) },
+        supportingContent = { Text(stringResource(Res.string.settings_color_theme_support)) },
         secondaryContent = {
           ThemingModeSelector(
             modifier = Modifier.fillMaxWidth(),
@@ -172,8 +191,8 @@ private fun DisplayScreen(
       ) {
         ListItemExpressive(
           icon = Symbols.DarkModeFill,
-          headlineText = stringResource(R.string.settings_amoled_dark),
-          supportingText = stringResource(R.string.settings_amoled_dark_support),
+          headlineText = stringResource(Res.string.settings_amoled_dark),
+          supportingText = stringResource(Res.string.settings_amoled_dark_support),
           switchState = controller.isAmoledThemeEnabled,
           onSwitchChange = onAmoledThemeChange,
           shape = ListItemExpressiveDefaults.middleShape,
@@ -188,8 +207,8 @@ private fun DisplayScreen(
           }
         ListItemExpressive(
           icon = Symbols.Colorize,
-          headlineText = stringResource(R.string.settings_dynamic_colors),
-          supportingText = stringResource(R.string.settings_dynamic_colors_support),
+          headlineText = stringResource(Res.string.settings_dynamic_colors),
+          supportingText = stringResource(Res.string.settings_dynamic_colors_support),
           switchState = controller.isDynamicThemeEnabled,
           onSwitchChange = onDynamicThemeChange,
           shape = dynamicColorListItemShape,
@@ -208,7 +227,7 @@ private fun DisplayScreen(
           ListItemExpressive(
             shape = shape,
             leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
-            headlineContent = { Text(stringResource(R.string.settings_selected_color)) },
+            headlineContent = { Text(stringResource(Res.string.settings_selected_color)) },
             secondaryContentPadding = PaddingValues(0.dp),
             secondaryContent = {
               ColorSelector(
@@ -234,7 +253,7 @@ private fun DisplayScreen(
           ListItemExpressive(
             shape = ListItemExpressiveDefaults.lastShape,
             leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
-            headlineContent = { Text(stringResource(R.string.settings_selected_style)) },
+            headlineContent = { Text(stringResource(Res.string.settings_selected_style)) },
             secondaryContentPadding = PaddingValues(0.dp),
             secondaryContent = {
               MonetModeSelector(
@@ -251,12 +270,12 @@ private fun DisplayScreen(
         }
       }
 
-      ListHeader(stringResource(R.string.settings_additional))
+      ListHeader(stringResource(Res.string.settings_additional))
 
       ListItemExpressive(
         icon = IconPack.ClearBold,
-        headlineText = stringResource(R.string.settings_ac_button),
-        supportingText = stringResource(R.string.settings_ac_button_support),
+        headlineText = stringResource(Res.string.settings_ac_button),
+        supportingText = stringResource(Res.string.settings_ac_button_support),
         switchState = prefs.acButton,
         onSwitchChange = updateAcButton,
         shape = ListItemExpressiveDefaults.firstShape,
@@ -264,8 +283,8 @@ private fun DisplayScreen(
 
       ListItemExpressive(
         icon = Symbols.ExposureZero,
-        headlineText = stringResource(R.string.settings_middle_zero),
-        supportingText = stringResource(R.string.settings_middle_zero_support),
+        headlineText = stringResource(Res.string.settings_middle_zero),
+        supportingText = stringResource(Res.string.settings_middle_zero_support),
         switchState = prefs.middleZero,
         onSwitchChange = updateMiddleZero,
         shape = ListItemExpressiveDefaults.middleShape,
@@ -273,8 +292,8 @@ private fun DisplayScreen(
 
       ListItemExpressive(
         icon = Symbols.Language,
-        headlineText = stringResource(R.string.settings_language),
-        supportingText = stringResource(R.string.settings_language_support),
+        headlineText = stringResource(Res.string.settings_language),
+        supportingText = stringResource(Res.string.settings_language_support),
         onClick = { navigateToLanguages() },
         shape = ListItemExpressiveDefaults.lastShape,
       )
@@ -293,23 +312,20 @@ private fun ThemingModeSelector(
     ToggleButton(
       onCheckedChange = { onThemeChange(ThemingMode.AUTO) },
       checked = ThemingMode.AUTO == currentThemingMode,
-      modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.settings_auto))
+      Text(stringResource(Res.string.settings_auto), maxLines = 1)
     }
     ToggleButton(
       onCheckedChange = { onThemeChange(ThemingMode.FORCE_LIGHT) },
       checked = ThemingMode.FORCE_LIGHT == currentThemingMode,
-      modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.settings_light_mode))
+      Text(stringResource(Res.string.settings_light_mode), maxLines = 1)
     }
     ToggleButton(
       onCheckedChange = { onThemeChange(ThemingMode.FORCE_DARK) },
       checked = ThemingMode.FORCE_DARK == currentThemingMode,
-      modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.settings_dark_mode))
+      Text(stringResource(Res.string.settings_dark_mode), maxLines = 1)
     }
   }
 }

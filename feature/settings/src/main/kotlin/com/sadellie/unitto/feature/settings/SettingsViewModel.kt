@@ -24,8 +24,6 @@ import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
@@ -33,9 +31,6 @@ internal class SettingsViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val currencyRatesDao: CurrencyRatesDao,
 ) : ViewModel() {
-  private val _showErrorToast = MutableSharedFlow<Boolean>()
-  val showErrorToast = _showErrorToast.asSharedFlow()
-
   val uiState =
     combine(userPrefsRepository.generalPrefs, currencyRatesDao.size()) { prefs, cacheSize ->
         SettingsUIState.Ready(

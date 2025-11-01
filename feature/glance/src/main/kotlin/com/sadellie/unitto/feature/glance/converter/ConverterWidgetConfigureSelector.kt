@@ -35,14 +35,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
@@ -57,7 +56,6 @@ import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.textfield.observe
-import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,7 +63,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.unit_kilometer
+import unitto.core.common.generated.resources.unit_kilometer_short
+import unitto.core.common.generated.resources.unit_meter
+import unitto.core.common.generated.resources.unit_meter_short
 
 @Composable
 internal fun ConverterWidgetConfigureSelectorRoute(
@@ -215,17 +219,17 @@ private fun PreviewConverterWidgetSelectFrom() {
           listOf(
               NormalUnit(
                 UnitID.meter,
-                BigDecimal("2"),
+                KBigDecimal("2"),
                 UnitGroup.LENGTH,
-                R.string.unit_meter,
-                R.string.unit_meter_short,
+                Res.string.unit_meter,
+                Res.string.unit_meter_short,
               ),
               NormalUnit(
                 UnitID.kilometer,
-                BigDecimal("2"),
+                KBigDecimal("2"),
                 UnitGroup.LENGTH,
-                R.string.unit_kilometer,
-                R.string.unit_kilometer_short,
+                Res.string.unit_kilometer,
+                Res.string.unit_kilometer_short,
               ),
             )
             .groupBy { it.group }

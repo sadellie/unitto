@@ -45,14 +45,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.openLink
@@ -64,8 +62,20 @@ import com.sadellie.unitto.core.ui.TextFieldBox
 import com.sadellie.unitto.core.ui.TextFieldRow
 import com.sadellie.unitto.feature.bodymass.components.BodyMassResult
 import com.sadellie.unitto.feature.bodymass.components.BodyMassTextField
-import java.math.BigDecimal
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.body_mass_height
+import unitto.core.common.generated.resources.body_mass_imperial
+import unitto.core.common.generated.resources.body_mass_metric
+import unitto.core.common.generated.resources.body_mass_title
+import unitto.core.common.generated.resources.body_mass_weight
+import unitto.core.common.generated.resources.common_read_article
+import unitto.core.common.generated.resources.unit_centimeter_short
+import unitto.core.common.generated.resources.unit_foot_short
+import unitto.core.common.generated.resources.unit_inch_short
+import unitto.core.common.generated.resources.unit_kilogram_short
+import unitto.core.common.generated.resources.unit_pound_short
 
 @Composable
 internal fun BodyMassRoute(openDrawer: () -> Unit, viewModel: BodyMassViewModel = koinViewModel()) {
@@ -90,16 +100,13 @@ private fun BodyMassScreen(
   openDrawer: () -> Unit,
 ) {
   val context = LocalContext.current
-  val resources = LocalResources.current
   val weightShortLabel =
-    remember(uiState.isMetric) {
-      resources.getString(
-        if (uiState.isMetric) R.string.unit_kilogram_short else R.string.unit_pound_short
-      )
-    }
+    stringResource(
+      if (uiState.isMetric) Res.string.unit_kilogram_short else Res.string.unit_pound_short
+    )
 
   ScaffoldWithTopBar(
-    title = { Text(stringResource(R.string.body_mass_title)) },
+    title = { Text(stringResource(Res.string.body_mass_title)) },
     navigationIcon = { DrawerButton(openDrawer) },
   ) { paddingValues ->
     Column(
@@ -129,7 +136,7 @@ private fun BodyMassScreen(
         transitionSpec = { (fadeIn() togetherWith fadeOut()) using SizeTransform(false) },
         label = "Body mass value visibility",
       ) { targetState ->
-        if (targetState.isEqualTo(BigDecimal.ZERO)) return@AnimatedContent
+        if (targetState.isEqualTo(KBigDecimal.ZERO)) return@AnimatedContent
 
         BodyMassResult(
           value = targetState,
@@ -146,7 +153,7 @@ private fun BodyMassScreen(
         modifier = Modifier.height(ButtonDefaults.MinHeight),
       ) {
         Text(
-          text = stringResource(R.string.common_read_article),
+          text = stringResource(Res.string.common_read_article),
           style = ButtonDefaults.textStyleFor(ButtonDefaults.MinHeight),
         )
       }
@@ -164,7 +171,7 @@ private fun BodyMassInputBox(modifier: Modifier, uiState: UIState.Ready, weightS
             modifier = Modifier.fillMaxWidth(),
             state = uiState.height1,
             label =
-              "${stringResource(R.string.body_mass_height)}, ${stringResource(R.string.unit_centimeter_short)}",
+              "${stringResource(Res.string.body_mass_height)}, ${stringResource(Res.string.unit_centimeter_short)}",
             formatterSymbols = uiState.formatterSymbols,
           )
         }
@@ -174,14 +181,14 @@ private fun BodyMassInputBox(modifier: Modifier, uiState: UIState.Ready, weightS
             modifier = Modifier.weight(1f),
             state = uiState.height1,
             label =
-              "${stringResource(R.string.body_mass_height)}, ${stringResource(R.string.unit_foot_short)}",
+              "${stringResource(Res.string.body_mass_height)}, ${stringResource(Res.string.unit_foot_short)}",
             formatterSymbols = uiState.formatterSymbols,
           )
           BodyMassTextField(
             modifier = Modifier.weight(1f),
             state = uiState.height2,
             label =
-              "${stringResource(R.string.body_mass_height)}, ${stringResource(R.string.unit_inch_short)}",
+              "${stringResource(Res.string.body_mass_height)}, ${stringResource(Res.string.unit_inch_short)}",
             formatterSymbols = uiState.formatterSymbols,
           )
         }
@@ -192,7 +199,7 @@ private fun BodyMassInputBox(modifier: Modifier, uiState: UIState.Ready, weightS
       BodyMassTextField(
         modifier = Modifier.fillMaxWidth(),
         state = uiState.weight,
-        label = "${stringResource(R.string.body_mass_weight)}, $weightShortLabel",
+        label = "${stringResource(Res.string.body_mass_weight)}, $weightShortLabel",
         formatterSymbols = uiState.formatterSymbols,
         imeAction = ImeAction.Done,
       )
@@ -213,14 +220,14 @@ private fun BodyMassInputModeSelector(
       checked = isMetric,
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.body_mass_metric))
+      Text(stringResource(Res.string.body_mass_metric))
     }
     ToggleButton(
       onCheckedChange = { updateIsMetric(false) },
       checked = !isMetric,
       modifier = Modifier.weight(1f),
     ) {
-      Text(stringResource(R.string.body_mass_imperial))
+      Text(stringResource(Res.string.body_mass_imperial))
     }
   }
 }
@@ -235,8 +242,8 @@ fun PreviewBodyMassScreen() {
         height1 = remember { TextFieldState() },
         height2 = remember { TextFieldState() },
         weight = remember { TextFieldState() },
-        normalWeightRange = BigDecimal(30) to BigDecimal(50),
-        result = BigDecimal(18.5),
+        normalWeightRange = KBigDecimal(30) to KBigDecimal(50),
+        result = KBigDecimal(18.5),
         formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
       ),
     updateIsMetric = {},

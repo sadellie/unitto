@@ -16,12 +16,57 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-  // Basic stuff
-  id("com.android.application")
-  id("kotlin-android")
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+plugins {
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.compose)
+  alias(libs.plugins.multiplatform)
+  alias(libs.plugins.android.application)
+}
+
+kotlin {
+  androidTarget {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions { jvmTarget.set(JvmTarget.JVM_11) }
+  }
+  @OptIn(ExperimentalWasmDsl::class)
+  wasmJs {
+    browser()
+    binaries.executable()
+  }
+  sourceSets.commonMain.dependencies {
+    implementation(libs.org.jetbrains.compose.material3.material3)
+    implementation(libs.org.jetbrains.compose.material3.material3.window.size)
+    implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
+    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+    implementation(libs.io.insert.koin.koin.core)
+    implementation(project(":core:themmo"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:database"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:data"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:calculator"))
+  }
+  sourceSets.androidMain.dependencies {
+    implementation(project(":feature:bodymass"))
+    implementation(project(":feature:converter"))
+    implementation(project(":feature:datecalculator"))
+    implementation(project(":feature:glance"))
+    implementation(project(":feature:timezone"))
+    implementation(project(":feature:settings"))
+
+    implementation(libs.androidx.core.core.ktx)
+    implementation(libs.androidx.appcompat.appcompat)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
+
+    implementation(libs.io.insert.koin.koin.androidx.startup)
+    implementation(libs.io.insert.koin.koin.core.coroutines)
+  }
 }
 
 android {
@@ -52,12 +97,6 @@ android {
       )
   }
 
-  flavorDimensions += "distribution"
-  productFlavors {
-    create("boring") {}
-    create("thriving") { this.applicationId = "io.github.sadellie" }
-  }
-
   buildTypes {
     debug {
       isDebuggable = true
@@ -73,8 +112,6 @@ android {
       applicationIdSuffix = ""
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
-    create("preview") { initWith(getByName("release")) }
-    create("cancer") { initWith(getByName("release")) }
   }
 
   buildFeatures {
@@ -96,32 +133,4 @@ android {
   packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
 }
 
-dependencies {
-  implementation(project(":core:navigation"))
-  implementation(project(":core:database"))
-  implementation(project(":core:data"))
-  implementation(project(":core:designsystem"))
-  implementation(project(":core:ui"))
-  implementation(project(":core:themmo"))
-  implementation(project(":core:datastore"))
-  implementation(project(":feature:bodymass"))
-  implementation(project(":feature:calculator"))
-  implementation(project(":feature:converter"))
-  implementation(project(":feature:datecalculator"))
-  implementation(project(":feature:glance"))
-  implementation(project(":feature:timezone"))
-  implementation(project(":feature:settings"))
-
-  add("coreLibraryDesugaring", libs.com.android.tools.desugar.jdk.libs)
-
-  implementation(libs.androidx.core.core.ktx)
-  implementation(libs.androidx.appcompat.appcompat)
-  implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
-  implementation(libs.androidx.compose.material3)
-  implementation(libs.androidx.compose.material3.window.size)
-  implementation(libs.androidx.navigation.navigation.compose)
-
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.androidx.startup)
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-}
+dependencies { coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs) }

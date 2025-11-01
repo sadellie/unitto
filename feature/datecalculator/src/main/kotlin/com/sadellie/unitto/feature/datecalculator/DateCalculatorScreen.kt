@@ -34,14 +34,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.feature.datecalculator.addsubtract.AddSubtractPage
 import com.sadellie.unitto.feature.datecalculator.difference.DateDifferencePage
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.date_calculator_add
+import unitto.core.common.generated.resources.date_calculator_difference
+import unitto.core.common.generated.resources.date_calculator_subtract
+import unitto.core.common.generated.resources.date_calculator_title
 
 @Composable
 internal fun DateCalculatorRoute(openDrawer: () -> Unit) {
@@ -51,8 +55,8 @@ internal fun DateCalculatorRoute(openDrawer: () -> Unit) {
 @Composable
 internal fun DateCalculatorScreen(openDrawer: () -> Unit) {
   val addSubtractLabel =
-    "${stringResource(R.string.date_calculator_add)}/${stringResource(R.string.date_calculator_subtract)}"
-  val differenceLabel = stringResource(R.string.date_calculator_difference)
+    "${stringResource(Res.string.date_calculator_add)}/${stringResource(Res.string.date_calculator_subtract)}"
+  val differenceLabel = stringResource(Res.string.date_calculator_difference)
   val focusManager = LocalFocusManager.current
 
   val allTabs = remember { listOf(addSubtractLabel, differenceLabel) }
@@ -61,7 +65,7 @@ internal fun DateCalculatorScreen(openDrawer: () -> Unit) {
 
   ScaffoldWithTopBar(
     modifier = Modifier,
-    title = { Text(stringResource(R.string.date_calculator_title)) },
+    title = { Text(stringResource(Res.string.date_calculator_title)) },
     navigationIcon = { DrawerButton(openDrawer) },
   ) { paddingValues ->
     Column(Modifier.consumeWindowInsets(paddingValues).padding(paddingValues)) {

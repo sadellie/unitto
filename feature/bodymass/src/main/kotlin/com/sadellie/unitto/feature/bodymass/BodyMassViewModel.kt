@@ -24,10 +24,10 @@ import android.os.Build
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.observe
-import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,8 +43,8 @@ internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepos
   private val _height1 = TextFieldState()
   private val _height2 = TextFieldState()
   private val _weight = TextFieldState()
-  private val _result = MutableStateFlow(BigDecimal.ZERO)
-  private val _normalWeightRange = MutableStateFlow(BigDecimal.ZERO to BigDecimal.ZERO)
+  private val _result = MutableStateFlow(KBigDecimal.ZERO)
+  private val _normalWeightRange = MutableStateFlow(KBigDecimal.ZERO to KBigDecimal.ZERO)
 
   val uiState =
     combine(userPreferencesRepository.bodyMassPrefs, _isMetric, _result, _normalWeightRange) {
@@ -96,21 +96,21 @@ internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepos
     _calculateJob =
       viewModelScope.launch(Dispatchers.Default) {
         try {
-          val height1 = BigDecimal(height1Input.ifEmpty { "0" })
-          val weight = BigDecimal(weightInput.ifEmpty { "0" })
+          val height1 = KBigDecimal(height1Input.ifEmpty { "0" })
+          val weight = KBigDecimal(weightInput.ifEmpty { "0" })
 
           if (isMetric) {
             _result.update { calculateMetric(height1, weight) }
             _normalWeightRange.update { calculateNormalWeightMetric(height1) }
           } else {
-            val height2 = BigDecimal(height2Input.ifEmpty { "0" })
+            val height2 = KBigDecimal(height2Input.ifEmpty { "0" })
 
             _result.update { calculateImperial(height1, height2, weight) }
             _normalWeightRange.update { calculateNormalWeightImperial(height1, height2) }
           }
         } catch (e: Exception) {
-          _result.update { BigDecimal.ZERO }
-          _normalWeightRange.update { BigDecimal.ZERO to BigDecimal.ZERO }
+          _result.update { KBigDecimal.ZERO }
+          _normalWeightRange.update { KBigDecimal.ZERO to KBigDecimal.ZERO }
         }
       }
   }

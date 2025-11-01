@@ -31,11 +31,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
@@ -47,7 +46,22 @@ import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.feature.converter.components.ChipsRow
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
 import com.sadellie.unitto.feature.converter.components.UnitsList
-import java.math.BigDecimal
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.unit_foot
+import unitto.core.common.generated.resources.unit_foot_short
+import unitto.core.common.generated.resources.unit_inch
+import unitto.core.common.generated.resources.unit_inch_short
+import unitto.core.common.generated.resources.unit_kilometer
+import unitto.core.common.generated.resources.unit_kilometer_short
+import unitto.core.common.generated.resources.unit_meter
+import unitto.core.common.generated.resources.unit_meter_short
+import unitto.core.common.generated.resources.unit_mile
+import unitto.core.common.generated.resources.unit_mile_short
+import unitto.core.common.generated.resources.unit_nautical_mile
+import unitto.core.common.generated.resources.unit_nautical_mile_short
+import unitto.core.common.generated.resources.unit_yard
+import unitto.core.common.generated.resources.unit_yard_short
 
 @Composable
 internal fun UnitFromSelectorRoute(
@@ -112,13 +126,12 @@ private fun UnitFromSelectorScreen(
     },
   ) { paddingValues ->
     if (uiState.units != null) {
-      val resources = LocalResources.current
       UnitsList(
         modifier = Modifier,
         searchResult = uiState.units,
         navigateToUnitGroups = navigateToUnitGroups,
         selectedUnitId = uiState.unitFromId,
-        supportLabel = { resources.getString(it.basicUnit.shortName) },
+        supportLabel = { stringResource(it.basicUnit.shortName) },
         onClick = {
           uiState.query.clearText()
           updateUnitFrom(it.basicUnit.id)
@@ -140,52 +153,52 @@ private fun UnitFromSelectorScreenPreview() {
         listOf(
             NormalUnit(
               UnitID.meter,
-              BigDecimal("1000000000000000000"),
+              KBigDecimal("1000000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_meter,
-              R.string.unit_meter_short,
+              Res.string.unit_meter,
+              Res.string.unit_meter_short,
             ),
             NormalUnit(
               UnitID.kilometer,
-              BigDecimal("1000000000000000000000"),
+              KBigDecimal("1000000000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_kilometer,
-              R.string.unit_kilometer_short,
+              Res.string.unit_kilometer,
+              Res.string.unit_kilometer_short,
             ),
             NormalUnit(
               UnitID.nautical_mile,
-              BigDecimal("1852000000000000000000"),
+              KBigDecimal("1852000000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_nautical_mile,
-              R.string.unit_nautical_mile_short,
+              Res.string.unit_nautical_mile,
+              Res.string.unit_nautical_mile_short,
             ),
             NormalUnit(
               UnitID.inch,
-              BigDecimal("25400000000000000"),
+              KBigDecimal("25400000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_inch,
-              R.string.unit_inch_short,
+              Res.string.unit_inch,
+              Res.string.unit_inch_short,
             ),
             NormalUnit(
               UnitID.foot,
-              BigDecimal("304800000000000000"),
+              KBigDecimal("304800000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_foot,
-              R.string.unit_foot_short,
+              Res.string.unit_foot,
+              Res.string.unit_foot_short,
             ),
             NormalUnit(
               UnitID.yard,
-              BigDecimal("914400000000000000"),
+              KBigDecimal("914400000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_yard,
-              R.string.unit_yard_short,
+              Res.string.unit_yard,
+              Res.string.unit_yard_short,
             ),
             NormalUnit(
               UnitID.mile,
-              BigDecimal("1609344000000000000000"),
+              KBigDecimal("1609344000000000000000"),
               UnitGroup.LENGTH,
-              R.string.unit_mile,
-              R.string.unit_mile_short,
+              Res.string.unit_mile,
+              Res.string.unit_mile_short,
             ),
           )
           .map { UnitSearchResultItem(it, UnitStats(it.id), null) }

@@ -18,16 +18,19 @@
 
 package com.sadellie.unitto.feature.settings.unitgroups
 
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import java.math.BigDecimal
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.unit_kilometer
+import unitto.core.common.generated.resources.unit_kilometer_short
 
 class SortUnitGroupsByUsage {
   private val testScope = TestScope(UnconfinedTestDispatcher())
@@ -37,10 +40,10 @@ class SortUnitGroupsByUsage {
     val unit =
       NormalUnit(
         id = "unit",
-        factor = BigDecimal.ZERO,
+        factor = KBigDecimal.ZERO,
         group = group,
-        displayName = -1,
-        shortName = -1,
+        displayName = Res.string.unit_kilometer,
+        shortName = Res.string.unit_kilometer_short,
         backward = false,
       )
 

@@ -26,20 +26,19 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.backup.BackupManager
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.AppStatsDao
-import com.sadellie.unitto.core.database.UnittoDatabase
+import com.sadellie.unitto.core.database.UnittoDatabaseAndroid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class BackupViewModel(appStatsDao: AppStatsDao, private val database: UnittoDatabase) :
+internal class BackupViewModel(appStatsDao: AppStatsDao, private val database: UnittoDatabaseAndroid) :
   ViewModel() {
   private val _showErrorToast = MutableSharedFlow<Boolean>()
-  val showErrorToast = _showErrorToast.asSharedFlow()
+  // TODO snackbar val showErrorToast = _showErrorToast.asSharedFlow()
   private val _favoriteUnits = appStatsDao.favoriteUnitsSize()
   private val _usedUnits = appStatsDao.usedUnitsCount()
   private val _savedExpressions = appStatsDao.savedExpressionCount()

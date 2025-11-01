@@ -59,14 +59,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isExpression
@@ -92,10 +90,29 @@ import com.sadellie.unitto.core.ui.textfield.deleteTokens
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
-import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.Locale
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.calculator_divide_by_zero_error
+import unitto.core.common.generated.resources.common_error
+import unitto.core.common.generated.resources.common_loading
+import unitto.core.common.generated.resources.converter_swap_units_description
+import unitto.core.common.generated.resources.unit_attosecond_short
+import unitto.core.common.generated.resources.unit_day_short
+import unitto.core.common.generated.resources.unit_foot_short
+import unitto.core.common.generated.resources.unit_hour_short
+import unitto.core.common.generated.resources.unit_inch_short
+import unitto.core.common.generated.resources.unit_meter
+import unitto.core.common.generated.resources.unit_meter_short
+import unitto.core.common.generated.resources.unit_microsecond_short
+import unitto.core.common.generated.resources.unit_millisecond_short
+import unitto.core.common.generated.resources.unit_minute_short
+import unitto.core.common.generated.resources.unit_nanosecond_short
+import unitto.core.common.generated.resources.unit_ounce_short
+import unitto.core.common.generated.resources.unit_pound_short
+import unitto.core.common.generated.resources.unit_second_short
 
 @Composable
 internal fun ConverterDefault(
@@ -140,8 +157,8 @@ internal fun ConverterDefault(
               modifier = textFieldModifier,
               input1 = uiState.input1,
               input2 = uiState.input2,
-              input1ShortName = stringResource(R.string.unit_foot_short),
-              input2ShortName = stringResource(R.string.unit_inch_short),
+              input1ShortName = stringResource(Res.string.unit_foot_short),
+              input2ShortName = stringResource(Res.string.unit_inch_short),
               onFocusedOnInput1Changed = { focusedOnInput1 = it },
               formatterSymbols = uiState.formatterSymbols,
             )
@@ -150,8 +167,8 @@ internal fun ConverterDefault(
               modifier = textFieldModifier,
               input1 = uiState.input1,
               input2 = uiState.input2,
-              input1ShortName = stringResource(R.string.unit_pound_short),
-              input2ShortName = stringResource(R.string.unit_ounce_short),
+              input1ShortName = stringResource(Res.string.unit_pound_short),
+              input2ShortName = stringResource(Res.string.unit_ounce_short),
               onFocusedOnInput1Changed = { focusedOnInput1 = it },
               formatterSymbols = uiState.formatterSymbols,
             )
@@ -296,7 +313,7 @@ private fun CalculationResultTextField(
   val showCalculation =
     remember(input1, result) {
       if (input1.toString().isExpression() && result is ConverterResult.Default) {
-        return@remember !result.calculation.isEqualTo(BigDecimal.ZERO)
+        return@remember !result.calculation.isEqualTo(KBigDecimal.ZERO)
       }
       false
     }
@@ -465,40 +482,77 @@ private fun ConverterResultTextField(
       NumberBaseTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
     }
     is ConverterResult.Time -> {
-      val mContext = LocalContext.current
+      val dayLabel = stringResource(Res.string.unit_day_short)
+      val hourLabel = stringResource(Res.string.unit_hour_short)
+      val minuteLabel = stringResource(Res.string.unit_minute_short)
+      val secondLabel = stringResource(Res.string.unit_second_short)
+      val millisecondLabel = stringResource(Res.string.unit_millisecond_short)
+      val microsecondLabel = stringResource(Res.string.unit_microsecond_short)
+      val nanosecondLabel = stringResource(Res.string.unit_nanosecond_short)
+      val attosecondLabel = stringResource(Res.string.unit_attosecond_short)
       val state =
         remember(result, formatterSymbols) {
-          TextFieldState(result.format(mContext, formatterSymbols))
+          TextFieldState(
+            result.format(
+              formatterSymbols = formatterSymbols,
+              dayLabel = dayLabel,
+              hourLabel = hourLabel,
+              minuteLabel = minuteLabel,
+              secondLabel = secondLabel,
+              millisecondLabel = millisecondLabel,
+              microsecondLabel = microsecondLabel,
+              nanosecondLabel = nanosecondLabel,
+              attosecondLabel = attosecondLabel,
+            )
+          )
         }
       SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
     }
     is ConverterResult.FootInch -> {
-      val mContext = LocalContext.current
+      val footLabel = stringResource(Res.string.unit_foot_short)
+      val inchLabel = stringResource(Res.string.unit_inch_short)
       val state =
         remember(result, scale, outputFormat, formatterSymbols) {
-          TextFieldState(result.format(mContext, scale, outputFormat, formatterSymbols))
+          TextFieldState(
+            result.format(
+              footLabel = footLabel,
+              inchLabel = inchLabel,
+              scale = scale,
+              outputFormat = outputFormat,
+              formatterSymbols = formatterSymbols,
+            )
+          )
         }
       SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
     }
     is ConverterResult.PoundOunce -> {
-      val mContext = LocalContext.current
+      val poundLabel = stringResource(Res.string.unit_pound_short)
+      val ounceLabel = stringResource(Res.string.unit_ounce_short)
       val state =
         remember(result, scale, outputFormat, formatterSymbols) {
-          TextFieldState(result.format(mContext, scale, outputFormat, formatterSymbols))
+          TextFieldState(
+            result.format(
+              poundLabel = poundLabel,
+              ounceLabel = ounceLabel,
+              scale = scale,
+              outputFormat = outputFormat,
+              formatterSymbols = formatterSymbols,
+            )
+          )
         }
       SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
     }
     is ConverterResult.Loading ->
       SimpleTextField(
         modifier = modifier,
-        state = TextFieldState(stringResource(R.string.common_loading)),
+        state = TextFieldState(stringResource(Res.string.common_loading)),
         minRatio = 0.7f,
         readOnly = true,
       )
     is ConverterResult.Error.DivideByZeroError ->
       SimpleTextField(
         modifier = modifier,
-        state = TextFieldState(stringResource(R.string.calculator_divide_by_zero_error)),
+        state = TextFieldState(stringResource(Res.string.calculator_divide_by_zero_error)),
         minRatio = 0.7f,
         readOnly = true,
         textColor = MaterialTheme.colorScheme.error,
@@ -506,7 +560,7 @@ private fun ConverterResultTextField(
     is ConverterResult.Error.CurrencyError ->
       SimpleTextField(
         modifier = modifier,
-        state = TextFieldState(stringResource(R.string.common_error)),
+        state = TextFieldState(stringResource(Res.string.common_error)),
         minRatio = 0.7f,
         readOnly = true,
         textColor = MaterialTheme.colorScheme.error,
@@ -515,7 +569,7 @@ private fun ConverterResultTextField(
 }
 
 @Composable
-private fun AnimatedUnitShortName(label: String = stringResource(R.string.common_loading)) {
+private fun AnimatedUnitShortName(label: String = stringResource(Res.string.common_loading)) {
   AnimatedContent(
     modifier = Modifier.fillMaxWidth(),
     targetState = label,
@@ -572,7 +626,7 @@ private fun UnitSelectionButtons(
       Icon(
         modifier = Modifier.rotate(swapButtonRotation).size(IconButtonDefaults.mediumIconSize),
         imageVector = Symbols.SwapHoriz,
-        contentDescription = stringResource(R.string.converter_swap_units_description),
+        contentDescription = stringResource(Res.string.converter_swap_units_description),
       )
     }
     UnitSelectionButton(
@@ -608,24 +662,24 @@ private fun PreviewConverterDefault() {
         unitFrom =
           NormalUnit(
             UnitID.meter,
-            BigDecimal("1000000000000000000"),
+            KBigDecimal("1000000000000000000"),
             UnitGroup.LENGTH,
-            R.string.unit_meter,
-            R.string.unit_meter_short,
+            Res.string.unit_meter,
+            Res.string.unit_meter_short,
           ),
         unitTo =
           NormalUnit(
             UnitID.meter,
-            BigDecimal("1000000000000000000"),
+            KBigDecimal("1000000000000000000"),
             UnitGroup.LENGTH,
-            R.string.unit_meter,
-            R.string.unit_meter_short,
+            Res.string.unit_meter,
+            Res.string.unit_meter_short,
           ),
         acButton = true,
         formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
         currencyRateUpdateState = CurrencyRateUpdateState.Nothing,
         outputFormat = OutputFormat.PLAIN,
-        result = ConverterResult.Default(BigDecimal.ZERO, BigDecimal.ZERO),
+        result = ConverterResult.Default(KBigDecimal.ZERO, KBigDecimal.ZERO),
         formatTime = true,
       ),
     navigateToRightScreen = { _, _, _, _, _ -> },

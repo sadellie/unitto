@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,11 +27,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.Favorite
 import com.sadellie.unitto.core.designsystem.icons.symbols.FavoriteFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.converter_favorite_button_description
 
 @Composable
 internal fun FavoritesButton(state: Boolean, onClick: () -> Unit) {
@@ -48,7 +49,7 @@ internal fun FavoritesButton(state: Boolean, onClick: () -> Unit) {
     ) {
       Icon(
         if (it) Symbols.FavoriteFill else Symbols.Favorite,
-        contentDescription = stringResource(R.string.converter_favorite_button_description),
+        contentDescription = stringResource(Res.string.converter_favorite_button_description),
       )
     }
   }

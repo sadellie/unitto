@@ -20,6 +20,7 @@ plugins {
   id("unitto.library")
 
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
 }
 
@@ -41,6 +42,7 @@ dependencies {
   implementation(project(":core:themmo"))
   implementation(project(":core:ui"))
 
+  implementation(libs.org.jetbrains.compose.components.components.resources)
   implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
   implementation(libs.io.insert.koin.koin.core.coroutines)
   implementation(libs.io.insert.koin.koin.compose.viewmodel)
@@ -50,7 +52,7 @@ dependencies {
   implementation(libs.androidx.compose.ui.ui)
   implementation(libs.androidx.compose.material3)
   implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.navigation.navigation.compose)
+  implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
   implementation(libs.androidx.glance.glance)
   implementation(libs.androidx.glance.glance.appwidget)

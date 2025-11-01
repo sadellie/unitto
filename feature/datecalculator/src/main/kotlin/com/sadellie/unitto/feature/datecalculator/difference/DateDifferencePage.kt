@@ -19,10 +19,9 @@
 package com.sadellie.unitto.feature.datecalculator.difference
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,32 +29,35 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeResultBlock
 import com.sadellie.unitto.feature.datecalculator.components.DialogState
-import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.date_calculator_end
+import unitto.core.common.generated.resources.date_calculator_start
 
 @Composable
 internal fun DateDifferencePage(viewModel: DateDifferenceViewModel = koinViewModel()) {
@@ -80,42 +82,30 @@ private fun DateDifferenceView(
 
   Column(
     modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-    verticalArrangement = Arrangement.spacedBy(8.dp),
+    verticalArrangement = Arrangement.spacedBy(Sizes.small),
   ) {
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(Sizes.large))
 
-    FlowRow(
-      modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
-      maxItemsInEachRow = 2,
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
+    Row(
+      modifier = Modifier.padding(horizontal = Sizes.large).fillMaxWidth(),
+      horizontalArrangement = Arrangement.spacedBy(Sizes.small),
     ) {
       DateTimeBlock(
-        modifier =
-          Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
-            .weight(1f)
-            .fillMaxWidth(),
-        title = stringResource(R.string.date_calculator_start),
-        dateTime = uiState.start,
-        onClick = { dialogState = DialogState.FROM },
-        onLongClick = { setStartDate(ZonedDateTimeUtils.nowWithMinutes()) },
+        modifier = Modifier.weight(1f).fillMaxWidth(),
+        title = stringResource(Res.string.date_calculator_start),
         onTimeClick = { dialogState = DialogState.FROM_TIME },
         onDateClick = { dialogState = DialogState.FROM_DATE },
-        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        onLongClick = { setStartDate(ZonedDateTimeUtils.nowWithMinutes()) },
+        dateTime = uiState.start,
       )
 
       DateTimeBlock(
-        modifier =
-          Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
-            .weight(1f)
-            .fillMaxWidth(),
-        title = stringResource(R.string.date_calculator_end),
-        dateTime = uiState.end,
-        onClick = { dialogState = DialogState.TO },
-        onLongClick = { setEndDate(ZonedDateTimeUtils.nowWithMinutes()) },
+        modifier = Modifier.weight(1f).fillMaxWidth(),
+        title = stringResource(Res.string.date_calculator_end),
         onTimeClick = { dialogState = DialogState.TO_TIME },
         onDateClick = { dialogState = DialogState.TO_DATE },
-        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        onLongClick = { setEndDate(ZonedDateTimeUtils.nowWithMinutes()) },
+        dateTime = uiState.end,
       )
     }
 
@@ -145,7 +135,6 @@ private fun DateDifferenceView(
     updateDialogState = { dialogState = it },
     date = uiState.start,
     updateDate = setStartDate,
-    bothState = DialogState.FROM,
     timeState = DialogState.FROM_TIME,
     dateState = DialogState.FROM_DATE,
   )
@@ -155,7 +144,6 @@ private fun DateDifferenceView(
     updateDialogState = { dialogState = it },
     date = uiState.end,
     updateDate = setEndDate,
-    bothState = DialogState.TO,
     timeState = DialogState.TO_TIME,
     dateState = DialogState.TO_DATE,
   )
@@ -163,7 +151,7 @@ private fun DateDifferenceView(
 
 @Preview
 @Composable
-fun DateDifferenceViewPreview() {
+fun DateDifferenceViewPreview() = ExpressivePreview {
   DateDifferenceView(
     uiState =
       DifferenceUIState.Ready(
@@ -176,11 +164,11 @@ fun DateDifferenceViewPreview() {
             days = 3,
             hours = 4,
             minutes = 5,
-            sumYears = BigDecimal("0.083"),
-            sumMonths = BigDecimal("1.000"),
-            sumDays = BigDecimal("30.000"),
-            sumHours = BigDecimal("720.000"),
-            sumMinutes = BigDecimal("43200.000"),
+            sumYears = KBigDecimal("0.083"),
+            sumMonths = KBigDecimal("1.000"),
+            sumDays = KBigDecimal("30.000"),
+            sumHours = KBigDecimal("720.000"),
+            sumMinutes = KBigDecimal("43200.000"),
           ),
         precision = 3,
         outputFormat = OutputFormat.PLAIN,

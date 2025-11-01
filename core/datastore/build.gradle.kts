@@ -16,20 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins { id("unitto.library") }
+plugins { id("unitto.multiplatform.library") }
+
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+    implementation(project(":core:themmo"))
+    implementation(project(":core:data"))
+    implementation(project(":core:navigation"))
+    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+    implementation(libs.io.insert.koin.koin.core)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
+  }
+  sourceSets.androidMain.dependencies {
+    implementation(libs.io.insert.koin.koin.android)
+    implementation(libs.io.insert.koin.koin.core.coroutines)
+    implementation(libs.androidx.datastore.datastore.preferences)
+  }
+}
 
 android.namespace = "com.sadellie.unitto.core.datastore"
-
-dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:model"))
-  implementation(project(":core:themmo"))
-  implementation(project(":core:data"))
-  implementation(project(":core:navigation"))
-
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.android)
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-
-  implementation(libs.androidx.datastore.datastore.preferences)
-}

@@ -21,12 +21,18 @@ package com.sadellie.unitto.feature.glance.converter
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -62,6 +68,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
+import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
@@ -72,10 +79,16 @@ import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.FloatingActionButton
 import com.sadellie.unitto.feature.glance.common.cornerRadiusWithBackground
-import java.math.BigDecimal
 import kotlinx.coroutines.flow.mapLatest
+import org.jetbrains.compose.resources.stringResource
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.converter_title
+import unitto.core.common.generated.resources.unit_kilometer
+import unitto.core.common.generated.resources.unit_kilometer_short
+import unitto.core.common.generated.resources.unit_meter
+import unitto.core.common.generated.resources.unit_meter_short
 
 internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
   override val sizeMode: SizeMode = SizeMode.Responsive(setOf(smallSizeMode, mediumSizeMode))
@@ -108,16 +121,21 @@ internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
       }
 
     provideContent {
-      val unitPairs = unitPairsFlow.collectAsState(emptyList())
-      ReadyUI(
-        modifier = GlanceModifier.fillMaxSize(),
-        size = LocalSize.current,
-        onUnitPairClick = { unitFromId, unitToId ->
-          launchConverterAction(context, unitFromId, unitToId)
-        },
-        onLaunchConverter = launchConverterAction(context, null, null),
-        units = unitPairs.value,
-      )
+      CompositionLocalProvider(
+        LocalConfiguration provides Configuration(context.resources.configuration),
+        LocalDensity provides Density(context),
+      ) {
+        val unitPairs = unitPairsFlow.collectAsState(emptyList())
+        ReadyUI(
+          modifier = GlanceModifier.fillMaxSize(),
+          size = LocalSize.current,
+          onUnitPairClick = { unitFromId, unitToId ->
+            launchConverterAction(context, unitFromId, unitToId)
+          },
+          onLaunchConverter = launchConverterAction(context, null, null),
+          units = unitPairs.value,
+        )
+      }
     }
   }
 }
@@ -130,7 +148,7 @@ private fun launchConverterAction(
   val componentName = ComponentName(mContext, "com.sadellie.unitto.MainActivity")
   val deepLinkIntent =
     Intent.makeMainActivity(componentName)
-      .setData(ConverterStartRoute.generateRoute(unitFromId, unitToId))
+      .setData(ConverterStartRoute.generateRoute(unitFromId, unitToId).toUri())
       .setAction(Intent.ACTION_VIEW)
 
   return actionStartActivity(deepLinkIntent)
@@ -152,7 +170,7 @@ private fun ReadyUI(
       Text(
         modifier = GlanceModifier.defaultWeight(),
         style = TextStyle(color = GlanceTheme.colors.onBackground, fontWeight = FontWeight.Medium),
-        text = LocalContext.current.getString(R.string.converter_title),
+        text = stringResource(Res.string.converter_title),
       )
       FloatingActionButton(
         glanceModifier = GlanceModifier,
@@ -209,8 +227,7 @@ private fun UnitPairItem(
     Text(
       modifier = GlanceModifier.defaultWeight(),
       style = unitTextStyle,
-      text =
-        context.getString(if (shortNames) unitPair.from.shortName else unitPair.from.displayName),
+      text = stringResource(if (shortNames) unitPair.from.shortName else unitPair.from.displayName),
     )
     Spacer(
       modifier =
@@ -219,7 +236,7 @@ private fun UnitPairItem(
     Text(
       modifier = GlanceModifier.defaultWeight(),
       style = unitTextStyle,
-      text = context.getString(if (shortNames) unitPair.to.shortName else unitPair.to.displayName),
+      text = stringResource(if (shortNames) unitPair.to.shortName else unitPair.to.displayName),
     )
   }
 }
@@ -235,18 +252,18 @@ private fun PreviewReadyUICompact() {
         from =
           NormalUnit(
             UnitID.meter,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_meter,
-            com.sadellie.unitto.core.common.R.string.unit_meter_short,
+            Res.string.unit_meter,
+            Res.string.unit_meter_short,
           ),
         to =
           NormalUnit(
             UnitID.kilometer,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer_short,
+            Res.string.unit_kilometer,
+            Res.string.unit_kilometer_short,
           ),
       ),
       SelectedUnitPair(
@@ -254,18 +271,18 @@ private fun PreviewReadyUICompact() {
         from =
           NormalUnit(
             UnitID.meter,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_meter,
-            com.sadellie.unitto.core.common.R.string.unit_meter_short,
+            Res.string.unit_meter,
+            Res.string.unit_meter_short,
           ),
         to =
           NormalUnit(
             UnitID.kilometer,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer_short,
+            Res.string.unit_kilometer,
+            Res.string.unit_kilometer_short,
           ),
       ),
     )
@@ -290,18 +307,18 @@ private fun PreviewReadyUIMedium() {
         from =
           NormalUnit(
             UnitID.meter,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_meter,
-            com.sadellie.unitto.core.common.R.string.unit_meter_short,
+            Res.string.unit_meter,
+            Res.string.unit_meter_short,
           ),
         to =
           NormalUnit(
             UnitID.kilometer,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer_short,
+            Res.string.unit_kilometer,
+            Res.string.unit_kilometer_short,
           ),
       ),
       SelectedUnitPair(
@@ -309,18 +326,18 @@ private fun PreviewReadyUIMedium() {
         from =
           NormalUnit(
             UnitID.meter,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_meter,
-            com.sadellie.unitto.core.common.R.string.unit_meter_short,
+            Res.string.unit_meter,
+            Res.string.unit_meter_short,
           ),
         to =
           NormalUnit(
             UnitID.kilometer,
-            BigDecimal("2"),
+            KBigDecimal("2"),
             UnitGroup.LENGTH,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer,
-            com.sadellie.unitto.core.common.R.string.unit_kilometer_short,
+            Res.string.unit_kilometer,
+            Res.string.unit_kilometer_short,
           ),
       ),
     )

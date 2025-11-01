@@ -46,17 +46,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.icons.symbols.FileSave
 import com.sadellie.unitto.core.designsystem.icons.symbols.RestorePage
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -66,27 +62,25 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.feature.settings.R
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.settings_back_up
+import unitto.core.common.generated.resources.settings_backup
+import unitto.core.common.generated.resources.settings_favorite_time_zones
+import unitto.core.common.generated.resources.settings_favorite_units
+import unitto.core.common.generated.resources.settings_restore
+import unitto.core.common.generated.resources.settings_saved_expressions
+import unitto.core.common.generated.resources.settings_used_units
 
 @Composable
 internal fun BackupRoute(
   viewModel: BackupViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
 ) {
-  val context = LocalContext.current
-  val resources = LocalResources.current
-  val uiState: BackupUIState = viewModel.uiState.collectAsStateWithLifecycle().value
-  val showErrorToast: Boolean =
-    viewModel.showErrorToast.collectAsStateWithLifecycle(initialValue = false).value
-
-  LaunchedEffect(showErrorToast) {
-    if (showErrorToast) showToast(context, resources.getString(R.string.common_error))
-  }
-
-  when (uiState) {
+  when (val uiState: BackupUIState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     BackupUIState.Loading -> EmptyScreen()
     BackupUIState.InProgress -> BackupScreenInProgress()
     is BackupUIState.Ready ->
@@ -107,7 +101,7 @@ private fun BackupScreenReady(
   onRestore: (Context, Uri) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.settings_backup),
+    title = stringResource(Res.string.settings_backup),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { paddingValues ->
     val scrollState = rememberScrollState()
@@ -124,25 +118,25 @@ private fun BackupScreenReady(
         onRestore = onRestore,
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(R.string.settings_saved_expressions)) },
+        headlineContent = { Text(stringResource(Res.string.settings_saved_expressions)) },
         supportingContent = { Text("${uiState.savedExpressions}") },
         shape = ListItemExpressiveDefaults.firstShape,
         onClick = null,
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(R.string.settings_favorite_units)) },
+        headlineContent = { Text(stringResource(Res.string.settings_favorite_units)) },
         supportingContent = { Text("${uiState.favoriteUnits}") },
         shape = ListItemExpressiveDefaults.middleShape,
         onClick = null,
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(R.string.settings_used_units)) },
+        headlineContent = { Text(stringResource(Res.string.settings_used_units)) },
         supportingContent = { Text("${uiState.usedUnits}") },
         shape = ListItemExpressiveDefaults.middleShape,
         onClick = null,
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(R.string.settings_favorite_time_zones)) },
+        headlineContent = { Text(stringResource(Res.string.settings_favorite_time_zones)) },
         supportingContent = { Text("${uiState.favoriteTimeZones}") },
         shape = ListItemExpressiveDefaults.lastShape,
         onClick = null,
@@ -174,13 +168,13 @@ private fun BackupRestoreControls(
       modifier = Modifier,
       onClick = { backupLauncher.launchSafely(backupFileName()) },
       imageVector = Symbols.FileSave,
-      label = stringResource(R.string.settings_back_up),
+      label = stringResource(Res.string.settings_back_up),
     )
     BackupRestoreButton(
       modifier = Modifier,
       onClick = { restoreLauncher.launchSafely(arrayOf(BACKUP_MIME_TYPE)) },
       imageVector = Symbols.RestorePage,
-      label = stringResource(R.string.settings_restore),
+      label = stringResource(Res.string.settings_restore),
     )
   }
 }

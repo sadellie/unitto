@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
 
 package com.sadellie.unitto.feature.bodymass
 
+import com.sadellie.unitto.core.common.KBigDecimal
+import com.sadellie.unitto.core.common.KRoundingMode
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 class BodyMassUtilsTest {
   @Test
   fun calculateMetric_positiveNumbers() {
-    val heightCm = BigDecimal("190")
-    val weightKg = BigDecimal("80")
-    val expected = BigDecimal("22.161").scaleDown()
+    val heightCm = KBigDecimal("190")
+    val weightKg = KBigDecimal("80")
+    val expected = KBigDecimal("22.161").scaleDown()
     val actual = calculateMetric(heightCm, weightKg).scaleDown()
 
     assertEquals(expected, actual)
@@ -36,9 +36,9 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateMetric_negativeNumbers() {
-    val heightCm = BigDecimal("-190")
-    val weightKg = BigDecimal("80")
-    val expected = BigDecimal.ZERO
+    val heightCm = KBigDecimal("-190")
+    val weightKg = KBigDecimal("80")
+    val expected = KBigDecimal.ZERO
     val actual = calculateMetric(heightCm, weightKg)
 
     assertEquals(expected, actual)
@@ -46,9 +46,9 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateMetric_zero() {
-    val heightCm = BigDecimal.ZERO
-    val weightKg = BigDecimal.ZERO
-    val expected = BigDecimal.ZERO
+    val heightCm = KBigDecimal.ZERO
+    val weightKg = KBigDecimal.ZERO
+    val expected = KBigDecimal.ZERO
     val actual = calculateMetric(heightCm, weightKg)
 
     assertEquals(expected, actual)
@@ -56,10 +56,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateImperial_positiveNumbers() {
-    val heightFt = BigDecimal("6")
-    val heightIn = BigDecimal("5")
-    val weightLbs = BigDecimal("150")
-    val expected = BigDecimal("17.785")
+    val heightFt = KBigDecimal("6")
+    val heightIn = KBigDecimal("5")
+    val weightLbs = KBigDecimal("150")
+    val expected = KBigDecimal("17.785")
     val actual = calculateImperial(heightFt, heightIn, weightLbs).scaleDown()
 
     assertEquals(expected, actual)
@@ -67,10 +67,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateImperial_negativeNumbers() {
-    val heightFt = BigDecimal("-6")
-    val heightIn = BigDecimal("5")
-    val weightLbs = BigDecimal.ZERO
-    val expected = BigDecimal.ZERO
+    val heightFt = KBigDecimal("-6")
+    val heightIn = KBigDecimal("5")
+    val weightLbs = KBigDecimal.ZERO
+    val expected = KBigDecimal.ZERO
     val actual = calculateImperial(heightFt, heightIn, weightLbs)
 
     assertEquals(expected, actual)
@@ -78,10 +78,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateImperial_zeroAll() {
-    val heightFt = BigDecimal.ZERO
-    val heightIn = BigDecimal.ZERO
-    val weightLbs = BigDecimal.ZERO
-    val expected = BigDecimal.ZERO
+    val heightFt = KBigDecimal.ZERO
+    val heightIn = KBigDecimal.ZERO
+    val weightLbs = KBigDecimal.ZERO
+    val expected = KBigDecimal.ZERO
     val actual = calculateImperial(heightFt, heightIn, weightLbs)
 
     assertEquals(expected, actual)
@@ -89,10 +89,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateImperial_zeroFeet() {
-    val heightFt = BigDecimal.ZERO
-    val heightIn = BigDecimal("12")
-    val weightLbs = BigDecimal("150")
-    val expectedWeight1 = BigDecimal("732.292")
+    val heightFt = KBigDecimal.ZERO
+    val heightIn = KBigDecimal("12")
+    val weightLbs = KBigDecimal("150")
+    val expectedWeight1 = KBigDecimal("732.292")
     val actual = calculateImperial(heightFt, heightIn, weightLbs).scaleDown()
 
     assertEquals(expectedWeight1, actual)
@@ -100,10 +100,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateImperial_zeroInch() {
-    val heightFt = BigDecimal("1")
-    val heightIn = BigDecimal.ZERO
-    val weightLbs = BigDecimal("150")
-    val expectedWeight1 = BigDecimal("732.292")
+    val heightFt = KBigDecimal("1")
+    val heightIn = KBigDecimal.ZERO
+    val weightLbs = KBigDecimal("150")
+    val expectedWeight1 = KBigDecimal("732.292")
     val actual = calculateImperial(heightFt, heightIn, weightLbs).scaleDown()
 
     assertEquals(expectedWeight1, actual)
@@ -111,10 +111,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateImperial_zeroWeightLbs() {
-    val heightFt = BigDecimal("1")
-    val heightIn = BigDecimal("12")
-    val weightLbs = BigDecimal.ZERO
-    val expectedWeight1 = BigDecimal.ZERO
+    val heightFt = KBigDecimal("1")
+    val heightIn = KBigDecimal("12")
+    val weightLbs = KBigDecimal.ZERO
+    val expectedWeight1 = KBigDecimal.ZERO
     val actual = calculateImperial(heightFt, heightIn, weightLbs)
 
     assertEquals(expectedWeight1, actual)
@@ -122,9 +122,9 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightMetric_positiveNumber() {
-    val height = BigDecimal("190")
-    val expectedWeight1 = BigDecimal("66.785")
-    val expectedWeight2 = BigDecimal("90.250")
+    val height = KBigDecimal("190")
+    val expectedWeight1 = KBigDecimal("66.785")
+    val expectedWeight2 = KBigDecimal("90.250")
     val actualWeight = calculateNormalWeightMetric(height)
 
     assertEquals(expectedWeight1, actualWeight.first.scaleDown())
@@ -133,9 +133,9 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightMetric_negativeNumber() {
-    val height = BigDecimal("-190")
-    val expectedWeight1 = BigDecimal.ZERO
-    val expectedWeight2 = BigDecimal.ZERO
+    val height = KBigDecimal("-190")
+    val expectedWeight1 = KBigDecimal.ZERO
+    val expectedWeight2 = KBigDecimal.ZERO
     val actualWeight = calculateNormalWeightMetric(height)
 
     assertEquals(expectedWeight1, actualWeight.first)
@@ -144,9 +144,9 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightMetric_zero() {
-    val height = BigDecimal.ZERO
-    val expectedWeight1 = BigDecimal.ZERO
-    val expectedWeight2 = BigDecimal.ZERO
+    val height = KBigDecimal.ZERO
+    val expectedWeight1 = KBigDecimal.ZERO
+    val expectedWeight2 = KBigDecimal.ZERO
     val actualWeight = calculateNormalWeightMetric(height)
 
     assertEquals(expectedWeight1, actualWeight.first)
@@ -155,10 +155,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightImperial_positiveNumbers() {
-    val heightFt = BigDecimal("6")
-    val heightIn = BigDecimal("5")
-    val expectedWeight1 = BigDecimal("156.026")
-    val expectedWeight2 = BigDecimal("210.846")
+    val heightFt = KBigDecimal("6")
+    val heightIn = KBigDecimal("5")
+    val expectedWeight1 = KBigDecimal("156.026")
+    val expectedWeight2 = KBigDecimal("210.846")
     val actualWeight = calculateNormalWeightImperial(heightFt, heightIn)
 
     assertEquals(expectedWeight1, actualWeight.first.scaleDown())
@@ -167,10 +167,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightImperial_negativeNumbers() {
-    val heightFt = BigDecimal("-6")
-    val heightIn = BigDecimal("5")
-    val expectedWeight1 = BigDecimal.ZERO
-    val expectedWeight2 = BigDecimal.ZERO
+    val heightFt = KBigDecimal("-6")
+    val heightIn = KBigDecimal("5")
+    val expectedWeight1 = KBigDecimal.ZERO
+    val expectedWeight2 = KBigDecimal.ZERO
     val actualWeight = calculateNormalWeightImperial(heightFt, heightIn)
 
     assertEquals(expectedWeight1, actualWeight.first)
@@ -179,10 +179,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightImperial_zeroFeet() {
-    val heightFt = BigDecimal.ZERO
-    val heightIn = BigDecimal("12")
-    val expectedWeight1 = BigDecimal("3.789")
-    val expectedWeight2 = BigDecimal("5.121")
+    val heightFt = KBigDecimal.ZERO
+    val heightIn = KBigDecimal("12")
+    val expectedWeight1 = KBigDecimal("3.789")
+    val expectedWeight2 = KBigDecimal("5.121")
     val actualWeight = calculateNormalWeightImperial(heightFt, heightIn)
 
     assertEquals(expectedWeight1, actualWeight.first.scaleDown())
@@ -191,10 +191,10 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightImperial_zeroInch() {
-    val heightFt = BigDecimal("1")
-    val heightIn = BigDecimal.ZERO
-    val expectedWeight1 = BigDecimal("3.789")
-    val expectedWeight2 = BigDecimal("5.121")
+    val heightFt = KBigDecimal("1")
+    val heightIn = KBigDecimal.ZERO
+    val expectedWeight1 = KBigDecimal("3.789")
+    val expectedWeight2 = KBigDecimal("5.121")
     val actualWeight = calculateNormalWeightImperial(heightFt, heightIn)
 
     assertEquals(expectedWeight1, actualWeight.first.scaleDown())
@@ -203,15 +203,15 @@ class BodyMassUtilsTest {
 
   @Test
   fun calculateNormalWeightImperial_zeroAll() {
-    val heightFt = BigDecimal.ZERO
-    val heightIn = BigDecimal.ZERO
-    val expectedWeight1 = BigDecimal.ZERO
-    val expectedWeight2 = BigDecimal.ZERO
+    val heightFt = KBigDecimal.ZERO
+    val heightIn = KBigDecimal.ZERO
+    val expectedWeight1 = KBigDecimal.ZERO
+    val expectedWeight2 = KBigDecimal.ZERO
     val actualWeight = calculateNormalWeightImperial(heightFt, heightIn)
 
     assertEquals(expectedWeight1, actualWeight.first)
     assertEquals(expectedWeight2, actualWeight.second)
   }
 
-  private fun BigDecimal.scaleDown(): BigDecimal = setScale(3, RoundingMode.HALF_EVEN)
+  private fun KBigDecimal.scaleDown(): KBigDecimal = setScale(3, KRoundingMode.HALF_EVEN)
 }

@@ -28,11 +28,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -42,8 +41,12 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.feature.settings.BuildConfig
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.settings_language
+import unitto.core.common.generated.resources.settings_translate_app
+import unitto.core.common.generated.resources.settings_translate_app_support
 
 @Composable
 internal fun LanguageRoute(navigateUp: () -> Unit) {
@@ -68,7 +71,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
   }
 
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.settings_language),
+    title = stringResource(Res.string.settings_language),
     navigationIcon = { NavigateUpButton(navigateUp) },
   ) { padding ->
     LazyColumn(
@@ -79,11 +82,11 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
       item(key = "translate", contentType = ContentType.ANNOYING_BOX) {
         AnnoyingBox(
           modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth(),
-          onClick = { openLink(mContext, BuildConfig.STORE_LINK) },
+          onClick = { openLink(mContext, Config.TRANSLATE_LINK) },
           imageVector = Symbols.Translate,
-          imageVectorContentDescription = stringResource(R.string.settings_translate_app),
-          title = stringResource(R.string.settings_translate_app),
-          support = stringResource(R.string.settings_translate_app_support),
+          imageVectorContentDescription = stringResource(Res.string.settings_translate_app),
+          title = stringResource(Res.string.settings_translate_app),
+          support = stringResource(Res.string.settings_translate_app_support),
         )
       }
 

@@ -20,10 +20,13 @@ package com.sadellie.unitto.feature.glance.calculator
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -90,32 +93,42 @@ class CalculatorWidget : GlanceAppWidget(), KoinComponent {
     try {
       val userPrefsRepository by inject<UserPreferencesRepository>()
       provideContent {
-        val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
+        CompositionLocalProvider(
+          LocalConfiguration provides Configuration(context.resources.configuration)
+        ) {
+          val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
 
-        LaunchedEffect(appPrefs) {
-          updateAppWidgetState(context, id) { state ->
-            state[precisionStateKey] = appPrefs?.precision ?: DEFAULT_PRECISION
-            state[outputFormatStateKey] = appPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
+          LaunchedEffect(appPrefs) {
+            updateAppWidgetState(context, id) { state ->
+              state[precisionStateKey] = appPrefs?.precision ?: DEFAULT_PRECISION
+              state[outputFormatStateKey] = appPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
+            }
+            this@CalculatorWidget.update(context, id)
           }
-          this@CalculatorWidget.update(context, id)
-        }
 
-        WidgetTheme {
-          if (appPrefs == null) {
-            LoadingUI(actionRunCallback<RestartCalculatorWidget>())
-          } else {
-            val state = currentState<Preferences>()
-            ReadyUI(
-              appPrefs = appPrefs,
-              input = state[inputStateKey] ?: "",
-              output = state[outputStateKey] ?: "",
-            )
+          WidgetTheme {
+            if (appPrefs == null) {
+              LoadingUI(actionRunCallback<RestartCalculatorWidget>())
+            } else {
+              val state = currentState<Preferences>()
+              ReadyUI(
+                appPrefs = appPrefs,
+                input = state[inputStateKey] ?: "",
+                output = state[outputStateKey] ?: "",
+              )
+            }
           }
         }
       }
     } catch (e: Exception) {
       Log.e("CalculatorWidget", "Error: $e")
-      provideContent { LoadingUI(actionRunCallback<RestartCalculatorWidget>()) }
+      provideContent {
+        CompositionLocalProvider(
+          LocalConfiguration provides Configuration(context.resources.configuration)
+        ) {
+          LoadingUI(actionRunCallback<RestartCalculatorWidget>())
+        }
+      }
     }
   }
 }

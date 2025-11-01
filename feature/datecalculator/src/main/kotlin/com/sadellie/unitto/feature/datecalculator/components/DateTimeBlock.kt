@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.feature.datecalculator.components
 
-import android.text.format.DateFormat
+import android.text.format.DateFormat.is24HourFormat
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -27,115 +27,105 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.ui.ProvideColor
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
-import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
-import com.sadellie.unitto.core.ui.datetime.formatTimeShort
-import com.sadellie.unitto.core.ui.squashable
+import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
 @Composable
 internal fun DateTimeBlock(
   modifier: Modifier = Modifier,
-  containerColor: Color,
   title: String,
-  dateTime: ZonedDateTime,
-  onClick: () -> Unit = {},
   onTimeClick: () -> Unit = {},
   onDateClick: () -> Unit = {},
   onLongClick: () -> Unit = {},
+  dateTime: ZonedDateTime,
 ) {
-  val locale = LocalLocale.current
-  val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
-
-  ProvideColor(MaterialTheme.colorScheme.contentColorFor(containerColor)) {
+  Column(
+    modifier = modifier,
+    horizontalAlignment = Alignment.Start,
+    verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+  ) {
     Column(
       modifier =
-        Modifier.squashable(
-            onClick = onClick,
-            onLongClick = onLongClick,
-            interactionSource = remember { MutableInteractionSource() },
-            cornerRadiusRange = Sizes.small..Sizes.extraLarge,
+        Modifier.combinedClickable(onClick = onTimeClick, onLongClick = onLongClick)
+          .clip(ListItemExpressiveDefaults.firstShape)
+          .background(MaterialTheme.colorScheme.secondaryContainer)
+          .padding(
+            start = Sizes.large,
+            end = Sizes.large,
+            top = Sizes.large,
+            bottom = Sizes.extraSmall,
           )
-          .background(containerColor)
-          .then(modifier)
-          .padding(Sizes.medium),
-      horizontalAlignment = Alignment.Start,
+          .fillMaxWidth()
     ) {
-      Text(text = title, style = MaterialTheme.typography.labelMedium, maxLines = 1)
-
-      Column(modifier = Modifier.clickable(onClick = onTimeClick)) {
-        AnimatedContent(
-          targetState = dateTime,
-          transitionSpec = {
-            slideInVertically { height -> height } + fadeIn() togetherWith
-              slideOutVertically { height -> -height } + fadeOut() using
-              SizeTransform()
-          },
-          label = "Animated time",
-        ) { time ->
-          Text(
-            text = time.formatTimeShort(locale, is24Hour),
-            style = MaterialTheme.typography.displaySmall,
-            maxLines = 1,
-          )
-        }
-
-        if (!is24Hour) {
-          AnimatedContent(
-            targetState = dateTime,
-            transitionSpec = {
-              slideInVertically { height -> height } + fadeIn() togetherWith
-                slideOutVertically { height -> -height } + fadeOut() using
-                SizeTransform()
-            },
-            label = "Animated am/pm",
-          ) { time ->
-            Text(
-              text = time.formatTimeAmPm(locale),
-              style = MaterialTheme.typography.bodyLarge,
-              maxLines = 1,
-            )
-          }
-        }
-      }
-
-      AnimatedContent(
-        targetState = dateTime,
-        transitionSpec = {
-          slideInVertically { height -> height } + fadeIn() togetherWith
-            slideOutVertically { height -> -height } + fadeOut() using
-            SizeTransform()
-        },
-        label = "Animated date",
-      ) { date ->
-        Text(
-          modifier = Modifier.clickable(onClick = onDateClick),
-          text = date.formatDateWeekDayMonthYear(locale),
-          style = MaterialTheme.typography.bodyMedium,
-          maxLines = 1,
-        )
-      }
+      Text(
+        text = title,
+        style = MaterialTheme.typography.labelMedium,
+        maxLines = 1,
+        color = MaterialTheme.colorScheme.onSecondaryContainer,
+      )
+      val is24Hour = is24HourFormat(LocalContext.current)
+      val locale = LocalLocale.current
+      val formattedTime = remember(is24Hour, dateTime) { dateTime.formatTime(locale, is24Hour) }
+      AnimatedText(
+        modifier = Modifier,
+        targetState = formattedTime,
+        style = MaterialTheme.typography.displaySmall,
+      )
     }
+    val locale1 = LocalLocale.current
+    val formattedDate = remember(locale1) { dateTime.formatDateWeekDayMonthYear(locale1) }
+    AnimatedText(
+      modifier =
+        Modifier.combinedClickable(onClick = onDateClick, onLongClick = onLongClick)
+          .clip(ListItemExpressiveDefaults.lastShape)
+          .background(MaterialTheme.colorScheme.secondaryContainer)
+          .padding(Sizes.large)
+          .fillMaxWidth(),
+      targetState = formattedDate,
+      style = MaterialTheme.typography.bodyLarge,
+    )
+  }
+}
+
+@Composable
+private fun AnimatedText(modifier: Modifier, targetState: String, style: TextStyle) {
+  AnimatedContent(
+    modifier = modifier,
+    targetState = targetState,
+    transitionSpec = {
+      slideInVertically { height -> height } + fadeIn() togetherWith
+        slideOutVertically { height -> -height } + fadeOut() using
+        SizeTransform()
+    },
+    label = "Animated date",
+  ) { text ->
+    Text(
+      text = text,
+      style = style,
+      maxLines = 1,
+      color = MaterialTheme.colorScheme.onSecondaryContainer,
+    )
   }
 }
 
@@ -144,7 +134,6 @@ internal fun DateTimeBlock(
 fun DateTimeBlockPreview() {
   DateTimeBlock(
     modifier = Modifier.width(224.dp),
-    containerColor = MaterialTheme.colorScheme.secondaryContainer,
     title = "End",
     dateTime = ZonedDateTimeUtils.nowWithMinutes(),
   )

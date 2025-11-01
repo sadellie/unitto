@@ -31,20 +31,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.R
+import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.common.openLink
-import com.sadellie.unitto.core.common.showToast
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.BacklightHigh
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cached
@@ -75,7 +71,34 @@ import com.sadellie.unitto.feature.settings.navigation.ConverterSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.DisplayRoute
 import com.sadellie.unitto.feature.settings.navigation.FormattingRoute
 import com.sadellie.unitto.feature.settings.navigation.StartingScreenRoute
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.app_name
+import unitto.core.common.generated.resources.calculator_title
+import unitto.core.common.generated.resources.converter_title
+import unitto.core.common.generated.resources.settings_about_unitto
+import unitto.core.common.generated.resources.settings_about_unitto_support
+import unitto.core.common.generated.resources.settings_additional
+import unitto.core.common.generated.resources.settings_backup
+import unitto.core.common.generated.resources.settings_backup_support
+import unitto.core.common.generated.resources.settings_calculator_support
+import unitto.core.common.generated.resources.settings_clear_cache
+import unitto.core.common.generated.resources.settings_converter_support
+import unitto.core.common.generated.resources.settings_display
+import unitto.core.common.generated.resources.settings_display_support
+import unitto.core.common.generated.resources.settings_formatting
+import unitto.core.common.generated.resources.settings_formatting_support
+import unitto.core.common.generated.resources.settings_keep_screen_on
+import unitto.core.common.generated.resources.settings_keep_screen_on_support
+import unitto.core.common.generated.resources.settings_rate_this_app
+import unitto.core.common.generated.resources.settings_starting_screen
+import unitto.core.common.generated.resources.settings_starting_screen_support
+import unitto.core.common.generated.resources.settings_title
+import unitto.core.common.generated.resources.settings_updated
+import unitto.core.common.generated.resources.settings_updated_support
+import unitto.core.common.generated.resources.settings_vibrations
+import unitto.core.common.generated.resources.settings_vibrations_support
 
 @Composable
 internal fun SettingsRoute(
@@ -83,17 +106,7 @@ internal fun SettingsRoute(
   openDrawer: () -> Unit,
   navControllerAction: (route: Route) -> Unit,
 ) {
-  val context = LocalContext.current
-  val resources = LocalResources.current
-  val uiState: SettingsUIState = viewModel.uiState.collectAsStateWithLifecycle().value
-  val showErrorToast: Boolean =
-    viewModel.showErrorToast.collectAsStateWithLifecycle(initialValue = false).value
-
-  LaunchedEffect(showErrorToast) {
-    if (showErrorToast) showToast(context, resources.getString(R.string.common_error))
-  }
-
-  when (uiState) {
+  when (val uiState: SettingsUIState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     SettingsUIState.Loading -> EmptyScreen()
 
     is SettingsUIState.Ready ->
@@ -120,7 +133,7 @@ private fun SettingsScreen(
   clearCache: () -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.settings_title),
+    title = stringResource(Res.string.settings_title),
     navigationIcon = {
       if (LocalWindowSize.current.widthSizeClass != WindowWidthSizeClass.Expanded) {
         DrawerButton(openDrawer)
@@ -142,7 +155,7 @@ private fun SettingsScreen(
         exit = shrinkVertically() + fadeOut(),
       ) {
         val mContext = LocalContext.current
-        val title = stringResource(R.string.settings_updated, stringResource(R.string.app_name))
+        val title = stringResource(Res.string.settings_updated, stringResource(Res.string.app_name))
         AnnoyingBox(
           modifier = Modifier.padding(vertical = Sizes.small).fillMaxWidth(),
           onClick = {
@@ -152,65 +165,65 @@ private fun SettingsScreen(
           imageVector = Symbols.NewReleases,
           imageVectorContentDescription = title,
           title = title,
-          support = stringResource(R.string.settings_updated_support, BuildConfig.VERSION_NAME),
+          support = stringResource(Res.string.settings_updated_support, BuildConfig.VERSION_NAME),
         )
       }
       ListItemExpressive(
         icon = Symbols.Palette,
-        headlineText = stringResource(R.string.settings_display),
-        supportingText = stringResource(R.string.settings_display_support),
+        headlineText = stringResource(Res.string.settings_display),
+        supportingText = stringResource(Res.string.settings_display_support),
         onClick = { navControllerAction(DisplayRoute) },
         shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         icon = Symbols.Home,
-        headlineText = stringResource(R.string.settings_starting_screen),
-        supportingText = stringResource(R.string.settings_starting_screen_support),
+        headlineText = stringResource(Res.string.settings_starting_screen),
+        supportingText = stringResource(Res.string.settings_starting_screen_support),
         onClick = { navControllerAction(StartingScreenRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols._123,
-        headlineText = stringResource(R.string.settings_formatting),
-        supportingText = stringResource(R.string.settings_formatting_support),
+        headlineText = stringResource(Res.string.settings_formatting),
+        supportingText = stringResource(Res.string.settings_formatting_support),
         onClick = { navControllerAction(FormattingRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Calculate,
-        headlineText = stringResource(R.string.calculator_title),
-        supportingText = stringResource(R.string.settings_calculator_support),
+        headlineText = stringResource(Res.string.calculator_title),
+        supportingText = stringResource(Res.string.settings_calculator_support),
         onClick = { navControllerAction(CalculatorSettingsRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.SwapHoriz,
-        headlineText = stringResource(R.string.converter_title),
-        supportingText = stringResource(R.string.settings_converter_support),
+        headlineText = stringResource(Res.string.converter_title),
+        supportingText = stringResource(Res.string.settings_converter_support),
         onClick = { navControllerAction(ConverterSettingsRoute) },
         shape = ListItemExpressiveDefaults.lastShape,
       )
-      ListHeader(stringResource(R.string.settings_additional))
+      ListHeader(stringResource(Res.string.settings_additional))
       ListItemExpressive(
         icon = Symbols.Vibration,
-        headlineText = stringResource(R.string.settings_vibrations),
-        supportingText = stringResource(R.string.settings_vibrations_support),
+        headlineText = stringResource(Res.string.settings_vibrations),
+        supportingText = stringResource(Res.string.settings_vibrations_support),
         switchState = uiState.enableVibrations,
         onSwitchChange = updateVibrations,
         shape = ListItemExpressiveDefaults.firstShape,
       )
       ListItemExpressive(
         icon = Symbols.BacklightHigh,
-        headlineText = stringResource(R.string.settings_keep_screen_on),
-        supportingText = stringResource(R.string.settings_keep_screen_on_support),
+        headlineText = stringResource(Res.string.settings_keep_screen_on),
+        supportingText = stringResource(Res.string.settings_keep_screen_on_support),
         switchState = uiState.enableKeepScreenOn,
         onSwitchChange = updateKeepScreenOn,
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.RestorePage,
-        headlineText = stringResource(R.string.settings_backup),
-        supportingText = stringResource(R.string.settings_backup_support),
+        headlineText = stringResource(Res.string.settings_backup),
+        supportingText = stringResource(Res.string.settings_backup_support),
         onClick = { navControllerAction(BackupRoute) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
@@ -219,30 +232,29 @@ private fun SettingsScreen(
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
       ) {
-        val mContext = LocalContext.current
         ListItemExpressive(
-          headlineText = stringResource(R.string.settings_clear_cache),
+          headlineText = stringResource(Res.string.settings_clear_cache),
           icon = Symbols.Cached,
           onClick = {
             clearCache()
-            showToast(mContext, "👌")
+            // TODO snackbar showToast(mContext, "👌")
           },
           shape = ListItemExpressiveDefaults.middleShape,
         )
       }
-      if (BuildConfig.STORE_LINK.isNotEmpty()) {
+      if (Config.STORE_LINK.isNotEmpty()) {
         val mContext = LocalContext.current
         ListItemExpressive(
           icon = Symbols.RateReview,
-          headlineText = stringResource(R.string.settings_rate_this_app),
-          onClick = { openLink(mContext, BuildConfig.STORE_LINK) },
+          headlineText = stringResource(Res.string.settings_rate_this_app),
+          onClick = { openLink(mContext, Config.STORE_LINK) },
           shape = ListItemExpressiveDefaults.middleShape,
         )
       }
       ListItemExpressive(
         icon = Symbols.Info,
-        headlineText = stringResource(R.string.settings_about_unitto),
-        supportingText = stringResource(R.string.settings_about_unitto_support),
+        headlineText = stringResource(Res.string.settings_about_unitto),
+        supportingText = stringResource(Res.string.settings_about_unitto_support),
         onClick = { navControllerAction(AboutRoute) },
         shape = ListItemExpressiveDefaults.lastShape,
       )

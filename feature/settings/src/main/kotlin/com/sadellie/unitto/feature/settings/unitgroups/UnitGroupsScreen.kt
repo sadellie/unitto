@@ -52,18 +52,15 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.common.R
 import com.sadellie.unitto.core.designsystem.icons.symbols.AddCircle
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cancel
 import com.sadellie.unitto.core.designsystem.icons.symbols.DragHandle
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapVert
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Undo
-import com.sadellie.unitto.core.designsystem.plus
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -72,10 +69,24 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.plus
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.ReorderableLazyListState
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_cancel
+import unitto.core.common.generated.resources.common_confirm
+import unitto.core.common.generated.resources.common_disabled
+import unitto.core.common.generated.resources.common_enabled
+import unitto.core.common.generated.resources.settings_disable_unit_group_description
+import unitto.core.common.generated.resources.settings_enable_unit_group_description
+import unitto.core.common.generated.resources.settings_reorder_unit_group_description
+import unitto.core.common.generated.resources.settings_unit_groups_auto_sort
+import unitto.core.common.generated.resources.settings_unit_groups_auto_sort_support
+import unitto.core.common.generated.resources.settings_unit_groups_title
+import unitto.core.common.generated.resources.settings_unit_groups_undo
 
 @Composable
 internal fun UnitGroupsRoute(
@@ -119,7 +130,7 @@ private fun UnitGroupsScreen(
     }
 
   ScaffoldWithLargeTopBar(
-    title = stringResource(R.string.settings_unit_groups_title),
+    title = stringResource(Res.string.settings_unit_groups_title),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
     actions = {
       AnimatedVisibility(
@@ -129,7 +140,7 @@ private fun UnitGroupsScreen(
         exit = fadeOut() + shrinkHorizontally(),
       ) {
         IconButton(onClick = undoAutoSortUnitGroups, enabled = !uiState.isAutoSortEnabled) {
-          Icon(Symbols.Undo, stringResource(R.string.settings_unit_groups_undo))
+          Icon(Symbols.Undo, stringResource(Res.string.settings_unit_groups_undo))
         }
       }
 
@@ -137,7 +148,7 @@ private fun UnitGroupsScreen(
         onClick = { updateAutoSortDialogState(AutoSortDialogState.SHOW) },
         enabled = uiState.isAutoSortEnabled,
       ) {
-        Icon(Symbols.SwapVert, stringResource(R.string.settings_unit_groups_auto_sort))
+        Icon(Symbols.SwapVert, stringResource(Res.string.settings_unit_groups_auto_sort))
       }
     },
   ) { paddingValues ->
@@ -173,7 +184,7 @@ private fun UnitGroupsScreen(
       item(key = "enabled", contentType = ContentType.HEADER) {
         ListHeader(
           modifier = Modifier.animateItem().then(headerModifier),
-          text = stringResource(R.string.common_enabled),
+          text = stringResource(Res.string.common_enabled),
         )
       }
 
@@ -193,7 +204,7 @@ private fun UnitGroupsScreen(
 
       item(key = "disabled", contentType = ContentType.HEADER) {
         ListHeader(
-          text = stringResource(R.string.common_disabled),
+          text = stringResource(Res.string.common_disabled),
           modifier = Modifier.animateItem().then(headerModifier),
         )
       }
@@ -214,11 +225,11 @@ private fun UnitGroupsScreen(
 
   if (showAutoSortDialog) {
     AlertDialog(
-      icon = { Icon(Symbols.SwapVert, stringResource(R.string.settings_unit_groups_auto_sort)) },
+      icon = { Icon(Symbols.SwapVert, stringResource(Res.string.settings_unit_groups_auto_sort)) },
       onDismissRequest = { updateAutoSortDialogState(AutoSortDialogState.NONE) },
       confirmButton = {
         TextButton(onClick = autoSortUnitGroups, enabled = !isSorting) {
-          Text(stringResource(R.string.common_confirm))
+          Text(stringResource(Res.string.common_confirm))
         }
       },
       dismissButton = {
@@ -226,11 +237,11 @@ private fun UnitGroupsScreen(
           onClick = { updateAutoSortDialogState(AutoSortDialogState.NONE) },
           enabled = !isSorting,
         ) {
-          Text(stringResource(R.string.common_cancel))
+          Text(stringResource(Res.string.common_cancel))
         }
       },
-      title = { Text(stringResource(R.string.settings_unit_groups_auto_sort)) },
-      text = { Text(stringResource(R.string.settings_unit_groups_auto_sort_support)) },
+      title = { Text(stringResource(Res.string.settings_unit_groups_auto_sort)) },
+      text = { Text(stringResource(Res.string.settings_unit_groups_auto_sort_support)) },
     )
   }
 }
@@ -266,7 +277,7 @@ private fun LazyItemScope.EnabledUnitGroupItem(
       leadingContent = {
         Icon(
           imageVector = Symbols.Cancel,
-          contentDescription = stringResource(R.string.settings_disable_unit_group_description),
+          contentDescription = stringResource(Res.string.settings_disable_unit_group_description),
           modifier =
             Modifier.clickable(
               interactionSource = remember { MutableInteractionSource() },
@@ -278,7 +289,7 @@ private fun LazyItemScope.EnabledUnitGroupItem(
       trailingContent = {
         Icon(
           imageVector = Symbols.DragHandle,
-          contentDescription = stringResource(R.string.settings_reorder_unit_group_description),
+          contentDescription = stringResource(Res.string.settings_reorder_unit_group_description),
           modifier =
             Modifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -306,7 +317,7 @@ private fun LazyItemScope.DisabledUnitGroupItem(
     trailingContent = {
       Icon(
         imageVector = Symbols.AddCircle,
-        contentDescription = stringResource(R.string.settings_enable_unit_group_description),
+        contentDescription = stringResource(Res.string.settings_enable_unit_group_description),
         modifier =
           Modifier.clickable(
             interactionSource = remember { MutableInteractionSource() },

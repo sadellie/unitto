@@ -19,6 +19,7 @@
 plugins {
   id("unitto.library")
 
+  alias(libs.plugins.compose)
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.serialization)
 }
@@ -27,8 +28,6 @@ android {
   namespace = "com.sadellie.unitto.feature.settings"
   defaultConfig.stringConfigField("VERSION_NAME", libs.versions.versionName.get())
   defaultConfig.stringConfigField("VERSION_CODE", libs.versions.versionCode.get())
-  defaultConfig.stringConfigField("STORE_LINK", "https://github.com/sadellie/unitto")
-  buildTypes.getByName("cancer").stringConfigField("STORE_LINK", "https://play.google.com/store/apps/details?id=com.sadellie.unitto")
   buildFeatures.compose = true
   buildFeatures.buildConfig = true
   composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
@@ -50,13 +49,14 @@ dependencies {
   implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
   implementation(libs.io.insert.koin.koin.compose.viewmodel)
   implementation(libs.io.insert.koin.koin.core.coroutines)
+  implementation(libs.org.jetbrains.compose.components.components.resources)
 
   implementation(libs.androidx.appcompat.appcompat)
   implementation(libs.androidx.compose.foundation.foundation)
   implementation(libs.androidx.compose.material3)
   implementation(libs.androidx.compose.material3.window.size)
   implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.navigation.navigation.compose)
+  implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
 
   implementation(libs.sh.calvin.reorderable.reorderable)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)

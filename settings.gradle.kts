@@ -19,6 +19,7 @@
 pluginManagement {
   includeBuild("build-logic")
   repositories {
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
     mavenCentral()
     gradlePluginPortal()
@@ -27,8 +28,8 @@ pluginManagement {
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
   repositories {
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
     mavenCentral()
     maven(url = "https://jitpack.io")
@@ -37,25 +38,27 @@ dependencyResolutionManagement {
 
 rootProject.name = "Unitto"
 
-include(":app")
-include(":core:common")
-include(":core:model")
-include(":core:themmo")
-include(":core:navigation")
-include(":core:designsystem")
-include(":core:ui")
-include(":core:database")
-include(":core:data")
-include(":core:remote")
-include(":core:evaluatto")
-include(":core:licenses")
-include(":core:backup")
-include(":core:datastore")
-include(":feature:bodymass")
-include(":feature:calculator")
-include(":feature:converter")
-include(":feature:datecalculator")
-include(":feature:glance")
-// include(":feature:graphing")
-include(":feature:timezone")
-include(":feature:settings")
+with(this) {
+  include(":app")
+  include(":core:common")
+  include(":core:model")
+  include(":core:themmo")
+  include(":core:navigation")
+  include(":core:designsystem")
+  include(":core:ui")
+  include(":core:database")
+  include(":core:data")
+  include(":core:remote")
+  include(":core:evaluatto")
+  include(":core:licenses")
+  include(":core:backup")
+  include(":core:datastore")
+  include(":feature:bodymass")
+  include(":feature:calculator")
+  include(":feature:converter")
+  include(":feature:datecalculator")
+  include(":feature:glance")
+  include(":feature:timezone")
+  include(":feature:settings")
+  include(":kt-math")
+}
