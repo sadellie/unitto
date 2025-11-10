@@ -25,7 +25,12 @@ import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-internal data class SelectedUnitPair(val order: Int, val from: BasicUnit, val to: BasicUnit)
+internal data class SelectedUnitPair(
+  val id: Int = 0,
+  val order: Int,
+  val from: BasicUnit,
+  val to: BasicUnit,
+)
 
 internal suspend fun entityListToDomainList(
   unitsRepo: UnitsRepository,
@@ -43,7 +48,14 @@ internal suspend fun entityListToDomainList(
         continue
       }
 
-      result.add(SelectedUnitPair(order = entity.position, from = foundFrom, to = foundTo))
+      result.add(
+        SelectedUnitPair(
+          id = entity.entityId,
+          order = entity.position,
+          from = foundFrom,
+          to = foundTo,
+        )
+      )
     }
 
     return@withContext result

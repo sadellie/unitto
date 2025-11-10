@@ -36,7 +36,6 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
-import androidx.glance.GlanceTheme
 import androidx.glance.LocalContext
 import androidx.glance.LocalSize
 import androidx.glance.appwidget.GlanceAppWidget
@@ -69,12 +68,13 @@ import com.sadellie.unitto.core.ui.textfield.formatExpression
 import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.IconButton
 import com.sadellie.unitto.feature.glance.common.LoadingUI
+import com.sadellie.unitto.feature.glance.common.UnittoGlanceTheme
 import com.sadellie.unitto.feature.glance.common.WidgetTheme
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class CalculatorWidget : GlanceAppWidget(), KoinComponent {
-  override val sizeMode = SizeMode.Responsive(setOf(SMALL, BIG))
+  override val sizeMode = SizeMode.Responsive(setOf(SMALL, MEDIUM, BIG))
 
   override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
 
@@ -86,7 +86,8 @@ class CalculatorWidget : GlanceAppWidget(), KoinComponent {
     internal val outputFormatStateKey = intPreferencesKey("GLANCE_OUTPUT_FORMAT")
 
     internal val SMALL = DpSize(200.dp, 250.dp)
-    internal val BIG = DpSize(250.dp, 400.dp)
+    internal val MEDIUM = DpSize(200.dp, 350.dp)
+    internal val BIG = DpSize(200.dp, 400.dp)
   }
 
   override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -96,23 +97,24 @@ class CalculatorWidget : GlanceAppWidget(), KoinComponent {
         CompositionLocalProvider(
           LocalConfiguration provides Configuration(context.resources.configuration)
         ) {
-          val appPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
+          val calculatorPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
+          val appPrefs = userPrefsRepository.appPrefs.collectAsState(null).value
 
-          LaunchedEffect(appPrefs) {
+          LaunchedEffect(calculatorPrefs) {
             updateAppWidgetState(context, id) { state ->
-              state[precisionStateKey] = appPrefs?.precision ?: DEFAULT_PRECISION
-              state[outputFormatStateKey] = appPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
+              state[precisionStateKey] = calculatorPrefs?.precision ?: DEFAULT_PRECISION
+              state[outputFormatStateKey] = calculatorPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
             }
             this@CalculatorWidget.update(context, id)
           }
 
-          WidgetTheme {
-            if (appPrefs == null) {
+          WidgetTheme(appPrefs?.enableAmoledTheme ?: false) {
+            if (calculatorPrefs == null) {
               LoadingUI(actionRunCallback<RestartCalculatorWidget>())
             } else {
               val state = currentState<Preferences>()
               ReadyUI(
-                appPrefs = appPrefs,
+                appPrefs = calculatorPrefs,
                 input = state[inputStateKey] ?: "",
                 output = state[outputStateKey] ?: "",
               )
@@ -137,21 +139,24 @@ class CalculatorWidget : GlanceAppWidget(), KoinComponent {
 private fun ReadyUI(appPrefs: CalculatorPreferences, input: String, output: String) {
   Column(
     modifier =
-      GlanceModifier.appWidgetBackground().background(GlanceTheme.colors.background).fillMaxSize()
+      GlanceModifier.appWidgetBackground()
+        .background(UnittoGlanceTheme.colors.surfaceContainer)
+        .fillMaxSize()
   ) {
     val formatterSymbols = appPrefs.formatterSymbols
     val uiSectionModifier = GlanceModifier.fillMaxWidth()
 
-    if (LocalSize.current != CalculatorWidget.SMALL) {
+    if (LocalSize.current.height == CalculatorWidget.BIG.height) {
       ActionButtons(
-        modifier = uiSectionModifier.background(GlanceTheme.colors.surfaceVariant),
+        modifier = uiSectionModifier.background(UnittoGlanceTheme.colors.surfaceVariant),
         output = output,
         formatterSymbols = formatterSymbols,
       )
     }
 
     TextFields(
-      modifier = uiSectionModifier.background(GlanceTheme.colors.surfaceVariant).defaultWeight(),
+      modifier =
+        uiSectionModifier.background(UnittoGlanceTheme.colors.surfaceVariant).defaultWeight(),
       input = input,
       formatterSymbols = formatterSymbols,
       output = output,
@@ -181,13 +186,13 @@ private fun ActionButtons(
 
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.primary,
+      containerColor = UnittoGlanceTheme.colors.primary,
       iconRes = R.drawable.content_copy,
       onClick = CopyResultAction.create(output, formatterSymbols.grouping),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.primary,
+      containerColor = UnittoGlanceTheme.colors.primary,
       iconRes = R.drawable.open_in_new,
       onClick = launchAction(LocalContext.current),
     )
@@ -212,20 +217,22 @@ private fun TextFields(
         TextStyle(
           fontSize = 36.sp,
           textAlign = TextAlign.End,
-          color = GlanceTheme.colors.onSurfaceVariant,
+          color = UnittoGlanceTheme.colors.onSurfaceVariant,
         ),
     )
-    Text(
-      text = output.formatExpression(formatterSymbols),
-      modifier = textModifier,
-      maxLines = 1,
-      style =
-        TextStyle(
-          fontSize = 36.sp,
-          textAlign = TextAlign.End,
-          color = GlanceTheme.colors.onSurfaceVariant.withAlpha(alpha = 0.5f),
-        ),
-    )
+    if (LocalSize.current.height >= CalculatorWidget.MEDIUM.height) {
+      Text(
+        text = output.formatExpression(formatterSymbols),
+        modifier = textModifier,
+        maxLines = 1,
+        style =
+          TextStyle(
+            fontSize = 36.sp,
+            textAlign = TextAlign.End,
+            color = UnittoGlanceTheme.colors.onSurfaceVariant.withAlpha(alpha = 0.5f),
+          ),
+      )
+    }
   }
 }
 
@@ -234,6 +241,7 @@ private fun TextFields(
 private fun ColorProvider.withAlpha(alpha: Float): ColorProvider =
   ColorProvider(this.getColor(LocalContext.current).copy(alpha = alpha))
 
+@Suppress("unused")
 @OptIn(ExperimentalGlancePreviewApi::class)
 @Composable
 @Preview

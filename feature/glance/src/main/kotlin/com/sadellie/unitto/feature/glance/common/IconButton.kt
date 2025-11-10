@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.IconCompat
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceModifier
-import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
@@ -37,7 +36,6 @@ import androidx.glance.action.Action
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.background
-import androidx.glance.color.ColorProviders
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.fillMaxWidth
@@ -52,7 +50,7 @@ internal fun IconButton(
   glanceModifier: GlanceModifier,
   containerColor: ColorProvider,
   @DrawableRes iconRes: Int,
-  contentColor: ColorProvider = GlanceTheme.colors.contentColorFor(containerColor),
+  contentColor: ColorProvider = UnittoGlanceTheme.colors.contentColorFor(containerColor),
   onClick: Action,
 ) {
   Box(modifier = glanceModifier.height(48.dp).padding(4.dp), contentAlignment = Alignment.Center) {
@@ -76,9 +74,9 @@ internal fun IconButton(
 @Composable
 internal fun FloatingActionButton(
   glanceModifier: GlanceModifier,
-  containerColor: ColorProvider = GlanceTheme.colors.primaryContainer,
+  containerColor: ColorProvider = UnittoGlanceTheme.colors.primaryContainer,
   @DrawableRes iconRes: Int,
-  contentColor: ColorProvider = GlanceTheme.colors.contentColorFor(containerColor),
+  contentColor: ColorProvider = UnittoGlanceTheme.colors.contentColorFor(containerColor),
   onClick: Action,
 ) {
   Box(modifier = glanceModifier.size(40.dp), contentAlignment = Alignment.Center) {
@@ -98,7 +96,7 @@ internal fun FloatingActionButton(
   }
 }
 
-private fun ColorProviders.contentColorFor(backgroundColor: ColorProvider): ColorProvider =
+private fun UnittoColorProviders.contentColorFor(backgroundColor: ColorProvider): ColorProvider =
   when (backgroundColor) {
     primary -> onPrimary
     primaryContainer -> onPrimaryContainer

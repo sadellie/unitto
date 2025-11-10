@@ -20,7 +20,6 @@ package com.sadellie.unitto.feature.glance.common
 
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceModifier
-import androidx.glance.GlanceTheme
 import androidx.glance.action.Action
 import androidx.glance.action.action
 import androidx.glance.appwidget.appWidgetBackground
@@ -36,12 +35,14 @@ import com.sadellie.unitto.feature.glance.R
 internal fun LoadingUI(onClick: Action) {
   Box(
     modifier =
-      GlanceModifier.appWidgetBackground().background(GlanceTheme.colors.background).fillMaxSize(),
+      GlanceModifier.appWidgetBackground()
+        .background(UnittoGlanceTheme.colors.surfaceContainer)
+        .fillMaxSize(),
     contentAlignment = Alignment.Center,
   ) {
     IconButton(
       glanceModifier = GlanceModifier,
-      containerColor = GlanceTheme.colors.primary,
+      containerColor = UnittoGlanceTheme.colors.primary,
       iconRes = R.drawable.refresh,
       onClick = onClick,
     )

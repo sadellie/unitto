@@ -20,6 +20,7 @@ package io.github.sadellie.themmo
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
@@ -127,7 +128,8 @@ internal expect fun provideDynamicColorScheme(
   defaultColorScheme: ColorScheme,
 ): ColorScheme
 
-private fun ColorScheme.toAmoled(): ColorScheme {
+@Stable
+fun ColorScheme.toAmoled(): ColorScheme {
   return ColorScheme(
     primary = this.primary.darken(AMOLED_MAIN_FACTOR),
     onPrimary = this.onPrimary.darken(AMOLED_TEXT_FACTOR),

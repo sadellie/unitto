@@ -20,7 +20,6 @@ package com.sadellie.unitto.feature.glance.calculator
 
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceModifier
-import androidx.glance.GlanceTheme
 import androidx.glance.action.Action
 import androidx.glance.action.action
 import androidx.glance.layout.Column
@@ -32,6 +31,7 @@ import androidx.glance.preview.Preview
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.IconButton
+import com.sadellie.unitto.feature.glance.common.UnittoGlanceTheme
 
 @Composable
 internal fun CalculatorKeyboard(
@@ -78,25 +78,25 @@ private fun KeyboardRow1(
 
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.tertiaryContainer,
+      containerColor = UnittoGlanceTheme.colors.tertiaryContainer,
       iconRes = R.drawable.clear,
       onClick = clearInputAction(),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.secondaryContainer,
+      containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.brackets,
       onClick = addBracketAction(),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.secondaryContainer,
+      containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.percent,
       onClick = addTokenAction(Token.Operator.PERCENT),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.secondaryContainer,
+      containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.divide,
       onClick = addTokenAction(Token.Operator.DIVIDE),
     )
@@ -110,25 +110,25 @@ private fun KeyboardRow2(rowModifier: GlanceModifier, addTokenAction: (String) -
 
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key7,
       onClick = addTokenAction(Token.Digit.DIGIT_7),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key8,
       onClick = addTokenAction(Token.Digit.DIGIT_8),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key9,
       onClick = addTokenAction(Token.Digit.DIGIT_9),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.secondaryContainer,
+      containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.multiply,
       onClick = addTokenAction(Token.Operator.MULTIPLY),
     )
@@ -142,25 +142,25 @@ private fun KeyboardRow3(rowModifier: GlanceModifier, addTokenAction: (String) -
 
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key4,
       onClick = addTokenAction(Token.Digit.DIGIT_4),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key5,
       onClick = addTokenAction(Token.Digit.DIGIT_5),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key6,
       onClick = addTokenAction(Token.Digit.DIGIT_6),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.secondaryContainer,
+      containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.minus,
       onClick = addTokenAction(Token.Operator.MINUS),
     )
@@ -174,25 +174,25 @@ private fun KeyboardRow4(rowModifier: GlanceModifier, addTokenAction: (String) -
 
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key1,
       onClick = addTokenAction(Token.Digit.DIGIT_1),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key2,
       onClick = addTokenAction(Token.Digit.DIGIT_2),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key3,
       onClick = addTokenAction(Token.Digit.DIGIT_3),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.secondaryContainer,
+      containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.plus,
       onClick = addTokenAction(Token.Operator.PLUS),
     )
@@ -214,39 +214,39 @@ private fun KeyboardRow5(
     if (middleZero) {
       IconButton(
         glanceModifier = buttonModifier,
-        containerColor = GlanceTheme.colors.inverseOnSurface,
+        containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = if (useDot) R.drawable.dot else R.drawable.comma,
         onClick = addTokenAction(Token.Digit.DOT),
       )
       IconButton(
         glanceModifier = buttonModifier,
-        containerColor = GlanceTheme.colors.inverseOnSurface,
+        containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = R.drawable.key0,
         onClick = addTokenAction(Token.Digit.DIGIT_0),
       )
     } else {
       IconButton(
         glanceModifier = buttonModifier,
-        containerColor = GlanceTheme.colors.inverseOnSurface,
+        containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = R.drawable.key0,
         onClick = addTokenAction(Token.Digit.DIGIT_0),
       )
       IconButton(
         glanceModifier = buttonModifier,
-        containerColor = GlanceTheme.colors.inverseOnSurface,
+        containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = if (useDot) R.drawable.dot else R.drawable.comma,
         onClick = addTokenAction(Token.Digit.DOT),
       )
     }
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.inverseOnSurface,
+      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.backspace,
       onClick = deleteTokenAction(),
     )
     IconButton(
       glanceModifier = buttonModifier,
-      containerColor = GlanceTheme.colors.primaryContainer,
+      containerColor = UnittoGlanceTheme.colors.primaryContainer,
       iconRes = R.drawable.equal,
       onClick = equalAction(),
     )

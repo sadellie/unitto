@@ -207,7 +207,7 @@ internal class ConverterWidgetConfigureViewModel(
       _inMemoryPairs.update { unitPairs ->
         if (unitPairs == null) return@update null
         val maxPosition = unitPairs.maxOfOrNull(SelectedUnitPair::order) ?: 0
-        unitPairs + SelectedUnitPair(maxPosition + 1, unitFrom, unitTo)
+        unitPairs + SelectedUnitPair(order = maxPosition + 1, from = unitFrom, to = unitTo)
       }
     }
   }
@@ -263,6 +263,7 @@ private fun PreviewMainScreen() {
         selectedUnits =
           listOf(
             SelectedUnitPair(
+              id = 0,
               order = 0,
               from =
                 NormalUnit(

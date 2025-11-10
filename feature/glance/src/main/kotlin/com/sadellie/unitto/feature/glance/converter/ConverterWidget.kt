@@ -24,6 +24,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
@@ -33,10 +34,10 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
-import androidx.glance.GlanceTheme
-import androidx.glance.LocalContext
+import androidx.glance.ImageProvider
 import androidx.glance.LocalSize
 import androidx.glance.action.Action
 import androidx.glance.action.action
@@ -72,13 +73,17 @@ import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
+import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
+import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.FloatingActionButton
-import com.sadellie.unitto.feature.glance.common.cornerRadiusWithBackground
+import com.sadellie.unitto.feature.glance.common.UnittoGlanceTheme
+import com.sadellie.unitto.feature.glance.common.WidgetTheme
+import kotlin.getValue
 import kotlinx.coroutines.flow.mapLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.component.KoinComponent
@@ -119,22 +124,25 @@ internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
       dao.getByAppWidgetId(appWidgetId).mapLatest { entities ->
         entityListToDomainList(unitsRepo, entities)
       }
-
+    val userPrefsRepository by inject<UserPreferencesRepository>()
     provideContent {
-      CompositionLocalProvider(
-        LocalConfiguration provides Configuration(context.resources.configuration),
-        LocalDensity provides Density(context),
-      ) {
-        val unitPairs = unitPairsFlow.collectAsState(emptyList())
-        ReadyUI(
-          modifier = GlanceModifier.fillMaxSize(),
-          size = LocalSize.current,
-          onUnitPairClick = { unitFromId, unitToId ->
-            launchConverterAction(context, unitFromId, unitToId)
-          },
-          onLaunchConverter = launchConverterAction(context, null, null),
-          units = unitPairs.value,
-        )
+      val appPrefs = userPrefsRepository.appPrefs.collectAsState(null).value
+      WidgetTheme(appPrefs?.enableAmoledTheme ?: false) {
+        CompositionLocalProvider(
+          LocalConfiguration provides Configuration(context.resources.configuration),
+          LocalDensity provides Density(context),
+        ) {
+          val unitPairs = unitPairsFlow.collectAsState(emptyList())
+          ReadyUI(
+            modifier = GlanceModifier.fillMaxSize(),
+            size = LocalSize.current,
+            onUnitPairClick = { unitFromId, unitToId ->
+              launchConverterAction(context, unitFromId, unitToId)
+            },
+            onLaunchConverter = launchConverterAction(context, null, null),
+            units = unitPairs.value,
+          )
+        }
       }
     }
   }
@@ -162,14 +170,15 @@ private fun ReadyUI(
   onLaunchConverter: Action,
   units: List<SelectedUnitPair>,
 ) {
-  Column(modifier = modifier.background(GlanceTheme.colors.widgetBackground)) {
+  Column(modifier = modifier.background(UnittoGlanceTheme.colors.surfaceContainer)) {
     Row(
       modifier = GlanceModifier.fillMaxWidth().padding(Sizes.small),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Text(
         modifier = GlanceModifier.defaultWeight(),
-        style = TextStyle(color = GlanceTheme.colors.onBackground, fontWeight = FontWeight.Medium),
+        style =
+          TextStyle(color = UnittoGlanceTheme.colors.onBackground, fontWeight = FontWeight.Medium),
         text = stringResource(Res.string.converter_title),
       )
       FloatingActionButton(
@@ -178,22 +187,27 @@ private fun ReadyUI(
         onClick = onLaunchConverter,
       )
     }
+    val indexedUnits = remember(units) { units.withIndex().toList() }
 
     LazyColumn(
       modifier = GlanceModifier.fillMaxWidth().defaultWeight().padding(horizontal = Sizes.small)
     ) {
-      items(units) { unitPair ->
+      items(items = indexedUnits, itemId = { (_, unitPair) -> unitPair.id.toLong() }) {
+        (index, unitPair) ->
         // outer padding
-        Box(GlanceModifier.padding(vertical = Sizes.extraSmall)) {
+        Box(GlanceModifier.padding(vertical = ListItemExpressiveDefaults.ListArrangement.spacing)) {
           UnitPairItem(
             modifier =
               GlanceModifier.clickable(onUnitPairClick(unitPair.from.id, unitPair.to.id))
                 .fillMaxWidth(),
             shortNames = size == ConverterWidget.smallSizeMode,
             unitPair = unitPair,
+            indexInList = index,
+            listSize = indexedUnits.size,
           )
         }
       }
+      item { Spacer(modifier = GlanceModifier.height(Sizes.small)) }
     }
   }
 }
@@ -203,11 +217,12 @@ private fun UnitPairItem(
   modifier: GlanceModifier = GlanceModifier,
   shortNames: Boolean,
   unitPair: SelectedUnitPair,
+  indexInList: Int,
+  listSize: Int,
 ) {
-  val context = LocalContext.current
   val unitTextStyle =
     TextStyle(
-      color = GlanceTheme.colors.onSecondaryContainer,
+      color = UnittoGlanceTheme.colors.onSecondaryContainer,
       textAlign = TextAlign.Center,
       fontSize = 14.sp,
       fontWeight = FontWeight.Normal,
@@ -216,10 +231,9 @@ private fun UnitPairItem(
     modifier =
       modifier
         .padding(Sizes.small)
-        .cornerRadiusWithBackground(
-          context = context,
-          cornerRadius = 8.dp,
-          color = GlanceTheme.colors.secondaryContainer,
+        .background(
+          imageProvider = ImageProvider(listedShaped(indexInList, listSize)),
+          colorFilter = ColorFilter.tint(UnittoGlanceTheme.colors.secondaryContainer),
         ),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalAlignment = Alignment.CenterVertically,
@@ -231,7 +245,7 @@ private fun UnitPairItem(
     )
     Spacer(
       modifier =
-        GlanceModifier.background(GlanceTheme.colors.outline).width(1.dp).height(Sizes.medium)
+        GlanceModifier.background(UnittoGlanceTheme.colors.outline).width(1.dp).height(Sizes.medium)
     )
     Text(
       modifier = GlanceModifier.defaultWeight(),
@@ -241,6 +255,19 @@ private fun UnitPairItem(
   }
 }
 
+@Stable
+private fun listedShaped(indexInList: Int, listSize: Int): Int {
+  if (listSize == 1) return R.drawable.rounded_corners_rectangle_shape_single
+  val isFirst = indexInList == 0
+  val isLast = indexInList == listSize - 1
+  return when {
+    isFirst -> R.drawable.rounded_corners_rectangle_shape_first
+    isLast -> R.drawable.rounded_corners_rectangle_shape_last
+    else -> R.drawable.rounded_corners_rectangle_shape_middle
+  }
+}
+
+@Suppress("unused")
 @OptIn(ExperimentalGlancePreviewApi::class)
 @Composable
 @Preview
@@ -248,6 +275,7 @@ private fun PreviewReadyUICompact() {
   val units = remember {
     listOf(
       SelectedUnitPair(
+        id = 0,
         order = 0,
         from =
           NormalUnit(
@@ -267,6 +295,7 @@ private fun PreviewReadyUICompact() {
           ),
       ),
       SelectedUnitPair(
+        id = 1,
         order = 1,
         from =
           NormalUnit(
@@ -303,6 +332,7 @@ private fun PreviewReadyUIMedium() {
   val units = remember {
     listOf(
       SelectedUnitPair(
+        id = 0,
         order = 0,
         from =
           NormalUnit(
@@ -322,6 +352,7 @@ private fun PreviewReadyUIMedium() {
           ),
       ),
       SelectedUnitPair(
+        id = 1,
         order = 1,
         from =
           NormalUnit(
