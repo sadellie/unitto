@@ -74,10 +74,10 @@ internal class ConverterWidgetConfigureActivity : AppCompatActivity() {
           darkColorScheme = DarkThemeColors,
           dynamicThemeEnabled = true,
         )
-      val coroutineScope = rememberCoroutineScope()
 
       Themmo(themmoController) {
         val navController = rememberNavController()
+        val coroutineScope = rememberCoroutineScope()
         ConverterWidgetConfigureNavigation(
           navController = navController,
           appWidgetId = appWidgetId,
