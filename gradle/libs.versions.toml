@@ -1,5 +1,5 @@
 [versions]
-versionCode = "59"
+versionCode = "60"
 versionName = "Slimy green"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
