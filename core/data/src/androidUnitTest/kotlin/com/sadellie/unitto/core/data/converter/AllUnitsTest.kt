@@ -389,6 +389,8 @@ class AllUnitsTest {
   fun testVolume() = testWithUnits {
     attoliter.checkWith(millimeter, "1507000000000", "0.00151")
     milliliter.checkWith(liter, "1507", "1.507")
+    centiliter.checkWith(liter, "1507", "15.07")
+    deciliter.checkWith(liter, "1507", "150.7")
     liter.checkWith(us_liquid_gallon, "1507", "398.10728")
     us_liquid_gallon.checkWith(us_fluid_ounce, "1507", "192896")
     us_liquid_quart.checkWith(us_liquid_gallon, "1507", "376.75")

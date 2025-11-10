@@ -288,6 +288,8 @@
     <string name="unit_celsius_short" translatable="false">°C</string>
     <string name="unit_cent">Cent</string>
     <string name="unit_cent_short">cent</string>
+    <string name="unit_centiliter">Centiliter</string>
+    <string name="unit_centiliter_short">cL</string>
     <string name="unit_centimeter">Centimeter</string>
     <string name="unit_centimeter_per_hour">Centimeter/hour</string>
     <string name="unit_centimeter_per_hour_short">cm/h</string>
@@ -758,6 +760,8 @@
     <string name="unit_currency_zwl_short" translatable="false">ZWL</string>
     <string name="unit_day">Day</string>
     <string name="unit_day_short">d</string>
+    <string name="unit_deciliter">Deciliter</string>
+    <string name="unit_deciliter_short">dL</string>
     <string name="unit_decimal">Decimal</string>
     <string name="unit_decimal_short">base10</string>
     <string name="unit_decimeter">Decimeter</string>

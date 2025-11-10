@@ -92,6 +92,20 @@ internal val volumeCollection: List<BasicUnit> by lazy {
       Res.string.unit_milliliter_short,
     ),
     NormalUnit(
+      UnitID.centiliter,
+      KBigDecimal("10000000000000000"),
+      UnitGroup.VOLUME,
+      Res.string.unit_milliliter,
+      Res.string.unit_milliliter_short,
+    ),
+    NormalUnit(
+      UnitID.deciliter,
+      KBigDecimal("100000000000000000"),
+      UnitGroup.VOLUME,
+      Res.string.unit_milliliter,
+      Res.string.unit_milliliter_short,
+    ),
+    NormalUnit(
       UnitID.liter,
       KBigDecimal("1000000000000000000"),
       UnitGroup.VOLUME,

@@ -141,6 +141,8 @@ object UnitID {
   // VOLUME
   const val attoliter = "attoliter"
   const val milliliter = "milliliter"
+  const val centiliter = "centiliter"
+  const val deciliter = "deciliter"
   const val liter = "liter"
   const val us_liquid_gallon = "gallon"
   const val us_liquid_quart = "us_liquid_quart"
