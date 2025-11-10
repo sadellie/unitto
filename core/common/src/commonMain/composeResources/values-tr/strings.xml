@@ -19,7 +19,7 @@
 <resources>
     <string name="calculator_clear_history">Geçmişi temizle</string>
     <string name="calculator_clear_history_support">Geçmişteki tüm ifadeler tamamen silinecek. Bu işlem geri alınamaz!</string>
-    <string name="calculator_divide_by_zero_error">0\'a bölünemez</string>
+    <string name="calculator_divide_by_zero_error">0'a bölünemez</string>
     <string name="calculator_no_history">Geçmiş yok</string>
     <string name="calculator_title">Hesap Makinesi</string>
     <string name="common_cancel">İptal</string>

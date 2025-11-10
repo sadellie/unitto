@@ -110,7 +110,7 @@
     <string name="settings_ac_button_support">Toon aparte verwijderknop</string>
     <string name="settings_additional">Overig</string>
     <string name="settings_amoled_dark">AMOLED-donker</string>
-    <string name="settings_amoled_dark_support">Gebruik een zwarte achtergrond voor donkere thema\'s</string>
+    <string name="settings_amoled_dark_support">Gebruik een zwarte achtergrond voor donkere thema's</string>
     <string name="settings_auto">Automatisch</string>
     <string name="settings_back_up">Back-up</string>
     <string name="settings_clear_cache">Verwijder cache</string>
@@ -423,7 +423,7 @@
     <string name="unit_currency_tjs">Tadzjiekse somoni</string>
     <string name="unit_currency_tmt">Turkmeense manat</string>
     <string name="unit_currency_tnd">Tunesische dinar</string>
-    <string name="unit_currency_top">Tongaanse pa\'anga</string>
+    <string name="unit_currency_top">Tongaanse pa'anga</string>
     <string name="unit_currency_try">Turkse lira</string>
     <string name="unit_currency_ttd">Trinidad en Tobagodollar</string>
     <string name="unit_currency_twd">Nieuwe Taiwanese dollar</string>

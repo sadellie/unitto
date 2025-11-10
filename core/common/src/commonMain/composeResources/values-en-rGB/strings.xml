@@ -18,8 +18,8 @@
 
 <resources>
     <string name="calculator_clear_history">Clear history</string>
-    <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can\'t be undone!</string>
-    <string name="calculator_divide_by_zero_error">Can\'t divide by 0</string>
+    <string name="calculator_clear_history_support">All expressions from history will be deleted forever. This action can't be undone!</string>
+    <string name="calculator_divide_by_zero_error">Can't divide by 0</string>
     <string name="calculator_no_history">No history</string>
     <string name="calculator_title">Calculator</string>
     <string name="common_add">Add</string>
@@ -74,7 +74,7 @@
     <string name="settings_color_theme">Colour theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
     <string name="settings_converter_support">Unit groups, sorting, formatting</string>
-    <string name="settings_currency_rates_note_text">Currency rates are updated daily. There\'s no real-time market monitoring in the app</string>
+    <string name="settings_currency_rates_note_text">Currency rates are updated daily. There's no real-time market monitoring in the app</string>
     <string name="settings_currency_rates_note_title">Wrong currency rates?</string>
     <string name="settings_dark_mode">Dark</string>
     <string name="settings_disable_unit_group_description">Disable unit group</string>
@@ -428,7 +428,7 @@
     <string name="unit_earth_mass_short">Earth M</string>
     <string name="unit_earth_surface_gravity">Earth surface gravity</string>
     <string name="unit_earth_surface_gravity_short">Earth g</string>
-    <string name="unit_earths_orbital_speed">Earth\'s orbital speed</string>
+    <string name="unit_earths_orbital_speed">Earth's orbital speed</string>
     <string name="unit_electron_cross_section">Electron cross section</string>
     <string name="unit_electron_cross_section_short">ecs</string>
     <string name="unit_electron_mass_rest">Electron mass</string>

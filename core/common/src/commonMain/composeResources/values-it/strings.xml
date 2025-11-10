@@ -46,7 +46,7 @@
     <string name="common_hello">Ciao!</string>
     <string name="common_label">Etichetta</string>
     <string name="common_loading">Caricamento…</string>
-    <string name="common_navigate_up_description">Naviga verso l\'alto</string>
+    <string name="common_navigate_up_description">Naviga verso l'alto</string>
     <string name="common_next">Avanti</string>
     <string name="common_no_results">Nessun risultato trovato</string>
     <string name="common_no_results_description">Svuota risultato ricerca</string>
@@ -84,7 +84,7 @@
     <string name="keyboard_sin">Seno</string>
     <string name="keyboard_tan">Tangente</string>
     <string name="settings_about_unitto">Riguardo a Unitto</string>
-    <string name="settings_about_unitto_support">Impara riguardo all\'app</string>
+    <string name="settings_about_unitto_support">Impara riguardo all'app</string>
     <string name="settings_ac_button">Pulsante AC</string>
     <string name="settings_ac_button_support">Mostra pulsante pulisci separato</string>
     <string name="settings_additional">Aggiuntive</string>
@@ -96,12 +96,12 @@
     <string name="settings_color_theme">Colore tema</string>
     <string name="settings_color_theme_support">Scegli una modalità tematica</string>
     <string name="settings_converter_support">Gruppi di unità, ordine, formato</string>
-    <string name="settings_currency_rates_note_text">I tassi di cambio sono aggiornati quotidianamente. Non c\'è alcun monitoraggio in tempo reale del mercato nell\'app</string>
+    <string name="settings_currency_rates_note_text">I tassi di cambio sono aggiornati quotidianamente. Non c'è alcun monitoraggio in tempo reale del mercato nell'app</string>
     <string name="settings_currency_rates_note_title">Tassi di cambio sbagliati?</string>
     <string name="settings_dark_mode">Scuro</string>
     <string name="settings_disable_unit_group_description">Disabilita gruppi di unità</string>
     <string name="settings_display">Schermo</string>
-    <string name="settings_display_support">Aspetto dell\'app</string>
+    <string name="settings_display_support">Aspetto dell'app</string>
     <string name="settings_dynamic_colors">Colori dinamici</string>
     <string name="settings_dynamic_colors_support">Usa colori dal tuo sfondo</string>
     <string name="settings_enable_unit_group_description">Abilita gruppo unità</string>
@@ -112,7 +112,7 @@
     <string name="settings_formatting">Formato</string>
     <string name="settings_formatting_support">Precisione e aspetto dei numeri</string>
     <string name="settings_language">Lingua</string>
-    <string name="settings_language_support">Cambia lingua dell\'app</string>
+    <string name="settings_language_support">Cambia lingua dell'app</string>
     <string name="settings_light_mode">Chiaro</string>
     <string name="settings_middle_zero">Zero al centro</string>
     <string name="settings_middle_zero_support">Scambia pulsanti zero e decimali</string>
@@ -154,7 +154,7 @@
     <string name="unit_acre">Acro</string>
     <string name="unit_acre_short">ac</string>
     <string name="unit_angle_minute">Minuto</string>
-    <string name="unit_angle_second">Secondo d\'angolo</string>
+    <string name="unit_angle_second">Secondo d'angolo</string>
     <string name="unit_apostilb">Apostilb</string>
     <string name="unit_apostilb_short">asb</string>
     <string name="unit_atomic_mass_unit">Dalton</string>
@@ -209,7 +209,7 @@
     <string name="unit_cent">Centesimo</string>
     <string name="unit_cent_short">cent</string>
     <string name="unit_centimeter">Centimetro</string>
-    <string name="unit_centimeter_per_hour">Centimetro all\'ora</string>
+    <string name="unit_centimeter_per_hour">Centimetro all'ora</string>
     <string name="unit_centimeter_per_hour_short">cm/h</string>
     <string name="unit_centimeter_per_minute">Centimetro/minuto</string>
     <string name="unit_centimeter_per_minute_short">cm/m</string>
@@ -267,7 +267,7 @@
     <string name="unit_currency_ars">Peso argentino</string>
     <string name="unit_currency_aud">Dollaro australiano</string>
     <string name="unit_currency_awg">Fiorino di Aruba</string>
-    <string name="unit_currency_azn">Manat dell\'Azerbaigian</string>
+    <string name="unit_currency_azn">Manat dell'Azerbaigian</string>
     <string name="unit_currency_bam">Marco bosniaco-ungherese convertibile</string>
     <string name="unit_currency_bbd">Dollaro delle Barbados</string>
     <string name="unit_currency_bdt">Taka bengalese</string>
@@ -367,7 +367,7 @@
     <string name="unit_currency_nok">Corona norvegeese</string>
     <string name="unit_currency_npr">Rupia nepalese</string>
     <string name="unit_currency_nzd">Dollaro neozelandese</string>
-    <string name="unit_currency_omr">Riyal dell\'Oman</string>
+    <string name="unit_currency_omr">Riyal dell'Oman</string>
     <string name="unit_currency_pab">Balboa panamense</string>
     <string name="unit_currency_pen">Sol</string>
     <string name="unit_currency_pgk">Kina papuana</string>
@@ -387,7 +387,7 @@
     <string name="unit_currency_sek">Corona svedese</string>
     <string name="unit_currency_sgd">Dollaro di Singapore</string>
     <string name="unit_currency_shib">Shiba Inu</string>
-    <string name="unit_currency_shp">Sterlina di Sant\'Elena</string>
+    <string name="unit_currency_shp">Sterlina di Sant'Elena</string>
     <string name="unit_currency_sll">Leone del Sierra Leone</string>
     <string name="unit_currency_sos">Scellinio somalo</string>
     <string name="unit_currency_srd">Dollaro del Suriname</string>
@@ -418,7 +418,7 @@
     <string name="unit_currency_wbtc">Wrapped Bitcoin</string>
     <string name="unit_currency_wst">Tala samoano</string>
     <string name="unit_currency_xaf">Franco CFA</string>
-    <string name="unit_currency_xag">Oncia d\'argento</string>
+    <string name="unit_currency_xag">Oncia d'argento</string>
     <string name="unit_currency_xcd">Dollaro dei Caraibi Orientali</string>
     <string name="unit_currency_xdr">Diritti speciali di prelievo</string>
     <string name="unit_currency_xof">West African CFA franc</string>
@@ -460,7 +460,7 @@
     <string name="unit_earth_surface_gravity">Gravità superficie della Terra</string>
     <string name="unit_earth_surface_gravity_short">Terra g</string>
     <string name="unit_earths_orbital_speed">Velocità orbitale della Terra</string>
-    <string name="unit_electron_cross_section">Sezione d\'urto dell\'elettrone</string>
+    <string name="unit_electron_cross_section">Sezione d'urto dell'elettrone</string>
     <string name="unit_electron_cross_section_short">ecs</string>
     <string name="unit_electron_mass_rest">Massa elettrone</string>
     <string name="unit_electron_mass_rest_short">m e</string>
@@ -492,7 +492,7 @@
     <string name="unit_foot">Piede</string>
     <string name="unit_foot_lambert">Piede-lambert</string>
     <string name="unit_foot_lambert_short">fL</string>
-    <string name="unit_foot_per_hour">Piede all\'ora</string>
+    <string name="unit_foot_per_hour">Piede all'ora</string>
     <string name="unit_foot_per_hour_short">ft/h</string>
     <string name="unit_foot_per_minute">Piede/minuto</string>
     <string name="unit_foot_per_minute_short">ft/m</string>
@@ -670,7 +670,7 @@
     <string name="unit_kilojoule">Kilojoule</string>
     <string name="unit_kilojoule_short">kJ</string>
     <string name="unit_kilometer">Chilometro</string>
-    <string name="unit_kilometer_per_hour">Chilometro all\'ora</string>
+    <string name="unit_kilometer_per_hour">Chilometro all'ora</string>
     <string name="unit_kilometer_per_hour_short">km/h</string>
     <string name="unit_kilometer_per_minute">Chilometro/minuto</string>
     <string name="unit_kilometer_per_minute_short">km/m</string>
@@ -771,7 +771,7 @@
     <string name="unit_mercury_surface_gravity">Gravità superficie di Mercurio</string>
     <string name="unit_mercury_surface_gravity_short">Mercurio g</string>
     <string name="unit_meter">Metro</string>
-    <string name="unit_meter_per_hour">Metro all\'ora</string>
+    <string name="unit_meter_per_hour">Metro all'ora</string>
     <string name="unit_meter_per_hour_short">m/h</string>
     <string name="unit_meter_per_minute">Metro/minuto</string>
     <string name="unit_meter_per_minute_short">m/m</string>
@@ -805,7 +805,7 @@
     <string name="unit_microweber">Microweber</string>
     <string name="unit_microweber_short">μWb</string>
     <string name="unit_mile">Miglio</string>
-    <string name="unit_mile_per_hour">Miglia all\'ora</string>
+    <string name="unit_mile_per_hour">Miglia all'ora</string>
     <string name="unit_mile_per_hour_short">mi/h</string>
     <string name="unit_mile_per_minute">Miglia al minuto</string>
     <string name="unit_mile_per_minute_short">mi/m</string>
@@ -831,7 +831,7 @@
     <string name="unit_millimeter">Millimetro</string>
     <string name="unit_millimeter_of_mercury">Millimetro di mercurio</string>
     <string name="unit_millimeter_of_mercury_short">mmHg</string>
-    <string name="unit_millimeter_per_hour">Millimetro all\'ora</string>
+    <string name="unit_millimeter_per_hour">Millimetro all'ora</string>
     <string name="unit_millimeter_per_hour_short">mm/h</string>
     <string name="unit_millimeter_per_minute">Millimetro/minuto</string>
     <string name="unit_millimeter_per_minute_short">mm/m</string>
@@ -1097,7 +1097,7 @@
     <string name="unit_week">Settimana</string>
     <string name="unit_week_short">s</string>
     <string name="unit_yard">Iarda</string>
-    <string name="unit_yard_per_hour">Iarda all\'ora</string>
+    <string name="unit_yard_per_hour">Iarda all'ora</string>
     <string name="unit_yard_per_hour_short">yd/h</string>
     <string name="unit_yard_per_minute">Iarda al minuto</string>
     <string name="unit_yard_per_minute_short">yd/m</string>
