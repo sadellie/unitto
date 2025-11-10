@@ -20,7 +20,6 @@ package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldBuffer
-import androidx.compose.foundation.text.input.insert
 import androidx.compose.runtime.Stable
 import com.sadellie.unitto.core.common.FormatterSymbols
 
@@ -32,16 +31,21 @@ import com.sadellie.unitto.core.common.FormatterSymbols
 @Stable
 data class ExpressionOutputTransformation(private val formatterSymbols: FormatterSymbols) :
   OutputTransformation {
+  private val groupingChar = formatterSymbols.grouping.first()
+  private val fractionalChar = formatterSymbols.fractional.first()
+
   override fun TextFieldBuffer.transformOutput() {
     if (length == 0) return
     val formattedText = this.toString().formatExpression(formatterSymbols)
-
     formattedText.forEachIndexed { index, char ->
       when (char) {
-        formatterSymbols.grouping.first() -> insert(index, formatterSymbols.grouping)
+        groupingChar -> {
+          val nextSymbol = formattedText.getOrNull(index + 1) ?: ""
+          // [1][2][3][4][5][6] -> [1][2][3][ 4][5][6]
+          replace(index, index + 1, "${formatterSymbols.grouping}${nextSymbol}")
+        }
 
-        formatterSymbols.fractional.first() ->
-          replace(index, index + 1, formatterSymbols.fractional)
+        fractionalChar -> replace(index, index + 1, formatterSymbols.fractional)
       }
     }
   }

@@ -28,12 +28,10 @@ import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.trimZeros
 
 /**
- * - Remove formatter symbol (for evaluatto)
+ * - Removes formatter symbol (for evaluatto)
  * - Replaces ugly tokens with appropriate versions (for evaluatto)
- * - Allow only legal tokens
+ * - Allows only legal tokens
  * - Fixes cursor position
- * - TODO Fix cursor when near grouping symbol
- * - TODO Keyboard support: Allow jumping over entire token using arrows
  */
 @Stable
 data class ExpressionInputTransformation(private val formatterSymbols: FormatterSymbols) :
