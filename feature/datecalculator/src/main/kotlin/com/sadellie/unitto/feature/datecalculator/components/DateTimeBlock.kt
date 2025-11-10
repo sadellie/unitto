@@ -67,8 +67,8 @@ internal fun DateTimeBlock(
   ) {
     Column(
       modifier =
-        Modifier.combinedClickable(onClick = onTimeClick, onLongClick = onLongClick)
-          .clip(ListItemExpressiveDefaults.firstShape)
+        Modifier.clip(ListItemExpressiveDefaults.firstShape)
+          .combinedClickable(onClick = onTimeClick, onLongClick = onLongClick)
           .background(MaterialTheme.colorScheme.secondaryContainer)
           .padding(
             start = Sizes.large,
@@ -97,8 +97,8 @@ internal fun DateTimeBlock(
     val formattedDate = remember(locale1) { dateTime.formatDateWeekDayMonthYear(locale1) }
     AnimatedText(
       modifier =
-        Modifier.combinedClickable(onClick = onDateClick, onLongClick = onLongClick)
-          .clip(ListItemExpressiveDefaults.lastShape)
+        Modifier.clip(ListItemExpressiveDefaults.lastShape)
+          .combinedClickable(onClick = onDateClick, onLongClick = onLongClick)
           .background(MaterialTheme.colorScheme.secondaryContainer)
           .padding(Sizes.large)
           .fillMaxWidth(),
