@@ -65,6 +65,7 @@ internal fun DateTimeBlock(
     horizontalAlignment = Alignment.Start,
     verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
   ) {
+    val locale = LocalLocale.current
     Column(
       modifier =
         Modifier.clip(ListItemExpressiveDefaults.firstShape)
@@ -84,17 +85,16 @@ internal fun DateTimeBlock(
         maxLines = 1,
         color = MaterialTheme.colorScheme.onSecondaryContainer,
       )
-      val is24Hour = is24HourFormat(LocalContext.current)
-      val locale = LocalLocale.current
-      val formattedTime = remember(is24Hour, dateTime) { dateTime.formatTime(locale, is24Hour) }
+      val context = LocalContext.current
+      val formattedTime =
+        remember(dateTime, locale) { dateTime.formatTime(locale, is24HourFormat(context)) }
       AnimatedText(
         modifier = Modifier,
         targetState = formattedTime,
         style = MaterialTheme.typography.displaySmall,
       )
     }
-    val locale1 = LocalLocale.current
-    val formattedDate = remember(locale1) { dateTime.formatDateWeekDayMonthYear(locale1) }
+    val formattedDate = remember(dateTime, locale) { dateTime.formatDateWeekDayMonthYear(locale) }
     AnimatedText(
       modifier =
         Modifier.clip(ListItemExpressiveDefaults.lastShape)
