@@ -77,6 +77,7 @@ fun TextBox(
       state = state,
       minRatio = 0.5f,
       formatterSymbols = formatterSymbols,
+      textColor = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
       CalculationResultTextField(

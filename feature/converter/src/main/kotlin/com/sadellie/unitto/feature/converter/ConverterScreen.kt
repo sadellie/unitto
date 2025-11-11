@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -117,7 +118,7 @@ private fun UnitConverterTopBar(
 @Preview(heightDp = 432, widthDp = 864, device = "spec:parent=pixel_5,orientation=landscape")
 @Preview(heightDp = 597, widthDp = 1393, device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
-private fun PreviewConverterScreen() {
+private fun PreviewConverterScreen() = ExpressivePreview {
   ConverterScreen(
     uiState = ConverterUIState.Loading,
     navigateToLeftScreen = { _, _ -> },

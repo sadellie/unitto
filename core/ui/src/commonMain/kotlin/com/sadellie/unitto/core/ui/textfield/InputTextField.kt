@@ -72,7 +72,7 @@ fun ExpressionTextField(
   modifier: Modifier,
   state: TextFieldState,
   minRatio: Float = 1f,
-  textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+  textColor: Color,
   formatterSymbols: FormatterSymbols,
   readOnly: Boolean = false,
   placeholder: String = "",
@@ -94,7 +94,7 @@ fun ExpressionTextField(
       inputTransformation = ExpressionInputTransformation(formatterSymbols),
       textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
       lineLimits = TextFieldLineLimits.SingleLine,
-      cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+      cursorBrush = SolidColor(textColor),
       outputTransformation = ExpressionOutputTransformation(formatterSymbols),
       minRatio = minRatio,
       placeholder = placeholder,
@@ -108,7 +108,7 @@ fun NumberBaseTextField(
   modifier: Modifier,
   state: TextFieldState,
   minRatio: Float = 1f,
-  textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+  textColor: Color,
   readOnly: Boolean = false,
   placeholder: String = "",
 ) {
@@ -120,7 +120,7 @@ fun NumberBaseTextField(
     outputTransformation = NumberBaseOutputTransformation,
     textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
     lineLimits = TextFieldLineLimits.SingleLine,
-    cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+    cursorBrush = SolidColor(textColor),
     minRatio = minRatio,
     placeholder = placeholder,
   )
@@ -131,7 +131,7 @@ fun SimpleTextField(
   modifier: Modifier,
   state: TextFieldState,
   minRatio: Float = 1f,
-  textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+  textColor: Color,
   readOnly: Boolean = false,
   placeholder: String = "",
 ) {
@@ -141,7 +141,7 @@ fun SimpleTextField(
     readOnly = readOnly,
     textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
     lineLimits = TextFieldLineLimits.SingleLine,
-    cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+    cursorBrush = SolidColor(textColor),
     minRatio = minRatio,
     placeholder = placeholder,
   )
@@ -258,6 +258,7 @@ private fun ExpressionTextFieldPreview() {
     modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline).height(172.dp),
     state = remember { TextFieldState() },
     formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+    textColor = MaterialTheme.colorScheme.onSurface,
     minRatio = 0.5f,
   )
 }

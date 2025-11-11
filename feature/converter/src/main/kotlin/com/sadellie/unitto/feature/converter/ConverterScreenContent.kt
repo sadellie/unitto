@@ -59,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -261,6 +262,7 @@ internal fun NumberBase(
           minRatio = 0.7f,
           placeholder = Token.Digit.DIGIT_0,
           state = uiState.input,
+          textColor = converterTextFieldColor,
         )
         AnimatedUnitShortName(stringResource(uiState.unitFrom.shortName))
 
@@ -338,7 +340,7 @@ private fun CalculationResultTextField(
       modifier = Modifier,
       state = calculationTextField,
       minRatio = 0.7f,
-      textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+      textColor = converterTextFieldColor.copy(alpha = 0.6f),
       formatterSymbols = formatterSymbols,
       readOnly = true,
     )
@@ -358,6 +360,7 @@ private fun SingleUnitInput(
   Column(modifier = modifier) {
     ExpressionTextField(
       modifier = Modifier.fillMaxWidth().weight(2f),
+      textColor = converterTextFieldColor,
       state = input,
       minRatio = 0.7f,
       formatterSymbols = formatterSymbols,
@@ -389,6 +392,7 @@ private fun DoubleUnitInput(
     Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
       ExpressionTextField(
         modifier = Modifier.fillMaxWidth().weight(1f),
+        textColor = converterTextFieldColor,
         state = input1,
         minRatio = 0.7f,
         formatterSymbols = formatterSymbols,
@@ -406,6 +410,7 @@ private fun DoubleUnitInput(
             onFocusedOnInput1Changed(!state.hasFocus)
           },
         state = input2,
+        textColor = converterTextFieldColor,
         minRatio = 0.7f,
         formatterSymbols = formatterSymbols,
         placeholder = Token.Digit.DIGIT_0,
@@ -472,6 +477,7 @@ private fun ConverterResultTextField(
       ExpressionTextField(
         modifier = modifier,
         state = state,
+        textColor = converterTextFieldColor,
         minRatio = 0.7f,
         formatterSymbols = formatterSymbols,
         readOnly = true,
@@ -479,7 +485,13 @@ private fun ConverterResultTextField(
     }
     is ConverterResult.NumberBase -> {
       val state = remember(result) { TextFieldState(result.value.uppercase()) }
-      NumberBaseTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
+      NumberBaseTextField(
+        modifier = modifier,
+        textColor = converterTextFieldColor,
+        state = state,
+        minRatio = 0.7f,
+        readOnly = true,
+      )
     }
     is ConverterResult.Time -> {
       val dayLabel = stringResource(Res.string.unit_day_short)
@@ -506,7 +518,13 @@ private fun ConverterResultTextField(
             )
           )
         }
-      SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
+      SimpleTextField(
+        modifier = modifier,
+        textColor = converterTextFieldColor,
+        state = state,
+        minRatio = 0.7f,
+        readOnly = true,
+      )
     }
     is ConverterResult.FootInch -> {
       val footLabel = stringResource(Res.string.unit_foot_short)
@@ -523,7 +541,13 @@ private fun ConverterResultTextField(
             )
           )
         }
-      SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
+      SimpleTextField(
+        modifier = modifier,
+        textColor = converterTextFieldColor,
+        state = state,
+        minRatio = 0.7f,
+        readOnly = true,
+      )
     }
     is ConverterResult.PoundOunce -> {
       val poundLabel = stringResource(Res.string.unit_pound_short)
@@ -540,12 +564,19 @@ private fun ConverterResultTextField(
             )
           )
         }
-      SimpleTextField(modifier = modifier, state = state, minRatio = 0.7f, readOnly = true)
+      SimpleTextField(
+        modifier = modifier,
+        textColor = converterTextFieldColor,
+        state = state,
+        minRatio = 0.7f,
+        readOnly = true,
+      )
     }
     is ConverterResult.Loading ->
       SimpleTextField(
         modifier = modifier,
         state = TextFieldState(stringResource(Res.string.common_loading)),
+        textColor = converterTextFieldColor,
         minRatio = 0.7f,
         readOnly = true,
       )
@@ -636,6 +667,9 @@ private fun UnitSelectionButtons(
     )
   }
 }
+
+private val converterTextFieldColor: Color
+  @Composable get() = MaterialTheme.colorScheme.onSurface
 
 @Preview
 @Composable
