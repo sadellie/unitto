@@ -35,7 +35,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.ui.Button
 
 /**
  * Button to select a unit
@@ -59,8 +58,8 @@ internal fun UnitSelectionButton(
     shapes = ButtonDefaults.shapes(),
     colors =
       ButtonDefaults.buttonColors(
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
       ),
     contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
   ) {

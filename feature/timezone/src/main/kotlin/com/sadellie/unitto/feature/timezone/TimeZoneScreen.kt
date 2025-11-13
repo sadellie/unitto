@@ -65,6 +65,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
@@ -77,6 +78,7 @@ import com.sadellie.unitto.core.ui.datetimepicker.TimePickerDialog
 import com.sadellie.unitto.core.ui.plus
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
+import java.time.ZonedDateTime
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -90,7 +92,6 @@ import unitto.core.common.generated.resources.common_label
 import unitto.core.common.generated.resources.common_ok
 import unitto.core.common.generated.resources.time_zone_add_title
 import unitto.core.common.generated.resources.time_zone_title
-import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -338,7 +339,7 @@ private const val USER_TIME_UPDATE_FREQUENCY_MS = 5_000L
 @RequiresApi(Build.VERSION_CODES.N)
 @Preview
 @Composable
-private fun PreviewTimeZoneScreen() {
+private fun PreviewTimeZoneScreen() = ExpressivePreview {
   TimeZoneScreen(
     uiState =
       TimeZoneUIState.Ready(
