@@ -27,8 +27,6 @@ package org.gciatto.kt.math
  * Portions Copyright IBM Corporation, 2001. All Rights Reserved.
  */
 
-import org.gciatto.kt.math.CommonBigDecimal.Companion.INFLATED
-import org.gciatto.kt.math.CommonBigInteger.Companion.LONG_MASK
 import kotlin.js.JsName
 import kotlin.jvm.JvmField
 import kotlin.jvm.JvmOverloads
@@ -40,6 +38,8 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sign
 import kotlin.math.sqrt
+import org.gciatto.kt.math.CommonBigDecimal.Companion.INFLATED
+import org.gciatto.kt.math.CommonBigInteger.Companion.LONG_MASK
 
 /**
  * Immutable, arbitrary-precision signed decimal numbers. A [CommonBigDecimal] consists of an
@@ -1137,7 +1137,7 @@ internal class CommonBigDecimal : BigDecimal {
       "     \n" +
       "      "
   )
-  private fun div(divisor: CommonBigDecimal, scale: Int, roundingMode: Int): CommonBigDecimal {
+  private fun divide(divisor: CommonBigDecimal, scale: Int, roundingMode: Int): CommonBigDecimal {
     if (roundingMode < RoundingMode.UP.value || roundingMode > RoundingMode.UNNECESSARY.value) {
       throw IllegalArgumentException("Invalid rounding mode")
     }
@@ -1191,7 +1191,7 @@ internal class CommonBigDecimal : BigDecimal {
       "      "
   )
   private fun div(divisor: CommonBigDecimal, roundingMode: Int): CommonBigDecimal =
-    this.div(divisor, _scale, roundingMode)
+    this.divide(divisor, _scale, roundingMode)
 
   override operator fun div(divisor: BigDecimal): CommonBigDecimal {
     val divisor: CommonBigDecimal = divisor.castTo()
@@ -1301,6 +1301,9 @@ internal class CommonBigDecimal : BigDecimal {
       }
     }
   }
+
+  override fun divide(divisor: BigDecimal, scale: Int, roundingMode: RoundingMode): BigDecimal =
+    divide(divisor.castTo(), scale, roundingMode.value)
 
   override fun divideToIntegralValue(divisor: BigDecimal): CommonBigDecimal {
     val divisor: CommonBigDecimal = divisor.castTo()

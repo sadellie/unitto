@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 /*
  * Unitto is a calculator for Android
  * Copyright (c) 2023-2025 Elshan Agaev
@@ -16,10 +18,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins { id("unitto.multiplatform.library") }
+plugins {
+  id("unitto.multiplatform.library")
+  alias(libs.plugins.compose)
+  alias(libs.plugins.compose.compiler)
+}
 
 kotlin {
-  sourceSets.commonMain.dependencies { implementation(project(":core:common")) }
+  @OptIn(ExperimentalWasmDsl::class)
+  wasmJs {
+    browser { testTask { useKarma { useFirefoxHeadless() } } }
+    binaries.executable()
+  }
+  sourceSets.commonMain.dependencies {
+    implementation(project(":core:common"))
+    implementation(libs.org.jetbrains.compose.runtime.runtime) // need skiko
+  }
+
   sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
 }
 

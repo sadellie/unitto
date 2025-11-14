@@ -51,7 +51,6 @@ class UnittoMultiplatformLibraryPlugin : Plugin<Project> {
         }
         @OptIn(ExperimentalWasmDsl::class)
         wasmJs {
-          outputModuleName.set("composeApp")
           browser { testTask { useKarma().useFirefoxHeadless() } }
           binaries.executable()
         }

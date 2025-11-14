@@ -82,7 +82,7 @@ actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDeci
     KBigDecimal(this.wrapped.minus(subtrahend.wrapped))
 
   actual fun divide(divisor: KBigDecimal, scale: Int, roundingMode: KRoundingMode): KBigDecimal =
-    TODO("Not ported from java yet")
+    KBigDecimal(this.wrapped.divide(divisor.wrapped, scale, roundingMode.wrapped))
 
   actual operator fun unaryMinus(): KBigDecimal = KBigDecimal(this.wrapped.unaryMinus())
 

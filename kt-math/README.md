@@ -13,3 +13,5 @@
   - added missing subtraction
 - `internal fun StringBuilder.insertChar(index: Int, char: Char): StringBuilder`
   - replaced with built-in `insert` (original was not working correctly)
+- `fun divide(divisor: BigDecimal, scale: Int, roundingMode: RoundingMode): BigDecimal`
+  - added method to interface and mapped to private method in `CommonBigDecimal`
