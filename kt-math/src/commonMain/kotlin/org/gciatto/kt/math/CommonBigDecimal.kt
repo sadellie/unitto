@@ -256,7 +256,7 @@ internal class CommonBigDecimal : BigDecimal {
    *   the defined subarray is not wholly within `in`.
    * @since 1.5
    */
-  internal constructor(
+  constructor(
     `in`: CharArray,
     offset: Int = 0,
     len: Int = `in`.size,

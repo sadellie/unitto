@@ -46,4 +46,7 @@ Leave.
 - Privacy Policy: https://sadellie.github.io/unitto/privacy
 - Help: https://sadellie.github.io/unitto/help
 - Telegram channel: https://t.me/sadellie_dev
-- Web version of this application uses ported [kt-math](https://github.com/gciatto/kt-math) with additional fixes. Files in `kt-math` folder are [licensed under GPL-2.0](./kt-math/LICENSE-kt-math)
+
+### Web version additional licensed code
+- wasm port of [kt-math](https://github.com/gciatto/kt-math) with additional fixes. Files in `kt-math` folder are [licensed under GPL-2.0](./kt-math/LICENSE-kt-math)
+- incomplete port of [big-math](https://github.com/eobermuhlner/big-math) with additional fixes. Files in `core/common/wasmJsMain` folder are [licensed under MIT](./core/common/LICENSE-big-math.txt)

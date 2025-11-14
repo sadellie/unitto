@@ -82,6 +82,8 @@ internal expect fun bigDecimalOf(`val`: Int, ctx: MathContext): BigDecimal
 
 internal expect fun bigDecimalOf(`val`: Long, ctx: MathContext): BigDecimal
 
+internal expect fun bigDecimalOf(`in`: CharArray, offset: Int, len: Int): BigDecimal
+
 internal expect object BigIntegers {
   val zero: BigInteger
   val one: BigInteger

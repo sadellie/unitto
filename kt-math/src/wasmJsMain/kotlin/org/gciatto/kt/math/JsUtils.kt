@@ -72,6 +72,9 @@ internal actual fun bigDecimalOf(`val`: Int, ctx: MathContext): BigDecimal =
 internal actual fun bigDecimalOf(`val`: Long, ctx: MathContext): BigDecimal =
   CommonBigDecimal.of(`val`, ctx)
 
+internal actual fun bigDecimalOf(`in`: CharArray, offset: Int, len: Int): BigDecimal =
+  CommonBigDecimal(`in`, offset, len)
+
 internal actual object BigDecimals {
   actual val zero: BigDecimal = CommonBigDecimal.ZERO
 

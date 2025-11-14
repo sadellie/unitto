@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.common
 
+import ch.obermuhlner.math.big.BigDecimalMath
 import org.gciatto.kt.math.BigDecimal
 import org.gciatto.kt.math.BigInteger
 import org.gciatto.kt.math.MathContext
@@ -45,6 +46,8 @@ actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDeci
     actual fun valueOf(double: Double): KBigDecimal = KBigDecimal(BigDecimal.of(double))
 
     actual fun valueOf(long: Long): KBigDecimal = KBigDecimal(BigDecimal.of(long))
+
+    internal const val ROUND_DOWN: Int = 1
   }
 
   actual override operator fun compareTo(other: KBigDecimal): Int =
@@ -115,6 +118,50 @@ actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDeci
   actual fun pow(n: Int): KBigDecimal = KBigDecimal(this.wrapped.pow(n))
 
   actual fun scaleByPowerOfTen(n: Int): KBigDecimal = KBigDecimal(this.wrapped.scaleByPowerOfTen(n))
+
+  internal fun negate(): KBigDecimal =
+    KBigDecimal(this.wrapped.times(KBigDecimal("-1").wrapped)) // TODO real negate
+
+  internal val signum: Int = this.wrapped.signum
+
+  internal fun toDouble(): Double = this.wrapped.toDouble()
+
+  internal fun toFloat(): Float = this.wrapped.toFloat()
+
+  internal fun toLong(): Long = this.wrapped.toLong()
+
+  internal fun movePointLeft(n: Int): KBigDecimal = KBigDecimal(this.wrapped.movePointLeft(n))
+
+  internal fun movePointRight(n: Int): KBigDecimal = KBigDecimal(this.wrapped.movePointRight(n))
+
+  internal fun round(mc: KMathContext): KBigDecimal =
+    KBigDecimal(this.wrapped.round(mc.wrapped)!!) // TODO remove nullability
+
+  internal fun multiply(bigDecimal: KBigDecimal, mc: KMathContext): KBigDecimal =
+    KBigDecimal(this.wrapped.times(bigDecimal.wrapped, mc.wrapped))
+
+  internal fun precision(): Int = this.wrapped.precision
+
+  internal constructor(
+    `in`: CharArray,
+    offset: Int,
+    len: Int,
+  ) : this(BigDecimal.of(`in`, offset, len))
+
+  @Suppress("DEPRECATION")
+  internal fun setScale(newScale: Int, roundingMode: Int): KBigDecimal =
+    KBigDecimal(this.wrapped.setScale(newScale, roundingMode))
+
+  internal fun add(bigDecimal: KBigDecimal, mc: KMathContext): KBigDecimal =
+    KBigDecimal(this.wrapped.plus(bigDecimal.wrapped, mc.wrapped))
+
+  internal fun longValueExact(): Long = this.wrapped.toLongExact()
+
+  internal fun remainder(divisor: KBigDecimal, mc: KMathContext): KBigDecimal =
+    KBigDecimal(this.wrapped.divideAndRemainder(divisor.wrapped, mc.wrapped).second)
+
+  internal fun minus(bigDecimal: KBigDecimal, mc: KMathContext): KBigDecimal =
+    KBigDecimal(this.wrapped.minus(bigDecimal.wrapped, mc.wrapped))
 }
 
 actual class KRoundingMode internal constructor(val wrapped: RoundingMode) {
@@ -130,6 +177,7 @@ actual class KRoundingMode internal constructor(val wrapped: RoundingMode) {
 
   actual companion object {
     actual val HALF_EVEN: KRoundingMode = KRoundingMode(RoundingMode.HALF_EVEN)
+    internal val HALF_UP: KRoundingMode = KRoundingMode(RoundingMode.HALF_UP)
     actual val DOWN: KRoundingMode = KRoundingMode(RoundingMode.DOWN)
   }
 }
@@ -138,6 +186,11 @@ actual class KMathContext private constructor(val wrapped: MathContext) {
   actual override fun equals(other: Any?): Boolean {
     if (other !is KMathContext) return false
     return this.wrapped == other.wrapped
+  }
+
+  internal companion object {
+    val DECIMAL128 = KMathContext(MathContext.DECIMAL128)
+    val UNLIMITED = KMathContext(MathContext.UNLIMITED)
   }
 
   actual override fun toString(): String = this.wrapped.toString()
@@ -149,7 +202,11 @@ actual class KMathContext private constructor(val wrapped: MathContext) {
     roundingMode: KRoundingMode,
   ) : this(MathContext(precision, roundingMode.wrapped))
 
+  internal constructor(precision: Int) : this(MathContext(precision))
+
   actual val precision: Int = this.wrapped.precision
+
+  internal val roundingMode: KRoundingMode = KRoundingMode(this.wrapped.roundingMode)
 }
 
 actual class KBigInteger internal constructor(internal val wrapped: BigInteger) :
@@ -174,6 +231,8 @@ actual class KBigInteger internal constructor(internal val wrapped: BigInteger) 
     actual val ONE: KBigInteger = KBigInteger(BigInteger.ONE)
     actual val ZERO: KBigInteger = KBigInteger(BigInteger.ZERO)
     actual val TEN: KBigInteger = KBigInteger(BigInteger.TEN)
+
+    internal fun valueOf(value: Long) = KBigInteger(BigInteger.of(value))
   }
 
   actual fun pow(n: Int): KBigInteger = KBigInteger(this.wrapped.pow(n))
@@ -194,80 +253,55 @@ actual class KBigInteger internal constructor(internal val wrapped: BigInteger) 
   actual constructor(value: String, radix: Int) : this(BigInteger.of(value, radix))
 
   actual override fun compareTo(other: KBigInteger): Int = this.wrapped.compareTo(other.wrapped)
+
+  internal val signum: Int = this.wrapped.signum
+
+  internal fun bitLength(): Int = this.wrapped.bitLength
 }
 
 actual class KBigDecimalMath {
-  actual override operator fun equals(other: Any?): Boolean {
-    TODO("Not yet implemented")
-  }
-
-  actual override fun toString(): String {
-    TODO("Not yet implemented")
-  }
-
-  actual override fun hashCode(): Int {
-    TODO("Not yet implemented")
-  }
-
   actual companion object {
-    actual fun toRadians(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun toRadians(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.toRadians(bigDecimal, mathContext)
 
-    actual fun sin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun sin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.sin(bigDecimal, mathContext)
 
-    actual fun asin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun asin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.asin(bigDecimal, mathContext)
 
-    actual fun toDegrees(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun toDegrees(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.toDegrees(bigDecimal, mathContext)
 
-    actual fun cos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun cos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.cos(bigDecimal, mathContext)
 
-    actual fun acos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun acos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.acos(bigDecimal, mathContext)
 
-    actual fun tan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun tan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.tan(bigDecimal, mathContext)
 
-    actual fun atan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun atan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.atan(bigDecimal, mathContext)
 
-    actual fun log(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun log(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.log(bigDecimal, mathContext)
 
-    actual fun log10(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun log10(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.log10(bigDecimal, mathContext)
 
-    actual fun exp(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun exp(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.exp(bigDecimal, mathContext)
 
-    actual fun pi(mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun pi(mathContext: KMathContext): KBigDecimal = BigDecimalMath.pi(mathContext)
 
-    actual fun e(mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun e(mathContext: KMathContext): KBigDecimal = BigDecimalMath.e(mathContext)
 
-    actual fun sqrt(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun sqrt(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.sqrt(bigDecimal, mathContext)
 
-    actual fun pow(expr: KBigDecimal, factor: KBigDecimal, mathContext: KMathContext): KBigDecimal {
-      TODO("Not yet implemented")
-    }
+    actual fun pow(expr: KBigDecimal, factor: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+      BigDecimalMath.pow(expr, factor, mathContext)
   }
 }

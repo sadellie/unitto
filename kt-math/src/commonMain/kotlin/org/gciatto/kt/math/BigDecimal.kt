@@ -886,5 +886,9 @@ interface BigDecimal : Comparable<BigDecimal> {
     @JvmStatic
     @JsName("ofWithContext")
     fun of(`val`: Long, ctx: MathContext): BigDecimal = bigDecimalOf(`val`, ctx)
+
+    @JvmStatic
+    @JsName("ofCharArray")
+    fun of(`in`: CharArray, offset: Int, len: Int): BigDecimal = bigDecimalOf(`in`, offset, len)
   }
 }

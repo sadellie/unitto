@@ -155,12 +155,6 @@ expect class KMathContext {
 }
 
 expect class KBigDecimalMath {
-  override fun equals(other: Any?): Boolean
-
-  override fun toString(): String
-
-  override fun hashCode(): Int
-
   companion object {
     fun toRadians(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal
 

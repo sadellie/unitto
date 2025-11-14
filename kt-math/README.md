@@ -15,3 +15,5 @@
   - replaced with built-in `insert` (original was not working correctly)
 - `fun divide(divisor: BigDecimal, scale: Int, roundingMode: RoundingMode): BigDecimal`
   - added method to interface and mapped to private method in `CommonBigDecimal`
+- `fun of(`in`: CharArray, offset: Int, len: Int): BigDecimal`
+  - added method to interface and mapped to internal method in `CommonBigDecimal`
