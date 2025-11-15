@@ -46,7 +46,7 @@ import com.sadellie.unitto.core.database.converters.Converters
 )
 @TypeConverters(Converters::class)
 abstract class UnittoDatabaseAndroid : UnittoDatabase, RoomDatabase() {
-  abstract fun unitsDao(): UnitsDao
+  abstract override fun unitsDao(): UnitsDao
 
   abstract override fun calculatorHistoryDao(): CalculatorHistoryDao
 

@@ -23,4 +23,5 @@ import org.koin.dsl.module
 val unittoDatabaseModule = module {
   single<UnittoDatabaseInMemory> { UnittoDatabaseInMemory() }
   factory<CalculatorHistoryDao> { get<UnittoDatabaseInMemory>().calculatorHistoryDao() }
+  factory<UnitsDao> { get<UnittoDatabaseInMemory>().unitsDao() }
 }

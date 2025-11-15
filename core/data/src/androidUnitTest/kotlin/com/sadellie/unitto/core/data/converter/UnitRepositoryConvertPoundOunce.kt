@@ -20,7 +20,7 @@ package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.setMaxScale
-import com.sadellie.unitto.core.data.UnitsRepository
+import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -31,7 +31,7 @@ class UnitRepositoryConvertPoundOunce {
   private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
-  private val fakeUnitsDao = FakeUnitsDao()
+  private val fakeUnitsDao = UnitsDaoInMemory()
   private val unitsRepository = UnitsRepository(fakeUnitsDao)
   private val unitConverterRepo =
     UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)

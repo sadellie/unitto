@@ -25,10 +25,42 @@ import kotlinx.coroutines.flow.update
 
 interface UnittoDatabase {
   fun calculatorHistoryDao(): CalculatorHistoryDao
+
+  fun unitsDao(): UnitsDao
 }
 
 class UnittoDatabaseInMemory : UnittoDatabase {
   override fun calculatorHistoryDao() = CalculatorHistoryDaoInMemory()
+
+  override fun unitsDao(): UnitsDao = UnitsDaoInMemory()
+}
+
+class UnitsDaoInMemory : UnitsDao {
+  private val entries = MutableStateFlow(emptyList<UnitsEntity>())
+
+  override fun getAllFlow(): Flow<List<UnitsEntity>> = entries
+
+  override suspend fun insertUnit(unit: UnitsEntity) =
+    entries.update { currentEntries ->
+      // upsert
+      currentEntries.filter { it.unitId != unit.unitId } + unit
+    }
+
+  override suspend fun getByIdsSortedByFavoriteAndFrequencyDesc(
+    unitIds: List<String>
+  ): UnitsEntity? =
+    entries.value
+      .filter { it.unitId in unitIds }
+      .sortedByDescending { it.frequency }
+      .maxByOrNull { it.isFavorite }
+
+  override suspend fun getByIds(unitIds: List<String>): List<UnitsEntity> =
+    entries.value.filter { it.unitId in unitIds }
+
+  override suspend fun getById(unitId: String): UnitsEntity? =
+    entries.value.firstOrNull { it.unitId == unitId }
+
+  override suspend fun clear() = entries.update { emptyList() }
 }
 
 class CalculatorHistoryDaoInMemory : CalculatorHistoryDao {

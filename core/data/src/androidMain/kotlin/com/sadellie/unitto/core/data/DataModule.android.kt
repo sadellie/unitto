@@ -22,6 +22,7 @@ import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepository
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepositoryImpl
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitConverterRepositoryImpl
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepositoryImpl
 import com.sadellie.unitto.core.remote.CurrencyApiServiceImpl

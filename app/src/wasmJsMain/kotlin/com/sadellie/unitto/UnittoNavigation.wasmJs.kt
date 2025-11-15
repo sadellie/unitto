@@ -28,6 +28,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
+import com.sadellie.unitto.feature.converter.navigation.converterGraph
 import io.github.sadellie.themmo.ThemmoController
 
 @Composable
@@ -45,5 +46,10 @@ internal fun UnittoNavigation(
     exitTransition = { fadeOut() },
   ) {
     calculatorGraph(openDrawer = openDrawer)
+    converterGraph(
+      openDrawer = openDrawer,
+      navController = navController,
+      navigateToUnitGroups = {},
+    )
   }
 }

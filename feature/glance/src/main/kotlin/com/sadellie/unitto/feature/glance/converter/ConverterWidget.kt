@@ -70,7 +70,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.data.UnitsRepository
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository

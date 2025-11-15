@@ -19,7 +19,7 @@
 package com.sadellie.unitto.feature.glance.converter
 
 import android.util.Log
-import com.sadellie.unitto.core.data.UnitsRepository
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairEntity
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import kotlinx.coroutines.Dispatchers

@@ -24,7 +24,6 @@ import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isLessThan
 import com.sadellie.unitto.core.common.setMaxScale
-import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.database.CurrencyRatesEntity
 import com.sadellie.unitto.core.model.converter.UnitGroup
@@ -32,11 +31,15 @@ import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.remote.CurrencyApiService
 import io.github.sadellie.evaluatto.Expression
-import java.time.LocalDate
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class UnitConverterRepositoryImpl(
   private val unitsRepo: UnitsRepository,
@@ -467,7 +470,7 @@ class UnitConverterRepositoryImpl(
         return@withContext ConverterResult.Error.CurrencyError
       }
       currencyRateUpdateState.update {
-        CurrencyRateUpdateState.Ready(LocalDate.ofEpochDay(latestRate.date))
+        CurrencyRateUpdateState.Ready(LocalDate.fromEpochDays(latestRate.date))
       }
 
       val conversion = value.multiply(pairUnitValue).setMaxScale()
@@ -475,10 +478,12 @@ class UnitConverterRepositoryImpl(
       return@withContext ConverterResult.Default(value = conversion, calculation = value)
     }
 
+  @OptIn(ExperimentalTime::class)
   private suspend fun refreshCurrencyRates(unitFromId: String) =
     withContext(Dispatchers.IO) {
       val latestUpdateDate = currencyRatesDao.getLatestRateTimeStamp(unitFromId)
-      val currentDate = LocalDate.now().toEpochDay()
+      val currentDate =
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toEpochDays()
 
       if (latestUpdateDate != currentDate) {
         // Update cache if needed

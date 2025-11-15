@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.core.data.converter
 
-import com.sadellie.unitto.core.data.UnitsRepository
 import com.sadellie.unitto.core.data.converter.collections.accelerationCollection
 import com.sadellie.unitto.core.data.converter.collections.angleCollection
 import com.sadellie.unitto.core.data.converter.collections.areaCollection
@@ -43,6 +42,7 @@ import com.sadellie.unitto.core.data.converter.collections.temperatureCollection
 import com.sadellie.unitto.core.data.converter.collections.timeCollection
 import com.sadellie.unitto.core.data.converter.collections.torqueCollection
 import com.sadellie.unitto.core.data.converter.collections.volumeCollection
+import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import kotlinx.coroutines.test.TestScope
@@ -61,7 +61,7 @@ class UnitRepositoryFilterUnitsTest {
   private val context = RuntimeEnvironment.getApplication().applicationContext
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
-  private val fakeUnitsDao = FakeUnitsDao()
+  private val fakeUnitsDao = UnitsDaoInMemory()
   private val unitsRepository = UnitsRepository(fakeUnitsDao)
   private val unitConverterRepo =
     UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)

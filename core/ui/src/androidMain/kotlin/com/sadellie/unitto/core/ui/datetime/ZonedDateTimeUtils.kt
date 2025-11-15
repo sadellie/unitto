@@ -96,10 +96,6 @@ fun ZonedDateTime.formatZone(locale: Locale): String = format(UnittoDateTimeForm
 fun ZonedDateTime.formatDateDayMonthYear(locale: Locale): String =
   format(UnittoDateTimeFormatter.dateDayMonthYear(locale))
 
-/** @see UnittoDateTimeFormatter.dateWeekDayMonthYear */
-fun LocalDate.formatDateWeekDayMonthYear(locale: Locale): String =
-  format(UnittoDateTimeFormatter.dateWeekDayMonthYear(locale))
-
 fun ZonedDateTime.formatOffset(
   currentTime: ZonedDateTime,
   hourShort: String,
@@ -108,7 +104,6 @@ fun ZonedDateTime.formatOffset(
   yesterdayLabel: String,
 ): String? {
   val offsetFixed = ChronoUnit.SECONDS.between(currentTime, this)
-
   var resultBuffer = ""
 
   // Add a positive/negative prefix symbol

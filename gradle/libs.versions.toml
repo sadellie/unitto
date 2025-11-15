@@ -74,6 +74,7 @@ kermit = "2.0.8"
 annotation = "1.9.1"
 # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel-savedstate
 lifecyclyViewModel = "2.9.5"
+kotlinxDatetime = "0.7.1"
 
 [libraries]
 androidx-activity-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityActivityCompose" }
@@ -135,6 +136,7 @@ org-jetbrains-compose-ui-ui-tooling-preview = { module = "org.jetbrains.compose.
 org-jetbrains-compose-material3-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMultiplatformMaterial3" }
 org-jetbrains-compose-material3-material3-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "composeMultiplatformMaterial3" }
 org-jetbrains-androidx-lifecycle-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecyclyViewModel" }
+org-jetbrains-kotlinx-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 # build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

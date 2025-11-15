@@ -34,6 +34,7 @@ kotlin {
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
     implementation(libs.io.insert.koin.koin.core)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
   }
   sourceSets.androidMain.dependencies {
     implementation(project(":core:remote"))

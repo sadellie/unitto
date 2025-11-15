@@ -50,6 +50,7 @@ import com.sadellie.unitto.core.ui.NavigationDrawer
 import com.sadellie.unitto.core.ui.UnittoDrawerValue
 import com.sadellie.unitto.core.ui.rememberUnittoDrawerState
 import com.sadellie.unitto.feature.calculator.calculatorModule
+import com.sadellie.unitto.feature.converter.converterModule
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
@@ -134,5 +135,7 @@ fun main() {
 }
 
 fun initKoin() {
-  startKoin { modules(unittoDatabaseModule, dataStoreModule, dataModule, calculatorModule) }
+  startKoin {
+    modules(unittoDatabaseModule, dataStoreModule, dataModule, calculatorModule, converterModule)
+  }
 }

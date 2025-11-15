@@ -51,10 +51,10 @@ kotlin {
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
     implementation(project(":feature:calculator"))
+    implementation(project(":feature:converter"))
   }
   sourceSets.androidMain.dependencies {
     implementation(project(":feature:bodymass"))
-    implementation(project(":feature:converter"))
     implementation(project(":feature:datecalculator"))
     implementation(project(":feature:glance"))
     implementation(project(":feature:timezone"))

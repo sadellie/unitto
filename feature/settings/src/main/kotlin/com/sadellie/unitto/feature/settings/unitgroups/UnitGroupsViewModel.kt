@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.unitgroups
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.data.UnitsRepository
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup

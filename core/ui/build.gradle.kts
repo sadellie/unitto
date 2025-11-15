@@ -33,6 +33,7 @@ kotlin {
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
     implementation(libs.org.jetbrains.androidx.lifecycle.lifecycle.viewmodel.savedstate)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
   }
   sourceSets.androidMain.dependencies {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling)

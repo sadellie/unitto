@@ -41,7 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.data.UnitsRepository
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairEntity
