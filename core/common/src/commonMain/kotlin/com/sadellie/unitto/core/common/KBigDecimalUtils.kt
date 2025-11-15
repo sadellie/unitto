@@ -68,20 +68,11 @@ internal fun KBigDecimal.setMinimumRequiredScale(prefScale: Int): KBigDecimal {
   val absValue = this.abs()
   if (absValue.isLessThan(KBigDecimal.ONE)) {
     // remainder returns 0.01234. Need to use substring to skip "0." part
-    println("---")
-    println(absValue.remainder(KBigDecimal.ONE).toPlainString())
-    println(absValue.divideAndRemainder(KBigDecimal.ONE)[0].toPlainString())
-    println(absValue.divideAndRemainder(KBigDecimal.ONE)[1].toPlainString())
-    println("---")
     val fractionalPart = absValue.remainder(KBigDecimal.ONE).toPlainString().substring(2)
-    println(fractionalPart)
     // indexOfFirst can give -1, but it's okay
     // +1 to show first non-zero digit in fractional part
     val scaleToShowFirstNonZeroDigit = fractionalPart.indexOfFirst { char -> char != '0' } + 1
-    println(scaleToShowFirstNonZeroDigit)
     val scaleToSet = max(prefScale, scaleToShowFirstNonZeroDigit)
-    println(scaleToSet)
-
     return setScale(scaleToSet, KRoundingMode.HALF_EVEN)
   } else {
     return setScale(prefScale, KRoundingMode.HALF_EVEN)
