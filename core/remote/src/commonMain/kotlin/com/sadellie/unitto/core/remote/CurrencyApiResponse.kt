@@ -52,7 +52,7 @@ data class CurrencyApiResponse(val date: String, val currency: Map<String, Doubl
         jsonElement.jsonObject[currencyCode] ?: error("No conversions in response")
       val conversionMap = mutableMapOf<String, Double>()
 
-      conversionsValue.jsonObject.forEach { key, value ->
+      conversionsValue.jsonObject.forEach { (key, value) ->
         // can be converted (was int or double)
         val valueAsDouble = value.toString().toDoubleOrNull()
         if (valueAsDouble != null) {

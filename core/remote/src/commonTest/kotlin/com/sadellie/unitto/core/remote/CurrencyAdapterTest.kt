@@ -18,11 +18,11 @@
 
 package com.sadellie.unitto.core.remote
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonUnquotedLiteral
-import org.junit.Assert.assertEquals
-import org.junit.Test
 
 @OptIn(ExperimentalSerializationApi::class)
 class CurrencyAdapterTest {

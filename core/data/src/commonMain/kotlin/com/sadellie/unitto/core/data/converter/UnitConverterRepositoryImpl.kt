@@ -18,9 +18,10 @@
 
 package com.sadellie.unitto.core.data.converter
 
-import android.util.Log
+import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KRoundingMode
+import com.sadellie.unitto.core.common.defaultIODispatcher
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isLessThan
 import com.sadellie.unitto.core.common.setMaxScale
@@ -66,7 +67,7 @@ class UnitConverterRepositoryImpl(
     favoritesOnly: Boolean,
     sorting: UnitsListSorting,
   ): Map<UnitGroup, List<UnitSearchResultItem>> =
-    withContext(Dispatchers.IO) {
+    withContext(defaultIODispatcher) {
       return@withContext unitsRepo
         .filter(
           query = query,
@@ -86,7 +87,7 @@ class UnitConverterRepositoryImpl(
     input1: String,
     input2: String,
   ): Map<UnitGroup, List<UnitSearchResultItem>> =
-    withContext(Dispatchers.IO) {
+    withContext(defaultIODispatcher) {
       val unitFrom = getById(unitFromId)
       val units =
         unitsRepo.filter(
@@ -137,7 +138,7 @@ class UnitConverterRepositoryImpl(
               )
           }
         } catch (e: Exception) {
-          Log.e(LOG_TAG, "Failed to batch convert: $e")
+          Logger.e(LOG_TAG, e) { "Failed to batch convert" }
           units.toList()
         }
 
@@ -460,7 +461,7 @@ class UnitConverterRepositoryImpl(
     unitTo: BasicUnit.Default,
     value: KBigDecimal,
   ): ConverterResult =
-    withContext(Dispatchers.IO) {
+    withContext(defaultIODispatcher) {
       refreshCurrencyRates(unitFrom.id)
 
       val latestRate = currencyRatesDao.getLatestRate(unitFrom.id, unitTo.id)
@@ -480,7 +481,7 @@ class UnitConverterRepositoryImpl(
 
   @OptIn(ExperimentalTime::class)
   private suspend fun refreshCurrencyRates(unitFromId: String) =
-    withContext(Dispatchers.IO) {
+    withContext(defaultIODispatcher) {
       val latestUpdateDate = currencyRatesDao.getLatestRateTimeStamp(unitFromId)
       val currentDate =
         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toEpochDays()
@@ -501,7 +502,7 @@ class UnitConverterRepositoryImpl(
             }
           currencyRatesDao.insertRates(rates)
         } catch (e: Exception) {
-          Log.d(LOG_TAG, "Skipped update: $e")
+          Logger.d(LOG_TAG, e) { "Skipped update" }
         }
       }
     }

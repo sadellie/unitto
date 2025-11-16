@@ -20,10 +20,22 @@ package com.sadellie.unitto.core.data
 
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepository
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepositoryImpl
+import com.sadellie.unitto.core.data.converter.UnitConverterRepository
+import com.sadellie.unitto.core.data.converter.UnitConverterRepositoryImpl
+import com.sadellie.unitto.core.data.converter.UnitsRepository
+import com.sadellie.unitto.core.remote.CurrencyApiServiceImpl
 import org.koin.dsl.module
 
 val dataModule = module {
   factory<CalculatorHistoryRepository> {
     CalculatorHistoryRepositoryImpl(calculatorHistoryDao = get())
+  }
+  factory<UnitsRepository> { UnitsRepository(unitsDao = get()) }
+  factory<UnitConverterRepository> {
+    UnitConverterRepositoryImpl(
+      unitsRepo = get(),
+      currencyRatesDao = get(),
+      currencyApiService = CurrencyApiServiceImpl,
+    )
   }
 }

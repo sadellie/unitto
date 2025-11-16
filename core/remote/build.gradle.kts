@@ -17,16 +17,20 @@
  */
 
 plugins {
-  id("unitto.library")
-
+  id("unitto.multiplatform.library")
   alias(libs.plugins.serialization)
 }
 
-android.namespace = "com.sadellie.unitto.core.remote"
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(libs.io.ktor.ktor.client.core)
+    implementation(libs.io.ktor.ktor.client.cio)
+    implementation(libs.io.ktor.ktor.serialization.kotlinx.json)
+    implementation(libs.io.ktor.ktor.client.content.negotiation)
 
-dependencies {
-  implementation(libs.io.ktor.ktor.client.core)
-  implementation(libs.io.ktor.ktor.client.cio)
-  implementation(libs.io.ktor.ktor.serialization.kotlinx.json)
-  implementation(libs.io.ktor.ktor.client.content.negotiation)
+  }
+  sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
+  sourceSets.wasmJsMain.dependencies { implementation(libs.io.ktor.ktor.client.js) }
 }
+
+android.namespace = "com.sadellie.unitto.core.remote"

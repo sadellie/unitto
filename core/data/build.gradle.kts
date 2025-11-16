@@ -29,15 +29,16 @@ kotlin {
     implementation(project(":core:themmo"))
     implementation(project(":core:evaluatto"))
     implementation(project(":core:database"))
+    implementation(project(":core:remote"))
     implementation(libs.org.jetbrains.compose.runtime.runtime)
     implementation(libs.org.jetbrains.compose.components.components.resources)
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
     implementation(libs.io.insert.koin.koin.core)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
+    implementation(libs.co.touchlab.kermit)
   }
   sourceSets.androidMain.dependencies {
-    implementation(project(":core:remote"))
     implementation(libs.io.insert.koin.koin.android)
     implementation(libs.io.insert.koin.koin.core.coroutines)
   }
