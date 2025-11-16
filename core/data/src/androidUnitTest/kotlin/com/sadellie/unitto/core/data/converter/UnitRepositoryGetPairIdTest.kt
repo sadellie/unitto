@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.data.converter
 
+import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.database.UnitsEntity
 import kotlinx.coroutines.test.TestScope
@@ -32,7 +33,7 @@ import org.robolectric.RobolectricTestRunner
 class UnitRepositoryGetPairIdTest {
   private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
-  private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
+  private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
   private val unitsRepository = UnitsRepository(fakeUnitsDao)
   private val unitConverterRepo =

@@ -42,6 +42,7 @@ import com.sadellie.unitto.core.data.converter.collections.temperatureCollection
 import com.sadellie.unitto.core.data.converter.collections.timeCollection
 import com.sadellie.unitto.core.data.converter.collections.torqueCollection
 import com.sadellie.unitto.core.data.converter.collections.volumeCollection
+import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
@@ -57,10 +58,8 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class UnitRepositoryFilterUnitsTest {
   private val testScope = TestScope(UnconfinedTestDispatcher())
-  // FIXME not provided to resource loader
-  private val context = RuntimeEnvironment.getApplication().applicationContext
   private val fakeCurrencyApiService = FakeCurrencyApiService()
-  private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
+  private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
   private val unitsRepository = UnitsRepository(fakeUnitsDao)
   private val unitConverterRepo =
@@ -137,6 +136,7 @@ class UnitRepositoryFilterUnitsTest {
       assertEquals(expected, actual)
     }
 
+  // FIXME not provided to resource loader
   @Test
   fun filterUnits_verySpecific() =
     testScope.runTest {

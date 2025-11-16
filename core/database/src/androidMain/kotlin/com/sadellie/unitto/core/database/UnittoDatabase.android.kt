@@ -52,7 +52,7 @@ abstract class UnittoDatabaseAndroid : UnittoDatabase, RoomDatabase() {
 
   abstract fun timeZoneDao(): TimeZoneDao
 
-  abstract fun currencyRatesDao(): CurrencyRatesDao
+  abstract override fun currencyRatesDao(): CurrencyRatesDao
 
   abstract fun converterWidgetUnitsPairDao(): ConverterWidgetUnitPairDao
 

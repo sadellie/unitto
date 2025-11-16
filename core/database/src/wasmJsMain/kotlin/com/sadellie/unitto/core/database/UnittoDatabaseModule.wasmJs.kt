@@ -21,7 +21,8 @@ package com.sadellie.unitto.core.database
 import org.koin.dsl.module
 
 val unittoDatabaseModule = module {
-  single<UnittoDatabaseInMemory> { UnittoDatabaseInMemory() }
+  single<UnittoDatabase> { UnittoDatabaseInMemory() }
   factory<CalculatorHistoryDao> { get<UnittoDatabaseInMemory>().calculatorHistoryDao() }
   factory<UnitsDao> { get<UnittoDatabaseInMemory>().unitsDao() }
+  factory<CurrencyRatesDao> { get<UnittoDatabaseInMemory>().currencyRatesDao() }
 }

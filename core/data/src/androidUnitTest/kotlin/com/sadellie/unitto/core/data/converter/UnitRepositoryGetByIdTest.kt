@@ -19,6 +19,7 @@
 package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.KBigDecimal
+import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
@@ -39,7 +40,7 @@ import unitto.core.common.generated.resources.unit_attometer_short
 class UnitRepositoryGetByIdTest {
   private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
-  private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
+  private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
   private val unitsRepository = UnitsRepository(fakeUnitsDao)
   private val unitConverterRepo =

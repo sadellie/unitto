@@ -23,6 +23,7 @@ import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.setMaxScale
 import com.sadellie.unitto.core.data.converter.collections.currencyCollection
 import com.sadellie.unitto.core.data.converter.collections.lengthCollection
+import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
@@ -38,7 +39,7 @@ import org.robolectric.RobolectricTestRunner
 class UnitRepositoryFilterUnitsAndBatchConvertTest {
   private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
-  private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
+  private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
   private val unitsRepository = UnitsRepository(fakeUnitsDao)
   private val unitConverterRepo =

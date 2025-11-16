@@ -21,6 +21,7 @@ package com.sadellie.unitto.core.data.converter
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.setMaxScale
+import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.CurrencyRatesEntity
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import io.github.sadellie.evaluatto.ExpressionException
@@ -35,7 +36,7 @@ import org.junit.Test
 class UnitConverterRepositoryImplTest {
   private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
-  private val fakeCurrencyRatesDao = FakeCurrencyRatesDao()
+  private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
   private val unitsRepository = UnitsRepository(fakeUnitsDao)
   private val unitConverterRepo =

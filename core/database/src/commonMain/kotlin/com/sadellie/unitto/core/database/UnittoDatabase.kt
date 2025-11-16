@@ -27,12 +27,16 @@ interface UnittoDatabase {
   fun calculatorHistoryDao(): CalculatorHistoryDao
 
   fun unitsDao(): UnitsDao
+
+  fun currencyRatesDao(): CurrencyRatesDao
 }
 
 class UnittoDatabaseInMemory : UnittoDatabase {
   override fun calculatorHistoryDao() = CalculatorHistoryDaoInMemory()
 
   override fun unitsDao(): UnitsDao = UnitsDaoInMemory()
+
+  override fun currencyRatesDao() = CurrencyRatesDaoInMemory()
 }
 
 class UnitsDaoInMemory : UnitsDao {
@@ -59,6 +63,23 @@ class UnitsDaoInMemory : UnitsDao {
 
   override suspend fun getById(unitId: String): UnitsEntity? =
     entries.value.firstOrNull { it.unitId == unitId }
+
+  override suspend fun clear() = entries.update { emptyList() }
+}
+
+class CurrencyRatesDaoInMemory : CurrencyRatesDao {
+  private val entries = MutableStateFlow(emptyList<CurrencyRatesEntity>())
+
+  override suspend fun insertRates(currencyRates: List<CurrencyRatesEntity>) =
+    entries.update { currentEntries -> currentEntries + currencyRates }
+
+  override suspend fun getLatestRateTimeStamp(baseId: String): Long? =
+    entries.value.firstOrNull { it.baseUnitId == baseId }?.date
+
+  override suspend fun getLatestRate(baseId: String, pairId: String): CurrencyRatesEntity? =
+    entries.value.firstOrNull { it.baseUnitId == baseId && it.pairUnitId == pairId }
+
+  override fun size(): Flow<Int> = entries.mapLatest { it.size }
 
   override suspend fun clear() = entries.update { emptyList() }
 }
