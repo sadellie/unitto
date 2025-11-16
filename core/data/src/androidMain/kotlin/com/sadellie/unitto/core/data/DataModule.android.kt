@@ -18,6 +18,9 @@
 
 package com.sadellie.unitto.core.data
 
+import android.icu.util.TimeZone
+import android.icu.util.ULocale
+import android.os.Build
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepository
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepositoryImpl
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
@@ -25,7 +28,10 @@ import com.sadellie.unitto.core.data.converter.UnitConverterRepositoryImpl
 import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepositoryImpl
+import com.sadellie.unitto.core.model.timezone.FavoriteZone
+import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.remote.CurrencyApiServiceImpl
+import kotlinx.coroutines.flow.emptyFlow
 import org.koin.dsl.lazyModule
 
 val dataModule = lazyModule {
@@ -43,5 +49,25 @@ val dataModule = lazyModule {
     )
   }
 
-  single<TimeZonesRepository> { TimeZonesRepositoryImpl(dao = get()) }
+  single<TimeZonesRepository> {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      TimeZonesRepositoryImpl(dao = get())
+    } else {
+      // unused dummy is easier to implement for this case
+      object : TimeZonesRepository {
+        override val favoriteTimeZones = emptyFlow<List<FavoriteZone>>()
+
+        override suspend fun updatePosition(timeZone: FavoriteZone, targetPosition: Int) {}
+
+        override suspend fun addToFavorites(timeZone: TimeZone) {}
+
+        override suspend fun removeFromFavorites(timeZone: FavoriteZone) {}
+
+        override suspend fun updateLabel(timeZone: FavoriteZone, label: String) {}
+
+        override suspend fun filter(searchQuery: String, locale: ULocale): List<SearchResultZone> =
+          emptyList()
+      }
+    }
+  }
 }
