@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DismissibleNavigationDrawer
@@ -64,9 +63,9 @@ import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.navigation.DrawerItem
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.ui.UnittoDrawerState.Companion.saver
+import kotlin.math.roundToInt
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @Composable
 fun NavigationDrawer(
@@ -265,18 +264,7 @@ private fun UnittoModalNavigationDrawer(
     content()
 
     // Drag handle
-    Box(
-      modifier =
-        modifier
-          .width(UnittoModalDrawerDragHandleWidth)
-          .fillMaxHeight()
-          .doNotConsumeTouchEvents()
-          .anchoredDraggable(
-            state = state.anchoredDraggableState,
-            orientation = Orientation.Horizontal,
-            enabled = gesturesEnabled or state.isOpen,
-          )
-    )
+    DragHandle(state.anchoredDraggableState, state.isOpen, gesturesEnabled)
 
     Scrim(
       open = state.isOpen,
@@ -302,6 +290,13 @@ private fun UnittoModalNavigationDrawer(
 }
 
 @Composable
+internal expect fun DragHandle(
+  anchoredDraggableState: AnchoredDraggableState<UnittoDrawerValue>,
+  isOpen: Boolean,
+  gesturesEnabled: Boolean,
+)
+
+@Composable
 private fun Scrim(
   open: Boolean,
   onClose: () -> Unit,
@@ -318,10 +313,8 @@ private fun Scrim(
   Canvas(Modifier.fillMaxSize().then(dismissDrawer)) { drawRect(color, alpha = fraction()) }
 }
 
+@Suppress("SameParameterValue")
 private fun fraction(a: Float, b: Float, pos: Float) = ((pos - a) / (b - a)).coerceIn(0f, 1f)
 
-// TODO this is wrong, wasm should have it's own logic for this
-internal expect fun Modifier.doNotConsumeTouchEvents(): Modifier
-
-private val UnittoModalDrawerDragHandleWidth = 36.dp
+internal val UnittoModalDrawerDragHandleWidth = 36.dp
 private val UnittoModalDrawerMaxWidth = 360.dp

@@ -18,6 +18,12 @@
 
 package com.sadellie.unitto.core.ui
 
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.runtime.Composable
 
-internal actual fun Modifier.doNotConsumeTouchEvents() = this
+@Composable
+internal actual fun DragHandle(
+  anchoredDraggableState: AnchoredDraggableState<UnittoDrawerValue>,
+  isOpen: Boolean,
+  gesturesEnabled: Boolean,
+) {}

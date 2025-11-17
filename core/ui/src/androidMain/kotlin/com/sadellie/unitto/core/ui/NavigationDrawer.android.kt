@@ -18,7 +18,13 @@
 
 package com.sadellie.unitto.core.ui
 
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,4 +75,21 @@ private fun PreviewUnittoModalNavigationDrawer() {
   )
 }
 
-internal actual fun Modifier.doNotConsumeTouchEvents() = pointerInteropFilter { false }
+@Composable
+internal actual fun DragHandle(
+  anchoredDraggableState: AnchoredDraggableState<UnittoDrawerValue>,
+  isOpen: Boolean,
+  gesturesEnabled: Boolean,
+) {
+  Box(
+    modifier =
+      Modifier.width(UnittoModalDrawerDragHandleWidth)
+        .fillMaxHeight()
+        .pointerInteropFilter { false }
+        .anchoredDraggable(
+          state = anchoredDraggableState,
+          orientation = Orientation.Horizontal,
+          enabled = gesturesEnabled || isOpen,
+        )
+  )
+}
