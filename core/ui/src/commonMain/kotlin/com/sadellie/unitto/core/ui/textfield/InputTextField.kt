@@ -209,9 +209,8 @@ private fun AutoSizeTextField(
         state = state,
         modifier =
           Modifier.fillMaxWidth()
-            .focusRequester(focusRequester)
             .clickable(
-              interactionSource = remember { MutableInteractionSource() },
+              interactionSource = null,
               indication = null,
               onClick = {
                 currentTextToolbar.hide()
@@ -219,7 +218,8 @@ private fun AutoSizeTextField(
                 state.edit { selection = TextRange.Zero }
                 currentTextToolbar.showMenu(Rect(Offset.Zero, 0f))
               },
-            ),
+            )
+            .focusRequester(focusRequester),
         enabled = enabled,
         readOnly = readOnly,
         inputTransformation = inputTransformation,
