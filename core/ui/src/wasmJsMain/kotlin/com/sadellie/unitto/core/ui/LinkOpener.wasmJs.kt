@@ -16,17 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.common
+package com.sadellie.unitto.core.ui
 
-import android.content.Context
-import android.util.Log
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.net.toUri
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import co.touchlab.kermit.Logger
+import kotlinx.browser.window
 
-fun openLink(context: Context, url: String) {
-  try {
-    CustomTabsIntent.Builder().build().launchUrl(context, url.toUri())
-  } catch (e: Exception) {
-    Log.e("UIUtils", "Failed to open link", e)
+private class LinkOpenerImpl : LinkOpener {
+  override fun launch(url: String) {
+    try {
+      window.open(url)
+    } catch (e: Exception) {
+      Logger.e("LinkOpener", e) { "Failed to open link: $url" }
+    }
   }
 }
+
+@Composable actual fun rememberLinkOpener(): LinkOpener = remember { LinkOpenerImpl() }

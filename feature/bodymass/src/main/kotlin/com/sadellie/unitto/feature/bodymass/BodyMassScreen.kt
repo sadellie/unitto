@@ -44,7 +44,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,13 +52,13 @@ import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
-import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.TextFieldBox
 import com.sadellie.unitto.core.ui.TextFieldRow
+import com.sadellie.unitto.core.ui.rememberLinkOpener
 import com.sadellie.unitto.feature.bodymass.components.BodyMassResult
 import com.sadellie.unitto.feature.bodymass.components.BodyMassTextField
 import org.jetbrains.compose.resources.stringResource
@@ -99,7 +98,6 @@ private fun BodyMassScreen(
   updateIsMetric: (Boolean) -> Unit,
   openDrawer: () -> Unit,
 ) {
-  val context = LocalContext.current
   val weightShortLabel =
     stringResource(
       if (uiState.isMetric) Res.string.unit_kilogram_short else Res.string.unit_pound_short
@@ -146,8 +144,9 @@ private fun BodyMassScreen(
         )
       }
 
+      val linkOpener = rememberLinkOpener()
       OutlinedButton(
-        onClick = { openLink(context, "https://sadellie.github.io/unitto/help#body-mass-index") },
+        onClick = { linkOpener.launch("https://sadellie.github.io/unitto/help#body-mass-index") },
         shapes = ButtonDefaults.shapes(),
         contentPadding = ButtonDefaults.SmallContentPadding,
         modifier = Modifier.height(ButtonDefaults.MinHeight),

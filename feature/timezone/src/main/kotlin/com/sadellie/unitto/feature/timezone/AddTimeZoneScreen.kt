@@ -46,7 +46,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.displayName
 import com.sadellie.unitto.core.common.offset
-import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.common.regionName
 import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
@@ -58,12 +57,13 @@ import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.SearchPlaceholder
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.plus
+import com.sadellie.unitto.core.ui.rememberLinkOpener
+import java.time.ZonedDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_read_article
 import unitto.core.common.generated.resources.time_zone_no_results_support
-import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -110,10 +110,11 @@ fun AddTimeZoneScreen(
       label = "Placeholder",
     ) { empty ->
       if (empty) {
+        val linkOpener = rememberLinkOpener()
         SearchPlaceholder(
           modifier = Modifier.padding(paddingValues),
           onButtonClick = {
-            openLink(mContext, "https://sadellie.github.io/unitto/help#add-time-zones")
+            linkOpener.launch("https://sadellie.github.io/unitto/help#add-time-zones")
           },
           supportText = stringResource(Res.string.time_zone_no_results_support),
           buttonLabel = stringResource(Res.string.common_read_article),

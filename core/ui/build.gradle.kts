@@ -39,6 +39,7 @@ kotlin {
   sourceSets.androidMain.dependencies {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling)
     implementation(libs.androidx.activity.activity.compose)
+    implementation(libs.androidx.browser.browser)
   }
   sourceSets.androidUnitTest.dependencies { implementation(libs.org.robolectric.robolectric) }
   sourceSets.commonTest.dependencies {

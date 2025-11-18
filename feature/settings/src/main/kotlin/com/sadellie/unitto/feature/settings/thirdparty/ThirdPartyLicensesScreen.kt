@@ -24,18 +24,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.licenses.ThirdParty
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.rememberLinkOpener
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.settings_third_party_licenses
@@ -45,16 +43,14 @@ import unitto.core.common.generated.resources.settings_third_party_licenses
  *
  * @param navigateUpAction Action to be called when clicking back button in top bar
  */
-@Stable
 @Composable
 internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
-  val mContext = LocalContext.current
-
   ScaffoldWithLargeTopBar(
     title = stringResource(Res.string.settings_third_party_licenses),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { padding ->
     val allThirdParty = remember { ThirdParty.allThirdParty() }
+    val linkOpener = rememberLinkOpener()
     LazyColumn(
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
       contentPadding = padding,
@@ -62,7 +58,7 @@ internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
     ) {
       itemsIndexed(allThirdParty) { index, item ->
         ListItemExpressive(
-          onClick = { openLink(mContext, item.website) },
+          onClick = { linkOpener.launch(item.website) },
           shape = ListItemExpressiveDefaults.listedShaped(index, allThirdParty.size),
           headlineContent = { Text("${item.name} (${item.license})") },
           supportingContent = {

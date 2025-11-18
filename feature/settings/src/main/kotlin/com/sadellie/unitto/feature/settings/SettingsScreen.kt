@@ -36,11 +36,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.Config
-import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.BacklightHigh
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cached
@@ -63,6 +61,7 @@ import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.rememberLinkOpener
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 import com.sadellie.unitto.feature.settings.navigation.AboutRoute
 import com.sadellie.unitto.feature.settings.navigation.BackupRoute
@@ -148,18 +147,18 @@ private fun SettingsScreen(
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
+      val linkOpener = rememberLinkOpener()
       AnimatedVisibility(
         modifier = Modifier.fillMaxWidth(),
         visible = uiState.showUpdateChangelog,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
       ) {
-        val mContext = LocalContext.current
         val title = stringResource(Res.string.settings_updated, stringResource(Res.string.app_name))
         AnnoyingBox(
           modifier = Modifier.padding(vertical = Sizes.small).fillMaxWidth(),
           onClick = {
-            openLink(mContext, "https://github.com/sadellie/unitto/releases/latest")
+            linkOpener.launch("https://github.com/sadellie/unitto/releases/latest")
             updateLastReadChangelog(BuildConfig.VERSION_CODE)
           },
           imageVector = Symbols.NewReleases,
@@ -243,11 +242,10 @@ private fun SettingsScreen(
         )
       }
       if (Config.STORE_LINK.isNotEmpty()) {
-        val mContext = LocalContext.current
         ListItemExpressive(
           icon = Symbols.RateReview,
           headlineText = stringResource(Res.string.settings_rate_this_app),
-          onClick = { openLink(mContext, Config.STORE_LINK) },
+          onClick = { linkOpener.launch(Config.STORE_LINK) },
           shape = ListItemExpressiveDefaults.middleShape,
         )
       }

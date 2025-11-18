@@ -31,7 +31,6 @@ kotlin {
   sourceSets.androidMain.dependencies {
     implementation(libs.big.math)
     implementation(libs.androidx.core.core.ktx)
-    implementation(libs.androidx.browser.browser)
   }
   // do not mix native BigDecimal binding from kt-math and pure java BigDecimal
   sourceSets.wasmJsMain.dependencies { implementation(project(":kt-math")) }

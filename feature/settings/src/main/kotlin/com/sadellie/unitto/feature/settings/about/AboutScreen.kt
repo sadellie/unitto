@@ -33,9 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.openLink
 import com.sadellie.unitto.core.designsystem.icons.symbols.Code
 import com.sadellie.unitto.core.designsystem.icons.symbols.Copyright
 import com.sadellie.unitto.core.designsystem.icons.symbols.Help
@@ -48,6 +46,7 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.rememberLinkOpener
 import com.sadellie.unitto.feature.settings.BuildConfig
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
@@ -81,7 +80,6 @@ private fun AboutScreen(
   navigateToThirdParty: () -> Unit,
   navigateToEasterEgg: () -> Unit,
 ) {
-  val mContext = LocalContext.current
   var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
   var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
@@ -97,6 +95,7 @@ private fun AboutScreen(
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
+      val linkOpener = rememberLinkOpener()
       ListItemExpressive(
         icon = Symbols.Help,
         onClick = { showDialog = true },
@@ -106,19 +105,19 @@ private fun AboutScreen(
       ListItemExpressive(
         icon = Symbols.PrivacyTip,
         headlineText = stringResource(Res.string.settings_terms_and_conditions),
-        onClick = { openLink(mContext, "https://sadellie.github.io/unitto/terms") },
+        onClick = { linkOpener.launch("https://sadellie.github.io/unitto/terms") },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Policy,
         headlineText = stringResource(Res.string.settings_privacy_policy),
-        onClick = { openLink(mContext, "https://sadellie.github.io/unitto/privacy") },
+        onClick = { linkOpener.launch("https://sadellie.github.io/unitto/privacy") },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Code,
         headlineText = stringResource(Res.string.settings_view_source_code),
-        onClick = { openLink(mContext, "https://github.com/sadellie/unitto") },
+        onClick = { linkOpener.launch("https://github.com/sadellie/unitto") },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
