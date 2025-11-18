@@ -60,12 +60,12 @@ fun String.tokenAhead(pos: Int): String {
   return substring((pos - 1).coerceAtLeast(0), pos)
 }
 
+/**
+ * - `123,456+c|os(8)` return `true`
+ * - `123,456+|cos(8)` return `false`
+ * - `123,|456+cos(8)` return `false` (impossible in UI. See [ExpressionOutputTransformation])
+ */
 private fun CharSequence.isPlacedIllegallyAt(pos: Int): Boolean {
-  // FIXME Should return true for "123,|456"
-  // For things like "123,|456" - this is illegal
-  // if (pos.isAfterToken(this, grouping)) return true
-
-  // For things like "123,456+c|os(8)" - this is illegal
   Token.Func.allWithOpeningBracket.forEach { if (pos.isAtToken(this, it)) return true }
 
   return false
