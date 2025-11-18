@@ -427,11 +427,11 @@ private fun CurrencyUpdateStatusBar(
 ) {
   val locale = LocalLocale.current
   val lastUpdate by
-    remember(currencyRateUpdateState, unitFromGroup) {
+    remember(currencyRateUpdateState, unitFromGroup, locale) {
       derivedStateOf {
         if (
-          currencyRateUpdateState is CurrencyRateUpdateState.Ready &&
-            unitFromGroup == UnitGroup.CURRENCY
+          unitFromGroup == UnitGroup.CURRENCY &&
+            currencyRateUpdateState is CurrencyRateUpdateState.Ready
         ) {
           currencyRateUpdateState.date.formatDateWeekDayMonthYear(locale)
         } else {

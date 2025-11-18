@@ -19,19 +19,36 @@
 package com.sadellie.unitto.core.ui.datetime
 
 import androidx.compose.ui.text.intl.PlatformLocale
+import co.touchlab.kermit.Logger
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 
+/**
+ * Format [this] into `Tue, Jan 31, 2022`. Fallbacks to English locale if there was an exception.
+ */
 fun LocalDate.formatDateWeekDayMonthYear(locale: PlatformLocale): String {
-  // TODO catch exceptions for names
   val formatter =
     LocalDate.Format {
-      this.dayOfWeek(commonDayOfWeekNames(locale))
+      val weekNames =
+        try {
+          dayOfWeekNamesAbbreviated(locale)
+        } catch (e: IllegalArgumentException) {
+          Logger.e(TAG, e) { "Failed to get week names" }
+          DayOfWeekNames.ENGLISH_ABBREVIATED
+        }
+      val monthNames =
+        try {
+          monthNamesAbbreviated(locale)
+        } catch (e: IllegalArgumentException) {
+          Logger.e(TAG, e) { "Failed to get month names" }
+          MonthNames.ENGLISH_ABBREVIATED
+        }
+      this.dayOfWeek(weekNames)
       this.chars(", ")
-      this.monthName(commonMonthNames(locale))
+      this.monthName(monthNames)
       this.char(' ')
       this.day()
       this.chars(", ")
@@ -41,6 +58,8 @@ fun LocalDate.formatDateWeekDayMonthYear(locale: PlatformLocale): String {
   return this.format(formatter)
 }
 
-expect fun commonDayOfWeekNames(locale: PlatformLocale): DayOfWeekNames
+expect fun dayOfWeekNamesAbbreviated(locale: PlatformLocale): DayOfWeekNames
 
-expect fun commonMonthNames(locale: PlatformLocale): MonthNames
+expect fun monthNamesAbbreviated(locale: PlatformLocale): MonthNames
+
+private const val TAG = "LocalDateUtils"

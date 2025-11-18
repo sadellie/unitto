@@ -23,7 +23,7 @@ import java.text.DateFormatSymbols
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
 
-actual fun commonDayOfWeekNames(locale: PlatformLocale): DayOfWeekNames {
+actual fun dayOfWeekNamesAbbreviated(locale: PlatformLocale): DayOfWeekNames {
   val weekDaysFromSunday =
     DateFormatSymbols.getInstance(locale).shortWeekdays.filterNot(String::isEmpty)
   return DayOfWeekNames(
@@ -37,5 +37,5 @@ actual fun commonDayOfWeekNames(locale: PlatformLocale): DayOfWeekNames {
   )
 }
 
-actual fun commonMonthNames(locale: PlatformLocale) =
+actual fun monthNamesAbbreviated(locale: PlatformLocale) =
   MonthNames(DateFormatSymbols.getInstance(locale).shortMonths.filterNot(String::isEmpty).toList())

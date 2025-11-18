@@ -22,6 +22,6 @@ import androidx.compose.ui.text.intl.PlatformLocale
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
 
-actual fun commonDayOfWeekNames(locale: PlatformLocale) = DayOfWeekNames.ENGLISH_ABBREVIATED
+actual fun dayOfWeekNamesAbbreviated(locale: PlatformLocale) = DayOfWeekNames.ENGLISH_ABBREVIATED
 
-actual fun commonMonthNames(locale: PlatformLocale) = MonthNames.ENGLISH_ABBREVIATED
+actual fun monthNamesAbbreviated(locale: PlatformLocale) = MonthNames.ENGLISH_ABBREVIATED
