@@ -39,6 +39,7 @@ kotlin {
   }
   sourceSets.commonMain.dependencies {
     implementation(libs.org.jetbrains.compose.material3.material3)
+    implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
     implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
@@ -64,6 +65,7 @@ kotlin {
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.androidx.appcompat.appcompat)
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
+    implementation(libs.org.jetbrains.compose.ui.ui.tooling)
 
     implementation(libs.io.insert.koin.koin.androidx.startup)
     implementation(libs.io.insert.koin.koin.core.coroutines)

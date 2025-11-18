@@ -18,7 +18,12 @@
 
 package com.sadellie.unitto
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
@@ -97,45 +102,53 @@ fun main() {
       val themmoController = rememberUnittoThemmoController(appPreferences)
 
       Themmo(themmoController = themmoController) {
-        val drawerScope = rememberCoroutineScope()
-        val drawerState = rememberUnittoDrawerState(UnittoDrawerValue.Closed)
-        val navController = rememberNavController()
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentGraphRoute =
-          remember(navBackStackEntry?.destination) {
-            val currentGraph = navBackStackEntry?.destination?.parent ?: return@remember null
-            (mainDrawerItems + additionalDrawerItems)
-              .firstOrNull { drawerItem -> currentGraph.hasRoute(drawerItem.graphRoute::class) }
-              ?.graphRoute
-          }
-        val gesturesEnabled: Boolean =
-          remember(currentGraphRoute) { currentGraphRoute in graphRoutes }
-        BackHandler(drawerState.isOpen) { drawerScope.launch { drawerState.close() } }
-        NavigationDrawer(
-          modifier = Modifier,
-          state = drawerState,
-          gesturesEnabled = gesturesEnabled,
-          mainTabs = mainDrawerItems,
-          additionalTabs = additionalDrawerItems,
-          currentDestination = currentGraphRoute,
-          onItemClick = { destination ->
-            drawerScope.launch { drawerState.close() }
-            navigateToTab(destination, navController)
-          },
-        ) {
-          UnittoNavigation(
-            navController = navController,
-            themmoController = it,
-            startDestination = appPreferences.startingScreen,
-            openDrawer = { drawerScope.launch { drawerState.open() } },
+        Column(Modifier.fillMaxSize()) {
+          ExperimentalBar(modifier = Modifier.fillMaxWidth())
+          HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.outlineVariant,
           )
+
+          val drawerScope = rememberCoroutineScope()
+          val drawerState = rememberUnittoDrawerState(UnittoDrawerValue.Closed)
+          val navController = rememberNavController()
+          val navBackStackEntry by navController.currentBackStackEntryAsState()
+          val currentGraphRoute =
+            remember(navBackStackEntry?.destination) {
+              val currentGraph = navBackStackEntry?.destination?.parent ?: return@remember null
+              (mainDrawerItems + additionalDrawerItems)
+                .firstOrNull { drawerItem -> currentGraph.hasRoute(drawerItem.graphRoute::class) }
+                ?.graphRoute
+            }
+          val gesturesEnabled: Boolean =
+            remember(currentGraphRoute) { currentGraphRoute in graphRoutes }
+          BackHandler(drawerState.isOpen) { drawerScope.launch { drawerState.close() } }
+          NavigationDrawer(
+            modifier = Modifier,
+            state = drawerState,
+            gesturesEnabled = gesturesEnabled,
+            mainTabs = mainDrawerItems,
+            additionalTabs = additionalDrawerItems,
+            currentDestination = currentGraphRoute,
+            onItemClick = { destination ->
+              drawerScope.launch { drawerState.close() }
+              navigateToTab(destination, navController)
+            },
+          ) {
+            UnittoNavigation(
+              navController = navController,
+              themmoController = it,
+              startDestination = appPreferences.startingScreen,
+              openDrawer = { drawerScope.launch { drawerState.open() } },
+            )
+          }
         }
       }
     }
   }
 }
 
-fun initKoin() {
+private fun initKoin() {
   startKoin {
     modules(
       unittoDatabaseModule,
