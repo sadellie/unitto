@@ -42,10 +42,8 @@ import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.ui.textfield.formatExpression
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
@@ -118,11 +116,9 @@ private fun DateDifferenceView(
         is ZonedDateTimeDifference.Default -> {
           DateTimeResultBlock(
             diff = result,
-            format = {
-              it
-                .toFormattedString(uiState.precision, uiState.outputFormat)
-                .formatExpression(uiState.formatterSymbols)
-            },
+            precision = uiState.precision,
+            outputFormat = uiState.outputFormat,
+            formatterSymbols = uiState.formatterSymbols,
           )
         }
         ZonedDateTimeDifference.Zero -> Unit

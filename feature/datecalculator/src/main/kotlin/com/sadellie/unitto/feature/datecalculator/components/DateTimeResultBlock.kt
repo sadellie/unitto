@@ -24,11 +24,17 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
+import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
+import com.sadellie.unitto.core.common.OutputFormat
+import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.ui.PagedIsland
+import com.sadellie.unitto.core.ui.textfield.formatExpression
 import com.sadellie.unitto.feature.datecalculator.difference.ZonedDateTimeDifference
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -44,7 +50,9 @@ import unitto.core.common.generated.resources.date_calculator_years
 internal fun DateTimeResultBlock(
   modifier: Modifier = Modifier,
   diff: ZonedDateTimeDifference.Default,
-  format: (KBigDecimal) -> String,
+  precision: Int,
+  outputFormat: Int,
+  formatterSymbols: FormatterSymbols,
 ) {
   val focusManager = LocalFocusManager.current
 
@@ -55,7 +63,7 @@ internal fun DateTimeResultBlock(
     backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
   ) { currentPage ->
     when (currentPage) {
-      0 -> {
+      0 ->
         Column(modifier = Modifier.fillMaxWidth()) {
           Text(
             text = stringResource(Res.string.date_calculator_difference),
@@ -63,112 +71,152 @@ internal fun DateTimeResultBlock(
           )
           SelectionContainer {
             Column {
-              // Years
               if (diff.years > 0) {
-                DateText(Res.string.date_calculator_years, KBigDecimal.valueOf(diff.years), format)
-              }
-
-              // Months
-              if (diff.months > 0) {
-                DateText(
-                  Res.string.date_calculator_months,
-                  KBigDecimal.valueOf(diff.months),
-                  format,
+                PartialDateText(
+                  Res.string.date_calculator_years,
+                  diff.years,
+                  precision,
+                  outputFormat,
+                  formatterSymbols,
                 )
               }
 
-              // Days
+              if (diff.months > 0) {
+                PartialDateText(
+                  Res.string.date_calculator_months,
+                  diff.months,
+                  precision,
+                  outputFormat,
+                  formatterSymbols,
+                )
+              }
+
               if (diff.days > 0) {
-                DateText(Res.string.date_calculator_days, KBigDecimal.valueOf(diff.days), format)
+                PartialDateText(
+                  Res.string.date_calculator_days,
+                  diff.days,
+                  precision,
+                  outputFormat,
+                  formatterSymbols,
+                )
               }
 
-              // Hours
               if (diff.hours > 0) {
-                DateText(Res.string.date_calculator_hours, KBigDecimal.valueOf(diff.hours), format)
+                PartialDateText(
+                  Res.string.date_calculator_hours,
+                  diff.hours,
+                  precision,
+                  outputFormat,
+                  formatterSymbols,
+                )
               }
 
-              // Minutes
               if (diff.minutes > 0) {
-                DateText(
+                PartialDateText(
                   Res.string.date_calculator_minutes,
-                  KBigDecimal.valueOf(diff.minutes),
-                  format,
+                  diff.minutes,
+                  precision,
+                  outputFormat,
+                  formatterSymbols,
                 )
               }
             }
           }
         }
-      }
 
-      1 -> {
-        Column {
-          Text(
-            text = stringResource(Res.string.date_calculator_years),
-            style = MaterialTheme.typography.labelMedium,
-          )
-          SelectionContainer { DateText(diff.sumYears, format) }
-        }
-      }
-
-      2 -> {
-        Column {
-          Text(
-            text = stringResource(Res.string.date_calculator_months),
-            style = MaterialTheme.typography.labelMedium,
-          )
-          SelectionContainer { DateText(diff.sumMonths, format) }
-        }
-      }
-
-      3 -> {
-        Column {
-          Text(
-            text = stringResource(Res.string.date_calculator_days),
-            style = MaterialTheme.typography.labelMedium,
-          )
-          SelectionContainer { DateText(diff.sumDays, format) }
-        }
-      }
-
-      4 -> {
-        Column {
-          Text(
-            text = stringResource(Res.string.date_calculator_hours),
-            style = MaterialTheme.typography.labelMedium,
-          )
-          SelectionContainer { DateText(diff.sumHours, format) }
-        }
-      }
-
-      5 -> {
-        Column {
-          Text(
-            text = stringResource(Res.string.date_calculator_minutes),
-            style = MaterialTheme.typography.labelMedium,
-          )
-          SelectionContainer { DateText(diff.sumMinutes, format) }
-        }
-      }
+      1 ->
+        SingleDateText(
+          Res.string.date_calculator_years,
+          diff.sumYears,
+          precision,
+          outputFormat,
+          formatterSymbols,
+        )
+      2 ->
+        SingleDateText(
+          Res.string.date_calculator_months,
+          diff.sumMonths,
+          precision,
+          outputFormat,
+          formatterSymbols,
+        )
+      3 ->
+        SingleDateText(
+          Res.string.date_calculator_days,
+          diff.sumDays,
+          precision,
+          outputFormat,
+          formatterSymbols,
+        )
+      4 ->
+        SingleDateText(
+          Res.string.date_calculator_hours,
+          diff.sumHours,
+          precision,
+          outputFormat,
+          formatterSymbols,
+        )
+      5 ->
+        SingleDateText(
+          Res.string.date_calculator_minutes,
+          diff.sumMinutes,
+          precision,
+          outputFormat,
+          formatterSymbols,
+        )
     }
   }
 }
 
 @Composable
-private fun DateText(text: StringResource, value: KBigDecimal, format: (KBigDecimal) -> String) =
+private fun PartialDateText(
+  text: StringResource,
+  value: Long,
+  precision: Int,
+  outputFormat: Int,
+  formatterSymbols: FormatterSymbols,
+) {
+  val formattedValue =
+    remember(value, precision, outputFormat, formatterSymbols) {
+      formatDateValue(KBigDecimal.valueOf(value), precision, outputFormat, formatterSymbols)
+    }
   Text(
-    text = "${stringResource(text)}: ${format(value)}",
+    text = "${stringResource(text)}: $formattedValue",
     style = MaterialTheme.typography.displaySmall,
   )
+}
 
 @Composable
-private fun DateText(value: KBigDecimal, format: (KBigDecimal) -> String) =
-  Text(text = format(value), style = MaterialTheme.typography.displaySmall)
+private fun SingleDateText(
+  headerText: StringResource,
+  value: KBigDecimal,
+  precision: Int,
+  outputFormat: Int,
+  formatterSymbols: FormatterSymbols,
+) {
+  Column {
+    Text(text = stringResource(headerText), style = MaterialTheme.typography.labelMedium)
+    SelectionContainer {
+      val formattedValue =
+        remember(value, precision, outputFormat, formatterSymbols) {
+          formatDateValue(value, precision, outputFormat, formatterSymbols)
+        }
+      Text(text = formattedValue, style = MaterialTheme.typography.displaySmall)
+    }
+  }
+}
+
+private fun formatDateValue(
+  value: KBigDecimal,
+  precision: Int,
+  outputFormat: Int,
+  formatterSymbols: FormatterSymbols,
+): String = value.toFormattedString(precision, outputFormat).formatExpression(formatterSymbols)
 
 @Preview
 @Composable
 private fun DateTimeResultBlockPreview() {
   DateTimeResultBlock(
-    modifier = Modifier,
     diff =
       ZonedDateTimeDifference.Default(
         years = 0,
@@ -182,6 +230,8 @@ private fun DateTimeResultBlockPreview() {
         sumHours = KBigDecimal.ZERO,
         sumMinutes = KBigDecimal("46080"),
       ),
-    format = { it.toPlainString() },
+    precision = 3,
+    outputFormat = OutputFormat.PLAIN,
+    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
   )
 }
