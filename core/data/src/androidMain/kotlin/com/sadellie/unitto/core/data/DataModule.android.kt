@@ -30,7 +30,6 @@ import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepositoryImpl
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
-import com.sadellie.unitto.core.remote.CurrencyApiServiceImpl
 import kotlinx.coroutines.flow.emptyFlow
 import org.koin.dsl.lazyModule
 
@@ -45,7 +44,7 @@ val dataModule = lazyModule {
     UnitConverterRepositoryImpl(
       unitsRepo = get(),
       currencyRatesDao = get(),
-      currencyApiService = CurrencyApiServiceImpl,
+      currencyApiService = get(),
     )
   }
 

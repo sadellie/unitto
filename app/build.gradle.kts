@@ -45,6 +45,7 @@ kotlin {
     implementation(libs.io.insert.koin.koin.core)
     implementation(project(":core:themmo"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:remote"))
     implementation(project(":core:database"))
     implementation(project(":core:datastore"))
     implementation(project(":core:data"))

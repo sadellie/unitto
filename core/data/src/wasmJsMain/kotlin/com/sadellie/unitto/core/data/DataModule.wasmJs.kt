@@ -23,7 +23,6 @@ import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepositoryImpl
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitConverterRepositoryImpl
 import com.sadellie.unitto.core.data.converter.UnitsRepository
-import com.sadellie.unitto.core.remote.CurrencyApiServiceImpl
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -35,7 +34,7 @@ val dataModule = module {
     UnitConverterRepositoryImpl(
       unitsRepo = get(),
       currencyRatesDao = get(),
-      currencyApiService = CurrencyApiServiceImpl,
+      currencyApiService = get(),
     )
   }
 }

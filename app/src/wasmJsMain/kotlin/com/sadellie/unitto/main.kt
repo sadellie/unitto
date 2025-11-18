@@ -45,6 +45,7 @@ import com.sadellie.unitto.core.navigation.CalculatorGraphRoute
 import com.sadellie.unitto.core.navigation.additionalDrawerItems
 import com.sadellie.unitto.core.navigation.graphRoutes
 import com.sadellie.unitto.core.navigation.mainDrawerItems
+import com.sadellie.unitto.core.remote.currencyApiModule
 import com.sadellie.unitto.core.ui.BackHandler
 import com.sadellie.unitto.core.ui.NavigationDrawer
 import com.sadellie.unitto.core.ui.UnittoDrawerValue
@@ -136,6 +137,13 @@ fun main() {
 
 fun initKoin() {
   startKoin {
-    modules(unittoDatabaseModule, dataStoreModule, dataModule, calculatorModule, converterModule)
+    modules(
+      unittoDatabaseModule,
+      dataStoreModule,
+      dataModule,
+      currencyApiModule,
+      calculatorModule,
+      converterModule,
+    )
   }
 }

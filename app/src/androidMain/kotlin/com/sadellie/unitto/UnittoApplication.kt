@@ -22,6 +22,7 @@ import android.app.Application
 import com.sadellie.unitto.core.data.dataModule
 import com.sadellie.unitto.core.database.unittoDatabaseModule
 import com.sadellie.unitto.core.datastore.dataStoreModule
+import com.sadellie.unitto.core.remote.currencyApiModule
 import com.sadellie.unitto.feature.bodymass.bodyMassModule
 import com.sadellie.unitto.feature.calculator.calculatorModule
 import com.sadellie.unitto.feature.converter.converterModule
@@ -47,6 +48,7 @@ internal class UnittoApplication : Application(), KoinStartup {
         bodyMassModule,
         calculatorModule,
         converterModule,
+        currencyApiModule,
         dateCalculatorModule,
         settingsModule,
         timeZoneModule,

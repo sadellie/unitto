@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,12 @@ kotlin {
     implementation(libs.io.ktor.ktor.client.cio)
     implementation(libs.io.ktor.ktor.serialization.kotlinx.json)
     implementation(libs.io.ktor.ktor.client.content.negotiation)
-
+    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+    implementation(libs.io.insert.koin.koin.core)
   }
+  sourceSets.androidMain.dependencies { implementation(libs.io.insert.koin.koin.core.coroutines) }
   sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
+
   sourceSets.wasmJsMain.dependencies { implementation(libs.io.ktor.ktor.client.js) }
 }
 
