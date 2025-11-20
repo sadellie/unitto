@@ -23,79 +23,167 @@ import com.sadellie.unitto.core.common.Token
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-private const val ENG_VALUE = "123E+21"
-private const val ENG_VALUE_FRACTIONAL = "123.3E+21"
-private const val ENG_VALUE_EXPRESSION = "123E+21+(123456.789)"
-private const val ENG_VALUE_FRACTIONAL_EXPRESSION = "123.3E+21+(123456.789)"
-private const val COMPLETE_VALUE = "123456.789"
-private const val INCOMPLETE_VALUE = "123456."
-private const val NO_FRACTIONAL_VALUE = "123456"
-private const val INCOMPLETE_EXPR = "50+123456÷8×0.8-12+"
-private const val COMPLETE_EXPR = "50+123456÷8×0.8-12+0-√9×4^9+2×(9+8×7)"
-private const val LONG_HALF_COMPLETE_EXPR =
-  "50+123456÷89078..9×0.8-12+0-√9×4^9+2×(9+8×7)×sin(13sin123cos"
-private const val SOME_BRACKETS = "(((((((("
-private const val FRACTION_VALUE = "1600 1234⁄56789"
-
+/**
+ * Expressions are formatted using 2 different APIs: regular strings and OutputTransformation. This
+ * does NOT test cursor shifts.
+ *
+ * @see [TextFieldTransformationTest]
+ */
 class FormatterExpressionTest {
-
   @Test
-  fun formatExpression_spaceAndPeriod() {
-    fun String.format(): String = formatExpression(FormatterSymbols(Token.SPACE, Token.PERIOD))
-    assertEquals("123E+21", ENG_VALUE.format())
-    assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
-    assertEquals("123E+21+(123 456.789)", ENG_VALUE_EXPRESSION.format())
-    assertEquals("123.3E+21+(123 456.789)", ENG_VALUE_FRACTIONAL_EXPRESSION.format())
-    assertEquals("123 456.789", COMPLETE_VALUE.format())
-    assertEquals("123 456.", INCOMPLETE_VALUE.format())
-    assertEquals("123 456", NO_FRACTIONAL_VALUE.format())
-    assertEquals("50+123 456÷8×0.8−12+", INCOMPLETE_EXPR.format())
-    assertEquals("50+123 456÷8×0.8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
-    assertEquals(
-      "50+123 456÷89 078..9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos",
-      LONG_HALF_COMPLETE_EXPR.format(),
+  fun formatExpression_testEng() {
+    assertFormatExpression(
+      unformatted = "123E+21",
+      spaceAndPeriod = "123E+21",
+      commaAndPeriod = "123E+21",
+      periodAndComma = "123E+21",
     )
-    assertEquals("((((((((", SOME_BRACKETS.format())
-    assertEquals("1 600 1234⁄56789", FRACTION_VALUE.format())
   }
 
   @Test
-  fun formatExpression_commaAndPeriod() {
-    fun String.format(): String = formatExpression(FormatterSymbols(Token.COMMA, Token.PERIOD))
-    assertEquals("123E+21", ENG_VALUE.format())
-    assertEquals("123.3E+21", ENG_VALUE_FRACTIONAL.format())
-    assertEquals("123E+21+(123,456.789)", ENG_VALUE_EXPRESSION.format())
-    assertEquals("123.3E+21+(123,456.789)", ENG_VALUE_FRACTIONAL_EXPRESSION.format())
-    assertEquals("123,456.789", COMPLETE_VALUE.format())
-    assertEquals("123,456.", INCOMPLETE_VALUE.format())
-    assertEquals("123,456", NO_FRACTIONAL_VALUE.format())
-    assertEquals("50+123,456÷8×0.8−12+", INCOMPLETE_EXPR.format())
-    assertEquals("50+123,456÷8×0.8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
-    assertEquals(
-      "50+123,456÷89,078..9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos",
-      LONG_HALF_COMPLETE_EXPR.format(),
+  fun formatExpression_testEngFractional() {
+    assertFormatExpression(
+      unformatted = "123.3E+21",
+      spaceAndPeriod = "123.3E+21",
+      commaAndPeriod = "123.3E+21",
+      periodAndComma = "123,3E+21",
     )
-    assertEquals("((((((((", SOME_BRACKETS.format())
-    assertEquals("1,600 1234⁄56789", FRACTION_VALUE.format())
   }
 
   @Test
-  fun formatExpression_periodAndComma() {
-    fun String.format(): String = formatExpression(FormatterSymbols(Token.PERIOD, Token.COMMA))
-    assertEquals("123E+21", ENG_VALUE.format())
-    assertEquals("123,3E+21", ENG_VALUE_FRACTIONAL.format())
-    assertEquals("123E+21+(123.456,789)", ENG_VALUE_EXPRESSION.format())
-    assertEquals("123,3E+21+(123.456,789)", ENG_VALUE_FRACTIONAL_EXPRESSION.format())
-    assertEquals("123.456,789", COMPLETE_VALUE.format())
-    assertEquals("123.456,", INCOMPLETE_VALUE.format())
-    assertEquals("123.456", NO_FRACTIONAL_VALUE.format())
-    assertEquals("50+123.456÷8×0,8−12+", INCOMPLETE_EXPR.format())
-    assertEquals("50+123.456÷8×0,8−12+0−√9×4^9+2×(9+8×7)", COMPLETE_EXPR.format())
-    assertEquals(
-      "50+123.456÷89.078,,9×0,8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos",
-      LONG_HALF_COMPLETE_EXPR.format(),
+  fun formatExpression_testEngValueExpression() {
+    assertFormatExpression(
+      unformatted = "123E+21+(123456.789)",
+      spaceAndPeriod = "123E+21+(123 456.789)",
+      commaAndPeriod = "123E+21+(123,456.789)",
+      periodAndComma = "123E+21+(123.456,789)",
     )
-    assertEquals("((((((((", SOME_BRACKETS.format())
-    assertEquals("1.600 1234⁄56789", FRACTION_VALUE.format())
+  }
+
+  @Test
+  fun formatExpression_testEngFractionalExpression() {
+    assertFormatExpression(
+      unformatted = "123.3E+21+(123456.789)",
+      spaceAndPeriod = "123.3E+21+(123 456.789)",
+      commaAndPeriod = "123.3E+21+(123,456.789)",
+      periodAndComma = "123,3E+21+(123.456,789)",
+    )
+  }
+
+  @Test
+  fun formatExpression_testComplete() {
+    assertFormatExpression(
+      unformatted = "123456.789",
+      spaceAndPeriod = "123 456.789",
+      commaAndPeriod = "123,456.789",
+      periodAndComma = "123.456,789",
+    )
+  }
+
+  @Test
+  fun formatExpression_testIncomplete() {
+    assertFormatExpression(
+      unformatted = "123456.",
+      spaceAndPeriod = "123 456.",
+      commaAndPeriod = "123,456.",
+      periodAndComma = "123.456,",
+    )
+  }
+
+  @Test
+  fun formatExpression_testInvalid() {
+    // never format invalid numbers
+    assertFormatExpression(
+      unformatted = "123456..78",
+      spaceAndPeriod = "123456..78",
+      commaAndPeriod = "123456..78",
+      periodAndComma = "123456..78",
+    )
+  }
+
+  @Test
+  fun formatExpression_testNoFractional() {
+    assertFormatExpression(
+      unformatted = "123456",
+      spaceAndPeriod = "123 456",
+      commaAndPeriod = "123,456",
+      periodAndComma = "123.456",
+    )
+  }
+
+  @Test
+  fun formatExpression_testIncompleteExpression() {
+    assertFormatExpression(
+      unformatted = "50+123456÷8×0.8-12+",
+      spaceAndPeriod = "50+123 456÷8×0.8−12+",
+      commaAndPeriod = "50+123,456÷8×0.8−12+",
+      periodAndComma = "50+123.456÷8×0,8−12+",
+    )
+  }
+
+  @Test
+  fun formatExpression_testCompleteExpression() {
+    assertFormatExpression(
+      unformatted = "50+123456÷8×0.8-12+0-√9×4^9+2×(9+8×7)",
+      spaceAndPeriod = "50+123 456÷8×0.8−12+0−√9×4^9+2×(9+8×7)",
+      commaAndPeriod = "50+123,456÷8×0.8−12+0−√9×4^9+2×(9+8×7)",
+      periodAndComma = "50+123.456÷8×0,8−12+0−√9×4^9+2×(9+8×7)",
+    )
+  }
+
+  @Test
+  fun formatExpression_testLongHalfCompleteExpression() {
+    assertFormatExpression(
+      unformatted = "50+123456÷89078.9×0.8-12+0-√9×4^9+2×(9+8×7)×sin(13sin123cos",
+      spaceAndPeriod = "50+123 456÷89 078.9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos",
+      commaAndPeriod = "50+123,456÷89,078.9×0.8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos",
+      periodAndComma = "50+123.456÷89.078,9×0,8−12+0−√9×4^9+2×(9+8×7)×sin(13sin123cos",
+    )
+  }
+
+  @Test
+  fun formatExpression_testSomeBrackets() {
+    assertFormatExpression(
+      unformatted = "((((((((",
+      spaceAndPeriod = "((((((((",
+      commaAndPeriod = "((((((((",
+      periodAndComma = "((((((((",
+    )
+  }
+
+  @Test
+  fun formatExpression_testFractional() {
+    assertFormatExpression(
+      unformatted = "1600 1234⁄56789",
+      spaceAndPeriod = "1 600 1234⁄56789",
+      commaAndPeriod = "1,600 1234⁄56789",
+      periodAndComma = "1.600 1234⁄56789",
+    )
+  }
+
+  private fun assertFormatExpression(
+    unformatted: String,
+    spaceAndPeriod: String,
+    commaAndPeriod: String,
+    periodAndComma: String,
+  ) {
+    assertEquals(
+      spaceAndPeriod,
+      unformatted.formatExpression(FormatterSymbols(Token.SPACE, Token.PERIOD)),
+    )
+    assertEquals(
+      commaAndPeriod,
+      unformatted.formatExpression(FormatterSymbols(Token.COMMA, Token.PERIOD)),
+    )
+    assertOutputTransformation(
+      outputTransformation =
+        ExpressionOutputTransformation(FormatterSymbols(Token.COMMA, Token.PERIOD)),
+      expected = "[]$commaAndPeriod", // set fake cursor at start as it is not tested here
+      input = "[]$unformatted",
+    )
+    assertEquals(
+      periodAndComma,
+      unformatted.formatExpression(FormatterSymbols(Token.PERIOD, Token.COMMA)),
+    )
   }
 }

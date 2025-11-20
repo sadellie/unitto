@@ -44,11 +44,11 @@ private fun String.formatFraction(formatterSymbols: FormatterSymbols): String {
 
 private fun String.formatExpressionNoFraction(formatterSymbols: FormatterSymbols): String {
   var input = this
+  val allNumberInInput = mutableSetOf<String>()
+  input.findNumbers { _, number -> allNumberInInput.add(number) }
 
   // format numbers
-  numbersRegex.findAll(input).map(MatchResult::value).forEach {
-    input = input.replace(it, it.formatNumber(formatterSymbols))
-  }
+  allNumberInInput.forEach { input = input.replace(it, it.formatNumber(formatterSymbols)) }
 
   // Replace ugly symbols
   Token.sexyToUgly.forEach { (token, uglySymbols) ->
@@ -58,7 +58,7 @@ private fun String.formatExpressionNoFraction(formatterSymbols: FormatterSymbols
   return input
 }
 
-private fun String.formatNumber(formatterSymbols: FormatterSymbols): String {
+internal fun String.formatNumber(formatterSymbols: FormatterSymbols): String {
   val input = this
 
   if (input.any { it.isLetter() }) return input
@@ -80,4 +80,18 @@ private fun String.formatNumber(formatterSymbols: FormatterSymbols): String {
   return output.plus(remainingPart.replace(".", formatterSymbols.fractional))
 }
 
-private val numbersRegex by lazy { Regex("[\\d.]+") }
+internal fun CharSequence.findNumbers(onFind: (startIndex: Int, number: String) -> Unit) {
+  var index = 0
+  while (index <= this.lastIndex) {
+    val number = this.substring(index).takeWhile { it.toString() in Token.Digit.allWithDot }
+    if (number.isBlank()) {
+      // no number
+      index++
+    } else {
+      val isValidNumber = number.count { it == '.' } <= 1
+      if (isValidNumber) onFind(index, number)
+      // even if number was invalid, move index past it
+      index += number.length
+    }
+  }
+}

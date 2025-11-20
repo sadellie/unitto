@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.textfield
 
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.text.TextRange
 import com.sadellie.unitto.core.common.Token
@@ -55,3 +56,23 @@ internal fun textStateInitialSelection(text: String): TextRange {
 
   return TextRange(selectionStart, selectionEnd)
 }
+
+internal fun assertOutputTransformation(
+  outputTransformation: OutputTransformation,
+  expected: String,
+  input: String,
+) =
+  with(outputTransformation) {
+    val expectedTextState = textState(expected)
+    // Start with clean state since all states are always originally empty
+    // Transformation will skip processing tokens if it doesn't notice text changes
+    val actualTextState = TextFieldState()
+    actualTextState.edit {
+      append(textStateInitialText(input))
+      selection = textStateInitialSelection(input)
+      this.transformOutput()
+    }
+
+    assertEquals(expectedTextState.text, actualTextState.text)
+    assertEquals(expectedTextState.selection, actualTextState.selection)
+  }

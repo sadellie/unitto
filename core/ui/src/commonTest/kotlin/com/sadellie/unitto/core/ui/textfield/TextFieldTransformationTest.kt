@@ -19,7 +19,6 @@
 package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.InputTransformation
-import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
@@ -75,6 +74,8 @@ class TextFieldTransformationTest {
     transformAndCompare("[]cos(1)+1,234", "[]cos(1)+1.234")
     transformAndCompare("cos(1)+1,2[]34", "cos(1)+1.2[]34")
     transformAndCompare("cos(1)+123[].456,789", "cos(1)+123[]456.789")
+    transformAndCompare("1[].234, .", "1[]234. .")
+    transformAndCompare("1.234 3⁄4[]", "1234 3⁄4[]")
   }
 
   @Test
@@ -139,26 +140,6 @@ class TextFieldTransformationTest {
         append(textStateInitialText(input))
         selection = textStateInitialSelection(input)
         this.transformInput()
-      }
-
-      assertEquals(expectedTextState.text, actualTextState.text)
-      assertEquals(expectedTextState.selection, actualTextState.selection)
-    }
-
-  private fun assertOutputTransformation(
-    outputTransformation: OutputTransformation,
-    expected: String,
-    input: String,
-  ) =
-    with(outputTransformation) {
-      val expectedTextState = textState(expected)
-      // Start with clean state since all states are always originally empty
-      // Transformation will skip processing tokens if it doesn't notice text changes
-      val actualTextState = TextFieldState()
-      actualTextState.edit {
-        append(textStateInitialText(input))
-        selection = textStateInitialSelection(input)
-        this.transformOutput()
       }
 
       assertEquals(expectedTextState.text, actualTextState.text)
