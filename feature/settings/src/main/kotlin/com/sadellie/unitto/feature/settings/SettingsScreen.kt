@@ -234,10 +234,7 @@ private fun SettingsScreen(
         ListItemExpressive(
           headlineText = stringResource(Res.string.settings_clear_cache),
           icon = Symbols.Cached,
-          onClick = {
-            clearCache()
-            // TODO snackbar showToast(mContext, "👌")
-          },
+          onClick = clearCache,
           shape = ListItemExpressiveDefaults.middleShape,
         )
       }

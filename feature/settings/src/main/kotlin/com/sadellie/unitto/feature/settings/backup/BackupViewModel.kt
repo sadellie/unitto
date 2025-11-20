@@ -20,25 +20,24 @@ package com.sadellie.unitto.feature.settings.backup
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.backup.BackupManager
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.AppStatsDao
 import com.sadellie.unitto.core.database.UnittoDatabaseAndroid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class BackupViewModel(appStatsDao: AppStatsDao, private val database: UnittoDatabaseAndroid) :
-  ViewModel() {
-  private val _showErrorToast = MutableSharedFlow<Boolean>()
-  // TODO snackbar val showErrorToast = _showErrorToast.asSharedFlow()
+internal class BackupViewModel(
+  appStatsDao: AppStatsDao,
+  private val database: UnittoDatabaseAndroid,
+) : ViewModel() {
   private val _favoriteUnits = appStatsDao.favoriteUnitsSize()
   private val _usedUnits = appStatsDao.usedUnitsCount()
   private val _savedExpressions = appStatsDao.savedExpressionCount()
@@ -72,8 +71,7 @@ internal class BackupViewModel(appStatsDao: AppStatsDao, private val database: U
         try {
           BackupManager().backup(context, uri, database)
         } catch (e: Exception) {
-          _showErrorToast.emit(true)
-          Log.e(TAG, "$e")
+          Logger.e(TAG, e) { "Failed to back up data to file" }
         }
         _isInProgress.update { false }
       }
@@ -87,8 +85,7 @@ internal class BackupViewModel(appStatsDao: AppStatsDao, private val database: U
         try {
           BackupManager().restore(context, uri, database)
         } catch (e: Exception) {
-          _showErrorToast.emit(true)
-          Log.e(TAG, "$e")
+          Logger.e(TAG, e) { "Failed to restore data from backup file" }
         }
         _isInProgress.update { false }
       }

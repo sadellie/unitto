@@ -57,6 +57,7 @@ dependencies {
   implementation(libs.androidx.compose.material3.window.size)
   implementation(libs.androidx.compose.ui.tooling.preview)
   implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
+  implementation(libs.co.touchlab.kermit)
 
   implementation(libs.sh.calvin.reorderable.reorderable)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
