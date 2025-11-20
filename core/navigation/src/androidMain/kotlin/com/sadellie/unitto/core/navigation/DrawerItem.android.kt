@@ -61,7 +61,7 @@ suspend fun DrawerItem.pushDynamicShortcut(context: Context) {
   withContext(Dispatchers.IO) {
     val drawerItem = this@pushDynamicShortcut
     val shortcut = generateShortcut(drawerItem) ?: return@withContext
-    val shortcutCompat = shortcutInfoCompat(context, drawerItem.graphRoute, shortcut)
+    val shortcutCompat = shortcutInfoCompat(context, drawerItem.topLevelRoute, shortcut)
     kotlin.runCatching { ShortcutManagerCompat.pushDynamicShortcut(context, shortcutCompat) }
   }
 }
@@ -71,7 +71,7 @@ suspend fun DrawerItem.pushDynamicShortcut(context: Context) {
 suspend fun DrawerItem.addShortcut(context: Context) {
   val drawerItem = this@addShortcut
   val shortcut = generateShortcut(drawerItem) ?: return
-  val shortcutCompat = shortcutInfoCompat(context, drawerItem.graphRoute, shortcut)
+  val shortcutCompat = shortcutInfoCompat(context, drawerItem.topLevelRoute, shortcut)
   val shortCutIntent = ShortcutManagerCompat.createShortcutResultIntent(context, shortcutCompat)
 
   try {
@@ -117,13 +117,16 @@ private fun generateShortcut(drawerItem: DrawerItem): Shortcut? {
         Res.string.time_zone_title,
         R.drawable.ic_shortcut_time_zone,
       )
-    GraphingDrawerItem,
     SettingsDrawerItem -> null
   }
 }
 
-private suspend fun shortcutInfoCompat(context: Context, graphRoute: Route, shortcut: Shortcut) =
-  ShortcutInfoCompat.Builder(context, graphRoute.id)
+private suspend fun shortcutInfoCompat(
+  context: Context,
+  graphRoute: TopLevelRoute,
+  shortcut: Shortcut,
+) =
+  ShortcutInfoCompat.Builder(context, graphRoute.routeId)
     .setShortLabel(getString(shortcut.shortcutShortLabel))
     .setLongLabel(getString(shortcut.shortcutLongLabel))
     .setIcon(IconCompat.createWithResource(context, shortcut.shortcutDrawable))

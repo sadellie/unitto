@@ -28,6 +28,7 @@ kotlin {
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
     implementation(libs.io.insert.koin.koin.core)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
+    implementation(libs.androidx.navigation3.navigation3.runtime)
   }
   sourceSets.androidMain.dependencies {
     implementation(libs.io.insert.koin.koin.android)

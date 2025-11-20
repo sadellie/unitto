@@ -43,9 +43,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
-import com.sadellie.unitto.core.navigation.ConverterGraphRoute
+import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.DrawerItem
-import com.sadellie.unitto.core.navigation.Route
+import com.sadellie.unitto.core.navigation.TopLevelRoute
 import com.sadellie.unitto.core.navigation.additionalDrawerItems
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import kotlinx.coroutines.delay
@@ -59,7 +59,7 @@ import unitto.core.common.generated.resources.common_hello
 internal fun ColumnScope.SheetContent(
   mainTabs: List<DrawerItem>,
   additionalTabs: List<DrawerItem>,
-  currentDestination: Route?,
+  currentDestination: TopLevelRoute?,
   onItemClick: (DrawerItem) -> Unit,
 ) {
   var showHello by remember { mutableStateOf(false) }
@@ -96,7 +96,7 @@ internal fun ColumnScope.SheetContent(
       unselectedTextColor = MaterialTheme.colorScheme.onSurface,
     )
   mainTabs.forEach { drawerItem ->
-    val selected = drawerItem.graphRoute == currentDestination
+    val selected = drawerItem.topLevelRoute == currentDestination
     DrawerItem(
       modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
       destination = drawerItem,
@@ -110,7 +110,7 @@ internal fun ColumnScope.SheetContent(
   HorizontalDivider(Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
 
   additionalTabs.forEach { drawerItem ->
-    val selected = drawerItem.graphRoute == currentDestination
+    val selected = drawerItem.topLevelRoute == currentDestination
     DrawerItem(
       modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
       destination = drawerItem,
@@ -150,7 +150,7 @@ private fun PreviewDrawerSheet() = ExpressivePreview {
     SheetContent(
       mainTabs = mainDrawerItems,
       additionalTabs = additionalDrawerItems,
-      currentDestination = ConverterGraphRoute,
+      currentDestination = CalculatorStartRoute,
       onItemClick = {},
     )
   }

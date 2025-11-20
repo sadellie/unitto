@@ -19,66 +19,47 @@
 package com.sadellie.unitto.feature.timezone.navigation
 
 import android.os.Build
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.navDeepLink
-import androidx.navigation.toRoute
-import com.sadellie.unitto.core.designsystem.unittoComposable
-import com.sadellie.unitto.core.designsystem.unittoNavigation
+import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.navigation.Route
-import com.sadellie.unitto.core.navigation.TimeZoneGraphRoute
-import com.sadellie.unitto.core.navigation.deepLink
+import com.sadellie.unitto.core.navigation.TimeZoneStartRoute
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.feature.timezone.AddTimeZoneRoute
 import com.sadellie.unitto.feature.timezone.TimeZoneRoute
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import kotlinx.serialization.Serializable
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
 
-fun NavGraphBuilder.timeZoneGraph(openDrawer: () -> Unit, navController: NavHostController) {
-  unittoNavigation<TimeZoneGraphRoute>(
-    startDestination = TimeZoneStartRoute::class,
-    deepLinks = listOf(navDeepLink { uriPattern = deepLink(TimeZoneGraphRoute) }),
-  ) {
-    unittoComposable<TimeZoneStartRoute> {
-      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-        EmptyScreen()
-        return@unittoComposable
-      }
-
-      TimeZoneRoute(
-        openDrawer = openDrawer,
-        navigateToAddTimeZone = { userTime ->
-          navController.navigate(
-            AddTimeZoneRoute(userTime.format(DateTimeFormatter.ISO_ZONED_DATE_TIME))
-          )
-        },
-      )
+@OptIn(KoinExperimentalAPI::class)
+fun Module.timeZoneNavigation() {
+  navigation<TimeZoneStartRoute> {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+      EmptyScreen()
+      return@navigation
     }
 
-    unittoComposable<AddTimeZoneRoute> { stackEntry ->
-      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-        EmptyScreen()
-        return@unittoComposable
-      }
-
-      val userTime =
-        ZonedDateTime.parse(
-          stackEntry.toRoute<AddTimeZoneRoute>().userTimeIso,
-          DateTimeFormatter.ISO_ZONED_DATE_TIME,
-        )
-
-      AddTimeZoneRoute(navigateUp = navController::navigateUp, userTime = userTime)
+    val navigator = LocalNavigator.current
+    TimeZoneRoute(
+      openDrawer = navigator::openDrawer,
+      navigateToAddTimeZone = { userTime ->
+        navigator.goTo(AddTimeZoneRoute(userTime.format(DateTimeFormatter.ISO_ZONED_DATE_TIME)))
+      },
+    )
+  }
+  navigation<AddTimeZoneRoute> { route ->
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+      EmptyScreen()
+      return@navigation
     }
+    val navigator = LocalNavigator.current
+    val userTime = ZonedDateTime.parse(route.userTimeIso, DateTimeFormatter.ISO_ZONED_DATE_TIME)
+    AddTimeZoneRoute(navigateUp = navigator::goBack, userTime = userTime)
   }
 }
 
 @Serializable
-private data object TimeZoneStartRoute : Route {
-  override val id = "time_zone_start"
-}
-
-@Serializable
 internal data class AddTimeZoneRoute(val userTimeIso: String) : Route {
-  override val id = "add_time_zone_route"
+  override val routeId = "add_time_zone_route"
 }

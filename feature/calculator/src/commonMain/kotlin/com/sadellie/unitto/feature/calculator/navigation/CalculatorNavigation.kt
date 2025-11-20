@@ -18,26 +18,17 @@
 
 package com.sadellie.unitto.feature.calculator.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.designsystem.unittoComposable
-import com.sadellie.unitto.core.designsystem.unittoNavigation
-import com.sadellie.unitto.core.navigation.CalculatorGraphRoute
-import com.sadellie.unitto.core.navigation.Route
-import com.sadellie.unitto.core.navigation.deepLink
+import com.sadellie.unitto.core.navigation.CalculatorStartRoute
+import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
-import kotlinx.serialization.Serializable
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
 
-fun NavGraphBuilder.calculatorGraph(openDrawer: () -> Unit) {
-  unittoNavigation<CalculatorGraphRoute>(
-    startDestination = CalculatorStartRoute::class,
-    deepLinks = listOf(navDeepLink { uriPattern = deepLink(CalculatorGraphRoute) }),
-  ) {
-    unittoComposable<CalculatorStartRoute> { CalculatorRoute(openDrawer = openDrawer) }
+@OptIn(KoinExperimentalAPI::class)
+fun Module.calculatorNavigation() {
+  navigation<CalculatorStartRoute> {
+    val navigator = LocalNavigator.current
+    CalculatorRoute(openDrawer = navigator::openDrawer)
   }
-}
-
-@Serializable
-private data object CalculatorStartRoute : Route {
-  override val id = "calculator_start"
 }

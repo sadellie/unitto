@@ -31,10 +31,11 @@ kotlin {
     implementation(libs.org.jetbrains.compose.components.components.resources)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
     implementation(libs.co.touchlab.kermit)
+    implementation(libs.androidx.navigation3.navigation3.runtime)
+    implementation(libs.com.eygraber.uri.kmp)
   }
-  sourceSets.androidMain.dependencies {
-    implementation(libs.androidx.core.core.ktx)
-  }
+  sourceSets.androidMain.dependencies { implementation(libs.androidx.core.core.ktx) }
+  sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
 }
 
 android.namespace = "com.sadellie.unitto.core.navigation"

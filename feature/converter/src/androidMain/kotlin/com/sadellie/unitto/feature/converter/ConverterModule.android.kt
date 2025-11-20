@@ -18,10 +18,14 @@
 
 package com.sadellie.unitto.feature.converter
 
+import com.sadellie.unitto.feature.converter.navigation.converterNavigation
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.lazyModule
 
+@OptIn(KoinExperimentalAPI::class)
 val converterModule = lazyModule {
+  converterNavigation()
   viewModelOf(::ConverterViewModel)
   viewModelOf(::UnitFromSelectorViewModel)
   viewModelOf(::UnitToSelectorViewModel)

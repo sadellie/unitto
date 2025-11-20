@@ -18,98 +18,83 @@
 
 package com.sadellie.unitto.feature.converter.navigation
 
-import androidx.compose.runtime.remember
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.designsystem.unittoComposable
-import com.sadellie.unitto.core.designsystem.unittoNavigation
 import com.sadellie.unitto.core.model.converter.UnitGroup
-import com.sadellie.unitto.core.navigation.ConverterGraphRoute
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
+import com.sadellie.unitto.core.navigation.LocalEventBus
+import com.sadellie.unitto.core.navigation.LocalNavigator
+import com.sadellie.unitto.core.navigation.ResultEffect
 import com.sadellie.unitto.core.navigation.Route
-import com.sadellie.unitto.core.navigation.deepLink
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.UnitFromSelectorRoute
 import com.sadellie.unitto.feature.converter.UnitToSelectorRoute
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.module.Module
+import org.koin.core.parameter.parametersOf
+import org.koin.dsl.navigation3.navigation
 
-fun NavGraphBuilder.converterGraph(
-  openDrawer: () -> Unit,
-  navController: NavHostController,
-  navigateToUnitGroups: () -> Unit,
-) {
-  unittoNavigation<ConverterGraphRoute>(
-    startDestination = ConverterStartRoute::class,
-    deepLinks = listOf(navDeepLink { uriPattern = deepLink(ConverterGraphRoute) }),
-  ) {
-    unittoComposable<ConverterStartRoute>(
-      deepLinks = listOf(navDeepLink<ConverterStartRoute>(ConverterStartRoute.BASE_PATH))
-    ) { backStackEntry ->
-      val parentEntry =
-        remember(backStackEntry) { navController.getBackStackEntry(ConverterGraphRoute) }
-      val parentViewModel = koinViewModel<ConverterViewModel>(viewModelStoreOwner = parentEntry)
-
-      ConverterRoute(
-        viewModel = parentViewModel,
-        navigateToLeftScreen = { unitFromId, group ->
-          navController.navigate(UnitFromRoute(unitFromId, group.name))
-        },
-        navigateToRightScreen = {
-          unitFromId: String,
-          unitToId: String,
-          group: UnitGroup,
-          input1: String,
-          input2: String ->
-          navController.navigate(UnitToRoute(unitFromId, unitToId, group.name, input1, input2))
-        },
-        openDrawer = openDrawer,
-      )
+@OptIn(KoinExperimentalAPI::class)
+fun Module.converterNavigation() {
+  navigation<ConverterStartRoute> {
+    val viewModel = koinViewModel<ConverterViewModel> { parametersOf(it) }
+    val resultEventBus = LocalEventBus.current
+    val navigator = LocalNavigator.current
+    ResultEffect<String>(resultEventBus, RESULT_TAG_FROM) { unitFromId ->
+      viewModel.updateUnitFromId(unitFromId)
     }
-
-    unittoComposable<UnitFromRoute> { backStackEntry ->
-      val parentEntry =
-        remember(backStackEntry) { navController.getBackStackEntry(ConverterGraphRoute) }
-      val parentViewModel = koinViewModel<ConverterViewModel>(viewModelStoreOwner = parentEntry)
-
-      UnitFromSelectorRoute(
-        unitSelectorViewModel = koinViewModel(),
-        converterViewModel = parentViewModel,
-        navigateUp = navController::navigateUp,
-        navigateToUnitGroups = navigateToUnitGroups,
-      )
+    ResultEffect<String>(resultEventBus, RESULT_TAG_TO) { unitToId ->
+      viewModel.updateUnitToId(unitToId)
     }
-
-    unittoComposable<UnitToRoute> { backStackEntry ->
-      val parentEntry =
-        remember(backStackEntry) { navController.getBackStackEntry(ConverterGraphRoute) }
-      val parentViewModel = koinViewModel<ConverterViewModel>(viewModelStoreOwner = parentEntry)
-
-      UnitToSelectorRoute(
-        unitSelectorViewModel = koinViewModel(),
-        converterViewModel = parentViewModel,
-        navigateUp = navController::navigateUp,
-        navigateToUnitGroups = navigateToUnitGroups,
-      )
-    }
+    ConverterRoute(
+      viewModel = viewModel,
+      navigateToLeftScreen = { unitFromId, group ->
+        navigator.goTo(UnitFromRoute(unitFromId, group))
+      },
+      navigateToRightScreen = { unitFromId, unitToId, group, input1, input2 ->
+        navigator.goTo(UnitToRoute(unitFromId, unitToId, group, input1, input2))
+      },
+      openDrawer = navigator::openDrawer,
+    )
+  }
+  navigation<UnitFromRoute> {
+    val resultEventBus = LocalEventBus.current
+    val navigator = LocalNavigator.current
+    UnitFromSelectorRoute(
+      unitSelectorViewModel = koinViewModel { parametersOf(it) },
+      updateUnitFrom = { unitFromId -> resultEventBus.sendResult(RESULT_TAG_FROM, unitFromId) },
+      navigateUp = navigator::goBack,
+      navigateToUnitGroups = navigator::navigateToUnitGroups,
+    )
+  }
+  navigation<UnitToRoute> {
+    val resultEventBus = LocalEventBus.current
+    val navigator = LocalNavigator.current
+    UnitToSelectorRoute(
+      unitSelectorViewModel = koinViewModel { parametersOf(it) },
+      updateUnitTo = { unitToId -> resultEventBus.sendResult(RESULT_TAG_TO, unitToId) },
+      navigateUp = navigator::goBack,
+      navigateToUnitGroups = navigator::navigateToUnitGroups,
+    )
   }
 }
 
-// TODO restore enums here
 @Serializable
-internal data class UnitFromRoute(val unitFromId: String, val unitGroupName: String) : Route {
-  override val id = "unit_from"
+data class UnitFromRoute(val unitFromId: String, val unitGroup: UnitGroup) : Route {
+  override val routeId = "unit_from"
 }
 
 @Serializable
-internal data class UnitToRoute(
+data class UnitToRoute(
   val unitFromId: String,
   val unitToId: String,
-  val unitGroupName: String,
+  val unitGroup: UnitGroup,
   val input1: String,
   val input2: String,
 ) : Route {
-  override val id = "unit_to"
+  override val routeId = "unit_to"
 }
+
+private const val RESULT_TAG_FROM = "from"
+private const val RESULT_TAG_TO = "to"

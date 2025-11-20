@@ -35,7 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.designsystem.icons.symbols.AppShortcut
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.navigation.ConverterGraphRoute
+import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.addShortcut
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -58,7 +58,7 @@ internal fun StartingScreenRoute(
     null -> EmptyScreen()
     else -> {
       StartingScreenScreen(
-        startingScreenGraphId = prefs.startingScreen.id,
+        startingScreenGraphId = prefs.startingScreen.routeId,
         updateStartingScreen = viewModel::updateStartingScreen,
         navigateUp = navigateUp,
       )
@@ -82,17 +82,17 @@ private fun StartingScreenScreen(
       modifier = Modifier.padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
-      itemsIndexed(mainDrawerItems, { _, destination -> destination.graphRoute.id }) {
+      itemsIndexed(mainDrawerItems, { _, destination -> destination.topLevelRoute.routeId }) {
         index,
         destination ->
         ListItemExpressive(
-          onClick = { updateStartingScreen(destination.graphRoute.id) },
+          onClick = { updateStartingScreen(destination.topLevelRoute.routeId) },
           shape = ListItemExpressiveDefaults.listedShaped(index, mainDrawerItems.size),
           headlineContent = { Text(stringResource(destination.name)) },
           leadingContent = {
             RadioButton(
-              selected = destination.graphRoute.id == startingScreenGraphId,
-              onClick = { updateStartingScreen(destination.graphRoute.id) },
+              selected = destination.topLevelRoute.routeId == startingScreenGraphId,
+              onClick = { updateStartingScreen(destination.topLevelRoute.routeId) },
             )
           },
           trailingContent = trail@{
@@ -114,7 +114,7 @@ private fun StartingScreenScreen(
 @Composable
 private fun StartingScreenPreview() {
   StartingScreenScreen(
-    startingScreenGraphId = ConverterGraphRoute.id,
+    startingScreenGraphId = CalculatorStartRoute.routeId,
     updateStartingScreen = {},
     navigateUp = {},
   )

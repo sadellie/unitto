@@ -22,6 +22,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.lazyModule
 
 val converterWidgetModule = lazyModule {
+  converterWidgetNavigation()
   viewModelOf(::ConverterWidgetConfigureViewModel)
   viewModelOf(::ConverterWidgetConfigureCreateNewViewModel)
   viewModelOf(::ConverterWidgetConfigureSelectorViewModel)

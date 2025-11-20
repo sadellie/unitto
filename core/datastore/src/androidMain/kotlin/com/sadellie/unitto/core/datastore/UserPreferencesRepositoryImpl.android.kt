@@ -29,10 +29,10 @@ import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.navigation.graphRoutes
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
+import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import java.io.IOException
 
 class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences>) :
   UserPreferencesRepository {
@@ -310,7 +310,7 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
     this[DatastorePrefKeys.MONET_MODE]?.letTryOrNull { MonetMode.valueOf(it) } ?: Defaults.monetMode
 
   private fun Preferences.getStartingScreen() =
-    graphRoutes.firstOrNull { it.id == this[DatastorePrefKeys.STARTING_SCREEN] }
+    graphRoutes.firstOrNull { it.routeId == this[DatastorePrefKeys.STARTING_SCREEN] }
       ?: Defaults.startingScreen
 
   private fun Preferences.getEnableToolsExperiment() =

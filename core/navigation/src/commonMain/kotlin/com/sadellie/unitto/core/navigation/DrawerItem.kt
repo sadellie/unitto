@@ -24,7 +24,6 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Calculate
 import com.sadellie.unitto.core.designsystem.icons.symbols.CalculateFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Event
 import com.sadellie.unitto.core.designsystem.icons.symbols.EventFill
-import com.sadellie.unitto.core.designsystem.icons.symbols.LineAxis
 import com.sadellie.unitto.core.designsystem.icons.symbols.Schedule
 import com.sadellie.unitto.core.designsystem.icons.symbols.ScheduleFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Settings
@@ -37,62 +36,61 @@ import unitto.core.common.generated.resources.body_mass_title
 import unitto.core.common.generated.resources.calculator_title
 import unitto.core.common.generated.resources.converter_title
 import unitto.core.common.generated.resources.date_calculator_title
-import unitto.core.common.generated.resources.graphing_title
 import unitto.core.common.generated.resources.settings_title
 import unitto.core.common.generated.resources.time_zone_title
 
 sealed interface DrawerItem {
-  val graphRoute: Route
+  val topLevelRoute: TopLevelRoute
   val name: StringResource
   val selectedIcon: ImageVector
   val defaultIcon: ImageVector
 }
 
 data object CalculatorDrawerItem : DrawerItem {
-  override val graphRoute = CalculatorGraphRoute
+  override val topLevelRoute = CalculatorStartRoute
   override val name = Res.string.calculator_title
   override val selectedIcon = Symbols.CalculateFill
   override val defaultIcon = Symbols.Calculate
 }
 
 data object ConverterDrawerItem : DrawerItem {
-  override val graphRoute = ConverterGraphRoute
+  override val topLevelRoute = ConverterStartRoute()
   override val name = Res.string.converter_title
   override val selectedIcon = Symbols.SwapHoriz
   override val defaultIcon = Symbols.SwapHoriz
 }
 
 // unused until solver update
-data object GraphingDrawerItem : DrawerItem {
-  override val graphRoute = GraphingGraphRoute
-  override val name = Res.string.graphing_title
-  override val selectedIcon = Symbols.LineAxis
-  override val defaultIcon = Symbols.LineAxis
-}
+// data object GraphingDrawerItem : DrawerItem {
+//  override val graphRoute = GraphingGraphRoute
+//  override val name = Res.string.graphing_title
+//  override val selectedIcon = Symbols.LineAxis
+//  override val defaultIcon = Symbols.LineAxis
+// }
 
 data object DateCalculatorDrawerItem : DrawerItem {
-  override val graphRoute = DateCalculatorGraphRoute
+  override val topLevelRoute = DateCalculatorStartRoute
   override val name = Res.string.date_calculator_title
   override val selectedIcon = Symbols.EventFill
   override val defaultIcon = Symbols.Event
 }
 
 data object TimeZonesDrawerItem : DrawerItem {
-  override val graphRoute = TimeZoneGraphRoute
+  override val topLevelRoute = TimeZoneStartRoute
   override val name = Res.string.time_zone_title
   override val selectedIcon = Symbols.ScheduleFill
   override val defaultIcon = Symbols.Schedule
 }
 
 data object BodyMassDrawerItem : DrawerItem {
-  override val graphRoute = BodyMassGraphRoute
+  override val topLevelRoute = BodyMassStartRoute
   override val name = Res.string.body_mass_title
   override val selectedIcon = Symbols.AccessibilityNew
   override val defaultIcon = Symbols.AccessibilityNew
 }
 
 data object SettingsDrawerItem : DrawerItem {
-  override val graphRoute = SettingsGraphRoute
+  override val topLevelRoute = SettingsStartRoute
   override val name = Res.string.settings_title
   override val selectedIcon = Symbols.SettingsFill
   override val defaultIcon = Symbols.Settings

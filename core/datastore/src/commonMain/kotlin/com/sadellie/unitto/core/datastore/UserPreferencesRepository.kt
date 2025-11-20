@@ -24,8 +24,8 @@ import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
-import com.sadellie.unitto.core.navigation.CalculatorGraphRoute
-import com.sadellie.unitto.core.navigation.Route
+import com.sadellie.unitto.core.navigation.CalculatorStartRoute
+import com.sadellie.unitto.core.navigation.TopLevelRoute
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 import kotlinx.coroutines.flow.Flow
@@ -60,8 +60,8 @@ interface UserPreferencesRepository {
     val monetMode: MonetMode
       get() = MonetMode.TonalSpot
 
-    val startingScreen: Route
-      get() = CalculatorGraphRoute
+    val startingScreen: TopLevelRoute
+      get() = CalculatorStartRoute
 
     val enableToolsExperiment: Boolean
       get() = false

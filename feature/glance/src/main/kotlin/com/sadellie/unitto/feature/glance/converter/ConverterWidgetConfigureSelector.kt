@@ -36,17 +36,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
@@ -65,6 +63,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.unit_kilometer
 import unitto.core.common.generated.resources.unit_kilometer_short
@@ -74,9 +73,11 @@ import unitto.core.common.generated.resources.unit_meter_short
 @Composable
 internal fun ConverterWidgetConfigureSelectorRoute(
   navigateUp: () -> Unit,
+  unitFromId: String,
   onClick: (unitId: String) -> Unit,
 ) {
-  val viewModel = koinViewModel<ConverterWidgetConfigureSelectorViewModel>()
+  val viewModel =
+    koinViewModel<ConverterWidgetConfigureSelectorViewModel> { parametersOf(unitFromId) }
   LaunchedEffect(Unit) { viewModel.observeFilter() }
 
   val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -135,7 +136,7 @@ private fun ConverterWidgetUnitList(
 
       itemsIndexed(
         items = units,
-        key = { index, item -> item.basicUnit.id },
+        key = { _, item -> item.basicUnit.id },
         contentType = { _, _ -> ContentType.ITEM },
       ) { index, unit ->
         Text(
@@ -165,9 +166,8 @@ internal data class ConverterWidgetConfigureSelectorUIState(
 
 internal class ConverterWidgetConfigureSelectorViewModel(
   private val unitsRepo: UnitsRepository,
-  savedStateHandle: SavedStateHandle,
+  private val unitFromId: String,
 ) : ViewModel() {
-  private val args = savedStateHandle.toRoute<ConverterWidgetConfigureSelectorRoute>()
   private var job: Job? = null
   private val _query = TextFieldState()
   private val _searchResult = MutableStateFlow<Map<UnitGroup, List<UnitSearchResultItem>>?>(null)
@@ -185,10 +185,10 @@ internal class ConverterWidgetConfigureSelectorViewModel(
       job =
         viewModelScope.launch(Dispatchers.Default) {
           val groups =
-            if (args.unitFromId == null) {
+            if (unitFromId.isEmpty()) {
               UnitGroup.entries.toList()
             } else {
-              val unitFrom = unitsRepo.getById(args.unitFromId)
+              val unitFrom = unitsRepo.getById(unitFromId)
               listOf(unitFrom.group)
             }
 

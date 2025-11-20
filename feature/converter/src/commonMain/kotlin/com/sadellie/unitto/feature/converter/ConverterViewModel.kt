@@ -21,7 +21,6 @@ package com.sadellie.unitto.feature.converter
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.stateIn
@@ -50,6 +49,7 @@ import kotlinx.coroutines.launch
 internal class ConverterViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val unitsRepo: UnitConverterRepository,
+  private val args: ConverterStartRoute,
   private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
   private var _conversionJob: Job? = null
@@ -216,8 +216,7 @@ internal class ConverterViewModel(
 
   private fun loadInitialUnits() =
     viewModelScope.launch {
-      val args = savedStateHandle.toRoute<ConverterStartRoute>()
-      if (args.unitFromId != null && args.unitToId != null) {
+      if (canUseUnitIdsFromArgs()) {
         _unitFromId.update { args.unitFromId }
         _unitToId.update { args.unitToId }
       } else {
@@ -242,6 +241,19 @@ internal class ConverterViewModel(
         unitTo = _unitToId.value ?: return@launch,
       )
     }
+
+  private suspend fun canUseUnitIdsFromArgs(): Boolean {
+    if (args.unitFromId.isBlank() || args.unitToId.isBlank()) return false
+    try {
+      // if this fails, this unit id pair is not valid
+      unitsRepo.getById(args.unitFromId)
+      unitsRepo.getById(args.unitToId)
+      return true
+    } catch (e: NoSuchElementException) {
+      Logger.e(TAG, e) { "Failed to extract unit ids from args" }
+      return false
+    }
+  }
 
   /**
    * Will call [block] if both [value1] and [value2] are [T].

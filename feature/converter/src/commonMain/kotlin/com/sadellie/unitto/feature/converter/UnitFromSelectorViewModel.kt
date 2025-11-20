@@ -19,10 +19,8 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
@@ -44,14 +42,12 @@ import kotlinx.coroutines.launch
 internal class UnitFromSelectorViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val unitsRepo: UnitConverterRepository,
-  savedStateHandle: SavedStateHandle,
+  private val args: UnitFromRoute,
 ) : ViewModel() {
   private var _searchJob: Job? = null
   private val _query = TextFieldState()
   private val _searchResults = MutableStateFlow<Map<UnitGroup, List<UnitSearchResultItem>>?>(null)
-  private val _args = savedStateHandle.toRoute<UnitFromRoute>()
-  private val _selectedUnitGroup =
-    MutableStateFlow<UnitGroup?>(UnitGroup.valueOf(_args.unitGroupName))
+  private val _selectedUnitGroup = MutableStateFlow<UnitGroup?>(args.unitGroup)
 
   val unitFromUIState: StateFlow<UnitSelectorUIState> =
     combine(_searchResults, _selectedUnitGroup, userPrefsRepository.converterPrefs) {
@@ -60,7 +56,7 @@ internal class UnitFromSelectorViewModel(
         prefs ->
         return@combine UnitSelectorUIState.UnitFrom(
           query = _query,
-          unitFromId = _args.unitFromId,
+          unitFromId = args.unitFromId,
           shownUnitGroups = prefs.shownUnitGroups,
           showFavoritesOnly = prefs.unitConverterFavoritesOnly,
           units = searchResults,

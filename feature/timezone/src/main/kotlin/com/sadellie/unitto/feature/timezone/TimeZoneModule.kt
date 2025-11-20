@@ -18,10 +18,12 @@
 
 package com.sadellie.unitto.feature.timezone
 
+import com.sadellie.unitto.feature.timezone.navigation.timeZoneNavigation
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.lazyModule
 
 val timeZoneModule = lazyModule {
+  timeZoneNavigation()
   viewModelOf(::TimeZoneViewModel)
   viewModelOf(::AddTimeZoneViewModel)
 }

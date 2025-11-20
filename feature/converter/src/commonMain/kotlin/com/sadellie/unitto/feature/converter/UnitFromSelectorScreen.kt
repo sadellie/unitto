@@ -66,7 +66,7 @@ import unitto.core.common.generated.resources.unit_yard_short
 @Composable
 internal fun UnitFromSelectorRoute(
   unitSelectorViewModel: UnitFromSelectorViewModel,
-  converterViewModel: ConverterViewModel,
+  updateUnitFrom: (String) -> Unit,
   navigateUp: () -> Unit,
   navigateToUnitGroups: () -> Unit,
 ) {
@@ -79,7 +79,7 @@ internal fun UnitFromSelectorRoute(
       UnitFromSelectorScreen(
         uiState = uiState,
         toggleFavoritesOnly = unitSelectorViewModel::updateShowFavoritesOnly,
-        updateUnitFrom = converterViewModel::updateUnitFromId,
+        updateUnitFrom = updateUnitFrom,
         updateUnitGroup = unitSelectorViewModel::updateSelectedUnitGroup,
         favoriteUnit = unitSelectorViewModel::favoriteUnit,
         navigateUp = navigateUp,

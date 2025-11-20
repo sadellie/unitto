@@ -40,9 +40,10 @@ kotlin {
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
-    implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
+    implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
     implementation(libs.io.insert.koin.koin.compose.viewmodel)
+    implementation(libs.io.insert.koin.koin.compose.navigation3)
   }
   sourceSets.androidMain.dependencies {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling)

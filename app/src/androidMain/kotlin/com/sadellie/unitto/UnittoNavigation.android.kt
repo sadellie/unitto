@@ -18,56 +18,64 @@
 
 package com.sadellie.unitto
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import com.sadellie.unitto.core.navigation.Route
-import com.sadellie.unitto.feature.bodymass.navigation.bodyMassGraph
-import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
-import com.sadellie.unitto.feature.converter.navigation.converterGraph
-import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorGraph
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import com.sadellie.unitto.core.designsystem.unittoFadeIn
+import com.sadellie.unitto.core.designsystem.unittoFadeOut
+import com.sadellie.unitto.core.navigation.LocalNavigator
+import com.sadellie.unitto.core.navigation.Navigator
+import com.sadellie.unitto.core.ui.UnittoDrawerState
+import com.sadellie.unitto.feature.settings.navigation.LocalThemmoController
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
-import com.sadellie.unitto.feature.settings.navigation.settingGraph
-import com.sadellie.unitto.feature.timezone.navigation.timeZoneGraph
 import io.github.sadellie.themmo.ThemmoController
+import kotlinx.coroutines.launch
+import org.koin.compose.navigation3.koinEntryProvider
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
-internal fun UnittoNavigation(
-  navController: NavHostController,
+actual fun UnittoNavigation(
+  backStack: NavBackStack<NavKey>,
   themmoController: ThemmoController,
-  startDestination: Route,
-  openDrawer: () -> Unit,
+  drawerState: UnittoDrawerState,
 ) {
-  NavHost(
-    navController = navController,
-    startDestination = startDestination::class,
-    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
-    enterTransition = { fadeIn() },
-    exitTransition = { fadeOut() },
+  val drawerScope = rememberCoroutineScope()
+  val navigator =
+    remember(backStack, drawerState) {
+      Navigator(
+        backStack = backStack,
+        openDrawerAction = { drawerScope.launch { drawerState.open() } },
+        navigateToUnitGroupsAction = backStack::navigateToUnitGroups,
+      )
+    }
+  CompositionLocalProvider(
+    LocalNavigator provides navigator,
+    LocalThemmoController provides themmoController,
   ) {
-    calculatorGraph(openDrawer = openDrawer)
-
-    converterGraph(
-      openDrawer = openDrawer,
-      navController = navController,
-      navigateToUnitGroups = navController::navigateToUnitGroups,
-    )
-
-    dateCalculatorGraph(openDrawer = openDrawer)
-
-    timeZoneGraph(openDrawer = openDrawer, navController = navController)
-
-    bodyMassGraph(openDrawer = openDrawer)
-
-    settingGraph(
-      openDrawer = openDrawer,
-      navController = navController,
-      themmoController = themmoController,
+    NavDisplay(
+      modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
+      backStack = backStack,
+      popTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      transitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      predictivePopTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      entryDecorators =
+        listOf(
+          rememberSaveableStateHolderNavEntryDecorator(),
+          rememberViewModelStoreNavEntryDecorator(),
+          rememberDrawerCloseGestureNavEntryDecorator(drawerState, drawerScope),
+        ),
+      entryProvider = koinEntryProvider(),
     )
   }
 }

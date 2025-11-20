@@ -18,7 +18,11 @@
 
 package com.sadellie.unitto.feature.bodymass
 
+import com.sadellie.unitto.feature.bodymass.navigation.bodyMassNavigation
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.lazyModule
 
-val bodyMassModule = lazyModule { viewModelOf(::BodyMassViewModel) }
+val bodyMassModule = lazyModule {
+  bodyMassNavigation()
+  viewModelOf(::BodyMassViewModel)
+}

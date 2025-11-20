@@ -36,7 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.navigation.ConverterGraphRoute
+import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.additionalDrawerItems
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import kotlinx.coroutines.launch
@@ -63,7 +63,7 @@ private fun PreviewUnittoModalNavigationDrawer() {
     gesturesEnabled = true,
     mainTabs = mainDrawerItems,
     additionalTabs = additionalDrawerItems,
-    currentDestination = ConverterGraphRoute,
+    currentDestination = CalculatorStartRoute,
     onItemClick = {},
     content = {
       Column {

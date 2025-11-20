@@ -19,10 +19,8 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
@@ -44,20 +42,19 @@ import kotlinx.coroutines.launch
 internal class UnitToSelectorViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val unitsRepo: UnitConverterRepository,
-  savedStateHandle: SavedStateHandle,
+  private val args: UnitToRoute,
 ) : ViewModel() {
   private var _searchJob: Job? = null
   private val _query = TextFieldState()
   private val _searchResults = MutableStateFlow<Map<UnitGroup, List<UnitSearchResultItem>>?>(null)
-  private val _args = savedStateHandle.toRoute<UnitToRoute>()
-  private val _selectedUnitGroup = MutableStateFlow(UnitGroup.valueOf(_args.unitGroupName))
+  private val _selectedUnitGroup = MutableStateFlow(args.unitGroup)
 
   val unitToUIState: StateFlow<UnitSelectorUIState> =
     combine(_searchResults, userPrefsRepository.converterPrefs) { searchResults, prefs ->
         UnitSelectorUIState.UnitTo(
           query = _query,
-          unitFrom = unitsRepo.getById(_args.unitFromId),
-          unitTo = unitsRepo.getById(_args.unitToId),
+          unitFrom = unitsRepo.getById(args.unitFromId),
+          unitTo = unitsRepo.getById(args.unitToId),
           showFavoritesOnly = prefs.unitConverterFavoritesOnly,
           units = searchResults,
           sorting = prefs.unitConverterSorting,
@@ -103,9 +100,9 @@ internal class UnitToSelectorViewModel(
             unitGroup = selectedGroupValue,
             favoritesOnly = prefs.unitConverterFavoritesOnly,
             sorting = prefs.unitConverterSorting,
-            unitFromId = _args.unitFromId,
-            input1 = _args.input1,
-            input2 = _args.input2,
+            unitFromId = args.unitFromId,
+            input1 = args.input1,
+            input2 = args.input2,
           )
 
         _searchResults.update { result }

@@ -21,11 +21,9 @@ androidxGlanceGlance = "1.1.1"
 # https://developer.android.com/jetpack/androidx/releases/datastore
 androidxDatastoreDatastorePreferences = "1.2.0"
 # https://github.com/InsertKoinIO/koin/releases
-koin = "4.1.1"
+koin = "4.2.0-alpha2"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-compose
 androidxLifecycleLifecycleRuntimeCompose = "2.10.0"
-# https://mvnrepository.com/artifact/org.jetbrains.androidx.navigation/navigation-compose
-androidxNavigationNavigationCompose = "2.9.1"
 # https://developer.android.com/jetpack/androidx/releases/room
 androidxRoom = "2.8.4"
 # https://mvnrepository.com/artifact/androidx.test/core
@@ -74,6 +72,10 @@ annotation = "1.9.1"
 lifecyclyViewModel = "2.10.0-alpha05"
 # https://github.com/Kotlin/kotlinx-datetime/releases/latest
 kotlinxDatetime = "0.7.1"
+navigation3Runtime = "1.0.0-rc01"
+navigation3UI = "1.0.0-alpha05"
+# https://github.com/eygraber/uri-kmp/releases
+uriKmp = "0.0.21"
 
 [libraries]
 androidx-activity-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityActivityCompose" }
@@ -94,8 +96,8 @@ io-insert-koin-koin-core-coroutines = { module = "io.insert-koin:koin-core-corou
 io-insert-koin-koin-compose = { module = "io.insert-koin:koin-compose" }
 io-insert-koin-koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 io-insert-koin-koin-androidx-startup = { module = "io.insert-koin:koin-androidx-startup" }
+io-insert-koin-koin-compose-navigation3 = { module = "io.insert-koin:koin-compose-navigation3" }
 androidx-lifecycle-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycleLifecycleRuntimeCompose" }
-org-jetbrains-androidx-navigation-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidxNavigationNavigationCompose" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
 androidx-room-common = { module = "androidx.room:room-common", version.ref = "androidxRoom" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
@@ -129,8 +131,12 @@ org-jetbrains-compose-ui-ui-tooling = { module = "org.jetbrains.compose.ui:ui-to
 org-jetbrains-compose-ui-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 org-jetbrains-compose-material3-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMultiplatformMaterial3" }
 org-jetbrains-compose-material3-material3-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "composeMultiplatformMaterial3" }
-org-jetbrains-androidx-lifecycle-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecyclyViewModel" }
 org-jetbrains-kotlinx-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+androidx-navigation3-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3Runtime" }
+org-jetbrains-androidx-navigation3-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3UI" }
+org-jetbrains-androidx-lifecycle-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecyclyViewModel" }
+org-jetbrains-androidx-lifecycle-lifecycle-viewmodel-navigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecyclyViewModel" }
+com-eygraber-uri-kmp = { module = "com.eygraber:uri-kmp", version.ref = "uriKmp" }
 
 # build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

@@ -30,12 +30,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eygraber.uri.toKmpUri
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.designsystem.HapticFeedbackManagerImpl
 import com.sadellie.unitto.core.designsystem.LocalHapticFeedbackManager
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
+import com.sadellie.unitto.core.navigation.Route
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -45,11 +47,12 @@ internal class MainActivity : AppCompatActivity(), KoinComponent {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
+    val uri = intent.data
+    val deepLinkRoute = uri?.let { Route.extractRouteFromDeeplink(uri.toKmpUri()) }
     val userPrefsRepository by inject<UserPreferencesRepository>()
 
     setContent {
       val prefs = userPrefsRepository.appPrefs.collectAsStateWithLifecycle(null).value
-      val numberTypography = numberTypographyUnitto()
 
       LaunchedEffect(prefs?.enableKeepScreenOn) {
         val enableKeepScreenOn = prefs?.enableKeepScreenOn ?: return@LaunchedEffect
@@ -65,12 +68,13 @@ internal class MainActivity : AppCompatActivity(), KoinComponent {
           HapticFeedbackManagerImpl(view, prefs?.enableVibrations ?: false)
         }
 
+      val numberTypography = numberTypographyUnitto()
       CompositionLocalProvider(
         LocalNumberTypography provides numberTypography,
         LocalWindowSize provides calculateWindowSizeClass(this@MainActivity),
         LocalHapticFeedbackManager provides hapticFeedbackManager,
       ) {
-        App(prefs)
+        App(deepLinkRoute, prefs)
       }
     }
   }

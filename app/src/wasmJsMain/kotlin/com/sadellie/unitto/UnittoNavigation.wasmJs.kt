@@ -18,38 +18,59 @@
 
 package com.sadellie.unitto
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import com.sadellie.unitto.core.navigation.Route
-import com.sadellie.unitto.feature.calculator.navigation.calculatorGraph
-import com.sadellie.unitto.feature.converter.navigation.converterGraph
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import com.sadellie.unitto.core.designsystem.unittoFadeIn
+import com.sadellie.unitto.core.designsystem.unittoFadeOut
+import com.sadellie.unitto.core.navigation.LocalNavigator
+import com.sadellie.unitto.core.navigation.Navigator
+import com.sadellie.unitto.core.ui.UnittoDrawerState
 import io.github.sadellie.themmo.ThemmoController
+import kotlinx.coroutines.launch
+import org.koin.compose.navigation3.koinEntryProvider
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
-internal fun UnittoNavigation(
-  navController: NavHostController,
+actual fun UnittoNavigation(
+  backStack: NavBackStack<NavKey>,
   themmoController: ThemmoController,
-  startDestination: Route,
-  openDrawer: () -> Unit,
+  drawerState: UnittoDrawerState,
 ) {
-  NavHost(
-    navController = navController,
-    startDestination = startDestination::class,
-    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
-    enterTransition = { fadeIn() },
-    exitTransition = { fadeOut() },
-  ) {
-    calculatorGraph(openDrawer = openDrawer)
-    converterGraph(
-      openDrawer = openDrawer,
-      navController = navController,
-      navigateToUnitGroups = {},
+  val drawerScope = rememberCoroutineScope()
+  val navigator =
+    remember(backStack, drawerState) {
+      Navigator(
+        backStack = backStack,
+        openDrawerAction = { drawerScope.launch { drawerState.open() } },
+        navigateToUnitGroupsAction = { /*TODO*/ },
+      )
+    }
+  CompositionLocalProvider(LocalNavigator provides navigator) {
+    NavDisplay(
+      modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
+      backStack = backStack,
+      popTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      transitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      predictivePopTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      entryDecorators =
+        listOf(
+          rememberSaveableStateHolderNavEntryDecorator(),
+          rememberViewModelStoreNavEntryDecorator(),
+          rememberDrawerCloseGestureNavEntryDecorator(drawerState, drawerScope),
+        ),
+      entryProvider = koinEntryProvider(),
     )
   }
 }

@@ -35,13 +35,14 @@ kotlin {
     implementation(project(":core:model"))
     implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
     implementation(libs.org.jetbrains.compose.components.components.resources)
-    implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
+    implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
     implementation(libs.io.insert.koin.koin.compose.viewmodel)
+    implementation(libs.io.insert.koin.koin.compose.navigation3)
     implementation(libs.co.touchlab.kermit)
   }
   sourceSets.androidMain.dependencies {

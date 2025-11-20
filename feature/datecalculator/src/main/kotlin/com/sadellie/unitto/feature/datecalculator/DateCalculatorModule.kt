@@ -20,10 +20,12 @@ package com.sadellie.unitto.feature.datecalculator
 
 import com.sadellie.unitto.feature.datecalculator.addsubtract.AddSubtractViewModel
 import com.sadellie.unitto.feature.datecalculator.difference.DateDifferenceViewModel
+import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorNavigation
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.lazyModule
 
 val dateCalculatorModule = lazyModule {
+  dateCalculatorNavigation()
   viewModelOf(::AddSubtractViewModel)
   viewModelOf(::DateDifferenceViewModel)
 }

@@ -258,8 +258,9 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
       ?: Defaults.monetMode
 
   private fun Preferences.getStartingScreen() =
-    graphRoutes.firstOrNull { it.id == this.getTyped<String>(PrefKeys.STARTING_SCREEN_PREF_KEY) }
-      ?: Defaults.startingScreen
+    graphRoutes.firstOrNull {
+      it.routeId == this.getTyped<String>(PrefKeys.STARTING_SCREEN_PREF_KEY)
+    } ?: Defaults.startingScreen
 
   @Suppress("UnusedReceiverParameter") private fun Preferences.getEnableToolsExperiment() = false
 

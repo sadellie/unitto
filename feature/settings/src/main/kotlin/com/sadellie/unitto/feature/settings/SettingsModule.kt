@@ -23,12 +23,14 @@ import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsViewMod
 import com.sadellie.unitto.feature.settings.converter.ConverterSettingsViewModel
 import com.sadellie.unitto.feature.settings.display.DisplayViewModel
 import com.sadellie.unitto.feature.settings.formatting.FormattingViewModel
+import com.sadellie.unitto.feature.settings.navigation.settingNavigation
 import com.sadellie.unitto.feature.settings.startingscreen.StartingScreenViewModel
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.lazyModule
 
 val settingsModule = lazyModule {
+  settingNavigation()
   viewModelOf(::BackupViewModel)
   viewModelOf(::CalculatorSettingsViewModel)
   viewModelOf(::ConverterSettingsViewModel)

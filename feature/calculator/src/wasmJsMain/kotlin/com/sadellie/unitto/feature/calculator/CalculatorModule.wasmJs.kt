@@ -18,7 +18,11 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import com.sadellie.unitto.feature.calculator.navigation.calculatorNavigation
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val calculatorModule = module { viewModelOf(::CalculatorViewModel) }
+val calculatorModule = module {
+  calculatorNavigation()
+  viewModelOf(::CalculatorViewModel)
+}

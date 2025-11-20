@@ -28,7 +28,7 @@ kotlin {
     implementation(libs.org.jetbrains.compose.components.components.resources)
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
-    implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
+    implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
   }
 }
 

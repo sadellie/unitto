@@ -18,26 +18,17 @@
 
 package com.sadellie.unitto.feature.bodymass.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.designsystem.unittoComposable
-import com.sadellie.unitto.core.designsystem.unittoNavigation
-import com.sadellie.unitto.core.navigation.BodyMassGraphRoute
-import com.sadellie.unitto.core.navigation.Route
-import com.sadellie.unitto.core.navigation.deepLink
+import com.sadellie.unitto.core.navigation.BodyMassStartRoute
+import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.feature.bodymass.BodyMassRoute
-import kotlinx.serialization.Serializable
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
 
-fun NavGraphBuilder.bodyMassGraph(openDrawer: () -> Unit) {
-  unittoNavigation<BodyMassGraphRoute>(
-    startDestination = BodyMassStartRoute::class,
-    deepLinks = listOf(navDeepLink { uriPattern = deepLink(BodyMassGraphRoute) }),
-  ) {
-    unittoComposable<BodyMassStartRoute> { BodyMassRoute(openDrawer = openDrawer) }
+@OptIn(KoinExperimentalAPI::class)
+fun Module.bodyMassNavigation() {
+  navigation<BodyMassStartRoute> {
+    val navigator = LocalNavigator.current
+    BodyMassRoute(openDrawer = navigator::openDrawer)
   }
-}
-
-@Serializable
-private data object BodyMassStartRoute : Route {
-  override val id = "body_mass_start"
 }

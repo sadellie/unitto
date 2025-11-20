@@ -61,7 +61,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.navigation.DrawerItem
-import com.sadellie.unitto.core.navigation.Route
+import com.sadellie.unitto.core.navigation.TopLevelRoute
 import com.sadellie.unitto.core.ui.UnittoDrawerState.Companion.saver
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CancellationException
@@ -74,7 +74,7 @@ fun NavigationDrawer(
   state: UnittoDrawerState,
   mainTabs: List<DrawerItem>,
   additionalTabs: List<DrawerItem>,
-  currentDestination: Route?,
+  currentDestination: TopLevelRoute?,
   onItemClick: (DrawerItem) -> Unit,
   content: @Composable () -> Unit,
 ) {

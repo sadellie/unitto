@@ -18,26 +18,17 @@
 
 package com.sadellie.unitto.feature.datecalculator.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.navDeepLink
-import com.sadellie.unitto.core.designsystem.unittoComposable
-import com.sadellie.unitto.core.designsystem.unittoNavigation
-import com.sadellie.unitto.core.navigation.DateCalculatorGraphRoute
-import com.sadellie.unitto.core.navigation.Route
-import com.sadellie.unitto.core.navigation.deepLink
+import com.sadellie.unitto.core.navigation.DateCalculatorStartRoute
+import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.feature.datecalculator.DateCalculatorRoute
-import kotlinx.serialization.Serializable
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
 
-fun NavGraphBuilder.dateCalculatorGraph(openDrawer: () -> Unit) {
-  unittoNavigation<DateCalculatorGraphRoute>(
-    startDestination = DateCalculatorStartRoute::class,
-    deepLinks = listOf(navDeepLink { uriPattern = deepLink(DateCalculatorGraphRoute) }),
-  ) {
-    unittoComposable<DateCalculatorStartRoute> { DateCalculatorRoute(openDrawer = openDrawer) }
+@OptIn(KoinExperimentalAPI::class)
+fun Module.dateCalculatorNavigation() {
+  navigation<DateCalculatorStartRoute> {
+    val navigator = LocalNavigator.current
+    DateCalculatorRoute(openDrawer = navigator::openDrawer)
   }
-}
-
-@Serializable
-private data object DateCalculatorStartRoute : Route {
-  override val id = "date_calculator_start"
 }

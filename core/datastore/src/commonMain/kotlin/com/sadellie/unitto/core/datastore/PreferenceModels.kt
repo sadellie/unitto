@@ -22,6 +22,7 @@ import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.navigation.Route
+import com.sadellie.unitto.core.navigation.TopLevelRoute
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 
@@ -90,4 +91,4 @@ data class BodyMassPreferences(val formatterSymbols: FormatterSymbols)
 
 data class AboutPreferences(val enableToolsExperiment: Boolean)
 
-data class StartingScreenPreferences(val startingScreen: Route)
+data class StartingScreenPreferences(val startingScreen: TopLevelRoute)
