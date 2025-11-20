@@ -7,29 +7,27 @@ androidxBrowserBrowser = "1.9.0"
 # https://developer.android.com/reference/tools/gradle-api
 androidGradlePlugin = "8.12.3"
 # https://mvnrepository.com/artifact/androidx.activity/activity-compose
-androidxActivityActivityCompose = "1.11.0"
+androidxActivityActivityCompose = "1.12.0"
 # https://mvnrepository.com/artifact/androidx.appcompat/appcompat
 androidxAppCompatAppCompat = "1.7.1"
 # https://developer.android.com/jetpack/androidx/releases/compose
-androidxCompose = "1.9.4"
+androidxCompose = "1.9.5"
 # https://developer.android.com/jetpack/androidx/releases/compose
 androidxComposeCompiler = "1.5.15"
-# https://developer.android.com/jetpack/androidx/releases/compose
-androidxComposeMaterial3 = "1.5.0-alpha07"
 # https://mvnrepository.com/artifact/androidx.core/core-ktx
 androidxCoreCoreKts = "1.17.0"
 # https://mvnrepository.com/artifact/androidx.glance/glance-appwidget
 androidxGlanceGlance = "1.1.1"
 # https://developer.android.com/jetpack/androidx/releases/datastore
-androidxDatastoreDatastorePreferences = "1.1.7"
+androidxDatastoreDatastorePreferences = "1.2.0"
 # https://github.com/InsertKoinIO/koin/releases
 koin = "4.1.1"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-compose
-androidxLifecycleLifecycleRuntimeCompose = "2.9.4"
+androidxLifecycleLifecycleRuntimeCompose = "2.10.0"
 # https://mvnrepository.com/artifact/org.jetbrains.androidx.navigation/navigation-compose
 androidxNavigationNavigationCompose = "2.9.1"
 # https://developer.android.com/jetpack/androidx/releases/room
-androidxRoom = "2.8.3"
+androidxRoom = "2.8.4"
 # https://mvnrepository.com/artifact/androidx.test/core
 androidxTest = "1.7.0"
 # https://mvnrepository.com/artifact/androidx.test.ext/junit-ktx
@@ -41,12 +39,12 @@ androidxWorkWorkRuntimeKtx = "2.11.0"
 # https://mvnrepository.com/artifact/com.android.tools/desugar_jdk_libs
 comAndroidToolsDesugarJdkLibs = "2.1.5"
 # https://github.com/ktorio/ktor/releases
-ktor = "3.3.1"
+ktor = "3.3.2"
 junitJunit = "4.13.2"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "2.2.21"
 # https://github.com/google/ksp/releases
-ksp = "2.2.20-2.0.4"
+ksp = "2.3.2"
 # https://github.com/Calvin-LL/Reorderable/releases
 reorderable = "3.0.0"
 # https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-test
@@ -62,31 +60,26 @@ devIurysouzaModulegraph = "0.13.0"
 # https://github.com/detekt/detekt/releases
 detekt = "1.23.8"
 # https://github.com/jordond/MaterialKolor/releases
-materialKolor = "3.0.1"
+materialKolor = "5.0.0-alpha03"
 # https://github.com/JetBrains/compose-multiplatform/releases
-composeMultiplatform = "1.10.0-beta01"
+composeMultiplatform = "1.10.0-beta02"
 # https://github.com/JetBrains/compose-multiplatform/releases
 # https://mvnrepository.com/artifact/org.jetbrains.compose.material3/material3
-composeMultiplatformMaterial3 = "1.10.0-alpha04"
+composeMultiplatformMaterial3 = "1.10.0-alpha05"
 # https://github.com/touchlab/Kermit/releases
 kermit = "2.0.8"
 # https://developer.android.com/jetpack/androidx/releases/annotation
 annotation = "1.9.1"
 # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel-savedstate
-lifecyclyViewModel = "2.9.5"
+lifecyclyViewModel = "2.10.0-alpha05"
+# https://github.com/Kotlin/kotlinx-datetime/releases/latest
 kotlinxDatetime = "0.7.1"
 
 [libraries]
 androidx-activity-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityActivityCompose" }
 androidx-appcompat-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppCompatAppCompat" }
 androidx-browser-browser = { module = "androidx.browser:browser", version.ref = "androidxBrowserBrowser" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidxComposeMaterial3" }
-androidx-compose-foundation-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidxCompose" }
-androidx-compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "androidxCompose" }
-androidx-compose-material3-window-size = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "androidxComposeMaterial3" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidxCompose" }
-androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidxCompose" }
-androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidxCompose" }
 androidx-core-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCoreCoreKts" }
 androidx-glance-glance = { module = "androidx.glance:glance", version.ref = "androidxGlanceGlance" }
 androidx-glance-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "androidxGlanceGlance" }

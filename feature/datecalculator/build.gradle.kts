@@ -46,10 +46,10 @@ dependencies {
   implementation(libs.io.insert.koin.koin.compose.viewmodel)
   implementation(libs.io.insert.koin.koin.core.coroutines)
 
-  implementation(libs.androidx.compose.foundation.foundation)
-  implementation(libs.androidx.compose.material3)
-  implementation(libs.androidx.compose.material3.window.size)
-  implementation(libs.androidx.compose.ui.tooling.preview)
+  implementation(libs.org.jetbrains.compose.foundation.foundation)
+  implementation(libs.org.jetbrains.compose.material3.material3)
+  implementation(libs.org.jetbrains.compose.material3.material3.window.size)
+  implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
   implementation(libs.org.jetbrains.androidx.navigation.navigation.compose)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
 
