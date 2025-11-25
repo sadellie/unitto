@@ -159,12 +159,12 @@ private fun SettingsScreen(
           modifier = Modifier.padding(vertical = Sizes.small).fillMaxWidth(),
           onClick = {
             linkOpener.launch("https://github.com/sadellie/unitto/releases/latest")
-            updateLastReadChangelog(BuildConfig.VERSION_CODE)
+            updateLastReadChangelog(Config.VERSION_CODE)
           },
           imageVector = Symbols.NewReleases,
           imageVectorContentDescription = title,
           title = title,
-          support = stringResource(Res.string.settings_updated_support, BuildConfig.VERSION_NAME),
+          support = stringResource(Res.string.settings_updated_support, Config.VERSION_NAME),
         )
       }
       ListItemExpressive(

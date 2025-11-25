@@ -23,11 +23,11 @@ import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.unit_kilometer
 import unitto.core.common.generated.resources.unit_kilometer_short

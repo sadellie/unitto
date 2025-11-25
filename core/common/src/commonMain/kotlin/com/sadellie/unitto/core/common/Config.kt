@@ -21,4 +21,7 @@ package com.sadellie.unitto.core.common
 object Config {
   const val STORE_LINK = "https://play.google.com/store/apps/details?id=com.sadellie.unitto"
   const val TRANSLATE_LINK = "https://github.com/sadellie/unitto"
+  const val VERSION_CODE = "Not implemented yet" // TODO BuildKonfig
+  const val VERSION_NAME = "Not implemented yet" // TODO BuildKonfig
+  const val BUILD_TYPE = "Not implemented yet" // TODO BuildKonfig
 }

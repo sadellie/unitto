@@ -34,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.designsystem.icons.symbols.Code
 import com.sadellie.unitto.core.designsystem.icons.symbols.Copyright
 import com.sadellie.unitto.core.designsystem.icons.symbols.Help
@@ -47,7 +48,6 @@ import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.rememberLinkOpener
-import com.sadellie.unitto.feature.settings.BuildConfig
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_ok
@@ -130,7 +130,7 @@ private fun AboutScreen(
         icon = Symbols.Info,
         headlineText = stringResource(Res.string.settings_version_name),
         supportingText =
-          "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) ${BuildConfig.BUILD_TYPE}",
+          "${Config.VERSION_NAME} (${Config.VERSION_CODE}) ${Config.BUILD_TYPE}",
         onClick = {
           val clicksToOpenEasterEgg = 5
           aboutItemClick++

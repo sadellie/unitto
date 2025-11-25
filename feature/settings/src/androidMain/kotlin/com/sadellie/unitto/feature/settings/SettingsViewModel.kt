@@ -20,6 +20,7 @@ package com.sadellie.unitto.feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
@@ -37,7 +38,7 @@ internal class SettingsViewModel(
           enableVibrations = prefs.enableVibrations,
           enableKeepScreenOn = prefs.enableKeepScreenOn,
           cacheSize = cacheSize,
-          showUpdateChangelog = prefs.lastReadChangelog != BuildConfig.VERSION_CODE,
+          showUpdateChangelog = prefs.lastReadChangelog != Config.VERSION_CODE,
         )
       }
       .stateIn(viewModelScope, SettingsUIState.Loading)

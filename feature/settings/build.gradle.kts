@@ -17,55 +17,51 @@
  */
 
 plugins {
-  id("unitto.library")
-
-  alias(libs.plugins.compose)
+  id("unitto.multiplatform.library")
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
+}
+
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:data"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:database"))
+    implementation(project(":core:model"))
+    implementation(project(":core:themmo"))
+    implementation(libs.org.jetbrains.compose.components.components.resources)
+    implementation(libs.org.jetbrains.compose.foundation.foundation)
+    implementation(libs.org.jetbrains.compose.material3.material3)
+    implementation(libs.org.jetbrains.compose.material3.material3.window.size)
+    implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
+    implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
+    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+    implementation(libs.io.insert.koin.koin.compose.viewmodel)
+    implementation(libs.io.insert.koin.koin.compose.navigation3)
+    implementation(libs.io.insert.koin.koin.core)
+    implementation(libs.co.touchlab.kermit)
+    implementation(libs.sh.calvin.reorderable.reorderable)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
+  }
+  sourceSets.androidMain.dependencies {
+    implementation(project(":core:backup"))
+    implementation(project(":core:licenses"))
+    implementation(libs.io.insert.koin.koin.core.coroutines)
+    implementation(libs.androidx.appcompat.appcompat)
+  }
+  sourceSets.commonTest.dependencies {
+    implementation(libs.org.jetbrains.kotlin.kotlin.test)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
+  }
 }
 
 android {
   namespace = "com.sadellie.unitto.feature.settings"
-  defaultConfig.stringConfigField("VERSION_NAME", libs.versions.versionName.get())
-  defaultConfig.stringConfigField("VERSION_CODE", libs.versions.versionCode.get())
   buildFeatures.compose = true
-  buildFeatures.buildConfig = true
   composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-}
-
-dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:ui"))
-  implementation(project(":core:navigation"))
-  implementation(project(":core:designsystem"))
-  implementation(project(":core:data"))
-  implementation(project(":core:datastore"))
-  implementation(project(":core:database"))
-  implementation(project(":core:backup"))
-  implementation(project(":core:model"))
-  implementation(project(":core:themmo"))
-  implementation(project(":core:licenses"))
-
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.compose.viewmodel)
-  implementation(libs.io.insert.koin.koin.compose.navigation3)
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-  implementation(libs.org.jetbrains.compose.components.components.resources)
-
-  implementation(libs.androidx.appcompat.appcompat)
-  implementation(libs.org.jetbrains.compose.foundation.foundation)
-  implementation(libs.org.jetbrains.compose.material3.material3)
-  implementation(libs.org.jetbrains.compose.material3.material3.window.size)
-  implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
-  implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
-  implementation(libs.co.touchlab.kermit)
-
-  implementation(libs.sh.calvin.reorderable.reorderable)
-  implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
-  testImplementation(libs.junit.junit)
-  testImplementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
-}
-
-fun com.android.build.api.dsl.VariantDimension.stringConfigField(name: String, url: String) {
-  buildConfigField("String", name, "\"${url}\"")
 }
