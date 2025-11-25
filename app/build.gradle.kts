@@ -57,13 +57,13 @@ kotlin {
     implementation(project(":core:ui"))
     implementation(project(":feature:calculator"))
     implementation(project(":feature:converter"))
+    implementation(project(":feature:settings"))
   }
   sourceSets.androidMain.dependencies {
     implementation(project(":feature:bodymass"))
     implementation(project(":feature:datecalculator"))
     implementation(project(":feature:glance"))
     implementation(project(":feature:timezone"))
-    implementation(project(":feature:settings"))
 
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.androidx.appcompat.appcompat)

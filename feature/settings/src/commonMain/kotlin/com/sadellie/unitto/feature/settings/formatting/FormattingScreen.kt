@@ -50,12 +50,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.designsystem.icons.symbols.Architecture
 import com.sadellie.unitto.core.designsystem.icons.symbols.EMobileData
@@ -96,7 +96,7 @@ fun FormattingRoute(
   viewModel: FormattingViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
 ) {
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
       FormattingScreen(

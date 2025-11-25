@@ -18,32 +18,24 @@
 
 package com.sadellie.unitto.feature.settings.startingscreen
 
-import android.os.Build
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sadellie.unitto.core.designsystem.icons.symbols.AppShortcut
-import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
-import com.sadellie.unitto.core.navigation.addShortcut
+import com.sadellie.unitto.core.navigation.DrawerItem
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
@@ -54,7 +46,7 @@ internal fun StartingScreenRoute(
   viewModel: StartingScreenViewModel = koinViewModel(),
   navigateUp: () -> Unit,
 ) {
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
       StartingScreenScreen(
@@ -76,7 +68,6 @@ private fun StartingScreenScreen(
     title = stringResource(Res.string.settings_starting_screen),
     navigationIcon = { NavigateUpButton(navigateUp) },
   ) { padding ->
-    val mContext = LocalContext.current
     LazyColumn(
       contentPadding = padding,
       modifier = Modifier.padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
@@ -95,20 +86,15 @@ private fun StartingScreenScreen(
               onClick = { updateStartingScreen(destination.topLevelRoute.routeId) },
             )
           },
-          trailingContent = trail@{
-              val coroutineScope = rememberCoroutineScope()
-              if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return@trail
-              IconButton(
-                onClick = { coroutineScope.launch { destination.addShortcut(mContext) } }
-              ) {
-                Icon(Symbols.AppShortcut, null)
-              }
-            },
+          trailingContent = { AddShortcutButton(destination) },
         )
       }
     }
   }
 }
+
+@Composable
+internal expect fun AddShortcutButton(destination: DrawerItem)
 
 @Preview
 @Composable

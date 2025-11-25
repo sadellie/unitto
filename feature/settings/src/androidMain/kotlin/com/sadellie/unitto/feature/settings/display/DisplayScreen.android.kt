@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins { id("unitto.multiplatform.library") }
+package com.sadellie.unitto.feature.settings.display
 
-android.namespace = "com.sadellie.unitto.core.licenses"
+import android.os.Build
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+
+@Composable
+@Stable
+internal actual fun isDynamicThemingSupported(): Boolean =
+  Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1

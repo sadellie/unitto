@@ -37,8 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.Config
+import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.BacklightHigh
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cached
@@ -105,7 +105,7 @@ internal fun SettingsRoute(
   openDrawer: () -> Unit,
   navControllerAction: (route: Route) -> Unit,
 ) {
-  when (val uiState: SettingsUIState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+  when (val uiState: SettingsUIState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     SettingsUIState.Loading -> EmptyScreen()
 
     is SettingsUIState.Ready ->

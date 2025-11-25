@@ -54,7 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.designsystem.icons.symbols.AddCircle
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cancel
 import com.sadellie.unitto.core.designsystem.icons.symbols.DragHandle
@@ -93,7 +93,7 @@ internal fun UnitGroupsRoute(
   viewModel: UnitGroupsViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
 ) {
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     UnitGroupsUIState.Loading -> EmptyScreen()
     is UnitGroupsUIState.Ready ->
       UnitGroupsScreen(

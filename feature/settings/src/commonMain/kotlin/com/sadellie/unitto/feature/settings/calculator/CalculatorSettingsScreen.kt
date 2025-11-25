@@ -33,10 +33,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Fraction
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
@@ -68,7 +68,7 @@ internal fun CalculatorSettingsRoute(
   viewModel: CalculatorSettingsViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
 ) {
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
       CalculatorSettingsScreen(

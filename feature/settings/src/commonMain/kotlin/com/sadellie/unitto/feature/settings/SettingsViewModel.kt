@@ -21,10 +21,10 @@ package com.sadellie.unitto.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.Config
+import com.sadellie.unitto.core.common.defaultIODispatcher
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
@@ -55,5 +55,5 @@ internal class SettingsViewModel(
   fun updateEnableKeepScreenOn(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateEnableKeepScreenOn(enabled) }
 
-  fun clearCache() = viewModelScope.launch(Dispatchers.IO) { currencyRatesDao.clear() }
+  fun clearCache() = viewModelScope.launch(defaultIODispatcher) { currencyRatesDao.clear() }
 }

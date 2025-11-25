@@ -18,8 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.display
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -41,12 +39,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.DisplayPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ClearBold
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
@@ -100,7 +99,7 @@ internal fun DisplayRoute(
   themmoController: ThemmoController,
   navigateToLanguages: () -> Unit,
 ) {
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
+  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else ->
       DisplayScreen(
@@ -112,10 +111,8 @@ internal fun DisplayRoute(
           viewModel.updateThemingMode(newValue)
         },
         onDynamicThemeChange = { newValue ->
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            themmoController.enableDynamicTheme(newValue)
-            viewModel.updateDynamicTheme(newValue)
-          }
+          themmoController.enableDynamicTheme(newValue)
+          viewModel.updateDynamicTheme(newValue)
         },
         onAmoledThemeChange = { newValue ->
           themmoController.enableAmoledTheme(newValue)
@@ -199,7 +196,7 @@ private fun DisplayScreen(
         )
       }
 
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+      if (isDynamicThemingSupported()) {
         val dynamicColorListItemShape =
           remember(isColorSelectedEnabled) {
             if (isColorSelectedEnabled) ListItemExpressiveDefaults.middleShape
@@ -330,8 +327,9 @@ private fun ThemingModeSelector(
   }
 }
 
+@Composable @Stable internal expect fun isDynamicThemingSupported(): Boolean
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@RequiresApi(Build.VERSION_CODES.O_MR1)
 @Preview
 @Composable
 private fun Preview() {

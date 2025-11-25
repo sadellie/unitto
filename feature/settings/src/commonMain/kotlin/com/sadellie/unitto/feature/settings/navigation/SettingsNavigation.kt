@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,13 +29,11 @@ import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.navigation.SettingsStartRoute
 import com.sadellie.unitto.feature.settings.SettingsRoute
 import com.sadellie.unitto.feature.settings.about.AboutRoute
-import com.sadellie.unitto.feature.settings.backup.BackupRoute
 import com.sadellie.unitto.feature.settings.bouncingemoji.BouncingEmojiRoute
 import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsRoute
 import com.sadellie.unitto.feature.settings.converter.ConverterSettingsRoute
 import com.sadellie.unitto.feature.settings.display.DisplayRoute
 import com.sadellie.unitto.feature.settings.formatting.FormattingRoute
-import com.sadellie.unitto.feature.settings.language.LanguageRoute
 import com.sadellie.unitto.feature.settings.startingscreen.StartingScreenRoute
 import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsRoute
@@ -71,10 +69,7 @@ fun Module.settingNavigation() {
       navigateToLanguages = { navigator.goTo(LanguageRoute) },
     )
   }
-  navigation<LanguageRoute>(metadata = NavDisplay.stackedTransition()) {
-    val navigator = LocalNavigator.current
-    LanguageRoute(navigateUp = navigator::goBack)
-  }
+  languageNavigation()
   navigation<StartingScreenRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     StartingScreenRoute(navigateUp = navigator::goBack)
@@ -98,10 +93,7 @@ fun Module.settingNavigation() {
     val navigator = LocalNavigator.current
     UnitGroupsRoute(navigateUpAction = navigator::goBack)
   }
-  navigation<BackupRoute>(metadata = NavDisplay.stackedTransition()) {
-    val navigator = LocalNavigator.current
-    BackupRoute(navigateUpAction = navigator::goBack)
-  }
+  backupNavigation()
   navigation<AboutRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     AboutRoute(
@@ -119,6 +111,10 @@ fun Module.settingNavigation() {
     BouncingEmojiRoute(navigateUpAction = navigator::goBack)
   }
 }
+
+internal expect fun Module.backupNavigation()
+
+internal expect fun Module.languageNavigation()
 
 @Serializable
 internal data object DisplayRoute : Route {
@@ -179,7 +175,7 @@ internal data object EasterEggRoute : Route {
 @KoinExperimentalAPI
 @KoinDslMarker
 @OptIn(KoinInternalApi::class)
-private inline fun <reified T : Any> Module.navigation(
+internal inline fun <reified T : Any> Module.navigation(
   metadata: Map<String, Any> = emptyMap(),
   noinline definition: @Composable Scope.(T) -> Unit,
 ): KoinDefinition<EntryProviderInstaller> {

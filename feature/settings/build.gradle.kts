@@ -34,6 +34,7 @@ kotlin {
     implementation(project(":core:database"))
     implementation(project(":core:model"))
     implementation(project(":core:themmo"))
+    implementation(project(":core:licenses"))
     implementation(libs.org.jetbrains.compose.components.components.resources)
     implementation(libs.org.jetbrains.compose.foundation.foundation)
     implementation(libs.org.jetbrains.compose.material3.material3)
@@ -50,7 +51,6 @@ kotlin {
   }
   sourceSets.androidMain.dependencies {
     implementation(project(":core:backup"))
-    implementation(project(":core:licenses"))
     implementation(libs.io.insert.koin.koin.core.coroutines)
     implementation(libs.androidx.appcompat.appcompat)
   }
