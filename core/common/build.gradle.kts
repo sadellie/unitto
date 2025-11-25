@@ -1,3 +1,5 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+
 /*
  * Unitto is a calculator for Android
  * Copyright (c) 2023-2025 Elshan Agaev
@@ -20,6 +22,15 @@ plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.compose)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.com.codingfeline.buildkonfig)
+}
+
+buildkonfig {
+  packageName = "com.sadellie.unitto.core.common"
+  defaultConfigs {
+    buildConfigField(FieldSpec.Type.STRING, "VERSION_CODE", libs.versions.versionCode.get())
+    buildConfigField(FieldSpec.Type.STRING, "VERSION_NAME", libs.versions.versionName.get())
+  }
 }
 
 kotlin {

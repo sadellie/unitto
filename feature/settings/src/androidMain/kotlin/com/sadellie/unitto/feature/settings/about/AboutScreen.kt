@@ -129,8 +129,7 @@ private fun AboutScreen(
       ListItemExpressive(
         icon = Symbols.Info,
         headlineText = stringResource(Res.string.settings_version_name),
-        supportingText =
-          "${Config.VERSION_NAME} (${Config.VERSION_CODE}) ${Config.BUILD_TYPE}",
+        supportingText = "${Config.VERSION_NAME} (${Config.VERSION_CODE})",
         onClick = {
           val clicksToOpenEasterEgg = 5
           aboutItemClick++
