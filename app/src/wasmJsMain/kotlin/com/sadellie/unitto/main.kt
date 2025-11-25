@@ -48,6 +48,7 @@ import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.core.remote.currencyApiModule
+import com.sadellie.unitto.feature.bodymass.bodyMassModule
 import com.sadellie.unitto.feature.calculator.calculatorModule
 import com.sadellie.unitto.feature.converter.converterModule
 import com.sadellie.unitto.feature.converter.navigation.UnitFromRoute
@@ -133,6 +134,7 @@ private fun initKoin() {
       currencyApiModule,
       calculatorModule,
       converterModule,
+      bodyMassModule,
       settingsModule,
     )
   }

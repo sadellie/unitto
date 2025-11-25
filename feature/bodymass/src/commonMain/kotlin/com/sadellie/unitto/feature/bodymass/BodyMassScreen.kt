@@ -47,10 +47,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.DrawerButton
@@ -80,7 +80,7 @@ import unitto.core.common.generated.resources.unit_pound_short
 internal fun BodyMassRoute(openDrawer: () -> Unit, viewModel: BodyMassViewModel = koinViewModel()) {
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     UIState.Loading -> EmptyScreen()
     is UIState.Ready ->
       BodyMassScreen(
@@ -241,7 +241,7 @@ fun PreviewBodyMassScreen() {
         height1 = remember { TextFieldState() },
         height2 = remember { TextFieldState() },
         weight = remember { TextFieldState() },
-        normalWeightRange = KBigDecimal(30) to KBigDecimal(50),
+        normalWeightRange = KBigDecimal(30.0) to KBigDecimal(50.0),
         result = KBigDecimal(18.5),
         formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
       ),

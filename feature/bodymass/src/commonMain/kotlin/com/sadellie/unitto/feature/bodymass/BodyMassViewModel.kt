@@ -18,9 +18,6 @@
 
 package com.sadellie.unitto.feature.bodymass
 
-import android.icu.util.LocaleData
-import android.icu.util.ULocale
-import android.os.Build
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -114,9 +111,6 @@ internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepos
         }
       }
   }
-
-  private fun getInitialIsMetric(): Boolean {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return true
-    return LocaleData.getMeasurementSystem(ULocale.getDefault()) != LocaleData.MeasurementSystem.US
-  }
 }
+
+internal expect fun getInitialIsMetric(): Boolean
