@@ -25,16 +25,12 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.unit_kilometer
 import unitto.core.common.generated.resources.unit_kilometer_short
 
 class SortUnitGroupsByUsage {
-  private val testScope = TestScope(UnconfinedTestDispatcher())
-
   private fun unitWithFrequency(group: UnitGroup, value: Int): UnitSearchResultItem {
     // sorting algorithm cares about frequency only, group is taken from map
     val unit =
@@ -55,53 +51,50 @@ class SortUnitGroupsByUsage {
   }
 
   @Test
-  fun sortUnitGroupsByUsage_empty() =
-    testScope.runTest {
-      val units = emptySequence<UnitSearchResultItem>()
-      val actual = sortUnitGroupsByUsage(units)
-      val expected = emptyList<UnitGroup>()
+  fun sortUnitGroupsByUsage_empty() = runTest {
+    val units = emptySequence<UnitSearchResultItem>()
+    val actual = sortUnitGroupsByUsage(units)
+    val expected = emptyList<UnitGroup>()
 
-      assertEquals(actual, expected)
-    }
-
-  @Test
-  fun autoSortUnitGroups_single() =
-    testScope.runTest {
-      val units =
-        listOf(
-            unitWithFrequency(UnitGroup.LENGTH, 10),
-            unitWithFrequency(UnitGroup.LENGTH, 8),
-            unitWithFrequency(UnitGroup.LENGTH, 6),
-            unitWithFrequency(UnitGroup.LENGTH, 4),
-          )
-          .asSequence()
-      val actual = sortUnitGroupsByUsage(units)
-      val expected = listOf(UnitGroup.LENGTH)
-
-      assertEquals(actual, expected)
-    }
+    assertEquals(actual, expected)
+  }
 
   @Test
-  fun sortUnitGroupsByUsage_multiple() =
-    testScope.runTest {
-      val units =
-        sequenceOf(
+  fun autoSortUnitGroups_single() = runTest {
+    val units =
+      listOf(
           unitWithFrequency(UnitGroup.LENGTH, 10),
           unitWithFrequency(UnitGroup.LENGTH, 8),
           unitWithFrequency(UnitGroup.LENGTH, 6),
           unitWithFrequency(UnitGroup.LENGTH, 4),
-          unitWithFrequency(UnitGroup.AREA, 4),
-          unitWithFrequency(UnitGroup.AREA, 3),
-          unitWithFrequency(UnitGroup.AREA, 2),
-          unitWithFrequency(UnitGroup.AREA, 1),
-          unitWithFrequency(UnitGroup.DATA, 100),
-          unitWithFrequency(UnitGroup.DATA, 80),
-          unitWithFrequency(UnitGroup.DATA, 60),
-          unitWithFrequency(UnitGroup.DATA, 40),
         )
-      val actual = sortUnitGroupsByUsage(units)
-      val expected = listOf(UnitGroup.DATA, UnitGroup.LENGTH, UnitGroup.AREA)
+        .asSequence()
+    val actual = sortUnitGroupsByUsage(units)
+    val expected = listOf(UnitGroup.LENGTH)
 
-      assertEquals(actual, expected)
-    }
+    assertEquals(actual, expected)
+  }
+
+  @Test
+  fun sortUnitGroupsByUsage_multiple() = runTest {
+    val units =
+      sequenceOf(
+        unitWithFrequency(UnitGroup.LENGTH, 10),
+        unitWithFrequency(UnitGroup.LENGTH, 8),
+        unitWithFrequency(UnitGroup.LENGTH, 6),
+        unitWithFrequency(UnitGroup.LENGTH, 4),
+        unitWithFrequency(UnitGroup.AREA, 4),
+        unitWithFrequency(UnitGroup.AREA, 3),
+        unitWithFrequency(UnitGroup.AREA, 2),
+        unitWithFrequency(UnitGroup.AREA, 1),
+        unitWithFrequency(UnitGroup.DATA, 100),
+        unitWithFrequency(UnitGroup.DATA, 80),
+        unitWithFrequency(UnitGroup.DATA, 60),
+        unitWithFrequency(UnitGroup.DATA, 40),
+      )
+    val actual = sortUnitGroupsByUsage(units)
+    val expected = listOf(UnitGroup.DATA, UnitGroup.LENGTH, UnitGroup.AREA)
+
+    assertEquals(actual, expected)
+  }
 }
