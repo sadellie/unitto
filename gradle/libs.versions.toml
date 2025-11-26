@@ -1,6 +1,6 @@
 [versions]
-versionCode = "61"
-versionName = "Slimy green"
+versionCode = "62"
+versionName = "Titanium yellow"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
 androidxBrowserBrowser = "1.9.0"
