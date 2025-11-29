@@ -1,0 +1,31 @@
+Calculator, converter and more.
+
+Look for Calculator on your home screen after installing the app.
+
+Calculator
+• Home screen widget
+• Copy, paste, save and share expression results
+• Trigonometric functions
+• Fractional output
+
+Unit converter
+• 601 units
+• Home screen widget
+• Built-in currency converter
+• Favorite units
+• Organize unit groups
+• Smart search algorithm
+
+Date calculator
+• Add and subtract dates
+• Calculate difference
+• Create events in calendar
+
+Time converter
+• Add to favorites
+• Add labels to time zones
+
+Body mass index
+• Get instant and accurate results
+
+Permissions and Data? Visit: https://github.com/sadellie/unitto/blob/master/SECURITY.md
