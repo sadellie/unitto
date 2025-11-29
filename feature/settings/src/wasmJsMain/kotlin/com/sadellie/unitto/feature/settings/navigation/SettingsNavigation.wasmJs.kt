@@ -18,41 +18,23 @@
 
 package com.sadellie.unitto.feature.settings.navigation
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation3.ui.NavDisplay
 import com.sadellie.unitto.core.designsystem.stackedTransition
 import com.sadellie.unitto.core.navigation.LocalNavigator
-import com.sadellie.unitto.core.ui.NavigateUpButton
-import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.NotAvailableInWasm
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
 
 @OptIn(KoinExperimentalAPI::class)
 internal actual fun Module.backupNavigation() {
-  navigation<BackupRoute>(metadata = NavDisplay.stackedTransition()) { NotAvailableInWasm() }
+  navigation<BackupRoute>(metadata = NavDisplay.stackedTransition()) {
+    NotAvailableInWasm(LocalNavigator.current::goBack)
+  }
 }
 
 @OptIn(KoinExperimentalAPI::class)
 internal actual fun Module.languageNavigation() {
-  navigation<LanguageRoute>(metadata = NavDisplay.stackedTransition()) { NotAvailableInWasm() }
-}
-
-@Composable
-private fun NotAvailableInWasm() {
-  // TODO design and move to components
-  val navigator = LocalNavigator.current
-  ScaffoldWithLargeTopBar(
-    title = "Not available in web",
-    navigationIcon = { NavigateUpButton(navigator::goBack) },
-  ) { paddingValues ->
-    Column(Modifier.padding(paddingValues)) {
-      Text("This functionality is only available in Android version of the app")
-      Button(navigator::goBack) { Text("Go back") }
-    }
+  navigation<LanguageRoute>(metadata = NavDisplay.stackedTransition()) {
+    NotAvailableInWasm(LocalNavigator.current::goBack)
   }
 }
