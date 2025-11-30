@@ -33,7 +33,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.navigation3.navigation
 
 @OptIn(KoinExperimentalAPI::class)
-fun Module.timeZoneNavigation() {
+internal actual fun Module.timeZoneNavigation() {
   navigation<TimeZoneStartRoute> {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
       EmptyScreen()

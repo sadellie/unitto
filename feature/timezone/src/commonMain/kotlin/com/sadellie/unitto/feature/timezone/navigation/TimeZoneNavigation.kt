@@ -16,14 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.navigation
+package com.sadellie.unitto.feature.timezone.navigation
 
-actual val mainDrawerItems: List<DrawerItem> by lazy {
-  listOf(
-    CalculatorDrawerItem,
-    ConverterDrawerItem,
-    BodyMassDrawerItem,
-    DateCalculatorDrawerItem,
-    TimeZonesDrawerItem,
-  )
-}
+import org.koin.core.module.Module
+
+internal expect fun Module.timeZoneNavigation()

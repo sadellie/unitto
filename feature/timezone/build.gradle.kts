@@ -17,43 +17,44 @@
  */
 
 plugins {
-  id("unitto.library")
-
-  alias(libs.plugins.compose)
+  id("unitto.multiplatform.library")
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
+}
+
+kotlin {
+  sourceSets.commonMain.dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:data"))
+    implementation(project(":core:model"))
+
+    implementation(libs.org.jetbrains.compose.components.components.resources)
+    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
+    implementation(libs.io.insert.koin.koin.compose.viewmodel)
+    implementation(libs.io.insert.koin.koin.compose.navigation3)
+    implementation(libs.org.jetbrains.compose.foundation.foundation)
+    implementation(libs.org.jetbrains.compose.material3.material3)
+    implementation(libs.org.jetbrains.compose.material3.material3.window.size)
+    implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
+    implementation(libs.sh.calvin.reorderable.reorderable)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
+  }
+  sourceSets.androidMain.dependencies {
+    implementation(libs.io.insert.koin.koin.core.coroutines)
+    implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
+  }
+  sourceSets.androidInstrumentedTest.dependencies {
+    implementation(libs.androidx.compose.ui.test.junit4)
+  }
 }
 
 android {
   namespace = "com.sadellie.unitto.feature.timezone"
   buildFeatures.compose = true
   composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-}
-
-dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:ui"))
-  implementation(project(":core:navigation"))
-  implementation(project(":core:designsystem"))
-  implementation(project(":core:datastore"))
-  implementation(project(":core:data"))
-  implementation(project(":core:model"))
-
-  implementation(libs.org.jetbrains.compose.components.components.resources)
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.compose.viewmodel)
-  implementation(libs.io.insert.koin.koin.compose.navigation3)
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-
-  implementation(libs.androidx.appcompat.appcompat)
-  implementation(libs.org.jetbrains.compose.foundation.foundation)
-  implementation(libs.org.jetbrains.compose.material3.material3)
-  implementation(libs.org.jetbrains.compose.material3.material3.window.size)
-  implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
-  implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
-
-  implementation(libs.sh.calvin.reorderable.reorderable)
-  implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
-
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }

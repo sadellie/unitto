@@ -16,14 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.navigation
+package com.sadellie.unitto.feature.timezone.navigation
 
-actual val mainDrawerItems: List<DrawerItem> by lazy {
-  listOf(
-    CalculatorDrawerItem,
-    ConverterDrawerItem,
-    BodyMassDrawerItem,
-    DateCalculatorDrawerItem,
-    TimeZonesDrawerItem,
-  )
+import com.sadellie.unitto.core.navigation.LocalNavigator
+import com.sadellie.unitto.core.navigation.TimeZoneStartRoute
+import com.sadellie.unitto.core.ui.AndroidExclusiveScreenMain
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
+
+@OptIn(KoinExperimentalAPI::class)
+internal actual fun Module.timeZoneNavigation() {
+  navigation<TimeZoneStartRoute> { AndroidExclusiveScreenMain(LocalNavigator.current::openDrawer) }
 }
