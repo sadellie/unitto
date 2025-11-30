@@ -181,6 +181,7 @@ private fun DisplayScreen(
         },
       )
 
+      val isDynamicThemingSupported = isDynamicThemingSupported()
       AnimatedVisibility(
         visible = controller.currentThemingMode != ThemingMode.FORCE_LIGHT,
         enter = expandVertically() + fadeIn(),
@@ -192,11 +193,13 @@ private fun DisplayScreen(
           supportingText = stringResource(Res.string.settings_amoled_dark_support),
           switchState = controller.isAmoledThemeEnabled,
           onSwitchChange = onAmoledThemeChange,
-          shape = ListItemExpressiveDefaults.middleShape,
+          shape =
+            if (isDynamicThemingSupported) ListItemExpressiveDefaults.middleShape
+            else ListItemExpressiveDefaults.lastShape,
         )
       }
 
-      if (isDynamicThemingSupported()) {
+      if (isDynamicThemingSupported) {
         val dynamicColorListItemShape =
           remember(isColorSelectedEnabled) {
             if (isColorSelectedEnabled) ListItemExpressiveDefaults.middleShape
