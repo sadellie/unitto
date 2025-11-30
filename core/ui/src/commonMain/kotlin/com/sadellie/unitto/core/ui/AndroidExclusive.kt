@@ -39,13 +39,36 @@ import unitto.core.common.generated.resources.android_exclusive_text
 import unitto.core.common.generated.resources.android_exclusive_title
 
 @Composable
-fun AndroidExclusiveScreen(navigateUpAction: () -> Unit) {
+fun AndroidExclusiveScreenMain(openDrawer: () -> Unit) {
+  ScaffoldWithTopBar(
+    title = { Text(stringResource(Res.string.android_exclusive_title)) },
+    navigationIcon = { DrawerButton(openDrawer) },
+  ) { paddingValues ->
+    Column(
+      modifier = Modifier.padding(paddingValues + PaddingValues(horizontal = Sizes.large)),
+      verticalArrangement = Arrangement.spacedBy(Sizes.large),
+    ) {
+      Text(stringResource(Res.string.android_exclusive_text))
+      val linkOpener = rememberLinkOpener()
+      Button(
+        onClick = { linkOpener.launch(Config.STORE_LINK) },
+        shapes = ButtonDefaults.shapes(),
+        modifier = Modifier.fillMaxWidth(),
+      ) {
+        Text(stringResource(Res.string.android_exclusive_action))
+      }
+    }
+  }
+}
+
+@Composable
+fun AndroidExclusiveScreenSecondary(navigateUpAction: () -> Unit) {
   ScaffoldWithLargeTopBar(
     title = stringResource(Res.string.android_exclusive_title),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { paddingValues ->
     Column(
-      Modifier.padding(paddingValues + PaddingValues(horizontal = Sizes.large)),
+      modifier = Modifier.padding(paddingValues + PaddingValues(horizontal = Sizes.large)),
       verticalArrangement = Arrangement.spacedBy(Sizes.large),
     ) {
       Text(stringResource(Res.string.android_exclusive_text))
@@ -82,6 +105,12 @@ fun AndroidExclusiveDialog(onDismissRequest: () -> Unit) {
 
 @Composable
 @Preview
-private fun AndroidExclusiveScreen() {
-  AndroidExclusiveScreen(navigateUpAction = {})
+private fun PreviewAndroidExclusiveScreenMain() {
+  AndroidExclusiveScreenMain(openDrawer = {})
+}
+
+@Composable
+@Preview
+private fun PreviewAndroidExclusiveScreenSecondary() {
+  AndroidExclusiveScreenSecondary(navigateUpAction = {})
 }

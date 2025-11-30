@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.navigation
+package com.sadellie.unitto.feature.datecalculator
 
-actual val mainDrawerItems: List<DrawerItem> by lazy {
-  listOf(CalculatorDrawerItem, ConverterDrawerItem, BodyMassDrawerItem, DateCalculatorDrawerItem)
-}
+import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorNavigation
+import org.koin.dsl.module
+
+val dateCalculatorModule = module { dateCalculatorNavigation() }

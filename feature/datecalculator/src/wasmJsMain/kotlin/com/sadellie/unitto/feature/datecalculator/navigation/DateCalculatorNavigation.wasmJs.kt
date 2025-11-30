@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2025 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +20,14 @@ package com.sadellie.unitto.feature.datecalculator.navigation
 
 import com.sadellie.unitto.core.navigation.DateCalculatorStartRoute
 import com.sadellie.unitto.core.navigation.LocalNavigator
-import com.sadellie.unitto.feature.datecalculator.DateCalculatorRoute
+import com.sadellie.unitto.core.ui.AndroidExclusiveScreenMain
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
 import org.koin.dsl.navigation3.navigation
 
 @OptIn(KoinExperimentalAPI::class)
-fun Module.dateCalculatorNavigation() {
+internal actual fun Module.dateCalculatorNavigation() {
   navigation<DateCalculatorStartRoute> {
-    val navigator = LocalNavigator.current
-    DateCalculatorRoute(openDrawer = navigator::openDrawer)
+    AndroidExclusiveScreenMain(LocalNavigator.current::openDrawer)
   }
 }

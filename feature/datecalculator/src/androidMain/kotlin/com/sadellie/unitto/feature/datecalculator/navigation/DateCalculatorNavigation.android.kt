@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2023-2024 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,25 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.navigation
+package com.sadellie.unitto.feature.datecalculator.navigation
 
-import androidx.navigation3.ui.NavDisplay
-import com.sadellie.unitto.core.designsystem.stackedTransition
+import com.sadellie.unitto.core.navigation.DateCalculatorStartRoute
 import com.sadellie.unitto.core.navigation.LocalNavigator
-import com.sadellie.unitto.core.ui.AndroidExclusiveScreenSecondary
+import com.sadellie.unitto.feature.datecalculator.DateCalculatorRoute
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
 
 @OptIn(KoinExperimentalAPI::class)
-internal actual fun Module.backupNavigation() {
-  navigation<BackupRoute>(metadata = NavDisplay.stackedTransition()) {
-    AndroidExclusiveScreenSecondary(LocalNavigator.current::goBack)
-  }
-}
-
-@OptIn(KoinExperimentalAPI::class)
-internal actual fun Module.languageNavigation() {
-  navigation<LanguageRoute>(metadata = NavDisplay.stackedTransition()) {
-    AndroidExclusiveScreenSecondary(LocalNavigator.current::goBack)
+internal actual fun Module.dateCalculatorNavigation() {
+  navigation<DateCalculatorStartRoute> {
+    val navigator = LocalNavigator.current
+    DateCalculatorRoute(openDrawer = navigator::openDrawer)
   }
 }

@@ -53,6 +53,7 @@ import com.sadellie.unitto.feature.calculator.calculatorModule
 import com.sadellie.unitto.feature.converter.converterModule
 import com.sadellie.unitto.feature.converter.navigation.UnitFromRoute
 import com.sadellie.unitto.feature.converter.navigation.UnitToRoute
+import com.sadellie.unitto.feature.datecalculator.dateCalculatorModule
 import com.sadellie.unitto.feature.settings.settingsModule
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.core.MonetMode
@@ -135,6 +136,7 @@ private fun initKoin() {
       calculatorModule,
       converterModule,
       bodyMassModule,
+      dateCalculatorModule,
       settingsModule,
     )
   }
