@@ -20,8 +20,8 @@ package com.sadellie.unitto.feature.bodymass
 
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KRoundingMode
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class BodyMassUtilsTest {
   @Test
