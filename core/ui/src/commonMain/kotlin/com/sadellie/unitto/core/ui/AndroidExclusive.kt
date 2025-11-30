@@ -23,41 +23,65 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import org.jetbrains.compose.resources.stringResource
+import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.android_exclusive_action
+import unitto.core.common.generated.resources.android_exclusive_text
+import unitto.core.common.generated.resources.android_exclusive_title
 
 @Composable
-fun NotAvailableInWasm(navigateUpAction: () -> Unit) {
+fun AndroidExclusiveScreen(navigateUpAction: () -> Unit) {
   ScaffoldWithLargeTopBar(
-    title = "Not available in web",
+    title = stringResource(Res.string.android_exclusive_title),
     navigationIcon = { NavigateUpButton(navigateUpAction) },
   ) { paddingValues ->
     Column(
       Modifier.padding(paddingValues + PaddingValues(horizontal = Sizes.large)),
       verticalArrangement = Arrangement.spacedBy(Sizes.large),
     ) {
-      Text("This feature is only available in Android version of the app")
+      Text(stringResource(Res.string.android_exclusive_text))
       val linkOpener = rememberLinkOpener()
       Button(
-        onClick = {
-          linkOpener.launch("https://play.google.com/store/apps/details?id=com.sadellie.unitto")
-        },
+        onClick = { linkOpener.launch(Config.STORE_LINK) },
         shapes = ButtonDefaults.shapes(),
         modifier = Modifier.fillMaxWidth(),
       ) {
-        Text("Get Android version")
+        Text(stringResource(Res.string.android_exclusive_action))
       }
     }
   }
 }
 
 @Composable
+fun AndroidExclusiveDialog(onDismissRequest: () -> Unit) {
+  AlertDialog(
+    title = { Text(stringResource(Res.string.android_exclusive_title)) },
+    text = { Text(stringResource(Res.string.android_exclusive_text)) },
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
+      val linkOpener = rememberLinkOpener()
+      Button(
+        onClick = { linkOpener.launch(Config.STORE_LINK) },
+        shapes = ButtonDefaults.shapes(),
+        modifier = Modifier.fillMaxWidth(),
+      ) {
+        Text(stringResource(Res.string.android_exclusive_action))
+      }
+    },
+  )
+}
+
+@Composable
 @Preview
-private fun PreviewNotAvailableInWasm() {
-  NotAvailableInWasm(navigateUpAction = {})
+private fun AndroidExclusiveScreen() {
+  AndroidExclusiveScreen(navigateUpAction = {})
 }

@@ -21,20 +21,20 @@ package com.sadellie.unitto.feature.settings.navigation
 import androidx.navigation3.ui.NavDisplay
 import com.sadellie.unitto.core.designsystem.stackedTransition
 import com.sadellie.unitto.core.navigation.LocalNavigator
-import com.sadellie.unitto.core.ui.NotAvailableInWasm
+import com.sadellie.unitto.core.ui.AndroidExclusiveScreen
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
 
 @OptIn(KoinExperimentalAPI::class)
 internal actual fun Module.backupNavigation() {
   navigation<BackupRoute>(metadata = NavDisplay.stackedTransition()) {
-    NotAvailableInWasm(LocalNavigator.current::goBack)
+    AndroidExclusiveScreen(LocalNavigator.current::goBack)
   }
 }
 
 @OptIn(KoinExperimentalAPI::class)
 internal actual fun Module.languageNavigation() {
   navigation<LanguageRoute>(metadata = NavDisplay.stackedTransition()) {
-    NotAvailableInWasm(LocalNavigator.current::goBack)
+    AndroidExclusiveScreen(LocalNavigator.current::goBack)
   }
 }

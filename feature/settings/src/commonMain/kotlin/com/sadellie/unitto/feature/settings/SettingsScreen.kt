@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,11 +56,14 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Vibration
 import com.sadellie.unitto.core.designsystem.icons.symbols._123
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.navigation.Route
+import com.sadellie.unitto.core.ui.AndroidExclusiveDialog
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
+import com.sadellie.unitto.core.ui.LocalPlatform
+import com.sadellie.unitto.core.ui.Platform
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
@@ -105,19 +109,30 @@ internal fun SettingsRoute(
   openDrawer: () -> Unit,
   navControllerAction: (route: Route) -> Unit,
 ) {
+  var showAndroidExclusiveDialog by rememberSaveable { mutableStateOf(false) }
+  val platform = LocalPlatform.current
+
   when (val uiState: SettingsUIState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     SettingsUIState.Loading -> EmptyScreen()
-
     is SettingsUIState.Ready ->
       SettingsScreen(
         uiState = uiState,
         openDrawer = openDrawer,
         navControllerAction = navControllerAction,
         updateLastReadChangelog = viewModel::updateLastReadChangelog,
-        updateVibrations = viewModel::updateVibrations,
-        updateKeepScreenOn = viewModel::updateEnableKeepScreenOn,
+        updateVibrations = {
+          if (platform == Platform.Android) viewModel.updateVibrations(it)
+          else showAndroidExclusiveDialog = true
+        },
+        updateKeepScreenOn = {
+          if (platform == Platform.Android) viewModel.updateEnableKeepScreenOn(it)
+          else showAndroidExclusiveDialog = true
+        },
         clearCache = viewModel::clearCache,
       )
+  }
+  if (showAndroidExclusiveDialog) {
+    AndroidExclusiveDialog { showAndroidExclusiveDialog = false }
   }
 }
 
@@ -238,14 +253,12 @@ private fun SettingsScreen(
           shape = ListItemExpressiveDefaults.middleShape,
         )
       }
-      if (Config.STORE_LINK.isNotEmpty()) {
-        ListItemExpressive(
-          icon = Symbols.RateReview,
-          headlineText = stringResource(Res.string.settings_rate_this_app),
-          onClick = { linkOpener.launch(Config.STORE_LINK) },
-          shape = ListItemExpressiveDefaults.middleShape,
-        )
-      }
+      ListItemExpressive(
+        icon = Symbols.RateReview,
+        headlineText = stringResource(Res.string.settings_rate_this_app),
+        onClick = { linkOpener.launch(Config.STORE_LINK) },
+        shape = ListItemExpressiveDefaults.middleShape,
+      )
       ListItemExpressive(
         icon = Symbols.Info,
         headlineText = stringResource(Res.string.settings_about_unitto),

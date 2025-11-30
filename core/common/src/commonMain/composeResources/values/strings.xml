@@ -18,6 +18,9 @@
 
 <resources>
     <string name="app_name" translatable="false">Unitto</string>
+    <string name="android_exclusive_action">Get Android version</string>
+    <string name="android_exclusive_text">This feature is only available in Android version of the app</string>
+    <string name="android_exclusive_title">Android exclusive</string>
     <string name="body_mass_height">Height</string>
     <string name="body_mass_imperial">Imperial</string>
     <string name="body_mass_metric">Metric</string>
