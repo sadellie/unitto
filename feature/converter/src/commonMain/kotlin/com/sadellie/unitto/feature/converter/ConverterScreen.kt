@@ -20,7 +20,10 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -28,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
+import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -103,12 +107,17 @@ private fun UnitConverterTopBar(
   openDrawer: () -> Unit,
   content: @Composable (PaddingValues) -> Unit,
 ) {
-  ScaffoldWithTopBar(
-    title = {},
-    navigationIcon = { DrawerButton(openDrawer) },
-    colors = topAppBarColors(containerColor = Color.Transparent),
-    content = { content(it) },
-  )
+  if (LocalWindowSize.current.widthSizeClass < WindowWidthSizeClass.Expanded) {
+    ScaffoldWithTopBar(
+      title = {},
+      navigationIcon = { DrawerButton(openDrawer) },
+      colors = topAppBarColors(containerColor = Color.Transparent),
+      content = { content(it) },
+    )
+  } else {
+    // expanded width does not need drawer button
+    Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer, content = { content(it) })
+  }
 }
 
 @Preview(widthDp = 432, heightDp = 1008, device = "spec:parent=pixel_5,orientation=portrait")
