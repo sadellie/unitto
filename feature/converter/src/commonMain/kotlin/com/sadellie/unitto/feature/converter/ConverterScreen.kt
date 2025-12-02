@@ -36,11 +36,10 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ConverterRoute(
-  viewModel: ConverterViewModel = koinViewModel(),
+  viewModel: ConverterViewModel,
   navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
   navigateToRightScreen:
     (

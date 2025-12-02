@@ -76,10 +76,8 @@ import unitto.core.common.generated.resources.settings_saved_expressions
 import unitto.core.common.generated.resources.settings_used_units
 
 @Composable
-internal fun BackupRoute(
-  viewModel: BackupViewModel = koinViewModel(),
-  navigateUpAction: () -> Unit,
-) {
+internal fun BackupRoute(navigateUpAction: () -> Unit) {
+  val viewModel: BackupViewModel = koinViewModel()
   when (val uiState: BackupUIState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     BackupUIState.Loading -> EmptyScreen()
     BackupUIState.InProgress -> BackupScreenInProgress()

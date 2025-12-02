@@ -68,9 +68,9 @@ internal fun ConverterWidgetConfigureNavigation(
 
 @OptIn(KoinExperimentalAPI::class)
 internal fun Module.converterWidgetNavigation() {
-  navigation<ConverterWidgetConfigureStartRoute> {
+  navigation<ConverterWidgetConfigureStartRoute> { route ->
     val viewModel =
-      koinViewModel<ConverterWidgetConfigureViewModel> { parametersOf(it.appWidgetId) }
+      koinViewModel<ConverterWidgetConfigureViewModel> { parametersOf(route.appWidgetId) }
 
     val resultEventBus = LocalEventBus.current
     val navigator = LocalNavigator.current

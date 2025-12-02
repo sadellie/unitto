@@ -95,11 +95,8 @@ import unitto.core.common.generated.resources.time_zone_title
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-internal fun TimeZoneRoute(
-  viewModel: TimeZoneViewModel = koinViewModel(),
-  openDrawer: () -> Unit,
-  navigateToAddTimeZone: (ZonedDateTime) -> Unit,
-) {
+internal fun TimeZoneRoute(openDrawer: () -> Unit, navigateToAddTimeZone: (ZonedDateTime) -> Unit) {
+  val viewModel: TimeZoneViewModel = koinViewModel()
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     TimeZoneUIState.Loading -> EmptyScreen()
     is TimeZoneUIState.Ready -> {
@@ -198,7 +195,7 @@ private fun TimeZoneScreen(
 
       itemsIndexed(
         items = mutableFavorites,
-        key = { index, item -> item.timeZone.id },
+        key = { _, item -> item.timeZone.id },
         contentType = { _, _ -> ContentType.ITEM },
       ) { index, item ->
         ReorderableItem(reorderableLazyListState, item.timeZone.id) { isDragging ->

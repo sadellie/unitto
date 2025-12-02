@@ -64,10 +64,8 @@ import unitto.core.common.generated.resources.settings_stepped_drag_gesture
 import unitto.core.common.generated.resources.settings_stepped_drag_gesture_support
 
 @Composable
-internal fun CalculatorSettingsRoute(
-  viewModel: CalculatorSettingsViewModel = koinViewModel(),
-  navigateUpAction: () -> Unit,
-) {
+internal fun CalculatorSettingsRoute(navigateUpAction: () -> Unit) {
+  val viewModel: CalculatorSettingsViewModel = koinViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {

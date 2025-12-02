@@ -77,7 +77,8 @@ import unitto.core.common.generated.resources.unit_kilogram_short
 import unitto.core.common.generated.resources.unit_pound_short
 
 @Composable
-internal fun BodyMassRoute(openDrawer: () -> Unit, viewModel: BodyMassViewModel = koinViewModel()) {
+internal fun BodyMassRoute(openDrawer: () -> Unit) {
+  val viewModel: BodyMassViewModel = koinViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {

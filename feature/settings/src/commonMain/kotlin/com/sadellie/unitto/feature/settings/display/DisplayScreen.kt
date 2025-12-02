@@ -63,7 +63,6 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.feature.settings.components.MonetModeSelector
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
@@ -94,11 +93,11 @@ import unitto.core.common.generated.resources.settings_selected_style
 
 @Composable
 internal fun DisplayRoute(
-  viewModel: DisplayViewModel = koinViewModel(),
   navigateUp: () -> Unit = {},
   themmoController: ThemmoController,
   navigateToLanguages: () -> Unit,
 ) {
+  val viewModel: DisplayViewModel = koinViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else ->

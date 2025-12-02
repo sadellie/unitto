@@ -29,7 +29,7 @@ interface CurrencyApiService {
   suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse
 }
 
-internal class CurrencyApiServiceImpl() : CurrencyApiService {
+internal class CurrencyApiServiceImpl : CurrencyApiService {
   private val client by lazy { HttpClient { install(ContentNegotiation) { json() } } }
 
   override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse {

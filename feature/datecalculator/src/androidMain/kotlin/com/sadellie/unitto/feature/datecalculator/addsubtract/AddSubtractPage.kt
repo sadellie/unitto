@@ -90,7 +90,8 @@ import unitto.core.common.generated.resources.date_calculator_subtract
 import unitto.core.common.generated.resources.date_calculator_years
 
 @Composable
-internal fun AddSubtractPage(viewModel: AddSubtractViewModel = koinViewModel()) {
+internal fun AddSubtractPage() {
+  val viewModel: AddSubtractViewModel = koinViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {

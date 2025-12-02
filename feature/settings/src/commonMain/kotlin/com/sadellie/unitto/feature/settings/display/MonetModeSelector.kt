@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.components
+package com.sadellie.unitto.feature.settings.display
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme

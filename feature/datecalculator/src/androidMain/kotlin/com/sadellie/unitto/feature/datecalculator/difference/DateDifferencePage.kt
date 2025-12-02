@@ -58,7 +58,8 @@ import unitto.core.common.generated.resources.date_calculator_end
 import unitto.core.common.generated.resources.date_calculator_start
 
 @Composable
-internal fun DateDifferencePage(viewModel: DateDifferenceViewModel = koinViewModel()) {
+internal fun DateDifferencePage() {
+  val viewModel: DateDifferenceViewModel = koinViewModel()
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     DifferenceUIState.Loading -> Unit
     is DifferenceUIState.Ready ->

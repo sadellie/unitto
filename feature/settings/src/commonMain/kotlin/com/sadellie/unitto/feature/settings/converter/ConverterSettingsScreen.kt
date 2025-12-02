@@ -68,10 +68,10 @@ import unitto.core.common.generated.resources.settings_units_sorting_support
 
 @Composable
 internal fun ConverterSettingsRoute(
-  viewModel: ConverterSettingsViewModel = koinViewModel(),
   navigateUpAction: () -> Unit,
   navigateToUnitsGroup: () -> Unit,
 ) {
+  val viewModel: ConverterSettingsViewModel = koinViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {

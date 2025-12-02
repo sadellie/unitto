@@ -43,17 +43,7 @@ tasks.register("detektProjectReport", Detekt::class) {
   parallel = false
   config = rootProject.files("/detekt/config.yml")
   baseline = rootProject.file("/detekt/baseline.xml")
-
-  setSource(files(rootDir))
-  include("**/*.kt")
-  exclude(
-    "**/*.kts",
-    "**/resources/**",
-    "**/build/**",
-    "**/icons/symbols/**",
-    "**/evaluatto/**",
-    "**/graphing/**",
-  )
+  setupDetektSources()
 
   reports {
     xml.required = false
@@ -73,17 +63,7 @@ tasks.register("detektProjectBaseline", DetektCreateBaselineTask::class) {
   parallel = false
   config = rootProject.files("/detekt/config.yml")
   baseline = rootProject.file("/detekt/baseline.xml")
-
-  setSource(files(rootDir))
-  include("**/*.kt")
-  exclude(
-    "**/*.kts",
-    "**/resources/**",
-    "**/build/**",
-    "**/icons/symbols/**",
-    "**/evaluatto/**",
-    "**/graphing/**",
-  )
+  setupDetektSources()
 }
 
 // Use createModuleGraph
@@ -104,4 +84,20 @@ moduleGraphConfig {
       theme = Theme.DARK
     }
   }
+}
+
+fun SourceTask.setupDetektSources() {
+  setSource(files(rootDir))
+  include("**/*.kt")
+  exclude(
+    "**/*.kts",
+    "**/resources/**",
+    "**/build/**",
+    "**/build-logic/**",
+    "**/icons/symbols/**",
+    "**/evaluatto/**",
+    "**/graphing/**",
+    "**/kt-math/**",
+    "**/ch/obermuhlner/math/big/**",
+  )
 }

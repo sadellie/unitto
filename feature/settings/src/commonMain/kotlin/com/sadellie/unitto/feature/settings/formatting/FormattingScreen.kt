@@ -92,10 +92,8 @@ import unitto.core.common.generated.resources.settings_space
 import unitto.core.common.generated.resources.settings_thousands_separator
 
 @Composable
-fun FormattingRoute(
-  viewModel: FormattingViewModel = koinViewModel(),
-  navigateUpAction: () -> Unit,
-) {
+fun FormattingRoute(navigateUpAction: () -> Unit) {
+  val viewModel: FormattingViewModel = koinViewModel()
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {

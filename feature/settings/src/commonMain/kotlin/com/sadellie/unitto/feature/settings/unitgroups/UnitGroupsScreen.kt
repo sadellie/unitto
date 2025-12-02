@@ -89,10 +89,8 @@ import unitto.core.common.generated.resources.settings_unit_groups_title
 import unitto.core.common.generated.resources.settings_unit_groups_undo
 
 @Composable
-internal fun UnitGroupsRoute(
-  viewModel: UnitGroupsViewModel = koinViewModel(),
-  navigateUpAction: () -> Unit,
-) {
+internal fun UnitGroupsRoute(navigateUpAction: () -> Unit) {
+  val viewModel: UnitGroupsViewModel = koinViewModel()
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     UnitGroupsUIState.Loading -> EmptyScreen()
     is UnitGroupsUIState.Ready ->
@@ -191,7 +189,7 @@ private fun UnitGroupsScreen(
       itemsIndexed(
         items = copiedShownList.value,
         key = { _, item -> item },
-        contentType = { index, item -> ContentType.ENABLED_ITEM },
+        contentType = { _, _ -> ContentType.ENABLED_ITEM },
       ) { index, unitGroup ->
         EnabledUnitGroupItem(
           reorderableLazyListState = reorderableLazyListState,
@@ -211,8 +209,8 @@ private fun UnitGroupsScreen(
 
       itemsIndexed(
         items = uiState.hiddenUnitGroups,
-        key = { index, item -> item },
-        contentType = { index, item -> ContentType.DISABLED_ITEM },
+        key = { _, item -> item },
+        contentType = { _, _ -> ContentType.DISABLED_ITEM },
       ) { index, unitGroup ->
         DisabledUnitGroupItem(
           onClick = { addShownUnitGroup(unitGroup) },

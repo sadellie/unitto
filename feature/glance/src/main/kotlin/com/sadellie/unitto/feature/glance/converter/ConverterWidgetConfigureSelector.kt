@@ -76,8 +76,9 @@ internal fun ConverterWidgetConfigureSelectorRoute(
   unitFromId: String,
   onClick: (unitId: String) -> Unit,
 ) {
-  val viewModel =
-    koinViewModel<ConverterWidgetConfigureSelectorViewModel> { parametersOf(unitFromId) }
+  val viewModel: ConverterWidgetConfigureSelectorViewModel = koinViewModel {
+    parametersOf(unitFromId)
+  }
   LaunchedEffect(Unit) { viewModel.observeFilter() }
 
   val uiState = viewModel.uiState.collectAsStateWithLifecycle().value

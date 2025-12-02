@@ -42,10 +42,8 @@ import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.settings_starting_screen
 
 @Composable
-internal fun StartingScreenRoute(
-  viewModel: StartingScreenViewModel = koinViewModel(),
-  navigateUp: () -> Unit,
-) {
+internal fun StartingScreenRoute(navigateUp: () -> Unit) {
+  val viewModel: StartingScreenViewModel = koinViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
@@ -93,8 +91,7 @@ private fun StartingScreenScreen(
   }
 }
 
-@Composable
-internal expect fun AddShortcutButton(destination: DrawerItem)
+@Composable internal expect fun AddShortcutButton(destination: DrawerItem)
 
 @Preview
 @Composable

@@ -104,11 +104,8 @@ import unitto.core.common.generated.resources.settings_vibrations
 import unitto.core.common.generated.resources.settings_vibrations_support
 
 @Composable
-internal fun SettingsRoute(
-  viewModel: SettingsViewModel = koinViewModel(),
-  openDrawer: () -> Unit,
-  navControllerAction: (route: Route) -> Unit,
-) {
+internal fun SettingsRoute(openDrawer: () -> Unit, navControllerAction: (route: Route) -> Unit) {
+  val viewModel: SettingsViewModel = koinViewModel()
   var showAndroidExclusiveDialog by rememberSaveable { mutableStateOf(false) }
   val platform = LocalPlatform.current
 
