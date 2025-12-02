@@ -55,6 +55,7 @@ fun TextBox(
   formatterSymbols: FormatterSymbols,
   state: TextFieldState,
   output: CalculationResult,
+  showHandle: Boolean,
 ) {
   Column(
     modifier =
@@ -86,12 +87,14 @@ fun TextBox(
         formatterSymbols = formatterSymbols,
       )
     }
-    // Handle
-    Box(
-      Modifier.padding(8.dp)
-        .background(MaterialTheme.colorScheme.onSurfaceVariant, RoundedCornerShape(2.dp))
-        .size(24.dp, 4.dp)
-    )
+    if (showHandle) {
+      // Handle
+      Box(
+        Modifier.padding(8.dp)
+          .background(MaterialTheme.colorScheme.onSurfaceVariant, RoundedCornerShape(2.dp))
+          .size(24.dp, 4.dp)
+      )
+    }
   }
 }
 
@@ -143,5 +146,18 @@ private fun PreviewTextBox() {
     formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
+    showHandle = true,
+  )
+}
+
+@Composable
+@Preview
+private fun PreviewTextBoxNoHandle() {
+  TextBox(
+    modifier = Modifier.height(200.dp),
+    formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA),
+    state = TextFieldState("123456.789"),
+    output = CalculationResult.Success("789012.345"),
+    showHandle = false,
   )
 }

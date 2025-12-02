@@ -33,6 +33,11 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -44,11 +49,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -66,6 +75,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
@@ -77,6 +87,7 @@ import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
 import com.sadellie.unitto.core.ui.BackHandler
 import com.sadellie.unitto.core.ui.DrawerButton
@@ -98,10 +109,8 @@ import unitto.core.common.generated.resources.common_clear
 import unitto.core.common.generated.resources.settings_history_view_button
 
 @Composable
-internal fun CalculatorRoute(
-  openDrawer: () -> Unit,
-  viewModel: CalculatorViewModel = koinViewModel(),
-) {
+internal fun CalculatorRoute(openDrawer: () -> Unit) {
+  val viewModel: CalculatorViewModel = koinViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
@@ -127,6 +136,59 @@ internal fun CalculatorRoute(
 
 @Composable
 internal fun Ready(
+  uiState: CalculatorUIState.Ready,
+  openDrawer: () -> Unit,
+  onAddTokenClick: (String) -> Unit,
+  onBracketsClick: () -> Unit,
+  onDeleteClick: () -> Unit,
+  onClearClick: () -> Unit,
+  onEqualClick: () -> Unit,
+  onRadianModeClick: (Boolean) -> Unit,
+  onAdditionalButtonsClick: (Boolean) -> Unit,
+  onInverseModeClick: (Boolean) -> Unit,
+  onClearHistoryClick: () -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
+  updateInitialPartialHistoryView: (Boolean) -> Unit,
+) {
+  val windowSizeClass = LocalWindowSize.current
+  if (
+    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
+      windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
+  ) {
+    ReadyExpanded(
+      uiState = uiState,
+      onAddTokenClick = onAddTokenClick,
+      onBracketsClick = onBracketsClick,
+      onDeleteClick = onDeleteClick,
+      onClearClick = onClearClick,
+      onEqualClick = onEqualClick,
+      onRadianModeClick = onRadianModeClick,
+      onAdditionalButtonsClick = onAdditionalButtonsClick,
+      onInverseModeClick = onInverseModeClick,
+      onClearHistoryClick = onClearHistoryClick,
+      onDeleteHistoryItemClick = onDeleteHistoryItemClick,
+    )
+  } else {
+    ReadyCompact(
+      uiState = uiState,
+      openDrawer = openDrawer,
+      onAddTokenClick = onAddTokenClick,
+      onBracketsClick = onBracketsClick,
+      onDeleteClick = onDeleteClick,
+      onClearClick = onClearClick,
+      onEqualClick = onEqualClick,
+      onRadianModeClick = onRadianModeClick,
+      onAdditionalButtonsClick = onAdditionalButtonsClick,
+      onInverseModeClick = onInverseModeClick,
+      onClearHistoryClick = onClearHistoryClick,
+      onDeleteHistoryItemClick = onDeleteHistoryItemClick,
+      updateInitialPartialHistoryView = updateInitialPartialHistoryView,
+    )
+  }
+}
+
+@Composable
+private fun ReadyCompact(
   uiState: CalculatorUIState.Ready,
   openDrawer: () -> Unit,
   onAddTokenClick: (String) -> Unit,
@@ -223,6 +285,7 @@ internal fun Ready(
           formatterSymbols = uiState.formatterSymbols,
           state = uiState.input,
           output = uiState.output,
+          showHandle = true,
         )
       },
       keyboard = { offset, height ->
@@ -257,6 +320,88 @@ internal fun Ready(
       updateInitialPartialHistoryView = updateInitialPartialHistoryView,
       dragState = dragState,
     )
+  }
+
+  if (showClearHistoryDialog) {
+    ClearHistoryDialog(
+      onConfirm = {
+        onClearHistoryClick()
+        showClearHistoryDialog = false
+      },
+      onDismiss = { showClearHistoryDialog = false },
+    )
+  }
+}
+
+@Composable
+private fun ReadyExpanded(
+  uiState: CalculatorUIState.Ready,
+  onAddTokenClick: (String) -> Unit,
+  onBracketsClick: () -> Unit,
+  onDeleteClick: () -> Unit,
+  onClearClick: () -> Unit,
+  onEqualClick: () -> Unit,
+  onRadianModeClick: (Boolean) -> Unit,
+  onAdditionalButtonsClick: (Boolean) -> Unit,
+  onInverseModeClick: (Boolean) -> Unit,
+  onClearHistoryClick: () -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
+) {
+  var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
+  Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer) { paddingValues ->
+    Row(
+      modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues).fillMaxSize()
+    ) {
+      CalculatorHistoryList(
+        modifier = Modifier.weight(2f).fillMaxHeight(),
+        calculatorHistoryItems = uiState.history,
+        formatterSymbols = uiState.formatterSymbols,
+        addTokens = onAddTokenClick,
+        onDelete = onDeleteHistoryItemClick,
+        showDeleteButtons = true,
+      )
+      ScaffoldWithTopBar(
+        modifier = Modifier.weight(3f),
+        title = {},
+        navigationIcon = {},
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+          ),
+        actions = { ClearHistoryButton(onClick = { showClearHistoryDialog = true }, isOpen = true) },
+      ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues).fillMaxHeight()) {
+          TextBox(
+            modifier = Modifier.fillMaxHeight(TEXT_BOX_HEIGHT_FACTOR_COMPACT).fillMaxWidth(),
+            formatterSymbols = uiState.formatterSymbols,
+            state = uiState.input,
+            output = uiState.output,
+            showHandle = false,
+          )
+          val focusManager = LocalFocusManager.current
+          CalculatorKeyboard(
+            modifier = Modifier.padding(Sizes.large).weight(1f).fillMaxWidth(),
+            onAddTokenClick = onAddTokenClick,
+            onBracketsClick = onBracketsClick,
+            onDeleteClick = onDeleteClick,
+            onClearClick = onClearClick,
+            onEqualClick = {
+              focusManager.clearFocus()
+              onEqualClick()
+            },
+            radianMode = uiState.radianMode,
+            onRadianModeClick = onRadianModeClick,
+            additionalButtons = uiState.additionalButtons,
+            onAdditionalButtonsClick = onAdditionalButtonsClick,
+            inverseMode = uiState.inverseMode,
+            onInverseModeClick = onInverseModeClick,
+            showAcButton = uiState.acButton,
+            middleZero = uiState.middleZero,
+            fractional = uiState.formatterSymbols.fractional,
+          )
+        }
+      }
+    }
   }
 
   if (showClearHistoryDialog) {
@@ -478,6 +623,7 @@ private const val REMEMBER_PARTIAL_HISTORY_VIEW_STATE_DELAY_MS = 1_000L
 @Preview(heightDp = 432, widthDp = 1008, device = "spec:parent=pixel_5,orientation=landscape")
 @Preview(heightDp = 432, widthDp = 864, device = "spec:parent=pixel_5,orientation=landscape")
 @Preview(heightDp = 597, widthDp = 1393, device = "spec:parent=pixel_5,orientation=landscape")
+@Preview(heightDp = 800, widthDp = 1600, device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
 private fun PreviewCalculatorScreen() {
   val calculatorHistoryItems =
@@ -495,36 +641,42 @@ private fun PreviewCalculatorScreen() {
         CalculatorHistoryItem(id = it.hashCode(), expression = "12345".repeat(10), result = "1234")
       }
 
-  Ready(
-    uiState =
-      CalculatorUIState.Ready(
-        input = TextFieldState("1.2345"),
-        output = CalculationResult.Success("1234"),
-        radianMode = false,
-        precision = 3,
-        outputFormat = OutputFormat.PLAIN,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
-        history = calculatorHistoryItems,
-        middleZero = false,
-        acButton = true,
-        additionalButtons = false,
-        inverseMode = false,
-        partialHistoryView = true,
-        steppedPartialHistoryView = true,
-        initialPartialHistoryView = false,
-        openHistoryViewButton = true,
-      ),
-    openDrawer = {},
-    onAddTokenClick = {},
-    onBracketsClick = {},
-    onDeleteClick = {},
-    onClearClick = {},
-    onEqualClick = {},
-    onRadianModeClick = {},
-    onAdditionalButtonsClick = {},
-    onInverseModeClick = {},
-    onClearHistoryClick = {},
-    onDeleteHistoryItemClick = {},
-    updateInitialPartialHistoryView = {},
-  )
+  BoxWithConstraints(Modifier.fillMaxSize()) {
+    val dpSize = DpSize(this.minWidth, this.minHeight)
+    val windowSizeClass = WindowSizeClass.calculateFromSize(dpSize)
+    CompositionLocalProvider(LocalWindowSize provides windowSizeClass) {
+      Ready(
+        uiState =
+          CalculatorUIState.Ready(
+            input = TextFieldState("1.2345"),
+            output = CalculationResult.Success("1234"),
+            radianMode = false,
+            precision = 3,
+            outputFormat = OutputFormat.PLAIN,
+            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+            history = calculatorHistoryItems,
+            middleZero = false,
+            acButton = true,
+            additionalButtons = false,
+            inverseMode = false,
+            partialHistoryView = true,
+            steppedPartialHistoryView = true,
+            initialPartialHistoryView = false,
+            openHistoryViewButton = true,
+          ),
+        openDrawer = {},
+        onAddTokenClick = {},
+        onBracketsClick = {},
+        onDeleteClick = {},
+        onClearClick = {},
+        onEqualClick = {},
+        onRadianModeClick = {},
+        onAdditionalButtonsClick = {},
+        onInverseModeClick = {},
+        onClearHistoryClick = {},
+        onDeleteHistoryItemClick = {},
+        updateInitialPartialHistoryView = {},
+      )
+    }
+  }
 }

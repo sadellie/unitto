@@ -66,12 +66,16 @@ internal fun CalculatorHistoryList(
   onDelete: (CalculatorHistoryItem) -> Unit,
   showDeleteButtons: Boolean,
 ) {
-  Crossfade(targetState = calculatorHistoryItems.isEmpty(), label = "History list") { emptyList ->
+  Crossfade(
+    targetState = calculatorHistoryItems.isEmpty(),
+    label = "History list",
+    modifier = modifier,
+  ) { emptyList ->
     if (emptyList) {
-      HistoryListPlaceholder(modifier = modifier)
+      HistoryListPlaceholder(modifier = Modifier.fillMaxSize())
     } else {
       HistoryListContent(
-        modifier = modifier,
+        modifier = Modifier.fillMaxSize(),
         calculatorHistoryItems = calculatorHistoryItems,
         formatterSymbols = formatterSymbols,
         addTokens = addTokens,
@@ -210,11 +214,7 @@ private fun PreviewCalculatorHistoryList() {
         "14.07.2005 23:59:19",
       )
       .map {
-        CalculatorHistoryItem(
-          id = it.hashCode(),
-          expression = "12345".repeat(10),
-          result = "67890",
-        )
+        CalculatorHistoryItem(id = it.hashCode(), expression = "12345".repeat(10), result = "67890")
       }
 
   CalculatorHistoryList(
