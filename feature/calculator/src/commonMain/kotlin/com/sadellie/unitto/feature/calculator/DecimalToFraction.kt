@@ -114,7 +114,10 @@ fun KBigDecimal.repeatingDecimals(): String? {
       if (pattern.all { it == '0' }) continue
       // how many characters to take to avoid incomplete chunks
       val maxCheckRangeBound = stringInFront.length - stringInFront.length % pattern.length
-      val stringToCheck = stringInFront.substring(0, maxCheckRangeBound)
+      val stringToCheck = stringInFront.substring(patternLength, maxCheckRangeBound)
+      // TODO check below is temporary, this algorithm is too expensive
+      // do not check against trailing zeroes. no pattern here at all
+      if (stringToCheck.all { it == '0' }) return null
       // split the string to check
       val checkChunks = stringToCheck.chunked(patternLength)
       val isRepeating = checkChunks.all { it == pattern }
