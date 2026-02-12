@@ -21,7 +21,7 @@ package com.sadellie.unitto.core.ui.textfield
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -30,7 +30,7 @@ class TextFieldTransformationTest {
   @Test
   fun expressionInputTransformation_test() {
     // 123.456,789
-    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
+    val fs = FormatterSymbols(Token2.Period, Token2.Comma, false)
     val inputTransformation = ExpressionInputTransformation(fs)
 
     fun transformAndCompare(expected: String, input: String) =
@@ -61,7 +61,7 @@ class TextFieldTransformationTest {
 
   @Test
   fun expressionOutputTransformation_test() {
-    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
+    val fs = FormatterSymbols(Token2.Period, Token2.Comma, false)
     val outputTransformation = ExpressionOutputTransformation(fs)
     fun transformAndCompare(expected: String, input: String) =
       assertOutputTransformation(outputTransformation, expected, input)

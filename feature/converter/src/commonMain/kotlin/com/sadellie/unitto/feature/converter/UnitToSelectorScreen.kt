@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.data.converter.ConverterResult
@@ -234,7 +234,7 @@ private fun UnitToSelectorPreview() {
         sorting = UnitsListSorting.USAGE,
         scale = 3,
         outputFormat = OutputFormat.PLAIN,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
       ),
     toggleFavoritesOnly = {},
     updateUnitTo = {},

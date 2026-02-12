@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
 
 package com.sadellie.unitto.feature.settings
 
-internal sealed class SettingsUIState {
-  data object Loading : SettingsUIState()
+internal sealed interface SettingsUIState {
+  data object Loading : SettingsUIState
 
   data class Ready(
     val enableVibrations: Boolean,
     val enableKeepScreenOn: Boolean,
     val cacheSize: Int,
     val showUpdateChangelog: Boolean,
-  ) : SettingsUIState()
+  ) : SettingsUIState
 }

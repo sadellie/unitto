@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -187,8 +187,8 @@ private fun TimeZoneScreen(
       item(key = "user time", contentType = ContentType.USER_TIME) {
         UserTimeZone(
           modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-          userTime = currentUserTime,
-          onClick = { setDialogState(TimeZoneDialogState.UserTimePicker(currentUserTime)) },
+          time = currentUserTime,
+          onUpdateTime = setSelectedTime,
           onResetClick = setCurrentTime,
           showReset = uiState.customUserTime != null,
         )
@@ -238,7 +238,6 @@ private fun TimeZoneScreen(
 
   TimeZoneDialog(
     dialogState = uiState.dialogState,
-    currentUserTime = currentUserTime,
     setSelectedTime = setSelectedTime,
     setDialogState = setDialogState,
     userTimeZone = uiState.userTimeZone,
@@ -250,25 +249,12 @@ private fun TimeZoneScreen(
 @Composable
 private fun TimeZoneDialog(
   dialogState: TimeZoneDialogState,
-  currentUserTime: ZonedDateTime,
   setSelectedTime: (ZonedDateTime) -> Unit,
   setDialogState: (TimeZoneDialogState) -> Unit,
   userTimeZone: TimeZone,
   updateLabel: (FavoriteZone, String) -> Unit,
 ) {
   when (dialogState) {
-    is TimeZoneDialogState.UserTimePicker -> {
-      TimePickerDialog(
-        hour = currentUserTime.hour,
-        minute = currentUserTime.minute,
-        onConfirm = { hour, minute ->
-          setSelectedTime(currentUserTime.withHour(hour).withMinute(minute))
-          setDialogState(TimeZoneDialogState.Nothing)
-        },
-        onCancel = { setDialogState(TimeZoneDialogState.Nothing) },
-      )
-    }
-
     is TimeZoneDialogState.FavoriteTimePicker -> {
       TimePickerDialog(
         hour = dialogState.time.hour,

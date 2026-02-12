@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepos
         isMetric,
         result,
         normalWeightRange ->
-        UIState.Ready(
+        BodyMassUIState.Ready(
           isMetric = isMetric,
           height1 = _height1,
           height2 = _height2,
@@ -59,7 +59,7 @@ internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepos
           formatterSymbols = userPrefs.formatterSymbols,
         )
       }
-      .stateIn(viewModelScope, UIState.Loading)
+      .stateIn(viewModelScope, BodyMassUIState.Loading)
 
   suspend fun observeInput() {
     val height1Flow = _height1.observe()

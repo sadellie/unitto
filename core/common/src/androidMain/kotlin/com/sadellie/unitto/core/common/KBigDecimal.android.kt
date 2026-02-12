@@ -116,6 +116,8 @@ actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDeci
   actual fun pow(n: Int): KBigDecimal = KBigDecimal(this.wrapped.pow(n))
 
   actual fun scaleByPowerOfTen(n: Int): KBigDecimal = KBigDecimal(this.wrapped.scaleByPowerOfTen(n))
+
+  actual fun negate(): KBigDecimal = KBigDecimal(this.wrapped.negate())
 }
 
 actual class KRoundingMode internal constructor(val wrapped: RoundingMode) {

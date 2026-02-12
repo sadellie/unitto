@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,33 +24,33 @@ import androidx.compose.foundation.text.input.placeCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.TextRange
 import androidx.lifecycle.SavedStateHandle
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 
 fun TextFieldState.addTokens(tokens: String) {
   when (tokens) {
-    Token.Operator.PLUS,
-    Token.Operator.MULTIPLY,
-    Token.Operator.DIVIDE,
-    Token.Operator.POWER -> {
+    Token2.Plus.symbol,
+    Token2.Multiply.symbol,
+    Token2.Divide.symbol,
+    Token2.Power.symbol -> {
       val tokenAhead = text.toString().tokenAhead(selection.min)
-      if (tokenAhead == Token.Operator.PLUS) return deleteAheadAndAdd(tokens)
-      if (tokenAhead == Token.Operator.MINUS) return deleteAheadAndAdd(tokens)
-      if (tokenAhead == Token.Operator.MULTIPLY) return deleteAheadAndAdd(tokens)
-      if (tokenAhead == Token.Operator.DIVIDE) return deleteAheadAndAdd(tokens)
-      if (tokenAhead == Token.Operator.SQRT) return deleteAheadAndAdd(tokens)
-      if (tokenAhead == Token.Operator.POWER) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Plus.symbol) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Minus.symbol) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Multiply.symbol) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Divide.symbol) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Sqrt.symbol) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Power.symbol) return deleteAheadAndAdd(tokens)
       if (tokenAhead == "") return deleteTokens()
     }
-    Token.Operator.MINUS -> {
+    Token2.Minus.symbol -> {
       val tokenAhead = text.toString().tokenAhead(selection.min)
-      if (tokenAhead == Token.Operator.PLUS) return deleteAheadAndAdd(tokens)
-      if (tokenAhead == Token.Operator.MINUS) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Plus.symbol) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Minus.symbol) return deleteAheadAndAdd(tokens)
     }
-    Token.Digit.DOT -> {
+    Token2.Dot.symbol -> {
       val tokenAhead = text.toString().tokenAhead(selection.min)
-      if (tokenAhead == Token.Digit.DOT) return deleteAheadAndAdd(tokens)
+      if (tokenAhead == Token2.Dot.symbol) return deleteAheadAndAdd(tokens)
     }
   }
 
@@ -65,53 +65,53 @@ fun TextFieldState.addBracket() {
 
   // Always open when empty in front
   if (subStringBeforeCursor.isEmpty()) {
-    addTokens(Token.Operator.LEFT_BRACKET)
+    addTokens(Token2.LeftBracket.symbol)
     return
   }
 
   // Always close before operator
   val openBeforeOperators =
     listOf(
-      Token.Operator.MULTIPLY,
-      Token.Operator.DIVIDE,
-      Token.Operator.PLUS,
-      Token.Operator.MINUS,
-      Token.Operator.POWER,
+      Token2.Multiply.symbol,
+      Token2.Divide.symbol,
+      Token2.Plus.symbol,
+      Token2.Minus.symbol,
+      Token2.Power.symbol,
     )
   if (text.toString().tokenAfter(selection.min) in openBeforeOperators) {
-    addTokens(Token.Operator.RIGHT_BRACKET)
+    addTokens(Token2.RightBracket.symbol)
     return
   }
 
   // Always open when balanced in front
-  val leftBracketChar: Char = Token.Operator.LEFT_BRACKET.first()
-  val rightBracketChar: Char = Token.Operator.RIGHT_BRACKET.first()
+  val leftBracketChar: Char = Token2.LeftBracket.symbol.first()
+  val rightBracketChar: Char = Token2.RightBracket.symbol.first()
   var balance = 0
   subStringBeforeCursor.forEach {
     if (it == leftBracketChar) balance += 1
     if (it == rightBracketChar) balance -= 1
   }
   if (balance == 0) {
-    addTokens(Token.Operator.LEFT_BRACKET)
+    addTokens(Token2.LeftBracket.symbol)
     return
   }
 
   // Always open after operator
   val openAfterOperators =
     listOf(
-      Token.Operator.MULTIPLY,
-      Token.Operator.DIVIDE,
-      Token.Operator.PLUS,
-      Token.Operator.MINUS,
-      Token.Operator.POWER,
-      Token.Operator.LEFT_BRACKET,
+      Token2.Multiply.symbol,
+      Token2.Divide.symbol,
+      Token2.Plus.symbol,
+      Token2.Minus.symbol,
+      Token2.Power.symbol,
+      Token2.LeftBracket.symbol,
     )
   if (text.toString().tokenAhead(selection.min) in openAfterOperators) {
-    addTokens(Token.Operator.LEFT_BRACKET)
+    addTokens(Token2.LeftBracket.symbol)
     return
   }
 
-  addTokens(Token.Operator.RIGHT_BRACKET)
+  addTokens(Token2.RightBracket.symbol)
 }
 
 fun TextFieldState.deleteTokens() {

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@ import androidx.compose.runtime.State
 
 @Composable internal expect fun connectivityState(): State<ConnectionState>
 
-internal sealed class ConnectionState {
-  data object Available : ConnectionState()
+internal sealed interface ConnectionState {
+  data object Available : ConnectionState
 
-  data object Unavailable : ConnectionState()
+  data object Unavailable : ConnectionState
 }

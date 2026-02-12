@@ -1,0 +1,75 @@
+/*
+ * Unitto is a calculator for Android
+ * Copyright (c) 2026 Elshan Agaev
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package io.github.sadellie.evaluatto.ast
+
+import com.sadellie.unitto.core.common.Token2
+import io.github.sadellie.evaluatto.tokenize
+import kotlin.test.Test
+import kotlin.test.assertEquals
+
+class ExtractRepeatableOperationTest {
+  private val cx = ScriptContext(2)
+
+  @Test
+  fun simpleValid() {
+    assertExtractedOperation("1+2", Operation.Plus(Token2.Number("2")))
+    assertExtractedOperation("1−2", Operation.Minus(Token2.Number("2")))
+    assertExtractedOperation("1×2", Operation.Multiply(Token2.Number("2")))
+    assertExtractedOperation("1÷2", Operation.Divide(Token2.Number("2")))
+  }
+
+  @Test
+  fun plus_bracketsValid1() {
+    assertExtractedOperation("(1)+2", Operation.Plus(Token2.Number("2")))
+    assertExtractedOperation("(1)−2", Operation.Minus(Token2.Number("2")))
+    assertExtractedOperation("(1)×2", Operation.Multiply(Token2.Number("2")))
+    assertExtractedOperation("(1)÷2", Operation.Divide(Token2.Number("2")))
+  }
+
+  @Test
+  fun plus_bracketsValid2() {
+    assertExtractedOperation("1+(2)", Operation.Plus(Token2.Number("2")))
+    assertExtractedOperation("1−(2)", Operation.Minus(Token2.Number("2")))
+    assertExtractedOperation("1×(2)", Operation.Multiply(Token2.Number("2")))
+    assertExtractedOperation("1÷(2)", Operation.Divide(Token2.Number("2")))
+  }
+
+  @Test
+  fun plus_bracketsValid3() {
+    assertExtractedOperation("(1)+(2)", Operation.Plus(Token2.Number("2")))
+    assertExtractedOperation("(1)−(2)", Operation.Minus(Token2.Number("2")))
+    assertExtractedOperation("(1)×(2)", Operation.Multiply(Token2.Number("2")))
+    assertExtractedOperation("(1)÷(2)", Operation.Divide(Token2.Number("2")))
+  }
+
+  @Test
+  fun invalid() {
+    assertExtractedOperation("1+2+3", null)
+    assertExtractedOperation("1−2−3", null)
+    assertExtractedOperation("1×2×3", null)
+    assertExtractedOperation("1÷2÷3", null)
+  }
+
+  private fun assertExtractedOperation(input: String, expected: Operation?) {
+    val tokens = input.tokenize()
+    val tree = ASTBuilder(tokens).buildTreeAndCollapse(cx) ?: error("No trees")
+    val actualOperation = extractRepeatableOperation(tree)
+    assertEquals(expected, actualOperation)
+  }
+}

@@ -91,6 +91,8 @@ expect class KBigDecimal : Comparable<KBigDecimal> {
   override fun hashCode(): Int
 
   fun scaleByPowerOfTen(n: Int): KBigDecimal
+
+  fun negate(): KBigDecimal
 }
 
 expect class KBigInteger : Comparable<KBigInteger> {

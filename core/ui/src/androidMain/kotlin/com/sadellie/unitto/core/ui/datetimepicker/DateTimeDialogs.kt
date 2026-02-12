@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,54 +16,55 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.datecalculator.components
+package com.sadellie.unitto.core.ui.datetimepicker
 
 import androidx.compose.runtime.Composable
-import com.sadellie.unitto.core.ui.datetimepicker.DatePickerDialog
-import com.sadellie.unitto.core.ui.datetimepicker.TimePickerDialog
 import java.time.ZonedDateTime
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_next
+import unitto.core.common.generated.resources.common_ok
 
 @Composable
-internal fun DateTimeDialogs(
-  dialogState: DialogState,
-  updateDialogState: (DialogState) -> Unit,
+fun DateTimeDialogs(
+  dialogState: DateTimeDialogState,
+  updateDialogState: (DateTimeDialogState) -> Unit,
   date: ZonedDateTime,
   updateDate: (ZonedDateTime) -> Unit,
-  timeState: DialogState,
-  dateState: DialogState,
+  timeState: DateTimeDialogState = DateTimeDialogState.FROM_TIME_AND_DATE,
+  dateState: DateTimeDialogState = DateTimeDialogState.FROM_DATE,
 ) {
   when (dialogState) {
     timeState ->
       TimePickerDialog(
         hour = date.hour,
         minute = date.minute,
-        onCancel = { updateDialogState(DialogState.NONE) },
+        onCancel = { updateDialogState(DateTimeDialogState.NONE) },
         onConfirm = { hour, minute ->
           updateDate(date.withHour(hour).withMinute(minute))
-          updateDialogState(dateState)
+          updateDialogState(if (dateState.nextButton) dateState else DateTimeDialogState.NONE)
         },
-        confirmLabel = stringResource(Res.string.common_next),
+        confirmLabel =
+          stringResource(if (dateState.nextButton) Res.string.common_next else Res.string.common_ok),
       )
     dateState ->
       DatePickerDialog(
         zonedDateTime = date,
-        onDismiss = { updateDialogState(DialogState.NONE) },
+        onDismiss = { updateDialogState(DateTimeDialogState.NONE) },
         onConfirm = {
           updateDate(it)
-          updateDialogState(DialogState.NONE)
+          updateDialogState(DateTimeDialogState.NONE)
         },
       )
     else -> Unit
   }
 }
 
-internal enum class DialogState {
+enum class DateTimeDialogState(internal val nextButton: Boolean = false) {
   NONE,
   FROM_TIME,
+  FROM_TIME_AND_DATE(true),
   FROM_DATE,
-  TO_TIME,
+  TO_TIME_AND_DATE(true),
   TO_DATE,
 }

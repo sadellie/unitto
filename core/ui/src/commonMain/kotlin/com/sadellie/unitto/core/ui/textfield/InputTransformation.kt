@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import androidx.compose.foundation.text.input.delete
 import androidx.compose.runtime.Stable
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.trimZeros
 
 /**
@@ -41,60 +41,60 @@ data class ExpressionInputTransformation(private val formatterSymbols: Formatter
 
   override val legalTokens =
     listOf(
-      Token.Func.ARCOS_BRACKET,
-      Token.Func.ARSIN_BRACKET,
-      Token.Func.ACTAN_BRACKET,
-      Token.Func.SIN_BRACKET,
-      Token.Func.COS_BRACKET,
-      Token.Func.TAN_BRACKET,
-      Token.Func.LOG_BRACKET,
-      Token.Func.EXP_BRACKET,
-      Token.Func.LN_BRACKET,
-      Token.Digit.DOT,
-      Token.Digit.DIGIT_0,
-      Token.Digit.DIGIT_1,
-      Token.Digit.DIGIT_2,
-      Token.Digit.DIGIT_3,
-      Token.Digit.DIGIT_4,
-      Token.Digit.DIGIT_5,
-      Token.Digit.DIGIT_6,
-      Token.Digit.DIGIT_7,
-      Token.Digit.DIGIT_8,
-      Token.Digit.DIGIT_9,
-      Token.Operator.MINUS,
-      Token.Operator.DIVIDE,
-      Token.Operator.MULTIPLY,
-      Token.Operator.PLUS,
-      Token.Operator.LEFT_BRACKET,
-      Token.Operator.RIGHT_BRACKET,
-      Token.Operator.POWER,
-      Token.Operator.FACTORIAL,
-      Token.Operator.MODULO,
-      Token.Operator.PERCENT,
-      Token.Operator.SQRT,
-      Token.Const.PI,
-      Token.Const.E,
+      Token2.ArCos.WithBracket.symbol,
+      Token2.ArSin.WithBracket.symbol,
+      Token2.ArTan.WithBracket.symbol,
+      Token2.Sin.WithBracket.symbol,
+      Token2.Cos.WithBracket.symbol,
+      Token2.Tan.WithBracket.symbol,
+      Token2.Log.WithBracket.symbol,
+      Token2.Exp.WithBracket.symbol,
+      Token2.Ln.WithBracket.symbol,
+      Token2.Dot.symbol,
+      Token2.Digit0.symbol,
+      Token2.Digit1.symbol,
+      Token2.Digit2.symbol,
+      Token2.Digit3.symbol,
+      Token2.Digit4.symbol,
+      Token2.Digit5.symbol,
+      Token2.Digit6.symbol,
+      Token2.Digit7.symbol,
+      Token2.Digit8.symbol,
+      Token2.Digit9.symbol,
+      Token2.Minus.symbol,
+      Token2.Divide.symbol,
+      Token2.Multiply.symbol,
+      Token2.Plus.symbol,
+      Token2.LeftBracket.symbol,
+      Token2.RightBracket.symbol,
+      Token2.Power.symbol,
+      Token2.Factorial.symbol,
+      Token2.Modulo.symbol,
+      Token2.Percent.symbol,
+      Token2.Sqrt.symbol,
+      Token2.Pi.symbol,
+      Token2.E.symbol,
     )
 
   override val replacementMap =
     mapOf(
       // formatterSymbols.grouping doesn't break replacement for other ugly symbols
-      formatterSymbols.grouping to "",
-      "arcos(" to Token.Func.ARCOS_BRACKET,
-      "arsin(" to Token.Func.ARSIN_BRACKET,
-      "actan(" to Token.Func.ACTAN_BRACKET,
-      formatterSymbols.fractional to Token.Digit.DOT,
-      "-" to Token.Operator.MINUS,
-      "–" to Token.Operator.MINUS,
-      "—" to Token.Operator.MINUS,
-      "/" to Token.Operator.DIVIDE,
-      "*" to Token.Operator.MULTIPLY,
-      "•" to Token.Operator.MULTIPLY,
+      formatterSymbols.grouping.symbol to "",
+      "arcos(" to Token2.ArCos.WithBracket.symbol,
+      "arsin(" to Token2.ArSin.WithBracket.symbol,
+      "actan(" to Token2.ArTan.WithBracket.symbol,
+      formatterSymbols.fractional.symbol to Token2.Dot.symbol,
+      "-" to Token2.Minus.symbol,
+      "–" to Token2.Minus.symbol,
+      "—" to Token2.Minus.symbol,
+      "/" to Token2.Divide.symbol,
+      "*" to Token2.Multiply.symbol,
+      "•" to Token2.Multiply.symbol,
     )
 }
 
 /**
- * - Allow only [Token.Digit.all] and [Token.Letter.all]. No fractional symbols
+ * - Allow only [Token2.Digit.all] and [Token2.Letter.all]. No fractional symbols
  * - Replaces lowercase letters with uppercase
  *
  * @see TextFieldBuffer.transformInputWithReplacements
@@ -106,39 +106,39 @@ data object NumberBaseInputTransformation : InputTransformationWithReplacement {
 
   override val legalTokens =
     listOf(
-      Token.Digit.DIGIT_0,
-      Token.Digit.DIGIT_1,
-      Token.Digit.DIGIT_2,
-      Token.Digit.DIGIT_3,
-      Token.Digit.DIGIT_4,
-      Token.Digit.DIGIT_5,
-      Token.Digit.DIGIT_6,
-      Token.Digit.DIGIT_7,
-      Token.Digit.DIGIT_8,
-      Token.Digit.DIGIT_9,
-      Token.Letter.LETTER_A,
-      Token.Letter.LETTER_B,
-      Token.Letter.LETTER_C,
-      Token.Letter.LETTER_D,
-      Token.Letter.LETTER_E,
-      Token.Letter.LETTER_F,
+      Token2.Digit0.symbol,
+      Token2.Digit1.symbol,
+      Token2.Digit2.symbol,
+      Token2.Digit3.symbol,
+      Token2.Digit4.symbol,
+      Token2.Digit5.symbol,
+      Token2.Digit6.symbol,
+      Token2.Digit7.symbol,
+      Token2.Digit8.symbol,
+      Token2.Digit9.symbol,
+      Token2.LetterA.symbol,
+      Token2.LetterB.symbol,
+      Token2.LetterC.symbol,
+      Token2.LetterD.symbol,
+      Token2.LetterE.symbol,
+      Token2.LetterF.symbol,
     )
 
   override val replacementMap =
     mapOf(
-      "a" to Token.Letter.LETTER_A,
-      "b" to Token.Letter.LETTER_B,
-      "c" to Token.Letter.LETTER_C,
-      "d" to Token.Letter.LETTER_D,
-      "e" to Token.Letter.LETTER_E,
-      "f" to Token.Letter.LETTER_F,
+      "a" to Token2.LetterA.symbol,
+      "b" to Token2.LetterB.symbol,
+      "c" to Token2.LetterC.symbol,
+      "d" to Token2.LetterD.symbol,
+      "e" to Token2.LetterE.symbol,
+      "f" to Token2.LetterF.symbol,
     )
 }
 
 /**
  * - Allow any digit
- * - Allow using any fractional symbol as input ([Token.COMMA] and [Token.PERIOD]), but only if
- *   [allowFraction] is True
+ * - Allow using any fractional symbol as input ([Token2.Comma.symbol] and [Token2.Period.symbol]),
+ *   but only if [allowFraction] is True
  * - Limit using [maxValue]
  */
 @Stable
@@ -154,11 +154,11 @@ data class UnexpectedDigitsInputTransformation(
 
       val legalToken =
         when (char) {
-          in Token.Digit.all -> true
-          Token.PERIOD -> allowFraction
-          Token.COMMA -> {
+          in Token2.Digit.allSymbols -> true
+          Token2.Period.symbol -> allowFraction
+          Token2.Comma.symbol -> {
             if (allowFraction) {
-              replace(cursor, cursor + Token.PERIOD.length, Token.PERIOD)
+              replace(cursor, cursor + Token2.Period.symbol.length, Token2.Period.symbol)
             }
             allowFraction
           }

@@ -19,7 +19,7 @@
 package com.sadellie.unitto.core.ui.textfield
 
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -52,12 +52,12 @@ class FormatterExtensionFormatNumberTest {
   ) {
     assertEquals(
       expectedInternational,
-      input.formatNumber(FormatterSymbols(Token.COMMA, Token.PERIOD, false)),
+      input.formatNumber(FormatterSymbols(Token2.Comma, Token2.Period, false)),
       "Unexpected International",
     )
     assertEquals(
       expectedIndian,
-      input.formatNumber(FormatterSymbols(Token.COMMA, Token.PERIOD, true)),
+      input.formatNumber(FormatterSymbols(Token2.Comma, Token2.Period, true)),
       "Unexpected Indian",
     )
   }

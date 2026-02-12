@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.settings.formatting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.MAX_SCALE
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import kotlinx.coroutines.flow.map
@@ -50,7 +51,11 @@ class FormattingViewModel(private val userPreferencesRepository: UserPreferences
     }
 
   /** @see UserPreferencesRepository.updateFormatterSymbols */
-  fun updateFormatterSymbols(grouping: String, fractional: String, indian: Boolean) =
+  fun updateFormatterSymbols(
+    grouping: Token2.Formatter,
+    fractional: Token2.Formatter,
+    indian: Boolean,
+  ) =
     viewModelScope.launch {
       userPreferencesRepository.updateFormatterSymbols(grouping, fractional, indian)
     }

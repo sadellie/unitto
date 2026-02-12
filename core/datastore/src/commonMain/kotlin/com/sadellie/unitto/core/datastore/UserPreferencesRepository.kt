@@ -20,7 +20,7 @@ package com.sadellie.unitto.core.datastore
 
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
@@ -44,101 +44,13 @@ interface UserPreferencesRepository {
   val aboutPrefs: Flow<AboutPreferences>
   val startingScreenPrefs: Flow<StartingScreenPreferences>
 
-  companion object Defaults {
-    val enableDynamicTheme: Boolean
-      get() = true
-
-    val themingMode: ThemingMode
-      get() = ThemingMode.AUTO
-
-    val enableAmoledTheme: Boolean
-      get() = false
-
-    val customColor: Long
-      get() = 16L
-
-    val monetMode: MonetMode
-      get() = MonetMode.TonalSpot
-
-    val startingScreen: TopLevelRoute
-      get() = CalculatorStartRoute
-
-    val enableToolsExperiment: Boolean
-      get() = false
-
-    val lastReadChangelog: String
-      get() = ""
-
-    val enableVibrations: Boolean
-      get() = true
-
-    val enableKeepScreenOn: Boolean
-      get() = false
-
-    val radianMode: Boolean
-      get() = true
-
-    val formatterSymbols: FormatterSymbols
-      get() = FormatterSymbols(Token.SPACE, Token.PERIOD, false)
-
-    val middleZero: Boolean
-      get() = true
-
-    val partialHistoryView: Boolean
-      get() = true
-
-    val steppedPartialHistoryView: Boolean
-      get() = true
-
-    val initialPartialHistoryView: Boolean
-      get() = false
-
-    val openHistoryViewButton: Boolean
-      get() = false
-
-    val digitsPrecision: Int
-      get() = 3
-
-    val outputFormat: Int
-      get() = OutputFormat.PLAIN
-
-    val unitConverterFormatTime: Boolean
-      get() = false
-
-    val unitConverterSorting: UnitsListSorting
-      get() = UnitsListSorting.USAGE
-
-    val shownUnitGroups: List<UnitGroup>
-      get() = UnitGroup.entries
-
-    val unitConverterFavoritesOnly: Boolean
-      get() = false
-
-    val latestLeftSide: String
-      get() = UnitID.kilometer
-
-    val latestRightSide: String
-      get() = UnitID.mile
-
-    val acButton: Boolean
-      get() = true
-
-    val additionButtons: Boolean
-      get() = false
-
-    val fractionalOutput: Boolean
-      get() = true
-
-    val inverseMode: Boolean
-      get() = false
-
-    val customApiUrl: String
-      get() = ""
-  }
-
   suspend fun updateDigitsPrecision(precision: Int)
 
-  suspend fun updateFormatterSymbols(grouping: String, fractional: String, indian: Boolean)
+  suspend fun updateFormatterSymbols(
+    grouping: Token2.Formatter,
+    fractional: Token2.Formatter,
+    indian: Boolean,
+  )
 
   suspend fun updateOutputFormat(outputFormat: Int)
 
@@ -197,6 +109,109 @@ interface UserPreferencesRepository {
   suspend fun updateInverseMode(enabled: Boolean)
 
   suspend fun updateCustomApiUrl(apiUrl: String)
+
+  suspend fun updateConstantCalculation(enabled: Boolean)
+}
+
+internal object Defaults {
+  val enableDynamicTheme: Boolean
+    get() = true
+
+  val themingMode: ThemingMode
+    get() = ThemingMode.AUTO
+
+  val enableAmoledTheme: Boolean
+    get() = false
+
+  val customColor: Long
+    get() = 16L
+
+  val monetMode: MonetMode
+    get() = MonetMode.TonalSpot
+
+  val startingScreen: TopLevelRoute
+    get() = CalculatorStartRoute
+
+  val enableToolsExperiment: Boolean
+    get() = false
+
+  val lastReadChangelog: String
+    get() = ""
+
+  val enableVibrations: Boolean
+    get() = true
+
+  val enableKeepScreenOn: Boolean
+    get() = false
+
+  val radianMode: Boolean
+    get() = true
+
+  val formatterSymbolGrouping: Token2.Formatter
+    get() = Token2.Space
+
+  val formatterSymbolFractional: Token2.Formatter
+    get() = Token2.Period
+
+  val formatterSymbolIndian: Boolean
+    get() = false
+
+  val middleZero: Boolean
+    get() = true
+
+  val partialHistoryView: Boolean
+    get() = true
+
+  val steppedPartialHistoryView: Boolean
+    get() = true
+
+  val initialPartialHistoryView: Boolean
+    get() = false
+
+  val openHistoryViewButton: Boolean
+    get() = false
+
+  val digitsPrecision: Int
+    get() = 3
+
+  val outputFormat: Int
+    get() = OutputFormat.PLAIN
+
+  val unitConverterFormatTime: Boolean
+    get() = false
+
+  val unitConverterSorting: UnitsListSorting
+    get() = UnitsListSorting.USAGE
+
+  val shownUnitGroups: List<UnitGroup>
+    get() = UnitGroup.entries
+
+  val unitConverterFavoritesOnly: Boolean
+    get() = false
+
+  val latestLeftSide: String
+    get() = UnitID.kilometer
+
+  val latestRightSide: String
+    get() = UnitID.mile
+
+  val acButton: Boolean
+    get() = true
+
+  val additionButtons: Boolean
+    get() = false
+
+  val fractionalOutput: Boolean
+    get() = true
+
+  val inverseMode: Boolean
+    get() = false
+
+  val customApiUrl: String
+    get() = ""
+
+  val constantCalculation: Boolean
+    get() = false
 }
 
 internal inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? =
@@ -207,3 +222,18 @@ internal inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? =
   }
 
 internal fun List<UnitGroup>.packToString(): String = this.joinToString(",")
+
+internal fun produceFormatterSymbols(grouping: String?, fractional: String?, indian: Boolean?) =
+  if (grouping == null || fractional == null) {
+    FormatterSymbols(
+      Defaults.formatterSymbolGrouping,
+      Defaults.formatterSymbolFractional,
+      indian ?: Defaults.formatterSymbolIndian,
+    )
+  } else {
+    FormatterSymbols(
+      Token2.Formatter.from(grouping),
+      Token2.Formatter.from(fractional),
+      indian ?: Defaults.formatterSymbolIndian,
+    )
+  }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,10 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KRoundingMode
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.isGreaterThan
 import com.sadellie.unitto.core.common.stateIn
@@ -39,8 +40,9 @@ import com.sadellie.unitto.core.ui.textfield.deleteTokens
 import com.sadellie.unitto.core.ui.textfield.getTextFieldState
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.core.ui.textfield.placeCursorAtTheEnd
-import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException
+import io.github.sadellie.evaluatto.ast.Operation
+import io.github.sadellie.evaluatto.ast.calculateExpressionAndExtractRepeatableOperation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
@@ -61,8 +63,11 @@ internal class CalculatorViewModel(
   private val _inputKey = "CALCULATOR_INPUT"
   private val _input = savedStateHandle.getTextFieldState(_inputKey)
   private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
-  private val _equalClicked = MutableStateFlow(false)
   private val _prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
+
+  /** Last result that was set after calling [onEqualClick]. Equal was clicked when not empty */
+  private val _lastResult = MutableStateFlow("")
+  private val _lastRepeatableOperation = MutableStateFlow<Operation?>(null)
 
   val uiState: StateFlow<CalculatorUIState> =
     combine(_result, _prefs, calculatorHistoryRepository.historyFlow) { result, prefs, history ->
@@ -90,9 +95,9 @@ internal class CalculatorViewModel(
 
   suspend fun observeInput() {
     _input.observe().collectLatest {
-      // Do not process input if equal was clicked to keep fractional output
-      if (_equalClicked.value) {
-        _equalClicked.update { false }
+      val lastResult = _lastResult.value
+      if (lastResult == it && lastResult.isNotEmpty()) {
+        // do not process last result (do not clear fractional in result field)
         return@collectLatest
       }
       savedStateHandle[_inputKey] = it.toString()
@@ -100,44 +105,53 @@ internal class CalculatorViewModel(
     }
   }
 
+  /** Method called before [_input] changes without buttons - hardware keyboard or clipboard */
+  fun onHardwareInput() {
+    // TODO replace input when on equals was clicked prior
+    _lastResult.update { "" }
+  }
+
   fun addTokens(tokens: String) {
-    when {
-      // Equal was clicked and user tries to type a digit or dot
-      _equalClicked.value && tokens in Token.Digit.allWithDot -> _input.clearText()
-      // Equal was clicked and user tries to add operator or something
-      _equalClicked.value -> _input.placeCursorAtTheEnd()
+    val isEqualClicked = isEqualClicked()
+    if (isEqualClicked) {
+      when {
+        // Equal was clicked and user tries to type a digit or dot
+        tokens in Token2.digitsWithDotSymbols -> _input.clearText()
+        // Equal was clicked and user tries to add operator or something
+        else -> _input.placeCursorAtTheEnd()
+      }
+      _lastResult.update { "" }
     }
     _input.addTokens(tokens)
-    _equalClicked.update { false }
   }
 
   fun addBracket() {
-    if (_equalClicked.value) {
+    if (isEqualClicked()) {
       // Cursor is set to 0 when equal is clicked
       _input.placeCursorAtTheEnd()
+      _lastResult.update { "" }
     }
     _input.addBracket()
-    _equalClicked.update { false }
   }
 
   fun deleteTokens() {
-    if (_equalClicked.value) {
+    if (isEqualClicked()) {
       _input.clearText()
+      _lastResult.update { "" }
     } else {
       _input.deleteTokens()
     }
-    _equalClicked.update { false }
   }
 
   fun clearInput() {
     _input.clearText()
-    _equalClicked.update { false }
+    _lastResult.update { "" }
   }
 
   fun updateRadianMode(newValue: Boolean) =
     viewModelScope.launch {
       userPrefsRepository.updateRadianMode(newValue)
-      _equalClicked.update { false }
+      _lastResult.update { "" }
       calculateInput()
     }
 
@@ -158,42 +172,55 @@ internal class CalculatorViewModel(
   fun onEqualClick() =
     viewModelScope.launch {
       val prefs = _prefs.value ?: return@launch
-      if (_equalClicked.value) return@launch
-      val inputValue = _input.text.toString()
+      var inputValue = _input.text.toString()
+      val lastResult = _lastResult.value
+      val lastRepeatableOperation = _lastRepeatableOperation.value
+      if (prefs.constantCalculation && lastResult.isNotEmpty() && lastRepeatableOperation != null) {
+        // equal was already clicked, get last operation and apply it
+        inputValue = lastRepeatableOperation.generateExpression(inputValue)
+      }
       if (!inputValue.isExpression()) return@launch
 
-      val calculated =
+      val (result, operation) =
         try {
-            calculate(inputValue, prefs.radianMode, KRoundingMode.HALF_EVEN)
-              .toFormattedString(prefs.precision, prefs.outputFormat)
-          } catch (e: ExpressionException.DivideByZero) {
-            _result.update { CalculationResult.DivideByZeroError }
-            return@launch
-          } catch (e: Exception) {
-            _result.update { CalculationResult.Error }
-            return@launch
-          }
-          // replace minus symbols since it is not recognized by evaluatto
-          .replace("-", Token.Operator.MINUS)
+          calculate(
+            inputValue,
+            prefs.radianMode,
+            KRoundingMode.HALF_EVEN,
+            prefs.constantCalculation,
+          )
+        } catch (_: ExpressionException.DivideByZero) {
+          _result.update { CalculationResult.DivideByZeroError }
+          return@launch
+        } catch (_: Exception) {
+          _result.update { CalculationResult.Error }
+          return@launch
+        }
+      _lastRepeatableOperation.update { operation }
 
+      val formattedResult =
+        result
+          .toFormattedString(prefs.precision, prefs.outputFormat)
+          .replace("-", Token2.Minus.symbol) // minus is not recognized by evaluatto
+      calculatorHistoryRepository.add(expression = inputValue, result = formattedResult)
+
+      // _input processing will not recalculate and invalidate _result for this value
+      _lastResult.update { formattedResult }
+      _input.setTextAndPlaceCursorAtEnd(formattedResult)
       val fractional =
         if (prefs.fractionalOutput) {
           try {
             // Different rounding mode to properly calculate fractional
-            calculate(inputValue, prefs.radianMode, KRoundingMode.DOWN).toFractionalString()
+            calculate(inputValue, prefs.radianMode, KRoundingMode.DOWN).first.toFractionalString()
           } catch (e: Exception) {
             _result.update { CalculationResult.Error }
-            return@launch
+            Logger.e(TAG, e) { "Failed to find fractional for: $inputValue" }
+            ""
           }
         } else {
           // User doesn't want fractional output, clear result field
           ""
         }
-
-      calculatorHistoryRepository.add(expression = inputValue, result = calculated)
-
-      _equalClicked.update { true }
-      _input.setTextAndPlaceCursorAtEnd(calculated)
       _result.update { CalculationResult.Success(fractional) }
     }
 
@@ -209,16 +236,12 @@ internal class CalculatorViewModel(
         val prefs = _prefs.value ?: return@launch
         val newResult =
           try {
-            val calculated =
-              calculate(
-                input = _input.text.toString(),
-                radianMode = prefs.radianMode,
-                roundingMode = KRoundingMode.HALF_EVEN,
-              )
+            val (calculated, _) =
+              calculate(_input.text.toString(), prefs.radianMode, KRoundingMode.HALF_EVEN)
             CalculationResult.Success(
               calculated.toFormattedString(prefs.precision, prefs.outputFormat)
             )
-          } catch (e: Exception) {
+          } catch (_: Exception) {
             CalculationResult.Empty
           }
         _result.update { newResult }
@@ -229,12 +252,21 @@ internal class CalculatorViewModel(
     input: String,
     radianMode: Boolean,
     roundingMode: KRoundingMode = KRoundingMode.HALF_EVEN,
-  ): KBigDecimal =
+    extractRepeating: Boolean = false,
+  ): Pair<KBigDecimal, Operation?> =
     withContext(Dispatchers.Default) {
-      Expression(input, radianMode, roundingMode).calculate().also {
-        if (it.isGreaterThan(maxCalculationResult)) throw ExpressionException.TooBig()
-      }
+      val result =
+        calculateExpressionAndExtractRepeatableOperation(
+          input = input,
+          radianMode = radianMode,
+          roundingMode = roundingMode,
+          extractRepeatable = extractRepeating,
+        )
+      if (result.first.isGreaterThan(maxCalculationResult)) throw ExpressionException.TooBig()
+      result
     }
+
+  private fun isEqualClicked() = _lastResult.value.isNotEmpty()
 
   private val maxCalculationResult = KBigDecimal.valueOf(Double.MAX_VALUE)
 
@@ -243,3 +275,5 @@ internal class CalculatorViewModel(
     super.onCleared()
   }
 }
+
+private const val TAG = "CalculatorViewModel"

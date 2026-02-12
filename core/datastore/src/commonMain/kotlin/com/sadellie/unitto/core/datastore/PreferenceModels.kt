@@ -58,6 +58,7 @@ data class CalculatorPreferences(
   val fractionalOutput: Boolean,
   val precision: Int,
   val outputFormat: Int,
+  val constantCalculation: Boolean,
 )
 
 data class ConverterPreferences(

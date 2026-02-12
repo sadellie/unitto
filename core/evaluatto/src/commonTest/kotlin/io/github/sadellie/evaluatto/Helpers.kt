@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package io.github.sadellie.evaluatto
 
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.toFormattedString
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -36,7 +37,7 @@ fun <T : Throwable> assertExprFail(expectedThrowable: T, expr: String, radianMod
   }
 }
 
-fun assertLex(expected: List<String>, actual: String) = assertEquals(expected, actual.tokenize())
+fun assertLex(expected: List<Token2>, actual: String) = assertEquals(expected, actual.tokenize())
 
 fun assertLex(expected: String, actual: String) =
-  assertEquals(expected, actual.tokenize().joinToString(""))
+  assertEquals(expected, actual.tokenize().joinToString("") { it.symbol })

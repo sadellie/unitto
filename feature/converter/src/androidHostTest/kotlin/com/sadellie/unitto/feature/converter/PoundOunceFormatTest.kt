@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.converter
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.data.converter.ConverterResult
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -29,7 +29,7 @@ import org.junit.Test
 class PoundOunceFormatTest {
   private val scale = 3
   private val outputFormat = OutputFormat.PLAIN
-  private val formatterSymbols = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
+  private val formatterSymbols = FormatterSymbols(Token2.Period.symbol, Token2.Comma.symbol, false)
 
   @Test
   fun testNegative() {

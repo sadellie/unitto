@@ -18,8 +18,7 @@
 
 package com.sadellie.unitto.core.datastore
 
-import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository.Defaults
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.navigation.graphRoutes
@@ -72,6 +71,7 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
         additionalButtons = preferences.getAdditionalButtons(),
         inverseMode = preferences.getInverseMode(),
         fractionalOutput = preferences.getFractionalOutput(),
+        constantCalculation = preferences.getConstantCalculation(),
       )
     }
 
@@ -139,13 +139,13 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
     updateData(PrefKeys.DIGITS_PRECISION_PREF_KEY, precision)
 
   override suspend fun updateFormatterSymbols(
-    grouping: String,
-    fractional: String,
+    grouping: Token2.Formatter,
+    fractional: Token2.Formatter,
     indian: Boolean,
   ) {
     if (grouping == fractional) return
-    updateData(PrefKeys.FORMATTER_GROUPING_PREF_KEY, grouping)
-    updateData(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY, fractional)
+    updateData(PrefKeys.FORMATTER_GROUPING_PREF_KEY, grouping.symbol)
+    updateData(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY, fractional.symbol)
     updateData(PrefKeys.FORMATTER_INDIAN_PREF_KEY, indian)
   }
 
@@ -249,6 +249,10 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
     updateData(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY, apiUrl)
   }
 
+  override suspend fun updateConstantCalculation(enabled: Boolean) {
+    updateData(PrefKeys.CONSTANT_CALCULATION_PREF_KEY, enabled)
+  }
+
   private fun Preferences.getEnableDynamicTheme() =
     this.getTyped<Boolean>(PrefKeys.ENABLE_DYNAMIC_THEME_PREF_KEY) ?: Defaults.enableDynamicTheme
 
@@ -283,19 +287,12 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
   private fun Preferences.getRadianMode() =
     this.getTyped<Boolean>(PrefKeys.RADIAN_MODE_PREF_KEY) ?: Defaults.radianMode
 
-  private fun Preferences.getFormatterSymbols(): FormatterSymbols {
-    var grouping = this.getTyped<String>(PrefKeys.FORMATTER_GROUPING_PREF_KEY)
-    var fractional = this.getTyped<String>(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY)
-    if (grouping == null || fractional == null) {
-      // formatter symbols must fallback together
-      val defaultFormatterSymbols = Defaults.formatterSymbols
-      grouping = defaultFormatterSymbols.grouping
-      fractional = defaultFormatterSymbols.fractional
-    }
-    val indian =
-      this.getTyped<Boolean>(PrefKeys.FORMATTER_INDIAN_PREF_KEY) ?: Defaults.formatterSymbols.indian
-    return FormatterSymbols(grouping, fractional, indian)
-  }
+  private fun Preferences.getFormatterSymbols() =
+    produceFormatterSymbols(
+      grouping = this.getTyped<String>(PrefKeys.FORMATTER_GROUPING_PREF_KEY),
+      fractional = this.getTyped<String>(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY),
+      indian = this.getTyped<Boolean>(PrefKeys.FORMATTER_INDIAN_PREF_KEY),
+    )
 
   private fun Preferences.getMiddleZero() =
     this.getTyped<Boolean>(PrefKeys.MIDDLE_ZERO_PREF_KEY) ?: Defaults.middleZero
@@ -365,6 +362,9 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
 
   private fun Preferences.getCustomApiUrl() =
     this.getTyped<String>(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY) ?: Defaults.customApiUrl
+
+  private fun Preferences.getConstantCalculation() =
+    this.getTyped<Boolean>(PrefKeys.CONSTANT_CALCULATION_PREF_KEY) ?: Defaults.constantCalculation
 
   private inline fun <reified T> Preferences.getTyped(key: String) = this[key] as? T
 

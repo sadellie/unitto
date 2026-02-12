@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ package com.sadellie.unitto.core.common
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 /**
  * This tests for accidental changes. Tokens uses special characters and sometimes it's difficult
@@ -31,71 +30,73 @@ class TokenTest {
 
   @Test
   fun formatterSymbols_test() {
-    assertEquals(" ", Token.SPACE)
-    assertEquals(".", Token.PERIOD)
-    assertEquals(",", Token.COMMA)
+    assertEquals(" ", Token2.Space.symbol)
+    assertEquals(".", Token2.Period.symbol)
+    assertEquals(",", Token2.Comma.symbol)
   }
 
   @Test
   fun digit_test() {
-    assertEquals("1234567890", Token.Digit.all.joinToString(""))
-    assertEquals("1234567890.", Token.Digit.allWithDot.joinToString(""))
+    assertEquals("1234567890", Token2.Digit.allSymbols.joinToString(""))
+    assertEquals("1234567890.", Token2.digitsWithDotSymbols.joinToString(""))
   }
 
   @Test
   fun letter_test() {
-    assertEquals("ABCDEF", Token.Letter.all.joinToString(""))
+    assertEquals("ABCDEF", Token2.Letter.allSymbols.joinToString(""))
   }
 
   @Test
   fun operator_test() {
-    listOf("+", "−", "×", "÷", "(", ")", "^", "!", "#", "%", "√").forEach {
-      assertContains(Token.Operator.all, it)
+    listOf("+", "−", "×", "÷", "^", "!", "#", "%", "√").forEach {
+      assertContains(Token2.Operator.allSymbols, it)
     }
   }
 
   @Test
   fun func_test() {
     listOf("sin", "cos", "tan", "sin⁻¹", "cos⁻¹", "tan⁻¹", "ln", "log", "exp").forEach {
-      assertContains(Token.Func.all, it)
+      assertContains(Token2.Func.allSymbols, it)
     }
 
     listOf("sin(", "cos(", "tan(", "sin⁻¹(", "cos⁻¹(", "tan⁻¹(", "ln(", "log(", "exp(").forEach {
-      assertContains(Token.Func.allWithOpeningBracket, it)
+      assertContains(Token2.Func.allSymbolsWithBracket, it)
     }
   }
 
   @Test
   fun const_test() {
-    listOf("π", "e").forEach { assertContains(Token.Const.all, it) }
+    listOf("π", "e").forEach { assertContains(Token2.Const.allSymbols, it) }
   }
 
   @Test
   fun expressionTokens_test() {
-    val operator = listOf("+", "−", "×", "÷", "(", ")", "^", "!", "#", "%", "√").joinToString("")
-
+    val operator = listOf("+", "−", "×", "÷", "^", "!", "#", "%", "√").joinToString("")
     val func =
       listOf("sin⁻¹", "cos⁻¹", "tan⁻¹", "sin", "cos", "tan", "log", "exp", "ln").joinToString("")
-
     val consts = listOf("π", "e").joinToString("")
 
-    assertEquals("1234567890.$operator$func${consts}E", Token.expressionTokens.joinToString(""))
+    assertEquals(
+      "1234567890.$operator()$func${consts}E",
+      Token2.expressionTokens.joinToString("") { it.symbol },
+    )
   }
 
   @Test
   fun numberBaseTokens_test() {
-    assertEquals("1234567890ABCDEF", Token.numberBaseTokens.joinToString(""))
+    assertEquals("1234567890ABCDEF", Token2.numberBaseTokens.joinToString(""))
   }
 
   @Test
-  fun displayOnlyObject_test() {
-    assertNotNull(Token.DisplayOnly)
+  fun displayOnly_test() {
+    assertEquals("E", Token2.EngineeringE.symbol)
+    assertEquals("⁄", Token2.Fraction.symbol)
   }
 
   @Test
   fun sexyToUgly_test() {
     listOf("−", "÷", "×", "sin⁻¹", "cos⁻¹", "tan⁻¹").forEach {
-      assertContains(Token.sexyToUgly.keys, it)
+      assertContains(Token2.sexyToUgly.keys, it)
     }
   }
 }

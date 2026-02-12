@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,15 @@ package com.sadellie.unitto.feature.datecalculator.difference
 import com.sadellie.unitto.core.common.FormatterSymbols
 import java.time.ZonedDateTime
 
-internal sealed class DifferenceUIState {
-  data object Loading : DifferenceUIState()
+internal sealed interface DifferenceUIState {
+  data object Loading : DifferenceUIState
 
   data class Ready(
-      val start: ZonedDateTime,
-      val end: ZonedDateTime,
-      val result: ZonedDateTimeDifference,
-      val precision: Int,
-      val outputFormat: Int,
-      val formatterSymbols: FormatterSymbols,
-  ) : DifferenceUIState()
+    val start: ZonedDateTime,
+    val end: ZonedDateTime,
+    val result: ZonedDateTimeDifference,
+    val precision: Int,
+    val outputFormat: Int,
+    val formatterSymbols: FormatterSymbols,
+  ) : DifferenceUIState
 }

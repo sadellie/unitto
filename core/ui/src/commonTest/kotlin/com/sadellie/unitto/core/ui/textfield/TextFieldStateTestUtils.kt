@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ package com.sadellie.unitto.core.ui.textfield
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.text.TextRange
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import kotlin.test.assertEquals
 
 fun compareTextStates(expected: String, input: String, action: (TextFieldState) -> Unit = {}) {
@@ -43,9 +43,9 @@ internal fun textStateInitialText(text: String): String =
   text
     .replace("[", "")
     .replace("]", "")
-    .replace("-", Token.Operator.MINUS)
-    .replace("/", Token.Operator.DIVIDE)
-    .replace("*", Token.Operator.MULTIPLY)
+    .replace("-", Token2.Minus.symbol)
+    .replace("/", Token2.Divide.symbol)
+    .replace("*", Token2.Multiply.symbol)
 
 /** Use [] for selection */
 internal fun textStateInitialSelection(text: String): TextRange {

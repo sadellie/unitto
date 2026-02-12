@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,4 +51,6 @@ class ExpressionComplexTest {
   @Test fun expression14() = assertExpr("4160×3.1%", "128.96", scale = 3)
 
   @Test fun expression15() = assertExpr("4160×3.13%", "130.208", scale = 3)
+
+  @Test fun expression16() = assertExpr("10−2", "8")
 }

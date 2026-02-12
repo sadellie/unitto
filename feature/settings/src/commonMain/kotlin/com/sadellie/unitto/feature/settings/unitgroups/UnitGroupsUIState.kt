@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +20,15 @@ package com.sadellie.unitto.feature.settings.unitgroups
 
 import com.sadellie.unitto.core.model.converter.UnitGroup
 
-internal sealed class UnitGroupsUIState {
-  data object Loading : UnitGroupsUIState()
+internal sealed interface UnitGroupsUIState {
+  data object Loading : UnitGroupsUIState
 
   data class Ready(
     val shownUnitGroups: List<UnitGroup>,
     val hiddenUnitGroups: List<UnitGroup>,
     val isAutoSortEnabled: Boolean,
     val autoSortDialogState: AutoSortDialogState,
-  ) : UnitGroupsUIState()
+  ) : UnitGroupsUIState
 }
 
 internal enum class AutoSortDialogState {

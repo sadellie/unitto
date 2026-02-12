@@ -16,17 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.backup
+package com.sadellie.unitto.feature.bodymass
 
-internal sealed interface BackupUIState {
-  data object Loading : BackupUIState
+import androidx.compose.foundation.text.input.TextFieldState
+import com.sadellie.unitto.core.common.FormatterSymbols
+import com.sadellie.unitto.core.common.KBigDecimal
+
+internal sealed interface BodyMassUIState {
+  data object Loading : BodyMassUIState
 
   data class Ready(
-    val favoriteUnits: Int,
-    val usedUnits: Int,
-    val savedExpressions: Int,
-    val favoriteTimeZones: Int,
-  ) : BackupUIState
-
-  data object InProgress : BackupUIState
+    val isMetric: Boolean,
+    val height1: TextFieldState,
+    val height2: TextFieldState,
+    val weight: TextFieldState,
+    val normalWeightRange: Pair<KBigDecimal, KBigDecimal>,
+    val result: KBigDecimal,
+    val formatterSymbols: FormatterSymbols,
+  ) : BodyMassUIState
 }

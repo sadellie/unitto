@@ -37,7 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.designsystem.icons.symbols.Rule
@@ -182,7 +182,7 @@ private fun PreviewConverterSettingsScreen() =
     ConverterSettingsScreen(
       prefs =
         ConverterPreferences(
-          formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+          formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
           middleZero = false,
           acButton = true,
           precision = 3,

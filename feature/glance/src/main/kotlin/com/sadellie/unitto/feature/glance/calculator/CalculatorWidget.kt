@@ -61,7 +61,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.formatExpression
@@ -169,7 +169,7 @@ private fun ReadyUI(appPrefs: CalculatorPreferences, input: String, output: Stri
       addBracketAction = AddBracketAction.Companion::create,
       deleteTokenAction = DeleteTokenAction.Companion::create,
       equalAction = EqualAction.Companion::create,
-      useDot = formatterSymbols.fractional == Token.Digit.DOT,
+      useDot = formatterSymbols.fractional == Token2.Dot,
       middleZero = appPrefs.middleZero,
     )
   }
@@ -250,7 +250,7 @@ private fun PreviewWidget() {
     appPrefs =
       CalculatorPreferences(
         radianMode = false,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
         fractionalOutput = false,
         middleZero = true,
         inverseMode = false,
@@ -262,6 +262,7 @@ private fun PreviewWidget() {
         steppedPartialHistoryView = false,
         initialPartialHistoryView = false,
         openHistoryViewButton = false,
+        constantCalculation = false, // TODO constant calc in widget
       ),
     input = "123+456",
     output = "789.012",

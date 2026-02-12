@@ -59,6 +59,7 @@ object DatastorePrefKeys {
   val FRACTIONAL_OUTPUT = booleanPreferencesKey(PrefKeys.FRACTIONAL_OUTPUT_PREF_KEY)
   val ADDITIONAL_BUTTONS = booleanPreferencesKey(PrefKeys.ADDITIONAL_BUTTONS_PREF_KEY)
   val INVERSE_MODE = booleanPreferencesKey(PrefKeys.INVERSE_MODE_PREF_KEY)
+  val CONSTANT_CALCULATION = booleanPreferencesKey(PrefKeys.CONSTANT_CALCULATION_PREF_KEY)
 
   // UNIT CONVERTER
   val LATEST_LEFT_SIDE = stringPreferencesKey(PrefKeys.LATEST_LEFT_SIDE_PREF_KEY)

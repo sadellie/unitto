@@ -413,7 +413,7 @@ interface BigDecimal : Comparable<BigDecimal> {
    * @see .plus
    * @since 1.5
    */
-  @JsName("round") fun round(mc: MathContext): BigDecimal?
+  @JsName("round") fun round(mc: MathContext): BigDecimal
 
   /**
    * Returns a [BigDecimal] whose _scale is the specified value, and whose unscaled value is

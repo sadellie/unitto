@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2024 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,11 +62,11 @@ fun String.isExpression(): Boolean {
   if (isEmpty()) return false
 
   // Positive numbers and zero
-  if (all { it.toString() in Token.Digit.allWithDot }) return false
+  if (all { it.toString() in Token2.digitsWithDotSymbols }) return false
 
   // Negative numbers
-  // Needs to start with an negative
-  if (this.first().toString() != Token.Operator.MINUS) return true
+  // Needs to start with a negative
+  if (this.first().toString() != Token2.Minus.symbol) return true
 
   // Rest of the string must be just like positive
   return this.drop(1).isExpression()

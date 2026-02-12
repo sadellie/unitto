@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,12 +33,12 @@ import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.state.updateAppWidgetState
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.ui.textfield.addBracket
 import com.sadellie.unitto.core.ui.textfield.addTokens
-import io.github.sadellie.evaluatto.Expression
+import io.github.sadellie.evaluatto.ast.calculateExpression
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -59,7 +59,7 @@ internal class AddTokenAction : ActionCallback {
     updateAppWidgetState(context, glanceId) { state ->
       val isEqualClicked = state[CalculatorWidget.equalClickedStateKey] ?: false
       // Clear input if equal is clicked and new token is a Digit
-      if (isEqualClicked && tokenToAdd in Token.Digit.allWithDot) {
+      if (isEqualClicked && tokenToAdd in Token2.digitsWithDotSymbols) {
         state[CalculatorWidget.inputStateKey] = ""
         state[CalculatorWidget.outputStateKey] = ""
       }
@@ -175,9 +175,9 @@ internal class CopyResultAction : ActionCallback {
   companion object {
     internal val outputParamKey = ActionParameters.Key<String>("outputParam")
 
-    fun create(output: String, grouping: String): Action =
+    fun create(output: String, grouping: Token2.Formatter): Action =
       actionRunCallback<CopyResultAction>(
-        actionParametersOf(outputParamKey to output.replace(grouping, ""))
+        actionParametersOf(outputParamKey to output.replace(grouping.symbol, ""))
       )
   }
 
@@ -216,8 +216,8 @@ private suspend fun calculate(input: String, precision: Int, outputFormat: Int):
     if (!input.isExpression()) return@withContext ""
 
     return@withContext try {
-      Expression(input).calculate().toFormattedString(precision, outputFormat)
-    } catch (e: Exception) {
+      calculateExpression(input).toFormattedString(precision, outputFormat)
+    } catch (_: Exception) {
       ""
     }
   }

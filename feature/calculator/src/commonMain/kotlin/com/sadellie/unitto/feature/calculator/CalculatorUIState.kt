@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
 
-internal sealed class CalculatorUIState {
-  data object Loading : CalculatorUIState()
+internal sealed interface CalculatorUIState {
+  data object Loading : CalculatorUIState
 
   data class Ready(
     val input: TextFieldState,
@@ -41,15 +41,15 @@ internal sealed class CalculatorUIState {
     val steppedPartialHistoryView: Boolean,
     val initialPartialHistoryView: Boolean,
     val openHistoryViewButton: Boolean,
-  ) : CalculatorUIState()
+  ) : CalculatorUIState
 }
 
-sealed class CalculationResult {
-  data class Success(val text: String) : CalculationResult()
+sealed interface CalculationResult {
+  data class Success(val text: String) : CalculationResult
 
-  data object Empty : CalculationResult()
+  data object Empty : CalculationResult
 
-  data object DivideByZeroError : CalculationResult()
+  data object DivideByZeroError : CalculationResult
 
-  data object Error : CalculationResult()
+  data object Error : CalculationResult
 }

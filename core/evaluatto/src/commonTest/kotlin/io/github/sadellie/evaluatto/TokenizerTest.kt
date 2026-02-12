@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +18,76 @@
 
 package io.github.sadellie.evaluatto
 
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TokenizerTest {
 
-  @Test fun tokens1() = assertLex(listOf("789"), "789")
+  @Test fun tokens1() = assertLex(listOf(Token2.Number("789")), "789")
 
-  @Test fun tokens2() = assertLex(listOf("789", "+", "200"), "789+200")
+  @Test
+  fun tokens2() =
+    assertLex(listOf(Token2.Number("789"), Token2.Plus, Token2.Number("200")), "789+200")
 
-  @Test fun tokens3() = assertLex(listOf("0.1", "+", "0.2"), "0.1+0.2")
+  @Test
+  fun tokens3() =
+    assertLex(listOf(Token2.Number("0.1"), Token2.Plus, Token2.Number("0.2")), "0.1+0.2")
 
-  @Test fun tokens4() = assertLex(listOf(".1", "+", ".2"), ".1+.2")
+  @Test
+  fun tokens4() = assertLex(listOf(Token2.Number(".1"), Token2.Plus, Token2.Number(".2")), ".1+.2")
 
-  @Test fun tokens5() = assertLex(listOf(".1", "+", ".2"), ".1+.2")
+  @Test
+  fun tokens5() = assertLex(listOf(Token2.Number(".1"), Token2.Plus, Token2.Number(".2")), ".1+.2")
 
   @Test
   fun tokens6() =
-    assertLex(listOf("789", "+", "200", "+", "cos", "(", "456", ")"), "789+200+cos(456)")
+    assertLex(
+      listOf(
+        Token2.Number("789"),
+        Token2.Plus,
+        Token2.Number("200"),
+        Token2.Plus,
+        Token2.Cos,
+        Token2.LeftBracket,
+        Token2.Number("456"),
+        Token2.RightBracket,
+      ),
+      "789+200+cos(456)",
+    )
 
   @Test fun tokens8() = assertLex(emptyList(), "")
 
-  @Test fun tokens9() = assertLex(listOf("e"), "something") // Tokenizer knows "e"
+  @Test fun tokens9() = assertLex(listOf(Token2.E), "something") // Tokenizer knows "e"
 
   @Test fun tokens10() = assertLex(emptyList(), "funnyword")
 
   @Test
+  fun tokens11() =
+    assertLex(
+      listOf(
+        Token2.Number("7"),
+        Token2.Factorial,
+        Token2.Divide,
+        Token2.Number("3"),
+        Token2.Factorial,
+        Token2.Minus,
+        Token2.Number("5"),
+        Token2.Factorial,
+        Token2.Divide,
+        Token2.Number("2"),
+        Token2.Factorial,
+      ),
+      "7!÷3!−5!÷2!",
+    )
+
+  @Test
   fun getBaseBefore_number() {
     // 132.5+14%
-    val input = mutableListOf("132.5", Token.Operator.PLUS, "14", Token.Operator.PERCENT)
+    val input =
+      mutableListOf(Token2.Number("132.5"), Token2.Plus, Token2.Number("14"), Token2.Percent)
 
-    val expected = mutableListOf("132.5")
+    val expected = mutableListOf(Token2.Number("132.5"))
     val actual = input.getExpressionBefore(0)
 
     assertEquals(expected, actual)
@@ -60,15 +98,15 @@ class TokenizerTest {
     // (132.5+12%)+(15+4)%
     val input =
       mutableListOf(
-        Token.Operator.LEFT_BRACKET,
-        "132.5",
-        Token.Operator.PLUS,
-        "12",
-        Token.Operator.PERCENT,
-        Token.Operator.RIGHT_BRACKET,
+        Token2.LeftBracket,
+        Token2.Number("132.5"),
+        Token2.Plus,
+        Token2.Number("12"),
+        Token2.Percent,
+        Token2.RightBracket,
       )
 
-    val expected = mutableListOf("132.5")
+    val expected = mutableListOf(Token2.Number("132.5"))
     val actual = input.getExpressionBefore(1)
 
     assertEquals(expected, actual)
@@ -79,23 +117,23 @@ class TokenizerTest {
     // (132.5+5)+90%
     val input =
       mutableListOf(
-        Token.Operator.LEFT_BRACKET,
-        "132.5",
-        Token.Operator.PLUS,
-        "5",
-        Token.Operator.RIGHT_BRACKET,
-        Token.Operator.PLUS,
-        "90",
-        Token.Operator.PERCENT,
+        Token2.LeftBracket,
+        Token2.Number("132.5"),
+        Token2.Plus,
+        Token2.Number("5"),
+        Token2.RightBracket,
+        Token2.Plus,
+        Token2.Number("90"),
+        Token2.Percent,
       )
 
     val expected =
       mutableListOf(
-        Token.Operator.LEFT_BRACKET,
-        "132.5",
-        Token.Operator.PLUS,
-        "5",
-        Token.Operator.RIGHT_BRACKET,
+        Token2.LeftBracket,
+        Token2.Number("132.5"),
+        Token2.Plus,
+        Token2.Number("5"),
+        Token2.RightBracket,
       )
     val actual = input.getExpressionBefore(4)
 
@@ -106,9 +144,15 @@ class TokenizerTest {
   fun getBaseBefore_factorial() {
     // 2!+5%
     val input =
-      mutableListOf("2", Token.Operator.FACTORIAL, Token.Operator.PLUS, "5", Token.Operator.PERCENT)
+      mutableListOf(
+        Token2.Number("2"),
+        Token2.Factorial,
+        Token2.Plus,
+        Token2.Number("5"),
+        Token2.Percent,
+      )
 
-    val expected = mutableListOf("2", Token.Operator.FACTORIAL)
+    val expected = mutableListOf(Token2.Number("2"), Token2.Factorial)
     val actual = input.getExpressionBefore(1)
 
     assertEquals(expected, actual)

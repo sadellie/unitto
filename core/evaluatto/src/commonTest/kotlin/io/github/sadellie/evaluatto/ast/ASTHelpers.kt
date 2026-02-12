@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,22 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.bodymass
+package io.github.sadellie.evaluatto.ast
 
-import androidx.compose.foundation.text.input.TextFieldState
-import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
+import com.sadellie.unitto.core.common.KRoundingMode
+import kotlin.test.assertEquals
+import kotlinx.coroutines.test.runTest
 
-internal sealed class UIState {
-  data object Loading : UIState()
-
-  data class Ready(
-    val isMetric: Boolean,
-    val height1: TextFieldState,
-    val height2: TextFieldState,
-    val weight: TextFieldState,
-    val normalWeightRange: Pair<KBigDecimal, KBigDecimal>,
-    val result: KBigDecimal,
-    val formatterSymbols: FormatterSymbols,
-  ) : UIState()
+internal fun assertASTExpr(
+  input: String,
+  expected: String,
+  scale: Int = 10,
+  radianMode: Boolean = true,
+) = runTest {
+  val result = calculateExpression(input, radianMode = radianMode)
+  assertEquals(
+    KBigDecimal(expected).setScale(scale, KRoundingMode.HALF_EVEN),
+    result.setScale(scale, KRoundingMode.HALF_EVEN),
+  )
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.ui.text.TextRange
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import kotlin.math.abs
 
 fun CharSequence.fixCursor(pos: Int): Int {
@@ -47,7 +47,7 @@ fun TextFieldBuffer.fixTextRange(): TextRange {
  * replace!
  */
 fun String.tokenLengthAhead(pos: Int): Int {
-  Token.Func.allWithOpeningBracket.forEach { if (pos.isAfterToken(this, it)) return it.length }
+  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it.length }
 
   // We default to 1 here. It means that cursor is not placed after illegal token. Just a number
   // or a binary operator or something else, can delete by one symbol.
@@ -55,7 +55,7 @@ fun String.tokenLengthAhead(pos: Int): Int {
 }
 
 fun String.tokenAhead(pos: Int): String {
-  Token.Func.allWithOpeningBracket.forEach { if (pos.isAfterToken(this, it)) return it }
+  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it }
 
   return substring((pos - 1).coerceAtLeast(0), pos)
 }
@@ -66,7 +66,7 @@ fun String.tokenAhead(pos: Int): String {
  * - `123,|456+cos(8)` return `false` (impossible in UI. See [ExpressionOutputTransformation])
  */
 private fun CharSequence.isPlacedIllegallyAt(pos: Int): Boolean {
-  Token.Func.allWithOpeningBracket.forEach { if (pos.isAtToken(this, it)) return true }
+  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isAtToken(this, it)) return true }
 
   return false
 }
@@ -88,7 +88,7 @@ private fun Int.isAfterToken(str: String, token: String): Boolean {
 // This can also make [TextFieldState.addTokens] better by checking tokens both ways. Needs more
 // tests
 fun String.tokenAfter(pos: Int): String {
-  Token.Func.allWithOpeningBracket.forEach { if (pos.isBeforeToken(this, it)) return it }
+  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isBeforeToken(this, it)) return it }
 
   return substring(pos, (pos + 1).coerceAtMost(this.length))
 }

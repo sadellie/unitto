@@ -1769,7 +1769,7 @@ internal class CommonBigDecimal : BigDecimal {
 
   override operator fun unaryPlus(): CommonBigDecimal = this
 
-  override fun unaryPlus(mc: MathContext): CommonBigDecimal? =
+  override fun unaryPlus(mc: MathContext): CommonBigDecimal =
     if (mc.precision == 0) this else doRound(this, mc)
 
   override val signum: Int
@@ -1806,7 +1806,7 @@ internal class CommonBigDecimal : BigDecimal {
       return this.inflated()
     }
 
-  override fun round(mc: MathContext): CommonBigDecimal? = unaryPlus(mc)
+  override fun round(mc: MathContext): CommonBigDecimal = unaryPlus(mc)
 
   override fun setScale(newScale: Int, roundingMode: RoundingMode): CommonBigDecimal =
     setScale(newScale, roundingMode.value)
@@ -3398,11 +3398,11 @@ internal class CommonBigDecimal : BigDecimal {
      * @throws ArithmeticException if the rounding mode is `RoundingMode.UNNECESSARY` and the result
      *   is inexact.
      */
-    private fun doRound(`val`: CommonBigDecimal?, mc: MathContext): CommonBigDecimal? {
+    private fun doRound(`val`: CommonBigDecimal, mc: MathContext): CommonBigDecimal {
       val mcp = mc.precision
       var wasDivided = false
       if (mcp > 0) {
-        var intVal = `val`!!._intVal
+        var intVal = `val`._intVal
         var compactVal = `val`._intCompact
         var scale = `val`._scale
         var prec = `val`.precision

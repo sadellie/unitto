@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,12 @@ package com.sadellie.unitto.core.data.converter
 
 import kotlinx.datetime.LocalDate
 
-sealed class CurrencyRateUpdateState {
-  data object Loading : CurrencyRateUpdateState()
+sealed interface CurrencyRateUpdateState {
+  data object Loading : CurrencyRateUpdateState
 
-  data object Error : CurrencyRateUpdateState()
+  data object Error : CurrencyRateUpdateState
 
-  data class Ready(val date: LocalDate) : CurrencyRateUpdateState()
+  data class Ready(val date: LocalDate) : CurrencyRateUpdateState
 
-  data object Nothing : CurrencyRateUpdateState()
+  data object Nothing : CurrencyRateUpdateState
 }

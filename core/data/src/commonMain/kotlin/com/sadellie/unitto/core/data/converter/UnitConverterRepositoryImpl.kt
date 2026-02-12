@@ -31,7 +31,7 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.remote.CurrencyApiService
-import io.github.sadellie.evaluatto.Expression
+import io.github.sadellie.evaluatto.ast.calculateExpression
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.Dispatchers
@@ -418,9 +418,9 @@ class UnitConverterRepositoryImpl(
     return ConverterResult.PoundOunce(integral, fractionInOunces)
   }
 
-  private fun calculateInput(value: String): KBigDecimal {
+  private suspend fun calculateInput(value: String): KBigDecimal {
     // Calculate expression in first text field
-    val calculated = Expression(value).calculate()
+    val calculated = calculateExpression(value)
     return calculated
   }
 
@@ -430,16 +430,13 @@ class UnitConverterRepositoryImpl(
     inchInput: String,
   ): KBigDecimal {
     // Calculate expression in first text field
-    var calculated = Expression(footInput).calculate()
-
-    val calculatedInches = Expression(inchInput).calculate()
+    var calculated = calculateExpression(footInput)
+    val calculatedInches = calculateExpression(inchInput)
     // turn inches into feet so that it all comes down to converting from feet only
     val inches = getById(UnitID.inch) as BasicUnit.Default
     val feet = getById(UnitID.foot) as BasicUnit.Default
     val inchesConvertedToFeet = inches.convert(feet, calculatedInches)
-
     calculated += inchesConvertedToFeet
-
     return calculated
   }
 
@@ -448,16 +445,13 @@ class UnitConverterRepositoryImpl(
     ounceInput: String,
   ): KBigDecimal {
     // Calculate expression in first text field
-    var calculated = Expression(poundInput).calculate()
-
-    val calculatedOunces = Expression(ounceInput).calculate()
+    var calculated = calculateExpression(poundInput)
+    val calculatedOunces = calculateExpression(ounceInput)
     // turn ounces into pounds so that it all comes down to converting from pounds only
     val ounce = getById(UnitID.ounce) as BasicUnit.Default
     val pound = getById(UnitID.pound) as BasicUnit.Default
     val ouncesConvertedToPounds = ounce.convert(pound, calculatedOunces)
-
     calculated += ouncesConvertedToPounds
-
     return calculated
   }
 

@@ -32,6 +32,7 @@ import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.then
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -62,7 +63,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.ui.autosize.AutoSizeTextStyleBox
 import kotlinx.coroutines.awaitCancellation
@@ -78,6 +79,7 @@ fun ExpressionTextField(
   placeholder: String = "",
   keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
   onKeyboardAction: KeyboardActionHandler? = null,
+  onHardwareInput: (() -> Unit)? = null,
 ) {
   val nativeClipboard = LocalClipboard.current.nativeClipboard
   val clipboardManager =
@@ -93,7 +95,8 @@ fun ExpressionTextField(
       state = state,
       modifier = modifier,
       readOnly = readOnly,
-      inputTransformation = ExpressionInputTransformation(formatterSymbols),
+      inputTransformation =
+        ExpressionInputTransformation(formatterSymbols).then { onHardwareInput?.invoke() },
       textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
       lineLimits = TextFieldLineLimits.SingleLine,
       cursorBrush = SolidColor(textColor),
@@ -261,7 +264,7 @@ private fun ExpressionTextFieldPreview() {
   ExpressionTextField(
     modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline).height(172.dp),
     state = remember { TextFieldState() },
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+    formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
     textColor = MaterialTheme.colorScheme.onSurface,
     minRatio = 0.5f,
   )

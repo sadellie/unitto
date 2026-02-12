@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2026 Elshan Agaev
+ * Copyright (c) 2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.settings.backup
+package io.github.sadellie.evaluatto.ast
 
-internal sealed interface BackupUIState {
-  data object Loading : BackupUIState
+import com.sadellie.unitto.core.common.Token2
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-  data class Ready(
-    val favoriteUnits: Int,
-    val usedUnits: Int,
-    val savedExpressions: Int,
-    val favoriteTimeZones: Int,
-  ) : BackupUIState
-
-  data object InProgress : BackupUIState
+class OperationGenerateExpressionTest {
+  @Test
+  fun test1() {
+    val input = "1"
+    val value2 = Token2.Number("2")
+    assertEquals("1+2", Operation.Plus(value2).generateExpression(input))
+    assertEquals("1−2", Operation.Minus(value2).generateExpression(input))
+    assertEquals("1×2", Operation.Multiply(value2).generateExpression(input))
+    assertEquals("1÷2", Operation.Divide(value2).generateExpression(input))
+  }
 }

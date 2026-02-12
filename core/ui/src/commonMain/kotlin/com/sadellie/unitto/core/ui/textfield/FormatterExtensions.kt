@@ -19,12 +19,12 @@
 package com.sadellie.unitto.core.ui.textfield
 
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 
 fun String.formatExpression(formatterSymbols: FormatterSymbols): String {
   if (isEmpty()) return this
 
-  return if (Token.DisplayOnly.FRACTION in this) {
+  return if (Token2.Fraction.symbol in this) {
     formatFraction(formatterSymbols)
   } else {
     formatExpressionNoFraction(formatterSymbols)
@@ -59,7 +59,7 @@ private fun String.formatExpressionNoFraction(formatterSymbols: FormatterSymbols
   }
 
   // Replace ugly symbols
-  Token.sexyToUgly.forEach { (token, uglySymbols) ->
+  Token2.sexyToUgly.forEach { (token, uglySymbols) ->
     uglySymbols.forEach { uglySymbol -> input = input.replace(uglySymbol, token) }
   }
 
@@ -85,25 +85,25 @@ internal fun String.formatNumber(formatterSymbols: FormatterSymbols): String {
           .dropLast(3) // 12354678 -> 12345
           .reversed() // 54321
           .chunked(2) // 54 32 1
-          .joinToString(formatterSymbols.grouping) // 54,32,1
+          .joinToString(formatterSymbols.grouping.symbol) // 54,32,1
           .reversed() // 1,23,45
-          .plus(formatterSymbols.grouping)
+          .plus(formatterSymbols.grouping.symbol)
           .plus(firstPart.takeLast(3)) // last group is 12345[678]
       else ->
         firstPart
           .reversed() // 12345678 -> 87654321
           .chunked(3) // 876 543 21
-          .joinToString(formatterSymbols.grouping) // 876,543,21
+          .joinToString(formatterSymbols.grouping.symbol) // 876,543,21
           .reversed() // 12,345,678
     }
 
-  return output.plus(remainingPart.replace(".", formatterSymbols.fractional))
+  return output.plus(remainingPart.replace(".", formatterSymbols.fractional.symbol))
 }
 
 internal fun CharSequence.findNumbers(onFind: (startIndex: Int, number: String) -> Unit) {
   var index = 0
   while (index <= this.lastIndex) {
-    val number = this.substring(index).takeWhile { it.toString() in Token.Digit.allWithDot }
+    val number = this.substring(index).takeWhile { it.toString() in Token2.digitsWithDotSymbols }
     if (number.isBlank()) {
       // no number
       index++

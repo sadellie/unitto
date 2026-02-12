@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import com.sadellie.unitto.core.common.KBigDecimalMath
 import com.sadellie.unitto.core.common.KMathContext
 import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.MAX_SCALE
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.isEqualTo
 
 sealed class ExpressionException(override val message: String) : Exception(message) {
@@ -64,9 +64,9 @@ class Expression(
   }
 
   // Null when at the end of expression
-  private fun peek() = tokens.getOrNull(cursorPosition) ?: ""
+  private fun peek() = tokens.getOrNull(cursorPosition)
 
-  private fun moveIfMatched(token: String): Boolean {
+  private fun moveIfMatched(token: Token2): Boolean {
     if (peek() == token) {
       // Move cursor
       cursorPosition++
@@ -81,10 +81,10 @@ class Expression(
 
     var expression = parseTerm()
 
-    while (peek() in listOf(Token.Operator.PLUS, Token.Operator.MINUS)) {
+    while (peek() in listOf(Token2.Plus, Token2.Minus)) {
       when {
-        moveIfMatched(Token.Operator.PLUS) -> expression += parseTerm()
-        moveIfMatched(Token.Operator.MINUS) -> expression -= parseTerm()
+        moveIfMatched(Token2.Plus) -> expression += parseTerm()
+        moveIfMatched(Token2.Minus) -> expression -= parseTerm()
       }
     }
     return expression
@@ -94,13 +94,13 @@ class Expression(
   private fun parseTerm(): KBigDecimal {
     var expression = parseFactor()
 
-    while (peek() in listOf(Token.Operator.MULTIPLY, Token.Operator.DIVIDE)) {
+    while (peek() in listOf(Token2.Multiply, Token2.Divide)) {
       when {
-        moveIfMatched(Token.Operator.MULTIPLY) -> {
+        moveIfMatched(Token2.Multiply) -> {
           expression = expression.multiply(parseFactor())
         }
 
-        moveIfMatched(Token.Operator.DIVIDE) -> {
+        moveIfMatched(Token2.Divide) -> {
           val divisor = parseFactor()
           if (divisor.isEqualTo(KBigDecimal.ZERO)) throw ExpressionException.DivideByZero()
 
@@ -117,12 +117,12 @@ class Expression(
     var expr: KBigDecimal? = null
 
     fun parseFuncParentheses(): KBigDecimal {
-      return if (moveIfMatched(Token.Operator.LEFT_BRACKET)) {
+      return if (moveIfMatched(Token2.LeftBracket)) {
         // Parse in parentheses
         val res = parseExpression()
 
         // Check if parentheses is closed
-        if (!moveIfMatched(Token.Operator.RIGHT_BRACKET)) throw ExpressionException.BadExpression()
+        if (!moveIfMatched(Token2.RightBracket)) throw ExpressionException.BadExpression()
         res
       } else {
         parseFactor()
@@ -130,97 +130,93 @@ class Expression(
     }
 
     // Unary plus
-    if (moveIfMatched(Token.Operator.PLUS)) {
+    if (moveIfMatched(Token2.Plus)) {
       return parseFactor()
     }
 
     // Unary minus
-    if (moveIfMatched(Token.Operator.MINUS)) {
+    if (moveIfMatched(Token2.UnaryMinus)) {
       return -parseFactor(true)
     }
 
     // Parentheses
-    if (moveIfMatched(Token.Operator.LEFT_BRACKET)) {
+    if (moveIfMatched(Token2.LeftBracket)) {
       // Parse in parentheses
       expr = parseExpression()
 
       // Check if parentheses is closed
-      if (!moveIfMatched(Token.Operator.RIGHT_BRACKET)) throw ExpressionException.BadExpression()
+      if (!moveIfMatched(Token2.RightBracket)) throw ExpressionException.BadExpression()
     }
 
     // Numbers
     val possibleNumber = peek()
-    // We know that if next token starts with a digit or dot, it can be converted into BigDecimal
-    // Ugly
-    if (possibleNumber.isNotEmpty()) {
-      if (Token.Digit.allWithDot.contains(possibleNumber.first().toString())) {
-        expr = KBigDecimal(possibleNumber).setScale(scale, roundingMode)
-        cursorPosition++
-      }
+    if (possibleNumber is Token2.Number) {
+      expr = KBigDecimal(possibleNumber.symbol).setScale(scale, roundingMode)
+      cursorPosition++
     }
 
     // PI
-    if (moveIfMatched(Token.Const.PI)) {
+    if (moveIfMatched(Token2.Pi)) {
       expr = KBigDecimalMath.pi(mathContext)
     }
 
     // e
-    if (moveIfMatched(Token.Const.E)) {
+    if (moveIfMatched(Token2.E)) {
       expr = KBigDecimalMath.e(mathContext)
     }
 
     // sqrt
-    if (moveIfMatched(Token.Operator.SQRT)) {
+    if (moveIfMatched(Token2.Sqrt)) {
       expr = KBigDecimalMath.sqrt(parseFuncParentheses(), mathContext)
     }
 
     // sin
-    if (moveIfMatched(Token.Func.SIN)) {
+    if (moveIfMatched(Token2.Sin)) {
       expr = parseFuncParentheses().sin(radianMode, mathContext).rescaleTrig()
     }
 
     // cos
-    if (moveIfMatched(Token.Func.COS)) {
+    if (moveIfMatched(Token2.Cos)) {
       expr = parseFuncParentheses().cos(radianMode, mathContext).rescaleTrig()
     }
 
     // tan
-    if (moveIfMatched(Token.Func.TAN)) {
+    if (moveIfMatched(Token2.Tan)) {
       expr = parseFuncParentheses().tan(radianMode, mathContext).rescaleTrig()
     }
 
     // arsin
-    if (moveIfMatched(Token.Func.ARSIN)) {
+    if (moveIfMatched(Token2.ArSin)) {
       expr = parseFuncParentheses().arsin(radianMode, mathContext).rescaleTrig()
     }
 
     // arcos
-    if (moveIfMatched(Token.Func.ARCOS)) {
+    if (moveIfMatched(Token2.ArCos)) {
       expr = parseFuncParentheses().arcos(radianMode, mathContext).rescaleTrig()
     }
 
     // actan
-    if (moveIfMatched(Token.Func.ACTAN)) {
+    if (moveIfMatched(Token2.ArTan)) {
       expr = parseFuncParentheses().artan(radianMode, mathContext).rescaleTrig()
     }
 
     // ln
-    if (moveIfMatched(Token.Func.LN)) {
+    if (moveIfMatched(Token2.Ln)) {
       expr = parseFuncParentheses().ln(mathContext)
     }
 
     // log
-    if (moveIfMatched(Token.Func.LOG)) {
+    if (moveIfMatched(Token2.Log)) {
       expr = parseFuncParentheses().log(mathContext)
     }
 
     // exp
-    if (moveIfMatched(Token.Func.EXP)) {
+    if (moveIfMatched(Token2.Exp)) {
       expr = parseFuncParentheses().exp(mathContext)
     }
 
     // Power
-    if (moveIfMatched(Token.Operator.POWER)) {
+    if (moveIfMatched(Token2.Power)) {
       val factor = parseFactor()
       if (expr == null) throw ExpressionException.BadExpression()
       // mathematicians made up this controversy because reasons
@@ -232,13 +228,13 @@ class Expression(
     }
 
     // Modulo
-    if (moveIfMatched(Token.Operator.MODULO)) {
+    if (moveIfMatched(Token2.Modulo)) {
       if (expr == null) throw ExpressionException.BadExpression()
       expr = expr.remainder(parseFactor())
     }
 
     // Factorial
-    if (moveIfMatched(Token.Operator.FACTORIAL)) {
+    if (moveIfMatched(Token2.Factorial)) {
       if (expr == null) throw ExpressionException.BadExpression()
       if (negative) throw ExpressionException.FactorialCalculation()
       expr = expr.factorial()

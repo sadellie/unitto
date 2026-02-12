@@ -28,7 +28,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.compose.resources.getString
 import org.junit.Rule
@@ -51,7 +51,7 @@ class CalculatorScreenTest {
               radianMode = false,
               precision = 3,
               outputFormat = OutputFormat.PLAIN,
-              formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+              formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
               history = emptyList(),
               middleZero = false,
               acButton = true,
@@ -94,7 +94,7 @@ class CalculatorScreenTest {
               radianMode = false,
               precision = 3,
               outputFormat = OutputFormat.PLAIN,
-              formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+              formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
               history = emptyList(),
               middleZero = false,
               acButton = true,

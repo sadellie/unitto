@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.converter
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isGreaterThan
 import com.sadellie.unitto.core.common.toFormattedString
@@ -30,8 +30,8 @@ import com.sadellie.unitto.core.data.converter.CurrencyRateUpdateState
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 
-internal sealed class ConverterUIState {
-  data object Loading : ConverterUIState()
+internal sealed interface ConverterUIState {
+  data object Loading : ConverterUIState
 
   data class Default(
     val input1: TextFieldState,
@@ -46,14 +46,14 @@ internal sealed class ConverterUIState {
     val formatTime: Boolean,
     val currencyRateUpdateState: CurrencyRateUpdateState,
     val acButton: Boolean,
-  ) : ConverterUIState()
+  ) : ConverterUIState
 
   data class NumberBase(
     val input: TextFieldState,
     val result: ConverterResult,
     val unitFrom: BasicUnit.NumberBase,
     val unitTo: BasicUnit.NumberBase,
-  ) : ConverterUIState()
+  ) : ConverterUIState
 }
 
 internal fun ConverterResult.Time.format(
@@ -109,10 +109,10 @@ internal fun ConverterResult.Time.format(
     result += "$value$attosecondLabel"
   }
 
-  if (result.isEmpty()) return Token.Digit.DIGIT_0
+  if (result.isEmpty()) return Token2.Digit0.symbol
   val resultString = result.joinToString(" ")
 
-  return if (negative) "${Token.Operator.MINUS}$resultString" else resultString
+  return if (negative) (Token2.Minus.symbol + resultString) else resultString
 }
 
 internal fun ConverterResult.FootInch.format(

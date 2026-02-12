@@ -152,6 +152,8 @@
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_color_theme">Color theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
+    <string name="settings_constant_calculation">Constant calculation</string>
+    <string name="settings_constant_calculation_support">Tap equals button again to apply last operation. Only applicable to simple operations.</string>
     <string name="settings_converter_support">Unit groups, sorting, formatting</string>
     <string name="settings_currency_rates_note_text">Currency rates are updated daily. There's no real-time market monitoring in the app</string>
     <string name="settings_currency_rates_note_title">Wrong currency rates?</string>

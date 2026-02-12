@@ -81,7 +81,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.designsystem.LocalHapticFeedbackManager
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
@@ -131,6 +131,7 @@ internal fun CalculatorRoute(openDrawer: () -> Unit) {
         onClearHistoryClick = viewModel::clearHistory,
         onDeleteHistoryItemClick = viewModel::deleteHistoryItem,
         updateInitialPartialHistoryView = viewModel::updateInitialPartialHistoryView,
+        onHardwareInput = viewModel::onHardwareInput,
       )
   }
 }
@@ -150,6 +151,7 @@ internal fun Ready(
   onClearHistoryClick: () -> Unit,
   onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
   updateInitialPartialHistoryView: (Boolean) -> Unit,
+  onHardwareInput: () -> Unit,
 ) {
   val windowSizeClass = LocalWindowSize.current
   if (
@@ -168,6 +170,7 @@ internal fun Ready(
       onInverseModeClick = onInverseModeClick,
       onClearHistoryClick = onClearHistoryClick,
       onDeleteHistoryItemClick = onDeleteHistoryItemClick,
+      onHardwareInput = onHardwareInput,
     )
   } else {
     ReadyCompact(
@@ -184,6 +187,7 @@ internal fun Ready(
       onClearHistoryClick = onClearHistoryClick,
       onDeleteHistoryItemClick = onDeleteHistoryItemClick,
       updateInitialPartialHistoryView = updateInitialPartialHistoryView,
+      onHardwareInput = onHardwareInput,
     )
   }
 }
@@ -203,6 +207,7 @@ private fun ReadyCompact(
   onClearHistoryClick: () -> Unit,
   onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
   updateInitialPartialHistoryView: (Boolean) -> Unit,
+  onHardwareInput: () -> Unit,
 ) {
   val focusManager = LocalFocusManager.current
   var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
@@ -288,6 +293,7 @@ private fun ReadyCompact(
           output = uiState.output,
           onEnter = onEqualClick,
           showHandle = true,
+          onHardwareInput = onHardwareInput,
         )
       },
       keyboard = { offset, height ->
@@ -348,6 +354,7 @@ private fun ReadyExpanded(
   onInverseModeClick: (Boolean) -> Unit,
   onClearHistoryClick: () -> Unit,
   onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
+  onHardwareInput: () -> Unit,
 ) {
   var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
   Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer) { paddingValues ->
@@ -380,6 +387,7 @@ private fun ReadyExpanded(
             output = uiState.output,
             onEnter = onEqualClick,
             showHandle = false,
+            onHardwareInput = onHardwareInput,
           )
           val focusManager = LocalFocusManager.current
           CalculatorKeyboard(
@@ -660,7 +668,7 @@ private fun PreviewCalculatorScreen() {
             radianMode = false,
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+            formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
             history = calculatorHistoryItems,
             middleZero = false,
             acButton = true,
@@ -683,6 +691,7 @@ private fun PreviewCalculatorScreen() {
         onClearHistoryClick = {},
         onDeleteHistoryItemClick = {},
         updateInitialPartialHistoryView = {},
+        onHardwareInput = {},
       )
     }
   }

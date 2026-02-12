@@ -45,6 +45,7 @@ kotlin {
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
     implementation(libs.io.insert.koin.koin.compose.viewmodel)
     implementation(libs.io.insert.koin.koin.compose.navigation3)
+    implementation(libs.co.touchlab.kermit)
   }
   sourceSets.androidMain.dependencies {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling)

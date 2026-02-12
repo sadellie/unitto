@@ -19,12 +19,16 @@
 package com.sadellie.unitto.core.common
 
 /**
- * Formatter symbols. Always use [Token].
+ * Formatter symbols for expressions.
  *
- * @property grouping Symbol fpr thousands separator.
- * @property fractional Symbol decimal separator.
+ * @property grouping Symbol for thousands separator.
+ * @property fractional Symbol for decimal separator.
  * @property indian controls group sizes
  * - `true` - 1,23,45,678
  * - `false` - 12,345,678
  */
-data class FormatterSymbols(val grouping: String, val fractional: String, val indian: Boolean)
+data class FormatterSymbols(
+  val grouping: Token2.Formatter,
+  val fractional: Token2.Formatter,
+  val indian: Boolean,
+)

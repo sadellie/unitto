@@ -22,8 +22,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository.Defaults
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.navigation.graphRoutes
@@ -79,6 +78,7 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
         additionalButtons = preferences.getAdditionalButtons(),
         inverseMode = preferences.getInverseMode(),
         fractionalOutput = preferences.getFractionalOutput(),
+        constantCalculation = preferences.getConstantCalculation(),
       )
     }
 
@@ -147,16 +147,16 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
   }
 
   override suspend fun updateFormatterSymbols(
-    grouping: String,
-    fractional: String,
+    grouping: Token2.Formatter,
+    fractional: Token2.Formatter,
     indian: Boolean,
   ) {
     // Grouping and fractional symbols are always different
     if (grouping == fractional) return
 
     dataStore.edit { preferences ->
-      preferences[DatastorePrefKeys.FORMATTER_GROUPING] = grouping
-      preferences[DatastorePrefKeys.FORMATTER_FRACTIONAL] = fractional
+      preferences[DatastorePrefKeys.FORMATTER_GROUPING] = grouping.symbol
+      preferences[DatastorePrefKeys.FORMATTER_FRACTIONAL] = fractional.symbol
       preferences[DatastorePrefKeys.FORMATTER_INDIAN] = indian
     }
   }
@@ -304,6 +304,10 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
     }
   }
 
+  override suspend fun updateConstantCalculation(enabled: Boolean) {
+    dataStore.edit { preferences -> preferences[DatastorePrefKeys.CONSTANT_CALCULATION] = enabled }
+  }
+
   private fun Preferences.getEnableDynamicTheme() =
     this[DatastorePrefKeys.ENABLE_DYNAMIC_THEME] ?: Defaults.enableDynamicTheme
 
@@ -339,18 +343,12 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
   private fun Preferences.getRadianMode() =
     this[DatastorePrefKeys.RADIAN_MODE] ?: Defaults.radianMode
 
-  private fun Preferences.getFormatterSymbols(): FormatterSymbols {
-    var grouping = this[DatastorePrefKeys.FORMATTER_GROUPING]
-    var fractional = this[DatastorePrefKeys.FORMATTER_FRACTIONAL]
-    if (grouping == null || fractional == null) {
-      // formatter symbols must fallback together
-      val defaultFormatterSymbols = Defaults.formatterSymbols
-      grouping = defaultFormatterSymbols.grouping
-      fractional = defaultFormatterSymbols.fractional
-    }
-    val indian = this[DatastorePrefKeys.FORMATTER_INDIAN] ?: Defaults.formatterSymbols.indian
-    return FormatterSymbols(grouping, fractional, indian)
-  }
+  private fun Preferences.getFormatterSymbols() =
+    produceFormatterSymbols(
+      grouping = this[DatastorePrefKeys.FORMATTER_GROUPING],
+      fractional = this[DatastorePrefKeys.FORMATTER_FRACTIONAL],
+      indian = this[DatastorePrefKeys.FORMATTER_INDIAN],
+    )
 
   private fun Preferences.getMiddleZero() =
     this[DatastorePrefKeys.MIDDLE_ZERO] ?: Defaults.middleZero
@@ -413,4 +411,7 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
 
   private fun Preferences.getCustomApiUrl() =
     this[DatastorePrefKeys.UNIT_CONVERTER_CUSTOM_API_URL] ?: Defaults.customApiUrl
+
+  private fun Preferences.getConstantCalculation() =
+    this[DatastorePrefKeys.CONSTANT_CALCULATION] ?: Defaults.constantCalculation
 }

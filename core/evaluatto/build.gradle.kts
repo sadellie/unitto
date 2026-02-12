@@ -35,6 +35,8 @@ kotlin {
     implementation(project(":core:common"))
     implementation(libs.org.jetbrains.compose.runtime.runtime) // need skiko
   }
-
-  sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
+  sourceSets.commonTest.dependencies {
+    implementation(libs.org.jetbrains.kotlin.kotlin.test)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
+  }
 }

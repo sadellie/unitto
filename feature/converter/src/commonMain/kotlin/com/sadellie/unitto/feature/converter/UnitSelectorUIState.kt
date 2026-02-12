@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 
-internal sealed class UnitSelectorUIState {
-  data object Loading : UnitSelectorUIState()
+internal sealed interface UnitSelectorUIState {
+  data object Loading : UnitSelectorUIState
 
   data class UnitFrom(
     val query: TextFieldState,
@@ -36,7 +36,7 @@ internal sealed class UnitSelectorUIState {
     val units: Map<UnitGroup, List<UnitSearchResultItem>>?,
     val selectedUnitGroup: UnitGroup?,
     val sorting: UnitsListSorting,
-  ) : UnitSelectorUIState()
+  ) : UnitSelectorUIState
 
   data class UnitTo(
     val query: TextFieldState,
@@ -48,5 +48,5 @@ internal sealed class UnitSelectorUIState {
     val scale: Int,
     val outputFormat: Int,
     val formatterSymbols: FormatterSymbols,
-  ) : UnitSelectorUIState()
+  ) : UnitSelectorUIState
 }

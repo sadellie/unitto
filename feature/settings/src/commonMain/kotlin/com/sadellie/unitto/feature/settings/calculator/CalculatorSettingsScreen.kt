@@ -35,11 +35,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
+import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Fraction
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
+import com.sadellie.unitto.core.designsystem.icons.symbols.AddRowBelow
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.MoveSelectionDown
 import com.sadellie.unitto.core.designsystem.icons.symbols.SplitscreenBottom
@@ -54,6 +55,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.calculator_title
+import unitto.core.common.generated.resources.settings_constant_calculation
+import unitto.core.common.generated.resources.settings_constant_calculation_support
 import unitto.core.common.generated.resources.settings_fractional_output
 import unitto.core.common.generated.resources.settings_fractional_output_support
 import unitto.core.common.generated.resources.settings_history_view_button
@@ -76,6 +79,7 @@ internal fun CalculatorSettingsRoute(navigateUpAction: () -> Unit) {
         updateSteppedPartialHistoryView = viewModel::updateSteppedPartialHistoryView,
         updateFractionalOutput = viewModel::updateFractionalOutput,
         updateOpenHistoryViewButton = viewModel::updateOpenHistoryViewButton,
+        updateConstantCalculation = viewModel::updateConstantCalculation,
       )
     }
   }
@@ -89,6 +93,7 @@ private fun CalculatorSettingsScreen(
   updateSteppedPartialHistoryView: (Boolean) -> Unit,
   updateOpenHistoryViewButton: (Boolean) -> Unit,
   updateFractionalOutput: (Boolean) -> Unit,
+  updateConstantCalculation: (Boolean) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
     title = stringResource(Res.string.calculator_title),
@@ -124,9 +129,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(Res.string.settings_partial_history_view_support),
         switchState = prefs.partialHistoryView,
         onSwitchChange = updatePartialHistoryView,
-        shape =
-          if (prefs.partialHistoryView) ListItemExpressiveDefaults.middleShape
-          else ListItemExpressiveDefaults.lastShape,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
 
       AnimatedVisibility(
@@ -141,9 +144,18 @@ private fun CalculatorSettingsScreen(
           supportingText = stringResource(Res.string.settings_stepped_drag_gesture_support),
           switchState = prefs.steppedPartialHistoryView,
           onSwitchChange = updateSteppedPartialHistoryView,
-          shape = ListItemExpressiveDefaults.lastShape,
+          shape = ListItemExpressiveDefaults.middleShape,
         )
       }
+
+      ListItemExpressive(
+        headlineText = stringResource(Res.string.settings_constant_calculation),
+        icon = Symbols.AddRowBelow,
+        supportingText = stringResource(Res.string.settings_constant_calculation_support),
+        switchState = prefs.constantCalculation,
+        onSwitchChange = updateConstantCalculation,
+        shape = ListItemExpressiveDefaults.lastShape,
+      )
     }
   }
 }
@@ -155,7 +167,7 @@ private fun PreviewCalculatorSettingsScreenStandard() {
     mutableStateOf(
       CalculatorPreferences(
         radianMode = true,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
         middleZero = false,
         acButton = false,
         additionalButtons = false,
@@ -167,6 +179,7 @@ private fun PreviewCalculatorSettingsScreenStandard() {
         precision = 3,
         outputFormat = OutputFormat.PLAIN,
         fractionalOutput = true,
+        constantCalculation = false,
       )
     )
   }
@@ -177,5 +190,6 @@ private fun PreviewCalculatorSettingsScreenStandard() {
     updateSteppedPartialHistoryView = { prefs = prefs.copy(steppedPartialHistoryView = it) },
     updateFractionalOutput = { prefs = prefs.copy(fractionalOutput = it) },
     updateOpenHistoryViewButton = { prefs = prefs.copy(openHistoryViewButton = it) },
+    updateConstantCalculation = { prefs = prefs.copy(constantCalculation = it) },
   )
 }
