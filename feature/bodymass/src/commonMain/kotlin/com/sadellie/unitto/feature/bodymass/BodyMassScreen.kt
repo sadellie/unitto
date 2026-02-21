@@ -50,7 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
@@ -251,7 +251,7 @@ fun PreviewBodyMassScreen() {
         weight = remember { TextFieldState() },
         normalWeightRange = KBigDecimal(30.0) to KBigDecimal(50.0),
         result = KBigDecimal(18.5),
-        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
       ),
     updateIsMetric = {},
     openDrawer = {},

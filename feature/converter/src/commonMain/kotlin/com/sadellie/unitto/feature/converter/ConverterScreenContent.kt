@@ -66,7 +66,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.toFormattedString
@@ -259,7 +259,7 @@ internal fun NumberBase(
         NumberBaseTextField(
           modifier = textFieldModifier,
           minRatio = 0.7f,
-          placeholder = Token2.Digit0.symbol,
+          placeholder = Token.Digit0.symbol,
           state = uiState.input,
           textColor = converterTextFieldColor,
         )
@@ -363,7 +363,7 @@ private fun SingleUnitInput(
       state = input,
       minRatio = 0.7f,
       formatterSymbols = formatterSymbols,
-      placeholder = Token2.Digit0.symbol,
+      placeholder = Token.Digit0.symbol,
     )
     CalculationResultTextField(
       modifier = Modifier.fillMaxWidth().weight(1f),
@@ -395,7 +395,7 @@ private fun DoubleUnitInput(
         state = input1,
         minRatio = 0.7f,
         formatterSymbols = formatterSymbols,
-        placeholder = Token2.Digit0.symbol,
+        placeholder = Token.Digit0.symbol,
       )
       AnimatedUnitShortName(input1ShortName)
     }
@@ -412,7 +412,7 @@ private fun DoubleUnitInput(
         textColor = converterTextFieldColor,
         minRatio = 0.7f,
         formatterSymbols = formatterSymbols,
-        placeholder = Token2.Digit0.symbol,
+        placeholder = Token.Digit0.symbol,
       )
       AnimatedUnitShortName(input2ShortName)
     }
@@ -465,7 +465,7 @@ private fun ConverterResultTextField(
   result: ConverterResult,
   scale: Int = 0,
   outputFormat: Int = OutputFormat.PLAIN,
-  formatterSymbols: FormatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+  formatterSymbols: FormatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
 ) {
   when (result) {
     is ConverterResult.Default -> {
@@ -709,7 +709,7 @@ private fun PreviewConverterDefault() {
             Res.string.unit_meter_short,
           ),
         acButton = true,
-        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
         currencyRateUpdateState = CurrencyRateUpdateState.Nothing,
         outputFormat = OutputFormat.PLAIN,
         result = ConverterResult.Default(KBigDecimal.ZERO, KBigDecimal.ZERO),

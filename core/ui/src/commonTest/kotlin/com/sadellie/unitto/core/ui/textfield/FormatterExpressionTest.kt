@@ -19,7 +19,7 @@
 package com.sadellie.unitto.core.ui.textfield
 
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -179,21 +179,21 @@ class FormatterExpressionTest {
   ) {
     assertEquals(
       spaceAndPeriod,
-      unformatted.formatExpression(FormatterSymbols(Token2.Space, Token2.Period, false)),
+      unformatted.formatExpression(FormatterSymbols(Token.Space, Token.Period, false)),
     )
     assertEquals(
       commaAndPeriod,
-      unformatted.formatExpression(FormatterSymbols(Token2.Comma, Token2.Period, false)),
+      unformatted.formatExpression(FormatterSymbols(Token.Comma, Token.Period, false)),
     )
     assertOutputTransformation(
       outputTransformation =
-        ExpressionOutputTransformation(FormatterSymbols(Token2.Comma, Token2.Period, false)),
+        ExpressionOutputTransformation(FormatterSymbols(Token.Comma, Token.Period, false)),
       expected = "[]$commaAndPeriod", // set fake cursor at start as it is not tested here
       input = "[]$unformatted",
     )
     assertEquals(
       periodAndComma,
-      unformatted.formatExpression(FormatterSymbols(Token2.Period, Token2.Comma, false)),
+      unformatted.formatExpression(FormatterSymbols(Token.Period, Token.Comma, false)),
     )
   }
 }

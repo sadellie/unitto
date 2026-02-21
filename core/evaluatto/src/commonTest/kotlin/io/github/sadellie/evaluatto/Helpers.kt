@@ -20,7 +20,7 @@ package io.github.sadellie.evaluatto
 
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -37,7 +37,7 @@ fun <T : Throwable> assertExprFail(expectedThrowable: T, expr: String, radianMod
   }
 }
 
-fun assertLex(expected: List<Token2>, actual: String) = assertEquals(expected, actual.tokenize())
+fun assertLex(expected: List<Token>, actual: String) = assertEquals(expected, actual.tokenize())
 
 fun assertLex(expected: String, actual: String) =
   assertEquals(expected, actual.tokenize().joinToString("") { it.symbol })

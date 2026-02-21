@@ -22,7 +22,7 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.runtime.Stable
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 
 /**
  * - Inserts missing grouping symbols
@@ -38,7 +38,7 @@ data class ExpressionOutputTransformation(private val formatterSymbols: Formatte
   override fun TextFieldBuffer.transformOutput() {
     if (length == 0) return
 
-    val isFractionalString = Token2.Fraction.symbol in this.asCharSequence()
+    val isFractionalString = Token.Fraction.symbol in this.asCharSequence()
     if (isFractionalString) {
       formatFractional()
     } else {

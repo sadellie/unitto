@@ -42,7 +42,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
@@ -155,7 +155,7 @@ private const val CALCULATION_ALPHA = 0.6f
 private fun PreviewTextBox() {
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token2.Space, Token2.Comma, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Comma, false),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
     onEnter = {},
@@ -169,7 +169,7 @@ private fun PreviewTextBox() {
 private fun PreviewTextBoxNoHandle() {
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token2.Space, Token2.Comma, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Comma, false),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
     onEnter = {},

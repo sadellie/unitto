@@ -28,7 +28,7 @@ package com.sadellie.unitto.core.common
  * - `false` - 12,345,678
  */
 data class FormatterSymbols(
-  val grouping: Token2.Formatter,
-  val fractional: Token2.Formatter,
+  val grouping: Token.Formatter,
+  val fractional: Token.Formatter,
   val indian: Boolean,
 )

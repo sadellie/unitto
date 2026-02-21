@@ -22,7 +22,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.navigation.graphRoutes
@@ -148,8 +148,8 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
   }
 
   override suspend fun updateFormatterSymbols(
-    grouping: Token2.Formatter,
-    fractional: Token2.Formatter,
+    grouping: Token.Formatter,
+    fractional: Token.Formatter,
     indian: Boolean,
   ) {
     // Grouping and fractional symbols are always different

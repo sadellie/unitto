@@ -22,7 +22,7 @@ import android.content.ClipData
 import android.content.Context
 import androidx.compose.ui.platform.toClipEntry
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -33,7 +33,7 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class ExpressionClipboardManagerTest {
   private val context = RuntimeEnvironment.getApplication().applicationContext
-  private val formatterSymbols = FormatterSymbols(Token2.Period, Token2.Comma, false)
+  private val formatterSymbols = FormatterSymbols(Token.Period, Token.Comma, false)
   private val systemClipboardManager =
     context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
   private val clipboardManager =

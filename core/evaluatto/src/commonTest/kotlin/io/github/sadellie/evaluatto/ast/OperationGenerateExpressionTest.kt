@@ -18,7 +18,7 @@
 
 package io.github.sadellie.evaluatto.ast
 
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -26,7 +26,7 @@ class OperationGenerateExpressionTest {
   @Test
   fun test1() {
     val input = "1"
-    val value2 = Token2.Number("2")
+    val value2 = Token.Number("2")
     assertEquals("1+2", Operation.Plus(value2).generateExpression(input))
     assertEquals("1−2", Operation.Minus(value2).generateExpression(input))
     assertEquals("1×2", Operation.Multiply(value2).generateExpression(input))

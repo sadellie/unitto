@@ -23,7 +23,7 @@ import com.sadellie.unitto.core.common.KBigDecimalMath
 import com.sadellie.unitto.core.common.KMathContext
 import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.MAX_SCALE
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isLessThan
 import io.github.sadellie.evaluatto.ExpressionException
@@ -84,7 +84,7 @@ internal fun extractRepeatableOperation(tree: ASTNode): Operation? {
     is PlusNode ->
       if (child2.value.isLessThan(KBigDecimal.ZERO))
         Operation.Minus(
-          child2.token.copy(symbol = child2.token.symbol.removePrefix(Token2.UnaryMinus.symbol))
+          child2.token.copy(symbol = child2.token.symbol.removePrefix(Token.UnaryMinus.symbol))
         )
       else Operation.Plus(child2.token)
     else -> null
@@ -92,30 +92,30 @@ internal fun extractRepeatableOperation(tree: ASTNode): Operation? {
 }
 
 sealed interface Operation {
-  val value2: Token2.Number
-  val operationToken: Token2.Operator
+  val value2: Token.Number
+  val operationToken: Token.Operator
 
   fun generateExpression(input: String): String = input + operationToken.symbol + value2.symbol
 
-  data class Plus(override val value2: Token2.Number) : Operation {
-    override val operationToken = Token2.Plus
+  data class Plus(override val value2: Token.Number) : Operation {
+    override val operationToken = Token.Plus
   }
 
-  data class Minus(override val value2: Token2.Number) : Operation {
-    override val operationToken = Token2.Minus
+  data class Minus(override val value2: Token.Number) : Operation {
+    override val operationToken = Token.Minus
   }
 
-  data class Multiply(override val value2: Token2.Number) : Operation {
-    override val operationToken = Token2.Multiply
+  data class Multiply(override val value2: Token.Number) : Operation {
+    override val operationToken = Token.Multiply
   }
 
-  data class Divide(override val value2: Token2.Number) : Operation {
-    override val operationToken = Token2.Divide
+  data class Divide(override val value2: Token.Number) : Operation {
+    override val operationToken = Token.Divide
   }
 }
 
-internal class ASTBuilder(private val tokens: List<Token2>) {
-  private val operatorStack by lazy { mutableListOf<Token2>() }
+internal class ASTBuilder(private val tokens: List<Token>) {
+  private val operatorStack by lazy { mutableListOf<Token>() }
   private val outputTree by lazy { mutableListOf<ASTNode>() }
 
   fun buildTreeAndCollapse(context: ScriptContext) = build(context).firstOrNull()?.collapse(context)
@@ -124,47 +124,47 @@ internal class ASTBuilder(private val tokens: List<Token2>) {
     if (tokens.isEmpty()) return emptyList()
     for (token in tokens) {
       when (token) {
-        is Token2.Number -> outputTree.add(NumberNode(token, context))
-        is Token2.Const -> outputTree.add(ConstantNode(token))
-        is Token2.Func -> operatorStack.add(token)
-        is Token2.Operator -> handleOperator(token)
-        Token2.LeftBracket -> operatorStack.add(token)
-        Token2.RightBracket -> handleRightParen()
+        is Token.Number -> outputTree.add(NumberNode(token, context))
+        is Token.Const -> outputTree.add(ConstantNode(token))
+        is Token.Func -> operatorStack.add(token)
+        is Token.Operator -> handleOperator(token)
+        Token.LeftBracket -> operatorStack.add(token)
+        Token.RightBracket -> handleRightParen()
         // explicit only
-        Token2.Comma,
-        Token2.Digit0,
-        Token2.Digit1,
-        Token2.Digit2,
-        Token2.Digit3,
-        Token2.Digit4,
-        Token2.Digit5,
-        Token2.Digit6,
-        Token2.Digit7,
-        Token2.Digit8,
-        Token2.Digit9,
-        Token2.Dot,
-        Token2.Fraction,
-        Token2.Period,
-        Token2.Space,
-        Token2.LetterA,
-        Token2.LetterB,
-        Token2.LetterC,
-        Token2.LetterD,
-        Token2.LetterE,
-        Token2.LetterF,
-        Token2.EngineeringE -> error("Unexpected: $token")
+        Token.Comma,
+        Token.Digit0,
+        Token.Digit1,
+        Token.Digit2,
+        Token.Digit3,
+        Token.Digit4,
+        Token.Digit5,
+        Token.Digit6,
+        Token.Digit7,
+        Token.Digit8,
+        Token.Digit9,
+        Token.Dot,
+        Token.Fraction,
+        Token.Period,
+        Token.Space,
+        Token.LetterA,
+        Token.LetterB,
+        Token.LetterC,
+        Token.LetterD,
+        Token.LetterE,
+        Token.LetterF,
+        Token.EngineeringE -> error("Unexpected: $token")
       }
     }
 
     while (operatorStack.isNotEmpty()) {
-      require(operatorStack.lastOrNull() !is Token2.LeftBracket) { "Missing right bracket" }
+      require(operatorStack.lastOrNull() !is Token.LeftBracket) { "Missing right bracket" }
       handlePopAndAddToOutput()
     }
 
     return outputTree
   }
 
-  private fun popLastFromOperatorStack(): Token2 = operatorStack.removeAt(operatorStack.lastIndex)
+  private fun popLastFromOperatorStack(): Token = operatorStack.removeAt(operatorStack.lastIndex)
 
   private fun popLastFromOutputTree(): ASTNode =
     try {
@@ -176,29 +176,29 @@ internal class ASTBuilder(private val tokens: List<Token2>) {
   private fun handleRightParen() {
     // end of expression in bracket, build tree from whatever is in stack
     var topOfStack = operatorStack.lastOrNull()
-    while (topOfStack != Token2.LeftBracket) {
+    while (topOfStack != Token.LeftBracket) {
       // null only when left parent, but should not be possible in this loop
       handlePopAndAddToOutput()
       topOfStack = operatorStack.lastOrNull()
     }
     // used all nodes in stack in reached start of the expression in brackets (walked backwards)
-    require(operatorStack.last() == Token2.LeftBracket)
+    require(operatorStack.last() == Token.LeftBracket)
     handlePopAndAddToOutput()
     // pushed everything in brackets, now inline bracket's children in function if needed
     topOfStack = operatorStack.lastOrNull()
-    if (topOfStack is Token2.Func) {
+    if (topOfStack is Token.Func) {
       require(outputTree.last() is BracketsNode) { "Function is missing brackets" }
       handlePopAndAddToOutput()
     }
   }
 
-  private fun handleOperator(operator1: Token2.Operator) {
+  private fun handleOperator(operator1: Token.Operator) {
     var operator2 = operatorStack.lastOrNull()
     while (
-      operator2 is Token2.Operator &&
+      operator2 is Token.Operator &&
         (operator2.precedence > operator1.precedence ||
           operator2.precedence == operator1.precedence &&
-            operator1.associativity == Token2.Operator.Associativity.LEFT)
+            operator1.associativity == Token.Operator.Associativity.LEFT)
     ) {
       // pop operators from stack to output
       handlePopAndAddToOutput()
@@ -211,84 +211,84 @@ internal class ASTBuilder(private val tokens: List<Token2>) {
   private fun handlePopAndAddToOutput() {
     val popped =
       when (val parentOperator = popLastFromOperatorStack()) {
-        is Token2.Func -> {
+        is Token.Func -> {
           // parameter is always a child in brackets
           val param = popLastFromOutputTree().children.first()
           FunctionNode(parentOperator, param)
         }
-        is Token2.UnaryMinus -> {
+        is Token.UnaryMinus -> {
           val child = popLastFromOutputTree()
           UnaryOperatorNode(parentOperator, child)
         }
-        is Token2.Minus -> {
+        is Token.Minus -> {
           val right = popLastFromOutputTree()
           val left = popLastFromOutputTree()
           // 1 - 2 = 1 + -2
-          PlusNode(left, UnaryOperatorNode(Token2.UnaryMinus, right))
+          PlusNode(left, UnaryOperatorNode(Token.UnaryMinus, right))
         }
-        is Token2.Plus -> {
+        is Token.Plus -> {
           val right = popLastFromOutputTree()
           val left = popLastFromOutputTree()
           PlusNode(listOf(left, right))
         }
-        is Token2.Multiply -> {
+        is Token.Multiply -> {
           val right = popLastFromOutputTree()
           val left = popLastFromOutputTree()
           MultiplyNode(left, right)
         }
-        is Token2.Divide -> {
+        is Token.Divide -> {
           val right = popLastFromOutputTree()
           val left = popLastFromOutputTree()
           DivideNode(left, right)
         }
-        is Token2.LeftBracket -> {
+        is Token.LeftBracket -> {
           val child = popLastFromOutputTree()
           BracketsNode(child)
         }
-        Token2.Factorial -> {
+        Token.Factorial -> {
           val child = popLastFromOutputTree()
           FactorialNode(child)
         }
-        Token2.Modulo -> {
+        Token.Modulo -> {
           val right = popLastFromOutputTree()
           val left = popLastFromOutputTree()
           ModuloNode(left, right)
         }
-        Token2.Power -> {
+        Token.Power -> {
           val right = popLastFromOutputTree()
           val left = popLastFromOutputTree()
           PowerNode(left, right)
         }
-        Token2.Sqrt -> {
+        Token.Sqrt -> {
           val child = popLastFromOutputTree()
           SqrtNode(child)
         }
-        Token2.Percent,
-        Token2.RightBracket,
-        is Token2.Const,
-        is Token2.Number,
-        Token2.Digit0,
-        Token2.Digit1,
-        Token2.Digit2,
-        Token2.Digit3,
-        Token2.Digit4,
-        Token2.Digit5,
-        Token2.Digit6,
-        Token2.Digit7,
-        Token2.Digit8,
-        Token2.Digit9,
-        Token2.EngineeringE,
-        Token2.Fraction,
-        Token2.Dot,
-        Token2.Period,
-        Token2.Space,
-        Token2.LetterA,
-        Token2.LetterB,
-        Token2.LetterC,
-        Token2.LetterD,
-        Token2.LetterE,
-        Token2.LetterF,
-        Token2.Comma -> error("Not allowed to pop: $parentOperator")
+        Token.Percent,
+        Token.RightBracket,
+        is Token.Const,
+        is Token.Number,
+        Token.Digit0,
+        Token.Digit1,
+        Token.Digit2,
+        Token.Digit3,
+        Token.Digit4,
+        Token.Digit5,
+        Token.Digit6,
+        Token.Digit7,
+        Token.Digit8,
+        Token.Digit9,
+        Token.EngineeringE,
+        Token.Fraction,
+        Token.Dot,
+        Token.Period,
+        Token.Space,
+        Token.LetterA,
+        Token.LetterB,
+        Token.LetterC,
+        Token.LetterD,
+        Token.LetterE,
+        Token.LetterF,
+        Token.Comma -> error("Not allowed to pop: $parentOperator")
       }
 
     outputTree.add(popped)
@@ -296,7 +296,7 @@ internal class ASTBuilder(private val tokens: List<Token2>) {
 }
 
 internal sealed interface ASTNode {
-  val token: Token2
+  val token: Token
   val children: List<ASTNode>
 
   fun withNewChildren(children: List<ASTNode>): ASTNode
@@ -319,10 +319,10 @@ internal sealed interface AtomicNode : ASTNode {
 
 internal data class NumberNode(
   val value: KBigDecimal,
-  override val token: Token2.Number = Token2.Number(value.toPlainString()),
+  override val token: Token.Number = Token.Number(value.toPlainString()),
 ) : AtomicNode {
   constructor(
-    token: Token2.Number,
+    token: Token.Number,
     context: ScriptContext,
   ) : this(
     (if (token.symbol == ".") KBigDecimal.ZERO else KBigDecimal(token.symbol)).setScale(
@@ -337,37 +337,37 @@ internal data class NumberNode(
     val isNegative = value.isLessThan(KBigDecimal.ZERO)
     val newTokenSymbol =
       if (isNegative) {
-        token.symbol.removePrefix(Token2.UnaryMinus.symbol)
+        token.symbol.removePrefix(Token.UnaryMinus.symbol)
       } else {
-        Token2.UnaryMinus.symbol + token.symbol
+        Token.UnaryMinus.symbol + token.symbol
       }
     return NumberNode(value = newValue, token = token.copy(symbol = newTokenSymbol))
   }
 }
 
-internal data class ConstantNode(override val token: Token2.Const) : AtomicNode
+internal data class ConstantNode(override val token: Token.Const) : AtomicNode
 
 internal data class FunctionNode(
-  override val token: Token2.Func,
+  override val token: Token.Func,
   override val children: List<ASTNode>,
 ) : ASTNode {
-  constructor(token: Token2.Func, vararg children: ASTNode) : this(token, children.asList())
+  constructor(token: Token.Func, vararg children: ASTNode) : this(token, children.asList())
 
   override fun withNewChildren(children: List<ASTNode>) = this.copy(children = children)
 }
 
 internal data class UnaryOperatorNode(
-  override val token: Token2.Operator,
+  override val token: Token.Operator,
   override val children: List<ASTNode>,
 ) : ASTNode {
-  constructor(token: Token2.Operator, child: ASTNode) : this(token, listOf(child))
+  constructor(token: Token.Operator, child: ASTNode) : this(token, listOf(child))
 
   override fun withNewChildren(children: List<ASTNode>) = this.copy(children = children)
 
   override fun collapse(scriptContext: ScriptContext): ASTNode {
     val child = children.firstOrNull()?.collapse(scriptContext)
     if (child is NumberNode) {
-      if (token !is Token2.UnaryMinus) throw ScriptException.WrongUnary(child, token)
+      if (token !is Token.UnaryMinus) throw ScriptException.WrongUnary(child, token)
       // negate numbers and omit this unary minus
       return child.negate()
     }
@@ -377,7 +377,7 @@ internal data class UnaryOperatorNode(
 }
 
 internal data class BracketsNode(override val children: List<ASTNode>) : ASTNode {
-  override val token: Token2
+  override val token: Token
     get() = error("Do not use token from this node, use toFormattedString instead")
 
   constructor(child: ASTNode) : this(listOf(child))
@@ -393,11 +393,11 @@ internal data class BracketsNode(override val children: List<ASTNode>) : ASTNode
 }
 
 internal sealed interface OperatorNode : ASTNode {
-  override val token: Token2.Operator
+  override val token: Token.Operator
 }
 
 internal data class PlusNode(override val children: List<ASTNode>) : OperatorNode {
-  override val token = Token2.Plus
+  override val token = Token.Plus
 
   constructor(vararg children: ASTNode) : this(children.asList())
 
@@ -433,7 +433,7 @@ internal data class PlusNode(override val children: List<ASTNode>) : OperatorNod
 }
 
 internal data class MultiplyNode(override val children: List<ASTNode>) : OperatorNode {
-  override val token = Token2.Multiply
+  override val token = Token.Multiply
 
   constructor(vararg children: ASTNode) : this(children.asList())
 
@@ -460,7 +460,7 @@ internal data class MultiplyNode(override val children: List<ASTNode>) : Operato
 }
 
 internal data class DivideNode(override val children: List<ASTNode>) : OperatorNode {
-  override val token = Token2.Divide
+  override val token = Token.Divide
 
   constructor(left: ASTNode, right: ASTNode) : this(listOf(left, right))
 
@@ -468,7 +468,7 @@ internal data class DivideNode(override val children: List<ASTNode>) : OperatorN
 }
 
 internal data class FactorialNode(override val children: List<ASTNode>) : OperatorNode {
-  override val token = Token2.Factorial
+  override val token = Token.Factorial
 
   constructor(child: ASTNode) : this(listOf(child))
 
@@ -476,7 +476,7 @@ internal data class FactorialNode(override val children: List<ASTNode>) : Operat
 }
 
 internal data class ModuloNode(override val children: List<ASTNode>) : OperatorNode {
-  override val token = Token2.Modulo
+  override val token = Token.Modulo
 
   constructor(left: ASTNode, right: ASTNode) : this(listOf(left, right))
 
@@ -484,7 +484,7 @@ internal data class ModuloNode(override val children: List<ASTNode>) : OperatorN
 }
 
 internal data class PowerNode(override val children: List<ASTNode>) : OperatorNode {
-  override val token = Token2.Power
+  override val token = Token.Power
 
   constructor(left: ASTNode, right: ASTNode) : this(listOf(left, right))
 
@@ -492,7 +492,7 @@ internal data class PowerNode(override val children: List<ASTNode>) : OperatorNo
 }
 
 internal data class SqrtNode(override val children: List<ASTNode>) : OperatorNode {
-  override val token = Token2.Sqrt
+  override val token = Token.Sqrt
 
   constructor(child: ASTNode) : this(listOf(child))
 
@@ -507,7 +507,7 @@ internal data class ScriptContext(
 )
 
 internal sealed class ScriptException : Exception() {
-  internal class WrongUnary(value: ASTNode?, operator: Token2.Operator) : ScriptException() {
+  internal class WrongUnary(value: ASTNode?, operator: Token.Operator) : ScriptException() {
     override val message = "Can not apply unary ($operator) collapse to $value"
   }
 }
@@ -547,8 +547,8 @@ private class SimplificationRule(val context: ScriptContext) {
   private fun simplifyConstant(node: ConstantNode): NumberNode {
     val result =
       when (node.token) {
-        Token2.Pi -> KBigDecimalMath.pi(context.mathContext)
-        Token2.E -> KBigDecimalMath.e(context.mathContext)
+        Token.Pi -> KBigDecimalMath.pi(context.mathContext)
+        Token.E -> KBigDecimalMath.e(context.mathContext)
       }
     return NumberNode(result)
   }
@@ -628,34 +628,34 @@ private class SimplificationRule(val context: ScriptContext) {
     val parameterBigDecimal = parameter.value
     val result =
       when (node.token) {
-        Token2.ArCos ->
+        Token.ArCos ->
           parameterBigDecimal
             .arcos(context.radianMode, context.mathContext)
             .rescaleTrig(context.mathContext)
-        Token2.ArSin ->
+        Token.ArSin ->
           parameterBigDecimal
             .arsin(context.radianMode, context.mathContext)
             .rescaleTrig(context.mathContext)
-        Token2.ArTan ->
+        Token.ArTan ->
           parameterBigDecimal
             .artan(context.radianMode, context.mathContext)
             .rescaleTrig(context.mathContext)
-        Token2.Cos ->
+        Token.Cos ->
           parameterBigDecimal
             .cos(context.radianMode, context.mathContext)
             .rescaleTrig(context.mathContext)
-        Token2.Sin ->
+        Token.Sin ->
           parameterBigDecimal
             .sin(context.radianMode, context.mathContext)
             .rescaleTrig(context.mathContext)
-        Token2.Tan ->
+        Token.Tan ->
           parameterBigDecimal
             .tan(context.radianMode, context.mathContext)
             .rescaleTrig(context.mathContext)
-        Token2.Exp -> parameterBigDecimal.exp(context.mathContext)
-        Token2.Ln -> parameterBigDecimal.ln(context.mathContext)
-        Token2.Log -> parameterBigDecimal.log(context.mathContext)
-        is Token2.Func.WithBracket -> error("Unexpected token WithBracket: $node")
+        Token.Exp -> parameterBigDecimal.exp(context.mathContext)
+        Token.Ln -> parameterBigDecimal.ln(context.mathContext)
+        Token.Log -> parameterBigDecimal.log(context.mathContext)
+        is Token.Func.WithBracket -> error("Unexpected token WithBracket: $node")
       }
     return NumberNode(result)
   }

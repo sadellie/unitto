@@ -41,7 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogState
@@ -169,7 +169,7 @@ fun DateDifferenceViewPreview() = ExpressivePreview {
           ),
         precision = 3,
         outputFormat = OutputFormat.PLAIN,
-        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
       ),
     setStartDate = {},
     setEndDate = {},

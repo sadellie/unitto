@@ -26,7 +26,7 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KRoundingMode
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.isGreaterThan
 import com.sadellie.unitto.core.common.stateIn
@@ -116,7 +116,7 @@ internal class CalculatorViewModel(
     if (isEqualClicked) {
       when {
         // Equal was clicked and user tries to type a digit or dot
-        tokens in Token2.digitsWithDotSymbols -> _input.clearText()
+        tokens in Token.digitsWithDotSymbols -> _input.clearText()
         // Equal was clicked and user tries to add operator or something
         else -> _input.placeCursorAtTheEnd()
       }
@@ -201,7 +201,7 @@ internal class CalculatorViewModel(
       val formattedResult =
         result
           .toFormattedString(prefs.precision, prefs.outputFormat)
-          .replace("-", Token2.Minus.symbol) // minus is not recognized by evaluatto
+          .replace("-", Token.Minus.symbol) // minus is not recognized by evaluatto
       calculatorHistoryRepository.add(expression = inputValue, result = formattedResult)
 
       // _input processing will not recalculate and invalidate _result for this value

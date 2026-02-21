@@ -63,7 +63,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.ui.autosize.AutoSizeTextStyleBox
 import kotlinx.coroutines.awaitCancellation
@@ -264,7 +264,7 @@ private fun ExpressionTextFieldPreview() {
   ExpressionTextField(
     modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline).height(172.dp),
     state = remember { TextFieldState() },
-    formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
     textColor = MaterialTheme.colorScheme.onSurface,
     minRatio = 0.5f,
   )

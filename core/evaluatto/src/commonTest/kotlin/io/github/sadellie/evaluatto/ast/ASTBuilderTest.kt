@@ -19,7 +19,7 @@
 package io.github.sadellie.evaluatto.ast
 
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import io.github.sadellie.evaluatto.tokenize
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -30,24 +30,24 @@ class ASTBuilderTest {
   @Test fun build_empty() = assertTree("", null)
 
   @Test
-  fun build_numberSingle() = assertTree("1", NumberNode(KBigDecimal("1.00"), Token2.Number("1")))
+  fun build_numberSingle() = assertTree("1", NumberNode(KBigDecimal("1.00"), Token.Number("1")))
 
   @Test
   fun build_numberSingleWithDot() =
-    assertTree("1.2", NumberNode(KBigDecimal("1.20"), Token2.Number("1.2")))
+    assertTree("1.2", NumberNode(KBigDecimal("1.20"), Token.Number("1.2")))
 
   @Test
-  fun build_numberOnlyDot() = assertTree(".", NumberNode(KBigDecimal("0.00"), Token2.Number(".")))
+  fun build_numberOnlyDot() = assertTree(".", NumberNode(KBigDecimal("0.00"), Token.Number(".")))
 
   @Test
   fun build_numberStartWithDot() =
-    assertTree(".2", NumberNode(KBigDecimal("0.20"), Token2.Number(".2")))
+    assertTree(".2", NumberNode(KBigDecimal("0.20"), Token.Number(".2")))
 
   @Test
   fun build_numberNegative() =
     assertTree(
       "−.2",
-      UnaryOperatorNode(Token2.UnaryMinus, NumberNode(KBigDecimal("0.20"), Token2.Number(".2"))),
+      UnaryOperatorNode(Token.UnaryMinus, NumberNode(KBigDecimal("0.20"), Token.Number(".2"))),
     )
 
   private fun assertTree(input: String, expected: ASTNode?) {

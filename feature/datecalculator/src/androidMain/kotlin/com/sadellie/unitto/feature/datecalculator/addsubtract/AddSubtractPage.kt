@@ -59,7 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Event
@@ -316,7 +316,7 @@ fun AddSubtractViewPreview() = ExpressivePreview {
         days = remember { TextFieldState("12") },
         hours = remember { TextFieldState("12") },
         minutes = remember { TextFieldState("12") },
-        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
       ),
     updateStart = {},
     updateAddition = {},

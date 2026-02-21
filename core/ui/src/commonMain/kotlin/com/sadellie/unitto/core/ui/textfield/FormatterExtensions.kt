@@ -19,12 +19,12 @@
 package com.sadellie.unitto.core.ui.textfield
 
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 
 fun String.formatExpression(formatterSymbols: FormatterSymbols): String {
   if (isEmpty()) return this
 
-  return if (Token2.Fraction.symbol in this) {
+  return if (Token.Fraction.symbol in this) {
     formatFraction(formatterSymbols)
   } else {
     formatExpressionNoFraction(formatterSymbols)
@@ -59,7 +59,7 @@ private fun String.formatExpressionNoFraction(formatterSymbols: FormatterSymbols
   }
 
   // Replace ugly symbols
-  Token2.sexyToUgly.forEach { (token, uglySymbols) ->
+  Token.sexyToUgly.forEach { (token, uglySymbols) ->
     uglySymbols.forEach { uglySymbol -> input = input.replace(uglySymbol, token) }
   }
 
@@ -103,7 +103,7 @@ internal fun String.formatNumber(formatterSymbols: FormatterSymbols): String {
 internal fun CharSequence.findNumbers(onFind: (startIndex: Int, number: String) -> Unit) {
   var index = 0
   while (index <= this.lastIndex) {
-    val number = this.substring(index).takeWhile { it.toString() in Token2.digitsWithDotSymbols }
+    val number = this.substring(index).takeWhile { it.toString() in Token.digitsWithDotSymbols }
     if (number.isBlank()) {
       // no number
       index++

@@ -81,7 +81,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.designsystem.LocalHapticFeedbackManager
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
@@ -668,7 +668,7 @@ private fun PreviewCalculatorScreen() {
             radianMode = false,
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+            formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
             history = calculatorHistoryItems,
             middleZero = false,
             acButton = true,

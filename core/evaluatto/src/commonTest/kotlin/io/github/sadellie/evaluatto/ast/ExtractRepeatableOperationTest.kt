@@ -18,7 +18,7 @@
 
 package io.github.sadellie.evaluatto.ast
 
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import io.github.sadellie.evaluatto.tokenize
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,34 +28,34 @@ class ExtractRepeatableOperationTest {
 
   @Test
   fun simpleValid() {
-    assertExtractedOperation("1+2", Operation.Plus(Token2.Number("2")))
-    assertExtractedOperation("1−2", Operation.Minus(Token2.Number("2")))
-    assertExtractedOperation("1×2", Operation.Multiply(Token2.Number("2")))
-    assertExtractedOperation("1÷2", Operation.Divide(Token2.Number("2")))
+    assertExtractedOperation("1+2", Operation.Plus(Token.Number("2")))
+    assertExtractedOperation("1−2", Operation.Minus(Token.Number("2")))
+    assertExtractedOperation("1×2", Operation.Multiply(Token.Number("2")))
+    assertExtractedOperation("1÷2", Operation.Divide(Token.Number("2")))
   }
 
   @Test
   fun plus_bracketsValid1() {
-    assertExtractedOperation("(1)+2", Operation.Plus(Token2.Number("2")))
-    assertExtractedOperation("(1)−2", Operation.Minus(Token2.Number("2")))
-    assertExtractedOperation("(1)×2", Operation.Multiply(Token2.Number("2")))
-    assertExtractedOperation("(1)÷2", Operation.Divide(Token2.Number("2")))
+    assertExtractedOperation("(1)+2", Operation.Plus(Token.Number("2")))
+    assertExtractedOperation("(1)−2", Operation.Minus(Token.Number("2")))
+    assertExtractedOperation("(1)×2", Operation.Multiply(Token.Number("2")))
+    assertExtractedOperation("(1)÷2", Operation.Divide(Token.Number("2")))
   }
 
   @Test
   fun plus_bracketsValid2() {
-    assertExtractedOperation("1+(2)", Operation.Plus(Token2.Number("2")))
-    assertExtractedOperation("1−(2)", Operation.Minus(Token2.Number("2")))
-    assertExtractedOperation("1×(2)", Operation.Multiply(Token2.Number("2")))
-    assertExtractedOperation("1÷(2)", Operation.Divide(Token2.Number("2")))
+    assertExtractedOperation("1+(2)", Operation.Plus(Token.Number("2")))
+    assertExtractedOperation("1−(2)", Operation.Minus(Token.Number("2")))
+    assertExtractedOperation("1×(2)", Operation.Multiply(Token.Number("2")))
+    assertExtractedOperation("1÷(2)", Operation.Divide(Token.Number("2")))
   }
 
   @Test
   fun plus_bracketsValid3() {
-    assertExtractedOperation("(1)+(2)", Operation.Plus(Token2.Number("2")))
-    assertExtractedOperation("(1)−(2)", Operation.Minus(Token2.Number("2")))
-    assertExtractedOperation("(1)×(2)", Operation.Multiply(Token2.Number("2")))
-    assertExtractedOperation("(1)÷(2)", Operation.Divide(Token2.Number("2")))
+    assertExtractedOperation("(1)+(2)", Operation.Plus(Token.Number("2")))
+    assertExtractedOperation("(1)−(2)", Operation.Minus(Token.Number("2")))
+    assertExtractedOperation("(1)×(2)", Operation.Multiply(Token.Number("2")))
+    assertExtractedOperation("(1)÷(2)", Operation.Divide(Token.Number("2")))
   }
 
   @Test

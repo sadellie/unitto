@@ -19,7 +19,7 @@
 package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.setMaxScale
 import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.CurrencyRatesEntity
@@ -79,7 +79,7 @@ class UnitConverterRepositoryImplTest {
       unitConverterRepo.convert(
         unitFromId = UnitID.attosecond,
         unitToId = UnitID.day,
-        value1 = "${Token2.Minus.symbol}28",
+        value1 = "${Token.Minus.symbol}28",
         value2 = "",
         formatTime = true,
         apiUrl = "",
@@ -111,7 +111,7 @@ class UnitConverterRepositoryImplTest {
       unitConverterRepo.convert(
         unitFromId = UnitID.attosecond,
         unitToId = UnitID.day,
-        value1 = "${Token2.Minus.symbol}0",
+        value1 = "${Token.Minus.symbol}0",
         value2 = "",
         formatTime = true,
         apiUrl = "",

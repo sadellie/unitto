@@ -18,10 +18,10 @@
 
 package com.sadellie.unitto.core.common
 
-sealed interface Token2 {
+sealed interface Token {
   val symbol: String
 
-  sealed interface Formatter : Token2 {
+  sealed interface Formatter : Token {
     companion object {
       fun from(symbol: String) =
         when (symbol) {
@@ -34,25 +34,25 @@ sealed interface Token2 {
   }
 
   // Used only in formatter, don't use internally
-  sealed interface DisplayOnly : Token2
+  sealed interface DisplayOnly : Token
 
-  sealed interface Digit : Token2 {
+  sealed interface Digit : Token {
     companion object {
       val all by lazy {
         listOf(Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8, Digit9, Digit0)
       }
-      val allSymbols by lazy { all.map(Token2::symbol) }
+      val allSymbols by lazy { all.map(Token::symbol) }
     }
   }
 
-  sealed interface Letter : Token2 {
+  sealed interface Letter : Token {
     companion object {
       val all by lazy { listOf(LetterA, LetterB, LetterC, LetterD, LetterE, LetterF) }
-      val allSymbols by lazy { all.map(Token2::symbol) }
+      val allSymbols by lazy { all.map(Token::symbol) }
     }
   }
 
-  sealed interface Operator : Token2 {
+  sealed interface Operator : Token {
 
     enum class Associativity {
       LEFT,
@@ -68,11 +68,11 @@ sealed interface Token2 {
       val all by lazy {
         listOf(Plus, Minus, Multiply, Divide, Power, Factorial, Modulo, Percent, Sqrt)
       }
-      val allSymbols by lazy { all.map(Token2::symbol) }
+      val allSymbols by lazy { all.map(Token::symbol) }
     }
   }
 
-  sealed interface Func : Token2 {
+  sealed interface Func : Token {
     /**
      * Same [Func] but with an opening bracket. Use it only for input from button clicks and in text
      * field transformation for correct cursor positions.
@@ -104,10 +104,10 @@ sealed interface Token2 {
     }
   }
 
-  sealed interface Const : Token2 {
+  sealed interface Const : Token {
     companion object {
       val all by lazy { listOf(Pi, E) }
-      val allSymbols by lazy { all.map(Token2::symbol) }
+      val allSymbols by lazy { all.map(Token::symbol) }
     }
   }
 
@@ -163,7 +163,7 @@ sealed interface Token2 {
     override val symbol = "0"
   }
 
-  data object Dot : Token2 {
+  data object Dot : Token {
     override val symbol = "."
   }
 
@@ -352,13 +352,13 @@ sealed interface Token2 {
     override val symbol = "⁄"
   }
 
-  data class Number(override val symbol: String) : Token2
+  data class Number(override val symbol: String) : Token
 
-  data object LeftBracket : Token2 {
+  data object LeftBracket : Token {
     override val symbol = "("
   }
 
-  data object RightBracket : Token2 {
+  data object RightBracket : Token {
     override val symbol = ")"
   }
 
@@ -368,7 +368,7 @@ sealed interface Token2 {
         .sortedByDescending { it.symbol.length }
     }
     val digitsWithDot by lazy { Digit.all + Dot }
-    val digitsWithDotSymbols by lazy { digitsWithDot.map(Token2::symbol) }
+    val digitsWithDotSymbols by lazy { digitsWithDot.map(Token::symbol) }
     val expressionTokens by lazy {
       digitsWithDot +
         Operator.all +

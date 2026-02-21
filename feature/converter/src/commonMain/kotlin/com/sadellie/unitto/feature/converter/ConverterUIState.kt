@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.converter
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isGreaterThan
 import com.sadellie.unitto.core.common.toFormattedString
@@ -109,10 +109,10 @@ internal fun ConverterResult.Time.format(
     result += "$value$attosecondLabel"
   }
 
-  if (result.isEmpty()) return Token2.Digit0.symbol
+  if (result.isEmpty()) return Token.Digit0.symbol
   val resultString = result.joinToString(" ")
 
-  return if (negative) (Token2.Minus.symbol + resultString) else resultString
+  return if (negative) (Token.Minus.symbol + resultString) else resultString
 }
 
 internal fun ConverterResult.FootInch.format(

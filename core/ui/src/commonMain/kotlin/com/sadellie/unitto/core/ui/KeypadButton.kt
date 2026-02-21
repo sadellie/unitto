@@ -21,7 +21,7 @@ package com.sadellie.unitto.core.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.icons.iconpack.AcTan
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ArCos
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ArSin
@@ -123,23 +123,23 @@ sealed interface KeypadButton {
   ) : KeypadButton
 
   companion object {
-    val Key0 = KeypadButtonAdd(IconPack.Key0, null, Token2.Digit0.symbol)
-    val Key1 = KeypadButtonAdd(IconPack.Key1, null, Token2.Digit1.symbol)
-    val Key2 = KeypadButtonAdd(IconPack.Key2, null, Token2.Digit2.symbol)
-    val Key3 = KeypadButtonAdd(IconPack.Key3, null, Token2.Digit3.symbol)
-    val Key4 = KeypadButtonAdd(IconPack.Key4, null, Token2.Digit4.symbol)
-    val Key5 = KeypadButtonAdd(IconPack.Key5, null, Token2.Digit5.symbol)
-    val Key6 = KeypadButtonAdd(IconPack.Key6, null, Token2.Digit6.symbol)
-    val Key7 = KeypadButtonAdd(IconPack.Key7, null, Token2.Digit7.symbol)
-    val Key8 = KeypadButtonAdd(IconPack.Key8, null, Token2.Digit8.symbol)
-    val Key9 = KeypadButtonAdd(IconPack.Key9, null, Token2.Digit9.symbol)
+    val Key0 = KeypadButtonAdd(IconPack.Key0, null, Token.Digit0.symbol)
+    val Key1 = KeypadButtonAdd(IconPack.Key1, null, Token.Digit1.symbol)
+    val Key2 = KeypadButtonAdd(IconPack.Key2, null, Token.Digit2.symbol)
+    val Key3 = KeypadButtonAdd(IconPack.Key3, null, Token.Digit3.symbol)
+    val Key4 = KeypadButtonAdd(IconPack.Key4, null, Token.Digit4.symbol)
+    val Key5 = KeypadButtonAdd(IconPack.Key5, null, Token.Digit5.symbol)
+    val Key6 = KeypadButtonAdd(IconPack.Key6, null, Token.Digit6.symbol)
+    val Key7 = KeypadButtonAdd(IconPack.Key7, null, Token.Digit7.symbol)
+    val Key8 = KeypadButtonAdd(IconPack.Key8, null, Token.Digit8.symbol)
+    val Key9 = KeypadButtonAdd(IconPack.Key9, null, Token.Digit9.symbol)
 
-    val KeyA = KeypadButtonAdd(IconPack.KeyA, null, Token2.LetterA.symbol)
-    val KeyB = KeypadButtonAdd(IconPack.KeyB, null, Token2.LetterB.symbol)
-    val KeyC = KeypadButtonAdd(IconPack.KeyC, null, Token2.LetterC.symbol)
-    val KeyD = KeypadButtonAdd(IconPack.KeyD, null, Token2.LetterD.symbol)
-    val KeyE = KeypadButtonAdd(IconPack.KeyE, null, Token2.LetterE.symbol)
-    val KeyF = KeypadButtonAdd(IconPack.KeyF, null, Token2.LetterF.symbol)
+    val KeyA = KeypadButtonAdd(IconPack.KeyA, null, Token.LetterA.symbol)
+    val KeyB = KeypadButtonAdd(IconPack.KeyB, null, Token.LetterB.symbol)
+    val KeyC = KeypadButtonAdd(IconPack.KeyC, null, Token.LetterC.symbol)
+    val KeyD = KeypadButtonAdd(IconPack.KeyD, null, Token.LetterD.symbol)
+    val KeyE = KeypadButtonAdd(IconPack.KeyE, null, Token.LetterE.symbol)
+    val KeyF = KeypadButtonAdd(IconPack.KeyF, null, Token.LetterF.symbol)
 
     val AngleRadKey = KeypadButtonSimple(IconPack.Rad, Res.string.keyboard_radian)
     val AngleDegKey = KeypadButtonSimple(IconPack.Deg, Res.string.keyboard_degree)
@@ -150,57 +150,57 @@ sealed interface KeypadButton {
     val InvKey = KeypadButtonSimple(IconPack.Inv, Res.string.keyboard_inverse)
 
     val AcTanKey =
-      KeypadButtonAdd(IconPack.AcTan, Res.string.keyboard_actan, Token2.ArTan.WithBracket.symbol)
+      KeypadButtonAdd(IconPack.AcTan, Res.string.keyboard_actan, Token.ArTan.WithBracket.symbol)
     val ArCosKey =
-      KeypadButtonAdd(IconPack.ArCos, Res.string.keyboard_arcos, Token2.ArCos.WithBracket.symbol)
+      KeypadButtonAdd(IconPack.ArCos, Res.string.keyboard_arcos, Token.ArCos.WithBracket.symbol)
     val ArSinKey =
-      KeypadButtonAdd(IconPack.ArSin, Res.string.keyboard_arsin, Token2.ArSin.WithBracket.symbol)
-    val CommaKey = KeypadButtonAdd(IconPack.Comma, Res.string.common_comma, Token2.Dot.symbol)
+      KeypadButtonAdd(IconPack.ArSin, Res.string.keyboard_arsin, Token.ArSin.WithBracket.symbol)
+    val CommaKey = KeypadButtonAdd(IconPack.Comma, Res.string.common_comma, Token.Dot.symbol)
     val CosKey =
-      KeypadButtonAdd(IconPack.Cos, Res.string.keyboard_cos, Token2.Cos.WithBracket.symbol)
-    val DotKey = KeypadButtonAdd(IconPack.Dot, Res.string.keyboard_dot, Token2.Dot.symbol)
+      KeypadButtonAdd(IconPack.Cos, Res.string.keyboard_cos, Token.Cos.WithBracket.symbol)
+    val DotKey = KeypadButtonAdd(IconPack.Dot, Res.string.keyboard_dot, Token.Dot.symbol)
     val DivideKey =
-      KeypadButtonAdd(IconPack.Divide, Res.string.keyboard_divide, Token2.Divide.symbol)
-    val EulerKey = KeypadButtonAdd(IconPack.Euler, Res.string.keyboard_euler, Token2.E.symbol)
-    val ExKey = KeypadButtonAdd(IconPack.Ex, Res.string.keyboard_exp, Token2.Exp.WithBracket.symbol)
+      KeypadButtonAdd(IconPack.Divide, Res.string.keyboard_divide, Token.Divide.symbol)
+    val EulerKey = KeypadButtonAdd(IconPack.Euler, Res.string.keyboard_euler, Token.E.symbol)
+    val ExKey = KeypadButtonAdd(IconPack.Ex, Res.string.keyboard_exp, Token.Exp.WithBracket.symbol)
     val FactorialKey =
-      KeypadButtonAdd(IconPack.Factorial, Res.string.keyboard_factorial, Token2.Factorial.symbol)
-    val MinusKey = KeypadButtonAdd(IconPack.Minus, Res.string.keyboard_minus, Token2.Minus.symbol)
+      KeypadButtonAdd(IconPack.Factorial, Res.string.keyboard_factorial, Token.Factorial.symbol)
+    val MinusKey = KeypadButtonAdd(IconPack.Minus, Res.string.keyboard_minus, Token.Minus.symbol)
     val ModuloKey =
-      KeypadButtonAdd(IconPack.Modulo, Res.string.keyboard_modulo, Token2.Modulo.symbol)
+      KeypadButtonAdd(IconPack.Modulo, Res.string.keyboard_modulo, Token.Modulo.symbol)
     val MultiplyKey =
-      KeypadButtonAdd(IconPack.Multiply, Res.string.keyboard_multiply, Token2.Multiply.symbol)
+      KeypadButtonAdd(IconPack.Multiply, Res.string.keyboard_multiply, Token.Multiply.symbol)
     val LeftBracketKey =
       KeypadButtonAdd(
         IconPack.LeftBracket,
         Res.string.keyboard_left_bracket,
-        Token2.LeftBracket.symbol,
+        Token.LeftBracket.symbol,
       )
-    val LnKey = KeypadButtonAdd(IconPack.Ln, Res.string.keyboard_ln, Token2.Ln.WithBracket.symbol)
+    val LnKey = KeypadButtonAdd(IconPack.Ln, Res.string.keyboard_ln, Token.Ln.WithBracket.symbol)
     val LogKey =
-      KeypadButtonAdd(IconPack.Log, Res.string.keyboard_log, Token2.Log.WithBracket.symbol)
+      KeypadButtonAdd(IconPack.Log, Res.string.keyboard_log, Token.Log.WithBracket.symbol)
     val PercentKey =
-      KeypadButtonAdd(IconPack.Percent, Res.string.keyboard_percent, Token2.Percent.symbol)
-    val PlusKey = KeypadButtonAdd(IconPack.Plus, Res.string.keyboard_plus, Token2.Plus.symbol)
-    val PiKey = KeypadButtonAdd(IconPack.Pi, Res.string.keyboard_pi, Token2.Pi.symbol)
-    val PowerKey = KeypadButtonAdd(IconPack.Power, Res.string.keyboard_power, Token2.Power.symbol)
+      KeypadButtonAdd(IconPack.Percent, Res.string.keyboard_percent, Token.Percent.symbol)
+    val PlusKey = KeypadButtonAdd(IconPack.Plus, Res.string.keyboard_plus, Token.Plus.symbol)
+    val PiKey = KeypadButtonAdd(IconPack.Pi, Res.string.keyboard_pi, Token.Pi.symbol)
+    val PowerKey = KeypadButtonAdd(IconPack.Power, Res.string.keyboard_power, Token.Power.symbol)
     val Power10Key =
       KeypadButtonAdd(
         IconPack.Power10,
         Res.string.keyboard_power_10,
-        Token2.Digit1.symbol + Token2.Digit0.symbol + Token2.Power.symbol,
+        Token.Digit1.symbol + Token.Digit0.symbol + Token.Power.symbol,
       )
-    val RootKey = KeypadButtonAdd(IconPack.Root, Res.string.keyboard_root, Token2.Sqrt.symbol)
+    val RootKey = KeypadButtonAdd(IconPack.Root, Res.string.keyboard_root, Token.Sqrt.symbol)
     val RightBracketKey =
       KeypadButtonAdd(
         IconPack.RightBracket,
         Res.string.keyboard_right_bracket,
-        Token2.RightBracket.symbol,
+        Token.RightBracket.symbol,
       )
     val SinKey =
-      KeypadButtonAdd(IconPack.Sin, Res.string.keyboard_sin, Token2.Sin.WithBracket.symbol)
+      KeypadButtonAdd(IconPack.Sin, Res.string.keyboard_sin, Token.Sin.WithBracket.symbol)
     val TanKey =
-      KeypadButtonAdd(IconPack.Tan, Res.string.keyboard_tan, Token2.Tan.WithBracket.symbol)
+      KeypadButtonAdd(IconPack.Tan, Res.string.keyboard_tan, Token.Tan.WithBracket.symbol)
   }
 }
 

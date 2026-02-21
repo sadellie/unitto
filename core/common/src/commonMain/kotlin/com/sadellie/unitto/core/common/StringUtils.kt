@@ -62,11 +62,11 @@ fun String.isExpression(): Boolean {
   if (isEmpty()) return false
 
   // Positive numbers and zero
-  if (all { it.toString() in Token2.digitsWithDotSymbols }) return false
+  if (all { it.toString() in Token.digitsWithDotSymbols }) return false
 
   // Negative numbers
   // Needs to start with a negative
-  if (this.first().toString() != Token2.Minus.symbol) return true
+  if (this.first().toString() != Token.Minus.symbol) return true
 
   // Rest of the string must be just like positive
   return this.drop(1).isExpression()

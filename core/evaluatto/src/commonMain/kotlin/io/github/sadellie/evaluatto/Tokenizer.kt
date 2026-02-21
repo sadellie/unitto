@@ -18,7 +18,7 @@
 
 package io.github.sadellie.evaluatto
 
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 
 internal sealed class TokenizerException(message: String) : Exception(message) {
 
@@ -29,11 +29,11 @@ internal sealed class TokenizerException(message: String) : Exception(message) {
   class BadScientificNotation : TokenizerException("Expected plus or minus symbol after \"E\"")
 }
 
-internal fun String.tokenize(): List<Token2> {
+internal fun String.tokenize(): List<Token> {
   val input = this
   if (input.isEmpty()) return emptyList()
   var cursor = 0
-  val tokens = mutableListOf<Token2>()
+  val tokens = mutableListOf<Token>()
 
   while (cursor != input.length) {
     // try to find token
@@ -61,11 +61,11 @@ internal fun String.tokenize(): List<Token2> {
   }
 
   for ((index, token) in tokens.withIndex()) {
-    if (token != Token2.Minus) continue
+    if (token != Token.Minus) continue
 
     // first symbol is always unary
     if (index == 0) {
-      tokens[index] = Token2.UnaryMinus
+      tokens[index] = Token.UnaryMinus
       continue
     }
 
@@ -73,21 +73,21 @@ internal fun String.tokenize(): List<Token2> {
     // always unary when following another operator
     val previousToken = tokens[index - 1]
     if (
-      previousToken is Token2.LeftBracket ||
-        (previousToken is Token2.Operator &&
+      previousToken is Token.LeftBracket ||
+        (previousToken is Token.Operator &&
           // NOT after factorial, percentage and similar tokens
           (!previousToken.isUnary &&
-            previousToken.associativity != Token2.Operator.Associativity.LEFT))
+            previousToken.associativity != Token.Operator.Associativity.LEFT))
     ) {
-      tokens[index] = Token2.UnaryMinus
+      tokens[index] = Token.UnaryMinus
     }
   }
 
   return tokens.repairLexicon()
 }
 
-private fun findTokenAhead(input: String, cursor: Int): Token2? {
-  for (token in Token2.parseableTokens) {
+private fun findTokenAhead(input: String, cursor: Int): Token? {
+  for (token in Token.parseableTokens) {
     // look in front for possible match with current token
     val lookUpString =
       input.substring(cursor, (cursor + token.symbol.length).coerceAtMost(input.length))
@@ -97,16 +97,16 @@ private fun findTokenAhead(input: String, cursor: Int): Token2? {
   return null
 }
 
-private fun findNumberTokenAhead(input: String, cursor: Int): Token2 {
+private fun findNumberTokenAhead(input: String, cursor: Int): Token {
   // walk left while
   val number = input.substring(cursor).takeWhile { char -> char.isDigitOrDot() }
   if (number.count { it == '.' } > 1) throw TokenizerException.TooManyFractionSymbols()
-  return Token2.Number(number)
+  return Token.Number(number)
 }
 
 private fun Char.isDigitOrDot(): Boolean = isDigit() || this == '.'
 
-private fun MutableList<Token2>.repairLexicon(): List<Token2> {
+private fun MutableList<Token>.repairLexicon(): List<Token> {
   return this.missingClosingBrackets()
     .unpackNotation()
     .missingMultiply()
@@ -120,18 +120,18 @@ private fun MutableList<Token2>.repairLexicon(): List<Token2> {
     .missingMultiply()
 }
 
-private fun MutableList<Token2>.missingClosingBrackets(): MutableList<Token2> {
-  val leftBracket = this.count { it == Token2.LeftBracket }
-  val rightBrackets = this.count { it == Token2.RightBracket }
+private fun MutableList<Token>.missingClosingBrackets(): MutableList<Token> {
+  val leftBracket = this.count { it == Token.LeftBracket }
+  val rightBrackets = this.count { it == Token.RightBracket }
   val neededBrackets = leftBracket - rightBrackets
 
   if (neededBrackets <= 0) return this
 
-  repeat(neededBrackets) { this.add(Token2.RightBracket) }
+  repeat(neededBrackets) { this.add(Token.RightBracket) }
   return this
 }
 
-private fun MutableList<Token2>.missingMultiply(): MutableList<Token2> {
+private fun MutableList<Token>.missingMultiply(): MutableList<Token> {
   val iterator = this.listIterator()
 
   // input    : (12)34
@@ -154,10 +154,10 @@ private fun MutableList<Token2>.missingMultiply(): MutableList<Token2> {
     if (!iterator.hasNext()) break
 
     // may need a multiplication after one of these
-    val isDigit1 = currentToken is Token2.Number
-    val isConst1 = currentToken is Token2.Const
-    val isRightBracket1 = currentToken == Token2.RightBracket
-    val isFactorial1 = currentToken == Token2.Factorial
+    val isDigit1 = currentToken is Token.Number
+    val isConst1 = currentToken is Token.Const
+    val isRightBracket1 = currentToken == Token.RightBracket
+    val isFactorial1 = currentToken == Token.Factorial
     val canBeFollowedByMultiplyToken = isDigit1 || isConst1 || isRightBracket1 || isFactorial1
     if (canBeFollowedByMultiplyToken) {
       // Peek next, but then go back
@@ -166,15 +166,15 @@ private fun MutableList<Token2>.missingMultiply(): MutableList<Token2> {
       iterator.previous()
 
       // needs a multiply symbol between tokens if one of these
-      val isLeftBracket2 = nextToken == Token2.LeftBracket
-      val isFunction2 = nextToken is Token2.Func
-      val isConst2 = nextToken is Token2.Const
-      val isSqrt2 = nextToken == Token2.Sqrt
-      val isDigit2 = nextToken is Token2.Number
+      val isLeftBracket2 = nextToken == Token.LeftBracket
+      val isFunction2 = nextToken is Token.Func
+      val isConst2 = nextToken is Token.Const
+      val isSqrt2 = nextToken == Token.Sqrt
+      val isDigit2 = nextToken is Token.Number
 
       val canHaveMultiplyBefore = isLeftBracket2 || isFunction2 || isConst2 || isSqrt2 || isDigit2
       if (canHaveMultiplyBefore) {
-        iterator.add(Token2.Multiply)
+        iterator.add(Token.Multiply)
       }
     }
   }
@@ -182,13 +182,13 @@ private fun MutableList<Token2>.missingMultiply(): MutableList<Token2> {
   return this
 }
 
-private fun MutableList<Token2>.unpackNotation(): MutableList<Token2> {
+private fun MutableList<Token>.unpackNotation(): MutableList<Token> {
   // Transform 1E+7 ==> 1*10^7
   // Transform 1E-7 ==> 1/10^7
   val iterator = this.listIterator()
 
   while (iterator.hasNext()) {
-    if (iterator.next() == Token2.EngineeringE) {
+    if (iterator.next() == Token.EngineeringE) {
       iterator.remove()
 
       val tokenAfterE =
@@ -201,26 +201,26 @@ private fun MutableList<Token2>.unpackNotation(): MutableList<Token2> {
       iterator.remove()
 
       when (tokenAfterE) {
-        Token2.Minus -> iterator.add(Token2.Divide)
-        Token2.Plus -> iterator.add(Token2.Multiply)
+        Token.Minus -> iterator.add(Token.Divide)
+        Token.Plus -> iterator.add(Token.Multiply)
         else -> throw TokenizerException.BadScientificNotation()
       }
 
-      iterator.add(Token2.Number("10"))
-      iterator.add(Token2.Power)
+      iterator.add(Token.Number("10"))
+      iterator.add(Token.Power)
     }
   }
 
   return this
 }
 
-private fun MutableList<Token2>.unpackAllPercents(): MutableList<Token2> {
+private fun MutableList<Token>.unpackAllPercents(): MutableList<Token> {
   var result = this
 
-  var percentIndex = result.indexOf(Token2.Percent)
+  var percentIndex = result.indexOf(Token.Percent)
   while (percentIndex != -1) {
     result = result.unpackPercentAt(percentIndex)
-    percentIndex = result.indexOf(Token2.Percent)
+    percentIndex = result.indexOf(Token.Percent)
   }
   return result
 }
@@ -229,7 +229,7 @@ private fun MutableList<Token2>.unpackAllPercents(): MutableList<Token2> {
  * Unpack unethical percentages. See tests for examples. This methods wraps expressions in more
  * brackets for safer calculation.
  */
-private fun MutableList<Token2>.unpackPercentAt(percentIndex: Int): MutableList<Token2> {
+private fun MutableList<Token>.unpackPercentAt(percentIndex: Int): MutableList<Token> {
   var cursor = percentIndex
 
   // get whatever is the percentage
@@ -247,7 +247,7 @@ private fun MutableList<Token2>.unpackPercentAt(percentIndex: Int): MutableList<
 
   // Don't go further. Percentage doesn't follow anything. Fallback: wrap expression with division
   // by 100: 123% -> (123/100)
-  if ((operator == null) or (operator !in listOf(Token2.Plus, Token2.Minus))) {
+  if ((operator == null) or (operator !in listOf(Token.Plus, Token.Minus))) {
     val mutList = this.toMutableList()
 
     // Remove percentage
@@ -256,14 +256,11 @@ private fun MutableList<Token2>.unpackPercentAt(percentIndex: Int): MutableList<
 
     // Add opening bracket before percentage
     // 123 -> (123
-    mutList.add(percentIndex - expressionTokensBefore.size, Token2.LeftBracket)
+    mutList.add(percentIndex - expressionTokensBefore.size, Token.LeftBracket)
 
     // Add "/100)" and closing bracket
     // (123 -> (123/100)
-    mutList.addAll(
-      percentIndex + 1,
-      listOf(Token2.Divide, Token2.Number("100"), Token2.RightBracket),
-    )
+    mutList.addAll(percentIndex + 1, listOf(Token.Divide, Token.Number("100"), Token.RightBracket))
 
     return mutList
   }
@@ -279,19 +276,19 @@ private fun MutableList<Token2>.unpackPercentAt(percentIndex: Int): MutableList<
   mutList.removeAt(percentIndex)
 
   // Add opening bracket before percentage
-  mutList.add(percentIndex - expressionTokensBefore.size, Token2.LeftBracket)
+  mutList.add(percentIndex - expressionTokensBefore.size, Token.LeftBracket)
 
   // Add "/ 100" and other stuff
   mutList.addAll(
     percentIndex + 1,
     listOf(
-      Token2.Divide,
-      Token2.Number("100"),
-      Token2.Multiply,
-      Token2.LeftBracket,
+      Token.Divide,
+      Token.Number("100"),
+      Token.Multiply,
+      Token.LeftBracket,
       *base.toTypedArray(),
-      Token2.RightBracket,
-      Token2.RightBracket,
+      Token.RightBracket,
+      Token.RightBracket,
     ),
   )
 
@@ -308,16 +305,16 @@ private fun MutableList<Token2>.unpackPercentAt(percentIndex: Int): MutableList<
  * - 132.5+(15+4)|% -> (15+4)
  * - 132.5+(15+4)%| -> throws [TokenizerException.FailedToUnpackNumber]
  */
-internal fun List<Token2>.getExpressionBefore(pos: Int): List<Token2> {
+internal fun List<Token>.getExpressionBefore(pos: Int): List<Token> {
   val tokenInFront = this[pos]
 
   // Just number
-  if (tokenInFront is Token2.Number) return listOf(tokenInFront)
+  if (tokenInFront is Token.Number) return listOf(tokenInFront)
 
   // For cases like "100+(2+5)|%" or "2!|+5". The check above won't pass, so the next expected thing
   // is
   // a number or expression in brackets. Anything else is not expected.
-  val validTokenInFront = tokenInFront == Token2.RightBracket || tokenInFront == Token2.Factorial
+  val validTokenInFront = tokenInFront == Token.RightBracket || tokenInFront == Token.Factorial
   if (!validTokenInFront) throw TokenizerException.FailedToUnpackNumber()
 
   var cursor = pos
@@ -327,9 +324,9 @@ internal fun List<Token2>.getExpressionBefore(pos: Int): List<Token2> {
   // Start walking left until we get balanced brackets
   while (cursor >= 0) {
     val currentToken = this[cursor]
-    if (currentToken == Token2.LeftBracket) leftBrackets++
-    if (currentToken == Token2.RightBracket) rightBrackets++
-    if (leftBrackets == rightBrackets && currentToken != Token2.Factorial) break
+    if (currentToken == Token.LeftBracket) leftBrackets++
+    if (currentToken == Token.RightBracket) rightBrackets++
+    if (leftBrackets == rightBrackets && currentToken != Token.Factorial) break
     cursor--
   }
 

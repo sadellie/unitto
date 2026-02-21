@@ -46,7 +46,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -221,7 +221,7 @@ private fun PreviewCalculatorHistoryList() {
   CalculatorHistoryList(
     modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh).fillMaxSize(),
     calculatorHistoryItems = calculatorHistoryItems,
-    formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
     addTokens = {},
     onDelete = {},
     showDeleteButtons = true,

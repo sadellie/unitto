@@ -20,7 +20,7 @@ package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.ui.text.TextRange
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import kotlin.math.abs
 
 fun CharSequence.fixCursor(pos: Int): Int {
@@ -47,7 +47,7 @@ fun TextFieldBuffer.fixTextRange(): TextRange {
  * replace!
  */
 fun String.tokenLengthAhead(pos: Int): Int {
-  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it.length }
+  Token.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it.length }
 
   // We default to 1 here. It means that cursor is not placed after illegal token. Just a number
   // or a binary operator or something else, can delete by one symbol.
@@ -55,7 +55,7 @@ fun String.tokenLengthAhead(pos: Int): Int {
 }
 
 fun String.tokenAhead(pos: Int): String {
-  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it }
+  Token.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it }
 
   return substring((pos - 1).coerceAtLeast(0), pos)
 }
@@ -66,7 +66,7 @@ fun String.tokenAhead(pos: Int): String {
  * - `123,|456+cos(8)` return `false` (impossible in UI. See [ExpressionOutputTransformation])
  */
 private fun CharSequence.isPlacedIllegallyAt(pos: Int): Boolean {
-  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isAtToken(this, it)) return true }
+  Token.Func.allSymbolsWithBracket.forEach { if (pos.isAtToken(this, it)) return true }
 
   return false
 }
@@ -88,7 +88,7 @@ private fun Int.isAfterToken(str: String, token: String): Boolean {
 // This can also make [TextFieldState.addTokens] better by checking tokens both ways. Needs more
 // tests
 fun String.tokenAfter(pos: Int): String {
-  Token2.Func.allSymbolsWithBracket.forEach { if (pos.isBeforeToken(this, it)) return it }
+  Token.Func.allSymbolsWithBracket.forEach { if (pos.isBeforeToken(this, it)) return it }
 
   return substring(pos, (pos + 1).coerceAtMost(this.length))
 }

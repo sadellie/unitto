@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.converter
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.data.converter.ConverterResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,7 +29,7 @@ import kotlin.test.assertEquals
 class FootInchFormatTest {
   private val scale = 3
   private val outputFormat = OutputFormat.PLAIN
-  private val formatterSymbols = FormatterSymbols(Token2.Period, Token2.Comma, false)
+  private val formatterSymbols = FormatterSymbols(Token.Period, Token.Comma, false)
 
   @Test
   fun testNegative() {

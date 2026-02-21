@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.ui.KeyboardButtonToken
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.BackspaceKey
@@ -70,7 +70,7 @@ internal fun DefaultKeyboard(
   onClearClick: () -> Unit,
   onDeleteClick: () -> Unit,
   onBracketsClick: () -> Unit,
-  fractional: Token2.Formatter,
+  fractional: Token.Formatter,
   middleZero: Boolean,
   acButton: Boolean,
 ) {
@@ -108,7 +108,7 @@ internal fun DefaultKeyboard(
     KeypadButtonFilled(bModifier, MinusKey, iconHeight, onAddTokenClick)
 
     val fractionalKey =
-      remember(fractional) { if (fractional == Token2.Period) DotKey else CommaKey }
+      remember(fractional) { if (fractional == Token.Period) DotKey else CommaKey }
     if (middleZero) {
       KeypadButtonLight(bModifier, fractionalKey, iconHeight, onAddTokenClick)
       KeypadButtonLight(bModifier, Key0, iconHeight, onAddTokenClick)
@@ -172,7 +172,7 @@ private fun PreviewConverterKeyboard() {
     onClearClick = {},
     onDeleteClick = {},
     onBracketsClick = {},
-    fractional = Token2.Period,
+    fractional = Token.Period,
     middleZero = false,
     acButton = true,
   )

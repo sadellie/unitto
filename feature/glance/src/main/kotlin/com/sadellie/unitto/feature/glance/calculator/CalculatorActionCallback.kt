@@ -33,7 +33,7 @@ import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.state.updateAppWidgetState
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.ui.textfield.addBracket
@@ -59,7 +59,7 @@ internal class AddTokenAction : ActionCallback {
     updateAppWidgetState(context, glanceId) { state ->
       val isEqualClicked = state[CalculatorWidget.equalClickedStateKey] ?: false
       // Clear input if equal is clicked and new token is a Digit
-      if (isEqualClicked && tokenToAdd in Token2.digitsWithDotSymbols) {
+      if (isEqualClicked && tokenToAdd in Token.digitsWithDotSymbols) {
         state[CalculatorWidget.inputStateKey] = ""
         state[CalculatorWidget.outputStateKey] = ""
       }
@@ -175,7 +175,7 @@ internal class CopyResultAction : ActionCallback {
   companion object {
     internal val outputParamKey = ActionParameters.Key<String>("outputParam")
 
-    fun create(output: String, grouping: Token2.Formatter): Action =
+    fun create(output: String, grouping: Token.Formatter): Action =
       actionRunCallback<CopyResultAction>(
         actionParametersOf(outputParamKey to output.replace(grouping.symbol, ""))
       )

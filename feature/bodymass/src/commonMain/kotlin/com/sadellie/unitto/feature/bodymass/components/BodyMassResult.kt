@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.textfield.formatExpression
@@ -179,6 +179,6 @@ fun PreviewBodyMassResult() {
     value = KBigDecimal(18.5),
     range = KBigDecimal(50.0) to KBigDecimal(80.0),
     rangeSuffix = "kg",
-    formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
   )
 }

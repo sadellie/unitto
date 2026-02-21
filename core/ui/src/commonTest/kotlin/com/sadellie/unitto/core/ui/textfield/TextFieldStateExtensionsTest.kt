@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.core.ui.textfield
 
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import kotlin.test.Test
 
 class TextFieldStateExtensionsTest {
@@ -26,234 +26,234 @@ class TextFieldStateExtensionsTest {
   @Test
   fun addTokens_addPlus() {
     // EMPTY
-    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("[]", "[123+456]") { it.addTokens(Token2.Plus.symbol) }
+    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("[]", "[123+456]") { it.addTokens(Token.Plus.symbol) }
 
     // PLUS
-    compareTextStates("123+[]", "123+[]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123[+]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]56", "123+[4]56") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123+[456]") { it.addTokens(Token2.Plus.symbol) }
+    compareTextStates("123+[]", "123+[]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123[+]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]56", "123+[4]56") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123+[456]") { it.addTokens(Token.Plus.symbol) }
 
     // MINUS
-    compareTextStates("123+[]", "123-[]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123[-]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]56", "123-[4]56") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123-[456]") { it.addTokens(Token2.Plus.symbol) }
+    compareTextStates("123+[]", "123-[]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123[-]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]56", "123-[4]56") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123-[456]") { it.addTokens(Token.Plus.symbol) }
 
     // MULTIPLY
-    compareTextStates("123+[]", "123*[]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123[*]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]56", "123*[4]56") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123*[456]") { it.addTokens(Token2.Plus.symbol) }
+    compareTextStates("123+[]", "123*[]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123[*]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]56", "123*[4]56") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123*[456]") { it.addTokens(Token.Plus.symbol) }
 
     // DIVIDE
-    compareTextStates("123+[]", "123/[]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123[/]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]56", "123/[4]56") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123/[456]") { it.addTokens(Token2.Plus.symbol) }
+    compareTextStates("123+[]", "123/[]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123[/]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]56", "123/[4]56") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123/[456]") { it.addTokens(Token.Plus.symbol) }
 
     // SQRT
-    compareTextStates("123+[]", "123√[]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123[√]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]56", "123√[4]56") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123√[456]") { it.addTokens(Token2.Plus.symbol) }
+    compareTextStates("123+[]", "123√[]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123[√]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]56", "123√[4]56") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123√[456]") { it.addTokens(Token.Plus.symbol) }
 
     // POWER
-    compareTextStates("123+[]", "123^[]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123[^]") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]56", "123^[4]56") { it.addTokens(Token2.Plus.symbol) }
-    compareTextStates("123+[]", "123^[456]") { it.addTokens(Token2.Plus.symbol) }
+    compareTextStates("123+[]", "123^[]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123[^]") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]56", "123^[4]56") { it.addTokens(Token.Plus.symbol) }
+    compareTextStates("123+[]", "123^[456]") { it.addTokens(Token.Plus.symbol) }
   }
 
   @Test
   fun addTokens_addMinus() {
     // EMPTY
-    compareTextStates("-[]123+456", "[]123+456") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("-[]+456", "[123]+456") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("-[]", "[123+456]") { it.addTokens(Token2.Minus.symbol) }
+    compareTextStates("-[]123+456", "[]123+456") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("-[]+456", "[123]+456") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("-[]", "[123+456]") { it.addTokens(Token.Minus.symbol) }
 
     // PLUS
-    compareTextStates("123-[]", "123+[]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123[+]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]56", "123+[4]56") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123+[456]") { it.addTokens(Token2.Minus.symbol) }
+    compareTextStates("123-[]", "123+[]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123[+]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]56", "123+[4]56") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123+[456]") { it.addTokens(Token.Minus.symbol) }
 
     // MINUS
-    compareTextStates("123-[]", "123-[]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123[-]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]56", "123-[4]56") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123-[456]") { it.addTokens(Token2.Minus.symbol) }
+    compareTextStates("123-[]", "123-[]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123[-]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]56", "123-[4]56") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123-[456]") { it.addTokens(Token.Minus.symbol) }
 
     // MULTIPLY
-    compareTextStates("123*-[]", "123*[]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123[*]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123*-[]56", "123*[4]56") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123*-[]", "123*[456]") { it.addTokens(Token2.Minus.symbol) }
+    compareTextStates("123*-[]", "123*[]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123[*]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123*-[]56", "123*[4]56") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123*-[]", "123*[456]") { it.addTokens(Token.Minus.symbol) }
 
     // DIVIDE
-    compareTextStates("123/-[]", "123/[]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123[/]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123/-[]56", "123/[4]56") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123/-[]", "123/[456]") { it.addTokens(Token2.Minus.symbol) }
+    compareTextStates("123/-[]", "123/[]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123[/]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123/-[]56", "123/[4]56") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123/-[]", "123/[456]") { it.addTokens(Token.Minus.symbol) }
 
     // SQRT
-    compareTextStates("123√-[]", "123√[]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123[√]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123√-[]56", "123√[4]56") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123√-[]", "123√[456]") { it.addTokens(Token2.Minus.symbol) }
+    compareTextStates("123√-[]", "123√[]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123[√]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123√-[]56", "123√[4]56") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123√-[]", "123√[456]") { it.addTokens(Token.Minus.symbol) }
 
     // POWER
-    compareTextStates("123^-[]", "123^[]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123-[]", "123[^]") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123^-[]56", "123^[4]56") { it.addTokens(Token2.Minus.symbol) }
-    compareTextStates("123^-[]", "123^[456]") { it.addTokens(Token2.Minus.symbol) }
+    compareTextStates("123^-[]", "123^[]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123-[]", "123[^]") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123^-[]56", "123^[4]56") { it.addTokens(Token.Minus.symbol) }
+    compareTextStates("123^-[]", "123^[456]") { it.addTokens(Token.Minus.symbol) }
   }
 
   @Test
   fun addTokens_addMultiply() {
     // EMPTY
-    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("[]", "[123+456]") { it.addTokens(Token2.Multiply.symbol) }
+    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("[]", "[123+456]") { it.addTokens(Token.Multiply.symbol) }
 
     // PLUS
-    compareTextStates("123*[]", "123+[]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123[+]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]56", "123+[4]56") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123+[456]") { it.addTokens(Token2.Multiply.symbol) }
+    compareTextStates("123*[]", "123+[]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123[+]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]56", "123+[4]56") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123+[456]") { it.addTokens(Token.Multiply.symbol) }
 
     // MINUS
-    compareTextStates("123*[]", "123-[]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123[-]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]56", "123-[4]56") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123-[456]") { it.addTokens(Token2.Multiply.symbol) }
+    compareTextStates("123*[]", "123-[]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123[-]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]56", "123-[4]56") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123-[456]") { it.addTokens(Token.Multiply.symbol) }
 
     // MULTIPLY
-    compareTextStates("123*[]", "123*[]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123[*]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]56", "123*[4]56") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123*[456]") { it.addTokens(Token2.Multiply.symbol) }
+    compareTextStates("123*[]", "123*[]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123[*]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]56", "123*[4]56") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123*[456]") { it.addTokens(Token.Multiply.symbol) }
 
     // DIVIDE
-    compareTextStates("123*[]", "123/[]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123[/]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]56", "123/[4]56") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123/[456]") { it.addTokens(Token2.Multiply.symbol) }
+    compareTextStates("123*[]", "123/[]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123[/]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]56", "123/[4]56") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123/[456]") { it.addTokens(Token.Multiply.symbol) }
 
     // SQRT
-    compareTextStates("123*[]", "123√[]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123[√]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]56", "123√[4]56") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123√[456]") { it.addTokens(Token2.Multiply.symbol) }
+    compareTextStates("123*[]", "123√[]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123[√]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]56", "123√[4]56") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123√[456]") { it.addTokens(Token.Multiply.symbol) }
 
     // POWER
-    compareTextStates("123*[]", "123^[]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123[^]") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]56", "123^[4]56") { it.addTokens(Token2.Multiply.symbol) }
-    compareTextStates("123*[]", "123^[456]") { it.addTokens(Token2.Multiply.symbol) }
+    compareTextStates("123*[]", "123^[]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123[^]") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]56", "123^[4]56") { it.addTokens(Token.Multiply.symbol) }
+    compareTextStates("123*[]", "123^[456]") { it.addTokens(Token.Multiply.symbol) }
   }
 
   @Test
   fun addTokens_addDivide() {
     // EMPTY
-    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("[]", "[123+456]") { it.addTokens(Token2.Divide.symbol) }
+    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("[]", "[123+456]") { it.addTokens(Token.Divide.symbol) }
 
     // PLUS
-    compareTextStates("123/[]", "123+[]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123[+]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]56", "123+[4]56") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123+[456]") { it.addTokens(Token2.Divide.symbol) }
+    compareTextStates("123/[]", "123+[]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123[+]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]56", "123+[4]56") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123+[456]") { it.addTokens(Token.Divide.symbol) }
 
     // MINUS
-    compareTextStates("123/[]", "123-[]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123[-]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]56", "123-[4]56") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123-[456]") { it.addTokens(Token2.Divide.symbol) }
+    compareTextStates("123/[]", "123-[]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123[-]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]56", "123-[4]56") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123-[456]") { it.addTokens(Token.Divide.symbol) }
 
     // MULTIPLY
-    compareTextStates("123/[]", "123*[]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123[*]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]56", "123*[4]56") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123*[456]") { it.addTokens(Token2.Divide.symbol) }
+    compareTextStates("123/[]", "123*[]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123[*]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]56", "123*[4]56") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123*[456]") { it.addTokens(Token.Divide.symbol) }
 
     // DIVIDE
-    compareTextStates("123/[]", "123/[]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123[/]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]56", "123/[4]56") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123/[456]") { it.addTokens(Token2.Divide.symbol) }
+    compareTextStates("123/[]", "123/[]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123[/]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]56", "123/[4]56") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123/[456]") { it.addTokens(Token.Divide.symbol) }
 
     // SQRT
-    compareTextStates("123/[]", "123√[]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123[√]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]56", "123√[4]56") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123√[456]") { it.addTokens(Token2.Divide.symbol) }
+    compareTextStates("123/[]", "123√[]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123[√]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]56", "123√[4]56") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123√[456]") { it.addTokens(Token.Divide.symbol) }
 
     // POWER
-    compareTextStates("123/[]", "123^[]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123[^]") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]56", "123^[4]56") { it.addTokens(Token2.Divide.symbol) }
-    compareTextStates("123/[]", "123^[456]") { it.addTokens(Token2.Divide.symbol) }
+    compareTextStates("123/[]", "123^[]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123[^]") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]56", "123^[4]56") { it.addTokens(Token.Divide.symbol) }
+    compareTextStates("123/[]", "123^[456]") { it.addTokens(Token.Divide.symbol) }
   }
 
   @Test
   fun addTokens_addPower() {
     // EMPTY
-    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("[]", "[123+456]") { it.addTokens(Token2.Power.symbol) }
+    compareTextStates("[]123+456", "[]123+456") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("[]+456", "[123]+456") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("[]", "[123+456]") { it.addTokens(Token.Power.symbol) }
 
     // PLUS
-    compareTextStates("123^[]", "123+[]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123[+]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]56", "123+[4]56") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123+[456]") { it.addTokens(Token2.Power.symbol) }
+    compareTextStates("123^[]", "123+[]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123[+]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]56", "123+[4]56") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123+[456]") { it.addTokens(Token.Power.symbol) }
 
     // MINUS
-    compareTextStates("123^[]", "123-[]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123[-]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]56", "123-[4]56") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123-[456]") { it.addTokens(Token2.Power.symbol) }
+    compareTextStates("123^[]", "123-[]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123[-]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]56", "123-[4]56") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123-[456]") { it.addTokens(Token.Power.symbol) }
 
     // MULTIPLY
-    compareTextStates("123^[]", "123*[]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123[*]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]56", "123*[4]56") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123*[456]") { it.addTokens(Token2.Power.symbol) }
+    compareTextStates("123^[]", "123*[]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123[*]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]56", "123*[4]56") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123*[456]") { it.addTokens(Token.Power.symbol) }
 
     // DIVIDE
-    compareTextStates("123^[]", "123/[]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123[/]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]56", "123/[4]56") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123/[456]") { it.addTokens(Token2.Power.symbol) }
+    compareTextStates("123^[]", "123/[]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123[/]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]56", "123/[4]56") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123/[456]") { it.addTokens(Token.Power.symbol) }
 
     // SQRT
-    compareTextStates("123^[]", "123√[]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123[√]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]56", "123√[4]56") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123√[456]") { it.addTokens(Token2.Power.symbol) }
+    compareTextStates("123^[]", "123√[]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123[√]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]56", "123√[4]56") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123√[456]") { it.addTokens(Token.Power.symbol) }
 
     // POWER
-    compareTextStates("123^[]", "123^[]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123[^]") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]56", "123^[4]56") { it.addTokens(Token2.Power.symbol) }
-    compareTextStates("123^[]", "123^[456]") { it.addTokens(Token2.Power.symbol) }
+    compareTextStates("123^[]", "123^[]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123[^]") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]56", "123^[4]56") { it.addTokens(Token.Power.symbol) }
+    compareTextStates("123^[]", "123^[456]") { it.addTokens(Token.Power.symbol) }
   }
 
   @Test
   fun addTokens_addDot() {
     // EMPTY
-    compareTextStates(".[]123+456", "[]123+456") { it.addTokens(Token2.Dot.symbol) }
-    compareTextStates(".[]+456", "[123]+456") { it.addTokens(Token2.Dot.symbol) }
-    compareTextStates(".[]", "[123+456]") { it.addTokens(Token2.Dot.symbol) }
+    compareTextStates(".[]123+456", "[]123+456") { it.addTokens(Token.Dot.symbol) }
+    compareTextStates(".[]+456", "[123]+456") { it.addTokens(Token.Dot.symbol) }
+    compareTextStates(".[]", "[123+456]") { it.addTokens(Token.Dot.symbol) }
 
-    compareTextStates("123+456.[]78", "123+456.[]78") { it.addTokens(Token2.Dot.symbol) }
-    compareTextStates("123+456.[]78", "123+456[.]78") { it.addTokens(Token2.Dot.symbol) }
-    compareTextStates("123+456.[]8", "123+456[.7]8") { it.addTokens(Token2.Dot.symbol) }
-    compareTextStates("123+45.[]78", "123+45[6.]78") { it.addTokens(Token2.Dot.symbol) }
+    compareTextStates("123+456.[]78", "123+456.[]78") { it.addTokens(Token.Dot.symbol) }
+    compareTextStates("123+456.[]78", "123+456[.]78") { it.addTokens(Token.Dot.symbol) }
+    compareTextStates("123+456.[]8", "123+456[.7]8") { it.addTokens(Token.Dot.symbol) }
+    compareTextStates("123+45.[]78", "123+45[6.]78") { it.addTokens(Token.Dot.symbol) }
   }
 
   @Test

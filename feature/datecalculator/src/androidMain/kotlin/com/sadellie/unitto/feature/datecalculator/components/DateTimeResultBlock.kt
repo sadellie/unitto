@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.ui.PagedIsland
 import com.sadellie.unitto.core.ui.textfield.formatExpression
@@ -232,6 +232,6 @@ private fun DateTimeResultBlockPreview() {
       ),
     precision = 3,
     outputFormat = OutputFormat.PLAIN,
-    formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
   )
 }

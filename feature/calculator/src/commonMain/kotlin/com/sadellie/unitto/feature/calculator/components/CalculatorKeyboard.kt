@@ -45,7 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowUp
@@ -118,7 +118,7 @@ internal fun CalculatorKeyboard(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: Token2.Formatter,
+  fractional: Token.Formatter,
 ) {
   if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
     CompactKeyboard(
@@ -173,7 +173,7 @@ private fun ExpandedKeyboard(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: Token2.Formatter,
+  fractional: Token.Formatter,
 ) {
   ColumnWithConstraints(modifier = modifier) { constraints ->
     val spacerHeight = constraints.maxHeight * SPACER_HEIGHT_FACTOR
@@ -225,7 +225,7 @@ private fun ExpandedKeyboard(
       KeypadButtonFilled(buttonModifier, PlusKey, iconHeight, onAddTokenClick)
 
       val fractionalKey =
-        remember(fractional) { if (fractional == Token2.Period) DotKey else CommaKey }
+        remember(fractional) { if (fractional == Token.Period) DotKey else CommaKey }
       if (middleZero) {
         KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
         KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
@@ -390,7 +390,7 @@ private fun CompactKeyboard(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: Token2.Formatter,
+  fractional: Token.Formatter,
 ) {
   Crossfade(targetState = inverseMode, label = "Inverse switch", modifier = modifier) { inverse ->
     val angleKey = if (radianMode) AngleRadKey else AngleDegKey
@@ -446,7 +446,7 @@ private fun CompactKeyboardInverse(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: Token2.Formatter,
+  fractional: Token.Formatter,
   angleKey: KeypadButton.KeypadButtonSimple,
 ) {
   KeypadFlow(modifier = modifier, rows = 4, columns = 8) { width, height ->
@@ -493,7 +493,7 @@ private fun CompactKeyboardInverse(
     KeypadButtonTransparent(buttonModifier, EulerKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, ExKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, Power10Key, iconHeightSecondary, onAddTokenClick)
-    val fractionalKey = if (fractional == Token2.Period) DotKey else CommaKey
+    val fractionalKey = if (fractional == Token.Period) DotKey else CommaKey
     if (middleZero) {
       KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
       KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
@@ -521,7 +521,7 @@ private fun CompactKeyboardDefault(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: Token2.Formatter,
+  fractional: Token.Formatter,
   angleKey: KeypadButton.KeypadButtonSimple,
 ) {
   KeypadFlow(modifier = modifier, rows = 4, columns = 8) { width, height ->
@@ -568,7 +568,7 @@ private fun CompactKeyboardDefault(
     KeypadButtonTransparent(buttonModifier, EulerKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, LnKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, LogKey, iconHeightSecondary, onAddTokenClick)
-    val fractionalKey = if (fractional == Token2.Period) DotKey else CommaKey
+    val fractionalKey = if (fractional == Token.Period) DotKey else CommaKey
     if (middleZero) {
       KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
       KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
@@ -609,7 +609,7 @@ private fun PreviewExpandedKeyboard() = ExpressivePreview {
     onInverseModeClick = {},
     showAcButton = true,
     middleZero = false,
-    fractional = Token2.Period,
+    fractional = Token.Period,
   )
 }
 
@@ -634,6 +634,6 @@ private fun PreviewCompactKeyboard() = ExpressivePreview {
     onInverseModeClick = { inverseMode = it },
     showAcButton = true,
     middleZero = false,
-    fractional = Token2.Period,
+    fractional = Token.Period,
   )
 }

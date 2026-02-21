@@ -20,7 +20,7 @@ package com.sadellie.unitto.core.datastore
 
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
@@ -47,8 +47,8 @@ interface UserPreferencesRepository {
   suspend fun updateDigitsPrecision(precision: Int)
 
   suspend fun updateFormatterSymbols(
-    grouping: Token2.Formatter,
-    fractional: Token2.Formatter,
+    grouping: Token.Formatter,
+    fractional: Token.Formatter,
     indian: Boolean,
   )
 
@@ -149,11 +149,11 @@ internal object Defaults {
   val radianMode: Boolean
     get() = true
 
-  val formatterSymbolGrouping: Token2.Formatter
-    get() = Token2.Space
+  val formatterSymbolGrouping: Token.Formatter
+    get() = Token.Space
 
-  val formatterSymbolFractional: Token2.Formatter
-    get() = Token2.Period
+  val formatterSymbolFractional: Token.Formatter
+    get() = Token.Period
 
   val formatterSymbolIndian: Boolean
     get() = false
@@ -237,8 +237,8 @@ internal fun produceFormatterSymbols(grouping: String?, fractional: String?, ind
     )
   } else {
     FormatterSymbols(
-      Token2.Formatter.from(grouping),
-      Token2.Formatter.from(fractional),
+      Token.Formatter.from(grouping),
+      Token.Formatter.from(fractional),
       indian ?: Defaults.formatterSymbolIndian,
     )
   }

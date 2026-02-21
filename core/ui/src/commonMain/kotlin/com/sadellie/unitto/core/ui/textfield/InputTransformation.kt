@@ -24,7 +24,7 @@ import androidx.compose.foundation.text.input.delete
 import androidx.compose.runtime.Stable
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.trimZeros
 
 /**
@@ -41,60 +41,60 @@ data class ExpressionInputTransformation(private val formatterSymbols: Formatter
 
   override val legalTokens =
     listOf(
-      Token2.ArCos.WithBracket.symbol,
-      Token2.ArSin.WithBracket.symbol,
-      Token2.ArTan.WithBracket.symbol,
-      Token2.Sin.WithBracket.symbol,
-      Token2.Cos.WithBracket.symbol,
-      Token2.Tan.WithBracket.symbol,
-      Token2.Log.WithBracket.symbol,
-      Token2.Exp.WithBracket.symbol,
-      Token2.Ln.WithBracket.symbol,
-      Token2.Dot.symbol,
-      Token2.Digit0.symbol,
-      Token2.Digit1.symbol,
-      Token2.Digit2.symbol,
-      Token2.Digit3.symbol,
-      Token2.Digit4.symbol,
-      Token2.Digit5.symbol,
-      Token2.Digit6.symbol,
-      Token2.Digit7.symbol,
-      Token2.Digit8.symbol,
-      Token2.Digit9.symbol,
-      Token2.Minus.symbol,
-      Token2.Divide.symbol,
-      Token2.Multiply.symbol,
-      Token2.Plus.symbol,
-      Token2.LeftBracket.symbol,
-      Token2.RightBracket.symbol,
-      Token2.Power.symbol,
-      Token2.Factorial.symbol,
-      Token2.Modulo.symbol,
-      Token2.Percent.symbol,
-      Token2.Sqrt.symbol,
-      Token2.Pi.symbol,
-      Token2.E.symbol,
+      Token.ArCos.WithBracket.symbol,
+      Token.ArSin.WithBracket.symbol,
+      Token.ArTan.WithBracket.symbol,
+      Token.Sin.WithBracket.symbol,
+      Token.Cos.WithBracket.symbol,
+      Token.Tan.WithBracket.symbol,
+      Token.Log.WithBracket.symbol,
+      Token.Exp.WithBracket.symbol,
+      Token.Ln.WithBracket.symbol,
+      Token.Dot.symbol,
+      Token.Digit0.symbol,
+      Token.Digit1.symbol,
+      Token.Digit2.symbol,
+      Token.Digit3.symbol,
+      Token.Digit4.symbol,
+      Token.Digit5.symbol,
+      Token.Digit6.symbol,
+      Token.Digit7.symbol,
+      Token.Digit8.symbol,
+      Token.Digit9.symbol,
+      Token.Minus.symbol,
+      Token.Divide.symbol,
+      Token.Multiply.symbol,
+      Token.Plus.symbol,
+      Token.LeftBracket.symbol,
+      Token.RightBracket.symbol,
+      Token.Power.symbol,
+      Token.Factorial.symbol,
+      Token.Modulo.symbol,
+      Token.Percent.symbol,
+      Token.Sqrt.symbol,
+      Token.Pi.symbol,
+      Token.E.symbol,
     )
 
   override val replacementMap =
     mapOf(
       // formatterSymbols.grouping doesn't break replacement for other ugly symbols
       formatterSymbols.grouping.symbol to "",
-      "arcos(" to Token2.ArCos.WithBracket.symbol,
-      "arsin(" to Token2.ArSin.WithBracket.symbol,
-      "actan(" to Token2.ArTan.WithBracket.symbol,
-      formatterSymbols.fractional.symbol to Token2.Dot.symbol,
-      "-" to Token2.Minus.symbol,
-      "–" to Token2.Minus.symbol,
-      "—" to Token2.Minus.symbol,
-      "/" to Token2.Divide.symbol,
-      "*" to Token2.Multiply.symbol,
-      "•" to Token2.Multiply.symbol,
+      "arcos(" to Token.ArCos.WithBracket.symbol,
+      "arsin(" to Token.ArSin.WithBracket.symbol,
+      "actan(" to Token.ArTan.WithBracket.symbol,
+      formatterSymbols.fractional.symbol to Token.Dot.symbol,
+      "-" to Token.Minus.symbol,
+      "–" to Token.Minus.symbol,
+      "—" to Token.Minus.symbol,
+      "/" to Token.Divide.symbol,
+      "*" to Token.Multiply.symbol,
+      "•" to Token.Multiply.symbol,
     )
 }
 
 /**
- * - Allow only [Token2.Digit.all] and [Token2.Letter.all]. No fractional symbols
+ * - Allow only [Token.Digit.all] and [Token.Letter.all]. No fractional symbols
  * - Replaces lowercase letters with uppercase
  *
  * @see TextFieldBuffer.transformInputWithReplacements
@@ -106,38 +106,38 @@ data object NumberBaseInputTransformation : InputTransformationWithReplacement {
 
   override val legalTokens =
     listOf(
-      Token2.Digit0.symbol,
-      Token2.Digit1.symbol,
-      Token2.Digit2.symbol,
-      Token2.Digit3.symbol,
-      Token2.Digit4.symbol,
-      Token2.Digit5.symbol,
-      Token2.Digit6.symbol,
-      Token2.Digit7.symbol,
-      Token2.Digit8.symbol,
-      Token2.Digit9.symbol,
-      Token2.LetterA.symbol,
-      Token2.LetterB.symbol,
-      Token2.LetterC.symbol,
-      Token2.LetterD.symbol,
-      Token2.LetterE.symbol,
-      Token2.LetterF.symbol,
+      Token.Digit0.symbol,
+      Token.Digit1.symbol,
+      Token.Digit2.symbol,
+      Token.Digit3.symbol,
+      Token.Digit4.symbol,
+      Token.Digit5.symbol,
+      Token.Digit6.symbol,
+      Token.Digit7.symbol,
+      Token.Digit8.symbol,
+      Token.Digit9.symbol,
+      Token.LetterA.symbol,
+      Token.LetterB.symbol,
+      Token.LetterC.symbol,
+      Token.LetterD.symbol,
+      Token.LetterE.symbol,
+      Token.LetterF.symbol,
     )
 
   override val replacementMap =
     mapOf(
-      "a" to Token2.LetterA.symbol,
-      "b" to Token2.LetterB.symbol,
-      "c" to Token2.LetterC.symbol,
-      "d" to Token2.LetterD.symbol,
-      "e" to Token2.LetterE.symbol,
-      "f" to Token2.LetterF.symbol,
+      "a" to Token.LetterA.symbol,
+      "b" to Token.LetterB.symbol,
+      "c" to Token.LetterC.symbol,
+      "d" to Token.LetterD.symbol,
+      "e" to Token.LetterE.symbol,
+      "f" to Token.LetterF.symbol,
     )
 }
 
 /**
  * - Allow any digit
- * - Allow using any fractional symbol as input ([Token2.Comma.symbol] and [Token2.Period.symbol]),
+ * - Allow using any fractional symbol as input ([Token.Comma.symbol] and [Token.Period.symbol]),
  *   but only if [allowFraction] is True
  * - Limit using [maxValue]
  */
@@ -154,11 +154,11 @@ data class UnexpectedDigitsInputTransformation(
 
       val legalToken =
         when (char) {
-          in Token2.Digit.allSymbols -> true
-          Token2.Period.symbol -> allowFraction
-          Token2.Comma.symbol -> {
+          in Token.Digit.allSymbols -> true
+          Token.Period.symbol -> allowFraction
+          Token.Comma.symbol -> {
             if (allowFraction) {
-              replace(cursor, cursor + Token2.Period.symbol.length, Token2.Period.symbol)
+              replace(cursor, cursor + Token.Period.symbol.length, Token.Period.symbol)
             }
             allowFraction
           }

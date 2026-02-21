@@ -23,7 +23,7 @@ import com.sadellie.unitto.core.common.KBigDecimalMath
 import com.sadellie.unitto.core.common.KMathContext
 import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.MAX_SCALE
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 
 sealed class ExpressionException(override val message: String) : Exception(message) {
@@ -66,7 +66,7 @@ class Expression(
   // Null when at the end of expression
   private fun peek() = tokens.getOrNull(cursorPosition)
 
-  private fun moveIfMatched(token: Token2): Boolean {
+  private fun moveIfMatched(token: Token): Boolean {
     if (peek() == token) {
       // Move cursor
       cursorPosition++
@@ -81,10 +81,10 @@ class Expression(
 
     var expression = parseTerm()
 
-    while (peek() in listOf(Token2.Plus, Token2.Minus)) {
+    while (peek() in listOf(Token.Plus, Token.Minus)) {
       when {
-        moveIfMatched(Token2.Plus) -> expression += parseTerm()
-        moveIfMatched(Token2.Minus) -> expression -= parseTerm()
+        moveIfMatched(Token.Plus) -> expression += parseTerm()
+        moveIfMatched(Token.Minus) -> expression -= parseTerm()
       }
     }
     return expression
@@ -94,13 +94,13 @@ class Expression(
   private fun parseTerm(): KBigDecimal {
     var expression = parseFactor()
 
-    while (peek() in listOf(Token2.Multiply, Token2.Divide)) {
+    while (peek() in listOf(Token.Multiply, Token.Divide)) {
       when {
-        moveIfMatched(Token2.Multiply) -> {
+        moveIfMatched(Token.Multiply) -> {
           expression = expression.multiply(parseFactor())
         }
 
-        moveIfMatched(Token2.Divide) -> {
+        moveIfMatched(Token.Divide) -> {
           val divisor = parseFactor()
           if (divisor.isEqualTo(KBigDecimal.ZERO)) throw ExpressionException.DivideByZero()
 
@@ -117,12 +117,12 @@ class Expression(
     var expr: KBigDecimal? = null
 
     fun parseFuncParentheses(): KBigDecimal {
-      return if (moveIfMatched(Token2.LeftBracket)) {
+      return if (moveIfMatched(Token.LeftBracket)) {
         // Parse in parentheses
         val res = parseExpression()
 
         // Check if parentheses is closed
-        if (!moveIfMatched(Token2.RightBracket)) throw ExpressionException.BadExpression()
+        if (!moveIfMatched(Token.RightBracket)) throw ExpressionException.BadExpression()
         res
       } else {
         parseFactor()
@@ -130,93 +130,93 @@ class Expression(
     }
 
     // Unary plus
-    if (moveIfMatched(Token2.Plus)) {
+    if (moveIfMatched(Token.Plus)) {
       return parseFactor()
     }
 
     // Unary minus
-    if (moveIfMatched(Token2.UnaryMinus)) {
+    if (moveIfMatched(Token.UnaryMinus)) {
       return -parseFactor(true)
     }
 
     // Parentheses
-    if (moveIfMatched(Token2.LeftBracket)) {
+    if (moveIfMatched(Token.LeftBracket)) {
       // Parse in parentheses
       expr = parseExpression()
 
       // Check if parentheses is closed
-      if (!moveIfMatched(Token2.RightBracket)) throw ExpressionException.BadExpression()
+      if (!moveIfMatched(Token.RightBracket)) throw ExpressionException.BadExpression()
     }
 
     // Numbers
     val possibleNumber = peek()
-    if (possibleNumber is Token2.Number) {
+    if (possibleNumber is Token.Number) {
       expr = KBigDecimal(possibleNumber.symbol).setScale(scale, roundingMode)
       cursorPosition++
     }
 
     // PI
-    if (moveIfMatched(Token2.Pi)) {
+    if (moveIfMatched(Token.Pi)) {
       expr = KBigDecimalMath.pi(mathContext)
     }
 
     // e
-    if (moveIfMatched(Token2.E)) {
+    if (moveIfMatched(Token.E)) {
       expr = KBigDecimalMath.e(mathContext)
     }
 
     // sqrt
-    if (moveIfMatched(Token2.Sqrt)) {
+    if (moveIfMatched(Token.Sqrt)) {
       expr = KBigDecimalMath.sqrt(parseFuncParentheses(), mathContext)
     }
 
     // sin
-    if (moveIfMatched(Token2.Sin)) {
+    if (moveIfMatched(Token.Sin)) {
       expr = parseFuncParentheses().sin(radianMode, mathContext).rescaleTrig()
     }
 
     // cos
-    if (moveIfMatched(Token2.Cos)) {
+    if (moveIfMatched(Token.Cos)) {
       expr = parseFuncParentheses().cos(radianMode, mathContext).rescaleTrig()
     }
 
     // tan
-    if (moveIfMatched(Token2.Tan)) {
+    if (moveIfMatched(Token.Tan)) {
       expr = parseFuncParentheses().tan(radianMode, mathContext).rescaleTrig()
     }
 
     // arsin
-    if (moveIfMatched(Token2.ArSin)) {
+    if (moveIfMatched(Token.ArSin)) {
       expr = parseFuncParentheses().arsin(radianMode, mathContext).rescaleTrig()
     }
 
     // arcos
-    if (moveIfMatched(Token2.ArCos)) {
+    if (moveIfMatched(Token.ArCos)) {
       expr = parseFuncParentheses().arcos(radianMode, mathContext).rescaleTrig()
     }
 
     // actan
-    if (moveIfMatched(Token2.ArTan)) {
+    if (moveIfMatched(Token.ArTan)) {
       expr = parseFuncParentheses().artan(radianMode, mathContext).rescaleTrig()
     }
 
     // ln
-    if (moveIfMatched(Token2.Ln)) {
+    if (moveIfMatched(Token.Ln)) {
       expr = parseFuncParentheses().ln(mathContext)
     }
 
     // log
-    if (moveIfMatched(Token2.Log)) {
+    if (moveIfMatched(Token.Log)) {
       expr = parseFuncParentheses().log(mathContext)
     }
 
     // exp
-    if (moveIfMatched(Token2.Exp)) {
+    if (moveIfMatched(Token.Exp)) {
       expr = parseFuncParentheses().exp(mathContext)
     }
 
     // Power
-    if (moveIfMatched(Token2.Power)) {
+    if (moveIfMatched(Token.Power)) {
       val factor = parseFactor()
       if (expr == null) throw ExpressionException.BadExpression()
       // mathematicians made up this controversy because reasons
@@ -228,13 +228,13 @@ class Expression(
     }
 
     // Modulo
-    if (moveIfMatched(Token2.Modulo)) {
+    if (moveIfMatched(Token.Modulo)) {
       if (expr == null) throw ExpressionException.BadExpression()
       expr = expr.remainder(parseFactor())
     }
 
     // Factorial
-    if (moveIfMatched(Token2.Factorial)) {
+    if (moveIfMatched(Token.Factorial)) {
       if (expr == null) throw ExpressionException.BadExpression()
       if (negative) throw ExpressionException.FactorialCalculation()
       expr = expr.factorial()

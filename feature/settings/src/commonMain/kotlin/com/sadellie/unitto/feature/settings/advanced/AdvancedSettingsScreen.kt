@@ -43,7 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token2
+import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
@@ -143,7 +143,7 @@ private fun PreviewAdvancedSettingsScreen() {
     updateCustomApiUrl = {},
     prefs =
       ConverterPreferences(
-        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
         middleZero = false,
         acButton = true,
         precision = 3,

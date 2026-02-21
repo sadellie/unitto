@@ -30,43 +30,43 @@ class TokenTest {
 
   @Test
   fun formatterSymbols_test() {
-    assertEquals(" ", Token2.Space.symbol)
-    assertEquals(".", Token2.Period.symbol)
-    assertEquals(",", Token2.Comma.symbol)
+    assertEquals(" ", Token.Space.symbol)
+    assertEquals(".", Token.Period.symbol)
+    assertEquals(",", Token.Comma.symbol)
   }
 
   @Test
   fun digit_test() {
-    assertEquals("1234567890", Token2.Digit.allSymbols.joinToString(""))
-    assertEquals("1234567890.", Token2.digitsWithDotSymbols.joinToString(""))
+    assertEquals("1234567890", Token.Digit.allSymbols.joinToString(""))
+    assertEquals("1234567890.", Token.digitsWithDotSymbols.joinToString(""))
   }
 
   @Test
   fun letter_test() {
-    assertEquals("ABCDEF", Token2.Letter.allSymbols.joinToString(""))
+    assertEquals("ABCDEF", Token.Letter.allSymbols.joinToString(""))
   }
 
   @Test
   fun operator_test() {
     listOf("+", "−", "×", "÷", "^", "!", "#", "%", "√").forEach {
-      assertContains(Token2.Operator.allSymbols, it)
+      assertContains(Token.Operator.allSymbols, it)
     }
   }
 
   @Test
   fun func_test() {
     listOf("sin", "cos", "tan", "sin⁻¹", "cos⁻¹", "tan⁻¹", "ln", "log", "exp").forEach {
-      assertContains(Token2.Func.allSymbols, it)
+      assertContains(Token.Func.allSymbols, it)
     }
 
     listOf("sin(", "cos(", "tan(", "sin⁻¹(", "cos⁻¹(", "tan⁻¹(", "ln(", "log(", "exp(").forEach {
-      assertContains(Token2.Func.allSymbolsWithBracket, it)
+      assertContains(Token.Func.allSymbolsWithBracket, it)
     }
   }
 
   @Test
   fun const_test() {
-    listOf("π", "e").forEach { assertContains(Token2.Const.allSymbols, it) }
+    listOf("π", "e").forEach { assertContains(Token.Const.allSymbols, it) }
   }
 
   @Test
@@ -78,25 +78,25 @@ class TokenTest {
 
     assertEquals(
       "1234567890.$operator()$func${consts}E",
-      Token2.expressionTokens.joinToString("") { it.symbol },
+      Token.expressionTokens.joinToString("") { it.symbol },
     )
   }
 
   @Test
   fun numberBaseTokens_test() {
-    assertEquals("1234567890ABCDEF", Token2.numberBaseTokens.joinToString(""))
+    assertEquals("1234567890ABCDEF", Token.numberBaseTokens.joinToString(""))
   }
 
   @Test
   fun displayOnly_test() {
-    assertEquals("E", Token2.EngineeringE.symbol)
-    assertEquals("⁄", Token2.Fraction.symbol)
+    assertEquals("E", Token.EngineeringE.symbol)
+    assertEquals("⁄", Token.Fraction.symbol)
   }
 
   @Test
   fun sexyToUgly_test() {
     listOf("−", "÷", "×", "sin⁻¹", "cos⁻¹", "tan⁻¹").forEach {
-      assertContains(Token2.sexyToUgly.keys, it)
+      assertContains(Token.sexyToUgly.keys, it)
     }
   }
 }
