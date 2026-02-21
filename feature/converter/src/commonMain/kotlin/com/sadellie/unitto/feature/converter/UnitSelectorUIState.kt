@@ -36,6 +36,7 @@ internal sealed interface UnitSelectorUIState {
     val units: Map<UnitGroup, List<UnitSearchResultItem>>?,
     val selectedUnitGroup: UnitGroup?,
     val sorting: UnitsListSorting,
+    val showIcons: Boolean,
   ) : UnitSelectorUIState
 
   data class UnitTo(

@@ -62,6 +62,7 @@ internal class UnitFromSelectorViewModel(
           units = searchResults,
           selectedUnitGroup = selectedUnitGroup,
           sorting = prefs.sorting,
+          showIcons = prefs.showIcons,
         )
       }
       .stateIn(viewModelScope, UnitSelectorUIState.Loading)

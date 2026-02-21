@@ -90,6 +90,7 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
         latestLeftSideUnit = preferences.getLatestLeftSide(),
         latestRightSideUnit = preferences.getLatestRightSide(),
         customApiUrl = preferences.getCustomApiUrl(),
+        showIcons = preferences.getUnitConverterShowIcons(),
       )
     }
 
@@ -221,6 +222,10 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
   override suspend fun updateUnitConverterSorting(sorting: UnitsListSorting) =
     updateData(PrefKeys.UNIT_CONVERTER_SORTING_PREF_KEY, sorting.name)
 
+  override suspend fun updateUnitConverterShowIcons(enabled: Boolean) {
+    updateData(PrefKeys.UNIT_CONVERTER_SHOW_ICONS_PREF_KEY, enabled)
+  }
+
   override suspend fun updatePartialHistoryView(enabled: Boolean) =
     updateData(PrefKeys.PARTIAL_HISTORY_VIEW_PREF_KEY, enabled)
 
@@ -341,6 +346,10 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
   private fun Preferences.getUnitConverterFavoritesOnly() =
     this.getTyped<Boolean>(PrefKeys.UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY)
       ?: Defaults.unitConverterFavoritesOnly
+
+  private fun Preferences.getUnitConverterShowIcons() =
+    this.getTyped<Boolean>(PrefKeys.UNIT_CONVERTER_SHOW_ICONS_PREF_KEY)
+      ?: Defaults.unitConverterShowIcons
 
   private fun Preferences.getLatestLeftSide() =
     this.getTyped<String>(PrefKeys.LATEST_LEFT_SIDE_PREF_KEY) ?: Defaults.latestLeftSide

@@ -199,6 +199,8 @@
     <string name="settings_saved_expressions">Saved expressions</string>
     <string name="settings_selected_color">Selected color</string>
     <string name="settings_selected_style">Selected style</string>
+    <string name="settings_show_unit_group_icons">Unit group icons</string>
+    <string name="settings_show_unit_group_icons_support">Show icons when selecting a unit</string>
     <string name="settings_sort_by_alphabetical">Alphabetical</string>
     <string name="settings_sort_by_scale_asc">Scale (Asc.)</string>
     <string name="settings_sort_by_scale_desc">Scale (Desc.)</string>

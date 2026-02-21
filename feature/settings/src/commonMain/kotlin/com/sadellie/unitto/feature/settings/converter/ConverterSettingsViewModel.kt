@@ -35,4 +35,7 @@ internal class ConverterSettingsViewModel(
 
   fun updateUnitConverterSorting(sorting: UnitsListSorting) =
     viewModelScope.launch { userPrefsRepository.updateUnitConverterSorting(sorting) }
+
+  fun updateUnitConverterShowIcons(enabled: Boolean) =
+    viewModelScope.launch { userPrefsRepository.updateUnitConverterShowIcons(enabled) }
 }

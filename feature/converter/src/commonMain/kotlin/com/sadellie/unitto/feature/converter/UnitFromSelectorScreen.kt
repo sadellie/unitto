@@ -43,8 +43,8 @@ import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.SearchBar
-import com.sadellie.unitto.feature.converter.components.ChipsRow
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
+import com.sadellie.unitto.feature.converter.components.UnitGroupFilter
 import com.sadellie.unitto.feature.converter.components.UnitsList
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
@@ -117,12 +117,13 @@ private fun UnitFromSelectorScreen(
           scrollBehavior = scrollBehavior,
         )
 
-        ChipsRow(
+        UnitGroupFilter(
           modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp).fillMaxWidth(),
           chosenUnitGroup = uiState.selectedUnitGroup,
           items = uiState.shownUnitGroups,
           selectAction = updateUnitGroup,
           navigateToSettingsAction = navigateToUnitGroups,
+          showIcons = uiState.showIcons,
         )
       }
     },
@@ -216,6 +217,7 @@ private fun UnitFromSelectorScreenPreview() {
         shownUnitGroups = UnitGroup.entries,
         showFavoritesOnly = false,
         sorting = UnitsListSorting.USAGE,
+        showIcons = true,
       ),
     toggleFavoritesOnly = {},
     updateUnitFrom = {},

@@ -155,6 +155,7 @@ private fun PreviewAdvancedSettingsScreen() {
         latestLeftSideUnit = "kilometer",
         latestRightSideUnit = "mile",
         customApiUrl = "",
+        showIcons = true,
       ),
   )
 }

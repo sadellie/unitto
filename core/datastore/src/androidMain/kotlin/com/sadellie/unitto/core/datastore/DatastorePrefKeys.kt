@@ -72,4 +72,5 @@ object DatastorePrefKeys {
   val UNIT_CONVERTER_SORTING = stringPreferencesKey(PrefKeys.UNIT_CONVERTER_SORTING_PREF_KEY)
   val UNIT_CONVERTER_CUSTOM_API_URL =
     stringPreferencesKey(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY)
+  val UNIT_CONVERTER_SHOW_ICONS = booleanPreferencesKey(PrefKeys.UNIT_CONVERTER_SHOW_ICONS_PREF_KEY)
 }

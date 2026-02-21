@@ -74,6 +74,7 @@ data class ConverterPreferences(
   val latestLeftSideUnit: String,
   val latestRightSideUnit: String,
   val customApiUrl: String,
+  val showIcons: Boolean,
 )
 
 data class DisplayPreferences(val middleZero: Boolean, val acButton: Boolean)

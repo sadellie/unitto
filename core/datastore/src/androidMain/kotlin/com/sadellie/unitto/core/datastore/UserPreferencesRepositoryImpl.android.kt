@@ -97,6 +97,7 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
         latestLeftSideUnit = preferences.getLatestLeftSide(),
         latestRightSideUnit = preferences.getLatestRightSide(),
         customApiUrl = preferences.getCustomApiUrl(),
+        showIcons = preferences.getUnitConverterShowIcons(),
       )
     }
 
@@ -260,6 +261,12 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
     }
   }
 
+  override suspend fun updateUnitConverterShowIcons(enabled: Boolean) {
+    dataStore.edit { preferences ->
+      preferences[DatastorePrefKeys.UNIT_CONVERTER_SHOW_ICONS] = enabled
+    }
+  }
+
   override suspend fun updatePartialHistoryView(enabled: Boolean) {
     dataStore.edit { preferences -> preferences[DatastorePrefKeys.PARTIAL_HISTORY_VIEW] = enabled }
   }
@@ -391,6 +398,9 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
 
   private fun Preferences.getUnitConverterFavoritesOnly() =
     this[DatastorePrefKeys.UNIT_CONVERTER_FAVORITES_ONLY] ?: Defaults.unitConverterFavoritesOnly
+
+  private fun Preferences.getUnitConverterShowIcons() =
+    this[DatastorePrefKeys.UNIT_CONVERTER_SHOW_ICONS] ?: Defaults.unitConverterShowIcons
 
   private fun Preferences.getLatestLeftSide() =
     this[DatastorePrefKeys.LATEST_LEFT_SIDE] ?: Defaults.latestLeftSide

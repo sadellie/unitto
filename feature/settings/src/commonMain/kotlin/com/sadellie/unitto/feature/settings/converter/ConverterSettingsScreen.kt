@@ -31,8 +31,11 @@ import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.common.FormatterSymbols
@@ -40,6 +43,7 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token2
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.ConverterPreferences
+import com.sadellie.unitto.core.designsystem.icons.symbols.DrawAbstract
 import com.sadellie.unitto.core.designsystem.icons.symbols.Rule
 import com.sadellie.unitto.core.designsystem.icons.symbols.Sort
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
@@ -52,9 +56,6 @@ import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import io.github.sadellie.themmo.Themmo
-import io.github.sadellie.themmo.core.ThemingMode
-import io.github.sadellie.themmo.rememberThemmoController
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -62,6 +63,8 @@ import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.converter_title
 import unitto.core.common.generated.resources.settings_format_time
 import unitto.core.common.generated.resources.settings_format_time_support
+import unitto.core.common.generated.resources.settings_show_unit_group_icons
+import unitto.core.common.generated.resources.settings_show_unit_group_icons_support
 import unitto.core.common.generated.resources.settings_unit_groups_support
 import unitto.core.common.generated.resources.settings_unit_groups_title
 import unitto.core.common.generated.resources.settings_units_sorting
@@ -82,6 +85,7 @@ internal fun ConverterSettingsRoute(
         navigateToUnitsGroup = navigateToUnitsGroup,
         updateUnitConverterFormatTime = viewModel::updateUnitConverterFormatTime,
         updateUnitConverterSorting = viewModel::updateUnitConverterSorting,
+        updateUnitConverterShowIcons = viewModel::updateUnitConverterShowIcons,
       )
     }
   }
@@ -95,6 +99,7 @@ private fun ConverterSettingsScreen(
   navigateToUnitsGroup: () -> Unit,
   updateUnitConverterFormatTime: (Boolean) -> Unit,
   updateUnitConverterSorting: (UnitsListSorting) -> Unit,
+  updateUnitConverterShowIcons: (Boolean) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
     title = stringResource(Res.string.converter_title),
@@ -125,6 +130,14 @@ private fun ConverterSettingsScreen(
             currentSorting = prefs.sorting,
           )
         },
+      )
+      ListItemExpressive(
+        icon = Symbols.DrawAbstract,
+        headlineText = stringResource(Res.string.settings_show_unit_group_icons),
+        supportingText = stringResource(Res.string.settings_show_unit_group_icons_support),
+        switchState = prefs.showIcons,
+        onSwitchChange = updateUnitConverterShowIcons,
+        shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Timer,
@@ -171,33 +184,34 @@ private fun UnitListSortingSetting(
   }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Preview
 @Composable
-private fun PreviewConverterSettingsScreen() =
-  Themmo(
-    themmoController =
-      rememberThemmoController(amoledThemeEnabled = true, themingMode = ThemingMode.FORCE_DARK)
-  ) {
-    ConverterSettingsScreen(
-      prefs =
-        ConverterPreferences(
-          formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
-          middleZero = false,
-          acButton = true,
-          precision = 3,
-          outputFormat = OutputFormat.PLAIN,
-          formatTime = false,
-          sorting = UnitsListSorting.USAGE,
-          shownUnitGroups = UnitGroup.entries,
-          favoritesOnly = false,
-          latestLeftSideUnit = "kilometer",
-          latestRightSideUnit = "mile",
-          customApiUrl = "",
-        ),
-      navigateUpAction = {},
-      navigateToUnitsGroup = {},
-      updateUnitConverterFormatTime = {},
-      updateUnitConverterSorting = {},
+private fun PreviewConverterSettingsScreen() {
+  var prefs by remember {
+    mutableStateOf(
+      ConverterPreferences(
+        formatterSymbols = FormatterSymbols(Token2.Space, Token2.Period, false),
+        middleZero = false,
+        acButton = true,
+        precision = 3,
+        outputFormat = OutputFormat.PLAIN,
+        formatTime = false,
+        sorting = UnitsListSorting.USAGE,
+        shownUnitGroups = UnitGroup.entries,
+        favoritesOnly = false,
+        latestLeftSideUnit = "kilometer",
+        latestRightSideUnit = "mile",
+        customApiUrl = "",
+        showIcons = true,
+      )
     )
   }
+  ConverterSettingsScreen(
+    prefs = prefs,
+    navigateUpAction = {},
+    navigateToUnitsGroup = {},
+    updateUnitConverterFormatTime = { prefs = prefs.copy(formatTime = it) },
+    updateUnitConverterSorting = { prefs = prefs.copy(sorting = it) },
+    updateUnitConverterShowIcons = { prefs = prefs.copy(showIcons = it) },
+  )
+}

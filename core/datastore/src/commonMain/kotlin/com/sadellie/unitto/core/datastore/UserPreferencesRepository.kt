@@ -92,6 +92,8 @@ interface UserPreferencesRepository {
 
   suspend fun updateUnitConverterSorting(sorting: UnitsListSorting)
 
+  suspend fun updateUnitConverterShowIcons(enabled: Boolean)
+
   suspend fun updatePartialHistoryView(enabled: Boolean)
 
   suspend fun updateSteppedPartialHistoryView(enabled: Boolean)
@@ -188,6 +190,9 @@ internal object Defaults {
 
   val unitConverterFavoritesOnly: Boolean
     get() = false
+
+  val unitConverterShowIcons: Boolean
+    get() = true
 
   val latestLeftSide: String
     get() = UnitID.kilometer

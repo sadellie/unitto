@@ -36,14 +36,52 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.designsystem.icons.symbols.ActivityZone
+import com.sadellie.unitto.core.designsystem.icons.symbols.ActivityZoneFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Airwave
+import com.sadellie.unitto.core.designsystem.icons.symbols.Asterisk
+import com.sadellie.unitto.core.designsystem.icons.symbols.AttachMoney
+import com.sadellie.unitto.core.designsystem.icons.symbols.BacklightHigh
+import com.sadellie.unitto.core.designsystem.icons.symbols.Code
+import com.sadellie.unitto.core.designsystem.icons.symbols.Compress
+import com.sadellie.unitto.core.designsystem.icons.symbols.DeviceThermostat
+import com.sadellie.unitto.core.designsystem.icons.symbols.DiagonalLine
+import com.sadellie.unitto.core.designsystem.icons.symbols.Download
+import com.sadellie.unitto.core.designsystem.icons.symbols.ElectricBolt
+import com.sadellie.unitto.core.designsystem.icons.symbols.ElectricBoltFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.ElectricRickshaw
+import com.sadellie.unitto.core.designsystem.icons.symbols.ElectricRickshawFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Energy
+import com.sadellie.unitto.core.designsystem.icons.symbols.FastForward
+import com.sadellie.unitto.core.designsystem.icons.symbols.FastForwardFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.FitnessCenter
+import com.sadellie.unitto.core.designsystem.icons.symbols.HardDrive2
+import com.sadellie.unitto.core.designsystem.icons.symbols.HardDrive2Fill
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowDown
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowUp
+import com.sadellie.unitto.core.designsystem.icons.symbols.Lightbulb
+import com.sadellie.unitto.core.designsystem.icons.symbols.LightbulbFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.LocalGasStation
+import com.sadellie.unitto.core.designsystem.icons.symbols.LocalGasStationFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Power
+import com.sadellie.unitto.core.designsystem.icons.symbols.PowerFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Schedule
+import com.sadellie.unitto.core.designsystem.icons.symbols.ScheduleFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Settings
+import com.sadellie.unitto.core.designsystem.icons.symbols.Speed
+import com.sadellie.unitto.core.designsystem.icons.symbols.SpeedFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Straighten
+import com.sadellie.unitto.core.designsystem.icons.symbols.StraightenFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.icons.symbols.WaterMedium
+import com.sadellie.unitto.core.designsystem.icons.symbols.WaterMediumFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Weight
+import com.sadellie.unitto.core.designsystem.icons.symbols.WeightFill
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.AssistChip
 import com.sadellie.unitto.core.ui.FilterChip
@@ -60,14 +98,16 @@ import unitto.core.common.generated.resources.common_open_settings
  * @param chosenUnitGroup Currently selected [UnitGroup]
  * @param selectAction Action to perform when a chip is clicked
  * @param navigateToSettingsAction Action to perform when clicking settings chip at the end
+ * @param showIcons Show [UnitGroup.icons] in front of chips
  */
 @Composable
-internal fun ChipsRow(
+internal fun UnitGroupFilter(
   modifier: Modifier,
   items: List<UnitGroup>,
   chosenUnitGroup: UnitGroup?,
   selectAction: (UnitGroup?) -> Unit,
   navigateToSettingsAction: () -> Unit,
+  showIcons: Boolean,
 ) {
   var expanded by remember { mutableStateOf(false) }
   val chipModifier = Modifier.padding(horizontal = 4.dp)
@@ -85,7 +125,8 @@ internal fun ChipsRow(
       maxRows = if (isExpanded) Int.MAX_VALUE else 2,
       mainContent = {
         items.forEach { item ->
-          val selected: Boolean = item == chosenUnitGroup
+          val selected = item == chosenUnitGroup
+          val icons = remember(showIcons) { if (showIcons) item.icons else null }
           FilterChip(
             modifier = chipModifier,
             isSelected = selected,
@@ -94,6 +135,8 @@ internal fun ChipsRow(
               expanded = false
             },
             label = stringResource(item.res),
+            unselectedIcon = icons?.first,
+            selectedIcon = icons?.second,
           )
         }
 
@@ -208,30 +251,57 @@ private enum class FlexRowSlots {
   Expand,
 }
 
+/** Pair of unselected and selected icons */
+private val UnitGroup.icons: Pair<ImageVector, ImageVector>
+  get() =
+    when (this) {
+      UnitGroup.LENGTH -> Symbols.Straighten to Symbols.StraightenFill
+      UnitGroup.CURRENCY -> Symbols.AttachMoney to Symbols.AttachMoney
+      UnitGroup.MASS -> Symbols.Weight to Symbols.WeightFill
+      UnitGroup.SPEED -> Symbols.Speed to Symbols.SpeedFill
+      UnitGroup.TEMPERATURE -> Symbols.DeviceThermostat to Symbols.DeviceThermostat
+      UnitGroup.AREA -> Symbols.ActivityZone to Symbols.ActivityZoneFill
+      UnitGroup.TIME -> Symbols.Schedule to Symbols.ScheduleFill
+      UnitGroup.VOLUME -> Symbols.WaterMedium to Symbols.WaterMediumFill
+      UnitGroup.DATA -> Symbols.HardDrive2 to Symbols.HardDrive2Fill
+      UnitGroup.PRESSURE -> Symbols.Compress to Symbols.Compress
+      UnitGroup.ACCELERATION -> Symbols.FastForward to Symbols.FastForwardFill
+      UnitGroup.ENERGY -> Symbols.Energy to Symbols.Energy
+      UnitGroup.POWER -> Symbols.Power to Symbols.PowerFill
+      UnitGroup.ANGLE -> Symbols.DiagonalLine to Symbols.DiagonalLine
+      UnitGroup.DATA_TRANSFER -> Symbols.Download to Symbols.Download
+      UnitGroup.FLUX -> Symbols.Lightbulb to Symbols.LightbulbFill
+      UnitGroup.NUMBER_BASE -> Symbols.Code to Symbols.Code
+      UnitGroup.ELECTROSTATIC_CAPACITANCE -> Symbols.ElectricBolt to Symbols.ElectricBoltFill
+      UnitGroup.PREFIX -> Symbols.Asterisk to Symbols.Asterisk
+      UnitGroup.FORCE -> Symbols.FitnessCenter to Symbols.FitnessCenter
+      UnitGroup.TORQUE -> Symbols.ElectricRickshaw to Symbols.ElectricRickshawFill
+      UnitGroup.FLOW_RATE -> Symbols.Airwave to Symbols.Airwave
+      UnitGroup.LUMINANCE -> Symbols.BacklightHigh to Symbols.BacklightHigh
+      UnitGroup.FUEL_CONSUMPTION -> Symbols.LocalGasStation to Symbols.LocalGasStationFill
+    }
+
 @Preview(device = "spec:width=380dp,height=850.9dp,dpi=440")
 @Composable
-fun PreviewUnittoChips() {
-  var selected by remember { mutableStateOf<UnitGroup?>(UnitGroup.LENGTH) }
-
-  fun selectAction(unitGroup: UnitGroup?) {
-    selected = unitGroup
-  }
-
+fun PreviewUnitGroupFilter() {
   Column {
-    ChipsRow(
+    var selected by remember { mutableStateOf<UnitGroup?>(UnitGroup.LENGTH) }
+    UnitGroupFilter(
       modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth(),
       items = UnitGroup.entries.take(7),
       chosenUnitGroup = selected,
-      selectAction = { selectAction(it) },
+      selectAction = { selected = it },
       navigateToSettingsAction = {},
+      showIcons = false,
     )
 
-    ChipsRow(
+    UnitGroupFilter(
       modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth(),
       items = UnitGroup.entries.take(10),
       chosenUnitGroup = selected,
-      selectAction = { selectAction(it) },
+      selectAction = { selected = it },
       navigateToSettingsAction = {},
+      showIcons = true,
     )
   }
 }

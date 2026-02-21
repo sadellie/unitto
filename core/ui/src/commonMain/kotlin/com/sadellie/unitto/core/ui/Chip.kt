@@ -18,14 +18,21 @@
 
 package com.sadellie.unitto.core.ui
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -43,6 +50,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.designsystem.icons.symbols.Check
+import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.Settings
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 
@@ -52,6 +61,8 @@ fun FilterChip(
   isSelected: Boolean,
   onClick: () -> Unit,
   label: String,
+  unselectedIcon: ImageVector?,
+  selectedIcon: ImageVector?,
 ) {
   val transition = updateTransition(targetState = isSelected, label = "Selected transition")
   val backgroundColor =
@@ -71,17 +82,30 @@ fun FilterChip(
         .clickable { onClick() }
         .background(backgroundColor.value)
         .border(width = 1.dp, color = borderColor.value, shape = FilterChipDefaults.shape)
-        .height(FilterChipDefaults.Height)
-        .padding(horizontal = 16.dp),
+        .height(FilterChipDefaults.Height),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-    Text(
-      text = label,
-      style = MaterialTheme.typography.labelLarge,
-      color =
-        if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-        else MaterialTheme.colorScheme.onSurfaceVariant,
-    )
+    val contentColor =
+      if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
+      else MaterialTheme.colorScheme.onSurfaceVariant
+    Spacer(Modifier.width(8.dp))
+    if (selectedIcon != null && unselectedIcon != null) {
+      val animationSpec = MaterialTheme.motionScheme.fastSpatialSpec<Float>()
+      AnimatedContent(
+        targetState = isSelected,
+        transitionSpec = { fadeIn(animationSpec) togetherWith fadeOut(animationSpec) },
+      ) { selected ->
+        Icon(
+          imageVector = if (selected) selectedIcon else unselectedIcon,
+          contentDescription = label,
+          tint = contentColor,
+          modifier = Modifier.requiredSize(18.dp),
+        )
+      }
+    }
+    Spacer(Modifier.width(8.dp))
+    Text(text = label, style = MaterialTheme.typography.labelLarge, color = contentColor)
+    Spacer(Modifier.width(16.dp))
   }
 }
 
@@ -126,6 +150,24 @@ fun PreviewAssistChip() {
 @Composable
 fun PreviewFilterChip() {
   var isSelected by remember { mutableStateOf(true) }
+  FilterChip(
+    isSelected = isSelected,
+    onClick = { isSelected = !isSelected },
+    label = "Label",
+    unselectedIcon = null,
+    selectedIcon = null,
+  )
+}
 
-  FilterChip(isSelected = isSelected, onClick = { isSelected = !isSelected }, label = "Label")
+@Preview
+@Composable
+fun PreviewFilterChipWithIcons() {
+  var isSelected by remember { mutableStateOf(true) }
+  FilterChip(
+    isSelected = isSelected,
+    onClick = { isSelected = !isSelected },
+    label = "Label",
+    unselectedIcon = Symbols.Close,
+    selectedIcon = Symbols.Check,
+  )
 }
