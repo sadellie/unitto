@@ -74,6 +74,7 @@ class CalculatorScreenTest {
           onClearHistoryClick = {},
           onDeleteHistoryItemClick = {},
           updateInitialPartialHistoryView = {},
+          onHardwareInput = {},
         )
       }
 
@@ -117,6 +118,7 @@ class CalculatorScreenTest {
           onClearHistoryClick = {},
           onDeleteHistoryItemClick = {},
           updateInitialPartialHistoryView = {},
+          onHardwareInput = {},
         )
       }
 
