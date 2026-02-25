@@ -112,14 +112,13 @@ private fun AddSubtractView(
   updateStart: (ZonedDateTime) -> Unit,
   updateAddition: (Boolean) -> Unit,
 ) {
-  val mContext = LocalContext.current
-  var dialogState by remember { mutableStateOf(DateTimeDialogState.NONE) }
-  val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
-
   Column(
     modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Sizes.large),
     verticalArrangement = Arrangement.spacedBy(12.dp),
   ) {
+    val mContext = LocalContext.current
+    var dialogState by remember { mutableStateOf(DateTimeDialogState.NONE) }
+    val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
     AnimatedContent(
       targetState = showResult,
       label = "Reveal result",
@@ -181,14 +180,14 @@ private fun AddSubtractView(
         style = ButtonDefaults.textStyleFor(ButtonDefaults.MediumContainerHeight),
       )
     }
-  }
 
-  DateTimeDialogs(
-    dialogState = dialogState,
-    updateDialogState = { dialogState = it },
-    date = uiState.start,
-    updateDate = updateStart,
-  )
+    DateTimeDialogs(
+      dialogState = dialogState,
+      updateDialogState = { dialogState = it },
+      date = uiState.start,
+      updateDate = updateStart,
+    )
+  }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
