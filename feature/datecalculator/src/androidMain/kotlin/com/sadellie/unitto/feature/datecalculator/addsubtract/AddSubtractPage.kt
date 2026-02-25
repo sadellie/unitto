@@ -47,10 +47,7 @@ import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
@@ -69,8 +66,6 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.TextFieldBox
 import com.sadellie.unitto.core.ui.TextFieldRow
-import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogState
-import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.TimeUnitTextField
@@ -117,7 +112,6 @@ private fun AddSubtractView(
     verticalArrangement = Arrangement.spacedBy(12.dp),
   ) {
     val mContext = LocalContext.current
-    var dialogState by remember { mutableStateOf(DateTimeDialogState.NONE) }
     val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
     AnimatedContent(
       targetState = showResult,
@@ -131,8 +125,7 @@ private fun AddSubtractView(
         DateTimeBlock(
           modifier = Modifier.weight(1f),
           title = stringResource(Res.string.date_calculator_start),
-          onTimeClick = { dialogState = DateTimeDialogState.FROM_TIME_AND_DATE },
-          onDateClick = { dialogState = DateTimeDialogState.FROM_DATE },
+          onUpdate = updateStart,
           onLongClick = { updateStart(ZonedDateTimeUtils.nowWithMinutes()) },
           dateTime = uiState.start,
         )
@@ -180,13 +173,6 @@ private fun AddSubtractView(
         style = ButtonDefaults.textStyleFor(ButtonDefaults.MediumContainerHeight),
       )
     }
-
-    DateTimeDialogs(
-      dialogState = dialogState,
-      updateDialogState = { dialogState = it },
-      date = uiState.start,
-      updateDate = updateStart,
-    )
   }
 }
 

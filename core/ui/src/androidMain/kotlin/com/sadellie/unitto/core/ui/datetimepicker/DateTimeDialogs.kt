@@ -25,29 +25,31 @@ import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_next
 import unitto.core.common.generated.resources.common_ok
 
+/** @param nextButton Show button to switch from time to date input (stepped input). */
 @Composable
 fun DateTimeDialogs(
   dialogState: DateTimeDialogState,
   updateDialogState: (DateTimeDialogState) -> Unit,
   date: ZonedDateTime,
   updateDate: (ZonedDateTime) -> Unit,
-  timeState: DateTimeDialogState = DateTimeDialogState.FROM_TIME_AND_DATE,
-  dateState: DateTimeDialogState = DateTimeDialogState.FROM_DATE,
+  nextButton: Boolean = true,
 ) {
   when (dialogState) {
-    timeState ->
+    DateTimeDialogState.FROM_TIME ->
       TimePickerDialog(
         hour = date.hour,
         minute = date.minute,
         onCancel = { updateDialogState(DateTimeDialogState.NONE) },
         onConfirm = { hour, minute ->
           updateDate(date.withHour(hour).withMinute(minute))
-          updateDialogState(if (dateState.nextButton) dateState else DateTimeDialogState.NONE)
+          updateDialogState(
+            if (nextButton) DateTimeDialogState.FROM_DATE else DateTimeDialogState.NONE
+          )
         },
         confirmLabel =
-          stringResource(if (dateState.nextButton) Res.string.common_next else Res.string.common_ok),
+          stringResource(if (nextButton) Res.string.common_next else Res.string.common_ok),
       )
-    dateState ->
+    DateTimeDialogState.FROM_DATE ->
       DatePickerDialog(
         zonedDateTime = date,
         onDismiss = { updateDialogState(DateTimeDialogState.NONE) },
@@ -56,15 +58,12 @@ fun DateTimeDialogs(
           updateDialogState(DateTimeDialogState.NONE)
         },
       )
-    else -> Unit
+    DateTimeDialogState.NONE -> Unit
   }
 }
 
-enum class DateTimeDialogState(internal val nextButton: Boolean = false) {
+enum class DateTimeDialogState {
   NONE,
   FROM_TIME,
-  FROM_TIME_AND_DATE(true),
   FROM_DATE,
-  TO_TIME_AND_DATE(true),
-  TO_DATE,
 }

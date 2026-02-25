@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,6 +52,8 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTime
+import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogState
+import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
@@ -55,11 +61,11 @@ import java.time.ZonedDateTime
 internal fun DateTimeBlock(
   modifier: Modifier = Modifier,
   title: String,
-  onTimeClick: () -> Unit = {},
-  onDateClick: () -> Unit = {},
+  onUpdate: ((ZonedDateTime) -> Unit)? = null,
   onLongClick: () -> Unit = {},
   dateTime: ZonedDateTime,
 ) {
+  var dialogState by rememberSaveable { mutableStateOf(DateTimeDialogState.NONE) }
   Column(
     modifier = modifier,
     horizontalAlignment = Alignment.Start,
@@ -69,7 +75,10 @@ internal fun DateTimeBlock(
     Column(
       modifier =
         Modifier.clip(ListItemExpressiveDefaults.firstShape)
-          .combinedClickable(onClick = onTimeClick, onLongClick = onLongClick)
+          .combinedClickable(
+            onClick = { dialogState = DateTimeDialogState.FROM_TIME },
+            onLongClick = onLongClick,
+          )
           .background(MaterialTheme.colorScheme.secondaryContainer)
           .padding(
             start = Sizes.large,
@@ -98,12 +107,24 @@ internal fun DateTimeBlock(
     AnimatedText(
       modifier =
         Modifier.clip(ListItemExpressiveDefaults.lastShape)
-          .combinedClickable(onClick = onDateClick, onLongClick = onLongClick)
+          .combinedClickable(
+            onClick = { dialogState = DateTimeDialogState.FROM_DATE },
+            onLongClick = onLongClick,
+          )
           .background(MaterialTheme.colorScheme.secondaryContainer)
           .padding(Sizes.large)
           .fillMaxWidth(),
       targetState = formattedDate,
       style = MaterialTheme.typography.bodyLarge,
+    )
+  }
+
+  if (onUpdate != null) {
+    DateTimeDialogs(
+      dialogState = dialogState,
+      updateDialogState = { dialogState = it },
+      date = dateTime,
+      updateDate = onUpdate,
     )
   }
 }
@@ -135,6 +156,7 @@ fun DateTimeBlockPreview() {
   DateTimeBlock(
     modifier = Modifier.width(224.dp),
     title = "End",
+    onUpdate = {},
     dateTime = ZonedDateTimeUtils.nowWithMinutes(),
   )
 }

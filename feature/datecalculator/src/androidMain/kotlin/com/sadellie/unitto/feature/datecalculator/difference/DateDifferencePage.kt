@@ -28,10 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,8 +37,6 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogState
-import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogs
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeResultBlock
@@ -78,8 +72,6 @@ private fun DateDifferenceView(
     modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Sizes.large),
     verticalArrangement = Arrangement.spacedBy(Sizes.small),
   ) {
-    var dialogState by remember { mutableStateOf(DateTimeDialogState.NONE) }
-
     Row(
       modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(Sizes.small),
@@ -87,8 +79,7 @@ private fun DateDifferenceView(
       DateTimeBlock(
         modifier = Modifier.weight(1f).fillMaxWidth(),
         title = stringResource(Res.string.date_calculator_start),
-        onTimeClick = { dialogState = DateTimeDialogState.FROM_TIME_AND_DATE },
-        onDateClick = { dialogState = DateTimeDialogState.FROM_DATE },
+        onUpdate = setStartDate,
         onLongClick = { setStartDate(ZonedDateTimeUtils.nowWithMinutes()) },
         dateTime = uiState.start,
       )
@@ -96,8 +87,7 @@ private fun DateDifferenceView(
       DateTimeBlock(
         modifier = Modifier.weight(1f).fillMaxWidth(),
         title = stringResource(Res.string.date_calculator_end),
-        onTimeClick = { dialogState = DateTimeDialogState.TO_TIME_AND_DATE },
-        onDateClick = { dialogState = DateTimeDialogState.TO_DATE },
+        onUpdate = setEndDate,
         onLongClick = { setEndDate(ZonedDateTimeUtils.nowWithMinutes()) },
         dateTime = uiState.end,
       )
@@ -119,24 +109,6 @@ private fun DateDifferenceView(
         ZonedDateTimeDifference.Zero -> Unit
       }
     }
-
-    DateTimeDialogs(
-      dialogState = dialogState,
-      updateDialogState = { dialogState = it },
-      date = uiState.start,
-      updateDate = setStartDate,
-      timeState = DateTimeDialogState.FROM_TIME_AND_DATE,
-      dateState = DateTimeDialogState.FROM_DATE,
-    )
-
-    DateTimeDialogs(
-      dialogState = dialogState,
-      updateDialogState = { dialogState = it },
-      date = uiState.end,
-      updateDate = setEndDate,
-      timeState = DateTimeDialogState.TO_TIME_AND_DATE,
-      dateState = DateTimeDialogState.TO_DATE,
-    )
   }
 }
 

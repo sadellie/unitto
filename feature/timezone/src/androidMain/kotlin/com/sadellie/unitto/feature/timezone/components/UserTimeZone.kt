@@ -114,7 +114,7 @@ internal fun UserTimeZone(
         updateDialogState = { dialogState = it },
         date = time,
         updateDate = onUpdateTime,
-        timeState = DateTimeDialogState.FROM_TIME,
+        nextButton = false,
       )
     }
 
