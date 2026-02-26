@@ -42,6 +42,12 @@ class HapticFeedbackManagerImpl(private val view: View, private val enabled: Boo
   private fun vibrate(scope: CoroutineScope, feedbackConstant: Int) {
     // skip creating a job at all if disabled
     if (!enabled) return
-    scope.launch { view.performHapticFeedback(feedbackConstant) }
+    scope.launch {
+      try {
+        view.performHapticFeedback(feedbackConstant)
+      } catch (_: SecurityException) {
+        // missing android.permission.VIBRATE
+      }
+    }
   }
 }

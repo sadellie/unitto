@@ -26,20 +26,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
-import com.sadellie.unitto.core.ui.textfield.ExpressionOutputTransformation
+import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.ui.textfield.OutlinedDecimalTextField
 import com.sadellie.unitto.core.ui.textfield.UnexpectedDigitsInputTransformation
-import com.sadellie.unitto.core.common.FormatterSymbols
 
 @Composable
 internal fun TimeUnitTextField(
-    modifier: Modifier,
-    state: TextFieldState,
-    label: String,
-    formatterSymbols: FormatterSymbols,
-    maxValue: Double,
-    imeAction: ImeAction = ImeAction.Next,
-    allowFraction: Boolean = true,
+  modifier: Modifier,
+  state: TextFieldState,
+  label: String,
+  formatterSymbols: FormatterSymbols,
+  maxValue: Double,
+  imeAction: ImeAction = ImeAction.Next,
+  allowFraction: Boolean = true,
 ) {
   OutlinedDecimalTextField(
     modifier = modifier,
@@ -50,7 +49,8 @@ internal fun TimeUnitTextField(
         focusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
         unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
       ),
-    outputTransformation = ExpressionOutputTransformation(formatterSymbols),
+    outputTransformation = null,
+    // outputTransformation = ExpressionOutputTransformation(formatterSymbols), TODO 1.11.0-alpha05
     inputTransformation = UnexpectedDigitsInputTransformation(maxValue, allowFraction),
     imeAction = imeAction,
   )

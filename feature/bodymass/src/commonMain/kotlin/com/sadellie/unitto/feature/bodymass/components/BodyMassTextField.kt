@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.ui.textfield.ExpressionOutputTransformation
 import com.sadellie.unitto.core.ui.textfield.OutlinedDecimalTextField
 import com.sadellie.unitto.core.ui.textfield.UnexpectedDigitsInputTransformation
 
@@ -48,7 +47,8 @@ internal fun BodyMassTextField(
         focusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
         unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
       ),
-    outputTransformation = ExpressionOutputTransformation(formatterSymbols),
+    outputTransformation = null,
+    // outputTransformation = ExpressionOutputTransformation(formatterSymbols), TODO 1.11.0-alpha05
     inputTransformation = UnexpectedDigitsInputTransformation(MAX_BODY_MASS_INPUT_VALUE, true),
     imeAction = imeAction,
   )

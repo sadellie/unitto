@@ -48,7 +48,7 @@ fun OutlinedDecimalTextField(
   label: @Composable () -> Unit,
   colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
   inputTransformation: InputTransformation,
-  outputTransformation: OutputTransformation,
+  outputTransformation: OutputTransformation?,
   imeAction: ImeAction = ImeAction.Next,
 ) {
   OutlinedTextField(
