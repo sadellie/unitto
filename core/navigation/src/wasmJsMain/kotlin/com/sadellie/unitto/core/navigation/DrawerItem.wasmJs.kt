@@ -22,6 +22,7 @@ actual val mainDrawerItems: List<DrawerItem> by lazy {
   listOf(
     CalculatorDrawerItem,
     ConverterDrawerItem,
+    ProgrammerDrawerItem,
     BodyMassDrawerItem,
     DateCalculatorDrawerItem,
     TimeZonesDrawerItem,

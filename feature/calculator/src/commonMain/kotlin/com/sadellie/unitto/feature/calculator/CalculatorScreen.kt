@@ -89,6 +89,8 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
 import com.sadellie.unitto.core.ui.BackHandler
 import com.sadellie.unitto.core.ui.DrawerButton
@@ -659,7 +661,10 @@ private fun PreviewCalculatorScreen() {
   BoxWithConstraints(Modifier.fillMaxSize()) {
     val dpSize = DpSize(this.minWidth, this.minHeight)
     val windowSizeClass = WindowSizeClass.calculateFromSize(dpSize)
-    CompositionLocalProvider(LocalWindowSize provides windowSizeClass) {
+    CompositionLocalProvider(
+      LocalWindowSize provides windowSizeClass,
+      LocalNumberTypography provides numberTypographyUnitto(),
+    ) {
       Ready(
         uiState =
           CalculatorUIState.Ready(

@@ -44,6 +44,7 @@ actual val mainDrawerItems: List<DrawerItem> by lazy {
     listOf(
       CalculatorDrawerItem,
       ConverterDrawerItem,
+      ProgrammerDrawerItem,
       DateCalculatorDrawerItem,
       TimeZonesDrawerItem,
       BodyMassDrawerItem,
@@ -117,7 +118,9 @@ private fun generateShortcut(drawerItem: DrawerItem): Shortcut? {
         Res.string.time_zone_title,
         R.drawable.ic_shortcut_time_zone,
       )
-    SettingsDrawerItem -> null
+    // TODO programmer shortcut
+    SettingsDrawerItem,
+    ProgrammerDrawerItem -> null
   }
 }
 

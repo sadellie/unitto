@@ -37,7 +37,7 @@ import com.sadellie.unitto.core.common.trimZeros
 data class ExpressionInputTransformation(private val formatterSymbols: FormatterSymbols) :
   InputTransformationWithReplacement {
   override fun TextFieldBuffer.transformInput() =
-    transformInputWithReplacements(legalTokens, replacementMap)
+    transformInputWithReplacements(longTokens = Token.Func.allMathSymbolsWithBracket)
 
   override val legalTokens =
     listOf(
@@ -94,7 +94,7 @@ data class ExpressionInputTransformation(private val formatterSymbols: Formatter
 }
 
 /**
- * - Allow only [Token.Digit.all] and [Token.Letter.all]. No fractional symbols
+ * - Allow only [Token.Digit] and [Token.Letter]. No fractional symbols
  * - Replaces lowercase letters with uppercase
  *
  * @see TextFieldBuffer.transformInputWithReplacements
@@ -102,7 +102,7 @@ data class ExpressionInputTransformation(private val formatterSymbols: Formatter
 @Stable
 data object NumberBaseInputTransformation : InputTransformationWithReplacement {
   override fun TextFieldBuffer.transformInput() =
-    transformInputWithReplacements(legalTokens, replacementMap)
+    transformInputWithReplacements(longTokens = emptyList())
 
   override val legalTokens =
     listOf(
@@ -180,40 +180,6 @@ data class UnexpectedDigitsInputTransformation(
   }
 }
 
-private fun TextFieldBuffer.transformInputWithReplacements(
-  legalTokens: List<String>,
-  replacementMap: Map<String, String>,
-) {
-  if (length == 0) return
-
-  val isTextChanged = this.toString() != originalText.toString()
-  if (isTextChanged) {
-    // process tokens
-    var cursor = 0
-
-    while (cursor < length) {
-      val charsLeft = length - cursor
-
-      // try to match with replacement map
-      var matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
-      if (matched == null) {
-        // try to find legal token ahead
-        matched = matchLegalToken(cursor, charsLeft, legalTokens)
-      }
-
-      if (matched == null) {
-        // illegal token
-        delete(cursor, cursor + 1)
-      } else {
-        cursor += matched.length
-      }
-    }
-  }
-
-  val fixedSelection = this.fixTextRange()
-  selection = fixedSelection
-}
-
 private fun TextFieldBuffer.matchLegalToken(
   cursor: Int,
   charsLeft: Int,
@@ -253,9 +219,40 @@ private fun TextFieldBuffer.getCharsInFront(cursor: Int, count: Int): String {
   return charsInFront
 }
 
-private interface InputTransformationWithReplacement : InputTransformation {
+interface InputTransformationWithReplacement : InputTransformation {
   /** Allowed tokens. Order matters, longest first. */
   val legalTokens: List<String>
   /** Ugly tokens and their replacements. Order matters, prefer longest first. */
   val replacementMap: Map<String, String>
+
+  fun TextFieldBuffer.transformInputWithReplacements(longTokens: List<String>) {
+    if (length == 0) return
+
+    val isTextChanged = this.toString() != originalText.toString()
+    if (isTextChanged) {
+      // process tokens
+      var cursor = 0
+
+      while (cursor < length) {
+        val charsLeft = length - cursor
+
+        // try to match with replacement map
+        var matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
+        if (matched == null) {
+          // try to find legal token ahead
+          matched = matchLegalToken(cursor, charsLeft, legalTokens)
+        }
+
+        if (matched == null) {
+          // illegal token
+          delete(cursor, cursor + 1)
+        } else {
+          cursor += matched.length
+        }
+      }
+    }
+
+    val fixedSelection = this.fixTextRange(longTokens)
+    selection = fixedSelection
+  }
 }

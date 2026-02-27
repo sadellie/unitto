@@ -165,7 +165,7 @@ fun SimpleTextField(
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun AutoSizeTextField(
+fun AutoSizeTextField(
   state: TextFieldState,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,

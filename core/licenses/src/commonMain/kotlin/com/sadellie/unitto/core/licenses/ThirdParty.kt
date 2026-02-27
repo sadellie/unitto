@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,12 +36,11 @@ data class ThirdParty(
           description = "Free Currency Rates API",
         ),
         ThirdParty(
-          name = "Lato",
-          dev = "Łukasz Dziedzic",
-          website = "https://fonts.google.com/specimen/Lato/about",
+          name = "Google Sans Flex",
+          dev = "Google",
+          website = "https://fonts.google.com/specimen/Google+Sans+Flex/license",
           license = "Open Font License",
-          description =
-            "Lato is a sans serif typeface family started in the summer of 2010 by Warsaw-based designer Łukasz Dziedzic (“Lato” means “Summer” in Polish). In December 2010 the Lato family was published under the Open Font License by his foundry tyPoland, with support from Google.",
+          description = "Google Sans Flex is the next generation of Google’s brand typeface",
         ),
         ThirdParty(
           name = "Core Kotlin Extensions",

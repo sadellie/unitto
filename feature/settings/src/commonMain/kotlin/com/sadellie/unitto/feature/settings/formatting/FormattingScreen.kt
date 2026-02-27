@@ -40,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -65,6 +66,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols._123
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
@@ -420,19 +422,20 @@ private fun PreviewFormattingScreen() {
     mutableStateOf(FormatterSymbols(Token.Space, Token.Period, false))
   }
   var currentOutputFormat by remember { mutableIntStateOf(OutputFormat.PLAIN) }
-
-  FormattingScreen(
-    uiState =
-      FormattingUIState(
-        precision = currentPrecision,
-        outputFormat = currentOutputFormat,
-        formatterSymbols = currentFormatterSymbols,
-      ),
-    onPrecisionChange = { currentPrecision = it },
-    updateFormatterSymbols = { grouping, fractional, indian ->
-      currentFormatterSymbols = FormatterSymbols(grouping, fractional, indian)
-    },
-    onOutputFormatChange = { currentOutputFormat = it },
-    navigateUpAction = {},
-  )
+  CompositionLocalProvider(LocalNumberTypography provides numberTypographyUnitto()) {
+    FormattingScreen(
+      uiState =
+        FormattingUIState(
+          precision = currentPrecision,
+          outputFormat = currentOutputFormat,
+          formatterSymbols = currentFormatterSymbols,
+        ),
+      onPrecisionChange = { currentPrecision = it },
+      updateFormatterSymbols = { grouping, fractional, indian ->
+        currentFormatterSymbols = FormatterSymbols(grouping, fractional, indian)
+      },
+      onOutputFormatChange = { currentOutputFormat = it },
+      navigateUpAction = {},
+    )
+  }
 }

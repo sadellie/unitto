@@ -62,3 +62,7 @@ Leave.
 - Terms and Conditions: https://sadellie.github.io/unitto/terms
 - Privacy Policy: https://sadellie.github.io/unitto/privacy
 - Help: https://sadellie.github.io/unitto/help
+
+### Google Sans Flex for Unitto
+
+This app uses a modified version of Google Sans Flex. Licenced under the [SIL Open Font License, Version 1.1](https://fonts.google.com/specimen/Google+Sans+Flex/license)

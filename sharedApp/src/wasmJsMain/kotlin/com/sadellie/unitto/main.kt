@@ -52,6 +52,7 @@ import com.sadellie.unitto.feature.converter.converterModule
 import com.sadellie.unitto.feature.converter.navigation.UnitFromRoute
 import com.sadellie.unitto.feature.converter.navigation.UnitToRoute
 import com.sadellie.unitto.feature.datecalculator.dateCalculatorModule
+import com.sadellie.unitto.feature.programmer.programmerModule
 import com.sadellie.unitto.feature.settings.settingsModule
 import com.sadellie.unitto.feature.timezone.timeZoneModule
 import io.github.sadellie.themmo.Themmo
@@ -132,6 +133,7 @@ private fun initKoin() {
       dataStoreModule,
       calculatorModule,
       converterModule,
+      programmerModule,
       bodyMassModule,
       dateCalculatorModule,
       timeZoneModule,

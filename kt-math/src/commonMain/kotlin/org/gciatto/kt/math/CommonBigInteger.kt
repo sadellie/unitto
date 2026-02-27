@@ -776,7 +776,7 @@ internal class CommonBigInteger : BigInteger {
         val u = lucasLehmerSequence(d, thisPlusOne, this)
 
         // Step 3
-        return u.rem(this) == ZERO
+        return u.mod(this) == ZERO
     }
 
     /**
@@ -1710,16 +1710,16 @@ internal class CommonBigInteger : BigInteger {
     // Modular Arithmetic Operations
 
     /**
-     * Returns a BigInteger whose value is `(this rem m`).  This method
+     * Returns a BigInteger whose value is `(this mod m`).  This method
      * differs from `remainder` in that it always returns a
      * *non-negative* BigInteger.
      *
      * @param modulus the modulus.
-     * @return `this rem other`
+     * @return `this mod other`
      * @throws ArithmeticException when `other` is 0
-     * @see .remainder
+     * @see remainder
      */
-    override operator fun rem(modulus: BigInteger): CommonBigInteger {
+    override fun mod(modulus: BigInteger): CommonBigInteger {
         val other: CommonBigInteger = modulus.castTo()
         if (other._signum <= 0) {
             throw ArithmeticException("BigInteger: modulus not positive")
@@ -1776,7 +1776,7 @@ internal class CommonBigInteger : BigInteger {
 
         val base =
             if (this._signum < 0 || this >= modulus) {
-                this.rem(modulus)
+                this.mod(modulus)
             } else {
                 this
             }
@@ -1799,7 +1799,7 @@ internal class CommonBigInteger : BigInteger {
             // Calculate new base from m1
             val base2 =
                 if (this._signum < 0 || this.compareTo(m1) >= 0) {
-                    this.rem(m1)
+                    this.mod(m1)
                 } else {
                     this
                 }
@@ -1825,7 +1825,7 @@ internal class CommonBigInteger : BigInteger {
                         .times(m2)
                         .times(y1)
                         .plus(a2.times(m1).times(y2))
-                        .rem(modulus)
+                        .mod(modulus)
             } else {
                 val t1 = MutableBigInteger()
                 MutableBigInteger(a1.times(m2)).multiply(MutableBigInteger(y1), t1)
@@ -2161,7 +2161,7 @@ internal class CommonBigInteger : BigInteger {
         // Calculate (this rem m)
         var modVal = this
         if (_signum < 0 || this.compareMagnitude(modulus) >= 0) {
-            modVal = this.rem(modulus)
+            modVal = this.mod(modulus)
         }
 
         if (modVal == ONE) {
@@ -3528,7 +3528,7 @@ internal class CommonBigInteger : BigInteger {
                 j = -j
             }
             // And reduce u rem p
-            u = n.rem(of(p.toLong())).toInt()
+            u = n.mod(of(p.toLong())).toInt()
 
             // Now compute Jacobi(u,p), u < p
             while (u != 0) {
@@ -3571,9 +3571,9 @@ internal class CommonBigInteger : BigInteger {
             var v2: CommonBigInteger
 
             for (i in k.bitLength - 2 downTo 0) {
-                u2 = u.times(v).rem(n)
+                u2 = u.times(v).mod(n)
 
-                v2 = v.square().plus(d.times(u.square())).rem(n)
+                v2 = v.square().plus(d.times(u.square())).mod(n)
                 if (v2.testBit(0)) {
                     v2 = v2.minus(n)
                 }
@@ -3583,13 +3583,13 @@ internal class CommonBigInteger : BigInteger {
                 u = u2
                 v = v2
                 if (k.testBit(i)) {
-                    u2 = u.plus(v).rem(n)
+                    u2 = u.plus(v).mod(n)
                     if (u2.testBit(0)) {
                         u2 = u2.minus(n)
                     }
 
                     u2 = u2.shr(1)
-                    v2 = v.plus(d.times(u)).rem(n)
+                    v2 = v.plus(d.times(u)).mod(n)
                     if (v2.testBit(0)) {
                         v2 = v2.minus(n)
                     }

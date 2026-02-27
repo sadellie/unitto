@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,18 +27,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.Font
 import unitto.core.designsystem.generated.resources.Res
-import unitto.core.designsystem.generated.resources.lato_regular
+import unitto.core.designsystem.generated.resources.google_sans_for_unitto
 
 val LocalNumberTypography = staticCompositionLocalOf {
   numberTypographyUnittoImpl(FontFamily.Default)
 }
 
-/** Branded typography using Lato font. */
+/**
+ * Branded typography
+ *
+ * `fonttools varLib.mutator font.ttf wght=400 wdth=86 ROND=100 slnt=0 opsz=28`
+ */
 @Composable
-fun numberTypographyUnitto(): Typography {
-  val latoFontFamily = FontFamily(Font(Res.font.lato_regular, weight = FontWeight.Normal))
-  return numberTypographyUnittoImpl(latoFontFamily)
-}
+fun numberTypographyUnitto(): Typography =
+  numberTypographyUnittoImpl(
+    FontFamily(Font(resource = Res.font.google_sans_for_unitto, weight = FontWeight.Normal))
+  )
 
 private fun numberTypographyUnittoImpl(fontFamily: FontFamily): Typography {
   return Typography(

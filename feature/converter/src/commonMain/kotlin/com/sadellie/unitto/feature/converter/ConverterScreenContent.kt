@@ -85,9 +85,9 @@ import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.textfield.NumberBaseTextField
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
-import com.sadellie.unitto.core.ui.textfield.addBracket
-import com.sadellie.unitto.core.ui.textfield.addTokens
-import com.sadellie.unitto.core.ui.textfield.deleteTokens
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addBracket
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addTokens
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.deleteTokens
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton

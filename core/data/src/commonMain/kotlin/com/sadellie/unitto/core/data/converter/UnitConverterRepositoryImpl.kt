@@ -31,7 +31,7 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.remote.CurrencyApiService
-import io.github.sadellie.evaluatto.ast.calculateExpression
+import io.github.sadellie.evaluatto.math.calculateExpression
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.Dispatchers

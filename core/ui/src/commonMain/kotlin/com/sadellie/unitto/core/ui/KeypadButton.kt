@@ -19,12 +19,13 @@
 package com.sadellie.unitto.core.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.designsystem.icons.iconpack.AcTan
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ArCos
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ArSin
+import com.sadellie.unitto.core.designsystem.icons.iconpack.ArTan
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Backspace
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Brackets
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Clear
@@ -111,12 +112,14 @@ sealed interface KeypadButton {
   val icon: ImageVector
   val description: StringResource?
 
+  @Immutable
   data class KeypadButtonAdd(
     override val icon: ImageVector,
     override val description: StringResource?,
     val token: String,
   ) : KeypadButton
 
+  @Immutable
   data class KeypadButtonSimple(
     override val icon: ImageVector,
     override val description: StringResource?,
@@ -150,7 +153,7 @@ sealed interface KeypadButton {
     val InvKey = KeypadButtonSimple(IconPack.Inv, Res.string.keyboard_inverse)
 
     val AcTanKey =
-      KeypadButtonAdd(IconPack.AcTan, Res.string.keyboard_actan, Token.ArTan.WithBracket.symbol)
+      KeypadButtonAdd(IconPack.ArTan, Res.string.keyboard_actan, Token.ArTan.WithBracket.symbol)
     val ArCosKey =
       KeypadButtonAdd(IconPack.ArCos, Res.string.keyboard_arcos, Token.ArCos.WithBracket.symbol)
     val ArSinKey =
@@ -210,12 +213,14 @@ fun KeypadButtonTransparent(
   button: KeypadButton.KeypadButtonAdd,
   height: Float,
   onClick: (String) -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonTransparent(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
   ) {
     onClick(button.token)
   }
@@ -226,12 +231,14 @@ fun KeypadButtonTransparent(
   button: KeypadButton.KeypadButtonSimple,
   height: Float,
   onClick: () -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonTransparent(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
     onClick = onClick,
   )
 
@@ -242,6 +249,7 @@ fun KeypadButtonTransparent(
   height: Float,
   onLongClick: () -> Unit,
   onClick: () -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonTransparent(
     modifier = modifier,
@@ -249,6 +257,7 @@ fun KeypadButtonTransparent(
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
     onLongClick = onLongClick,
+    enabled = enabled,
     onClick = onClick,
   )
 
@@ -258,12 +267,14 @@ fun KeypadButtonTertiary(
   button: KeypadButton.KeypadButtonSimple,
   height: Float,
   onClick: () -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonTertiary(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
     onClick = onClick,
   )
 
@@ -273,12 +284,14 @@ fun KeypadButtonFilled(
   button: KeypadButton.KeypadButtonSimple,
   height: Float,
   onClick: () -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonFilled(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
     onClick = onClick,
   )
 
@@ -288,12 +301,14 @@ fun KeypadButtonFilled(
   button: KeypadButton.KeypadButtonAdd,
   height: Float,
   onClick: (String) -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonFilled(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
   ) {
     onClick(button.token)
   }
@@ -304,12 +319,14 @@ fun KeypadButtonFilledPrimary(
   button: KeypadButton.KeypadButtonSimple,
   height: Float,
   onClick: () -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonFilledPrimary(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
     onClick = onClick,
   )
 
@@ -319,12 +336,14 @@ fun KeypadButtonFilledPrimary(
   button: KeypadButton.KeypadButtonAdd,
   height: Float,
   onClick: (String) -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonFilledPrimary(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
   ) {
     onClick(button.token)
   }
@@ -335,12 +354,14 @@ fun KeypadButtonLight(
   button: KeypadButton.KeypadButtonAdd,
   height: Float,
   onClick: (String) -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonLight(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
   ) {
     onClick(button.token)
   }
@@ -350,14 +371,16 @@ fun KeypadButtonLight(
   modifier: Modifier,
   button: KeypadButton.KeypadButtonSimple,
   height: Float,
-  onLongClick: () -> Unit,
+  onLongClick: (() -> Unit)?,
   onClick: () -> Unit,
+  enabled: Boolean = true,
 ) =
   KeyboardButtonLight(
     modifier = modifier,
     icon = button.icon,
     contentDescription = button.description?.let { stringResource(it) },
     contentHeight = height,
+    enabled = enabled,
     onLongClick = onLongClick,
     onClick = onClick,
   )

@@ -21,6 +21,12 @@ package com.sadellie.unitto.core.common
 sealed interface Token {
   val symbol: String
 
+  /** Token only for math calculator */
+  sealed interface Math : Token
+
+  /** Token only for programmer calculator */
+  sealed interface Programmer : Token
+
   sealed interface Formatter : Token {
     companion object {
       fun from(symbol: String) =
@@ -45,12 +51,7 @@ sealed interface Token {
     }
   }
 
-  sealed interface Letter : Token {
-    companion object {
-      val all by lazy { listOf(LetterA, LetterB, LetterC, LetterD, LetterE, LetterF) }
-      val allSymbols by lazy { all.map(Token::symbol) }
-    }
-  }
+  sealed interface Letter : Token
 
   sealed interface Operator : Token {
 
@@ -63,31 +64,24 @@ sealed interface Token {
     val precedence: Int
     val associativity: Associativity
     val isUnary: Boolean
-
-    companion object {
-      val all by lazy {
-        listOf(Plus, Minus, Multiply, Divide, Power, Factorial, Modulo, Percent, Sqrt)
-      }
-      val allSymbols by lazy { all.map(Token::symbol) }
-    }
   }
+
+  sealed interface MathOperator : Operator, Math
+
+  sealed interface ProgrammerOperator : Operator, Programmer
+
+  sealed interface MathFunc : Func, Math
 
   sealed interface Func : Token {
     /**
      * Same [Func] but with an opening bracket. Use it only for input from button clicks and in text
      * field transformation for correct cursor positions.
      */
-    interface WithBracket : Func
+    sealed interface WithBracket : Func
 
     companion object {
-      val all by lazy {
-        listOf(ArSin, ArCos, ArTan, Sin, Cos, Tan, Log, Exp, Ln).sortedByDescending {
-          it.symbol.length
-        }
-      }
-      val allSymbols by lazy { all.map { it.symbol } }
-      val allSymbolsWithBracket by lazy {
-        listOf(
+      val allMathSymbolsWithBracket by lazy {
+        listOf<Math>(
             ArSin.WithBracket,
             ArCos.WithBracket,
             ArTan.WithBracket,
@@ -104,12 +98,7 @@ sealed interface Token {
     }
   }
 
-  sealed interface Const : Token {
-    companion object {
-      val all by lazy { listOf(Pi, E) }
-      val allSymbols by lazy { all.map(Token::symbol) }
-    }
-  }
+  sealed interface Const : Token
 
   data object Space : Formatter {
     override val symbol = " "
@@ -191,21 +180,21 @@ sealed interface Token {
     override val symbol = "F"
   }
 
-  data object Plus : Operator {
+  data object Plus : Operator, Math, Programmer {
     override val symbol = "+"
     override val precedence = 0
     override val associativity = Operator.Associativity.LEFT
     override val isUnary = false
   }
 
-  data object Minus : Operator {
+  data object Minus : Operator, Math, Programmer {
     override val symbol = "−"
     override val precedence = 0
     override val associativity = Operator.Associativity.LEFT
     override val isUnary = false
   }
 
-  data object UnaryMinus : Operator {
+  data object UnaryMinus : Operator, Math, Programmer {
     override val symbol = "−"
     // unary first
     override val precedence = Int.MAX_VALUE
@@ -213,42 +202,42 @@ sealed interface Token {
     override val isUnary = true
   }
 
-  data object Multiply : Operator {
+  data object Multiply : Operator, Math, Programmer {
     override val symbol = "×"
     override val precedence = 1
     override val associativity = Operator.Associativity.LEFT
     override val isUnary = false
   }
 
-  data object Divide : Operator {
+  data object Divide : Operator, Math, Programmer {
     override val symbol = "÷"
     override val precedence = 1
     override val associativity = Operator.Associativity.LEFT
     override val isUnary = false
   }
 
-  data object Power : Operator {
+  data object Power : MathOperator {
     override val symbol = "^"
     override val precedence = 2
     override val associativity = Operator.Associativity.RIGHT
     override val isUnary = false
   }
 
-  data object Factorial : Operator {
+  data object Factorial : MathOperator {
     override val symbol = "!"
     override val precedence = 2
     override val associativity = Operator.Associativity.LEFT
     override val isUnary = true
   }
 
-  data object Modulo : Operator {
+  data object Modulo : MathOperator {
     override val symbol = "#"
     override val precedence = 3
     override val associativity = Operator.Associativity.LEFT
     override val isUnary = false
   }
 
-  data object Percent : Operator {
+  data object Percent : MathOperator {
     // not operator in AST, used only in tokenizer and replaced after input fixups
     override val symbol = "%"
     override val precedence = -1
@@ -256,95 +245,95 @@ sealed interface Token {
     override val isUnary = true
   }
 
-  data object Sqrt : Operator {
+  data object Sqrt : MathOperator {
     override val symbol = "√"
     override val precedence = 3
     override val associativity = Operator.Associativity.RIGHT
     override val isUnary = true
   }
 
-  data object Sin : Func {
+  data object Sin : MathFunc {
     override val symbol = "sin"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = Sin.symbol + LeftBracket.symbol
     }
   }
 
-  data object Cos : Func {
+  data object Cos : MathFunc {
     override val symbol = "cos"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = Cos.symbol + LeftBracket.symbol
     }
   }
 
-  data object Tan : Func {
+  data object Tan : MathFunc {
     override val symbol = "tan"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = Tan.symbol + LeftBracket.symbol
     }
   }
 
-  data object ArSin : Func {
+  data object ArSin : MathFunc {
     override val symbol = "sin⁻¹"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = ArSin.symbol + LeftBracket.symbol
     }
   }
 
-  data object ArCos : Func {
+  data object ArCos : MathFunc {
     override val symbol = "cos⁻¹"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = ArCos.symbol + LeftBracket.symbol
     }
   }
 
-  data object ArTan : Func {
+  data object ArTan : MathFunc {
     override val symbol = "tan⁻¹"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = ArTan.symbol + LeftBracket.symbol
     }
   }
 
-  data object Ln : Func {
+  data object Ln : MathFunc {
     override val symbol = "ln"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = Ln.symbol + LeftBracket.symbol
     }
   }
 
-  data object Log : Func {
+  data object Log : MathFunc {
     override val symbol = "log"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = Log.symbol + LeftBracket.symbol
     }
   }
 
-  data object Exp : Func {
+  data object Exp : MathFunc {
     override val symbol = "exp"
 
-    data object WithBracket : Func.WithBracket {
+    data object WithBracket : Func.WithBracket, Math {
       override val symbol = Exp.symbol + LeftBracket.symbol
     }
   }
 
-  data object Pi : Const {
+  data object Pi : Const, Math {
     override val symbol = "π"
   }
 
-  data object E : Const {
+  data object E : Const, Math {
     override val symbol = "e"
   }
 
   // TODO not display only, used in tokenizer
-  data object EngineeringE : DisplayOnly {
+  data object EngineeringE : DisplayOnly, Math {
     override val symbol = "E"
   }
 
@@ -352,34 +341,130 @@ sealed interface Token {
     override val symbol = "⁄"
   }
 
-  data class Number(override val symbol: String) : Token
+  // Programmer only
+  data object Or : ProgrammerOperator {
+    override val symbol = "or"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
 
-  data object LeftBracket : Token {
+  data object And : ProgrammerOperator {
+    override val symbol = "and"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data object Not : ProgrammerOperator {
+    override val symbol = "not"
+    override val precedence = Int.MAX_VALUE
+    override val associativity = Operator.Associativity.RIGHT
+    override val isUnary = true
+  }
+
+  data object Nand : ProgrammerOperator {
+    override val symbol = "nand"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data object Nor : ProgrammerOperator {
+    override val symbol = "nor"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data object Xor : ProgrammerOperator {
+    override val symbol = "xor"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data object Lsh : ProgrammerOperator {
+    override val symbol = "lsh"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data object Rsh : ProgrammerOperator {
+    override val symbol = "rsh"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data object Mod : ProgrammerOperator {
+    override val symbol = "mod"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data class Number(override val symbol: String) : Token, Math, Programmer
+
+  data object LeftBracket : Token, Math, Programmer {
     override val symbol = "("
   }
 
-  data object RightBracket : Token {
+  data object RightBracket : Token, Math, Programmer {
     override val symbol = ")"
   }
 
   companion object {
-    val parseableTokens by lazy {
-      (Operator.all + Func.all + Const.all + EngineeringE + LeftBracket + RightBracket)
+    val parseableMathTokens: List<Math> by lazy {
+      listOf(
+          Plus,
+          Minus,
+          Multiply,
+          Divide,
+          Power,
+          Factorial,
+          Modulo,
+          Percent,
+          Sqrt,
+          ArSin,
+          ArCos,
+          ArTan,
+          Sin,
+          Cos,
+          Tan,
+          Log,
+          Exp,
+          Ln,
+          Pi,
+          E,
+          EngineeringE,
+          LeftBracket,
+          RightBracket,
+        )
         .sortedByDescending { it.symbol.length }
     }
-    val digitsWithDot by lazy { Digit.all + Dot }
-    val digitsWithDotSymbols by lazy { digitsWithDot.map(Token::symbol) }
-    val expressionTokens by lazy {
-      digitsWithDot +
-        Operator.all +
-        LeftBracket +
-        RightBracket +
-        Func.all +
-        Const.all +
-        EngineeringE
+    val parseableProgrammerTokens: List<Programmer> by lazy {
+      listOf(
+          Plus,
+          Minus,
+          Multiply,
+          Divide,
+          Or,
+          And,
+          Not,
+          Nand,
+          Nor,
+          Xor,
+          Lsh,
+          Rsh,
+          Mod,
+          LeftBracket,
+          RightBracket,
+        )
+        .sortedByDescending { it.symbol.length }
     }
-
-    val numberBaseTokens by lazy { Digit.allSymbols + Letter.allSymbols }
+    val digitsWithDotSymbols by lazy { (Digit.all + Dot).map(Token::symbol) }
 
     val sexyToUgly by lazy {
       mapOf(

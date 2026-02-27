@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -33,18 +37,158 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.sadellie.unitto.core.designsystem.icons.symbols.Power
+import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 
 @Composable
-fun BasicKeyboardButton(
+fun KeyboardButtonLight(
   modifier: Modifier,
-  contentHeight: Float,
-  onClick: () -> Unit,
-  onLongClick: (() -> Unit)?,
-  containerColor: Color,
   icon: ImageVector,
   contentDescription: String?,
-  iconColor: Color,
+  contentHeight: Float,
+  enabled: Boolean,
+  onLongClick: (() -> Unit)? = null,
+  onClick: () -> Unit,
 ) {
+  BasicKeyboardButton(
+    modifier = modifier,
+    contentHeight = contentHeight,
+    enabled = enabled,
+    onClick = onClick,
+    onLongClick = onLongClick,
+    colors =
+      ButtonDefaults.filledTonalButtonColors(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+      ),
+    icon = icon,
+    contentDescription = contentDescription,
+  )
+}
+
+@Composable
+fun KeyboardButtonFilled(
+  modifier: Modifier,
+  icon: ImageVector,
+  contentDescription: String?,
+  contentHeight: Float,
+  enabled: Boolean,
+  onLongClick: (() -> Unit)? = null,
+  onClick: () -> Unit,
+) {
+  BasicKeyboardButton(
+    modifier = modifier,
+    contentHeight = contentHeight,
+    enabled = enabled,
+    onClick = onClick,
+    onLongClick = onLongClick,
+    colors =
+      ButtonDefaults.filledTonalButtonColors(
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+      ),
+    icon = icon,
+    contentDescription = contentDescription,
+  )
+}
+
+@Composable
+fun KeyboardButtonFilledPrimary(
+  modifier: Modifier,
+  icon: ImageVector,
+  contentDescription: String?,
+  contentHeight: Float,
+  enabled: Boolean,
+  onLongClick: (() -> Unit)? = null,
+  onClick: () -> Unit,
+) {
+  BasicKeyboardButton(
+    modifier = modifier,
+    contentHeight = contentHeight,
+    enabled = enabled,
+    onClick = onClick,
+    onLongClick = onLongClick,
+    colors =
+      ButtonDefaults.filledTonalButtonColors(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+      ),
+    icon = icon,
+    contentDescription = contentDescription,
+  )
+}
+
+@Composable
+fun KeyboardButtonTransparent(
+  modifier: Modifier,
+  icon: ImageVector,
+  contentDescription: String?,
+  contentHeight: Float,
+  enabled: Boolean,
+  onLongClick: (() -> Unit)? = null,
+  onClick: () -> Unit,
+) {
+  BasicKeyboardButton(
+    modifier = modifier,
+    contentHeight = contentHeight,
+    enabled = enabled,
+    onClick = onClick,
+    onLongClick = onLongClick,
+    colors =
+      ButtonDefaults.textButtonColors(
+        containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+      ),
+    icon = icon,
+    contentDescription = contentDescription,
+  )
+}
+
+@Composable
+fun KeyboardButtonTertiary(
+  modifier: Modifier,
+  icon: ImageVector,
+  contentDescription: String?,
+  contentHeight: Float,
+  enabled: Boolean,
+  onLongClick: (() -> Unit)? = null,
+  onClick: () -> Unit,
+) {
+  BasicKeyboardButton(
+    modifier = modifier,
+    contentHeight = contentHeight,
+    enabled = enabled,
+    onClick = onClick,
+    onLongClick = onLongClick,
+    colors =
+      ButtonDefaults.filledTonalButtonColors(
+        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+      ),
+    icon = icon,
+    contentDescription = contentDescription,
+  )
+}
+
+@Composable
+private fun BasicKeyboardButton(
+  modifier: Modifier,
+  contentHeight: Float,
+  enabled: Boolean,
+  onClick: () -> Unit,
+  onLongClick: (() -> Unit)?,
+  colors: ButtonColors,
+  icon: ImageVector,
+  contentDescription: String?,
+) {
+  val containerColor =
+    remember(colors, enabled) {
+      if (enabled) colors.containerColor else colors.disabledContainerColor
+    }
+  val contentColor =
+    remember(colors, enabled) { if (enabled) colors.contentColor else colors.disabledContentColor }
   Box(
     modifier =
       modifier
@@ -54,6 +198,7 @@ fun BasicKeyboardButton(
           onLongClick = onLongClick,
           cornerRadiusRange = 30..50,
           animationSpec = tween(KeyboardButtonToken.SQUASH_ANIMATION_DURATION_MS),
+          enabled = enabled,
         )
         .background(containerColor),
     contentAlignment = Alignment.Center,
@@ -68,114 +213,9 @@ fun BasicKeyboardButton(
             scaleX = contentHeight
             scaleY = contentHeight
           },
-      tint = iconColor,
+      tint = contentColor,
     )
   }
-}
-
-@Composable
-fun KeyboardButtonLight(
-  modifier: Modifier,
-  icon: ImageVector,
-  contentDescription: String?,
-  contentHeight: Float,
-  onLongClick: (() -> Unit)? = null,
-  onClick: () -> Unit,
-) {
-  BasicKeyboardButton(
-    modifier = modifier,
-    contentHeight = contentHeight,
-    onClick = onClick,
-    onLongClick = onLongClick,
-    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-    icon = icon,
-    contentDescription = contentDescription,
-    iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-  )
-}
-
-@Composable
-fun KeyboardButtonFilled(
-  modifier: Modifier,
-  icon: ImageVector,
-  contentDescription: String?,
-  contentHeight: Float,
-  onLongClick: (() -> Unit)? = null,
-  onClick: () -> Unit,
-) {
-  BasicKeyboardButton(
-    modifier = modifier,
-    contentHeight = contentHeight,
-    onClick = onClick,
-    onLongClick = onLongClick,
-    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-    icon = icon,
-    contentDescription = contentDescription,
-    iconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-  )
-}
-
-@Composable
-fun KeyboardButtonFilledPrimary(
-  modifier: Modifier,
-  icon: ImageVector,
-  contentDescription: String?,
-  contentHeight: Float,
-  onLongClick: (() -> Unit)? = null,
-  onClick: () -> Unit,
-) {
-  BasicKeyboardButton(
-    modifier = modifier,
-    contentHeight = contentHeight,
-    onClick = onClick,
-    onLongClick = onLongClick,
-    containerColor = MaterialTheme.colorScheme.primaryContainer,
-    icon = icon,
-    contentDescription = contentDescription,
-    iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-  )
-}
-
-@Composable
-fun KeyboardButtonTransparent(
-  modifier: Modifier,
-  icon: ImageVector,
-  contentDescription: String?,
-  contentHeight: Float,
-  onLongClick: (() -> Unit)? = null,
-  onClick: () -> Unit,
-) {
-  BasicKeyboardButton(
-    modifier = modifier,
-    contentHeight = contentHeight,
-    onClick = onClick,
-    onLongClick = onLongClick,
-    containerColor = Color.Transparent,
-    icon = icon,
-    contentDescription = contentDescription,
-    iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-  )
-}
-
-@Composable
-fun KeyboardButtonTertiary(
-  modifier: Modifier,
-  icon: ImageVector,
-  contentDescription: String?,
-  contentHeight: Float,
-  onLongClick: (() -> Unit)? = null,
-  onClick: () -> Unit,
-) {
-  BasicKeyboardButton(
-    modifier = modifier,
-    contentHeight = contentHeight,
-    onClick = onClick,
-    onLongClick = onLongClick,
-    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-    icon = icon,
-    contentDescription = contentDescription,
-    iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-  )
 }
 
 object KeyboardButtonToken {
@@ -193,4 +233,106 @@ object KeyboardButtonToken {
   const val ICON_HEIGHT_SHORT_SECONDARY = 1.1f
 
   const val SQUASH_ANIMATION_DURATION_MS = 200
+}
+
+@Composable
+@Preview
+private fun PreviewBasicKeyboardButton() {
+  FlowRow {
+    val modifier = Modifier.size(46.dp)
+    KeyboardButtonLight(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = true,
+      onClick = {},
+    )
+    KeyboardButtonLight(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = false,
+      onClick = {},
+    )
+
+    KeyboardButtonFilled(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = true,
+      onClick = {},
+    )
+    KeyboardButtonFilled(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = false,
+      onClick = {},
+    )
+
+    KeyboardButtonFilledPrimary(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = true,
+      onClick = {},
+    )
+    KeyboardButtonFilledPrimary(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = false,
+      onClick = {},
+    )
+
+    KeyboardButtonTransparent(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = true,
+      onClick = {},
+    )
+    KeyboardButtonTransparent(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = false,
+      onClick = {},
+    )
+
+    KeyboardButtonTertiary(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = true,
+      onClick = {},
+    )
+    KeyboardButtonTertiary(
+      modifier = modifier,
+      icon = Symbols.Power,
+      contentDescription = null,
+      contentHeight = 1f,
+      onLongClick = null,
+      enabled = false,
+      onClick = {},
+    )
+  }
 }

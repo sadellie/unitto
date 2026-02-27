@@ -36,9 +36,9 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.toFormattedString
-import com.sadellie.unitto.core.ui.textfield.addBracket
-import com.sadellie.unitto.core.ui.textfield.addTokens
-import io.github.sadellie.evaluatto.ast.calculateExpression
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addBracket
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addTokens
+import io.github.sadellie.evaluatto.math.calculateExpression
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

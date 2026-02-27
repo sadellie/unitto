@@ -272,6 +272,7 @@ object ListItemExpressiveDefaults {
 
   private const val HEADLINE_TEXT_FONT_WEIGHT = 450
 
+  @Stable
   fun listedShaped(indexInList: Int, listSize: Int): Shape {
     if (listSize == 1) return singleShape
     val isFirst = indexInList == 0

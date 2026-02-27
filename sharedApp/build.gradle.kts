@@ -45,6 +45,7 @@ kotlin {
     implementation(project(":feature:bodymass"))
     implementation(project(":feature:datecalculator"))
     implementation(project(":feature:timezone"))
+    implementation(project(":feature:programmer"))
     implementation(project(":feature:settings"))
   }
   sourceSets.androidMain.dependencies {

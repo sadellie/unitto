@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,69 +18,53 @@
 package com.sadellie.unitto.core.designsystem.icons.iconpack
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap.Companion.Butt
-import androidx.compose.ui.graphics.StrokeJoin.Companion.Miter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-@Suppress("UnusedReceiverParameter")
 val IconPack.KeyD: ImageVector
   get() {
-    if (_keyD != null) {
-      return _keyD!!
+    if (_KeyD != null) {
+      return _KeyD!!
     }
-    _keyD =
-      Builder(
+    _KeyD =
+      ImageVector.Builder(
           name = "KeyD",
-          defaultWidth = 24.0.dp,
-          defaultHeight = 24.0.dp,
-          viewportWidth = 24.0f,
-          viewportHeight = 24.0f,
+          defaultWidth = 24.dp,
+          defaultHeight = 24.dp,
+          viewportWidth = 24f,
+          viewportHeight = 24f,
         )
         .apply {
-          path(
-            fill = SolidColor(Color(0xFF000000)),
-            stroke = null,
-            strokeLineWidth = 0.0f,
-            strokeLineCap = Butt,
-            strokeLineJoin = Miter,
-            strokeLineMiter = 4.0f,
-            pathFillType = NonZero,
-          ) {
-            moveTo(15.3213f, 12.0887f)
-            curveTo(15.3213f, 12.6254f, 15.2363f, 13.1137f, 15.0663f, 13.5537f)
-            curveTo(14.8963f, 13.9937f, 14.6563f, 14.3704f, 14.3463f, 14.6837f)
-            curveTo(14.0363f, 14.997f, 13.663f, 15.2404f, 13.2263f, 15.4137f)
-            curveTo(12.793f, 15.5837f, 12.313f, 15.6687f, 11.7863f, 15.6687f)
-            horizontalLineTo(9.1113f)
-            verticalLineTo(8.5037f)
-            horizontalLineTo(11.7863f)
-            curveTo(12.313f, 8.5037f, 12.793f, 8.5904f, 13.2263f, 8.7637f)
-            curveTo(13.663f, 8.9337f, 14.0363f, 9.177f, 14.3463f, 9.4937f)
-            curveTo(14.6563f, 9.807f, 14.8963f, 10.1837f, 15.0663f, 10.6237f)
-            curveTo(15.2363f, 11.0637f, 15.3213f, 11.552f, 15.3213f, 12.0887f)
+          path(fill = SolidColor(Color.White)) {
+            moveTo(9.703f, 15.669f)
+            curveTo(9.553f, 15.669f, 9.423f, 15.615f, 9.313f, 15.509f)
+            curveTo(9.206f, 15.399f, 9.153f, 15.267f, 9.153f, 15.114f)
+            verticalLineTo(9.059f)
+            curveTo(9.153f, 8.909f, 9.206f, 8.78f, 9.313f, 8.674f)
+            curveTo(9.423f, 8.564f, 9.553f, 8.509f, 9.703f, 8.509f)
+            horizontalLineTo(11.593f)
+            curveTo(12.726f, 8.509f, 13.621f, 8.824f, 14.278f, 9.454f)
+            curveTo(14.938f, 10.084f, 15.268f, 10.96f, 15.268f, 12.084f)
+            curveTo(15.268f, 13.17f, 14.933f, 14.04f, 14.263f, 14.694f)
+            curveTo(13.596f, 15.344f, 12.706f, 15.669f, 11.593f, 15.669f)
+            horizontalLineTo(9.703f)
             close()
-            moveTo(14.3263f, 12.0887f)
-            curveTo(14.3263f, 11.6487f, 14.2663f, 11.2554f, 14.1463f, 10.9087f)
-            curveTo(14.0263f, 10.562f, 13.8563f, 10.2687f, 13.6363f, 10.0287f)
-            curveTo(13.4163f, 9.7887f, 13.1496f, 9.6054f, 12.8363f, 9.4787f)
-            curveTo(12.523f, 9.352f, 12.173f, 9.2887f, 11.7863f, 9.2887f)
-            horizontalLineTo(10.0813f)
-            verticalLineTo(14.8837f)
-            horizontalLineTo(11.7863f)
-            curveTo(12.173f, 14.8837f, 12.523f, 14.8204f, 12.8363f, 14.6937f)
-            curveTo(13.1496f, 14.567f, 13.4163f, 14.3854f, 13.6363f, 14.1487f)
-            curveTo(13.8563f, 13.9087f, 14.0263f, 13.6154f, 14.1463f, 13.2687f)
-            curveTo(14.2663f, 12.922f, 14.3263f, 12.5287f, 14.3263f, 12.0887f)
+            moveTo(10.183f, 14.719f)
+            horizontalLineTo(11.508f)
+            curveTo(12.351f, 14.719f, 13.016f, 14.495f, 13.503f, 14.049f)
+            curveTo(13.989f, 13.599f, 14.233f, 12.945f, 14.233f, 12.089f)
+            curveTo(14.233f, 11.209f, 13.988f, 10.55f, 13.498f, 10.114f)
+            curveTo(13.011f, 9.677f, 12.351f, 9.459f, 11.518f, 9.459f)
+            horizontalLineTo(10.183f)
+            verticalLineTo(14.719f)
             close()
           }
         }
         .build()
-    return _keyD!!
+
+    return _KeyD!!
   }
 
-private var _keyD: ImageVector? = null
+@Suppress("ObjectPropertyName") private var _KeyD: ImageVector? = null

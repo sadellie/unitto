@@ -110,8 +110,6 @@ expect class KBigInteger : Comparable<KBigInteger> {
 
   fun gcd(d: KBigInteger): KBigInteger
 
-  fun divide(divisor: KBigInteger): KBigInteger
-
   fun pow(n: Int): KBigInteger
 
   fun toKBigDecimal(): KBigDecimal
@@ -122,7 +120,31 @@ expect class KBigInteger : Comparable<KBigInteger> {
 
   operator fun minus(other: KBigInteger): KBigInteger
 
+  operator fun plus(other: KBigInteger): KBigInteger
+
   fun multiply(other: KBigInteger): KBigInteger
+
+  infix fun shl(n: Int): KBigInteger
+
+  infix fun shr(n: Int): KBigInteger
+
+  fun mod(m: KBigInteger): KBigInteger
+
+  fun remainder(m: KBigInteger): KBigInteger
+
+  fun negate(): KBigInteger
+
+  fun or(other: KBigInteger): KBigInteger
+
+  fun xor(other: KBigInteger): KBigInteger
+
+  fun and(other: KBigInteger): KBigInteger
+
+  fun nor(other: KBigInteger): KBigInteger
+
+  fun not(): KBigInteger
+
+  fun intValueExact(): Int
 
   companion object {
     val ONE: KBigInteger

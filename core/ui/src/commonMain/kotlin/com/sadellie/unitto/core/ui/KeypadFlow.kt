@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
  *   [fillMaxHeight] to build a [Modifier]. Passed [Composable]s are equally distributed, occupy
  *   entire height and width.
  */
+// TODO rewrite
 @Composable
 fun KeypadFlow(
   modifier: Modifier,
@@ -52,6 +53,7 @@ fun KeypadFlow(
   val height: Float = (1f - verticalPadding / MAX_PADDING.toFloat()) / rows
   val width: Float = (1f - horizontalPadding / MAX_PADDING.toFloat()) / columns
 
+  // (1 - 10 / 100) / 4 = (1 - 0.1) / 4 = 0.9 / 4
   FlowRow(
     modifier = modifier,
     maxItemsInEachRow = columns,

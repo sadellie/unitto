@@ -59,7 +59,8 @@ with(this) {
   include(":feature:converter")
   include(":feature:datecalculator")
   include(":feature:glance")
-  include(":feature:timezone")
+  include(":feature:programmer")
   include(":feature:settings")
+  include(":feature:timezone")
   include(":kt-math")
 }

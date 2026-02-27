@@ -76,7 +76,8 @@ actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDeci
   actual fun multiply(multiplier: KBigDecimal): KBigDecimal =
     KBigDecimal(this.wrapped.times(multiplier.wrapped))
 
-  actual fun div(divisor: KBigDecimal): KBigDecimal = KBigDecimal(this.wrapped.div(divisor.wrapped))
+  actual fun div(divisor: KBigDecimal): KBigDecimal =
+    KBigDecimal(this.wrapped.divide(divisor.wrapped, this.wrapped.scale, RoundingMode.HALF_EVEN))
 
   actual operator fun plus(addend: KBigDecimal): KBigDecimal =
     KBigDecimal(this.wrapped.plus(addend.wrapped))
@@ -119,8 +120,7 @@ actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDeci
 
   actual fun scaleByPowerOfTen(n: Int): KBigDecimal = KBigDecimal(this.wrapped.scaleByPowerOfTen(n))
 
-  actual fun negate(): KBigDecimal =
-    KBigDecimal(this.wrapped.times(KBigDecimal("-1").wrapped)) // TODO real negate
+  actual fun negate(): KBigDecimal = KBigDecimal(this.wrapped.unaryMinus())
 
   internal val signum: Int = this.wrapped.signum
 
@@ -223,9 +223,6 @@ actual class KBigInteger internal constructor(internal val wrapped: BigInteger) 
 
   actual fun gcd(d: KBigInteger): KBigInteger = KBigInteger(this.wrapped.gcd(d.wrapped))
 
-  actual fun divide(divisor: KBigInteger): KBigInteger =
-    KBigInteger(this.wrapped.div(divisor.wrapped))
-
   actual companion object {
     actual val ONE: KBigInteger = KBigInteger(BigInteger.ONE)
     actual val ZERO: KBigInteger = KBigInteger(BigInteger.ZERO)
@@ -244,8 +241,34 @@ actual class KBigInteger internal constructor(internal val wrapped: BigInteger) 
   actual operator fun minus(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.minus(other.wrapped))
 
+  actual operator fun plus(other: KBigInteger): KBigInteger =
+    KBigInteger(this.wrapped.plus(other.wrapped))
+
   actual fun multiply(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.times(other.wrapped))
+
+  actual infix fun shl(n: Int): KBigInteger = KBigInteger(this.wrapped.shl(n))
+
+  actual infix fun shr(n: Int): KBigInteger = KBigInteger(this.wrapped.shr(n))
+
+  actual fun mod(m: KBigInteger): KBigInteger = KBigInteger(this.wrapped.mod(m.wrapped))
+
+  actual fun remainder(m: KBigInteger): KBigInteger = KBigInteger(this.wrapped.remainder(m.wrapped))
+
+  actual fun negate(): KBigInteger = KBigInteger(this.wrapped.unaryMinus())
+
+  actual fun or(other: KBigInteger): KBigInteger = KBigInteger(this.wrapped.or(other.wrapped))
+
+  actual fun xor(other: KBigInteger): KBigInteger = KBigInteger(this.wrapped.xor(other.wrapped))
+
+  actual fun and(other: KBigInteger): KBigInteger = KBigInteger(this.wrapped.and(other.wrapped))
+
+  actual fun nor(other: KBigInteger): KBigInteger =
+    KBigInteger(this.wrapped.or(other.wrapped).not())
+
+  actual fun intValueExact(): Int = this.wrapped.toIntExact()
+
+  actual fun not(): KBigInteger = KBigInteger(this.wrapped.not())
 
   actual constructor(value: String) : this(BigInteger.of(value))
 

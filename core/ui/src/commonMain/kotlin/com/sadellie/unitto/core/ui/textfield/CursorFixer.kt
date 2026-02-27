@@ -20,42 +20,46 @@ package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.ui.text.TextRange
-import com.sadellie.unitto.core.common.Token
 import kotlin.math.abs
 
-fun CharSequence.fixCursor(pos: Int): Int {
+fun CharSequence.fixCursor(pos: Int, longTokens: List<String>): Int {
   if (isEmpty()) return pos
 
   // Best position if we move cursor left
   var leftCursor = pos
-  while (this.isPlacedIllegallyAt(leftCursor)) leftCursor--
+  while (this.isPlacedIllegallyAt(leftCursor, longTokens)) leftCursor--
 
   // Best position if we move cursor right
   var rightCursor = pos
-  while (this.isPlacedIllegallyAt(rightCursor)) rightCursor++
+  while (this.isPlacedIllegallyAt(rightCursor, longTokens)) rightCursor++
 
   return listOf(leftCursor, rightCursor).minBy { abs(it - pos) }
 }
 
-fun TextFieldBuffer.fixTextRange(): TextRange {
+fun TextFieldBuffer.fixTextRange(longTokens: List<String>): TextRange {
   val text = this.asCharSequence()
-  return TextRange(text.fixCursor(selection.min), text.fixCursor(selection.max))
+  return TextRange(
+    text.fixCursor(selection.min, longTokens),
+    text.fixCursor(selection.max, longTokens),
+  )
 }
 
 /**
  * Same as [String.tokenAhead], but more efficient. We only need a number, not string. Don't
  * replace!
+ *
+ * @param longTokens Tokens longer than 1 symbol
  */
-fun String.tokenLengthAhead(pos: Int): Int {
-  Token.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it.length }
+fun String.tokenLengthAhead(pos: Int, longTokens: List<String>): Int {
+  longTokens.forEach { if (pos.isAfterToken(this, it)) return it.length }
 
   // We default to 1 here. It means that cursor is not placed after illegal token. Just a number
   // or a binary operator or something else, can delete by one symbol.
   return 1
 }
 
-fun String.tokenAhead(pos: Int): String {
-  Token.Func.allSymbolsWithBracket.forEach { if (pos.isAfterToken(this, it)) return it }
+fun String.tokenAhead(pos: Int, longTokens: List<String>): String {
+  longTokens.forEach { if (pos.isAfterToken(this, it)) return it }
 
   return substring((pos - 1).coerceAtLeast(0), pos)
 }
@@ -65,8 +69,8 @@ fun String.tokenAhead(pos: Int): String {
  * - `123,456+|cos(8)` return `false`
  * - `123,|456+cos(8)` return `false` (impossible in UI. See [ExpressionOutputTransformation])
  */
-private fun CharSequence.isPlacedIllegallyAt(pos: Int): Boolean {
-  Token.Func.allSymbolsWithBracket.forEach { if (pos.isAtToken(this, it)) return true }
+private fun CharSequence.isPlacedIllegallyAt(pos: Int, longTokens: List<String>): Boolean {
+  longTokens.forEach { if (pos.isAtToken(this, it)) return true }
 
   return false
 }
@@ -87,8 +91,8 @@ private fun Int.isAfterToken(str: String, token: String): Boolean {
 
 // This can also make [TextFieldState.addTokens] better by checking tokens both ways. Needs more
 // tests
-fun String.tokenAfter(pos: Int): String {
-  Token.Func.allSymbolsWithBracket.forEach { if (pos.isBeforeToken(this, it)) return it }
+fun String.tokenAfter(pos: Int, longTokens: List<String>): String {
+  longTokens.forEach { if (pos.isBeforeToken(this, it)) return it }
 
   return substring(pos, (pos + 1).coerceAtMost(this.length))
 }

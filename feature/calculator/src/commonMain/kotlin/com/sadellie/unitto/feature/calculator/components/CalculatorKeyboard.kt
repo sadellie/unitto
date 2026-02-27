@@ -277,16 +277,22 @@ private fun ExpandedAdditionalKeyboard(
           KeypadButtonTransparent(bModifier, FactorialKey, iconHeight, onAddTokenClick)
 
           if (expanded) {
-            KeypadButtonTransparent(bModifier, angleKey, iconHeight) {
-              onRadianModeClick(!radianMode)
-            }
+            KeypadButtonTransparent(
+              bModifier,
+              angleKey,
+              iconHeight,
+              { onRadianModeClick(!radianMode) },
+            )
             KeypadButtonTransparent(bModifier, ArSinKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, ArCosKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, AcTanKey, iconHeight, onAddTokenClick)
 
-            KeypadButtonTransparent(bModifier, InvKey, iconHeight) {
-              onInverseModeClick(!inverseMode)
-            }
+            KeypadButtonTransparent(
+              bModifier,
+              InvKey,
+              iconHeight,
+              { onInverseModeClick(!inverseMode) },
+            )
             KeypadButtonTransparent(bModifier, EulerKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, ExKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, Power10Key, iconHeight, onAddTokenClick)
@@ -314,16 +320,22 @@ private fun ExpandedAdditionalKeyboard(
           KeypadButtonTransparent(bModifier, FactorialKey, iconHeight, onAddTokenClick)
 
           if (expanded) {
-            KeypadButtonTransparent(bModifier, angleKey, iconHeight) {
-              onRadianModeClick(!radianMode)
-            }
+            KeypadButtonTransparent(
+              bModifier,
+              angleKey,
+              iconHeight,
+              { onRadianModeClick(!radianMode) },
+            )
             KeypadButtonTransparent(bModifier, SinKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, CosKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, TanKey, iconHeight, onAddTokenClick)
 
-            KeypadButtonTransparent(bModifier, InvKey, iconHeight) {
-              onInverseModeClick(!inverseMode)
-            }
+            KeypadButtonTransparent(
+              bModifier,
+              InvKey,
+              iconHeight,
+              { onInverseModeClick(!inverseMode) },
+            )
             KeypadButtonTransparent(bModifier, EulerKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, LnKey, iconHeight, onAddTokenClick)
             KeypadButtonTransparent(bModifier, LogKey, iconHeight, onAddTokenClick)
@@ -454,9 +466,12 @@ private fun CompactKeyboardInverse(
     val iconHeightSecondary = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
     val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
 
-    KeypadButtonTransparent(buttonModifier, angleKey, iconHeightSecondary) {
-      onRadianModeClick(!radianMode)
-    }
+    KeypadButtonTransparent(
+      buttonModifier,
+      angleKey,
+      iconHeightSecondary,
+      { onRadianModeClick(!radianMode) },
+    )
     KeypadButtonTransparent(buttonModifier, ModuloKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, PiKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick)
@@ -470,9 +485,12 @@ private fun CompactKeyboardInverse(
       KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
     }
 
-    KeypadButtonTransparent(buttonModifier, InvKey, iconHeightSecondary) {
-      onInverseModeClick(!inverseMode)
-    }
+    KeypadButtonTransparent(
+      buttonModifier,
+      InvKey,
+      iconHeightSecondary,
+      { onInverseModeClick(!inverseMode) },
+    )
     KeypadButtonTransparent(buttonModifier, PowerKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, FactorialKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick)
@@ -529,9 +547,12 @@ private fun CompactKeyboardDefault(
     val iconHeightSecondary = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
     val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
 
-    KeypadButtonTransparent(buttonModifier, angleKey, iconHeightSecondary) {
-      onRadianModeClick(!radianMode)
-    }
+    KeypadButtonTransparent(
+      buttonModifier,
+      angleKey,
+      iconHeightSecondary,
+      { onRadianModeClick(!radianMode) },
+    )
     KeypadButtonTransparent(buttonModifier, RootKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, PiKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick)
@@ -545,9 +566,12 @@ private fun CompactKeyboardDefault(
       KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
     }
 
-    KeypadButtonTransparent(buttonModifier, InvKey, iconHeightSecondary) {
-      onInverseModeClick(!inverseMode)
-    }
+    KeypadButtonTransparent(
+      buttonModifier,
+      InvKey,
+      iconHeightSecondary,
+      { onInverseModeClick(!inverseMode) },
+    )
     KeypadButtonTransparent(buttonModifier, PowerKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, FactorialKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick)

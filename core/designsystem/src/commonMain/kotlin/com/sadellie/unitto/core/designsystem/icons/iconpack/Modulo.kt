@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,97 +18,79 @@
 package com.sadellie.unitto.core.designsystem.icons.iconpack
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap.Companion.Butt
-import androidx.compose.ui.graphics.StrokeJoin.Companion.Miter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-@Suppress("UnusedReceiverParameter")
 val IconPack.Modulo: ImageVector
   get() {
-    if (_modulo != null) {
-      return _modulo!!
+    if (_Modulo != null) {
+      return _Modulo!!
     }
-    _modulo =
-      Builder(
+    _Modulo =
+      ImageVector.Builder(
           name = "Modulo",
-          defaultWidth = 24.0.dp,
-          defaultHeight = 24.0.dp,
-          viewportWidth = 24.0f,
-          viewportHeight = 24.0f,
+          defaultWidth = 24.dp,
+          defaultHeight = 24.dp,
+          viewportWidth = 24f,
+          viewportHeight = 24f,
         )
         .apply {
-          path(
-            fill = SolidColor(Color(0xFF000000)),
-            stroke = null,
-            strokeLineWidth = 0.0f,
-            strokeLineCap = Butt,
-            strokeLineJoin = Miter,
-            strokeLineMiter = 4.0f,
-            pathFillType = NonZero,
-          ) {
-            moveTo(12.7496f, 11.2687f)
-            horizontalLineTo(11.5146f)
-            lineTo(11.1896f, 12.8987f)
-            horizontalLineTo(12.4246f)
-            lineTo(12.7496f, 11.2687f)
+          path(fill = SolidColor(Color.White)) {
+            moveTo(12.703f, 15.834f)
+            curveTo(12.586f, 15.834f, 12.49f, 15.789f, 12.413f, 15.699f)
+            curveTo(12.34f, 15.612f, 12.311f, 15.509f, 12.328f, 15.389f)
+            lineTo(13.328f, 8.674f)
+            curveTo(13.341f, 8.587f, 13.385f, 8.51f, 13.458f, 8.444f)
+            curveTo(13.535f, 8.377f, 13.62f, 8.344f, 13.713f, 8.344f)
+            curveTo(13.83f, 8.344f, 13.925f, 8.389f, 13.998f, 8.479f)
+            curveTo(14.071f, 8.565f, 14.1f, 8.669f, 14.083f, 8.789f)
+            lineTo(13.088f, 15.504f)
+            curveTo(13.075f, 15.59f, 13.03f, 15.667f, 12.953f, 15.734f)
+            curveTo(12.88f, 15.8f, 12.796f, 15.834f, 12.703f, 15.834f)
             close()
-            moveTo(14.6396f, 10.6137f)
-            lineTo(14.5746f, 10.9887f)
-            curveTo(14.5579f, 11.0854f, 14.5179f, 11.157f, 14.4546f, 11.2037f)
-            curveTo(14.3946f, 11.247f, 14.3013f, 11.2687f, 14.1746f, 11.2687f)
-            horizontalLineTo(13.4846f)
-            lineTo(13.1596f, 12.8987f)
-            horizontalLineTo(14.0546f)
-            curveTo(14.1513f, 12.8987f, 14.2196f, 12.927f, 14.2596f, 12.9837f)
-            curveTo(14.3029f, 13.037f, 14.3146f, 13.132f, 14.2946f, 13.2687f)
-            lineTo(14.2496f, 13.5537f)
-            horizontalLineTo(13.0646f)
-            lineTo(12.6446f, 15.6687f)
-            horizontalLineTo(12.2396f)
-            curveTo(12.1963f, 15.6687f, 12.1563f, 15.6587f, 12.1196f, 15.6387f)
-            curveTo(12.0829f, 15.6187f, 12.0513f, 15.592f, 12.0246f, 15.5587f)
-            curveTo(12.0013f, 15.5254f, 11.9846f, 15.4854f, 11.9746f, 15.4387f)
-            curveTo(11.9646f, 15.392f, 11.9646f, 15.3404f, 11.9746f, 15.2837f)
-            lineTo(12.3296f, 13.5537f)
-            horizontalLineTo(11.0946f)
-            lineTo(10.7396f, 15.3287f)
-            curveTo(10.7196f, 15.452f, 10.6713f, 15.5404f, 10.5946f, 15.5937f)
-            curveTo(10.5179f, 15.6437f, 10.4313f, 15.6687f, 10.3346f, 15.6687f)
-            horizontalLineTo(9.9346f)
-            lineTo(10.3596f, 13.5537f)
-            horizontalLineTo(9.6296f)
-            curveTo(9.5363f, 13.5537f, 9.4679f, 13.527f, 9.4246f, 13.4737f)
-            curveTo(9.3846f, 13.417f, 9.3746f, 13.3204f, 9.3946f, 13.1837f)
-            lineTo(9.4346f, 12.8987f)
-            horizontalLineTo(10.4546f)
-            lineTo(10.7796f, 11.2687f)
-            horizontalLineTo(9.6196f)
-            lineTo(9.6846f, 10.8987f)
-            curveTo(9.7013f, 10.802f, 9.7396f, 10.7304f, 9.7996f, 10.6837f)
-            curveTo(9.8629f, 10.637f, 9.9579f, 10.6137f, 10.0846f, 10.6137f)
-            horizontalLineTo(10.8746f)
-            lineTo(11.2346f, 8.8237f)
-            curveTo(11.2546f, 8.7237f, 11.2996f, 8.6454f, 11.3696f, 8.5887f)
-            curveTo(11.4429f, 8.532f, 11.5296f, 8.5037f, 11.6296f, 8.5037f)
-            horizontalLineTo(12.0296f)
-            lineTo(11.6096f, 10.6137f)
-            horizontalLineTo(12.8446f)
-            lineTo(13.2646f, 8.5037f)
-            horizontalLineTo(13.6596f)
-            curveTo(13.7563f, 8.5037f, 13.8313f, 8.5354f, 13.8846f, 8.5987f)
-            curveTo(13.9413f, 8.662f, 13.9613f, 8.742f, 13.9446f, 8.8387f)
-            lineTo(13.5796f, 10.6137f)
-            horizontalLineTo(14.6396f)
+            moveTo(10.298f, 15.834f)
+            curveTo(10.181f, 15.834f, 10.085f, 15.79f, 10.008f, 15.704f)
+            curveTo(9.935f, 15.617f, 9.906f, 15.512f, 9.923f, 15.389f)
+            lineTo(10.928f, 8.674f)
+            curveTo(10.941f, 8.587f, 10.985f, 8.51f, 11.058f, 8.444f)
+            curveTo(11.131f, 8.377f, 11.215f, 8.344f, 11.308f, 8.344f)
+            curveTo(11.425f, 8.344f, 11.52f, 8.389f, 11.593f, 8.479f)
+            curveTo(11.67f, 8.565f, 11.698f, 8.669f, 11.678f, 8.789f)
+            lineTo(10.683f, 15.499f)
+            curveTo(10.67f, 15.589f, 10.625f, 15.667f, 10.548f, 15.734f)
+            curveTo(10.475f, 15.8f, 10.391f, 15.834f, 10.298f, 15.834f)
+            close()
+            moveTo(9.308f, 13.789f)
+            curveTo(9.181f, 13.789f, 9.08f, 13.745f, 9.003f, 13.659f)
+            curveTo(8.926f, 13.572f, 8.898f, 13.465f, 8.918f, 13.339f)
+            curveTo(8.931f, 13.245f, 8.976f, 13.167f, 9.053f, 13.104f)
+            curveTo(9.133f, 13.037f, 9.218f, 13.004f, 9.308f, 13.004f)
+            horizontalLineTo(14.313f)
+            curveTo(14.44f, 13.004f, 14.541f, 13.049f, 14.618f, 13.139f)
+            curveTo(14.695f, 13.225f, 14.723f, 13.329f, 14.703f, 13.449f)
+            curveTo(14.69f, 13.542f, 14.645f, 13.622f, 14.568f, 13.689f)
+            curveTo(14.491f, 13.755f, 14.406f, 13.789f, 14.313f, 13.789f)
+            horizontalLineTo(9.308f)
+            close()
+            moveTo(9.693f, 11.224f)
+            curveTo(9.566f, 11.224f, 9.465f, 11.18f, 9.388f, 11.094f)
+            curveTo(9.315f, 11.007f, 9.286f, 10.904f, 9.303f, 10.784f)
+            curveTo(9.316f, 10.69f, 9.361f, 10.61f, 9.438f, 10.544f)
+            curveTo(9.518f, 10.477f, 9.603f, 10.444f, 9.693f, 10.444f)
+            horizontalLineTo(14.698f)
+            curveTo(14.825f, 10.444f, 14.926f, 10.487f, 15.003f, 10.574f)
+            curveTo(15.08f, 10.66f, 15.108f, 10.764f, 15.088f, 10.884f)
+            curveTo(15.075f, 10.977f, 15.03f, 11.057f, 14.953f, 11.124f)
+            curveTo(14.876f, 11.19f, 14.791f, 11.224f, 14.698f, 11.224f)
+            horizontalLineTo(9.693f)
             close()
           }
         }
         .build()
-    return _modulo!!
+
+    return _Modulo!!
   }
 
-private var _modulo: ImageVector? = null
+@Suppress("ObjectPropertyName") private var _Modulo: ImageVector? = null
