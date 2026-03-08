@@ -21,10 +21,12 @@ package com.sadellie.unitto.feature.programmer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -34,6 +36,7 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -44,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -54,6 +58,7 @@ import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
+import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.iconpack.And
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Base
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
@@ -371,7 +376,6 @@ private fun ProgrammerScreen(
     colors =
       TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
   ) { paddingValues ->
-    // TODO Expanded width or compact height
     Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
       TextFieldsBox(
         modifier = Modifier.fillMaxHeight(0.25f).fillMaxWidth(),
@@ -502,21 +506,65 @@ private fun ProgrammerKeyboard(
   toggleBase: () -> Unit,
   base: Int,
 ) {
+  if (LocalWindowSize.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+    ProgrammerKeyboardCompact(
+      modifier = modifier,
+      showAcButton = showAcButton,
+      onClearClick = onClearClick,
+      onBracketsClick = onBracketsClick,
+      onAddTokenClick = onAddTokenClick,
+      onDeleteClick = onDeleteClick,
+      onEqualClick = onEqualClick,
+      middleZero = middleZero,
+      toggleSize = toggleSize,
+      toggleBase = toggleBase,
+      base = base,
+    )
+  } else {
+    ProgrammerKeyboardExpanded(
+      modifier = modifier,
+      showAcButton = showAcButton,
+      onClearClick = onClearClick,
+      onBracketsClick = onBracketsClick,
+      onAddTokenClick = onAddTokenClick,
+      onDeleteClick = onDeleteClick,
+      onEqualClick = onEqualClick,
+      middleZero = middleZero,
+      toggleSize = toggleSize,
+      toggleBase = toggleBase,
+      base = base,
+    )
+  }
+}
+
+@Composable
+private fun ProgrammerKeyboardCompact(
+  modifier: Modifier,
+  showAcButton: Boolean,
+  onClearClick: () -> Unit,
+  onBracketsClick: () -> Unit,
+  onAddTokenClick: (String) -> Unit,
+  onDeleteClick: () -> Unit,
+  onEqualClick: () -> Unit,
+  middleZero: Boolean,
+  toggleSize: () -> Unit,
+  toggleBase: () -> Unit,
+  base: Int,
+) {
   KeypadFlow(modifier = modifier, rows = 9, columns = 4) { width, height ->
-    val iconHeightSecondary = KeyboardButtonToken.ICON_HEIGHT_TALL
+    val iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL
     val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
 
-    KeypadButtonTransparent(buttonModifier, KeyOr, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyAnd, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyNot, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyMod, iconHeightSecondary, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, KeyOr, iconHeight, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, KeyAnd, iconHeight, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, KeyNot, iconHeight, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, KeyMod, iconHeight, onAddTokenClick)
 
-    KeypadButtonTransparent(buttonModifier, KeyNor, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyNand, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyXor, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeySize, iconHeightSecondary, toggleSize)
+    KeypadButtonTransparent(buttonModifier, KeyNor, iconHeight, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, KeyNand, iconHeight, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, KeyXor, iconHeight, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, KeySize, iconHeight, toggleSize)
 
-    val iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL
     if (showAcButton) {
       KeypadButtonTertiary(buttonModifier, ClearKey, iconHeight, onClearClick)
       KeypadButtonFilled(buttonModifier, BracketsKey, iconHeight, onBracketsClick)
@@ -560,6 +608,78 @@ private fun ProgrammerKeyboard(
       KeypadButtonLight(buttonModifier, KeyBaseSwitch, iconHeight, null, toggleBase)
     }
     KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
+    KeypadButtonFilledPrimary(buttonModifier, EqualKey, iconHeight, onEqualClick)
+  }
+}
+
+@Composable
+private fun ProgrammerKeyboardExpanded(
+  modifier: Modifier,
+  showAcButton: Boolean,
+  onClearClick: () -> Unit,
+  onBracketsClick: () -> Unit,
+  onAddTokenClick: (String) -> Unit,
+  onDeleteClick: () -> Unit,
+  onEqualClick: () -> Unit,
+  middleZero: Boolean,
+  toggleSize: () -> Unit,
+  toggleBase: () -> Unit,
+  base: Int,
+) {
+  KeypadFlow(modifier = modifier, rows = 6, columns = 6) { width, height ->
+    val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
+    val iconHeight = 1f
+
+    KeypadButtonTransparent(buttonModifier, KeyNot, iconHeight, onAddTokenClick)
+    KeypadButtonLight(buttonModifier, KeyD, iconHeight, onAddTokenClick, base >= 14)
+    KeypadButtonLight(buttonModifier, KeyE, iconHeight, onAddTokenClick, base >= 15)
+    KeypadButtonLight(buttonModifier, KeyF, iconHeight, onAddTokenClick, base >= 16)
+    if (showAcButton) {
+      KeypadButtonTertiary(buttonModifier, ClearKey, iconHeight, onClearClick)
+      KeypadButtonFilled(buttonModifier, BracketsKey, iconHeight, onBracketsClick)
+    } else {
+      KeypadButtonFilled(buttonModifier, LeftBracketKey, iconHeight, onAddTokenClick)
+      KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
+    }
+
+    KeypadButtonTransparent(buttonModifier, KeyNand, iconHeight, onAddTokenClick)
+    KeypadButtonLight(buttonModifier, KeyA, iconHeight, onAddTokenClick, base >= 11)
+    KeypadButtonLight(buttonModifier, KeyB, iconHeight, onAddTokenClick, base >= 12)
+    KeypadButtonLight(buttonModifier, KeyC, iconHeight, onAddTokenClick, base >= 13)
+    KeypadButtonFilled(buttonModifier, KeyMod, iconHeight, onAddTokenClick)
+    KeypadButtonFilled(buttonModifier, KeySize, iconHeight, toggleSize)
+
+    KeypadButtonTransparent(buttonModifier, KeyAnd, iconHeight, onAddTokenClick)
+    KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick, base >= 8)
+    KeypadButtonLight(buttonModifier, Key8, iconHeight, onAddTokenClick, base >= 9)
+    KeypadButtonLight(buttonModifier, Key9, iconHeight, onAddTokenClick, base >= 10)
+    KeypadButtonFilled(buttonModifier, KeyLsh, iconHeight, onAddTokenClick)
+    KeypadButtonFilled(buttonModifier, KeyRsh, iconHeight, onAddTokenClick)
+
+    KeypadButtonTransparent(buttonModifier, KeyNor, iconHeight, onAddTokenClick)
+    KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick, base >= 5)
+    KeypadButtonLight(buttonModifier, Key5, iconHeight, onAddTokenClick, base >= 6)
+    KeypadButtonLight(buttonModifier, Key6, iconHeight, onAddTokenClick, base >= 7)
+    KeypadButtonFilled(buttonModifier, MultiplyKey, iconHeight, onAddTokenClick)
+    KeypadButtonFilled(buttonModifier, DivideKey, iconHeight, onAddTokenClick)
+
+    KeypadButtonTransparent(buttonModifier, KeyXor, iconHeight, onAddTokenClick)
+    KeypadButtonLight(buttonModifier, Key1, iconHeight, onAddTokenClick, base >= 2)
+    KeypadButtonLight(buttonModifier, Key2, iconHeight, onAddTokenClick, base >= 3)
+    KeypadButtonLight(buttonModifier, Key3, iconHeight, onAddTokenClick, base >= 4)
+    KeypadButtonFilled(buttonModifier, MinusKey, iconHeight, onAddTokenClick)
+    KeypadButtonFilled(buttonModifier, KeyShiftType, iconHeight, {}, false)
+
+    KeypadButtonTransparent(buttonModifier, KeyOr, iconHeight, onAddTokenClick)
+    if (middleZero) {
+      KeypadButtonLight(buttonModifier, KeyBaseSwitch, iconHeight, null, toggleBase)
+      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
+    } else {
+      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
+      KeypadButtonLight(buttonModifier, KeyBaseSwitch, iconHeight, null, toggleBase)
+    }
+    KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
+    KeypadButtonFilled(buttonModifier, PlusKey, iconHeight, onAddTokenClick)
     KeypadButtonFilledPrimary(buttonModifier, EqualKey, iconHeight, onEqualClick)
   }
 }
@@ -654,6 +774,42 @@ internal data class ProgrammerInputTransformation(private val grouping: Token.Fo
 
   override fun TextFieldBuffer.transformInput() =
     transformInputWithReplacements(longProgrammerTokens)
+}
+
+@Composable
+@Preview
+private fun PreviewProgrammerKeyboardCompact() = ExpressivePreview {
+  ProgrammerKeyboardCompact(
+    modifier = Modifier.aspectRatio(0.5f).width(400.dp),
+    showAcButton = true,
+    onClearClick = {},
+    onBracketsClick = {},
+    onAddTokenClick = {},
+    onDeleteClick = {},
+    onEqualClick = {},
+    middleZero = false,
+    toggleSize = {},
+    toggleBase = {},
+    base = 16,
+  )
+}
+
+@Composable
+@Preview
+private fun PreviewProgrammerKeyboardExpanded() = ExpressivePreview {
+  ProgrammerKeyboardExpanded(
+    modifier = Modifier.aspectRatio(2f).width(400.dp),
+    showAcButton = true,
+    onClearClick = {},
+    onBracketsClick = {},
+    onAddTokenClick = {},
+    onDeleteClick = {},
+    onEqualClick = {},
+    middleZero = false,
+    toggleSize = {},
+    toggleBase = {},
+    base = 16,
+  )
 }
 
 @Composable
