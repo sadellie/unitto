@@ -138,8 +138,8 @@ private fun Modifier.drawerEdgeGesture(enabled: Boolean, state: DrawerState) = c
   }
 }
 
-private val UnittoModalDrawerDragHandleWidth = 46.dp
-private val UnittoModalDrawerDragHandleThreshold = 24.dp
+private val UnittoModalDrawerDragHandleWidth = 60.dp
+private val UnittoModalDrawerDragHandleThreshold = 20.dp
 
 @Preview(backgroundColor = 0xFFC8F7D4, showBackground = true, widthDp = 840, heightDp = 500)
 @Preview(backgroundColor = 0xFFC8F7D4, showBackground = true, widthDp = 600, heightDp = 500)
