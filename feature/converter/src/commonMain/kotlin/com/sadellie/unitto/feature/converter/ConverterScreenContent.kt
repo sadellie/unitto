@@ -62,7 +62,6 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
@@ -387,7 +386,7 @@ private fun DoubleUnitInput(
   onFocusedOnInput1Changed: (Boolean) -> Unit,
   formatterSymbols: FormatterSymbols,
 ) {
-  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.small)) {
     Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
       ExpressionTextField(
         modifier = Modifier.fillMaxWidth().weight(1f),

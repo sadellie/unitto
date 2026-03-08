@@ -305,7 +305,7 @@ private fun ReadyCompact(
               .offset(offset)
               .height(height)
               .fillMaxWidth()
-              .padding(horizontal = 8.dp, vertical = 4.dp),
+              .padding(horizontal = Sizes.small, vertical = Sizes.extraSmall),
           onAddTokenClick = onAddTokenClick,
           onBracketsClick = onBracketsClick,
           onDeleteClick = onDeleteClick,

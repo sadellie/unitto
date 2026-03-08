@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
 import com.sadellie.unitto.feature.calculator.CalculationResult
@@ -75,11 +76,11 @@ fun TextBox(
             bottomEndPercent = 20,
           ),
         )
-        .padding(top = 4.dp),
+        .padding(top = Sizes.extraSmall),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     ExpressionTextField(
-      modifier = Modifier.weight(INPUT_WEIGHT).fillMaxWidth().padding(horizontal = 8.dp),
+      modifier = Modifier.weight(INPUT_WEIGHT).fillMaxWidth().padding(horizontal = Sizes.small),
       state = state,
       minRatio = 0.5f,
       formatterSymbols = formatterSymbols,
@@ -94,7 +95,8 @@ fun TextBox(
     )
     if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
       CalculationResultTextField(
-        modifier = Modifier.weight(CALCULATION_WEIGHT).fillMaxWidth().padding(horizontal = 8.dp),
+        modifier =
+          Modifier.weight(CALCULATION_WEIGHT).fillMaxWidth().padding(horizontal = Sizes.small),
         output = output,
         formatterSymbols = formatterSymbols,
       )
@@ -102,7 +104,7 @@ fun TextBox(
     if (showHandle) {
       // Handle
       Box(
-        Modifier.padding(8.dp)
+        Modifier.padding(Sizes.small)
           .background(MaterialTheme.colorScheme.onSurfaceVariant, RoundedCornerShape(2.dp))
           .size(24.dp, 4.dp)
       )

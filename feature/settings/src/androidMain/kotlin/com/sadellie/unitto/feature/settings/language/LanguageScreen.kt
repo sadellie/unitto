@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
@@ -80,7 +79,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
     ) {
       item(key = "translate", contentType = ContentType.ANNOYING_BOX) {
         AnnoyingBox(
-          modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth(),
+          modifier = Modifier.padding(vertical = Sizes.small).fillMaxWidth(),
           onClick = { linkOpener.launch(Config.TRANSLATE_LINK) },
           imageVector = Symbols.Translate,
           imageVectorContentDescription = stringResource(Res.string.settings_translate_app),

@@ -122,7 +122,7 @@ private fun AboutScreen(
     ) {
       val linkOpener = rememberLinkOpener()
       AuthorBlock(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+        modifier = Modifier.fillMaxWidth().padding(bottom = Sizes.extraSmall),
         onClick = { linkOpener.launch(Config.AUTHOR_LINK) },
       )
       ListItemExpressive(
@@ -195,8 +195,8 @@ private fun AuthorBlock(onClick: () -> Unit, modifier: Modifier) {
         .clip(ListItemExpressiveDefaults.singleShape)
         .clickable(onClick = onClick)
         .background(MaterialTheme.colorScheme.tertiaryContainer)
-        .padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
-    horizontalArrangement = Arrangement.spacedBy(16.dp),
+        .padding(start = Sizes.large, top = Sizes.small, bottom = Sizes.small, end = Sizes.small),
+    horizontalArrangement = Arrangement.spacedBy(Sizes.large),
     verticalAlignment = Alignment.CenterVertically,
   ) {
     Column(modifier = Modifier.weight(1f)) {
@@ -221,7 +221,7 @@ private fun AuthorBlock(onClick: () -> Unit, modifier: Modifier) {
       )
     Box(
       modifier =
-        Modifier.clip(RoundedCornerShape(8.dp))
+        Modifier.clip(RoundedCornerShape(Sizes.small))
           .background(MaterialTheme.colorScheme.tertiaryFixedDim),
       contentAlignment = Alignment.Center,
     ) {
@@ -239,7 +239,7 @@ private fun AuthorBlock(onClick: () -> Unit, modifier: Modifier) {
       Box(
         modifier =
           Modifier.rotate(rotation.value)
-            .padding(8.dp)
+            .padding(Sizes.small)
             .clip(backgroundShape.toShape())
             .background(Brush.verticalGradient(listOf(Color(BG_TOP), Color(BG_BOTTOM))))
             .size(36.dp)

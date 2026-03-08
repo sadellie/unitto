@@ -99,7 +99,9 @@ fun BasicColoredCheckbox(
     modifier =
       Modifier.size(48.dp).clip(shape).clickable { onClick() }.border(2.dp, borderColor, shape)
   ) {
-    Box(modifier = Modifier.fillMaxSize().padding(4.dp).clip(shape).background(color)) { content() }
+    Box(modifier = Modifier.fillMaxSize().padding(Sizes.extraSmall).clip(shape).background(color)) {
+      content()
+    }
   }
 }
 

@@ -148,7 +148,7 @@ fun FormattingScreen(
         }
 
       PreviewBox(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = Sizes.large),
         scale = scale,
         outputFormat = uiState.outputFormat,
         formatterSymbols = uiState.formatterSymbols,

@@ -43,6 +43,7 @@ import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.unit.ColorProvider
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.feature.glance.R
 
 @Composable
@@ -63,7 +64,7 @@ internal fun IconButton(
             cornerRadius = 24.dp,
             color = containerColor,
           )
-          .padding(horizontal = 16.dp, vertical = 8.dp),
+          .padding(horizontal = Sizes.large, vertical = Sizes.small),
       provider = ImageProvider(iconRes),
       contentDescription = null,
       colorFilter = ColorFilter.tint(contentColor),
@@ -88,7 +89,7 @@ internal fun FloatingActionButton(
             cornerRadius = 12.dp,
             color = containerColor,
           )
-          .padding(8.dp),
+          .padding(Sizes.small),
       provider = ImageProvider(iconRes),
       contentDescription = null,
       colorFilter = ColorFilter.tint(contentColor),

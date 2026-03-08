@@ -186,7 +186,7 @@ private fun TimeZoneScreen(
     ) {
       item(key = "user time", contentType = ContentType.USER_TIME) {
         UserTimeZone(
-          modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+          modifier = Modifier.fillMaxWidth().padding(vertical = Sizes.small),
           time = currentUserTime,
           onUpdateTime = setSelectedTime,
           onResetClick = setCurrentTime,
@@ -202,7 +202,8 @@ private fun TimeZoneScreen(
         ReorderableItem(reorderableLazyListState, item.timeZone.id) { isDragging ->
           val isSelected = uiState.selectedTimeZone == item
           val transition = updateTransition(isDragging, label = "draggedTransition")
-          val itemPadding by transition.animateDp(label = "itemPadding") { if (it) 8.dp else 0.dp }
+          val itemPadding by
+            transition.animateDp(label = "itemPadding") { if (it) Sizes.small else 0.dp }
           val background by
             transition.animateColor(label = "background") {
               if (it) MaterialTheme.colorScheme.surfaceContainerHighest

@@ -33,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
@@ -83,7 +82,7 @@ internal fun BodyMassResult(
 
   val classification = remember(value) { getBodyMassData(value) }
 
-  Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+  Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(Sizes.large)) {
     Column(
       modifier =
         Modifier.clip(MaterialTheme.shapes.extraLarge)

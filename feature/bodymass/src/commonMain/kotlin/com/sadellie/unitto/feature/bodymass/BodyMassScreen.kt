@@ -47,7 +47,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
@@ -113,9 +112,9 @@ private fun BodyMassScreen(
       modifier =
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
-          .padding(16.dp)
+          .padding(Sizes.large)
           .fillMaxSize(),
-      verticalArrangement = Arrangement.spacedBy(16.dp),
+      verticalArrangement = Arrangement.spacedBy(Sizes.large),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       BodyMassInputModeSelector(

@@ -235,14 +235,14 @@ fun ListItemExpressive(
     modifier =
       baseModifier
         .background(colors.containerColor)
-        .padding(horizontal = 16.dp)
+        .padding(horizontal = Sizes.large)
         .heightIn(min = if (supportingContent == null) 56.dp else 72.dp),
-    horizontalArrangement = Arrangement.spacedBy(16.dp),
+    horizontalArrangement = Arrangement.spacedBy(Sizes.large),
     verticalAlignment = Alignment.CenterVertically,
   ) {
     leadingContent?.let { ProvideColor(color = colors.leadingIconColor, content = it) }
 
-    Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
+    Column(Modifier.weight(1f).padding(vertical = Sizes.small)) {
       ProvideStyle(
         color = colors.headlineColor,
         textStyle = ListItemExpressiveDefaults.headlineTextStyle,

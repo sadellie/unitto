@@ -32,12 +32,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
@@ -118,7 +118,9 @@ private fun UnitFromSelectorScreen(
         )
 
         UnitGroupFilter(
-          modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp).fillMaxWidth(),
+          modifier =
+            Modifier.padding(start = Sizes.small, end = Sizes.small, bottom = Sizes.extraSmall)
+              .fillMaxWidth(),
           chosenUnitGroup = uiState.selectedUnitGroup,
           items = uiState.shownUnitGroups,
           selectAction = updateUnitGroup,

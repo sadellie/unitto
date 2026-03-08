@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.icons.symbols.SearchOff
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_no_results
@@ -49,9 +50,9 @@ fun SearchPlaceholder(
   buttonLabel: String,
 ) {
   Column(
-    modifier = modifier.fillMaxWidth().padding(16.dp),
+    modifier = modifier.fillMaxWidth().padding(Sizes.large),
     horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.spacedBy(16.dp),
+    verticalArrangement = Arrangement.spacedBy(Sizes.large),
   ) {
     Icon(
       imageVector = Symbols.SearchOff,

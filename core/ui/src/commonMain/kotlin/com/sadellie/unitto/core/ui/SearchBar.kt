@@ -64,6 +64,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.ArrowBack
 import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.Search
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import kotlin.math.roundToInt
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
@@ -117,7 +118,7 @@ fun SearchBar(
           .clip(CircleShape)
           .background(MaterialTheme.colorScheme.surfaceContainerHighest)
           .fillMaxWidth()
-          .padding(horizontal = 4.dp),
+          .padding(horizontal = Sizes.extraSmall),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       ProvideColor(MaterialTheme.colorScheme.onSurface) {

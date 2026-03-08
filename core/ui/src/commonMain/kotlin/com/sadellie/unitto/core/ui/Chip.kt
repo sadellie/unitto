@@ -54,6 +54,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Check
 import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.Settings
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 
 @Composable
 fun FilterChip(
@@ -77,7 +78,7 @@ fun FilterChip(
   Row(
     modifier =
       modifier
-        .padding(vertical = 8.dp)
+        .padding(vertical = Sizes.small)
         .clip(FilterChipDefaults.shape)
         .clickable { onClick() }
         .background(backgroundColor.value)
@@ -88,7 +89,7 @@ fun FilterChip(
     val contentColor =
       if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
       else MaterialTheme.colorScheme.onSurfaceVariant
-    Spacer(Modifier.width(8.dp))
+    Spacer(Modifier.width(Sizes.small))
     if (selectedIcon != null && unselectedIcon != null) {
       val animationSpec = MaterialTheme.motionScheme.fastSpatialSpec<Float>()
       AnimatedContent(
@@ -103,9 +104,9 @@ fun FilterChip(
         )
       }
     }
-    Spacer(Modifier.width(8.dp))
+    Spacer(Modifier.width(Sizes.small))
     Text(text = label, style = MaterialTheme.typography.labelLarge, color = contentColor)
-    Spacer(Modifier.width(16.dp))
+    Spacer(Modifier.width(Sizes.large))
   }
 }
 
@@ -119,7 +120,7 @@ fun AssistChip(
   Row(
     modifier =
       modifier
-        .padding(vertical = 8.dp)
+        .padding(vertical = Sizes.small)
         .clip(FilterChipDefaults.shape)
         .clickable { onClick() }
         .border(
@@ -128,7 +129,7 @@ fun AssistChip(
           shape = AssistChipDefaults.shape,
         )
         .height(32.dp)
-        .padding(horizontal = 8.dp),
+        .padding(horizontal = Sizes.small),
     verticalAlignment = Alignment.CenterVertically,
   ) {
     Icon(

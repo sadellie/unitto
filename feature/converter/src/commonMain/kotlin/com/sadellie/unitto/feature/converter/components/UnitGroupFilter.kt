@@ -40,7 +40,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.icons.symbols.ActivityZone
 import com.sadellie.unitto.core.designsystem.icons.symbols.ActivityZoneFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Airwave
@@ -82,6 +81,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.WaterMedium
 import com.sadellie.unitto.core.designsystem.icons.symbols.WaterMediumFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Weight
 import com.sadellie.unitto.core.designsystem.icons.symbols.WeightFill
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.AssistChip
 import com.sadellie.unitto.core.ui.FilterChip
@@ -110,7 +110,7 @@ internal fun UnitGroupFilter(
   showIcons: Boolean,
 ) {
   var expanded by remember { mutableStateOf(false) }
-  val chipModifier = Modifier.padding(horizontal = 4.dp)
+  val chipModifier = Modifier.padding(horizontal = Sizes.extraSmall)
 
   AnimatedContent(
     targetState = expanded,

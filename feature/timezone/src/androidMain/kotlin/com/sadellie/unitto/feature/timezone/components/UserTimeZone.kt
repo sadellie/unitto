@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.datetime.formatDateDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
@@ -142,7 +143,7 @@ private fun Time(time: ZonedDateTime) {
     TimeSeparator()
     SlidingText(time.formatTimeMinutes(locale))
     if (!is24Hour) {
-      Spacer(Modifier.padding(4.dp))
+      Spacer(Modifier.padding(Sizes.extraSmall))
       SlidingText(time.formatTimeAmPm(locale))
     }
   }

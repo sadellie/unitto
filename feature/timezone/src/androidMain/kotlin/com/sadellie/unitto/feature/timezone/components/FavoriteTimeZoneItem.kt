@@ -67,6 +67,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
 import com.sadellie.unitto.core.designsystem.icons.symbols.Edit
 import com.sadellie.unitto.core.designsystem.icons.symbols.Schedule
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.ProvideStyle
@@ -136,7 +137,7 @@ internal fun FavoriteTimeZoneItem(
     Row(
       modifier = Modifier.padding().heightIn(min = 56.dp),
       verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(4.dp),
+      horizontalArrangement = Arrangement.spacedBy(Sizes.extraSmall),
     ) {
       Column(
         modifier = Modifier.weight(1f).padding(2.dp),
@@ -204,7 +205,7 @@ private fun TimeZoneOption(
           .fillMaxWidth()
           .padding(horizontal = 8.dp, vertical = 12.dp),
       verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      horizontalArrangement = Arrangement.spacedBy(Sizes.small),
     ) {
       Icon(imageVector = icon, contentDescription = contentDescription)
       Text(text = title)
@@ -229,7 +230,7 @@ private fun TimeZoneLabel(label: String, expanded: Boolean, onLabelClick: () -> 
               imageVector = Symbols.Edit,
               // Not required because there is text next to it
               contentDescription = null,
-              modifier = Modifier.padding(end = 8.dp),
+              modifier = Modifier.padding(end = Sizes.small),
             )
             Text(text = stringResource(Res.string.common_add))
           }
@@ -241,7 +242,7 @@ private fun TimeZoneLabel(label: String, expanded: Boolean, onLabelClick: () -> 
               imageVector = Symbols.Edit,
               // Not required because there is text next to it
               contentDescription = null,
-              modifier = Modifier.padding(end = 8.dp),
+              modifier = Modifier.padding(end = Sizes.small),
             )
           }
           Text(text = label)

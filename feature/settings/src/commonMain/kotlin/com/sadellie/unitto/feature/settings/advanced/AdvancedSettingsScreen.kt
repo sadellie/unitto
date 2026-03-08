@@ -40,7 +40,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
@@ -104,7 +103,7 @@ private fun AdvancedSettingsScreen(
           text = {
             OutlinedTextField(
               state = textState,
-              shape = RoundedCornerShape(16.dp),
+              shape = RoundedCornerShape(Sizes.large),
               modifier = Modifier.fillMaxWidth(),
               lineLimits = TextFieldLineLimits.SingleLine,
             )
