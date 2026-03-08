@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -38,6 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.style.TextAlign
@@ -65,6 +67,7 @@ import com.sadellie.unitto.core.designsystem.icons.iconpack.ShiftLeft
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ShiftRight
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Size
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Xor
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.navigation.ProgrammerStartRoute
@@ -401,7 +404,20 @@ private fun TextFieldsBox(
   output: ProgrammerCalculationResult,
   formatterSymbols: FormatterSymbols,
 ) {
-  Column(modifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)) {
+  Column(
+    modifier =
+      modifier
+        .clip(
+          RoundedCornerShape(
+            topStartPercent = 0,
+            topEndPercent = 0,
+            bottomStartPercent = 20,
+            bottomEndPercent = 20,
+          )
+        )
+        .background(MaterialTheme.colorScheme.surfaceVariant)
+        .padding(vertical = Sizes.extraSmall, horizontal = Sizes.small)
+  ) {
     Text("Preview. Backend test, not UI")
     ProgrammerTextField(
       modifier = Modifier.weight(3f).fillMaxWidth(),
