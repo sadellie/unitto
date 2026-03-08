@@ -30,7 +30,7 @@ enum class DataUnit(val bitWidth: Int, val modulus: KBigInteger, val half: KBigI
   BYTE(8, KBigInteger("256"), KBigInteger("128")),
 }
 
-internal data class BaseNumber(val value: KBigInteger, private val dataUnit: DataUnit) {
+data class BaseNumber(val value: KBigInteger, private val dataUnit: DataUnit) {
 
   /**
    * Secondary constructor: parses a signed string in the given base, then constrains the result to

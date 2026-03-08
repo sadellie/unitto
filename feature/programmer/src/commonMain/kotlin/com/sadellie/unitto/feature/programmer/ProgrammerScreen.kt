@@ -36,9 +36,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -268,15 +266,31 @@ internal class ProgrammerViewModel(
   }
 
   fun toggleBase() {
-    _base.update { base ->
-      when (base) {
+    val oldRadix = _base.value
+    val newRadix =
+      when (oldRadix) {
         2 -> 8
         8 -> 10
         10 -> 16
         else -> 2
       }
+
+    val currentExpression = _input.text.toString()
+    if (currentExpression.isEmpty()) {
+      _base.update { newRadix }
+      return
     }
-    // TODO convert numbers in input
+
+    val convertedExpression =
+      convertExpressionBase(
+        expression = currentExpression,
+        fromRadix = oldRadix,
+        toRadix = newRadix,
+        dataUnit = _dataUnit.value,
+      )
+
+    _input.setTextAndPlaceCursorAtEnd(convertedExpression)
+    _base.update { newRadix }
     _lastResult.update { "" }
     calculate()
   }
