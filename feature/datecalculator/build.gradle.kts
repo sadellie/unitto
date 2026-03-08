@@ -24,7 +24,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.feature.datecalculator" }
+  android.namespace = "com.sadellie.unitto.feature.datecalculator"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:ui"))

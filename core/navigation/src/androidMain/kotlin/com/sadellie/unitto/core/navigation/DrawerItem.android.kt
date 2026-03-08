@@ -82,7 +82,7 @@ suspend fun DrawerItem.addShortcut(context: Context) {
       PendingIntent.getBroadcast(context, 0, shortCutIntent, FLAG_IMMUTABLE).intentSender,
     )
   } catch (e: Exception) {
-    Logger.e(TAG, e) { "addShortcut: Failed to pin shortcut" }
+    Logger.e(e, TAG) { "addShortcut: Failed to pin shortcut" }
   }
 }
 

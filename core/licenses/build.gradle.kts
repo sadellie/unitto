@@ -18,4 +18,4 @@
 
 plugins { id("unitto.multiplatform.library") }
 
-kotlin.androidLibrary { namespace = "com.sadellie.unitto.core.licenses" }
+kotlin.android.namespace = "com.sadellie.unitto.core.licenses"

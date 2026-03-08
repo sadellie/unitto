@@ -203,13 +203,13 @@ internal class ConverterViewModel(
               apiUrl = prefs.customApiUrl,
             )
           } catch (e: ExpressionException) {
-            Logger.w(TAG, e) { "Failed to convert" }
+            Logger.w(e, TAG) { "Failed to convert" }
             return@launch
           } catch (e: NumberFormatException) {
-            Logger.w(TAG, e) { "Failed to convert" }
+            Logger.w(e, TAG) { "Failed to convert" }
             return@launch
           } catch (e: Exception) {
-            Logger.w(TAG, e) { "Failed to convert" }
+            Logger.w(e, TAG) { "Failed to convert" }
             return@launch
           }
         _output.update { result }
@@ -252,7 +252,7 @@ internal class ConverterViewModel(
       unitsRepo.getById(args.unitToId)
       return true
     } catch (e: NoSuchElementException) {
-      Logger.e(TAG, e) { "Failed to extract unit ids from args" }
+      Logger.e(e, TAG) { "Failed to extract unit ids from args" }
       return false
     }
   }

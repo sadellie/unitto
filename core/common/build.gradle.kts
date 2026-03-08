@@ -34,7 +34,7 @@ buildkonfig {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.core.common" }
+  android.namespace = "com.sadellie.unitto.core.common"
   sourceSets.commonMain.dependencies {
     implementation(libs.org.jetbrains.compose.foundation.foundation)
     implementation(libs.org.jetbrains.compose.components.components.resources)

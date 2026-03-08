@@ -24,7 +24,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.feature.calculator" }
+  android.namespace = "com.sadellie.unitto.feature.calculator"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))

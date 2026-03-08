@@ -31,7 +31,7 @@ private class LinkOpenerImpl(private val context: Context) : LinkOpener {
     try {
       CustomTabsIntent.Builder().build().launchUrl(context, url.toUri())
     } catch (e: Exception) {
-      Logger.e("LinkOpener", e) { "Failed to open link: $url" }
+      Logger.e(e, "LinkOpener") { "Failed to open link: $url" }
     }
   }
 }

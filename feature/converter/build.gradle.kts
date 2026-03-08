@@ -24,7 +24,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.feature.converter" }
+  android.namespace = "com.sadellie.unitto.feature.converter"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:ui"))

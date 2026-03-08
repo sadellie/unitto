@@ -240,7 +240,7 @@ internal class ProgrammerViewModel(
 
   fun onEqual() {
     val result = _result.value
-    Logger.d(TAG) { "onEqual: $result" }
+    Logger.d(tag = TAG) { "onEqual: $result" }
     when (result) {
       is ProgrammerCalculationResult.Success -> {
         _lastResult.update { "" }
@@ -307,11 +307,11 @@ internal class ProgrammerViewModel(
               programmerCalculateExpression(_input.text.toString(), _base.value, _dataUnit.value)
             )
           } catch (e: Exception) {
-            Logger.e(TAG, e) { "Failed to calculate" }
+            Logger.e(throwable = e, tag = TAG) { "Failed to calculate" }
             ProgrammerCalculationResult.Error.InvisibleError
           }
 
-        Logger.d(TAG) { "Calculate: $newResult" }
+        Logger.d(tag = TAG) { "Calculate: $newResult" }
         _result.update { newResult }
       }
   }
@@ -425,7 +425,7 @@ private fun ProgrammerResultTextField(
   result: ProgrammerCalculationResult,
   formatterSymbols: FormatterSymbols,
 ) {
-  LaunchedEffect(result) { Logger.d("TAGGER") { "Result: $result" } }
+  LaunchedEffect(result) { Logger.d(tag = "TAGGER") { "Result: $result" } }
   when (result) {
     ProgrammerCalculationResult.Empty,
     ProgrammerCalculationResult.Error.InvisibleError -> Spacer(modifier)

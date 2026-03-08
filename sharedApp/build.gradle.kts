@@ -23,7 +23,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.shared" }
+  android { namespace = "com.sadellie.unitto.shared" }
   sourceSets.commonMain.dependencies {
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)

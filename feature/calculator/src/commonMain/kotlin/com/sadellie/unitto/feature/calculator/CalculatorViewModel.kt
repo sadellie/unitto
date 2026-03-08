@@ -214,7 +214,7 @@ internal class CalculatorViewModel(
             calculate(inputValue, prefs.radianMode, KRoundingMode.DOWN).first.toFractionalString()
           } catch (e: Exception) {
             _result.update { CalculationResult.Error }
-            Logger.e(TAG, e) { "Failed to find fractional for: $inputValue" }
+            Logger.e(e, TAG) { "Failed to find fractional for: $inputValue" }
             ""
           }
         } else {

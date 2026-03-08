@@ -24,7 +24,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.feature.bodymass" }
+  android.namespace = "com.sadellie.unitto.feature.bodymass"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:ui"))

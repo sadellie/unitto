@@ -25,7 +25,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "io.github.sadellie.evaluatto" }
+  android.namespace = "io.github.sadellie.evaluatto"
   @OptIn(ExperimentalWasmDsl::class)
   wasmJs {
     browser { testTask { useKarma { useFirefoxHeadless() } } }

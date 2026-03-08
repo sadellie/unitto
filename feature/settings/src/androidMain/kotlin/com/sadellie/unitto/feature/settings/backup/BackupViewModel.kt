@@ -71,7 +71,7 @@ internal class BackupViewModel(
         try {
           BackupManager().backup(context, uri, database)
         } catch (e: Exception) {
-          Logger.e(TAG, e) { "Failed to back up data to file" }
+          Logger.e(e, TAG) { "Failed to back up data to file" }
         }
         _isInProgress.update { false }
       }
@@ -85,7 +85,7 @@ internal class BackupViewModel(
         try {
           BackupManager().restore(context, uri, database)
         } catch (e: Exception) {
-          Logger.e(TAG, e) { "Failed to restore data from backup file" }
+          Logger.e(e, TAG) { "Failed to restore data from backup file" }
         }
         _isInProgress.update { false }
       }

@@ -140,7 +140,7 @@ class UnitConverterRepositoryImpl(
               )
           }
         } catch (e: Exception) {
-          Logger.e(LOG_TAG, e) { "Failed to batch convert" }
+          Logger.e(e, LOG_TAG) { "Failed to batch convert" }
           units.toList()
         }
 
@@ -503,7 +503,7 @@ class UnitConverterRepositoryImpl(
             }
           currencyRatesDao.insertRates(rates)
         } catch (e: Exception) {
-          Logger.d(LOG_TAG, e) { "Skipped update" }
+          Logger.d(e, LOG_TAG) { "Skipped update" }
         }
       }
     }
