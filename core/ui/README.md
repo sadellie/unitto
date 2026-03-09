@@ -26,6 +26,7 @@ graph LR
     :feature:timezone["timezone"]
     :feature:datecalculator["datecalculator"]
     :feature:glance["glance"]
+    :feature:programmer["programmer"]
   end
   :feature:settings --> :core:ui
   :sharedApp --> :core:ui
@@ -38,6 +39,7 @@ graph LR
   :core:ui --> :core:navigation
   :core:ui --> :core:designsystem
   :feature:glance --> :core:ui
+  :feature:programmer --> :core:ui
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :core:ui focus

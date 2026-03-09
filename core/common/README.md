@@ -30,6 +30,7 @@ graph LR
     :feature:timezone["timezone"]
     :feature:datecalculator["datecalculator"]
     :feature:glance["glance"]
+    :feature:programmer["programmer"]
   end
   :core:database --> :core:common
   :core:common --> :kt-math
@@ -45,6 +46,7 @@ graph LR
   :core:data --> :core:common
   :core:ui --> :core:common
   :feature:glance --> :core:common
+  :feature:programmer --> :core:common
   :core:navigation --> :core:common
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;

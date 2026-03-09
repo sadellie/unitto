@@ -35,6 +35,7 @@ graph LR
     :feature:timezone["timezone"]
     :feature:datecalculator["datecalculator"]
     :feature:glance["glance"]
+    :feature:programmer["programmer"]
   end
   :core:database --> :core:common
   :core:common --> :kt-math
@@ -119,6 +120,12 @@ graph LR
   :feature:glance --> :core:navigation
   :feature:glance --> :core:themmo
   :feature:glance --> :core:ui
+  :feature:programmer --> :core:common
+  :feature:programmer --> :core:ui
+  :feature:programmer --> :core:navigation
+  :feature:programmer --> :core:designsystem
+  :feature:programmer --> :core:datastore
+  :feature:programmer --> :core:evaluatto
   :core:backup --> :core:database
   :core:backup --> :core:datastore
   :core:navigation --> :core:common

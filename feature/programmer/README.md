@@ -4,7 +4,6 @@ Bit shifts and other crazy stuff.
 
 ## Graph
 
-[//]: # (TODO update graph)
 ```mermaid
 %%{
   init: {
@@ -19,17 +18,19 @@ graph LR
     :core:navigation["navigation"]
     :core:designsystem["designsystem"]
     :core:datastore["datastore"]
+    :core:evaluatto["evaluatto"]
   end
   subgraph :feature
-    :feature:bodymass["bodymass"]
+    :feature:programmer["programmer"]
   end
-  :sharedApp --> :feature:bodymass
-  :feature:bodymass --> :core:common
-  :feature:bodymass --> :core:ui
-  :feature:bodymass --> :core:navigation
-  :feature:bodymass --> :core:designsystem
-  :feature:bodymass --> :core:datastore
+  :sharedApp --> :feature:programmer
+  :feature:programmer --> :core:common
+  :feature:programmer --> :core:ui
+  :feature:programmer --> :core:navigation
+  :feature:programmer --> :core:designsystem
+  :feature:programmer --> :core:datastore
+  :feature:programmer --> :core:evaluatto
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
-class :feature:bodymass focus
+class :feature:programmer focus
 ```
