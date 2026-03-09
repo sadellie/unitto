@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.common
 
+import android.os.Build
 import ch.obermuhlner.math.big.BigDecimalMath
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -213,7 +214,12 @@ actual class KBigInteger internal constructor(internal val wrapped: BigInteger) 
   actual fun nor(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.or(other.wrapped).not())
 
-  actual fun intValueExact(): Int = this.wrapped.toInt() // TODO exact in API 31
+  actual fun intValueExact(): Int =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      this.wrapped.intValueExact()
+    } else {
+      this.wrapped.toInt()
+    }
 
   actual constructor(value: String) : this(BigInteger(value))
 
