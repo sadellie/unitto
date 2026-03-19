@@ -49,15 +49,15 @@ object TextFieldStateTokenExtensionsProgrammer : TextFieldStateTokenExtensions {
 
   override val longTokens: List<String> by lazy {
     listOf(
-      Token.Or.symbol,
+      Token.Nand.symbol,
+      Token.Xor.symbol,
       Token.And.symbol,
       Token.Not.symbol,
-      Token.Nand.symbol,
       Token.Nor.symbol,
-      Token.Xor.symbol,
       Token.Lsh.symbol,
       Token.Rsh.symbol,
       Token.Mod.symbol,
+      Token.Or.symbol,
     )
   }
 

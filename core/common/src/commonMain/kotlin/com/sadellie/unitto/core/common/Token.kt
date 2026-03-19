@@ -81,19 +81,17 @@ sealed interface Token {
 
     companion object {
       val allMathSymbolsWithBracket by lazy {
-        listOf<Math>(
-            ArSin.WithBracket,
-            ArCos.WithBracket,
-            ArTan.WithBracket,
-            Sin.WithBracket,
-            Cos.WithBracket,
-            Tan.WithBracket,
-            Log.WithBracket,
-            Exp.WithBracket,
-            Ln.WithBracket,
-          )
-          .sortedByDescending { it.symbol.length }
-          .map { it.symbol }
+        listOf(
+          ArSin.WithBracket.symbol,
+          ArCos.WithBracket.symbol,
+          ArTan.WithBracket.symbol,
+          Sin.WithBracket.symbol,
+          Cos.WithBracket.symbol,
+          Tan.WithBracket.symbol,
+          Log.WithBracket.symbol,
+          Exp.WithBracket.symbol,
+          Ln.WithBracket.symbol,
+        )
       }
     }
   }
