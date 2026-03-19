@@ -60,7 +60,7 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.toFormattedString
-import com.sadellie.unitto.core.designsystem.icons.symbols.Architecture
+import com.sadellie.unitto.core.designsystem.icons.symbols.DecimalIncrease
 import com.sadellie.unitto.core.designsystem.icons.symbols.EMobileData
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols._123
@@ -160,7 +160,7 @@ fun FormattingScreen(
       ListItemExpressive(
         shape = ListItemExpressiveDefaults.firstShape,
         leadingContent = {
-          Icon(Symbols.Architecture, stringResource(Res.string.settings_precision))
+          Icon(Symbols.DecimalIncrease, stringResource(Res.string.settings_precision))
         },
         headlineContent = {
           Row(
