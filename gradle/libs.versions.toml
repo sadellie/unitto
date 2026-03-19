@@ -6,20 +6,20 @@ versionName = "Unbleached silk"
 androidxBrowserBrowser = "1.9.0"
 # https://developer.android.com/reference/tools/gradle-api
 androidGradlePlugin = "9.1.0"
-# https://mvnrepository.com/artifact/androidx.activity/activity-compose
-androidxActivityActivityCompose = "1.12.4"
+# https://developer.android.com/jetpack/androidx/releases/activity
+androidxActivityActivityCompose = "1.13.0"
 # https://mvnrepository.com/artifact/androidx.appcompat/appcompat
 androidxAppCompatAppCompat = "1.7.1"
 # https://developer.android.com/jetpack/androidx/releases/compose
-androidxCompose = "1.10.4"
-# https://mvnrepository.com/artifact/androidx.core/core-ktx
-androidxCoreCoreKts = "1.17.0"
+androidxCompose = "1.10.5"
+# https://developer.android.com/jetpack/androidx/releases/core
+androidxCoreCoreKts = "1.18.0"
 # https://mvnrepository.com/artifact/androidx.glance/glance-appwidget
 androidxGlanceGlance = "1.1.1"
 # https://developer.android.com/jetpack/androidx/releases/datastore
-androidxDatastoreDatastorePreferences = "1.2.0"
+androidxDatastoreDatastorePreferences = "1.2.1"
 # https://github.com/InsertKoinIO/koin/releases
-koin = "4.2.0-RC1"
+koin = "4.2.0"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-compose
 androidxLifecycleLifecycleRuntimeCompose = "2.10.0"
 # https://developer.android.com/jetpack/androidx/releases/room
@@ -38,7 +38,7 @@ comAndroidToolsDesugarJdkLibs = "2.1.5"
 ktor = "3.4.1"
 junitJunit = "4.13.2"
 # https://kotlinlang.org/docs/whatsnew-eap.html
-kotlin = "2.3.20-RC2"
+kotlin = "2.3.20"
 # https://github.com/google/ksp/releases
 ksp = "2.3.4"
 # https://github.com/Calvin-LL/Reorderable/releases
@@ -58,7 +58,7 @@ detekt = "1.23.8"
 # https://github.com/jordond/MaterialKolor/releases
 materialKolor = "5.0.0-alpha07"
 # https://github.com/JetBrains/compose-multiplatform/releases
-composeMultiplatform = "1.10.1"
+composeMultiplatform = "1.10.3"
 # https://github.com/JetBrains/compose-multiplatform/releases
 # https://mvnrepository.com/artifact/org.jetbrains.compose.material3/material3
 composeMultiplatformMaterial3 = "1.10.0-alpha05"
@@ -67,7 +67,7 @@ kermit = "2.1.0"
 # https://developer.android.com/jetpack/androidx/releases/annotation
 annotation = "1.9.1"
 # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel-savedstate
-lifecyclyViewModel = "2.10.0-alpha08"
+lifecyclyViewModel = "2.10.0"
 # https://github.com/Kotlin/kotlinx-datetime/releases/latest
 kotlinxDatetime = "0.7.1"
 # https://developer.android.com/jetpack/androidx/releases/navigation3
