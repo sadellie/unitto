@@ -385,7 +385,10 @@ private fun ProgrammerScreen(
       )
 
       ProgrammerKeyboard(
-        modifier = Modifier.weight(1f).fillMaxWidth(),
+        modifier =
+          Modifier.weight(1f)
+            .fillMaxWidth()
+            .padding(horizontal = Sizes.small, vertical = Sizes.extraSmall),
         showAcButton = uiState.showAcButton,
         onClearClick = onClearClick,
         onBracketsClick = onBracketsClick,
