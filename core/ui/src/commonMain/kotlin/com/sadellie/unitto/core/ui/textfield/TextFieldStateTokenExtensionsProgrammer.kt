@@ -16,13 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.programmer
+package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.text.TextRange
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensions
-import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath
+import kotlin.collections.plus
 
 object TextFieldStateTokenExtensionsProgrammer : TextFieldStateTokenExtensions {
   override val closeBeforeOperators: List<String> by lazy {
@@ -62,7 +61,27 @@ object TextFieldStateTokenExtensionsProgrammer : TextFieldStateTokenExtensions {
   }
 
   override fun TextFieldState.addTokens(tokens: String) {
-    // TODO Replace tokens like in math
+    when (tokens) {
+      Token.Plus.symbol,
+      Token.Multiply.symbol,
+      Token.Divide.symbol -> {
+        val tokenAhead = text.toString().tokenAhead(selection.min, longTokens)
+        when (tokenAhead) {
+          Token.Plus.symbol,
+          Token.Minus.symbol,
+          Token.Multiply.symbol,
+          Token.Divide.symbol -> return deleteAheadAndAdd(tokens)
+          "" -> return deleteTokens()
+        }
+      }
+      Token.Minus.symbol -> {
+        val tokenAhead = text.toString().tokenAhead(selection.min, longTokens)
+        when (tokenAhead) {
+          Token.Plus.symbol,
+          Token.Minus.symbol -> return deleteAheadAndAdd(tokens)
+        }
+      }
+    }
     this.edit {
       replace(selection.min, selection.max, tokens)
       selection = TextRange(selection.max)

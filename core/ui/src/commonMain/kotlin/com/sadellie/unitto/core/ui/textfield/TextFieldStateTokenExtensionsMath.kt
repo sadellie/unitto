@@ -42,20 +42,24 @@ object TextFieldStateTokenExtensionsMath : TextFieldStateTokenExtensions {
       Token.Multiply.symbol,
       Token.Divide.symbol,
       Token.Power.symbol -> {
-        val tokenAhead = this.text.toString().tokenAhead(selection.min, longTokens)
-        if (tokenAhead == Token.Plus.symbol) return deleteAheadAndAdd(tokens)
-        if (tokenAhead == Token.Minus.symbol) return deleteAheadAndAdd(tokens)
-        if (tokenAhead == Token.Multiply.symbol) return deleteAheadAndAdd(tokens)
-        if (tokenAhead == Token.Divide.symbol) return deleteAheadAndAdd(tokens)
-        if (tokenAhead == Token.Sqrt.symbol) return deleteAheadAndAdd(tokens)
-        if (tokenAhead == Token.Power.symbol) return deleteAheadAndAdd(tokens)
-        if (tokenAhead == "") return deleteTokens()
+        val tokenAhead = text.toString().tokenAhead(selection.min, longTokens)
+        when (tokenAhead) {
+          Token.Plus.symbol,
+          Token.Minus.symbol,
+          Token.Multiply.symbol,
+          Token.Divide.symbol,
+          Token.Sqrt.symbol,
+          Token.Power.symbol -> return deleteAheadAndAdd(tokens)
+          "" -> return deleteTokens()
+        }
       }
 
       Token.Minus.symbol -> {
         val tokenAhead = text.toString().tokenAhead(selection.min, longTokens)
-        if (tokenAhead == Token.Plus.symbol) return deleteAheadAndAdd(tokens)
-        if (tokenAhead == Token.Minus.symbol) return deleteAheadAndAdd(tokens)
+        when (tokenAhead) {
+          Token.Plus.symbol,
+          Token.Minus.symbol -> return deleteAheadAndAdd(tokens)
+        }
       }
 
       Token.Dot.symbol -> {

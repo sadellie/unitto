@@ -117,6 +117,7 @@ import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.textfield.AutoSizeTextField
 import com.sadellie.unitto.core.ui.textfield.InputTransformationWithReplacement
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsProgrammer
 import com.sadellie.unitto.core.ui.textfield.getTextFieldState
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.core.ui.textfield.placeCursorAtTheEnd
