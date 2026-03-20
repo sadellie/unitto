@@ -18,9 +18,7 @@
 
 package com.sadellie.unitto.feature.converter.components
 
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -58,9 +56,6 @@ import com.sadellie.unitto.core.ui.KeypadButton.Companion.PlusKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.PowerKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RightBracketKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RootKey
-import com.sadellie.unitto.core.ui.KeypadButtonFilled
-import com.sadellie.unitto.core.ui.KeypadButtonLight
-import com.sadellie.unitto.core.ui.KeypadButtonTertiary
 import com.sadellie.unitto.core.ui.KeypadFlow
 
 @Composable
@@ -79,45 +74,53 @@ internal fun DefaultKeyboard(
       KeyboardButtonToken.ICON_HEIGHT_SHORT
     else KeyboardButtonToken.ICON_HEIGHT_TALL
 
-  KeypadFlow(modifier = modifier, rows = 5, columns = 4) { width, height ->
-    val bModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
-
-    if (acButton) {
-      KeypadButtonTertiary(bModifier, ClearKey, iconHeight, onClearClick)
-      KeypadButtonFilled(bModifier, BracketsKey, iconHeight, onBracketsClick)
-    } else {
-      KeypadButtonFilled(bModifier, LeftBracketKey, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(bModifier, RightBracketKey, iconHeight, onAddTokenClick)
+  KeypadFlow(modifier = modifier, iconHeight = iconHeight) {
+    KeypadRow {
+      if (acButton) {
+        ButtonTertiary(ClearKey, onClearClick)
+        ButtonFilled(BracketsKey, onBracketsClick)
+      } else {
+        ButtonFilled(LeftBracketKey, onAddTokenClick)
+        ButtonFilled(RightBracketKey, onAddTokenClick)
+      }
+      ButtonFilled(PowerKey, onAddTokenClick)
+      ButtonFilled(RootKey, onAddTokenClick)
     }
-    KeypadButtonFilled(bModifier, PowerKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, RootKey, iconHeight, onAddTokenClick)
 
-    KeypadButtonLight(bModifier, Key7, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key8, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key9, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, DivideKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonLight(bModifier, Key4, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key5, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key6, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, MultiplyKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonLight(bModifier, Key1, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key2, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key3, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, MinusKey, iconHeight, onAddTokenClick)
-
-    val fractionalKey =
-      remember(fractional) { if (fractional == Token.Period) DotKey else CommaKey }
-    if (middleZero) {
-      KeypadButtonLight(bModifier, fractionalKey, iconHeight, onAddTokenClick)
-      KeypadButtonLight(bModifier, Key0, iconHeight, onAddTokenClick)
-    } else {
-      KeypadButtonLight(bModifier, Key0, iconHeight, onAddTokenClick)
-      KeypadButtonLight(bModifier, fractionalKey, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonLight(Key7, onAddTokenClick)
+      ButtonLight(Key8, onAddTokenClick)
+      ButtonLight(Key9, onAddTokenClick)
+      ButtonFilled(DivideKey, onAddTokenClick)
     }
-    KeypadButtonLight(bModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
-    KeypadButtonFilled(bModifier, PlusKey, iconHeight, onAddTokenClick)
+
+    KeypadRow {
+      ButtonLight(Key4, onAddTokenClick)
+      ButtonLight(Key5, onAddTokenClick)
+      ButtonLight(Key6, onAddTokenClick)
+      ButtonFilled(MultiplyKey, onAddTokenClick)
+    }
+
+    KeypadRow {
+      ButtonLight(Key1, onAddTokenClick)
+      ButtonLight(Key2, onAddTokenClick)
+      ButtonLight(Key3, onAddTokenClick)
+      ButtonFilled(MinusKey, onAddTokenClick)
+    }
+
+    KeypadRow {
+      val fractionalKey =
+        remember(fractional) { if (fractional == Token.Period) DotKey else CommaKey }
+      if (middleZero) {
+        ButtonLight(fractionalKey, onAddTokenClick)
+        ButtonLight(Key0, onAddTokenClick)
+      } else {
+        ButtonLight(Key0, onAddTokenClick)
+        ButtonLight(fractionalKey, onAddTokenClick)
+      }
+      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
+      ButtonFilled(PlusKey, onAddTokenClick)
+    }
   }
 }
 
@@ -133,33 +136,41 @@ internal fun NumberBaseKeyboard(
       KeyboardButtonToken.ICON_HEIGHT_SHORT
     else KeyboardButtonToken.ICON_HEIGHT_TALL
 
-  KeypadFlow(modifier = modifier, rows = 6, columns = 3) { width, height ->
-    val bModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
-    val wideButtonModifier = Modifier.fillMaxHeight(height).fillMaxWidth(width * 2)
+  KeypadFlow(modifier = modifier, iconHeight = iconHeight) {
+    KeypadRow {
+      ButtonFilled(KeyA, onAddTokenClick)
+      ButtonFilled(KeyB, onAddTokenClick)
+      ButtonFilled(KeyC, onAddTokenClick)
+    }
 
-    KeypadButtonFilled(bModifier, KeyA, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, KeyB, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, KeyC, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonFilled(KeyD, onAddTokenClick)
+      ButtonFilled(KeyE, onAddTokenClick)
+      ButtonFilled(KeyF, onAddTokenClick)
+    }
 
-    KeypadButtonFilled(bModifier, KeyD, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, KeyE, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(bModifier, KeyF, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonLight(Key7, onAddTokenClick)
+      ButtonLight(Key8, onAddTokenClick)
+      ButtonLight(Key9, onAddTokenClick)
+    }
 
-    KeypadButtonLight(bModifier, Key7, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key8, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key9, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonLight(Key4, onAddTokenClick)
+      ButtonLight(Key5, onAddTokenClick)
+      ButtonLight(Key6, onAddTokenClick)
+    }
 
-    KeypadButtonLight(bModifier, Key4, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key5, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key6, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonLight(Key1, onAddTokenClick)
+      ButtonLight(Key2, onAddTokenClick)
+      ButtonLight(Key3, onAddTokenClick)
+    }
 
-    KeypadButtonLight(bModifier, Key1, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key2, iconHeight, onAddTokenClick)
-    KeypadButtonLight(bModifier, Key3, iconHeight, onAddTokenClick)
-
-    // TODO Should be a separate o use custom widthFillFactors and heightFillFactors
-    KeypadButtonLight(bModifier, Key0, iconHeight, onAddTokenClick)
-    KeypadButtonLight(wideButtonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
+    KeypadRow {
+      ButtonLight(Key0, onAddTokenClick)
+      ButtonLight(BackspaceKey, onClearClick, onDeleteClick, weight = 2f)
+    }
   }
 }
 

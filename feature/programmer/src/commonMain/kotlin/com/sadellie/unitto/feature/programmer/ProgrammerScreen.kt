@@ -107,11 +107,6 @@ import com.sadellie.unitto.core.ui.KeypadButton.Companion.MultiplyKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.PlusKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RightBracketKey
 import com.sadellie.unitto.core.ui.KeypadButton.KeypadButtonAdd
-import com.sadellie.unitto.core.ui.KeypadButtonFilled
-import com.sadellie.unitto.core.ui.KeypadButtonFilledPrimary
-import com.sadellie.unitto.core.ui.KeypadButtonLight
-import com.sadellie.unitto.core.ui.KeypadButtonTertiary
-import com.sadellie.unitto.core.ui.KeypadButtonTransparent
 import com.sadellie.unitto.core.ui.KeypadFlow
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.textfield.AutoSizeTextField
@@ -136,7 +131,6 @@ import org.koin.core.module.Module
 import org.koin.dsl.navigation3.navigation
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_error
-import unitto.core.common.generated.resources.keyboard_percent
 
 @OptIn(KoinExperimentalAPI::class)
 fun Module.programmerNavigation() {
@@ -555,64 +549,79 @@ private fun ProgrammerKeyboardCompact(
   toggleBase: () -> Unit,
   base: Int,
 ) {
-  KeypadFlow(modifier = modifier, rows = 9, columns = 4) { width, height ->
-    val iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL
-    val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
-
-    KeypadButtonTransparent(buttonModifier, KeyOr, iconHeight, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyAnd, iconHeight, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyNot, iconHeight, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyMod, iconHeight, onAddTokenClick)
-
-    KeypadButtonTransparent(buttonModifier, KeyNor, iconHeight, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyNand, iconHeight, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeyXor, iconHeight, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, KeySize, iconHeight, toggleSize)
-
-    if (showAcButton) {
-      KeypadButtonTertiary(buttonModifier, ClearKey, iconHeight, onClearClick)
-      KeypadButtonFilled(buttonModifier, BracketsKey, iconHeight, onBracketsClick)
-    } else {
-      KeypadButtonFilled(buttonModifier, LeftBracketKey, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
+  KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL) {
+    KeypadRow {
+      ButtonTransparent(KeyOr, onAddTokenClick)
+      ButtonTransparent(KeyAnd, onAddTokenClick)
+      ButtonTransparent(KeyNot, onAddTokenClick)
+      ButtonTransparent(KeyMod, onAddTokenClick)
     }
-    KeypadButtonFilled(buttonModifier, KeyLsh, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, KeyRsh, iconHeight, onAddTokenClick)
 
-    KeypadButtonLight(buttonModifier, KeyD, iconHeight, onAddTokenClick, base >= 14)
-    KeypadButtonLight(buttonModifier, KeyE, iconHeight, onAddTokenClick, base >= 15)
-    KeypadButtonLight(buttonModifier, KeyF, iconHeight, onAddTokenClick, base >= 16)
-    KeypadButtonFilled(buttonModifier, KeyShiftType, iconHeight, {}, false)
-
-    KeypadButtonLight(buttonModifier, KeyA, iconHeight, onAddTokenClick, base >= 11)
-    KeypadButtonLight(buttonModifier, KeyB, iconHeight, onAddTokenClick, base >= 12)
-    KeypadButtonLight(buttonModifier, KeyC, iconHeight, onAddTokenClick, base >= 13)
-    KeypadButtonFilled(buttonModifier, DivideKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick, base >= 8)
-    KeypadButtonLight(buttonModifier, Key8, iconHeight, onAddTokenClick, base >= 9)
-    KeypadButtonLight(buttonModifier, Key9, iconHeight, onAddTokenClick, base >= 10)
-    KeypadButtonFilled(buttonModifier, MultiplyKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick, base >= 5)
-    KeypadButtonLight(buttonModifier, Key5, iconHeight, onAddTokenClick, base >= 6)
-    KeypadButtonLight(buttonModifier, Key6, iconHeight, onAddTokenClick, base >= 7)
-    KeypadButtonFilled(buttonModifier, MinusKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonLight(buttonModifier, Key1, iconHeight, onAddTokenClick, base >= 2)
-    KeypadButtonLight(buttonModifier, Key2, iconHeight, onAddTokenClick, base >= 3)
-    KeypadButtonLight(buttonModifier, Key3, iconHeight, onAddTokenClick, base >= 4)
-    KeypadButtonFilled(buttonModifier, PlusKey, iconHeight, onAddTokenClick)
-
-    if (middleZero) {
-      KeypadButtonLight(buttonModifier, KeyBaseSwitch, iconHeight, null, toggleBase)
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-    } else {
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, KeyBaseSwitch, iconHeight, null, toggleBase)
+    KeypadRow {
+      ButtonTransparent(KeyNor, onAddTokenClick)
+      ButtonTransparent(KeyNand, onAddTokenClick)
+      ButtonTransparent(KeyXor, onAddTokenClick)
+      ButtonTransparent(KeySize, toggleSize)
     }
-    KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
-    KeypadButtonFilledPrimary(buttonModifier, EqualKey, iconHeight, onEqualClick)
+
+    KeypadRow {
+      if (showAcButton) {
+        ButtonTertiary(ClearKey, onClearClick)
+        ButtonFilled(BracketsKey, onBracketsClick)
+      } else {
+        ButtonFilled(LeftBracketKey, onAddTokenClick)
+        ButtonFilled(RightBracketKey, onAddTokenClick)
+      }
+      ButtonFilled(KeyLsh, onAddTokenClick)
+      ButtonFilled(KeyRsh, onAddTokenClick)
+    }
+
+    KeypadRow {
+      ButtonLight(KeyD, onAddTokenClick, base >= 14)
+      ButtonLight(KeyE, onAddTokenClick, base >= 15)
+      ButtonLight(KeyF, onAddTokenClick, base >= 16)
+      ButtonFilled(KeyShiftType, {}, false)
+    }
+
+    KeypadRow {
+      ButtonLight(KeyA, onAddTokenClick, base >= 11)
+      ButtonLight(KeyB, onAddTokenClick, base >= 12)
+      ButtonLight(KeyC, onAddTokenClick, base >= 13)
+      ButtonFilled(DivideKey, onAddTokenClick)
+    }
+
+    KeypadRow {
+      ButtonLight(Key7, onAddTokenClick, base >= 8)
+      ButtonLight(Key8, onAddTokenClick, base >= 9)
+      ButtonLight(Key9, onAddTokenClick, base >= 10)
+      ButtonFilled(MultiplyKey, onAddTokenClick)
+    }
+
+    KeypadRow {
+      ButtonLight(Key4, onAddTokenClick, base >= 5)
+      ButtonLight(Key5, onAddTokenClick, base >= 6)
+      ButtonLight(Key6, onAddTokenClick, base >= 7)
+      ButtonFilled(MinusKey, onAddTokenClick)
+    }
+
+    KeypadRow {
+      ButtonLight(Key1, onAddTokenClick, base >= 2)
+      ButtonLight(Key2, onAddTokenClick, base >= 3)
+      ButtonLight(Key3, onAddTokenClick, base >= 4)
+      ButtonFilled(PlusKey, onAddTokenClick)
+    }
+
+    KeypadRow {
+      if (middleZero) {
+        ButtonLight(KeyBaseSwitch, null, toggleBase)
+        ButtonLight(Key0, onAddTokenClick)
+      } else {
+        ButtonLight(Key0, onAddTokenClick)
+        ButtonLight(KeyBaseSwitch, null, toggleBase)
+      }
+      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
+      ButtonFilledPrimary(EqualKey, onEqualClick)
+    }
   }
 }
 
@@ -630,82 +639,86 @@ private fun ProgrammerKeyboardExpanded(
   toggleBase: () -> Unit,
   base: Int,
 ) {
-  KeypadFlow(modifier = modifier, rows = 6, columns = 6) { width, height ->
-    val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
-    val iconHeight = 1f
-
-    KeypadButtonTransparent(buttonModifier, KeyNot, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, KeyD, iconHeight, onAddTokenClick, base >= 14)
-    KeypadButtonLight(buttonModifier, KeyE, iconHeight, onAddTokenClick, base >= 15)
-    KeypadButtonLight(buttonModifier, KeyF, iconHeight, onAddTokenClick, base >= 16)
-    if (showAcButton) {
-      KeypadButtonTertiary(buttonModifier, ClearKey, iconHeight, onClearClick)
-      KeypadButtonFilled(buttonModifier, BracketsKey, iconHeight, onBracketsClick)
-    } else {
-      KeypadButtonFilled(buttonModifier, LeftBracketKey, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
+  KeypadFlow(modifier = modifier) {
+    KeypadRow {
+      ButtonTransparent(KeyNot, onAddTokenClick)
+      ButtonLight(KeyD, onAddTokenClick, base >= 14)
+      ButtonLight(KeyE, onAddTokenClick, base >= 15)
+      ButtonLight(KeyF, onAddTokenClick, base >= 16)
+      if (showAcButton) {
+        ButtonTertiary(ClearKey, onClearClick)
+        ButtonFilled(BracketsKey, onBracketsClick)
+      } else {
+        ButtonFilled(LeftBracketKey, onAddTokenClick)
+        ButtonFilled(RightBracketKey, onAddTokenClick)
+      }
     }
 
-    KeypadButtonTransparent(buttonModifier, KeyNand, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, KeyA, iconHeight, onAddTokenClick, base >= 11)
-    KeypadButtonLight(buttonModifier, KeyB, iconHeight, onAddTokenClick, base >= 12)
-    KeypadButtonLight(buttonModifier, KeyC, iconHeight, onAddTokenClick, base >= 13)
-    KeypadButtonFilled(buttonModifier, KeyMod, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, KeySize, iconHeight, toggleSize)
-
-    KeypadButtonTransparent(buttonModifier, KeyAnd, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick, base >= 8)
-    KeypadButtonLight(buttonModifier, Key8, iconHeight, onAddTokenClick, base >= 9)
-    KeypadButtonLight(buttonModifier, Key9, iconHeight, onAddTokenClick, base >= 10)
-    KeypadButtonFilled(buttonModifier, KeyLsh, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, KeyRsh, iconHeight, onAddTokenClick)
-
-    KeypadButtonTransparent(buttonModifier, KeyNor, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick, base >= 5)
-    KeypadButtonLight(buttonModifier, Key5, iconHeight, onAddTokenClick, base >= 6)
-    KeypadButtonLight(buttonModifier, Key6, iconHeight, onAddTokenClick, base >= 7)
-    KeypadButtonFilled(buttonModifier, MultiplyKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, DivideKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonTransparent(buttonModifier, KeyXor, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key1, iconHeight, onAddTokenClick, base >= 2)
-    KeypadButtonLight(buttonModifier, Key2, iconHeight, onAddTokenClick, base >= 3)
-    KeypadButtonLight(buttonModifier, Key3, iconHeight, onAddTokenClick, base >= 4)
-    KeypadButtonFilled(buttonModifier, MinusKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, KeyShiftType, iconHeight, {}, false)
-
-    KeypadButtonTransparent(buttonModifier, KeyOr, iconHeight, onAddTokenClick)
-    if (middleZero) {
-      KeypadButtonLight(buttonModifier, KeyBaseSwitch, iconHeight, null, toggleBase)
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-    } else {
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, KeyBaseSwitch, iconHeight, null, toggleBase)
+    KeypadRow {
+      ButtonTransparent(KeyNand, onAddTokenClick)
+      ButtonLight(KeyA, onAddTokenClick, base >= 11)
+      ButtonLight(KeyB, onAddTokenClick, base >= 12)
+      ButtonLight(KeyC, onAddTokenClick, base >= 13)
+      ButtonFilled(KeyMod, onAddTokenClick)
+      ButtonFilled(KeySize, toggleSize)
     }
-    KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
-    KeypadButtonFilled(buttonModifier, PlusKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilledPrimary(buttonModifier, EqualKey, iconHeight, onEqualClick)
+
+    KeypadRow {
+      ButtonTransparent(KeyAnd, onAddTokenClick)
+      ButtonLight(Key7, onAddTokenClick, base >= 8)
+      ButtonLight(Key8, onAddTokenClick, base >= 9)
+      ButtonLight(Key9, onAddTokenClick, base >= 10)
+      ButtonFilled(KeyLsh, onAddTokenClick)
+      ButtonFilled(KeyRsh, onAddTokenClick)
+    }
+
+    KeypadRow {
+      ButtonTransparent(KeyNor, onAddTokenClick)
+      ButtonLight(Key4, onAddTokenClick, base >= 5)
+      ButtonLight(Key5, onAddTokenClick, base >= 6)
+      ButtonLight(Key6, onAddTokenClick, base >= 7)
+      ButtonFilled(MultiplyKey, onAddTokenClick)
+      ButtonFilled(DivideKey, onAddTokenClick)
+    }
+    KeypadRow {
+      ButtonTransparent(KeyXor, onAddTokenClick)
+      ButtonLight(Key1, onAddTokenClick, base >= 2)
+      ButtonLight(Key2, onAddTokenClick, base >= 3)
+      ButtonLight(Key3, onAddTokenClick, base >= 4)
+      ButtonFilled(MinusKey, onAddTokenClick)
+      ButtonFilled(KeyShiftType, {}, false)
+    }
+
+    KeypadRow {
+      ButtonTransparent(KeyOr, onAddTokenClick)
+      if (middleZero) {
+        ButtonLight(KeyBaseSwitch, null, toggleBase)
+        ButtonLight(Key0, onAddTokenClick)
+      } else {
+        ButtonLight(Key0, onAddTokenClick)
+        ButtonLight(KeyBaseSwitch, null, toggleBase)
+      }
+      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
+      ButtonFilled(PlusKey, onAddTokenClick)
+      ButtonFilledPrimary(EqualKey, onEqualClick)
+    }
   }
 }
 
 // TODO image descriptions
-private val KeyOr = KeypadButtonAdd(IconPack.Or, Res.string.keyboard_percent, Token.Or.symbol)
-private val KeyAnd = KeypadButtonAdd(IconPack.And, Res.string.keyboard_percent, Token.And.symbol)
-private val KeyNot = KeypadButtonAdd(IconPack.Not, Res.string.keyboard_percent, Token.Not.symbol)
-private val KeyNand = KeypadButtonAdd(IconPack.Nand, Res.string.keyboard_percent, Token.Nand.symbol)
-private val KeyNor = KeypadButtonAdd(IconPack.Nor, Res.string.keyboard_percent, Token.Nor.symbol)
-private val KeyXor = KeypadButtonAdd(IconPack.Xor, Res.string.keyboard_percent, Token.Xor.symbol)
-private val KeyMod = KeypadButtonAdd(IconPack.Mod, Res.string.keyboard_percent, Token.Mod.symbol)
+private val KeyOr = KeypadButtonAdd(IconPack.Or, null, Token.Or.symbol)
+private val KeyAnd = KeypadButtonAdd(IconPack.And, null, Token.And.symbol)
+private val KeyNot = KeypadButtonAdd(IconPack.Not, null, Token.Not.symbol)
+private val KeyNand = KeypadButtonAdd(IconPack.Nand, null, Token.Nand.symbol)
+private val KeyNor = KeypadButtonAdd(IconPack.Nor, null, Token.Nor.symbol)
+private val KeyXor = KeypadButtonAdd(IconPack.Xor, null, Token.Xor.symbol)
+private val KeyMod = KeypadButtonAdd(IconPack.Mod, null, Token.Mod.symbol)
 // TODO other shift types
-private val KeyLsh =
-  KeypadButtonAdd(IconPack.ShiftLeft, Res.string.keyboard_percent, Token.Lsh.symbol)
-private val KeyRsh =
-  KeypadButtonAdd(IconPack.ShiftRight, Res.string.keyboard_percent, Token.Rsh.symbol)
-private val KeyBaseSwitch =
-  KeypadButton.KeypadButtonSimple(IconPack.Base, Res.string.keyboard_percent)
-private val KeyShiftType =
-  KeypadButton.KeypadButtonSimple(IconPack.Shift, Res.string.keyboard_percent)
-private val KeySize = KeypadButton.KeypadButtonSimple(IconPack.Size, Res.string.keyboard_percent)
+private val KeyLsh = KeypadButtonAdd(IconPack.ShiftLeft, null, Token.Lsh.symbol)
+private val KeyRsh = KeypadButtonAdd(IconPack.ShiftRight, null, Token.Rsh.symbol)
+private val KeyBaseSwitch = KeypadButton.KeypadButtonSimple(IconPack.Base, null)
+private val KeyShiftType = KeypadButton.KeypadButtonSimple(IconPack.Shift, null)
+private val KeySize = KeypadButton.KeypadButtonSimple(IconPack.Size, null)
 
 @Stable
 // TODO auto tests
