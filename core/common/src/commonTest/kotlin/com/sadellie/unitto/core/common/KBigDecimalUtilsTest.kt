@@ -202,5 +202,10 @@ class KBigDecimalUtilsTest {
     // big value without scale
     bd = KBigDecimal("123")
     assertEquals("123", bd.setMinimumRequiredScale(3).toPlainString())
+
+    // big value without negative scale
+    bd = KBigDecimal("0").setScale(-190, KRoundingMode.HALF_EVEN)
+    println(bd.scale())
+    assertEquals("0", bd.setMinimumRequiredScale(3).toPlainString())
   }
 }

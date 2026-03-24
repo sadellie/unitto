@@ -64,7 +64,7 @@ fun KBigDecimal.setMaxScale(): KBigDecimal = setScale(MAX_SCALE, KRoundingMode.H
  */
 internal fun KBigDecimal.setMinimumRequiredScale(prefScale: Int): KBigDecimal {
   // values without scale do not need rescaling. 123 => 123 (will not add trailing zeroes)
-  if (this.scale() == 0) return this
+  if (this.scale() <= 0) return this
   val absValue = this.abs()
   if (absValue.isLessThan(KBigDecimal.ONE)) {
     // remainder returns 0.01234. Need to use substring to skip "0." part
