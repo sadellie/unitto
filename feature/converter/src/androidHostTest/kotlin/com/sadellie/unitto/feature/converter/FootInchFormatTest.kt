@@ -29,7 +29,7 @@ import kotlin.test.assertEquals
 class FootInchFormatTest {
   private val scale = 3
   private val outputFormat = OutputFormat.PLAIN
-  private val formatterSymbols = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
+  private val formatterSymbols = FormatterSymbols(Token.Period, Token.Comma, false)
 
   @Test
   fun testNegative() {

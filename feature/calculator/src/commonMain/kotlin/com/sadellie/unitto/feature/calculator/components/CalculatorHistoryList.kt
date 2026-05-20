@@ -50,6 +50,7 @@ import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
 import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.textfield.FixedExpressionInputTextField
@@ -169,7 +170,7 @@ private fun HistoryListItem(
       }
     }
     Column(
-      modifier = Modifier.weight(1f).fillMaxHeight().padding(end = 8.dp),
+      modifier = Modifier.weight(1f).fillMaxHeight().padding(end = Sizes.small),
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.End,
     ) {
@@ -221,7 +222,7 @@ private fun PreviewCalculatorHistoryList() {
   CalculatorHistoryList(
     modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh).fillMaxSize(),
     calculatorHistoryItems = calculatorHistoryItems,
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
     addTokens = {},
     onDelete = {},
     showDeleteButtons = true,

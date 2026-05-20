@@ -23,7 +23,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -52,9 +51,8 @@ import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.app_name
 import unitto.core.common.generated.resources.common_hello
 
-@Suppress("UnusedReceiverParameter")
 @Composable
-internal fun ColumnScope.SheetContent(
+internal fun SheetContent(
   mainTabs: List<DrawerItem>,
   additionalTabs: List<DrawerItem>,
   currentDestination: TopLevelRoute?,

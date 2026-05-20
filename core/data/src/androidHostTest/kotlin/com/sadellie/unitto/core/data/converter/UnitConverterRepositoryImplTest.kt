@@ -79,7 +79,7 @@ class UnitConverterRepositoryImplTest {
       unitConverterRepo.convert(
         unitFromId = UnitID.attosecond,
         unitToId = UnitID.day,
-        value1 = "${Token.Operator.MINUS}28",
+        value1 = "${Token.Minus.symbol}28",
         value2 = "",
         formatTime = true,
         apiUrl = "",
@@ -111,7 +111,7 @@ class UnitConverterRepositoryImplTest {
       unitConverterRepo.convert(
         unitFromId = UnitID.attosecond,
         unitToId = UnitID.day,
-        value1 = "${Token.Operator.MINUS}0",
+        value1 = "${Token.Minus.symbol}0",
         value2 = "",
         formatTime = true,
         apiUrl = "",

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,72 +18,74 @@
 package com.sadellie.unitto.core.designsystem.icons.iconpack
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap.Companion.Butt
-import androidx.compose.ui.graphics.StrokeJoin.Companion.Miter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-@Suppress("UnusedReceiverParameter")
 val IconPack.Backspace: ImageVector
   get() {
-    if (_backspace != null) {
-      return _backspace!!
+    if (_Backspace != null) {
+      return _Backspace!!
     }
-    _backspace =
-      Builder(
+    _Backspace =
+      ImageVector.Builder(
           name = "Backspace",
-          defaultWidth = 24.0.dp,
-          defaultHeight = 24.0.dp,
-          viewportWidth = 24.0f,
-          viewportHeight = 24.0f,
+          defaultWidth = 24.dp,
+          defaultHeight = 24.dp,
+          viewportWidth = 24f,
+          viewportHeight = 24f,
         )
         .apply {
-          path(
-            fill = SolidColor(Color(0xFF000000)),
-            stroke = null,
-            strokeLineWidth = 0.0f,
-            strokeLineCap = Butt,
-            strokeLineJoin = Miter,
-            strokeLineMiter = 4.0f,
-            pathFillType = NonZero,
-          ) {
-            moveTo(11.7f, 14.1687f)
-            lineTo(13.0f, 12.8687f)
-            lineTo(14.3f, 14.1687f)
-            lineTo(15.0f, 13.4687f)
-            lineTo(13.7f, 12.1687f)
-            lineTo(15.0f, 10.8687f)
-            lineTo(14.3f, 10.1687f)
-            lineTo(13.0f, 11.4687f)
-            lineTo(11.7f, 10.1687f)
-            lineTo(11.0f, 10.8687f)
-            lineTo(12.3f, 12.1687f)
-            lineTo(11.0f, 13.4687f)
-            lineTo(11.7f, 14.1687f)
+          path(fill = SolidColor(Color.White)) {
+            moveTo(12.766f, 12.613f)
+            lineTo(13.597f, 13.444f)
+            curveTo(13.677f, 13.524f, 13.779f, 13.564f, 13.903f, 13.564f)
+            curveTo(14.027f, 13.564f, 14.129f, 13.524f, 14.209f, 13.444f)
+            curveTo(14.29f, 13.363f, 14.33f, 13.262f, 14.33f, 13.137f)
+            curveTo(14.33f, 13.014f, 14.29f, 12.911f, 14.209f, 12.831f)
+            lineTo(13.378f, 12f)
+            lineTo(14.209f, 11.169f)
+            curveTo(14.29f, 11.089f, 14.33f, 10.986f, 14.33f, 10.863f)
+            curveTo(14.33f, 10.738f, 14.29f, 10.637f, 14.209f, 10.556f)
+            curveTo(14.129f, 10.476f, 14.027f, 10.436f, 13.903f, 10.436f)
+            curveTo(13.779f, 10.436f, 13.677f, 10.476f, 13.597f, 10.556f)
+            lineTo(12.766f, 11.387f)
+            lineTo(11.934f, 10.556f)
+            curveTo(11.854f, 10.476f, 11.752f, 10.436f, 11.628f, 10.436f)
+            curveTo(11.504f, 10.436f, 11.402f, 10.476f, 11.322f, 10.556f)
+            curveTo(11.242f, 10.637f, 11.202f, 10.738f, 11.202f, 10.863f)
+            curveTo(11.202f, 10.986f, 11.242f, 11.089f, 11.322f, 11.169f)
+            lineTo(12.153f, 12f)
+            lineTo(11.322f, 12.831f)
+            curveTo(11.242f, 12.911f, 11.202f, 13.014f, 11.202f, 13.137f)
+            curveTo(11.202f, 13.262f, 11.242f, 13.363f, 11.322f, 13.444f)
+            curveTo(11.402f, 13.524f, 11.504f, 13.564f, 11.628f, 13.564f)
+            curveTo(11.752f, 13.564f, 11.854f, 13.524f, 11.934f, 13.444f)
+            lineTo(12.766f, 12.613f)
             close()
-            moveTo(7.5f, 12.1687f)
-            lineTo(9.675f, 9.0937f)
-            curveTo(9.7667f, 8.9604f, 9.8854f, 8.8562f, 10.0313f, 8.7812f)
-            curveTo(10.1771f, 8.7062f, 10.3333f, 8.6687f, 10.5f, 8.6687f)
-            horizontalLineTo(15.5f)
-            curveTo(15.775f, 8.6687f, 16.0104f, 8.7666f, 16.2063f, 8.9625f)
-            curveTo(16.4021f, 9.1583f, 16.5f, 9.3937f, 16.5f, 9.6687f)
-            verticalLineTo(14.6687f)
-            curveTo(16.5f, 14.9437f, 16.4021f, 15.1791f, 16.2063f, 15.375f)
-            curveTo(16.0104f, 15.5708f, 15.775f, 15.6687f, 15.5f, 15.6687f)
-            horizontalLineTo(10.5f)
-            curveTo(10.3333f, 15.6687f, 10.1771f, 15.6312f, 10.0313f, 15.5562f)
-            curveTo(9.8854f, 15.4812f, 9.7667f, 15.377f, 9.675f, 15.2437f)
-            lineTo(7.5f, 12.1687f)
+            moveTo(10.578f, 15.5f)
+            curveTo(10.44f, 15.5f, 10.308f, 15.469f, 10.184f, 15.407f)
+            curveTo(10.06f, 15.345f, 9.958f, 15.259f, 9.878f, 15.15f)
+            lineTo(7.909f, 12.525f)
+            curveTo(7.793f, 12.372f, 7.734f, 12.197f, 7.734f, 12f)
+            curveTo(7.734f, 11.803f, 7.793f, 11.628f, 7.909f, 11.475f)
+            lineTo(9.878f, 8.85f)
+            curveTo(9.958f, 8.741f, 10.06f, 8.655f, 10.184f, 8.593f)
+            curveTo(10.308f, 8.531f, 10.44f, 8.5f, 10.578f, 8.5f)
+            horizontalLineTo(15.391f)
+            curveTo(15.631f, 8.5f, 15.837f, 8.586f, 16.009f, 8.757f)
+            curveTo(16.18f, 8.928f, 16.266f, 9.134f, 16.266f, 9.375f)
+            verticalLineTo(14.625f)
+            curveTo(16.266f, 14.866f, 16.18f, 15.072f, 16.009f, 15.243f)
+            curveTo(15.837f, 15.414f, 15.631f, 15.5f, 15.391f, 15.5f)
+            horizontalLineTo(10.578f)
             close()
           }
         }
         .build()
-    return _backspace!!
+
+    return _Backspace!!
   }
 
-private var _backspace: ImageVector? = null
+@Suppress("ObjectPropertyName") private var _Backspace: ImageVector? = null

@@ -36,14 +36,14 @@ fun LocalDate.formatDateWeekDayMonthYear(locale: PlatformLocale): String {
         try {
           dayOfWeekNamesAbbreviated(locale)
         } catch (e: IllegalArgumentException) {
-          Logger.e(TAG, e) { "Failed to get week names" }
+          Logger.e(e, TAG) { "Failed to get week names" }
           DayOfWeekNames.ENGLISH_ABBREVIATED
         }
       val monthNames =
         try {
           monthNamesAbbreviated(locale)
         } catch (e: IllegalArgumentException) {
-          Logger.e(TAG, e) { "Failed to get month names" }
+          Logger.e(e, TAG) { "Failed to get month names" }
           MonthNames.ENGLISH_ABBREVIATED
         }
       this.dayOfWeek(weekNames)

@@ -47,7 +47,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
@@ -83,8 +82,8 @@ internal fun BodyMassRoute(openDrawer: () -> Unit) {
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
-    UIState.Loading -> EmptyScreen()
-    is UIState.Ready ->
+    BodyMassUIState.Loading -> EmptyScreen()
+    is BodyMassUIState.Ready ->
       BodyMassScreen(
         uiState = uiState,
         updateIsMetric = viewModel::updateIsMetric,
@@ -96,7 +95,7 @@ internal fun BodyMassRoute(openDrawer: () -> Unit) {
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun BodyMassScreen(
-  uiState: UIState.Ready,
+  uiState: BodyMassUIState.Ready,
   updateIsMetric: (Boolean) -> Unit,
   openDrawer: () -> Unit,
 ) {
@@ -113,9 +112,9 @@ private fun BodyMassScreen(
       modifier =
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
-          .padding(16.dp)
+          .padding(Sizes.large)
           .fillMaxSize(),
-      verticalArrangement = Arrangement.spacedBy(16.dp),
+      verticalArrangement = Arrangement.spacedBy(Sizes.large),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       BodyMassInputModeSelector(
@@ -163,7 +162,11 @@ private fun BodyMassScreen(
 }
 
 @Composable
-private fun BodyMassInputBox(modifier: Modifier, uiState: UIState.Ready, weightShortLabel: String) {
+private fun BodyMassInputBox(
+  modifier: Modifier,
+  uiState: BodyMassUIState.Ready,
+  weightShortLabel: String,
+) {
   TextFieldBox(modifier = modifier) {
     Crossfade(targetState = uiState.isMetric, label = "Measurement system change") { isMetric ->
       if (isMetric) {
@@ -240,14 +243,14 @@ private fun BodyMassInputModeSelector(
 fun PreviewBodyMassScreen() {
   BodyMassScreen(
     uiState =
-      UIState.Ready(
+      BodyMassUIState.Ready(
         isMetric = false,
         height1 = remember { TextFieldState() },
         height2 = remember { TextFieldState() },
         weight = remember { TextFieldState() },
         normalWeightRange = KBigDecimal(30.0) to KBigDecimal(50.0),
         result = KBigDecimal(18.5),
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
       ),
     updateIsMetric = {},
     openDrawer = {},

@@ -51,7 +51,7 @@ class CalculatorScreenTest {
               radianMode = false,
               precision = 3,
               outputFormat = OutputFormat.PLAIN,
-              formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+              formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
               history = emptyList(),
               middleZero = false,
               acButton = true,
@@ -74,6 +74,7 @@ class CalculatorScreenTest {
           onClearHistoryClick = {},
           onDeleteHistoryItemClick = {},
           updateInitialPartialHistoryView = {},
+          onHardwareInput = {},
         )
       }
 
@@ -94,7 +95,7 @@ class CalculatorScreenTest {
               radianMode = false,
               precision = 3,
               outputFormat = OutputFormat.PLAIN,
-              formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+              formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
               history = emptyList(),
               middleZero = false,
               acButton = true,
@@ -117,6 +118,7 @@ class CalculatorScreenTest {
           onClearHistoryClick = {},
           onDeleteHistoryItemClick = {},
           updateInitialPartialHistoryView = {},
+          onHardwareInput = {},
         )
       }
 

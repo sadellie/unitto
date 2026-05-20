@@ -62,7 +62,6 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
@@ -85,9 +84,9 @@ import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.textfield.NumberBaseTextField
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
-import com.sadellie.unitto.core.ui.textfield.addBracket
-import com.sadellie.unitto.core.ui.textfield.addTokens
-import com.sadellie.unitto.core.ui.textfield.deleteTokens
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addBracket
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addTokens
+import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.deleteTokens
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
@@ -259,7 +258,7 @@ internal fun NumberBase(
         NumberBaseTextField(
           modifier = textFieldModifier,
           minRatio = 0.7f,
-          placeholder = Token.Digit.DIGIT_0,
+          placeholder = Token.Digit0.symbol,
           state = uiState.input,
           textColor = converterTextFieldColor,
         )
@@ -363,7 +362,7 @@ private fun SingleUnitInput(
       state = input,
       minRatio = 0.7f,
       formatterSymbols = formatterSymbols,
-      placeholder = Token.Digit.DIGIT_0,
+      placeholder = Token.Digit0.symbol,
     )
     CalculationResultTextField(
       modifier = Modifier.fillMaxWidth().weight(1f),
@@ -387,7 +386,7 @@ private fun DoubleUnitInput(
   onFocusedOnInput1Changed: (Boolean) -> Unit,
   formatterSymbols: FormatterSymbols,
 ) {
-  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.small)) {
     Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
       ExpressionTextField(
         modifier = Modifier.fillMaxWidth().weight(1f),
@@ -395,7 +394,7 @@ private fun DoubleUnitInput(
         state = input1,
         minRatio = 0.7f,
         formatterSymbols = formatterSymbols,
-        placeholder = Token.Digit.DIGIT_0,
+        placeholder = Token.Digit0.symbol,
       )
       AnimatedUnitShortName(input1ShortName)
     }
@@ -412,7 +411,7 @@ private fun DoubleUnitInput(
         textColor = converterTextFieldColor,
         minRatio = 0.7f,
         formatterSymbols = formatterSymbols,
-        placeholder = Token.Digit.DIGIT_0,
+        placeholder = Token.Digit0.symbol,
       )
       AnimatedUnitShortName(input2ShortName)
     }
@@ -465,7 +464,7 @@ private fun ConverterResultTextField(
   result: ConverterResult,
   scale: Int = 0,
   outputFormat: Int = OutputFormat.PLAIN,
-  formatterSymbols: FormatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+  formatterSymbols: FormatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
 ) {
   when (result) {
     is ConverterResult.Default -> {
@@ -709,7 +708,7 @@ private fun PreviewConverterDefault() {
             Res.string.unit_meter_short,
           ),
         acButton = true,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
         currencyRateUpdateState = CurrencyRateUpdateState.Nothing,
         outputFormat = OutputFormat.PLAIN,
         result = ConverterResult.Default(KBigDecimal.ZERO, KBigDecimal.ZERO),

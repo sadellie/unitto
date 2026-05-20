@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,4 +40,7 @@ internal class CalculatorSettingsViewModel(
 
   fun updateFractionalOutput(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateFractionalOutput(enabled) }
+
+  fun updateConstantCalculation(enabled: Boolean) =
+    viewModelScope.launch { userPrefsRepository.updateConstantCalculation(enabled) }
 }

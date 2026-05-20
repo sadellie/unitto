@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.sadellie.unitto.core.designsystem.icons.symbols.AccessibilityNew
 import com.sadellie.unitto.core.designsystem.icons.symbols.Calculate
 import com.sadellie.unitto.core.designsystem.icons.symbols.CalculateFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Code
 import com.sadellie.unitto.core.designsystem.icons.symbols.Event
 import com.sadellie.unitto.core.designsystem.icons.symbols.EventFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.Schedule
@@ -36,6 +37,7 @@ import unitto.core.common.generated.resources.body_mass_title
 import unitto.core.common.generated.resources.calculator_title
 import unitto.core.common.generated.resources.converter_title
 import unitto.core.common.generated.resources.date_calculator_title
+import unitto.core.common.generated.resources.programmer_title
 import unitto.core.common.generated.resources.settings_title
 import unitto.core.common.generated.resources.time_zone_title
 
@@ -60,13 +62,12 @@ data object ConverterDrawerItem : DrawerItem {
   override val defaultIcon = Symbols.SwapHoriz
 }
 
-// unused until solver update
-// data object GraphingDrawerItem : DrawerItem {
-//  override val graphRoute = GraphingGraphRoute
-//  override val name = Res.string.graphing_title
-//  override val selectedIcon = Symbols.LineAxis
-//  override val defaultIcon = Symbols.LineAxis
-// }
+data object ProgrammerDrawerItem : DrawerItem {
+  override val topLevelRoute = ProgrammerStartRoute
+  override val name = Res.string.programmer_title
+  override val selectedIcon = Symbols.Code
+  override val defaultIcon = Symbols.Code
+}
 
 data object DateCalculatorDrawerItem : DrawerItem {
   override val topLevelRoute = DateCalculatorStartRoute

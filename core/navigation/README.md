@@ -27,6 +27,7 @@ graph LR
     :feature:timezone["timezone"]
     :feature:datecalculator["datecalculator"]
     :feature:glance["glance"]
+    :feature:programmer["programmer"]
   end
   :feature:settings --> :core:navigation
   :sharedApp --> :core:navigation
@@ -39,6 +40,7 @@ graph LR
   :feature:datecalculator --> :core:navigation
   :core:ui --> :core:navigation
   :feature:glance --> :core:navigation
+  :feature:programmer --> :core:navigation
   :core:navigation --> :core:common
   :core:navigation --> :core:designsystem
 

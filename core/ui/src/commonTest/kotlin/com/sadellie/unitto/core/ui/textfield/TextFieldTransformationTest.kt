@@ -30,7 +30,7 @@ class TextFieldTransformationTest {
   @Test
   fun expressionInputTransformation_test() {
     // 123.456,789
-    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
+    val fs = FormatterSymbols(Token.Period, Token.Comma, false)
     val inputTransformation = ExpressionInputTransformation(fs)
 
     fun transformAndCompare(expected: String, input: String) =
@@ -61,7 +61,7 @@ class TextFieldTransformationTest {
 
   @Test
   fun expressionOutputTransformation_test() {
-    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
+    val fs = FormatterSymbols(Token.Period, Token.Comma, false)
     val outputTransformation = ExpressionOutputTransformation(fs)
     fun transformAndCompare(expected: String, input: String) =
       assertOutputTransformation(outputTransformation, expected, input)

@@ -23,7 +23,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.core.ui" }
+  android.namespace = "com.sadellie.unitto.core.ui"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:navigation"))

@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
 import com.sadellie.unitto.feature.calculator.CalculationResult
@@ -60,6 +61,7 @@ fun TextBox(
   output: CalculationResult,
   onEnter: () -> Unit,
   showHandle: Boolean,
+  onHardwareInput: (() -> Unit)?,
 ) {
   Column(
     modifier =
@@ -74,11 +76,11 @@ fun TextBox(
             bottomEndPercent = 20,
           ),
         )
-        .padding(top = 4.dp),
+        .padding(top = Sizes.extraSmall),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     ExpressionTextField(
-      modifier = Modifier.weight(INPUT_WEIGHT).fillMaxWidth().padding(horizontal = 8.dp),
+      modifier = Modifier.weight(INPUT_WEIGHT).fillMaxWidth().padding(horizontal = Sizes.small),
       state = state,
       minRatio = 0.5f,
       formatterSymbols = formatterSymbols,
@@ -89,10 +91,12 @@ fun TextBox(
           onEnter()
           it()
         },
+      onHardwareInput = onHardwareInput,
     )
     if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
       CalculationResultTextField(
-        modifier = Modifier.weight(CALCULATION_WEIGHT).fillMaxWidth().padding(horizontal = 8.dp),
+        modifier =
+          Modifier.weight(CALCULATION_WEIGHT).fillMaxWidth().padding(horizontal = Sizes.small),
         output = output,
         formatterSymbols = formatterSymbols,
       )
@@ -100,7 +104,7 @@ fun TextBox(
     if (showHandle) {
       // Handle
       Box(
-        Modifier.padding(8.dp)
+        Modifier.padding(Sizes.small)
           .background(MaterialTheme.colorScheme.onSurfaceVariant, RoundedCornerShape(2.dp))
           .size(24.dp, 4.dp)
       )
@@ -153,11 +157,12 @@ private const val CALCULATION_ALPHA = 0.6f
 private fun PreviewTextBox() {
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Comma, false),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
     onEnter = {},
     showHandle = true,
+    onHardwareInput = null,
   )
 }
 
@@ -166,10 +171,11 @@ private fun PreviewTextBox() {
 private fun PreviewTextBoxNoHandle() {
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Comma, false),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
     onEnter = {},
     showHandle = false,
+    onHardwareInput = null,
   )
 }

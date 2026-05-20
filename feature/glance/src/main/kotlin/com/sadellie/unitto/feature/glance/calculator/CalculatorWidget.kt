@@ -169,7 +169,7 @@ private fun ReadyUI(appPrefs: CalculatorPreferences, input: String, output: Stri
       addBracketAction = AddBracketAction.Companion::create,
       deleteTokenAction = DeleteTokenAction.Companion::create,
       equalAction = EqualAction.Companion::create,
-      useDot = formatterSymbols.fractional == Token.Digit.DOT,
+      useDot = formatterSymbols.fractional == Token.Dot,
       middleZero = appPrefs.middleZero,
     )
   }
@@ -250,7 +250,7 @@ private fun PreviewWidget() {
     appPrefs =
       CalculatorPreferences(
         radianMode = false,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
         fractionalOutput = false,
         middleZero = true,
         inverseMode = false,
@@ -262,6 +262,7 @@ private fun PreviewWidget() {
         steppedPartialHistoryView = false,
         initialPartialHistoryView = false,
         openHistoryViewButton = false,
+        constantCalculation = false, // TODO constant calc in widget
       ),
     input = "123+456",
     output = "789.012",

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,7 @@ import com.sadellie.unitto.core.common.KRoundingMode
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
-internal sealed class ZonedDateTimeDifference {
-  // TODO long to KBigDecimal
+internal sealed interface ZonedDateTimeDifference {
   data class Default(
     val years: Long,
     val months: Long,
@@ -36,9 +35,9 @@ internal sealed class ZonedDateTimeDifference {
     val sumDays: KBigDecimal,
     val sumHours: KBigDecimal,
     val sumMinutes: KBigDecimal,
-  ) : ZonedDateTimeDifference()
+  ) : ZonedDateTimeDifference
 
-  data object Zero : ZonedDateTimeDifference()
+  data object Zero : ZonedDateTimeDifference
 }
 
 /**

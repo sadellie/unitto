@@ -74,7 +74,7 @@ internal class JavaBigIntegerAdapter(
 
     override fun unaryPlus(): BigInteger = this
 
-    override fun rem(modulus: BigInteger): BigInteger = adapt(modulus) { value.remainder(it) }
+    override fun mod(modulus: BigInteger): BigInteger = adapt(modulus) { value.remainder(it) }
 
     override fun modPow(
         exponent: BigInteger,

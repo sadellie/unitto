@@ -32,6 +32,7 @@ graph LR
     :feature:bodymass["bodymass"]
     :feature:datecalculator["datecalculator"]
     :feature:timezone["timezone"]
+    :feature:programmer["programmer"]
   end
   :feature:settings --> :core:backup
   :feature:settings --> :core:common
@@ -50,6 +51,7 @@ graph LR
   :sharedApp --> :feature:bodymass
   :sharedApp --> :feature:datecalculator
   :sharedApp --> :feature:timezone
+  :sharedApp --> :feature:programmer
   :sharedApp --> :feature:settings
   :feature:bodymass --> :core:common
   :feature:bodymass --> :core:ui
@@ -96,6 +98,12 @@ graph LR
   :feature:glance --> :core:navigation
   :feature:glance --> :core:themmo
   :feature:glance --> :core:ui
+  :feature:programmer --> :core:common
+  :feature:programmer --> :core:ui
+  :feature:programmer --> :core:navigation
+  :feature:programmer --> :core:designsystem
+  :feature:programmer --> :core:datastore
+  :feature:programmer --> :core:evaluatto
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :feature:settings focus
@@ -105,6 +113,7 @@ class :feature:converter focus
 class :feature:bodymass focus
 class :feature:datecalculator focus
 class :feature:timezone focus
+class :feature:programmer focus
 ```
 # Feature modules
 

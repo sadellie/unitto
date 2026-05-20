@@ -136,6 +136,7 @@
     <string name="locale_ru" translatable="false">Русский</string>
     <string name="locale_tr" translatable="false">Türkçe</string>
     <string name="locale_zh_rCN" translatable="false">简体中文</string>
+    <string name="programmer_title">Programmer</string>
     <string name="settings_about_unitto">About Unitto</string>
     <string name="settings_about_unitto_support">Learn about the app</string>
     <string name="settings_ac_button">AC button</string>
@@ -152,6 +153,8 @@
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_color_theme">Color theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
+    <string name="settings_constant_calculation">Constant calculation</string>
+    <string name="settings_constant_calculation_support">Tap equals button again to apply last operation. Only applicable to simple operations.</string>
     <string name="settings_converter_support">Unit groups, sorting, formatting</string>
     <string name="settings_currency_rates_note_text">Currency rates are updated daily. There's no real-time market monitoring in the app</string>
     <string name="settings_currency_rates_note_title">Wrong currency rates?</string>
@@ -197,6 +200,8 @@
     <string name="settings_saved_expressions">Saved expressions</string>
     <string name="settings_selected_color">Selected color</string>
     <string name="settings_selected_style">Selected style</string>
+    <string name="settings_show_unit_group_icons">Unit group icons</string>
+    <string name="settings_show_unit_group_icons_support">Show icons when selecting a unit</string>
     <string name="settings_sort_by_alphabetical">Alphabetical</string>
     <string name="settings_sort_by_scale_asc">Scale (Asc.)</string>
     <string name="settings_sort_by_scale_desc">Scale (Desc.)</string>

@@ -19,7 +19,7 @@
 plugins { id("unitto.multiplatform.library") }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.core.datastore" }
+  android.namespace = "com.sadellie.unitto.core.datastore"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))

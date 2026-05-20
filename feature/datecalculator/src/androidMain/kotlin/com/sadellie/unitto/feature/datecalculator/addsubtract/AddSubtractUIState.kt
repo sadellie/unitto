@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2024 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,18 +22,18 @@ import androidx.compose.foundation.text.input.TextFieldState
 import com.sadellie.unitto.core.common.FormatterSymbols
 import java.time.ZonedDateTime
 
-internal sealed class AddSubtractUIState {
-  data object Loading : AddSubtractUIState()
+internal sealed interface AddSubtractUIState {
+  data object Loading : AddSubtractUIState
 
   data class Ready(
-      val addition: Boolean,
-      val start: ZonedDateTime,
-      val result: ZonedDateTime,
-      val years: TextFieldState,
-      val months: TextFieldState,
-      val days: TextFieldState,
-      val hours: TextFieldState,
-      val minutes: TextFieldState,
-      val formatterSymbols: FormatterSymbols,
-  ) : AddSubtractUIState()
+    val addition: Boolean,
+    val start: ZonedDateTime,
+    val result: ZonedDateTime,
+    val years: TextFieldState,
+    val months: TextFieldState,
+    val days: TextFieldState,
+    val hours: TextFieldState,
+    val minutes: TextFieldState,
+    val formatterSymbols: FormatterSymbols,
+  ) : AddSubtractUIState
 }

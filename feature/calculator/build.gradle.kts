@@ -24,7 +24,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.feature.calculator" }
+  android.namespace = "com.sadellie.unitto.feature.calculator"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))
@@ -45,6 +45,7 @@ kotlin {
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
     implementation(libs.io.insert.koin.koin.compose.viewmodel)
     implementation(libs.io.insert.koin.koin.compose.navigation3)
+    implementation(libs.co.touchlab.kermit)
   }
   sourceSets.androidMain.dependencies {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling)

@@ -89,6 +89,8 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
 import com.sadellie.unitto.core.ui.BackHandler
 import com.sadellie.unitto.core.ui.DrawerButton
@@ -131,6 +133,7 @@ internal fun CalculatorRoute(openDrawer: () -> Unit) {
         onClearHistoryClick = viewModel::clearHistory,
         onDeleteHistoryItemClick = viewModel::deleteHistoryItem,
         updateInitialPartialHistoryView = viewModel::updateInitialPartialHistoryView,
+        onHardwareInput = viewModel::onHardwareInput,
       )
   }
 }
@@ -150,6 +153,7 @@ internal fun Ready(
   onClearHistoryClick: () -> Unit,
   onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
   updateInitialPartialHistoryView: (Boolean) -> Unit,
+  onHardwareInput: () -> Unit,
 ) {
   val windowSizeClass = LocalWindowSize.current
   if (
@@ -168,6 +172,7 @@ internal fun Ready(
       onInverseModeClick = onInverseModeClick,
       onClearHistoryClick = onClearHistoryClick,
       onDeleteHistoryItemClick = onDeleteHistoryItemClick,
+      onHardwareInput = onHardwareInput,
     )
   } else {
     ReadyCompact(
@@ -184,6 +189,7 @@ internal fun Ready(
       onClearHistoryClick = onClearHistoryClick,
       onDeleteHistoryItemClick = onDeleteHistoryItemClick,
       updateInitialPartialHistoryView = updateInitialPartialHistoryView,
+      onHardwareInput = onHardwareInput,
     )
   }
 }
@@ -203,6 +209,7 @@ private fun ReadyCompact(
   onClearHistoryClick: () -> Unit,
   onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
   updateInitialPartialHistoryView: (Boolean) -> Unit,
+  onHardwareInput: () -> Unit,
 ) {
   val focusManager = LocalFocusManager.current
   var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
@@ -288,6 +295,7 @@ private fun ReadyCompact(
           output = uiState.output,
           onEnter = onEqualClick,
           showHandle = true,
+          onHardwareInput = onHardwareInput,
         )
       },
       keyboard = { offset, height ->
@@ -297,7 +305,7 @@ private fun ReadyCompact(
               .offset(offset)
               .height(height)
               .fillMaxWidth()
-              .padding(horizontal = 8.dp, vertical = 4.dp),
+              .padding(horizontal = Sizes.small, vertical = Sizes.extraSmall),
           onAddTokenClick = onAddTokenClick,
           onBracketsClick = onBracketsClick,
           onDeleteClick = onDeleteClick,
@@ -348,6 +356,7 @@ private fun ReadyExpanded(
   onInverseModeClick: (Boolean) -> Unit,
   onClearHistoryClick: () -> Unit,
   onDeleteHistoryItemClick: (CalculatorHistoryItem) -> Unit,
+  onHardwareInput: () -> Unit,
 ) {
   var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
   Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer) { paddingValues ->
@@ -380,6 +389,7 @@ private fun ReadyExpanded(
             output = uiState.output,
             onEnter = onEqualClick,
             showHandle = false,
+            onHardwareInput = onHardwareInput,
           )
           val focusManager = LocalFocusManager.current
           CalculatorKeyboard(
@@ -651,7 +661,10 @@ private fun PreviewCalculatorScreen() {
   BoxWithConstraints(Modifier.fillMaxSize()) {
     val dpSize = DpSize(this.minWidth, this.minHeight)
     val windowSizeClass = WindowSizeClass.calculateFromSize(dpSize)
-    CompositionLocalProvider(LocalWindowSize provides windowSizeClass) {
+    CompositionLocalProvider(
+      LocalWindowSize provides windowSizeClass,
+      LocalNumberTypography provides numberTypographyUnitto(),
+    ) {
       Ready(
         uiState =
           CalculatorUIState.Ready(
@@ -660,7 +673,7 @@ private fun PreviewCalculatorScreen() {
             radianMode = false,
             precision = 3,
             outputFormat = OutputFormat.PLAIN,
-            formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+            formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
             history = calculatorHistoryItems,
             middleZero = false,
             acButton = true,
@@ -683,6 +696,7 @@ private fun PreviewCalculatorScreen() {
         onClearHistoryClick = {},
         onDeleteHistoryItemClick = {},
         updateInitialPartialHistoryView = {},
+        onHardwareInput = {},
       )
     }
   }

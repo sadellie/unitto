@@ -234,7 +234,7 @@ private fun UnitToSelectorPreview() {
         sorting = UnitsListSorting.USAGE,
         scale = 3,
         outputFormat = OutputFormat.PLAIN,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
       ),
     toggleFavoritesOnly = {},
     updateUnitTo = {},

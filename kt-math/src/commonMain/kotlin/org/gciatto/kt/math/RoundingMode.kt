@@ -257,6 +257,6 @@ enum class RoundingMode(@JsName("value") val value: Int) {
      * @return `RoundingMode` corresponding to the given integer.
      * @throws IllegalArgumentException integer is out of range
      */
-    @JvmStatic @JsName("valueOfInt") fun valueOf(rm: Int): RoundingMode = values()[rm]
+    @JvmStatic @JsName("valueOfInt") fun valueOf(rm: Int): RoundingMode = entries[rm]
   }
 }

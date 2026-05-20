@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,68 +18,56 @@
 package com.sadellie.unitto.core.designsystem.icons.iconpack
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathFillType.Companion.NonZero
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap.Companion.Butt
-import androidx.compose.ui.graphics.StrokeJoin.Companion.Miter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.ImageVector.Builder
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-@Suppress("UnusedReceiverParameter")
 val IconPack.Comma: ImageVector
   get() {
-    if (_comma != null) {
-      return _comma!!
+    if (_Comma != null) {
+      return _Comma!!
     }
-    _comma =
-      Builder(
+    _Comma =
+      ImageVector.Builder(
           name = "Comma",
-          defaultWidth = 24.0.dp,
-          defaultHeight = 24.0.dp,
-          viewportWidth = 24.0f,
-          viewportHeight = 24.0f,
+          defaultWidth = 24.dp,
+          defaultHeight = 24.dp,
+          viewportWidth = 24f,
+          viewportHeight = 24f,
         )
         .apply {
-          path(
-            fill = SolidColor(Color(0xFF000000)),
-            stroke = null,
-            strokeLineWidth = 0.0f,
-            strokeLineCap = Butt,
-            strokeLineJoin = Miter,
-            strokeLineMiter = 4.0f,
-            pathFillType = NonZero,
-          ) {
-            moveTo(11.4661f, 13.3917f)
-            curveTo(11.4371f, 13.3663f, 11.4171f, 13.3427f, 11.4062f, 13.3209f)
-            curveTo(11.3953f, 13.2991f, 11.3899f, 13.2719f, 11.3899f, 13.2392f)
-            curveTo(11.3899f, 13.2138f, 11.3971f, 13.1883f, 11.4116f, 13.1629f)
-            curveTo(11.4298f, 13.1375f, 11.4498f, 13.1139f, 11.4716f, 13.0921f)
-            curveTo(11.5079f, 13.0521f, 11.5533f, 12.9995f, 11.6078f, 12.9341f)
-            curveTo(11.6659f, 12.8687f, 11.724f, 12.7906f, 11.7821f, 12.6998f)
-            curveTo(11.8402f, 12.6127f, 11.8929f, 12.5146f, 11.9401f, 12.4056f)
-            curveTo(11.9909f, 12.3003f, 12.0273f, 12.1877f, 12.0491f, 12.0679f)
-            curveTo(12.0382f, 12.0715f, 12.0254f, 12.0733f, 12.0109f, 12.0733f)
-            curveTo(12.0f, 12.0733f, 11.9891f, 12.0733f, 11.9782f, 12.0733f)
-            curveTo(11.7894f, 12.0733f, 11.635f, 12.0116f, 11.5152f, 11.8881f)
-            curveTo(11.3989f, 11.761f, 11.3408f, 11.5993f, 11.3408f, 11.4032f)
-            curveTo(11.3408f, 11.2325f, 11.3989f, 11.0872f, 11.5152f, 10.9674f)
-            curveTo(11.635f, 10.8475f, 11.793f, 10.7876f, 11.9891f, 10.7876f)
-            curveTo(12.0981f, 10.7876f, 12.1943f, 10.8076f, 12.2779f, 10.8475f)
-            curveTo(12.3614f, 10.8875f, 12.4304f, 10.9438f, 12.4849f, 11.0164f)
-            curveTo(12.543f, 11.0854f, 12.5866f, 11.1671f, 12.6156f, 11.2616f)
-            curveTo(12.6447f, 11.3524f, 12.6592f, 11.4523f, 12.6592f, 11.5612f)
-            curveTo(12.6592f, 11.7246f, 12.6356f, 11.8954f, 12.5884f, 12.0733f)
-            curveTo(12.5448f, 12.2477f, 12.4776f, 12.4202f, 12.3868f, 12.5909f)
-            curveTo(12.2997f, 12.7652f, 12.1925f, 12.9341f, 12.0654f, 13.0975f)
-            curveTo(11.9383f, 13.261f, 11.793f, 13.4117f, 11.6296f, 13.5497f)
-            lineTo(11.4661f, 13.3917f)
+          path(fill = SolidColor(Color.White)) {
+            moveTo(11.466f, 13.392f)
+            curveTo(11.437f, 13.366f, 11.417f, 13.343f, 11.406f, 13.321f)
+            curveTo(11.395f, 13.299f, 11.39f, 13.272f, 11.39f, 13.239f)
+            curveTo(11.39f, 13.214f, 11.397f, 13.188f, 11.412f, 13.163f)
+            curveTo(11.43f, 13.137f, 11.45f, 13.114f, 11.472f, 13.092f)
+            curveTo(11.508f, 13.052f, 11.553f, 13f, 11.608f, 12.934f)
+            curveTo(11.666f, 12.869f, 11.724f, 12.791f, 11.782f, 12.7f)
+            curveTo(11.84f, 12.613f, 11.893f, 12.515f, 11.94f, 12.406f)
+            curveTo(11.991f, 12.3f, 12.027f, 12.188f, 12.049f, 12.068f)
+            curveTo(12.038f, 12.071f, 12.025f, 12.073f, 12.011f, 12.073f)
+            curveTo(12f, 12.073f, 11.989f, 12.073f, 11.978f, 12.073f)
+            curveTo(11.789f, 12.073f, 11.635f, 12.012f, 11.515f, 11.888f)
+            curveTo(11.399f, 11.761f, 11.341f, 11.599f, 11.341f, 11.403f)
+            curveTo(11.341f, 11.233f, 11.399f, 11.087f, 11.515f, 10.967f)
+            curveTo(11.635f, 10.847f, 11.793f, 10.788f, 11.989f, 10.788f)
+            curveTo(12.098f, 10.788f, 12.194f, 10.808f, 12.278f, 10.847f)
+            curveTo(12.361f, 10.887f, 12.43f, 10.944f, 12.485f, 11.016f)
+            curveTo(12.543f, 11.085f, 12.587f, 11.167f, 12.616f, 11.262f)
+            curveTo(12.645f, 11.352f, 12.659f, 11.452f, 12.659f, 11.561f)
+            curveTo(12.659f, 11.725f, 12.636f, 11.895f, 12.588f, 12.073f)
+            curveTo(12.545f, 12.248f, 12.478f, 12.42f, 12.387f, 12.591f)
+            curveTo(12.3f, 12.765f, 12.193f, 12.934f, 12.065f, 13.097f)
+            curveTo(11.938f, 13.261f, 11.793f, 13.412f, 11.63f, 13.55f)
+            lineTo(11.466f, 13.392f)
             close()
           }
         }
         .build()
-    return _comma!!
+
+    return _Comma!!
   }
 
-private var _comma: ImageVector? = null
+@Suppress("ObjectPropertyName") private var _Comma: ImageVector? = null

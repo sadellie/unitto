@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +20,17 @@ package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.KBigDecimal
 
-sealed class ConverterResult {
+sealed interface ConverterResult {
 
-  sealed class Error : ConverterResult() {
-    data object CurrencyError : Error()
+  sealed interface Error : ConverterResult {
+    data object CurrencyError : Error
 
-    data object DivideByZeroError : Error()
+    data object DivideByZeroError : Error
   }
 
-  data class Default(val value: KBigDecimal, val calculation: KBigDecimal) : ConverterResult()
+  data class Default(val value: KBigDecimal, val calculation: KBigDecimal) : ConverterResult
 
-  data class NumberBase(val value: String) : ConverterResult()
+  data class NumberBase(val value: String) : ConverterResult
 
   data class Time(
     val negative: Boolean = false,
@@ -42,11 +42,11 @@ sealed class ConverterResult {
     val microsecond: KBigDecimal = KBigDecimal.ZERO,
     val nanosecond: KBigDecimal = KBigDecimal.ZERO,
     val attosecond: KBigDecimal = KBigDecimal.ZERO,
-  ) : ConverterResult()
+  ) : ConverterResult
 
-  data class FootInch(val foot: KBigDecimal, val inch: KBigDecimal) : ConverterResult()
+  data class FootInch(val foot: KBigDecimal, val inch: KBigDecimal) : ConverterResult
 
-  data class PoundOunce(val pound: KBigDecimal, val ounce: KBigDecimal) : ConverterResult()
+  data class PoundOunce(val pound: KBigDecimal, val ounce: KBigDecimal) : ConverterResult
 
-  data object Loading : ConverterResult()
+  data object Loading : ConverterResult
 }

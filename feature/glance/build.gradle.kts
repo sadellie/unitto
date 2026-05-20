@@ -27,7 +27,6 @@ plugins {
 android {
   namespace = "com.sadellie.unitto.feature.glance"
   buildFeatures.compose = true
-  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
 }
 
 dependencies {

@@ -90,8 +90,8 @@ fun PagedIsland(
           .padding(Sizes.large)
     ) {
       Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp, pageIndicatorAlignment),
+        modifier = Modifier.fillMaxWidth().padding(vertical = Sizes.small),
+        horizontalArrangement = Arrangement.spacedBy(Sizes.small, pageIndicatorAlignment),
       ) {
         repeat(pageCount) {
           PageDot(
@@ -115,7 +115,7 @@ private const val MAX_PAGE_COUNT_FACTOR = 1_000
 
 @Composable
 private fun PageDot(color: Color) {
-  Canvas(modifier = Modifier.size(4.dp)) { drawCircle(color) }
+  Canvas(modifier = Modifier.size(Sizes.extraSmall)) { drawCircle(color) }
 }
 
 @Preview

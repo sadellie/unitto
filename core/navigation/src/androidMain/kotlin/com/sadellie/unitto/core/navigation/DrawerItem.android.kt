@@ -44,6 +44,7 @@ actual val mainDrawerItems: List<DrawerItem> by lazy {
     listOf(
       CalculatorDrawerItem,
       ConverterDrawerItem,
+      ProgrammerDrawerItem,
       DateCalculatorDrawerItem,
       TimeZonesDrawerItem,
       BodyMassDrawerItem,
@@ -81,7 +82,7 @@ suspend fun DrawerItem.addShortcut(context: Context) {
       PendingIntent.getBroadcast(context, 0, shortCutIntent, FLAG_IMMUTABLE).intentSender,
     )
   } catch (e: Exception) {
-    Logger.e(TAG, e) { "addShortcut: Failed to pin shortcut" }
+    Logger.e(e, TAG) { "addShortcut: Failed to pin shortcut" }
   }
 }
 
@@ -117,7 +118,9 @@ private fun generateShortcut(drawerItem: DrawerItem): Shortcut? {
         Res.string.time_zone_title,
         R.drawable.ic_shortcut_time_zone,
       )
-    SettingsDrawerItem -> null
+    // TODO programmer shortcut
+    SettingsDrawerItem,
+    ProgrammerDrawerItem -> null
   }
 }
 

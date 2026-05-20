@@ -23,7 +23,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.core.database" }
+  android.namespace = "com.sadellie.unitto.core.database"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))

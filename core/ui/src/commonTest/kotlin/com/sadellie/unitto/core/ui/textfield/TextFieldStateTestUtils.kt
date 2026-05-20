@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,9 +43,9 @@ internal fun textStateInitialText(text: String): String =
   text
     .replace("[", "")
     .replace("]", "")
-    .replace("-", Token.Operator.MINUS)
-    .replace("/", Token.Operator.DIVIDE)
-    .replace("*", Token.Operator.MULTIPLY)
+    .replace("-", Token.Minus.symbol)
+    .replace("/", Token.Divide.symbol)
+    .replace("*", Token.Multiply.symbol)
 
 /** Use [] for selection */
 internal fun textStateInitialSelection(text: String): TextRange {

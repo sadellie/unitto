@@ -33,7 +33,7 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class ExpressionClipboardManagerTest {
   private val context = RuntimeEnvironment.getApplication().applicationContext
-  private val formatterSymbols = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
+  private val formatterSymbols = FormatterSymbols(Token.Period, Token.Comma, false)
   private val systemClipboardManager =
     context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
   private val clipboardManager =

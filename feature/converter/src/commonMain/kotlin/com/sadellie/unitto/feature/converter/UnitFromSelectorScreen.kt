@@ -32,19 +32,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.SearchBar
-import com.sadellie.unitto.feature.converter.components.ChipsRow
 import com.sadellie.unitto.feature.converter.components.FavoritesButton
+import com.sadellie.unitto.feature.converter.components.UnitGroupFilter
 import com.sadellie.unitto.feature.converter.components.UnitsList
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
@@ -117,12 +117,15 @@ private fun UnitFromSelectorScreen(
           scrollBehavior = scrollBehavior,
         )
 
-        ChipsRow(
-          modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp).fillMaxWidth(),
+        UnitGroupFilter(
+          modifier =
+            Modifier.padding(start = Sizes.small, end = Sizes.small, bottom = Sizes.extraSmall)
+              .fillMaxWidth(),
           chosenUnitGroup = uiState.selectedUnitGroup,
           items = uiState.shownUnitGroups,
           selectAction = updateUnitGroup,
           navigateToSettingsAction = navigateToUnitGroups,
+          showIcons = uiState.showIcons,
         )
       }
     },
@@ -216,6 +219,7 @@ private fun UnitFromSelectorScreenPreview() {
         shownUnitGroups = UnitGroup.entries,
         showFavoritesOnly = false,
         sorting = UnitsListSorting.USAGE,
+        showIcons = true,
       ),
     toggleFavoritesOnly = {},
     updateUnitFrom = {},

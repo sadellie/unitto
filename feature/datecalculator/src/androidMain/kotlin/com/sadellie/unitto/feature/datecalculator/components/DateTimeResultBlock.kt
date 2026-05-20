@@ -232,6 +232,6 @@ private fun DateTimeResultBlockPreview() {
       ),
     precision = 3,
     outputFormat = OutputFormat.PLAIN,
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
   )
 }

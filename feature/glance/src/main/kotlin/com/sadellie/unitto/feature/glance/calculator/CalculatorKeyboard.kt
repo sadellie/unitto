@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,13 +92,13 @@ private fun KeyboardRow1(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.percent,
-      onClick = addTokenAction(Token.Operator.PERCENT),
+      onClick = addTokenAction(Token.Percent.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.divide,
-      onClick = addTokenAction(Token.Operator.DIVIDE),
+      onClick = addTokenAction(Token.Divide.symbol),
     )
   }
 }
@@ -112,25 +112,25 @@ private fun KeyboardRow2(rowModifier: GlanceModifier, addTokenAction: (String) -
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key7,
-      onClick = addTokenAction(Token.Digit.DIGIT_7),
+      onClick = addTokenAction(Token.Digit7.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key8,
-      onClick = addTokenAction(Token.Digit.DIGIT_8),
+      onClick = addTokenAction(Token.Digit8.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key9,
-      onClick = addTokenAction(Token.Digit.DIGIT_9),
+      onClick = addTokenAction(Token.Digit9.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.multiply,
-      onClick = addTokenAction(Token.Operator.MULTIPLY),
+      onClick = addTokenAction(Token.Multiply.symbol),
     )
   }
 }
@@ -144,25 +144,25 @@ private fun KeyboardRow3(rowModifier: GlanceModifier, addTokenAction: (String) -
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key4,
-      onClick = addTokenAction(Token.Digit.DIGIT_4),
+      onClick = addTokenAction(Token.Digit4.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key5,
-      onClick = addTokenAction(Token.Digit.DIGIT_5),
+      onClick = addTokenAction(Token.Digit5.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key6,
-      onClick = addTokenAction(Token.Digit.DIGIT_6),
+      onClick = addTokenAction(Token.Digit6.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.minus,
-      onClick = addTokenAction(Token.Operator.MINUS),
+      onClick = addTokenAction(Token.Minus.symbol),
     )
   }
 }
@@ -176,25 +176,25 @@ private fun KeyboardRow4(rowModifier: GlanceModifier, addTokenAction: (String) -
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key1,
-      onClick = addTokenAction(Token.Digit.DIGIT_1),
+      onClick = addTokenAction(Token.Digit1.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key2,
-      onClick = addTokenAction(Token.Digit.DIGIT_2),
+      onClick = addTokenAction(Token.Digit2.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
       iconRes = R.drawable.key3,
-      onClick = addTokenAction(Token.Digit.DIGIT_3),
+      onClick = addTokenAction(Token.Digit3.symbol),
     )
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
       iconRes = R.drawable.plus,
-      onClick = addTokenAction(Token.Operator.PLUS),
+      onClick = addTokenAction(Token.Plus.symbol),
     )
   }
 }
@@ -216,26 +216,26 @@ private fun KeyboardRow5(
         glanceModifier = buttonModifier,
         containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = if (useDot) R.drawable.dot else R.drawable.comma,
-        onClick = addTokenAction(Token.Digit.DOT),
+        onClick = addTokenAction(Token.Dot.symbol),
       )
       IconButton(
         glanceModifier = buttonModifier,
         containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = R.drawable.key0,
-        onClick = addTokenAction(Token.Digit.DIGIT_0),
+        onClick = addTokenAction(Token.Digit0.symbol),
       )
     } else {
       IconButton(
         glanceModifier = buttonModifier,
         containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = R.drawable.key0,
-        onClick = addTokenAction(Token.Digit.DIGIT_0),
+        onClick = addTokenAction(Token.Digit0.symbol),
       )
       IconButton(
         glanceModifier = buttonModifier,
         containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
         iconRes = if (useDot) R.drawable.dot else R.drawable.comma,
-        onClick = addTokenAction(Token.Digit.DOT),
+        onClick = addTokenAction(Token.Dot.symbol),
       )
     }
     IconButton(

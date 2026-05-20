@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,12 @@
 
 package com.sadellie.unitto.core.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.designsystem.icons.iconpack.AcTan
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ArCos
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ArSin
+import com.sadellie.unitto.core.designsystem.icons.iconpack.ArTan
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Backspace
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Brackets
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Clear
@@ -72,7 +71,6 @@ import com.sadellie.unitto.core.designsystem.icons.iconpack.Root
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Sin
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Tan
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_clear
 import unitto.core.common.generated.resources.common_comma
@@ -111,35 +109,37 @@ sealed interface KeypadButton {
   val icon: ImageVector
   val description: StringResource?
 
+  @Immutable
   data class KeypadButtonAdd(
     override val icon: ImageVector,
     override val description: StringResource?,
     val token: String,
   ) : KeypadButton
 
+  @Immutable
   data class KeypadButtonSimple(
     override val icon: ImageVector,
     override val description: StringResource?,
   ) : KeypadButton
 
   companion object {
-    val Key0 = KeypadButtonAdd(IconPack.Key0, null, Token.Digit.DIGIT_0)
-    val Key1 = KeypadButtonAdd(IconPack.Key1, null, Token.Digit.DIGIT_1)
-    val Key2 = KeypadButtonAdd(IconPack.Key2, null, Token.Digit.DIGIT_2)
-    val Key3 = KeypadButtonAdd(IconPack.Key3, null, Token.Digit.DIGIT_3)
-    val Key4 = KeypadButtonAdd(IconPack.Key4, null, Token.Digit.DIGIT_4)
-    val Key5 = KeypadButtonAdd(IconPack.Key5, null, Token.Digit.DIGIT_5)
-    val Key6 = KeypadButtonAdd(IconPack.Key6, null, Token.Digit.DIGIT_6)
-    val Key7 = KeypadButtonAdd(IconPack.Key7, null, Token.Digit.DIGIT_7)
-    val Key8 = KeypadButtonAdd(IconPack.Key8, null, Token.Digit.DIGIT_8)
-    val Key9 = KeypadButtonAdd(IconPack.Key9, null, Token.Digit.DIGIT_9)
+    val Key0 = KeypadButtonAdd(IconPack.Key0, null, Token.Digit0.symbol)
+    val Key1 = KeypadButtonAdd(IconPack.Key1, null, Token.Digit1.symbol)
+    val Key2 = KeypadButtonAdd(IconPack.Key2, null, Token.Digit2.symbol)
+    val Key3 = KeypadButtonAdd(IconPack.Key3, null, Token.Digit3.symbol)
+    val Key4 = KeypadButtonAdd(IconPack.Key4, null, Token.Digit4.symbol)
+    val Key5 = KeypadButtonAdd(IconPack.Key5, null, Token.Digit5.symbol)
+    val Key6 = KeypadButtonAdd(IconPack.Key6, null, Token.Digit6.symbol)
+    val Key7 = KeypadButtonAdd(IconPack.Key7, null, Token.Digit7.symbol)
+    val Key8 = KeypadButtonAdd(IconPack.Key8, null, Token.Digit8.symbol)
+    val Key9 = KeypadButtonAdd(IconPack.Key9, null, Token.Digit9.symbol)
 
-    val KeyA = KeypadButtonAdd(IconPack.KeyA, null, Token.Letter.LETTER_A)
-    val KeyB = KeypadButtonAdd(IconPack.KeyB, null, Token.Letter.LETTER_B)
-    val KeyC = KeypadButtonAdd(IconPack.KeyC, null, Token.Letter.LETTER_C)
-    val KeyD = KeypadButtonAdd(IconPack.KeyD, null, Token.Letter.LETTER_D)
-    val KeyE = KeypadButtonAdd(IconPack.KeyE, null, Token.Letter.LETTER_E)
-    val KeyF = KeypadButtonAdd(IconPack.KeyF, null, Token.Letter.LETTER_F)
+    val KeyA = KeypadButtonAdd(IconPack.KeyA, null, Token.LetterA.symbol)
+    val KeyB = KeypadButtonAdd(IconPack.KeyB, null, Token.LetterB.symbol)
+    val KeyC = KeypadButtonAdd(IconPack.KeyC, null, Token.LetterC.symbol)
+    val KeyD = KeypadButtonAdd(IconPack.KeyD, null, Token.LetterD.symbol)
+    val KeyE = KeypadButtonAdd(IconPack.KeyE, null, Token.LetterE.symbol)
+    val KeyF = KeypadButtonAdd(IconPack.KeyF, null, Token.LetterF.symbol)
 
     val AngleRadKey = KeypadButtonSimple(IconPack.Rad, Res.string.keyboard_radian)
     val AngleDegKey = KeypadButtonSimple(IconPack.Deg, Res.string.keyboard_degree)
@@ -150,210 +150,56 @@ sealed interface KeypadButton {
     val InvKey = KeypadButtonSimple(IconPack.Inv, Res.string.keyboard_inverse)
 
     val AcTanKey =
-      KeypadButtonAdd(IconPack.AcTan, Res.string.keyboard_actan, Token.Func.ACTAN_BRACKET)
+      KeypadButtonAdd(IconPack.ArTan, Res.string.keyboard_actan, Token.ArTan.WithBracket.symbol)
     val ArCosKey =
-      KeypadButtonAdd(IconPack.ArCos, Res.string.keyboard_arcos, Token.Func.ARCOS_BRACKET)
+      KeypadButtonAdd(IconPack.ArCos, Res.string.keyboard_arcos, Token.ArCos.WithBracket.symbol)
     val ArSinKey =
-      KeypadButtonAdd(IconPack.ArSin, Res.string.keyboard_arsin, Token.Func.ARSIN_BRACKET)
-    val CommaKey = KeypadButtonAdd(IconPack.Comma, Res.string.common_comma, Token.Digit.DOT)
-    val CosKey = KeypadButtonAdd(IconPack.Cos, Res.string.keyboard_cos, Token.Func.COS_BRACKET)
-    val DotKey = KeypadButtonAdd(IconPack.Dot, Res.string.keyboard_dot, Token.Digit.DOT)
+      KeypadButtonAdd(IconPack.ArSin, Res.string.keyboard_arsin, Token.ArSin.WithBracket.symbol)
+    val CommaKey = KeypadButtonAdd(IconPack.Comma, Res.string.common_comma, Token.Dot.symbol)
+    val CosKey =
+      KeypadButtonAdd(IconPack.Cos, Res.string.keyboard_cos, Token.Cos.WithBracket.symbol)
+    val DotKey = KeypadButtonAdd(IconPack.Dot, Res.string.keyboard_dot, Token.Dot.symbol)
     val DivideKey =
-      KeypadButtonAdd(IconPack.Divide, Res.string.keyboard_divide, Token.Operator.DIVIDE)
-    val EulerKey = KeypadButtonAdd(IconPack.Euler, Res.string.keyboard_euler, Token.Const.E)
-    val ExKey = KeypadButtonAdd(IconPack.Ex, Res.string.keyboard_exp, Token.Func.EXP_BRACKET)
+      KeypadButtonAdd(IconPack.Divide, Res.string.keyboard_divide, Token.Divide.symbol)
+    val EulerKey = KeypadButtonAdd(IconPack.Euler, Res.string.keyboard_euler, Token.E.symbol)
+    val ExKey = KeypadButtonAdd(IconPack.Ex, Res.string.keyboard_exp, Token.Exp.WithBracket.symbol)
     val FactorialKey =
-      KeypadButtonAdd(IconPack.Factorial, Res.string.keyboard_factorial, Token.Operator.FACTORIAL)
-    val MinusKey = KeypadButtonAdd(IconPack.Minus, Res.string.keyboard_minus, Token.Operator.MINUS)
+      KeypadButtonAdd(IconPack.Factorial, Res.string.keyboard_factorial, Token.Factorial.symbol)
+    val MinusKey = KeypadButtonAdd(IconPack.Minus, Res.string.keyboard_minus, Token.Minus.symbol)
     val ModuloKey =
-      KeypadButtonAdd(IconPack.Modulo, Res.string.keyboard_modulo, Token.Operator.MODULO)
+      KeypadButtonAdd(IconPack.Modulo, Res.string.keyboard_modulo, Token.Modulo.symbol)
     val MultiplyKey =
-      KeypadButtonAdd(IconPack.Multiply, Res.string.keyboard_multiply, Token.Operator.MULTIPLY)
+      KeypadButtonAdd(IconPack.Multiply, Res.string.keyboard_multiply, Token.Multiply.symbol)
     val LeftBracketKey =
       KeypadButtonAdd(
         IconPack.LeftBracket,
         Res.string.keyboard_left_bracket,
-        Token.Operator.LEFT_BRACKET,
+        Token.LeftBracket.symbol,
       )
-    val LnKey = KeypadButtonAdd(IconPack.Ln, Res.string.keyboard_ln, Token.Func.LN_BRACKET)
-    val LogKey = KeypadButtonAdd(IconPack.Log, Res.string.keyboard_log, Token.Func.LOG_BRACKET)
+    val LnKey = KeypadButtonAdd(IconPack.Ln, Res.string.keyboard_ln, Token.Ln.WithBracket.symbol)
+    val LogKey =
+      KeypadButtonAdd(IconPack.Log, Res.string.keyboard_log, Token.Log.WithBracket.symbol)
     val PercentKey =
-      KeypadButtonAdd(IconPack.Percent, Res.string.keyboard_percent, Token.Operator.PERCENT)
-    val PlusKey = KeypadButtonAdd(IconPack.Plus, Res.string.keyboard_plus, Token.Operator.PLUS)
-    val PiKey = KeypadButtonAdd(IconPack.Pi, Res.string.keyboard_pi, Token.Const.PI)
-    val PowerKey = KeypadButtonAdd(IconPack.Power, Res.string.keyboard_power, Token.Operator.POWER)
+      KeypadButtonAdd(IconPack.Percent, Res.string.keyboard_percent, Token.Percent.symbol)
+    val PlusKey = KeypadButtonAdd(IconPack.Plus, Res.string.keyboard_plus, Token.Plus.symbol)
+    val PiKey = KeypadButtonAdd(IconPack.Pi, Res.string.keyboard_pi, Token.Pi.symbol)
+    val PowerKey = KeypadButtonAdd(IconPack.Power, Res.string.keyboard_power, Token.Power.symbol)
     val Power10Key =
       KeypadButtonAdd(
         IconPack.Power10,
         Res.string.keyboard_power_10,
-        Token.Digit.DIGIT_1 + Token.Digit.DIGIT_0 + Token.Operator.POWER,
+        Token.Digit1.symbol + Token.Digit0.symbol + Token.Power.symbol,
       )
-    val RootKey = KeypadButtonAdd(IconPack.Root, Res.string.keyboard_root, Token.Operator.SQRT)
+    val RootKey = KeypadButtonAdd(IconPack.Root, Res.string.keyboard_root, Token.Sqrt.symbol)
     val RightBracketKey =
       KeypadButtonAdd(
         IconPack.RightBracket,
         Res.string.keyboard_right_bracket,
-        Token.Operator.RIGHT_BRACKET,
+        Token.RightBracket.symbol,
       )
-    val SinKey = KeypadButtonAdd(IconPack.Sin, Res.string.keyboard_sin, Token.Func.SIN_BRACKET)
-    val TanKey = KeypadButtonAdd(IconPack.Tan, Res.string.keyboard_tan, Token.Func.TAN_BRACKET)
+    val SinKey =
+      KeypadButtonAdd(IconPack.Sin, Res.string.keyboard_sin, Token.Sin.WithBracket.symbol)
+    val TanKey =
+      KeypadButtonAdd(IconPack.Tan, Res.string.keyboard_tan, Token.Tan.WithBracket.symbol)
   }
 }
-
-@Composable
-fun KeypadButtonTransparent(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonAdd,
-  height: Float,
-  onClick: (String) -> Unit,
-) =
-  KeyboardButtonTransparent(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-  ) {
-    onClick(button.token)
-  }
-
-@Composable
-fun KeypadButtonTransparent(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonSimple,
-  height: Float,
-  onClick: () -> Unit,
-) =
-  KeyboardButtonTransparent(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-    onClick = onClick,
-  )
-
-@Composable
-fun KeypadButtonTransparent(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonSimple,
-  height: Float,
-  onLongClick: () -> Unit,
-  onClick: () -> Unit,
-) =
-  KeyboardButtonTransparent(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-    onLongClick = onLongClick,
-    onClick = onClick,
-  )
-
-@Composable
-fun KeypadButtonTertiary(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonSimple,
-  height: Float,
-  onClick: () -> Unit,
-) =
-  KeyboardButtonTertiary(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-    onClick = onClick,
-  )
-
-@Composable
-fun KeypadButtonFilled(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonSimple,
-  height: Float,
-  onClick: () -> Unit,
-) =
-  KeyboardButtonFilled(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-    onClick = onClick,
-  )
-
-@Composable
-fun KeypadButtonFilled(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonAdd,
-  height: Float,
-  onClick: (String) -> Unit,
-) =
-  KeyboardButtonFilled(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-  ) {
-    onClick(button.token)
-  }
-
-@Composable
-fun KeypadButtonFilledPrimary(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonSimple,
-  height: Float,
-  onClick: () -> Unit,
-) =
-  KeyboardButtonFilledPrimary(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-    onClick = onClick,
-  )
-
-@Composable
-fun KeypadButtonFilledPrimary(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonAdd,
-  height: Float,
-  onClick: (String) -> Unit,
-) =
-  KeyboardButtonFilledPrimary(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-  ) {
-    onClick(button.token)
-  }
-
-@Composable
-fun KeypadButtonLight(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonAdd,
-  height: Float,
-  onClick: (String) -> Unit,
-) =
-  KeyboardButtonLight(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-  ) {
-    onClick(button.token)
-  }
-
-@Composable
-fun KeypadButtonLight(
-  modifier: Modifier,
-  button: KeypadButton.KeypadButtonSimple,
-  height: Float,
-  onLongClick: () -> Unit,
-  onClick: () -> Unit,
-) =
-  KeyboardButtonLight(
-    modifier = modifier,
-    icon = button.icon,
-    contentDescription = button.description?.let { stringResource(it) },
-    contentHeight = height,
-    onLongClick = onLongClick,
-    onClick = onClick,
-  )

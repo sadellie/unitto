@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ actual constructor(private val formatterSymbols: FormatterSymbols, clipboard: Na
     // Always only 1 item
     val firstClipDataItem = clipEntry.clipData.getItemAt(0)
     val firstClipDataItemText = firstClipDataItem.text.toString()
-    val clearedClipDataItem = firstClipDataItemText.replace(formatterSymbols.grouping, "")
+    val clearedClipDataItem = firstClipDataItemText.replace(formatterSymbols.grouping.symbol, "")
 
     nativeClipboard.setPrimaryClip(ClipData.newPlainText(PLAIN_TEXT_LABEL, clearedClipDataItem))
   }

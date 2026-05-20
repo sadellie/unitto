@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,11 +95,6 @@ import com.sadellie.unitto.core.ui.KeypadButton.Companion.RightBracketKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RootKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.SinKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.TanKey
-import com.sadellie.unitto.core.ui.KeypadButtonFilled
-import com.sadellie.unitto.core.ui.KeypadButtonFilledPrimary
-import com.sadellie.unitto.core.ui.KeypadButtonLight
-import com.sadellie.unitto.core.ui.KeypadButtonTertiary
-import com.sadellie.unitto.core.ui.KeypadButtonTransparent
 import com.sadellie.unitto.core.ui.KeypadFlow
 
 @Composable
@@ -118,7 +113,7 @@ internal fun CalculatorKeyboard(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: String,
+  fractional: Token.Formatter,
 ) {
   if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
     CompactKeyboard(
@@ -173,7 +168,7 @@ private fun ExpandedKeyboard(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: String,
+  fractional: Token.Formatter,
 ) {
   ColumnWithConstraints(modifier = modifier) { constraints ->
     val spacerHeight = constraints.maxHeight * SPACER_HEIGHT_FACTOR
@@ -194,48 +189,56 @@ private fun ExpandedKeyboard(
 
     Spacer(modifier = Modifier.height(spacerHeight))
 
-    KeypadFlow(modifier = Modifier.weight(1f).fillMaxSize(), rows = 5, columns = 4) { width, height
-      ->
-      val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
-      val iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL
-
-      if (showAcButton) {
-        KeypadButtonTertiary(buttonModifier, ClearKey, iconHeight, onClearClick)
-        KeypadButtonFilled(buttonModifier, BracketsKey, iconHeight, onBracketsClick)
-      } else {
-        KeypadButtonFilled(buttonModifier, LeftBracketKey, iconHeight, onAddTokenClick)
-        KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
-      }
-      KeypadButtonFilled(buttonModifier, PercentKey, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, DivideKey, iconHeight, onAddTokenClick)
-
-      KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key8, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key9, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, MultiplyKey, iconHeight, onAddTokenClick)
-
-      KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key5, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key6, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, MinusKey, iconHeight, onAddTokenClick)
-
-      KeypadButtonLight(buttonModifier, Key1, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key2, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key3, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, PlusKey, iconHeight, onAddTokenClick)
-
-      val fractionalKey =
-        remember(fractional) { if (fractional == Token.PERIOD) DotKey else CommaKey }
-      if (middleZero) {
-        KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
-        KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-      } else {
-        KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-        KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
+    KeypadFlow(
+      modifier = Modifier.weight(1f).fillMaxSize(),
+      iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL,
+    ) {
+      KeypadRow {
+        if (showAcButton) {
+          ButtonTertiary(ClearKey, onClearClick)
+          ButtonFilled(BracketsKey, onBracketsClick)
+        } else {
+          ButtonFilled(LeftBracketKey, onAddTokenClick)
+          ButtonFilled(RightBracketKey, onAddTokenClick)
+        }
+        ButtonFilled(PercentKey, onAddTokenClick)
+        ButtonFilled(DivideKey, onAddTokenClick)
       }
 
-      KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
-      KeypadButtonFilledPrimary(buttonModifier, EqualKey, iconHeight, onEqualClick)
+      KeypadRow {
+        ButtonLight(Key7, onAddTokenClick)
+        ButtonLight(Key8, onAddTokenClick)
+        ButtonLight(Key9, onAddTokenClick)
+        ButtonFilled(MultiplyKey, onAddTokenClick)
+      }
+
+      KeypadRow {
+        ButtonLight(Key4, onAddTokenClick)
+        ButtonLight(Key5, onAddTokenClick)
+        ButtonLight(Key6, onAddTokenClick)
+        ButtonFilled(MinusKey, onAddTokenClick)
+      }
+
+      KeypadRow {
+        ButtonLight(Key1, onAddTokenClick)
+        ButtonLight(Key2, onAddTokenClick)
+        ButtonLight(Key3, onAddTokenClick)
+        ButtonFilled(PlusKey, onAddTokenClick)
+      }
+
+      KeypadRow {
+        val fractionalKey =
+          remember(fractional) { if (fractional == Token.Period) DotKey else CommaKey }
+        if (middleZero) {
+          ButtonLight(fractionalKey, onAddTokenClick)
+          ButtonLight(Key0, onAddTokenClick)
+        } else {
+          ButtonLight(Key0, onAddTokenClick)
+          ButtonLight(fractionalKey, onAddTokenClick)
+        }
+        ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
+        ButtonFilledPrimary(EqualKey, onEqualClick)
+      }
     }
 
     Spacer(modifier = Modifier.height(spacerHeight))
@@ -266,30 +269,29 @@ private fun ExpandedAdditionalKeyboard(
       Row {
         KeypadFlow(
           modifier = Modifier.height(additionalButtonHeight * rows).fillMaxWidth().weight(1f),
-          rows = rows,
-          columns = 4,
-        ) { width, height ->
-          val bModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
-
-          KeypadButtonTransparent(bModifier, ModuloKey, iconHeight, onAddTokenClick)
-          KeypadButtonTransparent(bModifier, PiKey, iconHeight, onAddTokenClick)
-          KeypadButtonTransparent(bModifier, PowerKey, iconHeight, onAddTokenClick)
-          KeypadButtonTransparent(bModifier, FactorialKey, iconHeight, onAddTokenClick)
+          iconHeight = iconHeight,
+        ) {
+          KeypadRow {
+            ButtonTransparent(ModuloKey, onAddTokenClick)
+            ButtonTransparent(PiKey, onAddTokenClick)
+            ButtonTransparent(PowerKey, onAddTokenClick)
+            ButtonTransparent(FactorialKey, onAddTokenClick)
+          }
 
           if (expanded) {
-            KeypadButtonTransparent(bModifier, angleKey, iconHeight) {
-              onRadianModeClick(!radianMode)
+            KeypadRow {
+              ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) })
+              ButtonTransparent(ArSinKey, onAddTokenClick)
+              ButtonTransparent(ArCosKey, onAddTokenClick)
+              ButtonTransparent(AcTanKey, onAddTokenClick)
             }
-            KeypadButtonTransparent(bModifier, ArSinKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, ArCosKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, AcTanKey, iconHeight, onAddTokenClick)
 
-            KeypadButtonTransparent(bModifier, InvKey, iconHeight) {
-              onInverseModeClick(!inverseMode)
+            KeypadRow {
+              ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) })
+              ButtonTransparent(EulerKey, onAddTokenClick)
+              ButtonTransparent(ExKey, onAddTokenClick)
+              ButtonTransparent(Power10Key, onAddTokenClick)
             }
-            KeypadButtonTransparent(bModifier, EulerKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, ExKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, Power10Key, iconHeight, onAddTokenClick)
           }
         }
 
@@ -303,30 +305,29 @@ private fun ExpandedAdditionalKeyboard(
       Row {
         KeypadFlow(
           modifier = Modifier.height(additionalButtonHeight * rows).fillMaxWidth().weight(1f),
-          rows = rows,
-          columns = 4,
-        ) { width, height ->
-          val bModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
-
-          KeypadButtonTransparent(bModifier, RootKey, iconHeight, onAddTokenClick)
-          KeypadButtonTransparent(bModifier, PiKey, iconHeight, onAddTokenClick)
-          KeypadButtonTransparent(bModifier, PowerKey, iconHeight, onAddTokenClick)
-          KeypadButtonTransparent(bModifier, FactorialKey, iconHeight, onAddTokenClick)
+          iconHeight = iconHeight,
+        ) {
+          KeypadRow {
+            ButtonTransparent(RootKey, onAddTokenClick)
+            ButtonTransparent(PiKey, onAddTokenClick)
+            ButtonTransparent(PowerKey, onAddTokenClick)
+            ButtonTransparent(FactorialKey, onAddTokenClick)
+          }
 
           if (expanded) {
-            KeypadButtonTransparent(bModifier, angleKey, iconHeight) {
-              onRadianModeClick(!radianMode)
+            KeypadRow {
+              ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) })
+              ButtonTransparent(SinKey, onAddTokenClick)
+              ButtonTransparent(CosKey, onAddTokenClick)
+              ButtonTransparent(TanKey, onAddTokenClick)
             }
-            KeypadButtonTransparent(bModifier, SinKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, CosKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, TanKey, iconHeight, onAddTokenClick)
 
-            KeypadButtonTransparent(bModifier, InvKey, iconHeight) {
-              onInverseModeClick(!inverseMode)
+            KeypadRow {
+              ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) })
+              ButtonTransparent(EulerKey, onAddTokenClick)
+              ButtonTransparent(LnKey, onAddTokenClick)
+              ButtonTransparent(LogKey, onAddTokenClick)
             }
-            KeypadButtonTransparent(bModifier, EulerKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, LnKey, iconHeight, onAddTokenClick)
-            KeypadButtonTransparent(bModifier, LogKey, iconHeight, onAddTokenClick)
           }
         }
 
@@ -390,7 +391,7 @@ private fun CompactKeyboard(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: String,
+  fractional: Token.Formatter,
 ) {
   Crossfade(targetState = inverseMode, label = "Inverse switch", modifier = modifier) { inverse ->
     val angleKey = if (radianMode) AngleRadKey else AngleDegKey
@@ -446,64 +447,66 @@ private fun CompactKeyboardInverse(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: String,
+  fractional: Token.Formatter,
   angleKey: KeypadButton.KeypadButtonSimple,
 ) {
-  KeypadFlow(modifier = modifier, rows = 4, columns = 8) { width, height ->
-    val iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT
+  KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT) {
     val iconHeightSecondary = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
-    val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
 
-    KeypadButtonTransparent(buttonModifier, angleKey, iconHeightSecondary) {
-      onRadianModeClick(!radianMode)
-    }
-    KeypadButtonTransparent(buttonModifier, ModuloKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, PiKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key8, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key9, iconHeight, onAddTokenClick)
-    if (showAcButton) {
-      KeypadButtonTertiary(buttonModifier, ClearKey, iconHeight, onClearClick)
-      KeypadButtonFilled(buttonModifier, BracketsKey, iconHeight, onBracketsClick)
-    } else {
-      KeypadButtonFilled(buttonModifier, LeftBracketKey, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconHeightSecondary)
+      ButtonTransparent(ModuloKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(PiKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonLight(Key7, onAddTokenClick)
+      ButtonLight(Key8, onAddTokenClick)
+      ButtonLight(Key9, onAddTokenClick)
+      if (showAcButton) {
+        ButtonTertiary(ClearKey, onClearClick)
+        ButtonFilled(BracketsKey, onBracketsClick)
+      } else {
+        ButtonFilled(LeftBracketKey, onAddTokenClick)
+        ButtonFilled(RightBracketKey, onAddTokenClick)
+      }
     }
 
-    KeypadButtonTransparent(buttonModifier, InvKey, iconHeightSecondary) {
-      onInverseModeClick(!inverseMode)
+    KeypadRow {
+      ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconHeightSecondary)
+      ButtonTransparent(PowerKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(FactorialKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonLight(Key4, onAddTokenClick)
+      ButtonLight(Key5, onAddTokenClick)
+      ButtonLight(Key6, onAddTokenClick)
+      ButtonFilled(MultiplyKey, onAddTokenClick)
+      ButtonFilled(DivideKey, onAddTokenClick)
     }
-    KeypadButtonTransparent(buttonModifier, PowerKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, FactorialKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key5, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key6, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, MultiplyKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, DivideKey, iconHeight, onAddTokenClick)
 
-    KeypadButtonTransparent(buttonModifier, ArSinKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, ArCosKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, AcTanKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key1, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key2, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key3, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, MinusKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, PercentKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonTransparent(buttonModifier, EulerKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, ExKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, Power10Key, iconHeightSecondary, onAddTokenClick)
-    val fractionalKey = if (fractional == Token.PERIOD) DotKey else CommaKey
-    if (middleZero) {
-      KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-    } else {
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonTransparent(ArSinKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(ArCosKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(AcTanKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonLight(Key1, onAddTokenClick)
+      ButtonLight(Key2, onAddTokenClick)
+      ButtonLight(Key3, onAddTokenClick)
+      ButtonFilled(MinusKey, onAddTokenClick)
+      ButtonFilled(PercentKey, onAddTokenClick)
     }
-    KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
-    KeypadButtonFilled(buttonModifier, PlusKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilledPrimary(buttonModifier, EqualKey, iconHeight, onEqualClick)
+
+    KeypadRow {
+      ButtonTransparent(EulerKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(ExKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(Power10Key, onAddTokenClick, height = iconHeightSecondary)
+      val fractionalKey = if (fractional == Token.Period) DotKey else CommaKey
+      if (middleZero) {
+        ButtonLight(fractionalKey, onAddTokenClick)
+        ButtonLight(Key0, onAddTokenClick)
+      } else {
+        ButtonLight(Key0, onAddTokenClick)
+        ButtonLight(fractionalKey, onAddTokenClick)
+      }
+      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
+      ButtonFilled(PlusKey, onAddTokenClick)
+      ButtonFilledPrimary(EqualKey, onEqualClick)
+    }
   }
 }
 
@@ -521,64 +524,66 @@ private fun CompactKeyboardDefault(
   onInverseModeClick: (Boolean) -> Unit,
   showAcButton: Boolean,
   middleZero: Boolean,
-  fractional: String,
+  fractional: Token.Formatter,
   angleKey: KeypadButton.KeypadButtonSimple,
 ) {
-  KeypadFlow(modifier = modifier, rows = 4, columns = 8) { width, height ->
-    val iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT
+  KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT) {
     val iconHeightSecondary = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
-    val buttonModifier = Modifier.fillMaxWidth(width).fillMaxHeight(height)
 
-    KeypadButtonTransparent(buttonModifier, angleKey, iconHeightSecondary) {
-      onRadianModeClick(!radianMode)
-    }
-    KeypadButtonTransparent(buttonModifier, RootKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, PiKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key8, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key9, iconHeight, onAddTokenClick)
-    if (showAcButton) {
-      KeypadButtonTertiary(buttonModifier, ClearKey, iconHeight, onClearClick)
-      KeypadButtonFilled(buttonModifier, BracketsKey, iconHeight, onBracketsClick)
-    } else {
-      KeypadButtonFilled(buttonModifier, LeftBracketKey, iconHeight, onAddTokenClick)
-      KeypadButtonFilled(buttonModifier, RightBracketKey, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconHeightSecondary)
+      ButtonTransparent(RootKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(PiKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonLight(Key7, onAddTokenClick)
+      ButtonLight(Key8, onAddTokenClick)
+      ButtonLight(Key9, onAddTokenClick)
+      if (showAcButton) {
+        ButtonTertiary(ClearKey, onClearClick)
+        ButtonFilled(BracketsKey, onBracketsClick)
+      } else {
+        ButtonFilled(LeftBracketKey, onAddTokenClick)
+        ButtonFilled(RightBracketKey, onAddTokenClick)
+      }
     }
 
-    KeypadButtonTransparent(buttonModifier, InvKey, iconHeightSecondary) {
-      onInverseModeClick(!inverseMode)
+    KeypadRow {
+      ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconHeightSecondary)
+      ButtonTransparent(PowerKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(FactorialKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonLight(Key4, onAddTokenClick)
+      ButtonLight(Key5, onAddTokenClick)
+      ButtonLight(Key6, onAddTokenClick)
+      ButtonFilled(MultiplyKey, onAddTokenClick)
+      ButtonFilled(DivideKey, onAddTokenClick)
     }
-    KeypadButtonTransparent(buttonModifier, PowerKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, FactorialKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key4, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key5, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key6, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, MultiplyKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, DivideKey, iconHeight, onAddTokenClick)
 
-    KeypadButtonTransparent(buttonModifier, SinKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, CosKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, TanKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key1, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key2, iconHeight, onAddTokenClick)
-    KeypadButtonLight(buttonModifier, Key3, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, MinusKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilled(buttonModifier, PercentKey, iconHeight, onAddTokenClick)
-
-    KeypadButtonTransparent(buttonModifier, EulerKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, LnKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, LogKey, iconHeightSecondary, onAddTokenClick)
-    val fractionalKey = if (fractional == Token.PERIOD) DotKey else CommaKey
-    if (middleZero) {
-      KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-    } else {
-      KeypadButtonLight(buttonModifier, Key0, iconHeight, onAddTokenClick)
-      KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
+    KeypadRow {
+      ButtonTransparent(SinKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(CosKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(TanKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonLight(Key1, onAddTokenClick)
+      ButtonLight(Key2, onAddTokenClick)
+      ButtonLight(Key3, onAddTokenClick)
+      ButtonFilled(MinusKey, onAddTokenClick)
+      ButtonFilled(PercentKey, onAddTokenClick)
     }
-    KeypadButtonLight(buttonModifier, BackspaceKey, iconHeight, onClearClick, onDeleteClick)
-    KeypadButtonFilled(buttonModifier, PlusKey, iconHeight, onAddTokenClick)
-    KeypadButtonFilledPrimary(buttonModifier, EqualKey, iconHeight, onEqualClick)
+
+    KeypadRow {
+      ButtonTransparent(EulerKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(LnKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(LogKey, onAddTokenClick, height = iconHeightSecondary)
+      val fractionalKey = if (fractional == Token.Period) DotKey else CommaKey
+      if (middleZero) {
+        ButtonLight(fractionalKey, onAddTokenClick)
+        ButtonLight(Key0, onAddTokenClick)
+      } else {
+        ButtonLight(Key0, onAddTokenClick)
+        ButtonLight(fractionalKey, onAddTokenClick)
+      }
+      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
+      ButtonFilled(PlusKey, onAddTokenClick)
+      ButtonFilledPrimary(EqualKey, onEqualClick)
+    }
   }
 }
 
@@ -609,7 +614,7 @@ private fun PreviewExpandedKeyboard() = ExpressivePreview {
     onInverseModeClick = {},
     showAcButton = true,
     middleZero = false,
-    fractional = Token.PERIOD,
+    fractional = Token.Period,
   )
 }
 
@@ -634,6 +639,6 @@ private fun PreviewCompactKeyboard() = ExpressivePreview {
     onInverseModeClick = { inverseMode = it },
     showAcButton = true,
     middleZero = false,
-    fractional = Token.PERIOD,
+    fractional = Token.Period,
   )
 }

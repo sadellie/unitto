@@ -32,6 +32,7 @@ import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.then
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -78,6 +79,7 @@ fun ExpressionTextField(
   placeholder: String = "",
   keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
   onKeyboardAction: KeyboardActionHandler? = null,
+  onHardwareInput: (() -> Unit)? = null,
 ) {
   val nativeClipboard = LocalClipboard.current.nativeClipboard
   val clipboardManager =
@@ -93,7 +95,8 @@ fun ExpressionTextField(
       state = state,
       modifier = modifier,
       readOnly = readOnly,
-      inputTransformation = ExpressionInputTransformation(formatterSymbols),
+      inputTransformation =
+        ExpressionInputTransformation(formatterSymbols).then { onHardwareInput?.invoke() },
       textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
       lineLimits = TextFieldLineLimits.SingleLine,
       cursorBrush = SolidColor(textColor),
@@ -162,7 +165,7 @@ fun SimpleTextField(
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun AutoSizeTextField(
+fun AutoSizeTextField(
   state: TextFieldState,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
@@ -261,7 +264,7 @@ private fun ExpressionTextFieldPreview() {
   ExpressionTextField(
     modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline).height(172.dp),
     state = remember { TextFieldState() },
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+    formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
     textColor = MaterialTheme.colorScheme.onSurface,
     minRatio = 0.5f,
   )

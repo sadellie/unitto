@@ -40,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -59,12 +60,13 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.toFormattedString
-import com.sadellie.unitto.core.designsystem.icons.symbols.Architecture
+import com.sadellie.unitto.core.designsystem.icons.symbols.DecimalIncrease
 import com.sadellie.unitto.core.designsystem.icons.symbols.EMobileData
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols._123
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
@@ -116,7 +118,8 @@ fun FormattingScreen(
   navigateUpAction: () -> Unit,
   uiState: FormattingUIState,
   onPrecisionChange: (Int) -> Unit,
-  updateFormatterSymbols: (grouping: String, fractional: String, indian: Boolean) -> Unit,
+  updateFormatterSymbols:
+    (grouping: Token.Formatter, fractional: Token.Formatter, indian: Boolean) -> Unit,
   onOutputFormatChange: (Int) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
@@ -145,7 +148,7 @@ fun FormattingScreen(
         }
 
       PreviewBox(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = Sizes.large),
         scale = scale,
         outputFormat = uiState.outputFormat,
         formatterSymbols = uiState.formatterSymbols,
@@ -157,7 +160,7 @@ fun FormattingScreen(
       ListItemExpressive(
         shape = ListItemExpressiveDefaults.firstShape,
         leadingContent = {
-          Icon(Symbols.Architecture, stringResource(Res.string.settings_precision))
+          Icon(Symbols.DecimalIncrease, stringResource(Res.string.settings_precision))
         },
         headlineContent = {
           Row(
@@ -199,7 +202,7 @@ fun FormattingScreen(
 
       // Decimal separator
       AnimatedVisibility(
-        visible = uiState.formatterSymbols.grouping == Token.SPACE,
+        visible = uiState.formatterSymbols.grouping == Token.Space,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
       ) {
@@ -291,14 +294,15 @@ private fun PreviewBox(
 @Composable
 private fun FractionalSymbolSelector(
   modifier: Modifier,
-  updateFormatterSymbols: (grouping: String, fractional: String, indian: Boolean) -> Unit,
+  updateFormatterSymbols:
+    (grouping: Token.Formatter, fractional: Token.Formatter, indian: Boolean) -> Unit,
   formatterSymbols: FormatterSymbols,
 ) {
   Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.small)) {
     ToggleButton(
-      checked = formatterSymbols.fractional == Token.PERIOD,
+      checked = formatterSymbols.fractional == Token.Period,
       onCheckedChange = {
-        updateFormatterSymbols(Token.SPACE, Token.PERIOD, formatterSymbols.indian)
+        updateFormatterSymbols(Token.Space, Token.Period, formatterSymbols.indian)
       },
       modifier = Modifier.weight(1f),
       shapes = ToggleButtonDefaults.shapes(),
@@ -306,9 +310,9 @@ private fun FractionalSymbolSelector(
       Text(stringResource(Res.string.settings_period))
     }
     ToggleButton(
-      checked = formatterSymbols.fractional == Token.COMMA,
+      checked = formatterSymbols.fractional == Token.Comma,
       onCheckedChange = {
-        updateFormatterSymbols(Token.SPACE, Token.COMMA, formatterSymbols.indian)
+        updateFormatterSymbols(Token.Space, Token.Comma, formatterSymbols.indian)
       },
       modifier = Modifier.weight(1f),
       shapes = ToggleButtonDefaults.shapes(),
@@ -322,14 +326,15 @@ private fun FractionalSymbolSelector(
 @Composable
 private fun GroupingSymbolSelector(
   modifier: Modifier,
-  updateFormatterSymbols: (grouping: String, fractional: String, indian: Boolean) -> Unit,
+  updateFormatterSymbols:
+    (grouping: Token.Formatter, fractional: Token.Formatter, indian: Boolean) -> Unit,
   formatterSymbols: FormatterSymbols,
 ) {
   Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.small)) {
     ToggleButton(
-      checked = formatterSymbols.grouping == Token.SPACE,
+      checked = formatterSymbols.grouping == Token.Space,
       onCheckedChange = {
-        updateFormatterSymbols(Token.SPACE, formatterSymbols.fractional, formatterSymbols.indian)
+        updateFormatterSymbols(Token.Space, formatterSymbols.fractional, formatterSymbols.indian)
       },
       modifier = Modifier.weight(1f),
       shapes = ToggleButtonDefaults.shapes(),
@@ -337,9 +342,9 @@ private fun GroupingSymbolSelector(
       Text(stringResource(Res.string.settings_space))
     }
     ToggleButton(
-      checked = formatterSymbols.grouping == Token.PERIOD,
+      checked = formatterSymbols.grouping == Token.Period,
       onCheckedChange = {
-        updateFormatterSymbols(Token.PERIOD, Token.COMMA, formatterSymbols.indian)
+        updateFormatterSymbols(Token.Period, Token.Comma, formatterSymbols.indian)
       },
       modifier = Modifier.weight(1f),
       shapes = ToggleButtonDefaults.shapes(),
@@ -347,9 +352,9 @@ private fun GroupingSymbolSelector(
       Text(stringResource(Res.string.settings_period))
     }
     ToggleButton(
-      checked = formatterSymbols.grouping == Token.COMMA,
+      checked = formatterSymbols.grouping == Token.Comma,
       onCheckedChange = {
-        updateFormatterSymbols(Token.COMMA, Token.PERIOD, formatterSymbols.indian)
+        updateFormatterSymbols(Token.Comma, Token.Period, formatterSymbols.indian)
       },
       modifier = Modifier.weight(1f),
       shapes = ToggleButtonDefaults.shapes(),
@@ -414,22 +419,23 @@ private fun rememberEmptyImageVector() = remember {
 private fun PreviewFormattingScreen() {
   var currentPrecision by remember { mutableIntStateOf(6) }
   var currentFormatterSymbols by remember {
-    mutableStateOf(FormatterSymbols(Token.SPACE, Token.PERIOD, false))
+    mutableStateOf(FormatterSymbols(Token.Space, Token.Period, false))
   }
   var currentOutputFormat by remember { mutableIntStateOf(OutputFormat.PLAIN) }
-
-  FormattingScreen(
-    uiState =
-      FormattingUIState(
-        precision = currentPrecision,
-        outputFormat = currentOutputFormat,
-        formatterSymbols = currentFormatterSymbols,
-      ),
-    onPrecisionChange = { currentPrecision = it },
-    updateFormatterSymbols = { grouping, fractional, indian ->
-      currentFormatterSymbols = FormatterSymbols(grouping, fractional, indian)
-    },
-    onOutputFormatChange = { currentOutputFormat = it },
-    navigateUpAction = {},
-  )
+  CompositionLocalProvider(LocalNumberTypography provides numberTypographyUnitto()) {
+    FormattingScreen(
+      uiState =
+        FormattingUIState(
+          precision = currentPrecision,
+          outputFormat = currentOutputFormat,
+          formatterSymbols = currentFormatterSymbols,
+        ),
+      onPrecisionChange = { currentPrecision = it },
+      updateFormatterSymbols = { grouping, fractional, indian ->
+        currentFormatterSymbols = FormatterSymbols(grouping, fractional, indian)
+      },
+      onOutputFormatChange = { currentOutputFormat = it },
+      navigateUpAction = {},
+    )
+  }
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,13 +32,13 @@ import com.sadellie.unitto.core.common.Token
 @Stable
 data class ExpressionOutputTransformation(private val formatterSymbols: FormatterSymbols) :
   OutputTransformation {
-  private val groupingChar = formatterSymbols.grouping.first()
-  private val fractionalChar = formatterSymbols.fractional.first()
+  private val groupingChar = formatterSymbols.grouping.symbol.first()
+  private val fractionalChar = formatterSymbols.fractional.symbol.first()
 
   override fun TextFieldBuffer.transformOutput() {
     if (length == 0) return
 
-    val isFractionalString = Token.DisplayOnly.FRACTION in this.asCharSequence()
+    val isFractionalString = Token.Fraction.symbol in this.asCharSequence()
     if (isFractionalString) {
       formatFractional()
     } else {
@@ -65,9 +65,7 @@ data class ExpressionOutputTransformation(private val formatterSymbols: Formatte
     // starts and ends of numbers
     val numberPositions = this.findNumberPositions()
     var shift = 0
-    numberPositions.forEach { (start, end) ->
-      shift += formatNumber(start + shift, end + shift)
-    }
+    numberPositions.forEach { (start, end) -> shift += formatNumber(start + shift, end + shift) }
   }
 
   private fun TextFieldBuffer.findNumberPositions(): Set<Pair<Int, Int>> {
@@ -94,10 +92,11 @@ data class ExpressionOutputTransformation(private val formatterSymbols: Formatte
         groupingChar -> {
           val nextSymbol = formattedNumber.getOrNull(index + 1) ?: ""
           // [1][2][3][4][5][6] -> [1][2][3][ 4][5][6]
-          replace(indexInBuffer, indexInBuffer + 1, "${formatterSymbols.grouping}${nextSymbol}")
+          replace(indexInBuffer, indexInBuffer + 1, formatterSymbols.grouping.symbol + nextSymbol)
         }
 
-        fractionalChar -> replace(indexInBuffer, indexInBuffer + 1, formatterSymbols.fractional)
+        fractionalChar ->
+          replace(indexInBuffer, indexInBuffer + 1, formatterSymbols.fractional.symbol)
       }
     }
     return formattedNumber.length - originalNumber.length

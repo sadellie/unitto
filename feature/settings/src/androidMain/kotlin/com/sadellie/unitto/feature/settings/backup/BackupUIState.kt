@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,15 @@
 
 package com.sadellie.unitto.feature.settings.backup
 
-internal sealed class BackupUIState {
-  data object Loading : BackupUIState()
+internal sealed interface BackupUIState {
+  data object Loading : BackupUIState
 
   data class Ready(
     val favoriteUnits: Int,
     val usedUnits: Int,
     val savedExpressions: Int,
     val favoriteTimeZones: Int,
+  ) : BackupUIState
 
-  ) : BackupUIState()
-
-  data object InProgress: BackupUIState()
+  data object InProgress : BackupUIState
 }

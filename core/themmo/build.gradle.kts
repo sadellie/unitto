@@ -23,7 +23,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "io.github.sadellie.themmo" }
+  android.namespace = "io.github.sadellie.themmo"
   sourceSets.commonMain.dependencies {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
     implementation(libs.org.jetbrains.compose.foundation.foundation)

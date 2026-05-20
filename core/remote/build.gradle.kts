@@ -22,7 +22,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.core.remote" }
+  android.namespace = "com.sadellie.unitto.core.remote"
   sourceSets.commonMain.dependencies {
     implementation(libs.io.ktor.ktor.client.core)
     implementation(libs.io.ktor.ktor.client.cio)

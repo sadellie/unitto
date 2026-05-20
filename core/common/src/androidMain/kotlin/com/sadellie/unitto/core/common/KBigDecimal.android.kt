@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.common
 
+import android.os.Build
 import ch.obermuhlner.math.big.BigDecimalMath
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -116,6 +117,8 @@ actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDeci
   actual fun pow(n: Int): KBigDecimal = KBigDecimal(this.wrapped.pow(n))
 
   actual fun scaleByPowerOfTen(n: Int): KBigDecimal = KBigDecimal(this.wrapped.scaleByPowerOfTen(n))
+
+  actual fun negate(): KBigDecimal = KBigDecimal(this.wrapped.negate())
 }
 
 actual class KRoundingMode internal constructor(val wrapped: RoundingMode) {
@@ -168,9 +171,6 @@ actual class KBigInteger internal constructor(internal val wrapped: BigInteger) 
 
   actual fun gcd(d: KBigInteger): KBigInteger = KBigInteger(this.wrapped.gcd(d.wrapped))
 
-  actual fun divide(divisor: KBigInteger): KBigInteger =
-    KBigInteger(this.wrapped.divide(divisor.wrapped))
-
   actual companion object {
     actual val ONE: KBigInteger = KBigInteger(BigInteger.ONE)
     actual val ZERO: KBigInteger = KBigInteger(BigInteger.ZERO)
@@ -187,8 +187,39 @@ actual class KBigInteger internal constructor(internal val wrapped: BigInteger) 
   actual operator fun minus(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.minus(other.wrapped))
 
+  actual operator fun plus(other: KBigInteger): KBigInteger =
+    KBigInteger(this.wrapped.plus(other.wrapped))
+
   actual fun multiply(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.multiply(other.wrapped))
+
+  actual infix fun shl(n: Int): KBigInteger = KBigInteger(this.wrapped.shl(n))
+
+  actual infix fun shr(n: Int): KBigInteger = KBigInteger(this.wrapped.shr(n))
+
+  actual fun mod(m: KBigInteger): KBigInteger = KBigInteger(this.wrapped.mod(m.wrapped))
+
+  actual fun remainder(m: KBigInteger): KBigInteger = KBigInteger(this.wrapped.remainder(m.wrapped))
+
+  actual fun negate(): KBigInteger = KBigInteger(this.wrapped.negate())
+
+  actual fun or(other: KBigInteger): KBigInteger = KBigInteger(this.wrapped.or(other.wrapped))
+
+  actual fun xor(other: KBigInteger): KBigInteger = KBigInteger(this.wrapped.xor(other.wrapped))
+
+  actual fun and(other: KBigInteger): KBigInteger = KBigInteger(this.wrapped.and(other.wrapped))
+
+  actual fun not(): KBigInteger = KBigInteger(this.wrapped.not())
+
+  actual fun nor(other: KBigInteger): KBigInteger =
+    KBigInteger(this.wrapped.or(other.wrapped).not())
+
+  actual fun intValueExact(): Int =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      this.wrapped.intValueExact()
+    } else {
+      this.wrapped.toInt()
+    }
 
   actual constructor(value: String) : this(BigInteger(value))
 

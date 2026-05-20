@@ -47,10 +47,7 @@ import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
@@ -71,8 +68,6 @@ import com.sadellie.unitto.core.ui.TextFieldBox
 import com.sadellie.unitto.core.ui.TextFieldRow
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
-import com.sadellie.unitto.feature.datecalculator.components.DateTimeDialogs
-import com.sadellie.unitto.feature.datecalculator.components.DialogState
 import com.sadellie.unitto.feature.datecalculator.components.TimeUnitTextField
 import java.time.ZonedDateTime
 import org.jetbrains.compose.resources.stringResource
@@ -112,14 +107,12 @@ private fun AddSubtractView(
   updateStart: (ZonedDateTime) -> Unit,
   updateAddition: (Boolean) -> Unit,
 ) {
-  val mContext = LocalContext.current
-  var dialogState by remember { mutableStateOf(DialogState.NONE) }
-  val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
-
   Column(
     modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Sizes.large),
     verticalArrangement = Arrangement.spacedBy(12.dp),
   ) {
+    val mContext = LocalContext.current
+    val showResult = remember(uiState.start, uiState.result) { uiState.start != uiState.result }
     AnimatedContent(
       targetState = showResult,
       label = "Reveal result",
@@ -132,8 +125,7 @@ private fun AddSubtractView(
         DateTimeBlock(
           modifier = Modifier.weight(1f),
           title = stringResource(Res.string.date_calculator_start),
-          onTimeClick = { dialogState = DialogState.FROM_TIME },
-          onDateClick = { dialogState = DialogState.FROM_DATE },
+          onUpdate = updateStart,
           onLongClick = { updateStart(ZonedDateTimeUtils.nowWithMinutes()) },
           dateTime = uiState.start,
         )
@@ -182,15 +174,6 @@ private fun AddSubtractView(
       )
     }
   }
-
-  DateTimeDialogs(
-    dialogState = dialogState,
-    updateDialogState = { dialogState = it },
-    date = uiState.start,
-    updateDate = updateStart,
-    timeState = DialogState.FROM_TIME,
-    dateState = DialogState.FROM_DATE,
-  )
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -318,7 +301,7 @@ fun AddSubtractViewPreview() = ExpressivePreview {
         days = remember { TextFieldState("12") },
         hours = remember { TextFieldState("12") },
         minutes = remember { TextFieldState("12") },
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
+        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
       ),
     updateStart = {},
     updateAddition = {},

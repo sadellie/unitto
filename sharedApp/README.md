@@ -27,6 +27,7 @@ graph LR
     :feature:bodymass["bodymass"]
     :feature:datecalculator["datecalculator"]
     :feature:timezone["timezone"]
+    :feature:programmer["programmer"]
     :feature:settings["settings"]
   end
   :sharedApp --> :feature:glance
@@ -41,6 +42,7 @@ graph LR
   :sharedApp --> :feature:bodymass
   :sharedApp --> :feature:datecalculator
   :sharedApp --> :feature:timezone
+  :sharedApp --> :feature:programmer
   :sharedApp --> :feature:settings
   :androidApp --> :sharedApp
 

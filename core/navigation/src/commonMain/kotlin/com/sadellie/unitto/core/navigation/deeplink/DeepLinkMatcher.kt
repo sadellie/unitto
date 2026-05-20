@@ -55,7 +55,7 @@ internal class DeepLinkMatcher<T : NavKey>(
             try {
               candidateSegment.typeParser.invoke(requestedSegment)
             } catch (e: IllegalArgumentException) {
-              Logger.e(TAG_LOG_ERROR, e) { "Failed to parse path value:[$requestedSegment]." }
+              Logger.e(e, TAG_LOG_ERROR) { "Failed to parse path value:[$requestedSegment]." }
               return null
             }
           args[candidateSegment.stringValue] = parsedValue
@@ -68,14 +68,14 @@ internal class DeepLinkMatcher<T : NavKey>(
     request.queries.forEach { (name, value) ->
       val queryStringParser = deepLinkPattern.queryValueParsers[name]
       if (queryStringParser == null) {
-        Logger.e(TAG_LOG_ERROR) { "Failed to find parser for name:[$name] value:[$value]." }
+        Logger.e(tag = TAG_LOG_ERROR) { "Failed to find parser for name:[$name] value:[$value]." }
         return null
       }
       val queryParsedValue =
         try {
           queryStringParser.invoke(value)
         } catch (e: IllegalArgumentException) {
-          Logger.e(TAG_LOG_ERROR, e) { "Failed to parse query name:[$name] value:[$value]." }
+          Logger.e(e, TAG_LOG_ERROR) { "Failed to parse query name:[$name] value:[$value]." }
           return null
         }
       args[name] = queryParsedValue

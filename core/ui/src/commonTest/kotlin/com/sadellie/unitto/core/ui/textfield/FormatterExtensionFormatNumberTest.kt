@@ -52,12 +52,12 @@ class FormatterExtensionFormatNumberTest {
   ) {
     assertEquals(
       expectedInternational,
-      input.formatNumber(FormatterSymbols(Token.COMMA, Token.PERIOD, false)),
+      input.formatNumber(FormatterSymbols(Token.Comma, Token.Period, false)),
       "Unexpected International",
     )
     assertEquals(
       expectedIndian,
-      input.formatNumber(FormatterSymbols(Token.COMMA, Token.PERIOD, true)),
+      input.formatNumber(FormatterSymbols(Token.Comma, Token.Period, true)),
       "Unexpected Indian",
     )
   }

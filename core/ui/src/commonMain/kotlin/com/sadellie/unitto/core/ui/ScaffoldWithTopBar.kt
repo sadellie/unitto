@@ -18,11 +18,6 @@
 
 package com.sadellie.unitto.core.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -69,11 +64,7 @@ fun ScaffoldWithTopBar(
     containerColor = MaterialTheme.colorScheme.surfaceContainer,
     modifier = modifier,
     topBar = {
-      AnimatedVisibility(
-        visible = LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact,
-        enter = slideInVertically() + fadeIn(),
-        exit = slideOutVertically() + fadeOut(),
-      ) {
+      if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
         TopAppBar(
           title = title,
           subtitle = {},

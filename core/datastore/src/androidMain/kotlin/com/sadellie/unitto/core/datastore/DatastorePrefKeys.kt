@@ -59,6 +59,7 @@ object DatastorePrefKeys {
   val FRACTIONAL_OUTPUT = booleanPreferencesKey(PrefKeys.FRACTIONAL_OUTPUT_PREF_KEY)
   val ADDITIONAL_BUTTONS = booleanPreferencesKey(PrefKeys.ADDITIONAL_BUTTONS_PREF_KEY)
   val INVERSE_MODE = booleanPreferencesKey(PrefKeys.INVERSE_MODE_PREF_KEY)
+  val CONSTANT_CALCULATION = booleanPreferencesKey(PrefKeys.CONSTANT_CALCULATION_PREF_KEY)
 
   // UNIT CONVERTER
   val LATEST_LEFT_SIDE = stringPreferencesKey(PrefKeys.LATEST_LEFT_SIDE_PREF_KEY)
@@ -71,4 +72,5 @@ object DatastorePrefKeys {
   val UNIT_CONVERTER_SORTING = stringPreferencesKey(PrefKeys.UNIT_CONVERTER_SORTING_PREF_KEY)
   val UNIT_CONVERTER_CUSTOM_API_URL =
     stringPreferencesKey(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY)
+  val UNIT_CONVERTER_SHOW_ICONS = booleanPreferencesKey(PrefKeys.UNIT_CONVERTER_SHOW_ICONS_PREF_KEY)
 }

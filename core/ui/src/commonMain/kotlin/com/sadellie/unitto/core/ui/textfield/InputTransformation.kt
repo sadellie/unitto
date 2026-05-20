@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,64 +37,64 @@ import com.sadellie.unitto.core.common.trimZeros
 data class ExpressionInputTransformation(private val formatterSymbols: FormatterSymbols) :
   InputTransformationWithReplacement {
   override fun TextFieldBuffer.transformInput() =
-    transformInputWithReplacements(legalTokens, replacementMap)
+    transformInputWithReplacements(longTokens = Token.Func.allMathSymbolsWithBracket)
 
   override val legalTokens =
     listOf(
-      Token.Func.ARCOS_BRACKET,
-      Token.Func.ARSIN_BRACKET,
-      Token.Func.ACTAN_BRACKET,
-      Token.Func.SIN_BRACKET,
-      Token.Func.COS_BRACKET,
-      Token.Func.TAN_BRACKET,
-      Token.Func.LOG_BRACKET,
-      Token.Func.EXP_BRACKET,
-      Token.Func.LN_BRACKET,
-      Token.Digit.DOT,
-      Token.Digit.DIGIT_0,
-      Token.Digit.DIGIT_1,
-      Token.Digit.DIGIT_2,
-      Token.Digit.DIGIT_3,
-      Token.Digit.DIGIT_4,
-      Token.Digit.DIGIT_5,
-      Token.Digit.DIGIT_6,
-      Token.Digit.DIGIT_7,
-      Token.Digit.DIGIT_8,
-      Token.Digit.DIGIT_9,
-      Token.Operator.MINUS,
-      Token.Operator.DIVIDE,
-      Token.Operator.MULTIPLY,
-      Token.Operator.PLUS,
-      Token.Operator.LEFT_BRACKET,
-      Token.Operator.RIGHT_BRACKET,
-      Token.Operator.POWER,
-      Token.Operator.FACTORIAL,
-      Token.Operator.MODULO,
-      Token.Operator.PERCENT,
-      Token.Operator.SQRT,
-      Token.Const.PI,
-      Token.Const.E,
+      Token.ArCos.WithBracket.symbol,
+      Token.ArSin.WithBracket.symbol,
+      Token.ArTan.WithBracket.symbol,
+      Token.Sin.WithBracket.symbol,
+      Token.Cos.WithBracket.symbol,
+      Token.Tan.WithBracket.symbol,
+      Token.Log.WithBracket.symbol,
+      Token.Exp.WithBracket.symbol,
+      Token.Ln.WithBracket.symbol,
+      Token.Dot.symbol,
+      Token.Digit0.symbol,
+      Token.Digit1.symbol,
+      Token.Digit2.symbol,
+      Token.Digit3.symbol,
+      Token.Digit4.symbol,
+      Token.Digit5.symbol,
+      Token.Digit6.symbol,
+      Token.Digit7.symbol,
+      Token.Digit8.symbol,
+      Token.Digit9.symbol,
+      Token.Minus.symbol,
+      Token.Divide.symbol,
+      Token.Multiply.symbol,
+      Token.Plus.symbol,
+      Token.LeftBracket.symbol,
+      Token.RightBracket.symbol,
+      Token.Power.symbol,
+      Token.Factorial.symbol,
+      Token.Modulo.symbol,
+      Token.Percent.symbol,
+      Token.Sqrt.symbol,
+      Token.Pi.symbol,
+      Token.E.symbol,
     )
 
   override val replacementMap =
     mapOf(
       // formatterSymbols.grouping doesn't break replacement for other ugly symbols
-      formatterSymbols.grouping to "",
-      "arcos(" to Token.Func.ARCOS_BRACKET,
-      "arsin(" to Token.Func.ARSIN_BRACKET,
-      "actan(" to Token.Func.ACTAN_BRACKET,
-      formatterSymbols.fractional to Token.Digit.DOT,
-      "-" to Token.Operator.MINUS,
-      "–" to Token.Operator.MINUS,
-      "—" to Token.Operator.MINUS,
-      "/" to Token.Operator.DIVIDE,
-      "*" to Token.Operator.MULTIPLY,
-      "•" to Token.Operator.MULTIPLY,
+      formatterSymbols.grouping.symbol to "",
+      "arcos(" to Token.ArCos.WithBracket.symbol,
+      "arsin(" to Token.ArSin.WithBracket.symbol,
+      "actan(" to Token.ArTan.WithBracket.symbol,
+      formatterSymbols.fractional.symbol to Token.Dot.symbol,
+      "-" to Token.Minus.symbol,
+      "–" to Token.Minus.symbol,
+      "—" to Token.Minus.symbol,
+      "/" to Token.Divide.symbol,
+      "*" to Token.Multiply.symbol,
+      "•" to Token.Multiply.symbol,
     )
 }
 
 /**
- * - Allow only [Token.Digit.all] and [Token.Letter.all]. No fractional symbols
+ * - Allow only [Token.Digit] and [Token.Letter]. No fractional symbols
  * - Replaces lowercase letters with uppercase
  *
  * @see TextFieldBuffer.transformInputWithReplacements
@@ -102,43 +102,43 @@ data class ExpressionInputTransformation(private val formatterSymbols: Formatter
 @Stable
 data object NumberBaseInputTransformation : InputTransformationWithReplacement {
   override fun TextFieldBuffer.transformInput() =
-    transformInputWithReplacements(legalTokens, replacementMap)
+    transformInputWithReplacements(longTokens = emptyList())
 
   override val legalTokens =
     listOf(
-      Token.Digit.DIGIT_0,
-      Token.Digit.DIGIT_1,
-      Token.Digit.DIGIT_2,
-      Token.Digit.DIGIT_3,
-      Token.Digit.DIGIT_4,
-      Token.Digit.DIGIT_5,
-      Token.Digit.DIGIT_6,
-      Token.Digit.DIGIT_7,
-      Token.Digit.DIGIT_8,
-      Token.Digit.DIGIT_9,
-      Token.Letter.LETTER_A,
-      Token.Letter.LETTER_B,
-      Token.Letter.LETTER_C,
-      Token.Letter.LETTER_D,
-      Token.Letter.LETTER_E,
-      Token.Letter.LETTER_F,
+      Token.Digit0.symbol,
+      Token.Digit1.symbol,
+      Token.Digit2.symbol,
+      Token.Digit3.symbol,
+      Token.Digit4.symbol,
+      Token.Digit5.symbol,
+      Token.Digit6.symbol,
+      Token.Digit7.symbol,
+      Token.Digit8.symbol,
+      Token.Digit9.symbol,
+      Token.LetterA.symbol,
+      Token.LetterB.symbol,
+      Token.LetterC.symbol,
+      Token.LetterD.symbol,
+      Token.LetterE.symbol,
+      Token.LetterF.symbol,
     )
 
   override val replacementMap =
     mapOf(
-      "a" to Token.Letter.LETTER_A,
-      "b" to Token.Letter.LETTER_B,
-      "c" to Token.Letter.LETTER_C,
-      "d" to Token.Letter.LETTER_D,
-      "e" to Token.Letter.LETTER_E,
-      "f" to Token.Letter.LETTER_F,
+      "a" to Token.LetterA.symbol,
+      "b" to Token.LetterB.symbol,
+      "c" to Token.LetterC.symbol,
+      "d" to Token.LetterD.symbol,
+      "e" to Token.LetterE.symbol,
+      "f" to Token.LetterF.symbol,
     )
 }
 
 /**
  * - Allow any digit
- * - Allow using any fractional symbol as input ([Token.COMMA] and [Token.PERIOD]), but only if
- *   [allowFraction] is True
+ * - Allow using any fractional symbol as input ([Token.Comma.symbol] and [Token.Period.symbol]),
+ *   but only if [allowFraction] is True
  * - Limit using [maxValue]
  */
 @Stable
@@ -154,11 +154,11 @@ data class UnexpectedDigitsInputTransformation(
 
       val legalToken =
         when (char) {
-          in Token.Digit.all -> true
-          Token.PERIOD -> allowFraction
-          Token.COMMA -> {
+          in Token.Digit.allSymbols -> true
+          Token.Period.symbol -> allowFraction
+          Token.Comma.symbol -> {
             if (allowFraction) {
-              replace(cursor, cursor + Token.PERIOD.length, Token.PERIOD)
+              replace(cursor, cursor + Token.Period.symbol.length, Token.Period.symbol)
             }
             allowFraction
           }
@@ -178,40 +178,6 @@ data class UnexpectedDigitsInputTransformation(
       replace(0, length, maxValueBD.trimZeros().toPlainString())
     }
   }
-}
-
-private fun TextFieldBuffer.transformInputWithReplacements(
-  legalTokens: List<String>,
-  replacementMap: Map<String, String>,
-) {
-  if (length == 0) return
-
-  val isTextChanged = this.toString() != originalText.toString()
-  if (isTextChanged) {
-    // process tokens
-    var cursor = 0
-
-    while (cursor < length) {
-      val charsLeft = length - cursor
-
-      // try to match with replacement map
-      var matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
-      if (matched == null) {
-        // try to find legal token ahead
-        matched = matchLegalToken(cursor, charsLeft, legalTokens)
-      }
-
-      if (matched == null) {
-        // illegal token
-        delete(cursor, cursor + 1)
-      } else {
-        cursor += matched.length
-      }
-    }
-  }
-
-  val fixedSelection = this.fixTextRange()
-  selection = fixedSelection
 }
 
 private fun TextFieldBuffer.matchLegalToken(
@@ -253,9 +219,40 @@ private fun TextFieldBuffer.getCharsInFront(cursor: Int, count: Int): String {
   return charsInFront
 }
 
-private interface InputTransformationWithReplacement : InputTransformation {
+interface InputTransformationWithReplacement : InputTransformation {
   /** Allowed tokens. Order matters, longest first. */
   val legalTokens: List<String>
   /** Ugly tokens and their replacements. Order matters, prefer longest first. */
   val replacementMap: Map<String, String>
+
+  fun TextFieldBuffer.transformInputWithReplacements(longTokens: List<String>) {
+    if (length == 0) return
+
+    val isTextChanged = this.toString() != originalText.toString()
+    if (isTextChanged) {
+      // process tokens
+      var cursor = 0
+
+      while (cursor < length) {
+        val charsLeft = length - cursor
+
+        // try to match with replacement map
+        var matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
+        if (matched == null) {
+          // try to find legal token ahead
+          matched = matchLegalToken(cursor, charsLeft, legalTokens)
+        }
+
+        if (matched == null) {
+          // illegal token
+          delete(cursor, cursor + 1)
+        } else {
+          cursor += matched.length
+        }
+      }
+    }
+
+    val fixedSelection = this.fixTextRange(longTokens)
+    selection = fixedSelection
+  }
 }

@@ -22,8 +22,8 @@ import android.icu.util.TimeZone
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import java.time.ZonedDateTime
 
-internal sealed class TimeZoneUIState {
-  data object Loading : TimeZoneUIState()
+internal sealed interface TimeZoneUIState {
+  data object Loading : TimeZoneUIState
 
   data class Ready(
     val favorites: List<FavoriteZone>,
@@ -31,16 +31,14 @@ internal sealed class TimeZoneUIState {
     val userTimeZone: TimeZone,
     val selectedTimeZone: FavoriteZone?,
     val dialogState: TimeZoneDialogState,
-  ) : TimeZoneUIState()
+  ) : TimeZoneUIState
 }
 
-internal sealed class TimeZoneDialogState {
-  data object Nothing : TimeZoneDialogState()
-
-  data class UserTimePicker(val time: ZonedDateTime) : TimeZoneDialogState()
+internal sealed interface TimeZoneDialogState {
+  data object Nothing : TimeZoneDialogState
 
   data class FavoriteTimePicker(val timeZone: FavoriteZone, val time: ZonedDateTime) :
-    TimeZoneDialogState()
+    TimeZoneDialogState
 
-  data class LabelEditPicker(val timeZone: FavoriteZone) : TimeZoneDialogState()
+  data class LabelEditPicker(val timeZone: FavoriteZone) : TimeZoneDialogState
 }

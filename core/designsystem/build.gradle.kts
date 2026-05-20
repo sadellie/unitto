@@ -23,7 +23,7 @@ plugins {
 }
 
 kotlin {
-  androidLibrary { namespace = "com.sadellie.unitto.core.designsystem" }
+  android.namespace = "com.sadellie.unitto.core.designsystem"
   sourceSets.commonMain.dependencies {
     implementation(libs.org.jetbrains.compose.foundation.foundation)
     implementation(libs.org.jetbrains.compose.components.components.resources)

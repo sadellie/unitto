@@ -24,15 +24,20 @@ import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import com.sadellie.unitto.core.designsystem.theme.DarkThemeColors
 import com.sadellie.unitto.core.designsystem.theme.LightThemeColors
+import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
+import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ExpressivePreview(content: @Composable () -> Unit) {
-  MaterialExpressiveTheme(
-    colorScheme = if (isSystemInDarkTheme()) DarkThemeColors else LightThemeColors
-  ) {
-    Surface(color = MaterialTheme.colorScheme.surfaceContainer) { content() }
+  CompositionLocalProvider(LocalNumberTypography provides numberTypographyUnitto()) {
+    MaterialExpressiveTheme(
+      colorScheme = if (isSystemInDarkTheme()) DarkThemeColors else LightThemeColors
+    ) {
+      Surface(color = MaterialTheme.colorScheme.surfaceContainer) { content() }
+    }
   }
 }

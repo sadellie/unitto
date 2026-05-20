@@ -25,7 +25,7 @@ plugins {
 }
 
 kotlin {
-  target { compilerOptions { jvmTarget.set(JvmTarget.JVM_11) } }
+  target { compilerOptions { jvmTarget.set(JvmTarget.JVM_21) } }
   dependencies {
     implementation(project(":sharedApp"))
     implementation(project(":core:themmo"))
@@ -98,12 +98,10 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
     isCoreLibraryDesugaringEnabled = true
   }
-  kotlin.jvmToolchain(11)
-  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
   packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
 }
 

@@ -58,6 +58,7 @@ data class CalculatorPreferences(
   val fractionalOutput: Boolean,
   val precision: Int,
   val outputFormat: Int,
+  val constantCalculation: Boolean,
 )
 
 data class ConverterPreferences(
@@ -73,6 +74,7 @@ data class ConverterPreferences(
   val latestLeftSideUnit: String,
   val latestRightSideUnit: String,
   val customApiUrl: String,
+  val showIcons: Boolean,
 )
 
 data class DisplayPreferences(val middleZero: Boolean, val acButton: Boolean)

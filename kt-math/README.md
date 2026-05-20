@@ -35,3 +35,5 @@ class :kt-math focus
   - added method to interface and mapped to private method in `CommonBigDecimal`
 - `fun of(`in`: CharArray, offset: Int, len: Int): BigDecimal`
   - added method to interface and mapped to internal method in `CommonBigDecimal`
+- `override operator fun rem(modulus: BigInteger): CommonBigInteger`
+  - renamed rem to mod (same for overloads)

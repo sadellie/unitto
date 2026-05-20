@@ -205,19 +205,19 @@ interface BigInteger : Comparable<BigInteger> {
   @JsName("unaryPlus") operator fun unaryPlus(): BigInteger
 
   /**
-   * Returns a BigInteger whose value is `(this rem m`). This method differs from `remainder` in
+   * Returns a BigInteger whose value is `(this mod m`). This method differs from `remainder` in
    * that it always returns a *non-negative* BigInteger.
    *
    * @param modulus the modulus.
-   * @return `this rem m`
+   * @return `this mod m`
    * @throws ArithmeticException `m` 0
-   * @see .remainder
+   * @see remainder
    */
-  @JsName("rem") operator fun rem(modulus: BigInteger): BigInteger
+  @JsName("mod") fun mod(modulus: BigInteger): BigInteger
 
-  @JsName("remInt") operator fun rem(modulus: Int): BigInteger = rem(of(modulus))
+  @JsName("modInt") fun mod(modulus: Int): BigInteger = mod(of(modulus))
 
-  @JsName("remLong") operator fun rem(modulus: Long): BigInteger = rem(of(modulus))
+  @JsName("modLong") fun mod(modulus: Long): BigInteger = mod(of(modulus))
 
   /**
    * Returns a BigInteger whose value is `(this<sup>exponent</sup> rem m)`. (Unlike `pow`, this
