@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.plus
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -45,6 +46,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -73,18 +75,17 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.datetimepicker.TimePickerDialog
-import com.sadellie.unitto.core.ui.plus
+import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
-import java.time.ZonedDateTime
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import unitto.core.common.generated.resources.Res
@@ -93,11 +94,12 @@ import unitto.core.common.generated.resources.common_label
 import unitto.core.common.generated.resources.common_ok
 import unitto.core.common.generated.resources.time_zone_add_title
 import unitto.core.common.generated.resources.time_zone_title
+import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun TimeZoneRoute(openDrawer: () -> Unit, navigateToAddTimeZone: (ZonedDateTime) -> Unit) {
-  val viewModel: TimeZoneViewModel = koinViewModel()
+  val viewModel: TimeZoneViewModel = metroViewModel()
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     TimeZoneUIState.Loading -> EmptyScreen()
     is TimeZoneUIState.Ready -> {
@@ -182,7 +184,7 @@ private fun TimeZoneScreen(
       modifier = Modifier.fillMaxSize(),
       contentPadding =
         padding + PaddingValues(start = Sizes.large, end = Sizes.large, bottom = 124.dp),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       item(key = "user time", contentType = ContentType.USER_TIME) {
         UserTimeZone(
@@ -216,7 +218,7 @@ private fun TimeZoneScreen(
             modifier =
               Modifier.padding(itemPadding)
                 .clip(RoundedCornerShape(cornerRadius))
-                .clip(ListItemExpressiveDefaults.listedShaped(index, mutableFavorites.size))
+                .clip(ListItemDefaults.listedShapes(index, mutableFavorites.size).shape)
                 .background(background)
                 .longPressDraggableHandle(onDragStopped = { onDragEnd(mutableFavorites, item) }),
             item = item,
@@ -327,22 +329,28 @@ private const val USER_TIME_UPDATE_FREQUENCY_MS = 5_000L
 @Preview
 @Composable
 private fun PreviewTimeZoneScreen() = ExpressivePreview {
-  TimeZoneScreen(
-    uiState =
+  val favorites = remember {
+    TimeZone.getAvailableIDs().mapIndexed { index, tz ->
+      FavoriteZone(
+        timeZone = TimeZone.getTimeZone(tz),
+        position = index,
+        label = if (tz == "ACT") "label text" else "",
+      )
+    }
+  }
+  var uiState by remember {
+    mutableStateOf(
       TimeZoneUIState.Ready(
-        favorites =
-          TimeZone.getAvailableIDs().mapIndexed { index, tz ->
-            FavoriteZone(
-              timeZone = TimeZone.getTimeZone(tz),
-              position = index,
-              label = if (tz == "ACT") "label text" else "",
-            )
-          },
+        favorites = favorites,
         customUserTime = null,
         userTimeZone = TimeZone.getTimeZone("Africa/Addis_Ababa"),
         selectedTimeZone = null,
         dialogState = TimeZoneDialogState.Nothing,
-      ),
+      )
+    )
+  }
+  TimeZoneScreen(
+    uiState = uiState,
     openDrawer = {},
     navigateToAddTimeZone = {},
     setCurrentTime = {},
@@ -350,7 +358,7 @@ private fun PreviewTimeZoneScreen() = ExpressivePreview {
     onDragEnd = { _, _ -> },
     delete = {},
     updateLabel = { _, _ -> },
-    selectTimeZone = {},
+    selectTimeZone = { uiState = uiState.copy(selectedTimeZone = it) },
     setDialogState = {},
   )
 }

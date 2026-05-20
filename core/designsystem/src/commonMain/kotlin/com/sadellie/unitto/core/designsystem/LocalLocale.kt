@@ -21,4 +21,4 @@ package com.sadellie.unitto.core.designsystem
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.intl.Locale
 
-val LocalLocale = staticCompositionLocalOf { Locale.current.platformLocale }
+val LocalLocale = staticCompositionLocalOf { Locale.current }

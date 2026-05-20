@@ -18,6 +18,7 @@
 
 package io.github.sadellie.evaluatto.math
 
+import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KBigDecimalMath
 import com.sadellie.unitto.core.common.KMathContext
@@ -37,6 +38,7 @@ import io.github.sadellie.evaluatto.ast.MathModuloNode
 import io.github.sadellie.evaluatto.ast.MathNumberNode
 import io.github.sadellie.evaluatto.ast.MultiplyNode
 import io.github.sadellie.evaluatto.ast.NumberNode
+import io.github.sadellie.evaluatto.ast.PercentNode
 import io.github.sadellie.evaluatto.ast.PlusNode
 import io.github.sadellie.evaluatto.ast.PowerNode
 import io.github.sadellie.evaluatto.ast.ProgrammerOperatorNode
@@ -50,7 +52,7 @@ import kotlin.collections.plus
 internal class MathSimplify(override val input: ASTNode, private val context: ScriptContext.Math) :
   Simplify {
   override fun simplify(tree: ASTNode): ASTNode? =
-    simplifyBottomToTop(context, tree) { currentNode ->
+    simplifyBottomToTop(context, tree) { currentNode, parentNode ->
       when (currentNode) {
         is ConstantNode -> simplifyConstant(currentNode)
         is PlusNode -> simplifyPlus(currentNode)
@@ -62,6 +64,7 @@ internal class MathSimplify(override val input: ASTNode, private val context: Sc
         is FactorialNode -> simplifyFactorial(currentNode)
         is MathFunctionNode -> simplifyFunction(currentNode)
         is UnaryMinusNode -> simplifyUnaryMinus(currentNode)
+        is PercentNode -> simplifyPercent(currentNode, parentNode)
         is NumberNode,
         is BracketsNode,
         is UnaryOperatorNode,
@@ -85,6 +88,14 @@ internal class MathSimplify(override val input: ASTNode, private val context: Sc
   }
 
   private fun simplifyPlus(node: PlusNode): PlusNode? {
+    // plus percentages apply special rule 1 + 2 + 3% + 4
+    val simplifiedPlusPercent = simplifyPlusPercent(node)
+    if (simplifiedPlusPercent != null) return simplifiedPlusPercent
+    // minus percentages apply special rule 1 + 2 - 3% + 4
+    val simplifiedMinusPercent = simplifyMinusPercent(node)
+    if (simplifiedMinusPercent != null) return simplifiedMinusPercent
+
+    // basic numbers sum
     val numberNodes = node.children.filterIsInstance<MathNumberNode>()
     if (numberNodes.size < 2) return null
     var sumOfNodes = KBigDecimal.ZERO
@@ -94,6 +105,105 @@ internal class MathSimplify(override val input: ASTNode, private val context: Sc
       node.children.filter { child -> child !is MathNumberNode }.plus(MathNumberNode(sumOfNodes))
     val updatedNode = node.withNewChildren(updatedChildren)
     return updatedNode
+  }
+
+  private fun simplifyPercentInPlus(
+    node: PlusNode,
+    percentIndex: Int,
+    percentNumber: KBigDecimal,
+    applyPercent: (sumOfNodes: KBigDecimal, percentFraction: KBigDecimal) -> KBigDecimal,
+  ): PlusNode {
+    // 1 + 2 + 3% + 4
+    // need to apply 3% to 1 + 2
+    val numberNodesBeforePercent =
+      node.children.take(percentIndex).filterIsInstance<MathNumberNode>()
+    val sumOfNodes =
+      numberNodesBeforePercent.fold(KBigDecimal.ZERO) { acc, numberNode ->
+        acc.plus(numberNode.value)
+      }
+
+    // sumOfNodes + 3% -> 3 / 100 * sumOfNodes
+    val percentFraction =
+      percentNumber
+        .divide(
+          KBigDecimal("100"),
+          context.scale,
+          context.roundingMode,
+        )
+        .multiply(sumOfNodes)
+
+    val updatedChildren =
+      node.children.mapIndexedNotNull { index, child ->
+        when {
+          // replace percent node with new node
+          index == percentIndex -> MathNumberNode(applyPercent(sumOfNodes, percentFraction))
+          // remove all number nodes before percent
+          index < percentIndex && child is MathNumberNode -> null
+          // keep other nodes
+          else -> child
+        }
+      }
+
+    return node.withNewChildren(updatedChildren)
+  }
+
+  private fun simplifyPlusPercent(node: PlusNode): PlusNode? {
+    // find percent node index, nodes before will be increased by percent
+    val percentIndex = node.children.indexOfFirst { it is PercentNode }
+    if (percentIndex == -1) {
+      Logger.v { "Percent not found, skipped" }
+      return null
+    }
+
+    val percentNode = node.children[percentIndex] as? PercentNode
+    percentNode?.extractNumberValue(0)
+    val percentNumber = percentNode?.extractNumberValue(0)
+    if (percentNumber == null) {
+      Logger.w { "Percent number not found" }
+      return null
+    }
+
+    return simplifyPercentInPlus(node, percentIndex, percentNumber) { sumOfNodes, fraction ->
+      sumOfNodes.plus(fraction)
+    }
+  }
+
+  private fun simplifyMinusPercent(node: PlusNode): PlusNode? {
+    // minus percent is in unary minus node
+    val percentIndex =
+      node.children.indexOfFirst {
+        it is UnaryMinusNode && it.children.getOrNull(0) is PercentNode
+      }
+    if (percentIndex == -1) {
+      Logger.v { "Percent not found, skipped" }
+      return null
+    }
+
+    val minusNode = node.children[percentIndex] as? UnaryMinusNode
+    val percentNode = minusNode?.children[0] as? PercentNode
+    val percentNumber = percentNode?.extractNumberValue(0)
+    if (percentNumber == null) {
+      Logger.v { "Percent number not found" }
+      return null
+    }
+
+    return simplifyPercentInPlus(node, percentIndex, percentNumber) { sumOfNodes, fraction ->
+      sumOfNodes.minus(fraction)
+    }
+  }
+
+  private fun simplifyPercent(node: PercentNode, parentNode: ASTNode?): MathNumberNode? {
+    // let simplifyPlus handle it
+    if (parentNode is PlusNode || parentNode is UnaryMinusNode) return null
+    // replace with fraction
+    val percentNumber = node.extractNumberValue(0)
+    if (percentNumber == null) {
+      Logger.v { "percentNumberNode is null" }
+      return null
+    }
+    val fractionNode =
+      MathNumberNode(percentNumber.divide(KBigDecimal("100"), context.scale, context.roundingMode))
+    return fractionNode
   }
 
   private fun simplifyMultiply(node: MultiplyNode): MultiplyNode? {
@@ -112,8 +222,8 @@ internal class MathSimplify(override val input: ASTNode, private val context: Sc
 
   private fun simplifyDivide(node: DivideNode): MathNumberNode? {
     if (node.children.size != 2) return null
-    val child1 = (node.children[0] as? MathNumberNode)?.value ?: return null
-    val child2 = (node.children[1] as? MathNumberNode)?.value ?: return null
+    val child1 = node.extractNumberValue(0) ?: return null
+    val child2 = node.extractNumberValue(1) ?: return null
     if (child2.isEqualTo(KBigDecimal.ZERO)) throw ExpressionException.DivideByZero()
     val result = child1.divide(child2, context.scale, context.roundingMode)
     return MathNumberNode(result)
@@ -121,16 +231,16 @@ internal class MathSimplify(override val input: ASTNode, private val context: Sc
 
   private fun simplifyModulo(node: MathModuloNode): MathNumberNode? {
     if (node.children.size != 2) return null
-    val child1 = (node.children[0] as? MathNumberNode)?.value ?: return null
-    val child2 = (node.children[1] as? MathNumberNode)?.value ?: return null
+    val child1 = node.extractNumberValue(0) ?: return null
+    val child2 = node.extractNumberValue(1) ?: return null
     val result = child1.remainder(child2)
     return MathNumberNode(result)
   }
 
   private fun simplifyPower(node: PowerNode): MathNumberNode? {
     if (node.children.size != 2) return null
-    val child1 = (node.children[0] as? MathNumberNode)?.value ?: return null
-    val child2 = (node.children[1] as? MathNumberNode)?.value ?: return null
+    val child1 = node.extractNumberValue(0) ?: return null
+    val child2 = node.extractNumberValue(1) ?: return null
     // mathematicians made up this controversy because reasons
     if (child1.isEqualTo(KBigDecimal.ZERO) && child2.isEqualTo(KBigDecimal.ZERO)) {
       throw ExpressionException.BadExpression()
@@ -141,14 +251,14 @@ internal class MathSimplify(override val input: ASTNode, private val context: Sc
 
   private fun simplifySqrt(node: SqrtNode): MathNumberNode? {
     if (node.children.size != 1) return null
-    val child1 = (node.children[0] as? MathNumberNode)?.value ?: return null
+    val child1 = node.extractNumberValue(0) ?: return null
     val result = KBigDecimalMath.sqrt(child1, context.mathContext)
     return MathNumberNode(result)
   }
 
   private fun simplifyFactorial(node: FactorialNode): MathNumberNode? {
     if (node.children.size != 1) return null
-    val child1 = (node.children[0] as? MathNumberNode)?.value ?: return null
+    val child1 = node.extractNumberValue(0) ?: return null
     if (child1.isLessThan(KBigDecimal.ZERO)) throw ExpressionException.FactorialCalculation()
     val result = child1.factorial()
     return MathNumberNode(result)
@@ -195,4 +305,7 @@ internal class MathSimplify(override val input: ASTNode, private val context: Sc
   // rescale to avoid precision loss when evaluating special cases in trigonometry
   private fun KBigDecimal.rescaleTrig(mathContext: KMathContext): KBigDecimal =
     this.setScale(mathContext.precision, KRoundingMode.HALF_EVEN)
+
+  private fun ASTNode.extractNumberValue(index: Int): KBigDecimal? =
+    (this.children[index] as? MathNumberNode)?.value
 }

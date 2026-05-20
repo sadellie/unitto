@@ -21,24 +21,19 @@ package com.sadellie.unitto.feature.converter.components
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.ListItemShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,10 +44,11 @@ import com.sadellie.unitto.core.data.converter.UnitStats
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
-import com.sadellie.unitto.core.ui.ProvideColor
+import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.SearchPlaceholder
+import com.sadellie.unitto.core.ui.listedShapes
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_open_settings
@@ -100,7 +96,7 @@ internal fun UnitsList(
     } else {
       LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+        verticalArrangement = ListItemDefaults.ListArrangement,
         contentPadding = contentPadding,
       ) {
         searchResult.forEach { (group, units) ->
@@ -120,12 +116,12 @@ internal fun UnitsList(
 
           itemsIndexed(
             items = units,
-            key = { index, item -> item.basicUnit.id },
+            key = { _, item -> item.basicUnit.id },
             contentType = { _, _ -> ContentType.ITEM },
           ) { index, item ->
             UnitListItem(
               modifier = Modifier.animateItem().padding(horizontal = Sizes.medium).fillMaxWidth(),
-              shape = ListItemExpressiveDefaults.listedShaped(index, units.size),
+              shapes = ListItemDefaults.listedShapes(index, units.size),
               name = stringResource(item.basicUnit.displayName),
               supportLabel = supportLabel(item),
               isFavorite = item.stats.isFavorite,
@@ -147,51 +143,34 @@ private fun UnitListItem(
   supportLabel: String,
   isFavorite: Boolean,
   isSelected: Boolean,
-  shape: Shape,
+  shapes: ListItemShapes,
   onClick: () -> Unit,
   favoriteUnit: () -> Unit,
 ) {
-  Row(
-    modifier =
-      Modifier.clickable(onClick = onClick)
-        .then(modifier)
-        .clip(shape)
-        .background(
-          if (isSelected) MaterialTheme.colorScheme.primaryContainer
-          else MaterialTheme.colorScheme.surfaceBright
-        )
-        .padding(
-          start = Sizes.medium,
-          top = Sizes.extraSmall,
-          bottom = Sizes.extraSmall,
-          end = Sizes.extraSmall,
-        ),
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(Sizes.large),
-  ) {
-    val itemColor =
-      if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-      else MaterialTheme.colorScheme.onSurfaceVariant
-    Column(Modifier.weight(1f)) {
+  ListItemExpressive(
+    selected = isSelected,
+    modifier = modifier,
+    onClick = onClick,
+    shapes = shapes,
+    content = {
       Text(
         modifier = Modifier.fillMaxWidth(),
         text = name,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        color = itemColor,
       )
+    },
+    supportingContent = {
       Text(
         modifier = Modifier.fillMaxWidth(),
         text = supportLabel,
         style = MaterialTheme.typography.bodySmall,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        color = itemColor,
       )
-    }
-
-    ProvideColor(itemColor) { FavoritesButton(state = isFavorite, onClick = favoriteUnit) }
-  }
+    },
+    trailingContent = { FavoritesButton(state = isFavorite, onClick = favoriteUnit) },
+  )
 }
 
 private enum class ContentType {
@@ -258,7 +237,13 @@ private fun PreviewUnitsList() {
               Res.string.unit_mile_short,
             ),
           )
-          .map { UnitSearchResultItem(it, UnitStats(it.id), null) }
+          .map { unit ->
+            UnitSearchResultItem(
+              basicUnit = unit,
+              stats = UnitStats(id = unit.id, isFavorite = unit.id == UnitID.foot),
+              conversion = null,
+            )
+          }
     )
 
   UnitsList(

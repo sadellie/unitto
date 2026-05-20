@@ -32,6 +32,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -42,8 +43,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
@@ -51,10 +52,17 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.singleShapes
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
@@ -138,14 +146,13 @@ private fun ConverterWidgetConfigureCreateNewScreen(
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       ListItemExpressive(
         onClick = { navigateToSelectFrom() },
-        shape =
-          if (isUnitFromSelected) ListItemExpressiveDefaults.firstShape
-          else ListItemExpressiveDefaults.singleShape,
-        headlineContent = { Text(stringResource(Res.string.converter_widget_configure_left_unit)) },
+        shapes =
+          if (isUnitFromSelected) ListItemDefaults.firstShapes else ListItemDefaults.singleShapes,
+        content = { Text(stringResource(Res.string.converter_widget_configure_left_unit)) },
         supportingContent = {
           Text(
             stringResource(
@@ -162,10 +169,8 @@ private fun ConverterWidgetConfigureCreateNewScreen(
       ) {
         ListItemExpressive(
           onClick = { if (uiState.unitFrom != null) navigateToSelectTo(uiState.unitFrom.id) },
-          shape = ListItemExpressiveDefaults.lastShape,
-          headlineContent = {
-            Text(stringResource(Res.string.converter_widget_configure_right_unit))
-          },
+          shapes = ListItemDefaults.lastShapes,
+          content = { Text(stringResource(Res.string.converter_widget_configure_right_unit)) },
           supportingContent = {
             Text(
               stringResource(
@@ -184,18 +189,21 @@ internal data class ConverterWidgetConfigureCreateNewUIState(
   val unitTo: BasicUnit?,
 )
 
-internal class ConverterWidgetConfigureCreateNewViewModel(private val unitsRepo: UnitsRepository) :
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class ConverterWidgetConfigureCreateNewViewModel(private val unitsRepo: UnitsRepository) :
   ViewModel() {
   private val _unitFrom = MutableStateFlow<BasicUnit?>(null)
   private val _unitTo = MutableStateFlow<BasicUnit?>(null)
 
-  val uiState =
+  internal val uiState =
     combine(_unitFrom, _unitTo) { unitFrom, unitTo ->
         ConverterWidgetConfigureCreateNewUIState(unitFrom = unitFrom, unitTo = unitTo)
       }
       .stateIn(viewModelScope, null)
 
-  fun selectUnitFromById(id: String) {
+  internal fun selectUnitFromById(id: String) {
     viewModelScope.launch {
       val unitFrom = unitsRepo.getById(id)
       if (unitFrom.group != _unitTo.value?.group) {
@@ -205,7 +213,7 @@ internal class ConverterWidgetConfigureCreateNewViewModel(private val unitsRepo:
     }
   }
 
-  fun selectUnitToById(id: String) {
+  internal fun selectUnitToById(id: String) {
     viewModelScope.launch {
       val unitTo = unitsRepo.getById(id)
       if (unitTo.group != _unitFrom.value?.group) return@launch

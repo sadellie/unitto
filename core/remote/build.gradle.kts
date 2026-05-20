@@ -19,6 +19,7 @@
 plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.serialization)
+  alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -28,10 +29,7 @@ kotlin {
     implementation(libs.io.ktor.ktor.client.cio)
     implementation(libs.io.ktor.ktor.serialization.kotlinx.json)
     implementation(libs.io.ktor.ktor.client.content.negotiation)
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.core)
   }
-  sourceSets.androidMain.dependencies { implementation(libs.io.insert.koin.koin.core.coroutines) }
   sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
 
   sourceSets.wasmJsMain.dependencies { implementation(libs.io.ktor.ktor.client.js) }

@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.core.navigation
 
-import com.eygraber.uri.toKmpUri
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -74,5 +73,5 @@ class ExtractRouteFromDeepLinkTest {
     assertExtractedRoute(BodyMassStartRoute, "app://com.sadellie.unitto/body_mass_route")
 
   private fun assertExtractedRoute(expected: Route?, uriString: String) =
-    assertEquals(expected, Route.extractRouteFromDeeplink(uriString.toKmpUri()))
+    assertEquals(expected, Route.extractRouteFromDeeplink(uriString))
 }

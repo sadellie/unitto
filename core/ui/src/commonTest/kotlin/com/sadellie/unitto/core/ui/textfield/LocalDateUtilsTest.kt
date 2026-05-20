@@ -27,7 +27,7 @@ import kotlinx.datetime.LocalDate
 class LocalDateUtilsTest {
   @Test
   fun formatDateWeekDayMonthYear_validDate() {
-    val locale = Locale("en").platformLocale
+    val locale = Locale("en")
     val localDate = LocalDate(2025, 12, 21)
     val expected = "Sun, Dec 21, 2025"
     val actual = localDate.formatDateWeekDayMonthYear(locale)

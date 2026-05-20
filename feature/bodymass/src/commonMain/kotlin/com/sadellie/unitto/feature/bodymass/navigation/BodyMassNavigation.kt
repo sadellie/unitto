@@ -18,16 +18,14 @@
 
 package com.sadellie.unitto.feature.bodymass.navigation
 
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.sadellie.unitto.core.navigation.BodyMassStartRoute
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.feature.bodymass.BodyMassRoute
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
-fun Module.bodyMassNavigation() {
-  navigation<BodyMassStartRoute> {
+fun EntryProviderScope<NavKey>.bodyMassNavigation() {
+  entry<BodyMassStartRoute> {
     val navigator = LocalNavigator.current
     BodyMassRoute(openDrawer = navigator::openDrawer)
   }

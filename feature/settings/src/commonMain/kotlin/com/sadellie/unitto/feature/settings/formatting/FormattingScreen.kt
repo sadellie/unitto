@@ -35,6 +35,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
@@ -68,17 +69,18 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.PagedIsland
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.Slider
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.middleShapes
 import com.sadellie.unitto.core.ui.textfield.formatExpression
-import kotlin.math.ceil
-import kotlin.math.roundToInt
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_comma
 import unitto.core.common.generated.resources.common_disabled
@@ -95,10 +97,12 @@ import unitto.core.common.generated.resources.settings_precision_max
 import unitto.core.common.generated.resources.settings_precision_support
 import unitto.core.common.generated.resources.settings_space
 import unitto.core.common.generated.resources.settings_thousands_separator
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 @Composable
 fun FormattingRoute(navigateUpAction: () -> Unit) {
-  val viewModel: FormattingViewModel = koinViewModel()
+  val viewModel: FormattingViewModel = metroViewModel()
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
@@ -131,7 +135,7 @@ fun FormattingScreen(
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
           .padding(horizontal = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       val precisions: ClosedFloatingPointRange<Float> = 0f..MAX_SCALE_ALIAS
       var scale by rememberSaveable(uiState.precision) { mutableIntStateOf(uiState.precision) }
@@ -158,7 +162,7 @@ fun FormattingScreen(
 
       // Precision
       ListItemExpressive(
-        shape = ListItemExpressiveDefaults.firstShape,
+        shapes = ListItemDefaults.firstShapes,
         leadingContent = {
           Icon(Symbols.DecimalIncrease, stringResource(Res.string.settings_precision))
         },
@@ -186,7 +190,7 @@ fun FormattingScreen(
 
       // Thousands separator
       ListItemExpressive(
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
         leadingContent = {
           Icon(Symbols._123, stringResource(Res.string.settings_thousands_separator))
         },
@@ -207,7 +211,7 @@ fun FormattingScreen(
         exit = shrinkVertically() + fadeOut(),
       ) {
         ListItemExpressive(
-          shape = ListItemExpressiveDefaults.middleShape,
+          shapes = ListItemDefaults.middleShapes,
           leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
           headlineContent = { Text(stringResource(Res.string.settings_decimal_separator)) },
           secondaryContent = {
@@ -221,7 +225,7 @@ fun FormattingScreen(
       }
 
       ListItemExpressive(
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
         headlineText = stringResource(Res.string.settings_indian_numbering_system),
         icon = rememberEmptyImageVector(), // empty vector for correct padding
         onSwitchChange = { indian ->
@@ -236,7 +240,7 @@ fun FormattingScreen(
 
       // Output format
       ListItemExpressive(
-        shape = ListItemExpressiveDefaults.lastShape,
+        shapes = ListItemDefaults.lastShapes,
         leadingContent = {
           Icon(Symbols.EMobileData, stringResource(Res.string.settings_exponential_notation))
         },

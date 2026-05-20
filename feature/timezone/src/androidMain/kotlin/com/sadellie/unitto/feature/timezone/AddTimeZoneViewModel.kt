@@ -30,6 +30,10 @@ import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.ui.textfield.observe
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +43,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.N)
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
 class AddTimeZoneViewModel(private val timezonesRepository: TimeZonesRepository) : ViewModel() {
   private var _searchJob: Job? = null
   private val _locale =
@@ -46,12 +53,12 @@ class AddTimeZoneViewModel(private val timezonesRepository: TimeZonesRepository)
   private val _query = TextFieldState()
   private val _result = MutableStateFlow(emptyList<SearchResultZone>())
 
-  val uiState =
+  internal val uiState =
     _result
       .mapLatest { AddTimeZoneUIState.Ready(_query, it) }
       .stateIn(viewModelScope, AddTimeZoneUIState.Loading)
 
-  suspend fun observeSearchFilters() {
+  internal suspend fun observeSearchFilters() {
     val queryFlow = _query.observe()
 
     combine(queryFlow, timezonesRepository.favoriteTimeZones) { queryFlowValue, _ ->
@@ -60,7 +67,7 @@ class AddTimeZoneViewModel(private val timezonesRepository: TimeZonesRepository)
       .collectLatest {}
   }
 
-  fun addToFavorites(timeZone: TimeZone) =
+  internal fun addToFavorites(timeZone: TimeZone) =
     viewModelScope.launch { timezonesRepository.addToFavorites(timeZone) }
 
   private fun search(query: String) {

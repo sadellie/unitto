@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,11 +50,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogState
 import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogs
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
@@ -69,12 +72,12 @@ internal fun DateTimeBlock(
   Column(
     modifier = modifier,
     horizontalAlignment = Alignment.Start,
-    verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+    verticalArrangement = ListItemDefaults.ListArrangement,
   ) {
     val locale = LocalLocale.current
     Column(
       modifier =
-        Modifier.clip(ListItemExpressiveDefaults.firstShape)
+        Modifier.clip(ListItemDefaults.firstShape)
           .combinedClickable(
             onClick = { dialogState = DateTimeDialogState.FROM_TIME },
             onLongClick = onLongClick,
@@ -96,17 +99,20 @@ internal fun DateTimeBlock(
       )
       val context = LocalContext.current
       val formattedTime =
-        remember(dateTime, locale) { dateTime.formatTime(locale, is24HourFormat(context)) }
+        remember(dateTime, locale) {
+          dateTime.formatTime(locale.platformLocale, is24HourFormat(context))
+        }
       AnimatedText(
         modifier = Modifier,
         targetState = formattedTime,
         style = MaterialTheme.typography.displaySmall,
       )
     }
-    val formattedDate = remember(dateTime, locale) { dateTime.formatDateWeekDayMonthYear(locale) }
+    val formattedDate =
+      remember(dateTime, locale) { dateTime.formatDateWeekDayMonthYear(locale.platformLocale) }
     AnimatedText(
       modifier =
-        Modifier.clip(ListItemExpressiveDefaults.lastShape)
+        Modifier.clip(ListItemDefaults.lastShape)
           .combinedClickable(
             onClick = { dialogState = DateTimeDialogState.FROM_DATE },
             onLongClick = onLongClick,

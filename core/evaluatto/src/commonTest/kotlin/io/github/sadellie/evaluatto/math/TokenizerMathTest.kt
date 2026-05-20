@@ -99,6 +99,22 @@ class TokenizerMathTest {
     )
 
   @Test
+  fun `percentage as token`() =
+    assertEquals(
+      listOf(
+        Token.Number("1"),
+        Token.Plus,
+        Token.LeftBracket,
+        Token.Number("2"),
+        Token.Plus,
+        Token.Number("3"),
+        Token.RightBracket,
+        Token.Percent,
+      ),
+      "1+(2+3)%".tokenizeMath(),
+    )
+
+  @Test
   fun getBaseBefore_number() {
     // 132.5+14%
     val input = mutableListOf(Token.Number("132.5"), Token.Plus, Token.Number("14"), Token.Percent)

@@ -27,6 +27,10 @@ import com.sadellie.unitto.core.backup.BackupManager
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.AppStatsDao
 import com.sadellie.unitto.core.database.UnittoDatabaseAndroid
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,10 +38,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class BackupViewModel(
-  appStatsDao: AppStatsDao,
-  private val database: UnittoDatabaseAndroid,
-) : ViewModel() {
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class BackupViewModel(appStatsDao: AppStatsDao, private val database: UnittoDatabaseAndroid) :
+  ViewModel() {
   private val _favoriteUnits = appStatsDao.favoriteUnitsSize()
   private val _usedUnits = appStatsDao.usedUnitsCount()
   private val _savedExpressions = appStatsDao.savedExpressionCount()
@@ -45,7 +50,7 @@ internal class BackupViewModel(
   private val _isInProgress = MutableStateFlow(false)
   private var backupJob: Job? = null
 
-  val uiState =
+  internal val uiState =
     combine(_favoriteUnits, _usedUnits, _savedExpressions, _favoriteTimeZones, _isInProgress) {
         favoriteUnits,
         usedUnits,
@@ -63,7 +68,7 @@ internal class BackupViewModel(
       }
       .stateIn(viewModelScope, BackupUIState.Loading)
 
-  fun backup(context: Context, uri: Uri) {
+  internal fun backup(context: Context, uri: Uri) {
     backupJob?.cancel()
     backupJob =
       viewModelScope.launch(Dispatchers.IO) {
@@ -77,7 +82,7 @@ internal class BackupViewModel(
       }
   }
 
-  fun restore(context: Context, uri: Uri) {
+  internal fun restore(context: Context, uri: Uri) {
     backupJob?.cancel()
     backupJob =
       viewModelScope.launch(Dispatchers.IO) {

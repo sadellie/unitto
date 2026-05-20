@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,10 +35,11 @@ import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.icons.symbols.Translate
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 import org.jetbrains.compose.resources.stringResource
@@ -75,7 +77,7 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
     LazyColumn(
       modifier = Modifier.padding(horizontal = Sizes.large),
       contentPadding = padding,
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       item(key = "translate", contentType = ContentType.ANNOYING_BOX) {
         AnnoyingBox(
@@ -92,11 +94,11 @@ private fun LanguageScreen(navigateUp: () -> Unit) {
         item(key = key, contentType = ContentType.ITEM) {
           ListItemExpressive(
             onClick = { changeLanguage(key) },
-            headlineContent = { Text(stringResource(res)) },
+            content = { Text(stringResource(res)) },
             leadingContent = {
               RadioButton(selected = currentLangKey == key, onClick = { changeLanguage(key) })
             },
-            shape = ListItemExpressiveDefaults.listedShaped(index, languages.size),
+            shapes = ListItemDefaults.listedShapes(index, languages.size),
           )
         }
       }

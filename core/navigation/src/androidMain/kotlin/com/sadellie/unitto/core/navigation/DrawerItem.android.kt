@@ -50,10 +50,6 @@ actual val mainDrawerItems: List<DrawerItem> by lazy {
       BodyMassDrawerItem,
     )
 
-  if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-    all = all - TimeZonesDrawerItem
-  }
-
   all
 }
 

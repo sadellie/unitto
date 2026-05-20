@@ -48,9 +48,10 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
@@ -113,9 +114,13 @@ import com.sadellie.unitto.core.ui.textfield.AutoSizeTextField
 import com.sadellie.unitto.core.ui.textfield.InputTransformationWithReplacement
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsProgrammer
-import com.sadellie.unitto.core.ui.textfield.getTextFieldState
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.core.ui.textfield.placeCursorAtTheEnd
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import io.github.sadellie.evaluatto.programmer.DataUnit
 import io.github.sadellie.evaluatto.programmer.programmerCalculateExpression
 import kotlinx.coroutines.Job
@@ -125,16 +130,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.dsl.navigation3.navigation
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_error
 
-@OptIn(KoinExperimentalAPI::class)
-fun Module.programmerNavigation() {
-  navigation<ProgrammerStartRoute> {
+fun EntryProviderScope<NavKey>.programmerNavigation() {
+  entry<ProgrammerStartRoute> {
     val navigator = LocalNavigator.current
     ProgrammerRoute(openDrawer = navigator::openDrawer)
   }
@@ -166,13 +166,12 @@ internal sealed interface ProgrammerCalculationResult {
   }
 }
 
-internal class ProgrammerViewModel(
-  private val userPrefsRepository: UserPreferencesRepository,
-  private val savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class ProgrammerViewModel(userPrefsRepository: UserPreferencesRepository) : ViewModel() {
   private var _calculationJob: Job? = null
-  private val _inputKey = "PROGRAMMER_INPUT"
-  private val _input = savedStateHandle.getTextFieldState(_inputKey)
+  private val _input = TextFieldState()
   private val _result =
     MutableStateFlow<ProgrammerCalculationResult>(ProgrammerCalculationResult.Empty)
   private val _lastResult = MutableStateFlow("")
@@ -180,7 +179,7 @@ internal class ProgrammerViewModel(
   private val _dataUnit = MutableStateFlow(DataUnit.QWORD)
   private val _prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
 
-  val uiState =
+  internal val uiState =
     combine(_prefs, _result, _dataUnit, _base) { prefs, result, unit, base ->
         prefs ?: return@combine ProgrammerScreenUIState.Loading
         ProgrammerScreenUIState.Ready(
@@ -195,22 +194,21 @@ internal class ProgrammerViewModel(
       }
       .stateIn(viewModelScope, ProgrammerScreenUIState.Loading)
 
-  suspend fun observe() {
+  internal suspend fun observe() {
     _input.observe().collectLatest { input ->
       val lastResult = _lastResult.value
       // skip
       if (lastResult == input && lastResult.isNotEmpty()) return@collectLatest
-      savedStateHandle[_inputKey] = input.toString()
       calculate()
     }
   }
 
-  fun onClear() {
+  internal fun onClear() {
     _input.clearText()
     _result.update { ProgrammerCalculationResult.Empty }
   }
 
-  fun onBrackets() {
+  internal fun onBrackets() {
     val isEqualClicked = _lastResult.value.isNotEmpty()
     if (isEqualClicked) {
       _input.placeCursorAtTheEnd()
@@ -219,7 +217,7 @@ internal class ProgrammerViewModel(
     with(TextFieldStateTokenExtensionsProgrammer) { _input.addBracket() }
   }
 
-  fun onAddToken(token: String) {
+  internal fun onAddToken(token: String) {
     val isEqualClicked = _lastResult.value.isNotEmpty()
     if (isEqualClicked) {
       when {
@@ -231,7 +229,7 @@ internal class ProgrammerViewModel(
     with(TextFieldStateTokenExtensionsProgrammer) { _input.addTokens(token) }
   }
 
-  fun onDelete() {
+  internal fun onDelete() {
     val isEqualClicked = _lastResult.value.isNotEmpty()
     if (isEqualClicked) {
       _input.clearText()
@@ -241,7 +239,7 @@ internal class ProgrammerViewModel(
     }
   }
 
-  fun onEqual() {
+  internal fun onEqual() {
     val result = _result.value
     Logger.d(tag = TAG) { "onEqual: $result" }
     when (result) {
@@ -256,7 +254,7 @@ internal class ProgrammerViewModel(
     }
   }
 
-  fun toggleSize() {
+  internal fun toggleSize() {
     _dataUnit.update { unit ->
       when (unit) {
         DataUnit.QWORD -> DataUnit.WORD
@@ -268,7 +266,7 @@ internal class ProgrammerViewModel(
     calculate()
   }
 
-  fun toggleBase() {
+  internal fun toggleBase() {
     val oldRadix = _base.value
     val newRadix =
       when (oldRadix) {
@@ -300,23 +298,22 @@ internal class ProgrammerViewModel(
 
   private fun calculate() {
     _calculationJob?.cancel()
-    _calculationJob =
-      viewModelScope.launch {
-        val prefs = _prefs.value ?: return@launch
-        // TODO base and qword in prefs
-        val newResult =
-          try {
-            ProgrammerCalculationResult.Success(
-              programmerCalculateExpression(_input.text.toString(), _base.value, _dataUnit.value)
-            )
-          } catch (e: Exception) {
-            Logger.e(throwable = e, tag = TAG) { "Failed to calculate" }
-            ProgrammerCalculationResult.Error.InvisibleError
-          }
+    _calculationJob = viewModelScope.launch {
+      val prefs = _prefs.value ?: return@launch
+      // TODO base and qword in prefs
+      val newResult =
+        try {
+          ProgrammerCalculationResult.Success(
+            programmerCalculateExpression(_input.text.toString(), _base.value, _dataUnit.value)
+          )
+        } catch (e: Exception) {
+          Logger.e(throwable = e, tag = TAG) { "Failed to calculate" }
+          ProgrammerCalculationResult.Error.InvisibleError
+        }
 
-        Logger.d(tag = TAG) { "Calculate: $newResult" }
-        _result.update { newResult }
-      }
+      Logger.d(tag = TAG) { "Calculate: $newResult" }
+      _result.update { newResult }
+    }
   }
 
   companion object {
@@ -326,7 +323,7 @@ internal class ProgrammerViewModel(
 
 @Composable
 internal fun ProgrammerRoute(openDrawer: () -> Unit) {
-  val viewModel: ProgrammerViewModel = koinViewModel()
+  val viewModel: ProgrammerViewModel = metroViewModel()
   LaunchedEffect(Unit) { viewModel.observe() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
@@ -726,6 +723,15 @@ internal data class ProgrammerInputTransformation(private val grouping: Token.Fo
   InputTransformationWithReplacement {
   override val legalTokens: List<String> =
     listOf(
+      Token.Nand.symbol,
+      Token.Or.symbol,
+      Token.And.symbol,
+      Token.Not.symbol,
+      Token.Nor.symbol,
+      Token.Xor.symbol,
+      Token.Lsh.symbol,
+      Token.Rsh.symbol,
+      Token.Mod.symbol,
       Token.Digit0.symbol,
       Token.Digit1.symbol,
       Token.Digit2.symbol,
@@ -748,15 +754,6 @@ internal data class ProgrammerInputTransformation(private val grouping: Token.Fo
       Token.Plus.symbol,
       Token.LeftBracket.symbol,
       Token.RightBracket.symbol,
-      Token.Or.symbol,
-      Token.And.symbol,
-      Token.Not.symbol,
-      Token.Nand.symbol,
-      Token.Nor.symbol,
-      Token.Xor.symbol,
-      Token.Lsh.symbol,
-      Token.Rsh.symbol,
-      Token.Mod.symbol,
     )
 
   override val replacementMap: Map<String, String> =
@@ -788,6 +785,8 @@ internal data class ProgrammerInputTransformation(private val grouping: Token.Fo
       Token.Rsh.symbol,
       Token.Mod.symbol,
     )
+
+  override val illegalTokens: List<String> = emptyList()
 
   override fun TextFieldBuffer.transformInput() =
     transformInputWithReplacements(longProgrammerTokens)
@@ -836,7 +835,7 @@ private fun PreviewProgrammerScreen() = ExpressivePreview {
     uiState =
       remember {
         ProgrammerScreenUIState.Ready(
-          input = TextFieldState("123ABC"),
+          input = TextFieldState("123andABC"),
           output = ProgrammerCalculationResult.Success("789"),
           showAcButton = true,
           formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),

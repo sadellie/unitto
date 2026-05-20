@@ -22,6 +22,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
@@ -70,24 +71,19 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
-import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
+import com.sadellie.unitto.core.ui.ListArrangement
+import com.sadellie.unitto.feature.glance.GraphProvider
 import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.FloatingActionButton
 import com.sadellie.unitto.feature.glance.common.UnittoGlanceTheme
 import com.sadellie.unitto.feature.glance.common.WidgetTheme
-import kotlin.getValue
 import kotlinx.coroutines.flow.mapLatest
 import org.jetbrains.compose.resources.stringResource
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.converter_title
 import unitto.core.common.generated.resources.unit_kilometer
@@ -95,7 +91,7 @@ import unitto.core.common.generated.resources.unit_kilometer_short
 import unitto.core.common.generated.resources.unit_meter
 import unitto.core.common.generated.resources.unit_meter_short
 
-internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
+internal class ConverterWidget : GlanceAppWidget() {
   override val sizeMode: SizeMode = SizeMode.Responsive(setOf(smallSizeMode, mediumSizeMode))
   override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
 
@@ -106,7 +102,7 @@ internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
   }
 
   override suspend fun onDelete(context: Context, glanceId: GlanceId) {
-    val dao by inject<ConverterWidgetUnitPairDao>()
+    val dao = GraphProvider.widgetDependencies.converterWidgetUnitPairDao
     val manager = GlanceAppWidgetManager(context)
     val appWidgetId = manager.getAppWidgetId(glanceId)
     dao.deleteByAppWidgetId(appWidgetId)
@@ -115,8 +111,8 @@ internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
   }
 
   override suspend fun provideGlance(context: Context, id: GlanceId) {
-    val dao by inject<ConverterWidgetUnitPairDao>()
-    val unitsRepo by inject<UnitsRepository>()
+    val dao = GraphProvider.widgetDependencies.converterWidgetUnitPairDao
+    val unitsRepo = GraphProvider.widgetDependencies.unitsRepository
     val manager = GlanceAppWidgetManager(context)
     val appWidgetId = manager.getAppWidgetId(id)
 
@@ -124,7 +120,7 @@ internal class ConverterWidget : GlanceAppWidget(), KoinComponent {
       dao.getByAppWidgetId(appWidgetId).mapLatest { entities ->
         entityListToDomainList(unitsRepo, entities)
       }
-    val userPrefsRepository by inject<UserPreferencesRepository>()
+    val userPrefsRepository = GraphProvider.widgetDependencies.userPreferencesRepository
     provideContent {
       val appPrefs = userPrefsRepository.appPrefs.collectAsState(null).value
       WidgetTheme(appPrefs?.enableAmoledTheme ?: false) {
@@ -195,7 +191,7 @@ private fun ReadyUI(
       items(items = indexedUnits, itemId = { (_, unitPair) -> unitPair.id.toLong() }) {
         (index, unitPair) ->
         // outer padding
-        Box(GlanceModifier.padding(vertical = ListItemExpressiveDefaults.ListArrangement.spacing)) {
+        Box(GlanceModifier.padding(vertical = ListItemDefaults.ListArrangement.spacing)) {
           UnitPairItem(
             modifier =
               GlanceModifier.clickable(onUnitPairClick(unitPair.from.id, unitPair.to.id))
@@ -232,7 +228,7 @@ private fun UnitPairItem(
       modifier
         .padding(Sizes.small)
         .background(
-          imageProvider = ImageProvider(listedShaped(indexInList, listSize)),
+          imageProvider = ImageProvider(listedShapes(indexInList, listSize)),
           colorFilter = ColorFilter.tint(UnittoGlanceTheme.colors.secondaryContainer),
         ),
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -256,7 +252,7 @@ private fun UnitPairItem(
 }
 
 @Stable
-private fun listedShaped(indexInList: Int, listSize: Int): Int {
+private fun listedShapes(indexInList: Int, listSize: Int): Int {
   if (listSize == 1) return R.drawable.rounded_corners_rectangle_shape_single
   val isFirst = indexInList == 0
   val isLast = indexInList == listSize - 1

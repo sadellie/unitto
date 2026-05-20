@@ -32,9 +32,11 @@ object TextFieldStateTokenExtensionsMath : TextFieldStateTokenExtensions {
       Token.Power.symbol,
     )
   }
-  override val openAfterOperators by lazy { closeBeforeOperators + Token.LeftBracket.symbol }
+  override val openAfterOperators by lazy {
+    closeBeforeOperators + Token.LeftBracket.symbol + Token.MathFunc.allMathSymbolsWithBracket
+  }
 
-  override val longTokens = Token.Func.allMathSymbolsWithBracket
+  override val longTokens = Token.MathFunc.allMathSymbolsWithBracket
 
   override fun TextFieldState.addTokens(tokens: String) {
     when (tokens) {

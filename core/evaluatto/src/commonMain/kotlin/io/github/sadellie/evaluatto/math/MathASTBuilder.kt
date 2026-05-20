@@ -29,6 +29,7 @@ import io.github.sadellie.evaluatto.ast.MathFunctionNode
 import io.github.sadellie.evaluatto.ast.MathModuloNode
 import io.github.sadellie.evaluatto.ast.MathNumberNode
 import io.github.sadellie.evaluatto.ast.MultiplyNode
+import io.github.sadellie.evaluatto.ast.PercentNode
 import io.github.sadellie.evaluatto.ast.PlusNode
 import io.github.sadellie.evaluatto.ast.PowerNode
 import io.github.sadellie.evaluatto.ast.ScriptContext
@@ -103,6 +104,10 @@ internal class ASTMathBuilder(override val tokens: List<Token.Math>) :
           val child = popLastFromOutputTree()
           FactorialNode(child)
         }
+        Token.Percent -> {
+          val child = popLastFromOutputTree()
+          PercentNode(child)
+        }
         Token.Modulo -> {
           val right = popLastFromOutputTree()
           val left = popLastFromOutputTree()
@@ -121,7 +126,6 @@ internal class ASTMathBuilder(override val tokens: List<Token.Math>) :
         is Token.Const,
         Token.EngineeringE,
         is Token.Number,
-        Token.Percent,
         Token.RightBracket -> error("Not allowed to pop: $parentOperator")
       }
 

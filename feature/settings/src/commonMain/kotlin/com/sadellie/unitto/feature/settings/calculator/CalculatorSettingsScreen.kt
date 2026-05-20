@@ -26,6 +26,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,12 +48,15 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.SplitscreenBottom
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.middleShapes
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.calculator_title
 import unitto.core.common.generated.resources.settings_constant_calculation
@@ -68,7 +72,7 @@ import unitto.core.common.generated.resources.settings_stepped_drag_gesture_supp
 
 @Composable
 internal fun CalculatorSettingsRoute(navigateUpAction: () -> Unit) {
-  val viewModel: CalculatorSettingsViewModel = koinViewModel()
+  val viewModel: CalculatorSettingsViewModel = metroViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
@@ -103,7 +107,7 @@ private fun CalculatorSettingsScreen(
       modifier =
         Modifier.padding(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       ListItemExpressive(
         headlineText = stringResource(Res.string.settings_history_view_button),
@@ -111,7 +115,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(Res.string.settings_history_view_button_support),
         switchState = prefs.openHistoryViewButton,
         onSwitchChange = updateOpenHistoryViewButton,
-        shape = ListItemExpressiveDefaults.firstShape,
+        shapes = ListItemDefaults.firstShapes,
       )
 
       ListItemExpressive(
@@ -120,7 +124,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(Res.string.settings_fractional_output_support),
         switchState = prefs.fractionalOutput,
         onSwitchChange = updateFractionalOutput,
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
 
       ListItemExpressive(
@@ -129,7 +133,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(Res.string.settings_partial_history_view_support),
         switchState = prefs.partialHistoryView,
         onSwitchChange = updatePartialHistoryView,
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
 
       AnimatedVisibility(
@@ -144,7 +148,7 @@ private fun CalculatorSettingsScreen(
           supportingText = stringResource(Res.string.settings_stepped_drag_gesture_support),
           switchState = prefs.steppedPartialHistoryView,
           onSwitchChange = updateSteppedPartialHistoryView,
-          shape = ListItemExpressiveDefaults.middleShape,
+          shapes = ListItemDefaults.middleShapes,
         )
       }
 
@@ -154,7 +158,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(Res.string.settings_constant_calculation_support),
         switchState = prefs.constantCalculation,
         onSwitchChange = updateConstantCalculation,
-        shape = ListItemExpressiveDefaults.lastShape,
+        shapes = ListItemDefaults.lastShapes,
       )
     }
   }

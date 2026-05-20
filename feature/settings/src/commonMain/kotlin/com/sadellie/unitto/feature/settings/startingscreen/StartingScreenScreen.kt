@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.settings.startingscreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,18 +33,19 @@ import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.DrawerItem
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.listedShapes
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.settings_starting_screen
 
 @Composable
 internal fun StartingScreenRoute(navigateUp: () -> Unit) {
-  val viewModel: StartingScreenViewModel = koinViewModel()
+  val viewModel: StartingScreenViewModel = metroViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
@@ -69,15 +71,15 @@ private fun StartingScreenScreen(
     LazyColumn(
       contentPadding = padding,
       modifier = Modifier.padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       itemsIndexed(mainDrawerItems, { _, destination -> destination.topLevelRoute.routeId }) {
         index,
         destination ->
         ListItemExpressive(
           onClick = { updateStartingScreen(destination.topLevelRoute.routeId) },
-          shape = ListItemExpressiveDefaults.listedShaped(index, mainDrawerItems.size),
-          headlineContent = { Text(stringResource(destination.name)) },
+          shapes = ListItemDefaults.listedShapes(index, mainDrawerItems.size),
+          content = { Text(stringResource(destination.name)) },
           leadingContent = {
             RadioButton(
               selected = destination.topLevelRoute.routeId == startingScreenGraphId,

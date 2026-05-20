@@ -19,14 +19,10 @@
 package com.sadellie.unitto.core.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.eygraber.uri.Uri
-import com.eygraber.uri.toKmpUri
+import androidx.navigation3.runtime.deeplink.DeepLinkRequest
+import androidx.navigation3.runtime.deeplink.DeepLinkUri
+import androidx.navigation3.runtime.deeplink.UriDeepLinkMatcher
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute.serializer
-import com.sadellie.unitto.core.navigation.ConverterStartRoute.Companion.DEEP_LINK_PATTERN
-import com.sadellie.unitto.core.navigation.deeplink.DeepLinkMatcher
-import com.sadellie.unitto.core.navigation.deeplink.DeepLinkPattern
-import com.sadellie.unitto.core.navigation.deeplink.DeepLinkRequest
-import com.sadellie.unitto.core.navigation.deeplink.KeyDecoder
 import kotlinx.serialization.Serializable
 
 interface Route : NavKey {
@@ -35,43 +31,46 @@ interface Route : NavKey {
 
   companion object {
     /**
-     * Extract [Route] from [uri]
+     * Extract [Route] from [uriString]
      *
-     * @return matched [Route] (using [DeepLinkPattern]) or null if no matches
+     * @return matched [Route] (using [DeepLinkRequest]) or null if no matches
      * @author https://github.com/android/nav3-recipes
      */
-    fun extractRouteFromDeeplink(uri: Uri): Route? {
-      val deepLinkPatterns: List<DeepLinkPattern<out Route>> =
+    fun extractRouteFromDeeplink(uriString: String): Route? {
+      val deepLinkRequest = DeepLinkRequest(uriString)
+      val uriDeepLinkMatchers: List<UriDeepLinkMatcher<Route>> =
         listOf(
-          DeepLinkPattern(serializer(), deepLink(CalculatorStartRoute).toKmpUri()),
-          DeepLinkPattern(
+          UriDeepLinkMatcher(DeepLinkUri(deepLink(CalculatorStartRoute)), serializer()),
+          UriDeepLinkMatcher(
+            DeepLinkUri(deepLink(ConverterStartRoute())),
             ConverterStartRoute.serializer(),
-            deepLink(ConverterStartRoute()).toKmpUri(),
           ),
-          DeepLinkPattern(ConverterStartRoute.serializer(), (DEEP_LINK_PATTERN.toKmpUri())),
-          DeepLinkPattern(
+          UriDeepLinkMatcher(
+            DeepLinkUri(ConverterStartRoute.DEEP_LINK_PATTERN),
+            ConverterStartRoute.serializer(),
+          ),
+          UriDeepLinkMatcher(
+            DeepLinkUri(deepLink(DateCalculatorStartRoute)),
             DateCalculatorStartRoute.serializer(),
-            deepLink(DateCalculatorStartRoute).toKmpUri(),
           ),
-          DeepLinkPattern(TimeZoneStartRoute.serializer(), deepLink(TimeZoneStartRoute).toKmpUri()),
-          DeepLinkPattern(BodyMassStartRoute.serializer(), deepLink(BodyMassStartRoute).toKmpUri()),
-          DeepLinkPattern(
+          UriDeepLinkMatcher(
+            DeepLinkUri(deepLink(TimeZoneStartRoute)),
+            TimeZoneStartRoute.serializer(),
+          ),
+          UriDeepLinkMatcher(
+            DeepLinkUri(deepLink(BodyMassStartRoute)),
+            BodyMassStartRoute.serializer(),
+          ),
+          UriDeepLinkMatcher(
+            DeepLinkUri(deepLink(BodyMassStartRoute)),
             ProgrammerStartRoute.serializer(),
-            deepLink(BodyMassStartRoute).toKmpUri(),
           ),
         )
-      /** STEP 2. Parse requested deeplink */
-      val request = DeepLinkRequest(uri)
-      /** STEP 3. Compared requested with supported deeplink to find match */
-      val match =
-        deepLinkPatterns.firstNotNullOfOrNull { pattern ->
-          DeepLinkMatcher(request, pattern).match()
-        } ?: return null
-      /** STEP 4. If match is found, associate match to the correct key */
-      // leverage kotlinx.serialization's Decoder to decode
-      // match result into a backstack key
-      val deepLinkRoute = KeyDecoder(match.args).decodeSerializableValue(match.serializer)
-      return deepLinkRoute
+      val matches = uriDeepLinkMatchers.mapNotNull {
+        it.match(deepLinkRequest)
+      }
+      val bestMatch = matches.maxOrNull()
+      return bestMatch?.key
     }
   }
 }

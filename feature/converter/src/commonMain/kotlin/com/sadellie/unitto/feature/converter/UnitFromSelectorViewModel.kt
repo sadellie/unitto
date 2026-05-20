@@ -29,6 +29,13 @@ import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.feature.converter.navigation.UnitFromRoute
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,17 +46,25 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class UnitFromSelectorViewModel(
-  private val userPrefsRepository: UserPreferencesRepository,
+@AssistedInject
+class UnitFromSelectorViewModel(
+  @Assisted private val args: UnitFromRoute,
   private val unitsRepo: UnitConverterRepository,
-  private val args: UnitFromRoute,
+  private val userPrefsRepository: UserPreferencesRepository,
 ) : ViewModel() {
+  @AssistedFactory
+  @ManualViewModelAssistedFactoryKey
+  @ContributesIntoMap(AppScope::class)
+  fun interface Factory : ManualViewModelAssistedFactory {
+    fun create(args: UnitFromRoute): UnitFromSelectorViewModel
+  }
+
   private var _searchJob: Job? = null
   private val _query = TextFieldState()
   private val _searchResults = MutableStateFlow<Map<UnitGroup, List<UnitSearchResultItem>>?>(null)
   private val _selectedUnitGroup = MutableStateFlow<UnitGroup?>(args.unitGroup)
 
-  val unitFromUIState: StateFlow<UnitSelectorUIState> =
+  internal val unitFromUIState: StateFlow<UnitSelectorUIState> =
     combine(_searchResults, _selectedUnitGroup, userPrefsRepository.converterPrefs) {
         searchResults,
         selectedUnitGroup,
@@ -67,7 +82,7 @@ internal class UnitFromSelectorViewModel(
       }
       .stateIn(viewModelScope, UnitSelectorUIState.Loading)
 
-  suspend fun observeSearchFilters() {
+  internal suspend fun observeSearchFilters() {
     val queryFlow = _query.observe()
 
     combine(queryFlow, _selectedUnitGroup, userPrefsRepository.converterPrefs) {
@@ -79,14 +94,14 @@ internal class UnitFromSelectorViewModel(
       .collectLatest {}
   }
 
-  fun updateShowFavoritesOnly(value: Boolean) =
+  internal fun updateShowFavoritesOnly(value: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateUnitConverterFavoritesOnly(value) }
 
-  fun updateSelectedUnitGroup(value: UnitGroup?) {
+  internal fun updateSelectedUnitGroup(value: UnitGroup?) {
     _selectedUnitGroup.update { value }
   }
 
-  fun favoriteUnit(unit: UnitSearchResultItem) =
+  internal fun favoriteUnit(unit: UnitSearchResultItem) =
     viewModelScope.launch {
       unitsRepo.favorite(unit.basicUnit.id)
       onSearch(

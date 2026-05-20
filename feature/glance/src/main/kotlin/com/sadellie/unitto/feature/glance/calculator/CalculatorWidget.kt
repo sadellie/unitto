@@ -63,17 +63,15 @@ import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.formatExpression
+import com.sadellie.unitto.feature.glance.GraphProvider
 import com.sadellie.unitto.feature.glance.R
 import com.sadellie.unitto.feature.glance.common.IconButton
 import com.sadellie.unitto.feature.glance.common.LoadingUI
 import com.sadellie.unitto.feature.glance.common.UnittoGlanceTheme
 import com.sadellie.unitto.feature.glance.common.WidgetTheme
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-class CalculatorWidget : GlanceAppWidget(), KoinComponent {
+class CalculatorWidget : GlanceAppWidget() {
   override val sizeMode = SizeMode.Responsive(setOf(SMALL, MEDIUM, BIG))
 
   override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
@@ -92,11 +90,11 @@ class CalculatorWidget : GlanceAppWidget(), KoinComponent {
 
   override suspend fun provideGlance(context: Context, id: GlanceId) {
     try {
-      val userPrefsRepository by inject<UserPreferencesRepository>()
       provideContent {
         CompositionLocalProvider(
           LocalConfiguration provides Configuration(context.resources.configuration)
         ) {
+          val userPrefsRepository = GraphProvider.widgetDependencies.userPreferencesRepository
           val calculatorPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
           val appPrefs = userPrefsRepository.appPrefs.collectAsState(null).value
 

@@ -111,6 +111,14 @@ internal data class FactorialNode(override val children: List<ASTNode>) : Operat
   override fun withNewChildren(children: List<ASTNode>) = this.copy(children = children)
 }
 
+internal data class PercentNode(override val children: List<ASTNode>) : OperatorNode {
+  override val token = Token.Percent
+
+  constructor(child: ASTNode) : this(listOf(child))
+
+  override fun withNewChildren(children: List<ASTNode>) = this.copy(children = children)
+}
+
 internal data class SqrtNode(override val children: List<ASTNode>) : OperatorNode {
   override val token = Token.Sqrt
 

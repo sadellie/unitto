@@ -29,7 +29,6 @@ import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -47,8 +46,8 @@ class UnittoMultiplatformLibraryPlugin : Plugin<Project> {
       apply(plugin = libs.getPlugin("android.multiplatform.library"))
       extensions.configure<KotlinMultiplatformExtension> {
         configure<KotlinMultiplatformAndroidLibraryTarget> {
-          compileSdk = 36
-          minSdk = 23
+          compileSdk = 37
+          minSdk = 24
           @OptIn(ExperimentalKotlinGradlePluginApi::class)
           compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
@@ -86,8 +85,8 @@ class UnittoLibraryPlugin : Plugin<Project> {
       apply(plugin = libs.getPlugin("android.library"))
 
       extensions.configure<LibraryExtension> {
-        compileSdk = 36
-        defaultConfig.minSdk = 23
+        compileSdk = 37
+        defaultConfig.minSdk = 24
 
         buildFeatures {
           compose = false
@@ -112,7 +111,7 @@ class UnittoLibraryPlugin : Plugin<Project> {
       }
 
       dependencies {
-        "implementation"(libs.findLibrary("androidx.core.core.ktx").get())
+        "implementation"(libs.findLibrary("androidx.core.core").get())
         "coreLibraryDesugaring"(libs.findLibrary("com.android.tools.desugar.jdk.libs").get())
 
         "testImplementation"(libs.findLibrary("junit.junit").get())
@@ -134,9 +133,6 @@ private fun VersionCatalog.getPlugin(name: String) =
 /** Configure base Kotlin options */
 private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
   configure<T> {
-    // Treat all Kotlin warnings as errors (disabled by default)
-    // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
-    val warningsAsErrors: String? by project
     val compilerOptions =
       when (this) {
         is KotlinAndroidProjectExtension -> compilerOptions
@@ -145,7 +141,8 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
       }
 
     compilerOptions.jvmTarget = JvmTarget.JVM_21
-    compilerOptions.allWarningsAsErrors = warningsAsErrors.toBoolean()
+    // TODO Treat all Kotlin warnings as errors (disabled by default)
+    compilerOptions.allWarningsAsErrors = false
     compilerOptions.optInExperimental()
   }
 

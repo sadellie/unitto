@@ -36,6 +36,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
@@ -59,18 +60,21 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.ColorSelector
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.middleShapes
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 import io.github.sadellie.themmo.rememberThemmoController
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.settings_ac_button
 import unitto.core.common.generated.resources.settings_ac_button_support
@@ -98,7 +102,7 @@ internal fun DisplayRoute(
   themmoController: ThemmoController,
   navigateToLanguages: () -> Unit,
 ) {
-  val viewModel: DisplayViewModel = koinViewModel()
+  val viewModel: DisplayViewModel = metroViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else ->
@@ -157,7 +161,7 @@ private fun DisplayScreen(
           .verticalScroll(rememberScrollState())
           .padding(paddingValues)
           .padding(horizontal = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       ThemingModeSelector(
         onThemeChange = onThemeChange,
@@ -205,7 +209,7 @@ private fun DisplayScreen(
         supportingText = stringResource(Res.string.settings_ac_button_support),
         switchState = prefs.acButton,
         onSwitchChange = updateAcButton,
-        shape = ListItemExpressiveDefaults.firstShape,
+        shapes = ListItemDefaults.firstShapes,
       )
 
       ListItemExpressive(
@@ -214,7 +218,7 @@ private fun DisplayScreen(
         supportingText = stringResource(Res.string.settings_middle_zero_support),
         switchState = prefs.middleZero,
         onSwitchChange = updateMiddleZero,
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
 
       ListItemExpressive(
@@ -222,7 +226,7 @@ private fun DisplayScreen(
         headlineText = stringResource(Res.string.settings_language),
         supportingText = stringResource(Res.string.settings_language_support),
         onClick = { navigateToLanguages() },
-        shape = ListItemExpressiveDefaults.lastShape,
+        shapes = ListItemDefaults.lastShapes,
       )
     }
   }
@@ -235,7 +239,7 @@ private fun ThemingModeSelector(
   currentThemingMode: ThemingMode,
 ) {
   ListItemExpressive(
-    shape = ListItemExpressiveDefaults.firstShape,
+    shapes = ListItemDefaults.firstShapes,
     leadingContent = { Icon(Symbols.Palette, stringResource(Res.string.settings_color_theme)) },
     headlineContent = { Text(stringResource(Res.string.settings_color_theme)) },
     supportingContent = { Text(stringResource(Res.string.settings_color_theme_support)) },
@@ -287,7 +291,7 @@ private fun AmoledSelector(
       supportingText = stringResource(Res.string.settings_amoled_dark_support),
       switchState = isAmoledThemeEnabled,
       onSwitchChange = onAmoledThemeChange,
-      shape = ListItemExpressiveDefaults.middleShape,
+      shapes = ListItemDefaults.middleShapes,
     )
   }
 }
@@ -298,18 +302,15 @@ private fun DynamicThemingSelector(
   onDynamicThemeChange: (Boolean) -> Unit,
   isDynamicThemeEnabled: Boolean,
 ) {
-  val dynamicColorListItemShape =
-    remember(isColorSelectorEnabled) {
-      if (isColorSelectorEnabled) ListItemExpressiveDefaults.middleShape
-      else ListItemExpressiveDefaults.lastShape
-    }
+  val shapes =
+    if (isColorSelectorEnabled) ListItemDefaults.middleShapes else ListItemDefaults.lastShapes
   ListItemExpressive(
     icon = Symbols.Colorize,
     headlineText = stringResource(Res.string.settings_dynamic_colors),
     supportingText = stringResource(Res.string.settings_dynamic_colors_support),
     switchState = isDynamicThemeEnabled,
     onSwitchChange = onDynamicThemeChange,
-    shape = dynamicColorListItemShape,
+    shapes = shapes,
   )
 }
 
@@ -325,13 +326,10 @@ private fun ColorSelector(
     enter = expandVertically() + fadeIn(),
     exit = shrinkVertically() + fadeOut(),
   ) {
-    val shape =
-      remember(isStyleSelectorEnabled) {
-        if (isStyleSelectorEnabled) ListItemExpressiveDefaults.middleShape
-        else ListItemExpressiveDefaults.lastShape
-      }
+    val shapes =
+      if (isStyleSelectorEnabled) ListItemDefaults.middleShapes else ListItemDefaults.lastShapes
     ListItemExpressive(
-      shape = shape,
+      shapes = shapes,
       leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
       headlineContent = { Text(stringResource(Res.string.settings_selected_color)) },
       secondaryContentPadding = PaddingValues(0.dp),
@@ -364,7 +362,7 @@ private fun StyleSelector(
     exit = shrinkVertically() + fadeOut(),
   ) {
     ListItemExpressive(
-      shape = ListItemExpressiveDefaults.lastShape,
+      shapes = ListItemDefaults.lastShapes,
       leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
       headlineContent = { Text(stringResource(Res.string.settings_selected_style)) },
       secondaryContentPadding = PaddingValues(0.dp),

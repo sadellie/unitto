@@ -30,6 +30,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -50,17 +51,17 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.singleShapes
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_cancel
 
 @Composable
 internal fun AdvancedSettingsRoute(navigateUpAction: () -> Unit) {
-  val viewModel: AdvancedSettingsViewModel = koinViewModel()
+  val viewModel: AdvancedSettingsViewModel = metroViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else ->
@@ -89,48 +90,59 @@ private fun AdvancedSettingsScreen(
           .padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large)
     ) {
-      var showCustomApiUrlDialog by rememberSaveable { mutableStateOf(false) }
-      ListItemExpressive(
-        headlineContent = { Text("Currency exchange rates API") },
-        supportingContent = { Text("Leave empty for default") },
-        shape = ListItemExpressiveDefaults.singleShape,
-        onClick = { showCustomApiUrlDialog = true },
+      CurrencyExchangeRatesAPI(
+        updateCustomApiUrl = { apiUrl -> updateCustomApiUrl(apiUrl) },
+        customApiUrl = prefs.customApiUrl,
       )
-      if (showCustomApiUrlDialog) {
-        val textState = rememberTextFieldState(prefs.customApiUrl)
-        AlertDialog(
-          title = { Text("Currency exchange rates API") },
-          text = {
-            OutlinedTextField(
-              state = textState,
-              shape = RoundedCornerShape(Sizes.large),
-              modifier = Modifier.fillMaxWidth(),
-              lineLimits = TextFieldLineLimits.SingleLine,
-            )
-          },
-          dismissButton = {
-            TextButton(
-              onClick = { showCustomApiUrlDialog = false },
-              shapes = ButtonDefaults.shapes(),
-            ) {
-              Text(stringResource(Res.string.common_cancel))
-            }
-          },
-          confirmButton = {
-            Button(
-              onClick = {
-                updateCustomApiUrl(textState.text.toString())
-                showCustomApiUrlDialog = false
-              },
-              shapes = ButtonDefaults.shapes(),
-            ) {
-              Text("Save")
-            }
-          },
-          onDismissRequest = { showCustomApiUrlDialog = false },
-        )
-      }
     }
+  }
+}
+
+@Composable
+private fun CurrencyExchangeRatesAPI(
+  updateCustomApiUrl: (apiUrl: String) -> Unit,
+  customApiUrl: String,
+) {
+  var showCustomApiUrlDialog by rememberSaveable { mutableStateOf(false) }
+  ListItemExpressive(
+    content = { Text("Currency exchange rates API") },
+    supportingContent = { Text("Leave empty for default") },
+    shapes = ListItemDefaults.singleShapes,
+    onClick = { showCustomApiUrlDialog = true },
+  )
+  if (showCustomApiUrlDialog) {
+    val textState = rememberTextFieldState(customApiUrl)
+    AlertDialog(
+      title = { Text("Currency exchange rates API") },
+      text = {
+        OutlinedTextField(
+          state = textState,
+          shape = RoundedCornerShape(Sizes.large),
+          modifier = Modifier.fillMaxWidth(),
+          lineLimits = TextFieldLineLimits.SingleLine,
+        )
+      },
+      dismissButton = {
+        TextButton(
+          onClick = { showCustomApiUrlDialog = false },
+          shapes = ButtonDefaults.shapes(),
+        ) {
+          Text(stringResource(Res.string.common_cancel))
+        }
+      },
+      confirmButton = {
+        Button(
+          onClick = {
+            updateCustomApiUrl(textState.text.toString())
+            showCustomApiUrlDialog = false
+          },
+          shapes = ButtonDefaults.shapes(),
+        ) {
+          Text("Save")
+        }
+      },
+      onDismissRequest = { showCustomApiUrlDialog = false },
+    )
   }
 }
 

@@ -24,6 +24,10 @@ import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import java.time.ZonedDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,13 +37,15 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class DateDifferenceViewModel(userPrefsRepository: UserPreferencesRepository) :
-  ViewModel() {
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class DateDifferenceViewModel(userPrefsRepository: UserPreferencesRepository) : ViewModel() {
   private val start = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
   private val end = MutableStateFlow(ZonedDateTimeUtils.nowWithMinutes())
   private val result = MutableStateFlow<ZonedDateTimeDifference>(ZonedDateTimeDifference.Zero)
 
-  val uiState: StateFlow<DifferenceUIState> =
+  internal val uiState: StateFlow<DifferenceUIState> =
     combine(userPrefsRepository.formattingPrefs, start, end, result) { prefs, start, end, result ->
         return@combine DifferenceUIState.Ready(
           start = start,
@@ -57,9 +63,9 @@ internal class DateDifferenceViewModel(userPrefsRepository: UserPreferencesRepos
       }
       .stateIn(viewModelScope, DifferenceUIState.Loading)
 
-  fun setStartDate(newValue: ZonedDateTime) = start.update { newValue }
+  internal fun setStartDate(newValue: ZonedDateTime) = start.update { newValue }
 
-  fun setEndDate(newValue: ZonedDateTime) = end.update { newValue }
+  internal fun setEndDate(newValue: ZonedDateTime) = end.update { newValue }
 
   private fun updateResult(start: ZonedDateTime, end: ZonedDateTime) =
     viewModelScope.launch(Dispatchers.Default) {

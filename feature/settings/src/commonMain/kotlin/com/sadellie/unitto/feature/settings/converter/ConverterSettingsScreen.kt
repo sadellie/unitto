@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
@@ -52,13 +53,16 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.middleShapes
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.converter_title
 import unitto.core.common.generated.resources.settings_format_time
@@ -75,7 +79,7 @@ internal fun ConverterSettingsRoute(
   navigateUpAction: () -> Unit,
   navigateToUnitsGroup: () -> Unit,
 ) {
-  val viewModel: ConverterSettingsViewModel = koinViewModel()
+  val viewModel: ConverterSettingsViewModel = metroViewModel()
   when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else -> {
@@ -109,17 +113,17 @@ private fun ConverterSettingsScreen(
       modifier =
         Modifier.padding(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       ListItemExpressive(
         icon = Symbols.Rule,
         headlineText = stringResource(Res.string.settings_unit_groups_title),
         supportingText = stringResource(Res.string.settings_unit_groups_support),
         onClick = { navigateToUnitsGroup() },
-        shape = ListItemExpressiveDefaults.firstShape,
+        shapes = ListItemDefaults.firstShapes,
       )
       ListItemExpressive(
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
         icon = Symbols.Sort,
         headlineText = stringResource(Res.string.settings_units_sorting),
         supportingText = stringResource(Res.string.settings_units_sorting_support),
@@ -137,7 +141,7 @@ private fun ConverterSettingsScreen(
         supportingText = stringResource(Res.string.settings_show_unit_group_icons_support),
         switchState = prefs.showIcons,
         onSwitchChange = updateUnitConverterShowIcons,
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.Timer,
@@ -145,7 +149,7 @@ private fun ConverterSettingsScreen(
         supportingText = stringResource(Res.string.settings_format_time_support),
         switchState = prefs.formatTime,
         onSwitchChange = updateUnitConverterFormatTime,
-        shape = ListItemExpressiveDefaults.lastShape,
+        shapes = ListItemDefaults.lastShapes,
       )
     }
   }

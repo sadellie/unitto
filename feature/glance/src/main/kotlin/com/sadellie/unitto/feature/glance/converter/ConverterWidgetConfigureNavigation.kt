@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.glance.converter
 
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,24 +28,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.runtime.result.ResultEffect
 import androidx.navigation3.ui.NavDisplay
+import com.sadellie.unitto.core.designsystem.unittoFadeIn
+import com.sadellie.unitto.core.designsystem.unittoFadeOut
 import com.sadellie.unitto.core.navigation.LocalEventBus
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.navigation.Navigator
-import com.sadellie.unitto.core.navigation.ResultEffect
 import com.sadellie.unitto.core.navigation.Route
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
-import org.koin.compose.navigation3.koinEntryProvider
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.core.parameter.parametersOf
-import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
 @Composable
 internal fun ConverterWidgetConfigureNavigation(
   backStack: NavBackStack<NavKey>,
@@ -56,21 +56,28 @@ internal fun ConverterWidgetConfigureNavigation(
     NavDisplay(
       backStack = backStack,
       modifier = Modifier.background(MaterialTheme.colorScheme.background),
+      popTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      transitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      predictivePopTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
       entryDecorators =
         listOf(
           rememberSaveableStateHolderNavEntryDecorator(),
           rememberViewModelStoreNavEntryDecorator(),
         ),
-      entryProvider = koinEntryProvider(),
+      entryProvider = entryProvider { converterWidgetNavigation() },
     )
   }
 }
 
-@OptIn(KoinExperimentalAPI::class)
-internal fun Module.converterWidgetNavigation() {
-  navigation<ConverterWidgetConfigureStartRoute> { route ->
+internal fun EntryProviderScope<NavKey>.converterWidgetNavigation() {
+  entry<ConverterWidgetConfigureStartRoute> { route ->
     val viewModel =
-      koinViewModel<ConverterWidgetConfigureViewModel> { parametersOf(route.appWidgetId) }
+      assistedMetroViewModel<
+        ConverterWidgetConfigureViewModel,
+        ConverterWidgetConfigureViewModel.Factory,
+      > {
+        create(route.appWidgetId)
+      }
 
     val resultEventBus = LocalEventBus.current
     val navigator = LocalNavigator.current
@@ -93,16 +100,16 @@ internal fun Module.converterWidgetNavigation() {
     )
   }
 
-  navigation<ConverterWidgetConfigureCreateNewRoute> {
-    val viewModel = koinViewModel<ConverterWidgetConfigureCreateNewViewModel>()
+  entry<ConverterWidgetConfigureCreateNewRoute> {
+    val viewModel = metroViewModel<ConverterWidgetConfigureCreateNewViewModel>()
     val resultEventBus = LocalEventBus.current
     val navigator = LocalNavigator.current
 
-    ResultEffect<String>(resultEventBus, SELECT_UNIT_FROM_RESULT) {
+    ResultEffect<String>(SELECT_UNIT_FROM_RESULT, resultEventBus) {
       viewModel.selectUnitFromById(it)
     }
 
-    ResultEffect<String>(resultEventBus, SELECT_UNIT_TO_RESULT) { viewModel.selectUnitToById(it) }
+    ResultEffect<String>(SELECT_UNIT_TO_RESULT, resultEventBus) { viewModel.selectUnitToById(it) }
 
     ConverterWidgetConfigureCreateNewRoute(
       viewModel = viewModel,
@@ -119,7 +126,7 @@ internal fun Module.converterWidgetNavigation() {
     )
   }
 
-  navigation<ConverterWidgetConfigureSelectorRoute> {
+  entry<ConverterWidgetConfigureSelectorRoute> {
     val resultEventBus = LocalEventBus.current
     val navigator = LocalNavigator.current
     ConverterWidgetConfigureSelectorRoute(

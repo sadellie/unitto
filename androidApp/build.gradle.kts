@@ -22,6 +22,7 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.compose)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -32,26 +33,24 @@ kotlin {
     implementation(project(":core:datastore"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
-    implementation(libs.androidx.core.core.ktx)
+    implementation(libs.androidx.core.core)
     implementation(libs.androidx.appcompat.appcompat)
     implementation(libs.com.eygraber.uri.kmp)
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.core)
   }
 }
 
 android {
   namespace = "com.sadellie.unitto"
-  compileSdk = 36
+  compileSdk = 37
 
   defaultConfig {
     applicationId = "com.sadellie.unitto"
-    minSdk = 23
-    targetSdk = 36
+    minSdk = 24
+    targetSdk = 37
     versionCode = libs.versions.versionCode.get().toInt()
     versionName = libs.versions.versionName.get()
     androidResources.localeFilters +=

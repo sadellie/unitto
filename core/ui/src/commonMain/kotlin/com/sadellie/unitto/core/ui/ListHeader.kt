@@ -21,6 +21,7 @@ package com.sadellie.unitto.core.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,14 +52,14 @@ fun ListHeader(
 private fun PreviewListHeader() {
   LazyColumn(
     modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
-    verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+    verticalArrangement = ListItemDefaults.ListArrangement,
   ) {
     item { ListHeader("Text") }
     items(10) {
       ListItemExpressive(
-        onClick = null,
-        headlineContent = { Text("Item $it") },
-        shape = ListItemExpressiveDefaults.listedShaped(it, 10),
+        onClick = {},
+        content = { Text("Item $it") },
+        shapes = ListItemDefaults.listedShapes(it, 10),
       )
     }
   }

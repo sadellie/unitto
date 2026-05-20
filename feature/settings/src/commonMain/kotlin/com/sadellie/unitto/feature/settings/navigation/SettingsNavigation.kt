@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.settings.navigation
 
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
@@ -38,22 +39,18 @@ import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsRoute
 import io.github.sadellie.themmo.ThemmoController
 import kotlinx.serialization.Serializable
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.dsl.navigation3.navigation
 
 fun NavBackStack<NavKey>.navigateToUnitGroups() = add(UnitGroupRoute)
 
 val LocalThemmoController =
   staticCompositionLocalOf<ThemmoController> { error("LocalThemmoController not provided") }
 
-@OptIn(KoinExperimentalAPI::class)
-fun Module.settingNavigation() {
-  navigation<SettingsStartRoute> {
+fun EntryProviderScope<NavKey>.settingNavigation() {
+  entry<SettingsStartRoute> {
     val navigator = LocalNavigator.current
     SettingsRoute(openDrawer = navigator::openDrawer, navControllerAction = navigator::goTo)
   }
-  navigation<DisplayRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<DisplayRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     DisplayRoute(
       navigateUp = navigator::goBack,
@@ -62,31 +59,31 @@ fun Module.settingNavigation() {
     )
   }
   languageNavigation()
-  navigation<StartingScreenRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<StartingScreenRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     StartingScreenRoute(navigateUp = navigator::goBack)
   }
-  navigation<FormattingRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<FormattingRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     FormattingRoute(navigateUpAction = navigator::goBack)
   }
-  navigation<CalculatorSettingsRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<CalculatorSettingsRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     CalculatorSettingsRoute(navigateUpAction = navigator::goBack)
   }
-  navigation<ConverterSettingsRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<ConverterSettingsRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     ConverterSettingsRoute(
       navigateUpAction = navigator::goBack,
       navigateToUnitsGroup = { navigator.goTo(UnitGroupRoute) },
     )
   }
-  navigation<UnitGroupRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<UnitGroupRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     UnitGroupsRoute(navigateUpAction = navigator::goBack)
   }
   backupNavigation()
-  navigation<AboutRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<AboutRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     AboutRoute(
       navigateUpAction = navigator::goBack,
@@ -94,19 +91,19 @@ fun Module.settingNavigation() {
       navigateToAdvanced = { navigator.goTo(AdvancedSettingsRoute) },
     )
   }
-  navigation<ThirdPartyRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<ThirdPartyRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     ThirdPartyLicensesScreen(navigateUpAction = navigator::goBack)
   }
-  navigation<AdvancedSettingsRoute>(metadata = NavDisplay.stackedTransition()) {
+  entry<AdvancedSettingsRoute>(metadata = NavDisplay.stackedTransition()) {
     val navigator = LocalNavigator.current
     AdvancedSettingsRoute(navigateUpAction = navigator::goBack)
   }
 }
 
-internal expect fun Module.backupNavigation()
+internal expect fun EntryProviderScope<NavKey>.backupNavigation()
 
-internal expect fun Module.languageNavigation()
+internal expect fun EntryProviderScope<NavKey>.languageNavigation()
 
 @Serializable
 internal data object DisplayRoute : Route {

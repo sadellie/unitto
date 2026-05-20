@@ -310,5 +310,11 @@ class TextFieldStateTokenExtensionsMathTest {
     // Default
     compareTextStates("123([]", "123[]") { it.addBracket() }
     compareTextStates("123(456+789)[]", "123(456+789[]") { it.addBracket() }
+
+    // Never close after open
+    compareTextStates("123(([]", "123([]") { it.addBracket() }
+    compareTextStates("123cos(([]", "123cos([]") { it.addBracket() }
+    compareTextStates("123)cos(([]", "123)cos([]") { it.addBracket() }
+    compareTextStates("123(cos(([]", "123(cos([]") { it.addBracket() }
   }
 }

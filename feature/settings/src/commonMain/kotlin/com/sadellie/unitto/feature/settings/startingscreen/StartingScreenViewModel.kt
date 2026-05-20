@@ -22,12 +22,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.launch
 
-internal class StartingScreenViewModel(private val userPrefsRepository: UserPreferencesRepository) :
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class StartingScreenViewModel(private val userPrefsRepository: UserPreferencesRepository) :
   ViewModel() {
-  val prefs = userPrefsRepository.startingScreenPrefs.stateIn(viewModelScope, null)
+  internal val prefs = userPrefsRepository.startingScreenPrefs.stateIn(viewModelScope, null)
 
-  fun updateStartingScreen(startingScreen: String) =
+  internal fun updateStartingScreen(startingScreen: String) =
     viewModelScope.launch { userPrefsRepository.updateStartingScreen(startingScreen) }
 }

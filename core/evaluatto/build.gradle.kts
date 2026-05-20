@@ -34,6 +34,7 @@ kotlin {
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(libs.org.jetbrains.compose.runtime.runtime) // need skiko
+    implementation(libs.co.touchlab.kermit)
   }
   sourceSets.commonTest.dependencies {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)

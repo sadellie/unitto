@@ -100,10 +100,10 @@ import com.sadellie.unitto.feature.calculator.components.CalculatorHistoryList
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
 import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
 import com.sadellie.unitto.feature.calculator.components.TextBox
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.calculator_clear_history
 import unitto.core.common.generated.resources.calculator_clear_history_support
@@ -113,7 +113,7 @@ import unitto.core.common.generated.resources.settings_history_view_button
 
 @Composable
 internal fun CalculatorRoute(openDrawer: () -> Unit) {
-  val viewModel: CalculatorViewModel = koinViewModel()
+  val viewModel: CalculatorViewModel = metroViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {

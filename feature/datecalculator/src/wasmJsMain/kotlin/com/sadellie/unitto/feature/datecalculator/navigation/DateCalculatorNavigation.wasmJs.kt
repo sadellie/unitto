@@ -18,16 +18,12 @@
 
 package com.sadellie.unitto.feature.datecalculator.navigation
 
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.sadellie.unitto.core.navigation.DateCalculatorStartRoute
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.ui.AndroidExclusiveScreenMain
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
-internal actual fun Module.dateCalculatorNavigation() {
-  navigation<DateCalculatorStartRoute> {
-    AndroidExclusiveScreenMain(LocalNavigator.current::openDrawer)
-  }
+actual fun EntryProviderScope<NavKey>.dateCalculatorNavigation() {
+  entry<DateCalculatorStartRoute> { AndroidExclusiveScreenMain(LocalNavigator.current::openDrawer) }
 }

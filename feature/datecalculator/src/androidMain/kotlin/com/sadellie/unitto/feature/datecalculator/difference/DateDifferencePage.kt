@@ -40,17 +40,17 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeResultBlock
-import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.date_calculator_end
 import unitto.core.common.generated.resources.date_calculator_start
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 @Composable
 internal fun DateDifferencePage() {
-  val viewModel: DateDifferenceViewModel = koinViewModel()
+  val viewModel: DateDifferenceViewModel = metroViewModel()
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     DifferenceUIState.Loading -> Unit
     is DifferenceUIState.Ready ->

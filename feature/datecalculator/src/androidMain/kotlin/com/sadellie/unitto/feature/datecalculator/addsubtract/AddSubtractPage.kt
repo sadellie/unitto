@@ -69,9 +69,9 @@ import com.sadellie.unitto.core.ui.TextFieldRow
 import com.sadellie.unitto.feature.datecalculator.ZonedDateTimeUtils
 import com.sadellie.unitto.feature.datecalculator.components.DateTimeBlock
 import com.sadellie.unitto.feature.datecalculator.components.TimeUnitTextField
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import java.time.ZonedDateTime
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.date_calculator_add
 import unitto.core.common.generated.resources.date_calculator_create_event
@@ -86,7 +86,7 @@ import unitto.core.common.generated.resources.date_calculator_years
 
 @Composable
 internal fun AddSubtractPage() {
-  val viewModel: AddSubtractViewModel = koinViewModel()
+  val viewModel: AddSubtractViewModel = metroViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {

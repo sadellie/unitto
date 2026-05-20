@@ -81,9 +81,11 @@ fun ExpressionTextField(
   onKeyboardAction: KeyboardActionHandler? = null,
   onHardwareInput: (() -> Unit)? = null,
 ) {
-  val nativeClipboard = LocalClipboard.current.nativeClipboard
+  val nativeClipboard = LocalClipboard.current
   val clipboardManager =
-    remember(formatterSymbols) { ExpressionClipboardManager(formatterSymbols, nativeClipboard) }
+    remember(formatterSymbols) {
+      createExpressionClipboard(formatterSymbols, nativeClipboard)
+    }
 
   CompositionLocalProvider(LocalClipboard provides clipboardManager) {
     val displayedText =

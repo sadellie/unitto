@@ -18,10 +18,9 @@
 
 package com.sadellie.unitto.core.ui.datetime
 
-import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 /**

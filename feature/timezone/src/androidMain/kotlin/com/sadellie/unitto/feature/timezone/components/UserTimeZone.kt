@@ -43,6 +43,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,7 +62,7 @@ import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.datetime.formatDateDayMonthYear
 import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
 import com.sadellie.unitto.core.ui.datetime.formatTimeHours
@@ -69,10 +70,12 @@ import com.sadellie.unitto.core.ui.datetime.formatTimeMinutes
 import com.sadellie.unitto.core.ui.datetime.formatZone
 import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogState
 import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogs
-import java.time.ZonedDateTime
+import com.sadellie.unitto.core.ui.firstShape
+import com.sadellie.unitto.core.ui.lastShape
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.time_zone_reset
+import java.time.ZonedDateTime
 
 @Composable
 internal fun UserTimeZone(
@@ -84,16 +87,16 @@ internal fun UserTimeZone(
 ) {
   Row(
     modifier = modifier.height(IntrinsicSize.Min),
-    horizontalArrangement = ListItemExpressiveDefaults.ListArrangement,
+    horizontalArrangement = ListItemDefaults.ListArrangement,
   ) {
     Column(
       modifier = Modifier.weight(1f).height(IntrinsicSize.Min),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       var dialogState by remember { mutableStateOf(DateTimeDialogState.NONE) }
       Column(
         Modifier.fillMaxWidth()
-          .clip(ListItemExpressiveDefaults.firstShape)
+          .clip(ListItemDefaults.firstShape)
           .clickable { dialogState = DateTimeDialogState.FROM_TIME }
           .background(MaterialTheme.colorScheme.tertiaryContainer)
           .padding(horizontal = 16.dp, vertical = 12.dp)
@@ -103,7 +106,7 @@ internal fun UserTimeZone(
       }
       Box(
         Modifier.fillMaxWidth()
-          .clip(ListItemExpressiveDefaults.lastShape)
+          .clip(ListItemDefaults.lastShape)
           .clickable { dialogState = DateTimeDialogState.FROM_DATE }
           .background(MaterialTheme.colorScheme.tertiaryContainer)
           .padding(horizontal = 16.dp, vertical = 12.dp)
@@ -128,7 +131,7 @@ internal fun UserTimeZone(
 @Composable
 private fun TimeZoneWithOffset(time: ZonedDateTime) {
   Text(
-    text = time.formatZone(LocalLocale.current),
+    text = time.formatZone(LocalLocale.current.platformLocale),
     style = MaterialTheme.typography.bodyLarge,
     color = MaterialTheme.colorScheme.onTertiaryContainer,
   )
@@ -139,12 +142,12 @@ private fun Time(time: ZonedDateTime) {
   Row(verticalAlignment = Alignment.Bottom) {
     val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     val locale = LocalLocale.current
-    SlidingText(time.formatTimeHours(locale, is24Hour))
+    SlidingText(time.formatTimeHours(locale.platformLocale, is24Hour))
     TimeSeparator()
-    SlidingText(time.formatTimeMinutes(locale))
+    SlidingText(time.formatTimeMinutes(locale.platformLocale))
     if (!is24Hour) {
       Spacer(Modifier.padding(Sizes.extraSmall))
-      SlidingText(time.formatTimeAmPm(locale))
+      SlidingText(time.formatTimeAmPm(locale.platformLocale))
     }
   }
 }
@@ -152,7 +155,7 @@ private fun Time(time: ZonedDateTime) {
 @Composable
 private fun Date(time: ZonedDateTime) {
   Text(
-    text = time.formatDateDayMonthYear(LocalLocale.current),
+    text = time.formatDateDayMonthYear(LocalLocale.current.platformLocale),
     style = MaterialTheme.typography.headlineMedium,
     color = MaterialTheme.colorScheme.onTertiaryContainer,
   )

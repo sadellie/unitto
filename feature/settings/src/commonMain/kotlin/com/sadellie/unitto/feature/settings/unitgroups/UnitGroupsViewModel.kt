@@ -26,6 +26,10 @@ import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +39,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-internal class UnitGroupsViewModel(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class UnitGroupsViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val unitsRepository: UnitsRepository,
 ) : ViewModel() {
@@ -45,7 +52,7 @@ internal class UnitGroupsViewModel(
   private val _shownUnitGroups =
     userPrefsRepository.unitGroupsPrefs.map { it.shownUnitGroups }.stateIn(viewModelScope, null)
 
-  val uiState =
+  internal val uiState =
     combine(_shownUnitGroups, _autoSortDialogState, _unitGroupBeforeAutoSorting) {
         shownUnitGroups,
         autoSortDialogState,
@@ -60,7 +67,7 @@ internal class UnitGroupsViewModel(
       .stateIn(viewModelScope, UnitGroupsUIState.Loading)
 
   /** @see UserPreferencesRepository.removeShownUnitGroup */
-  fun removeShownUnitGroup(unitGroup: UnitGroup) {
+  internal fun removeShownUnitGroup(unitGroup: UnitGroup) {
     viewModelScope.launch {
       userPrefsRepository.removeShownUnitGroup(unitGroup)
       _unitGroupBeforeAutoSorting.update { emptyList() }
@@ -68,7 +75,7 @@ internal class UnitGroupsViewModel(
   }
 
   /** @see UserPreferencesRepository.addShownUnitGroup */
-  fun addShownUnitGroup(unitGroup: UnitGroup) {
+  internal fun addShownUnitGroup(unitGroup: UnitGroup) {
     viewModelScope.launch {
       userPrefsRepository.addShownUnitGroup(unitGroup)
       _unitGroupBeforeAutoSorting.update { emptyList() }
@@ -76,14 +83,14 @@ internal class UnitGroupsViewModel(
   }
 
   /** @see UserPreferencesRepository.updateShownUnitGroups */
-  fun updateShownUnitGroups(unitGroups: List<UnitGroup>) {
+  internal fun updateShownUnitGroups(unitGroups: List<UnitGroup>) {
     viewModelScope.launch {
       userPrefsRepository.updateShownUnitGroups(unitGroups)
       _unitGroupBeforeAutoSorting.update { emptyList() }
     }
   }
 
-  fun autoSortUnitGroups() {
+  internal fun autoSortUnitGroups() {
     _autoSortJob?.cancel()
     _autoSortJob =
       viewModelScope.launch(Dispatchers.Default) {
@@ -105,14 +112,14 @@ internal class UnitGroupsViewModel(
       }
   }
 
-  fun undoAutoSortUnitGroups() {
+  internal fun undoAutoSortUnitGroups() {
     viewModelScope.launch {
       userPrefsRepository.updateShownUnitGroups(_unitGroupBeforeAutoSorting.value)
       _unitGroupBeforeAutoSorting.update { emptyList() }
     }
   }
 
-  fun updateAutoSortDialogState(value: AutoSortDialogState) {
+  internal fun updateAutoSortDialogState(value: AutoSortDialogState) {
     if (_autoSortJob?.isActive == true) return
     _autoSortDialogState.update { value }
   }

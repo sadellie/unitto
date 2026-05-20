@@ -21,6 +21,7 @@ plugins {
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
+  alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -37,19 +38,15 @@ kotlin {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
     implementation(libs.org.jetbrains.compose.components.components.resources)
     implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
+    implementation(libs.androidx.navigation3.navigation3.runtime)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.compose.viewmodel)
-    implementation(libs.io.insert.koin.koin.compose.navigation3)
+    implementation(libs.dev.zacsweers.metro.metrox.viewmodel.compose)
     implementation(libs.co.touchlab.kermit)
   }
-  sourceSets.androidMain.dependencies {
-    implementation(libs.io.insert.koin.koin.core.coroutines)
-    implementation(libs.org.jetbrains.compose.ui.ui.tooling)
-  }
+  sourceSets.androidMain.dependencies { implementation(libs.org.jetbrains.compose.ui.ui.tooling) }
   sourceSets.commonTest.dependencies {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)

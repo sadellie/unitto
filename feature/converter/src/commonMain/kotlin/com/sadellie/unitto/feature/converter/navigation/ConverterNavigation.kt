@@ -18,33 +18,33 @@
 
 package com.sadellie.unitto.feature.converter.navigation
 
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.result.ResultEffect
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.core.navigation.LocalEventBus
 import com.sadellie.unitto.core.navigation.LocalNavigator
-import com.sadellie.unitto.core.navigation.ResultEffect
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.feature.converter.ConverterRoute
 import com.sadellie.unitto.feature.converter.ConverterViewModel
 import com.sadellie.unitto.feature.converter.UnitFromSelectorRoute
+import com.sadellie.unitto.feature.converter.UnitFromSelectorViewModel
 import com.sadellie.unitto.feature.converter.UnitToSelectorRoute
+import com.sadellie.unitto.feature.converter.UnitToSelectorViewModel
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.serialization.Serializable
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.core.parameter.parametersOf
-import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
-fun Module.converterNavigation() {
-  navigation<ConverterStartRoute> {
-    val viewModel = koinViewModel<ConverterViewModel> { parametersOf(it) }
+fun EntryProviderScope<NavKey>.converterNavigation() {
+  entry<ConverterStartRoute> { route ->
+    val viewModel =
+      assistedMetroViewModel<ConverterViewModel, ConverterViewModel.Factory> { create(route) }
     val resultEventBus = LocalEventBus.current
     val navigator = LocalNavigator.current
-    ResultEffect<String>(resultEventBus, RESULT_TAG_FROM) { unitFromId ->
+    ResultEffect<String>(RESULT_TAG_FROM, resultEventBus) { unitFromId ->
       viewModel.updateUnitFromId(unitFromId)
     }
-    ResultEffect<String>(resultEventBus, RESULT_TAG_TO) { unitToId ->
+    ResultEffect<String>(RESULT_TAG_TO, resultEventBus) { unitToId ->
       viewModel.updateUnitToId(unitToId)
     }
     ConverterRoute(
@@ -58,21 +58,27 @@ fun Module.converterNavigation() {
       openDrawer = navigator::openDrawer,
     )
   }
-  navigation<UnitFromRoute> {
+  entry<UnitFromRoute> { route ->
     val resultEventBus = LocalEventBus.current
     val navigator = LocalNavigator.current
     UnitFromSelectorRoute(
-      unitSelectorViewModel = koinViewModel { parametersOf(it) },
+      unitSelectorViewModel =
+        assistedMetroViewModel<UnitFromSelectorViewModel, UnitFromSelectorViewModel.Factory> {
+          create(route)
+        },
       updateUnitFrom = { unitFromId -> resultEventBus.sendResult(RESULT_TAG_FROM, unitFromId) },
       navigateUp = navigator::goBack,
       navigateToUnitGroups = navigator::navigateToUnitGroups,
     )
   }
-  navigation<UnitToRoute> {
+  entry<UnitToRoute> { route ->
     val resultEventBus = LocalEventBus.current
     val navigator = LocalNavigator.current
     UnitToSelectorRoute(
-      unitSelectorViewModel = koinViewModel { parametersOf(it) },
+      unitSelectorViewModel =
+        assistedMetroViewModel<UnitToSelectorViewModel, UnitToSelectorViewModel.Factory> {
+          create(route)
+        },
       updateUnitTo = { unitToId -> resultEventBus.sendResult(RESULT_TAG_TO, unitToId) },
       navigateUp = navigator::goBack,
       navigateToUnitGroups = navigator::navigateToUnitGroups,

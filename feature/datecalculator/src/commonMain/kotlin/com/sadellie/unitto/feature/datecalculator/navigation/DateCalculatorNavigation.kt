@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.datecalculator.navigation
 
-import org.koin.core.module.Module
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 
-internal expect fun Module.dateCalculatorNavigation()
+expect fun EntryProviderScope<NavKey>.dateCalculatorNavigation()

@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.designsystem.icons.symbols.Help
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
+import com.sadellie.unitto.core.ui.singleShapes
 
 @Composable
 internal fun AnnoyingBox(
@@ -44,7 +44,7 @@ internal fun AnnoyingBox(
     supportingText = support,
     icon = imageVector,
     iconDescription = imageVectorContentDescription,
-    shape = ListItemExpressiveDefaults.singleShape,
+    shapes = ListItemDefaults.singleShapes,
     onClick = onClick,
     modifier = modifier,
     colors =

@@ -60,4 +60,14 @@ class CalculateExpressionMathComplexTest {
   @Test fun expression17() = assertCalculateExpressionMath("100+500", "600")
 
   @Test fun expression18() = assertCalculateExpressionMath("2×5", "10")
+
+  @Test fun expression19() = assertCalculateExpressionMath("1+(2+3)%", "1.05")
+
+  @Test fun expression20() = assertCalculateExpressionMath("1000×20%+30%", "260.00")
+
+  @Test fun expression21() = assertCalculateExpressionMath("1000÷20%−30%", "3500.00")
+
+  @Test fun expression22() = assertCalculateExpressionMath("123×456+1+2+3%+4+5+6", "57788.73")
+
+  @Test fun expression23() = assertCalculateExpressionMath("1+2−3%+4−5+6", "7.91")
 }

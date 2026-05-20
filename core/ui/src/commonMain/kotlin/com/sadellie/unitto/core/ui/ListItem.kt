@@ -20,40 +20,34 @@ package com.sadellie.unitto.core.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.ListItemElevation
+import androidx.compose.material3.ListItemShapes
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
+import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,7 +55,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sadellie.unitto.core.designsystem.icons.symbols.Check
 import com.sadellie.unitto.core.designsystem.icons.symbols.Close
-import com.sadellie.unitto.core.designsystem.icons.symbols.Help
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 
@@ -76,61 +69,26 @@ fun ListItemExpressive(
   secondaryContentPadding: PaddingValues =
     PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
   interactionSource: MutableInteractionSource? = null,
-  role: Role? = null,
   colors: ListItemColors =
     ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceBright),
-  shape: Shape,
+  shapes: ListItemShapes,
 ) {
-  Column(modifier = modifier.clip(shape).background(colors.containerColor)) {
+  Column(modifier = modifier.clip(shapes.shape).background(colors.containerColor)) {
     ListItemExpressive(
       modifier = Modifier,
-      headlineContent = headlineContent,
+      content = headlineContent,
       supportingContent = supportingContent,
       leadingContent = leadingContent,
       trailingContent = trailingContent,
       colors = colors,
-      onClick = null,
+      onClick = {},
       interactionSource = interactionSource,
-      role = role,
-      shape = RectangleShape,
+      shapes = ListItemDefaults.middleShapes,
     )
+
     Box(modifier = Modifier.fillMaxWidth().padding(secondaryContentPadding)) { secondaryContent() }
   }
 }
-
-@Composable
-fun ListItemExpressive(
-  modifier: Modifier = Modifier,
-  headlineText: String,
-  supportingText: String? = null,
-  icon: ImageVector,
-  iconDescription: String = headlineText,
-  trailingContent: @Composable (() -> Unit)? = null,
-  onClick: (() -> Unit)?,
-  interactionSource: MutableInteractionSource? = null,
-  role: Role? = null,
-  colors: ListItemColors =
-    ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceBright),
-  shape: Shape,
-) =
-  ListItemExpressive(
-    modifier = modifier,
-    headlineContent = { Text(headlineText) },
-    supportingContent = supportingText?.let { { Text(it) } },
-    leadingContent = {
-      Icon(
-        imageVector = icon,
-        contentDescription = iconDescription,
-        modifier = Modifier.size(24.dp),
-      )
-    },
-    trailingContent = trailingContent,
-    onClick = onClick,
-    interactionSource = interactionSource,
-    role = role,
-    shape = shape,
-    colors = colors,
-  )
 
 @Composable
 fun ListItemExpressive(
@@ -144,12 +102,11 @@ fun ListItemExpressive(
   secondaryContentPadding: PaddingValues =
     PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
   interactionSource: MutableInteractionSource? = null,
-  role: Role? = null,
   colors: ListItemColors =
     ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceBright),
-  shape: Shape,
+  shapes: ListItemShapes,
 ) {
-  Column(modifier = modifier.clip(shape).background(colors.containerColor)) {
+  Column(modifier = modifier.clip(shapes.shape).background(colors.containerColor)) {
     ListItemExpressive(
       modifier = Modifier,
       headlineText = headlineText,
@@ -158,14 +115,46 @@ fun ListItemExpressive(
       iconDescription = iconDescription,
       trailingContent = trailingContent,
       colors = colors,
-      onClick = null,
+      onClick = {},
       interactionSource = interactionSource,
-      role = role,
-      shape = RectangleShape,
+      shapes = ListItemDefaults.middleShapes,
     )
+
     Box(modifier = Modifier.fillMaxWidth().padding(secondaryContentPadding)) { secondaryContent() }
   }
 }
+
+@Composable
+fun ListItemExpressive(
+  modifier: Modifier = Modifier,
+  headlineText: String,
+  supportingText: String? = null,
+  icon: ImageVector,
+  iconDescription: String = headlineText,
+  trailingContent: @Composable (() -> Unit)? = null,
+  onClick: (() -> Unit) = {},
+  interactionSource: MutableInteractionSource? = null,
+  colors: ListItemColors =
+    ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceBright),
+  shapes: ListItemShapes,
+) =
+  ListItemExpressive(
+    onClick = onClick,
+    shapes = shapes,
+    modifier = modifier,
+    leadingContent = {
+      Icon(
+        imageVector = icon,
+        contentDescription = iconDescription,
+        modifier = Modifier.size(24.dp),
+      )
+    },
+    trailingContent = trailingContent,
+    supportingContent = supportingText?.let { { Text(it) } },
+    content = { Text(headlineText) },
+    interactionSource = interactionSource,
+    colors = colors,
+  )
 
 @Composable
 fun ListItemExpressive(
@@ -178,17 +167,18 @@ fun ListItemExpressive(
   onSwitchChange: (Boolean) -> Unit,
   colors: ListItemColors =
     ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceBright),
-  shape: Shape,
+  shapes: ListItemShapes,
 ) {
   val interactionSource = remember { MutableInteractionSource() }
   ListItemExpressive(
     modifier = modifier,
     onClick = { onSwitchChange(!switchState) },
     interactionSource = interactionSource,
-    role = Role.Switch,
-    headlineContent = { Text(headlineText) },
+    content = { Text(headlineText) },
+    shapes = shapes,
     supportingContent = supportingText?.let { { Text(supportingText) } },
     leadingContent = { Icon(icon, contentDescription = iconDescription) },
+    verticalAlignment = Alignment.CenterVertically,
     trailingContent = {
       Switch(
         checked = switchState,
@@ -206,61 +196,11 @@ fun ListItemExpressive(
         },
       )
     },
-    shape = shape,
     colors = colors,
   )
 }
 
-@Composable
-fun ListItemExpressive(
-  headlineContent: @Composable () -> Unit,
-  modifier: Modifier = Modifier,
-  supportingContent: @Composable (() -> Unit)? = null,
-  leadingContent: @Composable (() -> Unit)? = null,
-  trailingContent: @Composable (() -> Unit)? = null,
-  onClick: (() -> Unit)?,
-  interactionSource: MutableInteractionSource? = null,
-  role: Role? = null,
-  colors: ListItemColors =
-    ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceBright),
-  shape: Shape,
-) {
-  val baseModifier =
-    if (onClick == null) modifier.clip(shape)
-    else
-      modifier
-        .clip(shape)
-        .clickable(onClick = onClick, interactionSource = interactionSource, role = role)
-  Row(
-    modifier =
-      baseModifier
-        .background(colors.containerColor)
-        .padding(horizontal = Sizes.large)
-        .heightIn(min = if (supportingContent == null) 56.dp else 72.dp),
-    horizontalArrangement = Arrangement.spacedBy(Sizes.large),
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    leadingContent?.let { ProvideColor(color = colors.leadingIconColor, content = it) }
-
-    Column(Modifier.weight(1f).padding(vertical = Sizes.small)) {
-      ProvideStyle(
-        color = colors.headlineColor,
-        textStyle = ListItemExpressiveDefaults.headlineTextStyle,
-        content = headlineContent,
-      )
-      supportingContent?.let {
-        ProvideStyle(
-          color = colors.supportingTextColor,
-          textStyle = ListItemExpressiveDefaults.supportingTextStyle,
-          content = it,
-        )
-      }
-    }
-    trailingContent?.let { ProvideColor(color = colors.trailingIconColor, content = it) }
-  }
-}
-
-object ListItemExpressiveDefaults {
+private object UnittoListItemDefaults {
   val headlineTextStyle: TextStyle
     @Stable
     @Composable
@@ -271,82 +211,137 @@ object ListItemExpressiveDefaults {
     @Stable @Composable get() = MaterialTheme.typography.bodyMedium.copy(lineHeight = 16.sp)
 
   private const val HEADLINE_TEXT_FONT_WEIGHT = 450
-
-  @Stable
-  fun listedShaped(indexInList: Int, listSize: Int): Shape {
-    if (listSize == 1) return singleShape
-    val isFirst = indexInList == 0
-    val isLast = indexInList == listSize - 1
-    return when {
-      isFirst -> firstShape
-      isLast -> lastShape
-      else -> middleShape
-    }
-  }
-
-  val ListArrangement = Arrangement.spacedBy(2.dp)
-
-  @Stable
-  val firstShape: Shape
-    get() = RoundedCornerShape(Sizes.large, Sizes.large, Sizes.extraSmall, Sizes.extraSmall)
-
-  @Stable
-  val middleShape: Shape
-    get() = RoundedCornerShape(Sizes.extraSmall)
-
-  @Stable
-  val lastShape: Shape
-    get() = RoundedCornerShape(Sizes.extraSmall, Sizes.extraSmall, Sizes.large, Sizes.large)
-
-  @Stable
-  val singleShape: Shape
-    get() = RoundedCornerShape(Sizes.large)
 }
 
-@Preview
 @Composable
-fun PreviewListItem1() {
-  Column(verticalArrangement = ListItemExpressiveDefaults.ListArrangement) {
-    ListItemExpressive(
-      modifier = Modifier,
-      onClick = null,
-      headlineContent = { Text("Headline") },
-      supportingContent = { Text("Support") },
-      leadingContent = { Icon(imageVector = Symbols.Help, contentDescription = null) },
-      shape = ListItemExpressiveDefaults.firstShape,
-    )
-
-    var radioState by rememberSaveable { mutableStateOf(false) }
-    ListItemExpressive(
-      modifier = Modifier,
-      onClick = null,
-      headlineContent = { Text("Headline") },
-      leadingContent = {
-        RadioButton(selected = radioState, onClick = { radioState = !radioState })
+fun ListItemExpressive(
+  onClick: () -> Unit,
+  shapes: ListItemShapes,
+  modifier: Modifier = Modifier,
+  selected: Boolean = false,
+  enabled: Boolean = true,
+  leadingContent: @Composable (() -> Unit)? = null,
+  trailingContent: @Composable (() -> Unit)? = null,
+  overlineContent: @Composable (() -> Unit)? = null,
+  supportingContent: @Composable (() -> Unit)? = null,
+  verticalAlignment: Alignment.Vertical = ListItemDefaults.verticalAlignment(),
+  onLongClick: (() -> Unit)? = null,
+  onLongClickLabel: String? = null,
+  colors: ListItemColors =
+    ListItemDefaults.segmentedColors(containerColor = MaterialTheme.colorScheme.surfaceBright),
+  elevation: ListItemElevation = ListItemDefaults.elevation(),
+  contentPadding: PaddingValues = ListItemDefaults.ContentPadding,
+  interactionSource: MutableInteractionSource? = null,
+  content: @Composable () -> Unit,
+) {
+  SegmentedListItem(
+    selected = selected,
+    onClick = onClick,
+    shapes = shapes,
+    modifier = modifier,
+    enabled = enabled,
+    leadingContent = leadingContent,
+    trailingContent = trailingContent,
+    overlineContent = overlineContent,
+    supportingContent =
+      supportingContent?.let {
+        {
+          ProvideStyle(
+            color = colors.supportingContentColor,
+            textStyle = UnittoListItemDefaults.supportingTextStyle,
+            content = it,
+          )
+        }
       },
-      shape = ListItemExpressiveDefaults.middleShape,
+    verticalAlignment = verticalAlignment,
+    onLongClick = onLongClick,
+    onLongClickLabel = onLongClickLabel,
+    colors = colors,
+    elevation = elevation,
+    contentPadding = contentPadding,
+    interactionSource = interactionSource,
+    content = {
+      ProvideStyle(
+        color = colors.contentColor,
+        textStyle = UnittoListItemDefaults.headlineTextStyle,
+        content = content,
+      )
+    },
+  )
+}
+
+@Composable
+fun ListItemDefaults.listedShapes(indexInList: Int, listSize: Int): ListItemShapes {
+  return segmentedShapes(
+    index = indexInList,
+    count = listSize,
+    defaultShapes = shapes(if (listSize == 1) singleShape else middleShape),
+  )
+}
+
+@Stable
+val ListItemDefaults.firstShapes: ListItemShapes
+  @Composable get() = shapes(ListItemDefaults.firstShape)
+
+@Stable
+val ListItemDefaults.middleShapes: ListItemShapes
+  @Composable get() = shapes(ListItemDefaults.middleShape)
+
+@Stable
+val ListItemDefaults.lastShapes: ListItemShapes
+  @Composable get() = shapes(ListItemDefaults.lastShape)
+
+@Stable
+val ListItemDefaults.singleShapes: ListItemShapes
+  @Composable get() = shapes(ListItemDefaults.singleShape)
+
+@Suppress("UnusedReceiverParameter")
+@Stable
+val ListItemDefaults.rectangleShapes: ListItemShapes
+  get() =
+    ListItemShapes(
+      RectangleShape,
+      RectangleShape,
+      RectangleShape,
+      RectangleShape,
+      RectangleShape,
+      RectangleShape,
     )
 
-    ListItemExpressive(
-      icon = Symbols.Help,
-      onClick = null,
-      headlineText = "Text text",
-      supportingText = "Support text support text support text support text",
-      modifier = Modifier,
-      trailingContent = {},
-      iconDescription = "",
-      shape = ListItemExpressiveDefaults.middleShape,
-    )
+@Suppress("UnusedReceiverParameter")
+@Stable
+val ListItemDefaults.firstShape: Shape
+  get() = RoundedCornerShape(Sizes.large, Sizes.large, Sizes.extraSmall, Sizes.extraSmall)
 
-    var switchState by rememberSaveable { mutableStateOf(false) }
+@Suppress("UnusedReceiverParameter")
+@Stable
+val ListItemDefaults.middleShape: Shape
+  get() = RoundedCornerShape(Sizes.extraSmall)
+
+@Suppress("UnusedReceiverParameter")
+@Stable
+val ListItemDefaults.lastShape: Shape
+  get() = RoundedCornerShape(Sizes.extraSmall, Sizes.extraSmall, Sizes.large, Sizes.large)
+
+@Suppress("UnusedReceiverParameter")
+@Stable
+val ListItemDefaults.singleShape: Shape
+  get() = RoundedCornerShape(Sizes.large)
+
+@Suppress("UnusedReceiverParameter")
+@Stable
+val ListItemDefaults.ListArrangement
+  get() = Arrangement.spacedBy(2.dp)
+
+@Composable
+@Preview
+private fun PreviewListItem2() {
+  Column(verticalArrangement = ListItemDefaults.ListArrangement) {
     ListItemExpressive(
-      icon = Symbols.Help,
-      headlineText = "Text text",
-      supportingText = "Support text support text support text support text",
-      modifier = Modifier,
-      onSwitchChange = { switchState = !switchState },
-      switchState = switchState,
-      shape = ListItemExpressiveDefaults.lastShape,
+      shapes = ListItemDefaults.firstShapes,
+      content = { Text("List item") },
+      supportingContent = { Text("List item") },
+      onClick = {},
     )
   }
 }

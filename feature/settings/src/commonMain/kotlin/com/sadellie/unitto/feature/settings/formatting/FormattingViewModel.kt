@@ -24,14 +24,21 @@ import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
 class FormattingViewModel(private val userPreferencesRepository: UserPreferencesRepository) :
   ViewModel() {
   private val prefs = userPreferencesRepository.formattingPrefs
 
-  val uiState =
+  internal val uiState =
     prefs
       .map { mainPrefs ->
         FormattingUIState(
@@ -43,7 +50,7 @@ class FormattingViewModel(private val userPreferencesRepository: UserPreferences
       .stateIn(viewModelScope, null)
 
   /** @see UserPreferencesRepository.updateDigitsPrecision */
-  fun updatePrecision(precision: Int) =
+  internal fun updatePrecision(precision: Int) =
     viewModelScope.launch {
       // In UI the slider for precision goes from 0 to 16, where 16 is treated as 1000 (MAX)
       val newPrecision = if (precision < MAX_SCALE_ALIAS) precision else MAX_SCALE
@@ -51,7 +58,7 @@ class FormattingViewModel(private val userPreferencesRepository: UserPreferences
     }
 
   /** @see UserPreferencesRepository.updateFormatterSymbols */
-  fun updateFormatterSymbols(
+  internal fun updateFormatterSymbols(
     grouping: Token.Formatter,
     fractional: Token.Formatter,
     indian: Boolean,
@@ -61,6 +68,6 @@ class FormattingViewModel(private val userPreferencesRepository: UserPreferences
     }
 
   /** @see UserPreferencesRepository.updateOutputFormat */
-  fun updateOutputFormat(outputFormat: Int) =
+  internal fun updateOutputFormat(outputFormat: Int) =
     viewModelScope.launch { userPreferencesRepository.updateOutputFormat(outputFormat) }
 }

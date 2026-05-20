@@ -25,7 +25,10 @@ import com.sadellie.unitto.core.common.combineBig
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.observe
-import java.time.ZonedDateTime
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,9 +37,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 
-internal class AddSubtractViewModel(userPreferencesRepository: UserPreferencesRepository) :
-  ViewModel() {
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class AddSubtractViewModel(userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
   private val _initialDateTime = ZonedDateTime.now()
   private var _calculateJob: Job? = null
   private val _result = MutableStateFlow(_initialDateTime)
@@ -48,7 +54,7 @@ internal class AddSubtractViewModel(userPreferencesRepository: UserPreferencesRe
   private val _hours = TextFieldState()
   private val _minutes = TextFieldState()
 
-  val uiState: StateFlow<AddSubtractUIState> =
+  internal val uiState: StateFlow<AddSubtractUIState> =
     combine(_result, _start, _addition, userPreferencesRepository.addSubtractPrefs) {
         resultValue,
         startValue,
@@ -68,7 +74,7 @@ internal class AddSubtractViewModel(userPreferencesRepository: UserPreferencesRe
       }
       .stateIn(viewModelScope, AddSubtractUIState.Loading)
 
-  suspend fun observeInput() {
+  internal suspend fun observeInput() {
     val yearsFlow = _years.observe()
     val monthsFlow = _months.observe()
     val daysFlow = _days.observe()
@@ -96,10 +102,10 @@ internal class AddSubtractViewModel(userPreferencesRepository: UserPreferencesRe
       .collectLatest {}
   }
 
-  fun updateStart(newValue: ZonedDateTime) = _start.update { newValue }
+  internal fun updateStart(newValue: ZonedDateTime) = _start.update { newValue }
 
   // BCE is not handled properly because who gives a shit...
-  fun updateAddition(newValue: Boolean) = _addition.update { newValue }
+  internal fun updateAddition(newValue: Boolean) = _addition.update { newValue }
 
   private fun calculate(
     addition: Boolean,

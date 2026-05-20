@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.feature.converter
 
-import androidx.lifecycle.SavedStateHandle
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
@@ -30,8 +30,14 @@ import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
-import com.sadellie.unitto.core.ui.textfield.getTextFieldState
 import com.sadellie.unitto.core.ui.textfield.observe
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import io.github.sadellie.evaluatto.ExpressionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -43,21 +49,25 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class ConverterViewModel(
+@AssistedInject
+class ConverterViewModel(
+  @Assisted private val args: ConverterStartRoute,
   private val userPrefsRepository: UserPreferencesRepository,
   private val unitsRepo: UnitConverterRepository,
-  private val args: ConverterStartRoute,
-  private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+  @AssistedFactory
+  @ManualViewModelAssistedFactoryKey
+  @ContributesIntoMap(AppScope::class)
+  fun interface Factory : ManualViewModelAssistedFactory {
+    fun create(args: ConverterStartRoute): ConverterViewModel
+  }
+
   private var _conversionJob: Job? = null
-  private val _converterInputKey1 = "CONVERTER_INPUT_1"
-  private val _converterInputKey2 = "CONVERTER_INPUT_2"
-  private val _input1 = savedStateHandle.getTextFieldState(_converterInputKey1)
-  private val _input2 = savedStateHandle.getTextFieldState(_converterInputKey2)
+  private val _input1 = TextFieldState()
+  private val _input2 = TextFieldState()
   private val _output = MutableStateFlow<ConverterResult>(ConverterResult.Loading)
   private val _currencyRateUpdateState = unitsRepo.currencyRateUpdateState
   private val _unitFromId = MutableStateFlow<String?>(null)
@@ -74,7 +84,7 @@ internal class ConverterViewModel(
       .flowOn(Dispatchers.Default)
       .stateIn(viewModelScope, null)
 
-  val uiState: StateFlow<ConverterUIState> =
+  internal val uiState: StateFlow<ConverterUIState> =
     combine(
         _output,
         _unitFrom,
@@ -119,11 +129,9 @@ internal class ConverterViewModel(
     loadInitialUnits()
   }
 
-  suspend fun observeInput() {
-    val input1Flow =
-      _input1.observe().onEach { savedStateHandle[_converterInputKey1] = _input1.text }
-    val input2Flow =
-      _input2.observe().onEach { savedStateHandle[_converterInputKey2] = _input2.text }
+  internal suspend fun observeInput() {
+    val input1Flow = _input1.observe()
+    val input2Flow = _input2.observe()
 
     combine(input1Flow, input2Flow, _unitFromId, _unitToId, userPrefsRepository.converterPrefs) {
         input1Value,
@@ -142,7 +150,7 @@ internal class ConverterViewModel(
       .collectLatest {}
   }
 
-  fun retryConvert() {
+  internal fun retryConvert() {
     viewModelScope.launch {
       val prefs = userPrefsRepository.converterPrefs.first()
       convert(
@@ -155,7 +163,7 @@ internal class ConverterViewModel(
     }
   }
 
-  fun updateUnitFromId(id: String) =
+  internal fun updateUnitFromId(id: String) =
     viewModelScope.launch {
       val pairId = unitsRepo.getPairId(id)
 
@@ -166,7 +174,7 @@ internal class ConverterViewModel(
       updateLatestPairOfUnits()
     }
 
-  fun updateUnitToId(id: String) =
+  internal fun updateUnitToId(id: String) =
     viewModelScope.launch {
       _unitToId.update { id }
       unitsRepo.incrementCounter(id)
@@ -174,7 +182,7 @@ internal class ConverterViewModel(
       updateLatestPairOfUnits()
     }
 
-  fun swapUnits(newUnitFromId: String, newInputToId: String) =
+  internal fun swapUnits(newUnitFromId: String, newInputToId: String) =
     viewModelScope.launch {
       _unitFromId.update { newUnitFromId }
       _unitToId.update { newInputToId }
@@ -182,7 +190,7 @@ internal class ConverterViewModel(
       updateLatestPairOfUnits()
     }
 
-  fun convert(
+  internal fun convert(
     input1Value: String,
     input2Value: String,
     unitFromIdValue: String?,

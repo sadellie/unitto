@@ -42,6 +42,7 @@ import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -58,14 +59,15 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.RestorePage
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.middleShapes
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.settings_back_up
 import unitto.core.common.generated.resources.settings_backup
@@ -74,10 +76,12 @@ import unitto.core.common.generated.resources.settings_favorite_units
 import unitto.core.common.generated.resources.settings_restore
 import unitto.core.common.generated.resources.settings_saved_expressions
 import unitto.core.common.generated.resources.settings_used_units
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 internal fun BackupRoute(navigateUpAction: () -> Unit) {
-  val viewModel: BackupViewModel = koinViewModel()
+  val viewModel: BackupViewModel = metroViewModel()
   when (val uiState: BackupUIState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     BackupUIState.Loading -> EmptyScreen()
     BackupUIState.InProgress -> BackupScreenInProgress()
@@ -108,7 +112,7 @@ private fun BackupScreenReady(
         Modifier.verticalScroll(scrollState)
           .padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       BackupRestoreControls(
         modifier = Modifier.padding(vertical = Sizes.large),
@@ -116,28 +120,28 @@ private fun BackupScreenReady(
         onRestore = onRestore,
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(Res.string.settings_saved_expressions)) },
+        content = { Text(stringResource(Res.string.settings_saved_expressions)) },
         supportingContent = { Text("${uiState.savedExpressions}") },
-        shape = ListItemExpressiveDefaults.firstShape,
-        onClick = null,
+        shapes = ListItemDefaults.firstShapes,
+        onClick = {},
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(Res.string.settings_favorite_units)) },
+        content = { Text(stringResource(Res.string.settings_favorite_units)) },
         supportingContent = { Text("${uiState.favoriteUnits}") },
-        shape = ListItemExpressiveDefaults.middleShape,
-        onClick = null,
+        shapes = ListItemDefaults.middleShapes,
+        onClick = {},
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(Res.string.settings_used_units)) },
+        content = { Text(stringResource(Res.string.settings_used_units)) },
         supportingContent = { Text("${uiState.usedUnits}") },
-        shape = ListItemExpressiveDefaults.middleShape,
-        onClick = null,
+        shapes = ListItemDefaults.middleShapes,
+        onClick = {},
       )
       ListItemExpressive(
-        headlineContent = { Text(stringResource(Res.string.settings_favorite_time_zones)) },
+        content = { Text(stringResource(Res.string.settings_favorite_time_zones)) },
         supportingContent = { Text("${uiState.favoriteTimeZones}") },
-        shape = ListItemExpressiveDefaults.lastShape,
-        onClick = null,
+        shapes = ListItemDefaults.lastShapes,
+        onClick = {},
       )
     }
   }

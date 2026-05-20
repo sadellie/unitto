@@ -20,21 +20,6 @@ package com.sadellie.unitto.core.ui.textfield
 
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.ui.text.TextRange
-import kotlin.math.abs
-
-fun CharSequence.fixCursor(pos: Int, longTokens: List<String>): Int {
-  if (isEmpty()) return pos
-
-  // Best position if we move cursor left
-  var leftCursor = pos
-  while (this.isPlacedIllegallyAt(leftCursor, longTokens)) leftCursor--
-
-  // Best position if we move cursor right
-  var rightCursor = pos
-  while (this.isPlacedIllegallyAt(rightCursor, longTokens)) rightCursor++
-
-  return listOf(leftCursor, rightCursor).minBy { abs(it - pos) }
-}
 
 fun TextFieldBuffer.fixTextRange(longTokens: List<String>): TextRange {
   val text = this.asCharSequence()
@@ -58,10 +43,52 @@ fun String.tokenLengthAhead(pos: Int, longTokens: List<String>): Int {
   return 1
 }
 
+/**
+ * Find token before cursor
+ *
+ * @param longTokens Tokens that can are longer than 1 character. Checked first. If not found, will
+ *   return best match - next character (can be illegal).
+ */
 fun String.tokenAhead(pos: Int, longTokens: List<String>): String {
   longTokens.forEach { if (pos.isAfterToken(this, it)) return it }
 
   return substring((pos - 1).coerceAtLeast(0), pos)
+}
+
+/**
+ * Find the token after cursor
+ *
+ * @see [tokenAhead]
+ */
+fun String.tokenAfter(pos: Int, longTokens: List<String>): String {
+  // This can also make [TextFieldState.addTokens] better by checking tokens both ways. Needs more
+  // tests
+  longTokens.forEach { if (pos.isBeforeToken(this, it)) return it }
+
+  return substring(pos, (pos + 1).coerceAtMost(this.length))
+}
+
+private fun CharSequence.fixCursor(pos: Int, longTokens: List<String>): Int {
+  if (pos <= 0) return 0
+  if (pos >= this.length) return this.length
+  if (isEmpty()) return pos
+
+  // best position if move cursor left
+  var leftCursor = pos
+  while (this.isPlacedIllegallyAt(leftCursor, longTokens)) leftCursor--
+  val leftMoves = pos - leftCursor
+  // already fixed
+  if (leftMoves == 0) return pos
+
+  // best position if move cursor right
+  var rightCursor = pos
+  while (this.isPlacedIllegallyAt(rightCursor, longTokens)) rightCursor++
+  val rightMoves = rightCursor - pos
+  // already fixed
+  if (rightMoves == 0) return pos
+
+  val bestCursor = if (leftMoves < rightMoves) leftCursor else rightCursor
+  return bestCursor.coerceIn(0, this.length)
 }
 
 /**
@@ -87,14 +114,6 @@ private fun Int.isAtToken(str: CharSequence, token: String): Boolean {
 
 private fun Int.isAfterToken(str: String, token: String): Boolean {
   return str.substring((this - token.length).coerceAtLeast(0), this).contains(token)
-}
-
-// This can also make [TextFieldState.addTokens] better by checking tokens both ways. Needs more
-// tests
-fun String.tokenAfter(pos: Int, longTokens: List<String>): String {
-  longTokens.forEach { if (pos.isBeforeToken(this, it)) return it }
-
-  return substring(pos, (pos + 1).coerceAtMost(this.length))
 }
 
 private fun Int.isBeforeToken(str: String, token: String): Boolean {

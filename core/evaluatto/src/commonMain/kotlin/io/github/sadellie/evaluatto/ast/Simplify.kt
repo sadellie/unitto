@@ -20,11 +20,11 @@ package io.github.sadellie.evaluatto.ast
 
 internal fun simplifyBottomToTop(
   context: ScriptContext,
-  parentNode: ASTNode,
-  onVisitParent: (currentNode: ASTNode) -> ASTNode?,
+  rootNode: ASTNode,
+  onVisitParent: (currentNode: ASTNode, parent: ASTNode?) -> ASTNode?,
 ): ASTNode? {
   // null if no pattern match report to caller
-  val simplifiedTree = walkBottomToTop(context, parentNode, onVisitParent) ?: return null
+  val simplifiedTree = walkBottomToTop(context, rootNode, null, onVisitParent) ?: return null
   // found a pattern and simplified
   return simplifiedTree
 }
@@ -32,31 +32,35 @@ internal fun simplifyBottomToTop(
 /**
  * Start visiting nodes from the deepest bracket in expression. Always collapses before returning
  * result.
+ *
+ * @param node Node to visit
+ * @param parentNode Parent of node
  */
 internal fun walkBottomToTop(
   context: ScriptContext,
-  parentNode: ASTNode,
-  onVisitParent: (node: ASTNode) -> ASTNode?,
+  node: ASTNode,
+  parentNode: ASTNode?,
+  onVisitParent: (node: ASTNode, parent: ASTNode?) -> ASTNode?,
 ): ASTNode? {
   val sortedChildrenWithIndex =
-    parentNode.children
+    node.children
       // index before sorting to keep indexes to modify list correctly
       .withIndex()
       // visit brackets first
       .sortedByDescending { it.value is BracketsNode }
 
   for ((index, child) in sortedChildrenWithIndex) {
-    val simplified = walkBottomToTop(context, child, onVisitParent)
+    val simplified = walkBottomToTop(context, child, node, onVisitParent)
     if (simplified != null) {
-      val updatedChildren = parentNode.children.toMutableList()
+      val updatedChildren = node.children.toMutableList()
       updatedChildren[index] = simplified
-      return parentNode.withNewChildren(updatedChildren).collapse(context)
+      return node.withNewChildren(updatedChildren).collapse(context)
     }
   }
 
-  // visited all children and made no modifications, now visit parent
-  val visitedParentNode = onVisitParent(parentNode)?.collapse(context)
-  if (visitedParentNode != null) return visitedParentNode
+  // visited all children and made no modifications, now visit node
+  val visitedNode = onVisitParent(node, parentNode)?.collapse(context)
+  if (visitedNode != null) return visitedNode
 
   return null
 }

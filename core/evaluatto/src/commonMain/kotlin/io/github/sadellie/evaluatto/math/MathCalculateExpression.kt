@@ -63,7 +63,7 @@ suspend fun calculateExpressionAndExtractRepeatableOperation(
       ASTMathBuilder(tokens).buildTreeAndCollapse(context) ?: error("Failed to build a tree")
     val operation = if (extractRepeatable) extractRepeatableOperation(tree) else null
     val simplified = MathSimplify(tree, context).simplifyRecursively()
-    if (simplified !is MathNumberNode) error("Result is not a number")
+    if (simplified !is MathNumberNode) error("Result is not a number: $simplified")
     return@withContext simplified.value to operation
   }
 

@@ -18,9 +18,9 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
@@ -37,9 +37,12 @@ import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addBracket
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addTokens
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.deleteTokens
-import com.sadellie.unitto.core.ui.textfield.getTextFieldState
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.core.ui.textfield.placeCursorAtTheEnd
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import io.github.sadellie.evaluatto.ExpressionException
 import io.github.sadellie.evaluatto.math.Operation
 import io.github.sadellie.evaluatto.math.calculateExpressionAndExtractRepeatableOperation
@@ -54,14 +57,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-internal class CalculatorViewModel(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class CalculatorViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val calculatorHistoryRepository: CalculatorHistoryRepository,
-  private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
   private var _calculationJob: Job? = null
-  private val _inputKey = "CALCULATOR_INPUT"
-  private val _input = savedStateHandle.getTextFieldState(_inputKey)
+  private val _input = TextFieldState()
   private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
   private val _prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
 
@@ -69,7 +73,7 @@ internal class CalculatorViewModel(
   private val _lastResult = MutableStateFlow("")
   private val _lastRepeatableOperation = MutableStateFlow<Operation?>(null)
 
-  val uiState: StateFlow<CalculatorUIState> =
+  internal val uiState: StateFlow<CalculatorUIState> =
     combine(_result, _prefs, calculatorHistoryRepository.historyFlow) { result, prefs, history ->
         prefs ?: return@combine CalculatorUIState.Loading
 
@@ -93,25 +97,24 @@ internal class CalculatorViewModel(
       }
       .stateIn(viewModelScope, CalculatorUIState.Loading)
 
-  suspend fun observeInput() {
+  internal suspend fun observeInput() {
     _input.observe().collectLatest {
       val lastResult = _lastResult.value
       if (lastResult == it && lastResult.isNotEmpty()) {
         // do not process last result (do not clear fractional in result field)
         return@collectLatest
       }
-      savedStateHandle[_inputKey] = it.toString()
       calculateInput()
     }
   }
 
   /** Method called before [_input] changes without buttons - hardware keyboard or clipboard */
-  fun onHardwareInput() {
+  internal fun onHardwareInput() {
     // TODO replace input when on equals was clicked prior
     _lastResult.update { "" }
   }
 
-  fun addTokens(tokens: String) {
+  internal fun addTokens(tokens: String) {
     val isEqualClicked = isEqualClicked()
     if (isEqualClicked) {
       when {
@@ -125,7 +128,7 @@ internal class CalculatorViewModel(
     _input.addTokens(tokens)
   }
 
-  fun addBracket() {
+  internal fun addBracket() {
     if (isEqualClicked()) {
       // Cursor is set to 0 when equal is clicked
       _input.placeCursorAtTheEnd()
@@ -134,7 +137,7 @@ internal class CalculatorViewModel(
     _input.addBracket()
   }
 
-  fun deleteTokens() {
+  internal fun deleteTokens() {
     if (isEqualClicked()) {
       _input.clearText()
       _lastResult.update { "" }
@@ -143,33 +146,33 @@ internal class CalculatorViewModel(
     }
   }
 
-  fun clearInput() {
+  internal fun clearInput() {
     _input.clearText()
     _lastResult.update { "" }
   }
 
-  fun updateRadianMode(newValue: Boolean) =
+  internal fun updateRadianMode(newValue: Boolean) =
     viewModelScope.launch {
       userPrefsRepository.updateRadianMode(newValue)
       _lastResult.update { "" }
       calculateInput()
     }
 
-  fun updateAdditionalButtons(newValue: Boolean) =
+  internal fun updateAdditionalButtons(newValue: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateAdditionalButtons(newValue) }
 
-  fun updateInverseMode(newValue: Boolean) =
+  internal fun updateInverseMode(newValue: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateInverseMode(newValue) }
 
-  fun updateInitialPartialHistoryView(newValue: Boolean) =
+  internal fun updateInitialPartialHistoryView(newValue: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateInitialPartialHistoryView(newValue) }
 
-  fun clearHistory() = viewModelScope.launch { calculatorHistoryRepository.clear() }
+  internal fun clearHistory() = viewModelScope.launch { calculatorHistoryRepository.clear() }
 
-  fun deleteHistoryItem(item: CalculatorHistoryItem) =
+  internal fun deleteHistoryItem(item: CalculatorHistoryItem) =
     viewModelScope.launch { calculatorHistoryRepository.delete(item.id) }
 
-  fun onEqualClick() =
+  internal fun onEqualClick() =
     viewModelScope.launch {
       val prefs = _prefs.value ?: return@launch
       var inputValue = _input.text.toString()

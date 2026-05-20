@@ -22,6 +22,7 @@ plugins {
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
+  alias(libs.plugins.metro)
 }
 
 android {
@@ -40,19 +41,15 @@ dependencies {
   implementation(project(":core:navigation"))
   implementation(project(":core:themmo"))
   implementation(project(":core:ui"))
-
+  implementation(libs.dev.zacsweers.metro.metrox.viewmodel.compose)
   implementation(libs.org.jetbrains.compose.components.components.resources)
-  implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-  implementation(libs.io.insert.koin.koin.core.coroutines)
-  implementation(libs.io.insert.koin.koin.compose.viewmodel)
-  implementation(libs.io.insert.koin.koin.compose.navigation3)
-
   implementation(libs.androidx.appcompat.appcompat)
   implementation(libs.org.jetbrains.compose.foundation.foundation)
   implementation(libs.org.jetbrains.compose.ui.ui)
   implementation(libs.org.jetbrains.compose.material3.material3)
   implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
   implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
+  implementation(libs.androidx.navigation3.navigation3.runtime)
   implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
   implementation(libs.org.jetbrains.androidx.lifecycle.lifecycle.viewmodel.navigation3)
   implementation(libs.androidx.glance.glance)

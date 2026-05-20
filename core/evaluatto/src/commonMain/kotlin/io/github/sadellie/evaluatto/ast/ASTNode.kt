@@ -31,4 +31,17 @@ internal sealed interface ASTNode {
     val updatedNode = this.withNewChildren(collapsedChildren)
     return updatedNode
   }
+
+  fun toPrettyString(indent: String = "", isLast: Boolean = true): String {
+    val bob = StringBuilder()
+    val marker = if (isLast) "└ " else "├ "
+    val nodeToken = if (this is BracketsNode) "()" else this.token
+    bob.append(indent).append(marker).append(nodeToken).append("\n")
+    val childrenIndent = indent + if (isLast) "  " else "│ "
+    children.indices.forEach { i ->
+      val isLastChild = i == children.size - 1
+      bob.append(children[i].toPrettyString(childrenIndent, isLastChild))
+    }
+    return bob.toString()
+  }
 }

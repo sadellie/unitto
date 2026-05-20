@@ -19,39 +19,48 @@
 package com.sadellie.unitto
 
 import android.app.Application
-import com.sadellie.unitto.core.database.unittoDatabaseModule
-import com.sadellie.unitto.core.datastore.dataStoreModule
-import com.sadellie.unitto.feature.bodymass.bodyMassModule
-import com.sadellie.unitto.feature.calculator.calculatorModule
-import com.sadellie.unitto.feature.converter.converterModule
-import com.sadellie.unitto.feature.datecalculator.dateCalculatorModule
-import com.sadellie.unitto.feature.glance.converter.converterWidgetModule
-import com.sadellie.unitto.feature.programmer.programmerModule
-import com.sadellie.unitto.feature.settings.settingsModule
-import com.sadellie.unitto.feature.timezone.timeZoneModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.androix.startup.KoinStartup
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.lazyModules
-import org.koin.dsl.koinConfiguration
+import android.content.Context
+import com.sadellie.unitto.core.data.TimeZoneDataBindings
+import com.sadellie.unitto.core.data.calculator.CalculatorDataBindings
+import com.sadellie.unitto.core.data.converter.ConverterDataBindings
+import com.sadellie.unitto.core.datastore.DataStoreBindings
+import com.sadellie.unitto.core.remote.RemoteBindings
+import com.sadellie.unitto.feature.glance.GraphProvider
+import com.sadellie.unitto.feature.glance.WidgetDependencies
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.createGraphFactory
 
-@OptIn(KoinExperimentalAPI::class)
-class UnittoApplication : Application(), KoinStartup {
-  override fun onKoinStartup() = koinConfiguration {
-    androidContext(this@UnittoApplication)
-    lazyModules(
-      listOf(
-        unittoDatabaseModule,
-        dataStoreModule,
-        bodyMassModule,
-        calculatorModule,
-        converterModule,
-        programmerModule,
-        dateCalculatorModule,
-        settingsModule,
-        timeZoneModule,
-        converterWidgetModule,
-      )
-    )
+class UnittoApplication : Application() {
+  val appGraph by lazy { createGraphFactory<AndroidAppGraph.Factory>().create(application = this) }
+
+  override fun onCreate() {
+    super.onCreate()
+    GraphProvider.widgetDependencies = appGraph
   }
 }
+
+@DependencyGraph(
+  AppScope::class,
+  bindingContainers =
+    [
+      DataStoreBindings::class,
+      CalculatorDataBindings::class,
+      ConverterDataBindings::class,
+      TimeZoneDataBindings::class,
+      RemoteBindings::class,
+    ],
+)
+interface AndroidAppGraph : AppGraph, WidgetDependencies {
+  @DependencyGraph.Factory
+  fun interface Factory {
+    fun create(@Provides application: Application): AndroidAppGraph
+  }
+
+  @Provides
+  private fun provideContext(application: Application): Context = application.applicationContext
+}
+
+internal fun getApplicationGraph(context: Context): AndroidAppGraph =
+  (context as? UnittoApplication)?.appGraph ?: error("wrong $context type")

@@ -27,21 +27,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.Font
 import unitto.core.designsystem.generated.resources.Res
-import unitto.core.designsystem.generated.resources.google_sans_for_unitto
+import unitto.core.designsystem.generated.resources.google_sans_flex_unitto_big
 
 val LocalNumberTypography = staticCompositionLocalOf {
   numberTypographyUnittoImpl(FontFamily.Default)
 }
 
-/**
- * Branded typography
- *
- * `fonttools varLib.mutator font.ttf wght=400 wdth=86 ROND=100 slnt=0 opsz=28`
- */
+/** Branded typography */
 @Composable
 fun numberTypographyUnitto(): Typography =
   numberTypographyUnittoImpl(
-    FontFamily(Font(resource = Res.font.google_sans_for_unitto, weight = FontWeight.Normal))
+    FontFamily(Font(resource = Res.font.google_sans_flex_unitto_big, weight = FontWeight.Normal))
   )
 
 private fun numberTypographyUnittoImpl(fontFamily: FontFamily): Typography {
@@ -50,7 +46,7 @@ private fun numberTypographyUnittoImpl(fontFamily: FontFamily): Typography {
       TextStyle(
         fontFamily = fontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 57.sp,
+        fontSize = 55.sp,
         lineHeight = 64.0.sp,
         letterSpacing = (-0.2).sp,
       ),

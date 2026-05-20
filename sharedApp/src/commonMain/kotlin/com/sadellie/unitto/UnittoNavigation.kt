@@ -33,6 +33,7 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.sadellie.unitto.core.designsystem.unittoFadeIn
@@ -45,13 +46,18 @@ import com.sadellie.unitto.core.navigation.additionalDrawerItems
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import com.sadellie.unitto.core.ui.BackHandler
 import com.sadellie.unitto.core.ui.NavigationDrawer
+import com.sadellie.unitto.feature.bodymass.navigation.bodyMassNavigation
+import com.sadellie.unitto.feature.calculator.navigation.calculatorNavigation
+import com.sadellie.unitto.feature.converter.navigation.converterNavigation
+import com.sadellie.unitto.feature.datecalculator.navigation.dateCalculatorNavigation
+import com.sadellie.unitto.feature.programmer.programmerNavigation
 import com.sadellie.unitto.feature.settings.navigation.LocalThemmoController
 import com.sadellie.unitto.feature.settings.navigation.navigateToUnitGroups
+import com.sadellie.unitto.feature.settings.navigation.settingNavigation
+import com.sadellie.unitto.feature.timezone.navigation.timeZoneNavigation
 import io.github.sadellie.themmo.ThemmoController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.koin.compose.navigation3.koinEntryProvider
-import org.koin.core.annotation.KoinExperimentalAPI
 
 @Composable
 fun MainAppContent(
@@ -88,7 +94,6 @@ fun MainAppContent(
   }
 }
 
-@OptIn(KoinExperimentalAPI::class)
 @Composable
 private fun UnittoNavigation(
   backStack: NavBackStack<NavKey>,
@@ -120,7 +125,16 @@ private fun UnittoNavigation(
           rememberViewModelStoreNavEntryDecorator(),
           rememberDrawerCloseGestureNavEntryDecorator(drawerState, drawerScope),
         ),
-      entryProvider = koinEntryProvider(),
+      entryProvider =
+        entryProvider {
+          calculatorNavigation()
+          converterNavigation()
+          bodyMassNavigation()
+          dateCalculatorNavigation()
+          programmerNavigation()
+          settingNavigation()
+          timeZoneNavigation()
+        },
     )
   }
 }

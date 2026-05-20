@@ -20,6 +20,7 @@ plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.compose)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -32,16 +33,11 @@ kotlin {
     implementation(project(":core:remote"))
     implementation(libs.org.jetbrains.compose.runtime.runtime)
     implementation(libs.org.jetbrains.compose.components.components.resources)
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.core)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.co.touchlab.kermit)
   }
-  sourceSets.androidMain.dependencies {
-    implementation(libs.io.insert.koin.koin.android)
-    implementation(libs.io.insert.koin.koin.core.coroutines)
-  }
+  sourceSets.androidMain.dependencies { implementation(libs.androidx.annotation.annotation.jvm) }
   sourceSets.commonTest.dependencies {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)

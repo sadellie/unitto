@@ -31,6 +31,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -55,9 +56,17 @@ import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
+import com.sadellie.unitto.core.ui.listedShapes
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -143,13 +152,13 @@ private fun MainScreen(
       modifier =
         Modifier.padding(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       itemsIndexed(uiState.selectedUnits) { index, selectedUnit ->
         ListItemExpressive(
-          shape = ListItemExpressiveDefaults.listedShaped(index, uiState.selectedUnits.size),
-          onClick = null,
-          headlineContent = {
+          shapes = ListItemDefaults.listedShapes(index, uiState.selectedUnits.size),
+          onClick = {},
+          content = {
             Row(
               modifier = Modifier.height(IntrinsicSize.Max),
               horizontalArrangement = Arrangement.spacedBy(Sizes.small),
@@ -182,13 +191,21 @@ internal data class ConverterWidgetConfigureMainUIState(
   val submitProgress: ConverterWidgetConfigureSubmitProgress,
 )
 
-internal class ConverterWidgetConfigureViewModel(
+@AssistedInject
+class ConverterWidgetConfigureViewModel(
+  @Assisted private val appWidgetId: Int,
   private val converterWidgetUnitPairDao: ConverterWidgetUnitPairDao,
   private val unitsRepo: UnitsRepository,
-  private val appWidgetId: Int,
 ) : ViewModel() {
+  @AssistedFactory
+  @ManualViewModelAssistedFactoryKey
+  @ContributesIntoMap(AppScope::class)
+  fun interface Factory : ManualViewModelAssistedFactory {
+    fun create(appWidgetId: Int): ConverterWidgetConfigureViewModel
+  }
+
   private val _inMemoryPairs = MutableStateFlow<List<SelectedUnitPair>?>(null)
-  val submitProgress = MutableStateFlow(ConverterWidgetConfigureSubmitProgress.NONE)
+  internal val submitProgress = MutableStateFlow(ConverterWidgetConfigureSubmitProgress.NONE)
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
@@ -198,14 +215,14 @@ internal class ConverterWidgetConfigureViewModel(
     }
   }
 
-  val mainUiState =
+  internal val mainUiState =
     combine(_inMemoryPairs, submitProgress) { selectedUnitPairs, submitProgressValue ->
         if (selectedUnitPairs == null) return@combine null
         ConverterWidgetConfigureMainUIState(selectedUnitPairs, submitProgressValue)
       }
       .stateIn(viewModelScope, null)
 
-  fun addNewPair(unitFromId: String, unitToId: String) {
+  internal fun addNewPair(unitFromId: String, unitToId: String) {
     viewModelScope.launch {
       val unitFrom = unitsRepo.getById(unitFromId)
       val unitTo = unitsRepo.getById(unitToId)
@@ -217,7 +234,7 @@ internal class ConverterWidgetConfigureViewModel(
     }
   }
 
-  fun removePair(index: Int) {
+  internal fun removePair(index: Int) {
     _inMemoryPairs.update { unitPairs ->
       if (unitPairs == null) return@update null
       val mutableList = unitPairs.toMutableList()
@@ -226,7 +243,7 @@ internal class ConverterWidgetConfigureViewModel(
     }
   }
 
-  fun submitNewPairs() {
+  internal fun submitNewPairs() {
     // Already submitting
     if (submitProgress.value != ConverterWidgetConfigureSubmitProgress.NONE) return
     viewModelScope.launch(Dispatchers.IO) {
@@ -286,7 +303,27 @@ private fun PreviewMainScreen() {
                   Res.string.unit_kilometer,
                   Res.string.unit_kilometer_short,
                 ),
-            )
+            ),
+            SelectedUnitPair(
+              id = 1,
+              order = 1,
+              from =
+                NormalUnit(
+                  UnitID.meter,
+                  KBigDecimal("2"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_meter,
+                  Res.string.unit_meter_short,
+                ),
+              to =
+                NormalUnit(
+                  UnitID.kilometer,
+                  KBigDecimal("2"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_kilometer,
+                  Res.string.unit_kilometer_short,
+                ),
+            ),
           ),
         submitProgress = ConverterWidgetConfigureSubmitProgress.NONE,
       ),

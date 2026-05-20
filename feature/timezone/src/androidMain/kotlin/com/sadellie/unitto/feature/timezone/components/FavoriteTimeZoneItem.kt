@@ -73,8 +73,6 @@ import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.ProvideStyle
 import com.sadellie.unitto.core.ui.datetime.formatOffset
 import com.sadellie.unitto.core.ui.datetime.formatTime
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_add
@@ -84,6 +82,8 @@ import unitto.core.common.generated.resources.common_tomorrow
 import unitto.core.common.generated.resources.common_yesterday
 import unitto.core.common.generated.resources.unit_hour_short
 import unitto.core.common.generated.resources.unit_minute_short
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -159,7 +159,7 @@ internal fun FavoriteTimeZoneItem(
         }
       }
       AnimatedContent(
-        targetState = offsetTime.formatTime(locale, is24Hour),
+        targetState = offsetTime.formatTime(locale.platformLocale, is24Hour),
         label = "Time change",
         transitionSpec = { fadeIn() togetherWith fadeOut() using (SizeTransform(clip = false)) },
       ) { time ->

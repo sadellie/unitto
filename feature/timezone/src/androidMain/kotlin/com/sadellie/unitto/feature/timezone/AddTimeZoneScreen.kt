@@ -29,9 +29,11 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.plus
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -51,24 +53,24 @@ import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.SearchPlaceholder
 import com.sadellie.unitto.core.ui.datetime.formatTime
-import com.sadellie.unitto.core.ui.plus
+import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
-import java.time.ZonedDateTime
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_read_article
 import unitto.core.common.generated.resources.time_zone_no_results_support
+import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun AddTimeZoneRoute(
-  viewModel: AddTimeZoneViewModel = koinViewModel(),
+  viewModel: AddTimeZoneViewModel = metroViewModel(),
   navigateUp: () -> Unit,
   userTime: ZonedDateTime,
 ) {
@@ -128,21 +130,21 @@ fun AddTimeZoneScreen(
           contentPadding =
             paddingValues +
               PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-          verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+          verticalArrangement = ListItemDefaults.ListArrangement,
         ) {
-          itemsIndexed(uiState.searchResults, { index, item -> item.timeZone.id }) { index, item ->
+          itemsIndexed(uiState.searchResults, { _, item -> item.timeZone.id }) { index, item ->
             ListItemExpressive(
-              shape = ListItemExpressiveDefaults.listedShaped(index, uiState.searchResults.size),
+              shapes = ListItemDefaults.listedShapes(index, uiState.searchResults.size),
               modifier = Modifier.animateItem(),
               onClick = {
                 addToFavorites(item.timeZone)
                 navigateUp()
               },
-              headlineContent = { Text(item.name) },
+              content = { Text(item.name) },
               supportingContent = { Text(item.region) },
               trailingContent = {
                 Text(
-                  text = item.timeZone.offset(userTime).formatTime(locale, is24Hour),
+                  text = item.timeZone.offset(userTime).formatTime(locale.platformLocale, is24Hour),
                   style = MaterialTheme.typography.headlineSmall,
                 )
               },

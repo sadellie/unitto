@@ -18,14 +18,14 @@
 
 package com.sadellie.unitto.core.ui.datetime
 
-import androidx.compose.ui.text.intl.PlatformLocale
-import java.text.DateFormatSymbols
+import androidx.compose.ui.text.intl.Locale
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
+import java.text.DateFormatSymbols
 
-actual fun dayOfWeekNamesAbbreviated(locale: PlatformLocale): DayOfWeekNames {
+actual fun dayOfWeekNamesAbbreviated(locale: Locale): DayOfWeekNames {
   val weekDaysFromSunday =
-    DateFormatSymbols.getInstance(locale).shortWeekdays.filterNot(String::isEmpty)
+    DateFormatSymbols.getInstance(locale.platformLocale).shortWeekdays.filterNot(String::isEmpty)
   return DayOfWeekNames(
     monday = weekDaysFromSunday[1],
     tuesday = weekDaysFromSunday[2],
@@ -37,5 +37,10 @@ actual fun dayOfWeekNamesAbbreviated(locale: PlatformLocale): DayOfWeekNames {
   )
 }
 
-actual fun monthNamesAbbreviated(locale: PlatformLocale) =
-  MonthNames(DateFormatSymbols.getInstance(locale).shortMonths.filterNot(String::isEmpty).toList())
+actual fun monthNamesAbbreviated(locale: Locale) =
+  MonthNames(
+    DateFormatSymbols.getInstance(locale.platformLocale)
+      .shortMonths
+      .filterNot(String::isEmpty)
+      .toList()
+  )

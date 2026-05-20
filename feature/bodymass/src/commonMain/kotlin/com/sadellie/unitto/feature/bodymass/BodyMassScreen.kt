@@ -61,8 +61,8 @@ import com.sadellie.unitto.core.ui.TextFieldRow
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 import com.sadellie.unitto.feature.bodymass.components.BodyMassResult
 import com.sadellie.unitto.feature.bodymass.components.BodyMassTextField
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.body_mass_height
 import unitto.core.common.generated.resources.body_mass_imperial
@@ -78,7 +78,7 @@ import unitto.core.common.generated.resources.unit_pound_short
 
 @Composable
 internal fun BodyMassRoute(openDrawer: () -> Unit) {
-  val viewModel: BodyMassViewModel = koinViewModel()
+  val viewModel: BodyMassViewModel = metroViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
   when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {

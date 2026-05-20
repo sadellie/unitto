@@ -20,20 +20,17 @@ plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.ksp)
   alias(libs.plugins.room)
+  alias(libs.plugins.metro)
 }
 
 kotlin {
   android.namespace = "com.sadellie.unitto.core.database"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.core)
     implementation(libs.androidx.room.common)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
   }
   sourceSets.androidMain.dependencies {
-    implementation(libs.io.insert.koin.koin.android)
-    implementation(libs.io.insert.koin.koin.core.coroutines)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
   }

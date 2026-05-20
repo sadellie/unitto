@@ -18,16 +18,14 @@
 
 package com.sadellie.unitto.feature.calculator.navigation
 
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.feature.calculator.CalculatorRoute
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
-fun Module.calculatorNavigation() {
-  navigation<CalculatorStartRoute> {
+fun EntryProviderScope<NavKey>.calculatorNavigation() {
+  entry<CalculatorStartRoute> {
     val navigator = LocalNavigator.current
     CalculatorRoute(openDrawer = navigator::openDrawer)
   }

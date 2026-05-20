@@ -23,38 +23,45 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import io.github.sadellie.themmo.core.MonetMode
 import io.github.sadellie.themmo.core.ThemingMode
 import kotlinx.coroutines.launch
 
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
 class DisplayViewModel(private val userPrefsRepository: UserPreferencesRepository) : ViewModel() {
 
-  val prefs = userPrefsRepository.displayPrefs.stateIn(viewModelScope, null)
+  internal val prefs = userPrefsRepository.displayPrefs.stateIn(viewModelScope, null)
 
-  fun updateThemingMode(themingMode: ThemingMode) {
+  internal fun updateThemingMode(themingMode: ThemingMode) {
     viewModelScope.launch { userPrefsRepository.updateThemingMode(themingMode) }
   }
 
-  fun updateDynamicTheme(enabled: Boolean) {
+  internal fun updateDynamicTheme(enabled: Boolean) {
     viewModelScope.launch { userPrefsRepository.updateDynamicTheme(enabled) }
   }
 
-  fun updateAmoledTheme(enabled: Boolean) {
+  internal fun updateAmoledTheme(enabled: Boolean) {
     viewModelScope.launch { userPrefsRepository.updateAmoledTheme(enabled) }
   }
 
-  fun updateCustomColor(color: Color) {
+  internal fun updateCustomColor(color: Color) {
     viewModelScope.launch { userPrefsRepository.updateCustomColor(color.value.toLong()) }
   }
 
-  fun updateMonetMode(monetMode: MonetMode) {
+  internal fun updateMonetMode(monetMode: MonetMode) {
     viewModelScope.launch { userPrefsRepository.updateMonetMode(monetMode) }
   }
 
-  fun updateAcButton(enabled: Boolean) {
+  internal fun updateAcButton(enabled: Boolean) {
     viewModelScope.launch { userPrefsRepository.updateAcButton(enabled) }
   }
 
-  fun updateMiddleZero(enabled: Boolean) =
+  internal fun updateMiddleZero(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateMiddleZero(enabled) }
 }

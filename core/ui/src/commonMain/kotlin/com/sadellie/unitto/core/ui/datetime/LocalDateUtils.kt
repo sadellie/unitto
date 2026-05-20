@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.core.ui.datetime
 
-import androidx.compose.ui.text.intl.PlatformLocale
+import androidx.compose.ui.text.intl.Locale
 import co.touchlab.kermit.Logger
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
@@ -29,7 +29,7 @@ import kotlinx.datetime.format.char
 /**
  * Format [this] into `Tue, Jan 31, 2022`. Fallbacks to English locale if there was an exception.
  */
-fun LocalDate.formatDateWeekDayMonthYear(locale: PlatformLocale): String {
+fun LocalDate.formatDateWeekDayMonthYear(locale: Locale): String {
   val formatter =
     LocalDate.Format {
       val weekNames =
@@ -58,8 +58,8 @@ fun LocalDate.formatDateWeekDayMonthYear(locale: PlatformLocale): String {
   return this.format(formatter)
 }
 
-expect fun dayOfWeekNamesAbbreviated(locale: PlatformLocale): DayOfWeekNames
+expect fun dayOfWeekNamesAbbreviated(locale: Locale): DayOfWeekNames
 
-expect fun monthNamesAbbreviated(locale: PlatformLocale): MonthNames
+expect fun monthNamesAbbreviated(locale: Locale): MonthNames
 
 private const val TAG = "LocalDateUtils"

@@ -35,33 +35,31 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.ComposeViewport
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.savedstate.serialization.SavedStateConfiguration
-import com.sadellie.unitto.core.database.unittoDatabaseModule
+import com.sadellie.unitto.core.data.calculator.CalculatorDataBindings
+import com.sadellie.unitto.core.data.converter.ConverterDataBindings
 import com.sadellie.unitto.core.datastore.AppPreferences
-import com.sadellie.unitto.core.datastore.dataStoreModule
+import com.sadellie.unitto.core.datastore.DataStoreBindings
+import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
-import com.sadellie.unitto.feature.bodymass.bodyMassModule
-import com.sadellie.unitto.feature.calculator.calculatorModule
-import com.sadellie.unitto.feature.converter.converterModule
+import com.sadellie.unitto.core.remote.RemoteBindings
 import com.sadellie.unitto.feature.converter.navigation.UnitFromRoute
 import com.sadellie.unitto.feature.converter.navigation.UnitToRoute
-import com.sadellie.unitto.feature.datecalculator.dateCalculatorModule
-import com.sadellie.unitto.feature.programmer.programmerModule
-import com.sadellie.unitto.feature.settings.settingsModule
-import com.sadellie.unitto.feature.timezone.timeZoneModule
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.createGraphFactory
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import io.github.sadellie.themmo.Themmo
-import io.github.sadellie.themmo.core.MonetMode
-import io.github.sadellie.themmo.core.ThemingMode
 import kotlinx.browser.document
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import org.koin.core.context.startKoin
 
 @OptIn(
   ExperimentalComposeUiApi::class,
@@ -69,34 +67,23 @@ import org.koin.core.context.startKoin
   ExperimentalMaterial3ExpressiveApi::class,
 )
 fun main() {
-  initKoin()
+  val appGraph = createGraphFactory<WasmAppGraph.Factory>().create()
   ComposeViewport(document.body!!) {
     CompositionLocalProvider(
+      LocalMetroViewModelFactory provides appGraph.metroViewModelFactory,
       LocalWindowSize provides rememberWindowSizeClass(),
       LocalNumberTypography provides numberTypographyUnitto(),
     ) {
-      App()
+      val prefs = appGraph.userPreferencesRepository.appPrefs.collectAsStateWithLifecycle(null)
+      App(prefs = prefs.value)
     }
   }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun App() {
-  val appPreferences = remember {
-    AppPreferences(
-      themingMode = ThemingMode.AUTO,
-      enableDynamicTheme = false,
-      enableAmoledTheme = false,
-      customColor = 16L,
-      monetMode = MonetMode.TonalSpot,
-      startingScreen = CalculatorStartRoute,
-      enableToolsExperiment = false,
-      enableVibrations = false,
-      enableKeepScreenOn = false,
-    )
-  }
-  val themmoController = rememberUnittoThemmoController(appPreferences)
+private fun App(prefs: AppPreferences?) {
+  val themmoController = rememberUnittoThemmoController(prefs ?: return)
   Themmo(themmoController = themmoController) {
     Column(Modifier.fillMaxSize()) {
       ExperimentalBar(modifier = Modifier.fillMaxWidth())
@@ -105,7 +92,7 @@ private fun App() {
         color = MaterialTheme.colorScheme.outlineVariant,
       )
 
-      val backStack = rememberNavBackStack(navBackStackConfig, appPreferences.startingScreen)
+      val backStack = rememberNavBackStack(navBackStackConfig, prefs.startingScreen)
       MainAppContent(
         backStack = backStack,
         onDrawerItemClick = {},
@@ -126,20 +113,23 @@ private val navBackStackConfig = SavedStateConfiguration {
   }
 }
 
-private fun initKoin() {
-  startKoin {
-    modules(
-      unittoDatabaseModule,
-      dataStoreModule,
-      calculatorModule,
-      converterModule,
-      programmerModule,
-      bodyMassModule,
-      dateCalculatorModule,
-      timeZoneModule,
-      settingsModule,
-    )
+@DependencyGraph(
+  AppScope::class,
+  bindingContainers =
+    [
+      DataStoreBindings::class,
+      CalculatorDataBindings::class,
+      ConverterDataBindings::class,
+      RemoteBindings::class,
+    ],
+)
+interface WasmAppGraph : AppGraph {
+  @DependencyGraph.Factory
+  fun interface Factory {
+    fun create(): WasmAppGraph
   }
+
+  val userPreferencesRepository: UserPreferencesRepository
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

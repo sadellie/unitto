@@ -32,12 +32,17 @@ import com.sadellie.unitto.core.common.trimZeros
  * - Replaces ugly tokens with appropriate versions (for evaluatto)
  * - Allows only legal tokens
  * - Fixes cursor position
+ *
+ * This will always convert into parseable expression, where fractional part is separated by dot, no
+ * grouping symbols.
+ *
+ * 123456.789 is parseable by evaluatto
  */
 @Stable
 data class ExpressionInputTransformation(private val formatterSymbols: FormatterSymbols) :
   InputTransformationWithReplacement {
   override fun TextFieldBuffer.transformInput() =
-    transformInputWithReplacements(longTokens = Token.Func.allMathSymbolsWithBracket)
+    transformInputWithReplacements(longTokens = Token.MathFunc.allMathSymbolsWithBracket)
 
   override val legalTokens =
     listOf(
@@ -78,8 +83,6 @@ data class ExpressionInputTransformation(private val formatterSymbols: Formatter
 
   override val replacementMap =
     mapOf(
-      // formatterSymbols.grouping doesn't break replacement for other ugly symbols
-      formatterSymbols.grouping.symbol to "",
       "arcos(" to Token.ArCos.WithBracket.symbol,
       "arsin(" to Token.ArSin.WithBracket.symbol,
       "actan(" to Token.ArTan.WithBracket.symbol,
@@ -91,6 +94,8 @@ data class ExpressionInputTransformation(private val formatterSymbols: Formatter
       "*" to Token.Multiply.symbol,
       "•" to Token.Multiply.symbol,
     )
+
+  override val illegalTokens: List<String> = listOf(formatterSymbols.grouping.symbol)
 }
 
 /**
@@ -133,6 +138,8 @@ data object NumberBaseInputTransformation : InputTransformationWithReplacement {
       "e" to Token.LetterE.symbol,
       "f" to Token.LetterF.symbol,
     )
+
+  override val illegalTokens: List<String> = emptyList()
 }
 
 /**
@@ -180,6 +187,52 @@ data class UnexpectedDigitsInputTransformation(
   }
 }
 
+interface InputTransformationWithReplacement : InputTransformation {
+  /** Allowed tokens. Order matters, longest first. */
+  val legalTokens: List<String>
+  /** Ugly tokens and their replacements. Order matters, prefer longest first. */
+  val replacementMap: Map<String, String>
+  /** Tokens to remove before processing anything */
+  val illegalTokens: List<String>
+
+  /** @param longTokens Tokens that are longer than one character */
+  fun TextFieldBuffer.transformInputWithReplacements(longTokens: List<String>) {
+    if (length == 0) return
+
+    val isTextChanged = this.toString() != originalText.toString()
+    if (isTextChanged) {
+      // process tokens
+      var cursor = 0
+
+      while (cursor < length) {
+        val charsLeft = length - cursor
+
+        val remove = matchLegalToken(cursor, charsLeft, illegalTokens)
+        if (remove != null) {
+          delete(cursor, cursor + remove.length)
+          continue
+        }
+
+        var matched = matchLegalToken(cursor, charsLeft, legalTokens)
+        if (matched == null) {
+          // no legal tokens found, try replacement map to fix input and make token ahead legal
+          matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
+        }
+        if (matched == null) {
+          // replacement map did not help, still no match. token is illegal, delete
+          delete(cursor, cursor + 1)
+        } else {
+          // token is legal: was always legal or was fixed by replacement map
+          cursor += matched.length
+        }
+      }
+    }
+
+    val fixedSelection = this.fixTextRange(longTokens)
+    selection = fixedSelection
+  }
+}
+
 private fun TextFieldBuffer.matchLegalToken(
   cursor: Int,
   charsLeft: Int,
@@ -202,8 +255,11 @@ private fun TextFieldBuffer.matchAndReplaceToken(
   replacementMap: Map<String, String>,
 ): String? {
   for ((ugly, replacement) in replacementMap) {
+    // not enough room for ugly symbol to be here, skip
     if (ugly.length > charsLeft) continue
+    // look ahead and see what chars are there
     val charsInFront = getCharsInFront(cursor, ugly.length)
+    // see if chars ahead match ugly
     if (charsInFront == ugly) {
       // this works even if ugly and replacement have different length
       replace(cursor, cursor + ugly.length, replacement)
@@ -217,42 +273,4 @@ private fun TextFieldBuffer.getCharsInFront(cursor: Int, count: Int): String {
   var charsInFront = ""
   repeat(count) { charsInFront += charAt(cursor + it) }
   return charsInFront
-}
-
-interface InputTransformationWithReplacement : InputTransformation {
-  /** Allowed tokens. Order matters, longest first. */
-  val legalTokens: List<String>
-  /** Ugly tokens and their replacements. Order matters, prefer longest first. */
-  val replacementMap: Map<String, String>
-
-  fun TextFieldBuffer.transformInputWithReplacements(longTokens: List<String>) {
-    if (length == 0) return
-
-    val isTextChanged = this.toString() != originalText.toString()
-    if (isTextChanged) {
-      // process tokens
-      var cursor = 0
-
-      while (cursor < length) {
-        val charsLeft = length - cursor
-
-        // try to match with replacement map
-        var matched = matchAndReplaceToken(cursor, charsLeft, replacementMap)
-        if (matched == null) {
-          // try to find legal token ahead
-          matched = matchLegalToken(cursor, charsLeft, legalTokens)
-        }
-
-        if (matched == null) {
-          // illegal token
-          delete(cursor, cursor + 1)
-        } else {
-          cursor += matched.length
-        }
-      }
-    }
-
-    val fixedSelection = this.fixTextRange(longTokens)
-    selection = fixedSelection
-  }
 }

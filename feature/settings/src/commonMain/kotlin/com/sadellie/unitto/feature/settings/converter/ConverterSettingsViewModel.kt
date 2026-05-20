@@ -23,19 +23,25 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.launch
 
-internal class ConverterSettingsViewModel(
-  private val userPrefsRepository: UserPreferencesRepository
-) : ViewModel() {
-  val prefs = userPrefsRepository.converterPrefs.stateIn(viewModelScope, null)
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class ConverterSettingsViewModel(private val userPrefsRepository: UserPreferencesRepository) :
+  ViewModel() {
+  internal val prefs = userPrefsRepository.converterPrefs.stateIn(viewModelScope, null)
 
-  fun updateUnitConverterFormatTime(enabled: Boolean) =
+  internal fun updateUnitConverterFormatTime(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateUnitConverterFormatTime(enabled) }
 
-  fun updateUnitConverterSorting(sorting: UnitsListSorting) =
+  internal fun updateUnitConverterSorting(sorting: UnitsListSorting) =
     viewModelScope.launch { userPrefsRepository.updateUnitConverterSorting(sorting) }
 
-  fun updateUnitConverterShowIcons(enabled: Boolean) =
+  internal fun updateUnitConverterShowIcons(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateUnitConverterShowIcons(enabled) }
 }

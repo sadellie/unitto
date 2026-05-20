@@ -18,10 +18,10 @@
 
 package com.sadellie.unitto.core.ui.datetime
 
-import androidx.compose.ui.text.intl.PlatformLocale
+import androidx.compose.ui.text.intl.Locale
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
 
-actual fun dayOfWeekNamesAbbreviated(locale: PlatformLocale) = DayOfWeekNames.ENGLISH_ABBREVIATED
+actual fun dayOfWeekNamesAbbreviated(locale: Locale) = DayOfWeekNames.ENGLISH_ABBREVIATED
 
-actual fun monthNamesAbbreviated(locale: PlatformLocale) = MonthNames.ENGLISH_ABBREVIATED
+actual fun monthNamesAbbreviated(locale: Locale) = MonthNames.ENGLISH_ABBREVIATED

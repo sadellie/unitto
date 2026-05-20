@@ -31,6 +31,7 @@ import io.github.sadellie.evaluatto.ast.MathFunctionNode
 import io.github.sadellie.evaluatto.ast.MathModuloNode
 import io.github.sadellie.evaluatto.ast.MultiplyNode
 import io.github.sadellie.evaluatto.ast.NumberNode
+import io.github.sadellie.evaluatto.ast.PercentNode
 import io.github.sadellie.evaluatto.ast.PlusNode
 import io.github.sadellie.evaluatto.ast.PowerNode
 import io.github.sadellie.evaluatto.ast.ProgrammerNumberNode
@@ -47,7 +48,7 @@ internal class ProgrammerSimplify(
   private val context: ScriptContext.Programmer,
 ) : Simplify {
   override fun simplify(tree: ASTNode): ASTNode? =
-    simplifyBottomToTop(context, tree) { currentNode ->
+    simplifyBottomToTop(context, tree) { currentNode, _ ->
       when (currentNode) {
         is PlusNode -> simplifyPlus(currentNode)
         is MultiplyNode -> simplifyMultiply(currentNode)
@@ -60,6 +61,7 @@ internal class ProgrammerSimplify(
         is BracketsNode,
         is MathFunctionNode,
         is FactorialNode,
+        is PercentNode,
         is MathModuloNode,
         is PowerNode,
         is SqrtNode -> return@simplifyBottomToTop null

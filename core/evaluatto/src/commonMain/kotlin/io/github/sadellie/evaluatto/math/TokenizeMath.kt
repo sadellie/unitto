@@ -75,17 +75,7 @@ private fun findNumberTokenAhead(input: String, cursor: Int): Token.Number {
 private fun Char.isDigitOrDot(): Boolean = isDigit() || this == '.'
 
 private fun MutableList<Token.Math>.repairLexicon(): List<Token.Math> {
-  return this.missingClosingBrackets()
-    .unpackNotation()
-    .missingMultiply()
-    .unpackAllPercents()
-    // input like 80%80% should be treated as 80%*80%.
-    // After unpacking we get (80/100)(80/100), the multiply is missing (!!!)
-    // No, we can't unpack before fixing missing multiply.
-    // Ideally we need to add missing multiply for 80%80%
-    // In that case unpackAllPercents gets input with all operators 80%*80% in this case
-    // Can't be done right now since missingMultiply checks for tokens in front only
-    .missingMultiply()
+  return this.missingClosingBrackets().unpackNotation().missingMultiply()
 }
 
 private fun MutableList<Token.Math>.missingMultiply(): MutableList<Token.Math> {
@@ -169,87 +159,6 @@ private fun MutableList<Token.Math>.unpackNotation(): MutableList<Token.Math> {
   }
 
   return this
-}
-
-private fun MutableList<Token.Math>.unpackAllPercents(): MutableList<Token.Math> {
-  var result = this
-
-  var percentIndex = result.indexOf(Token.Percent)
-  while (percentIndex != -1) {
-    result = result.unpackPercentAt(percentIndex)
-    percentIndex = result.indexOf(Token.Percent)
-  }
-  return result
-}
-
-/**
- * Unpack unethical percentages. See tests for examples. This methods wraps expressions in more
- * brackets for safer calculation.
- */
-private fun MutableList<Token.Math>.unpackPercentAt(percentIndex: Int): MutableList<Token.Math> {
-  var cursor = percentIndex
-
-  // get whatever is the percentage
-  // can be number or expression in brackets
-  // -1 to check what is before percentage token
-  val expressionTokensBefore = this.getExpressionBefore(percentIndex - 1)
-  // Move cursor
-  // 123+345%| -> 123+|345%
-  cursor -= expressionTokensBefore.size
-
-  // get the operator in front
-  // 123+|345% -> 123|+345%
-  cursor -= 1
-  val operator = this.getOrNull(cursor)
-
-  // Don't go further. Percentage doesn't follow anything. Fallback: wrap expression with division
-  // by 100: 123% -> (123/100)
-  if ((operator == null) or (operator !in listOf(Token.Plus, Token.Minus))) {
-    val mutList = this.toMutableList()
-
-    // Remove percentage
-    // 123% -> 123
-    mutList.removeAt(percentIndex)
-
-    // Add opening bracket before percentage
-    // 123 -> (123
-    mutList.add(percentIndex - expressionTokensBefore.size, Token.LeftBracket)
-
-    // Add "/100)" and closing bracket
-    // (123 -> (123/100)
-    mutList.addAll(percentIndex + 1, listOf(Token.Divide, Token.Number("100"), Token.RightBracket))
-
-    return mutList
-  }
-
-  // move cursor to jump over operator
-  // 123+|345% -> 123|+345%
-  cursor -= 1
-  // Get the base
-  val base = this.getExpressionBefore(cursor)
-  val mutList = this.toMutableList()
-
-  // Remove percentage
-  mutList.removeAt(percentIndex)
-
-  // Add opening bracket before percentage
-  mutList.add(percentIndex - expressionTokensBefore.size, Token.LeftBracket)
-
-  // Add "/ 100" and other stuff
-  mutList.addAll(
-    percentIndex + 1,
-    listOf(
-      Token.Divide,
-      Token.Number("100"),
-      Token.Multiply,
-      Token.LeftBracket,
-      *base.toTypedArray(),
-      Token.RightBracket,
-      Token.RightBracket,
-    ),
-  )
-
-  return mutList
 }
 
 /**

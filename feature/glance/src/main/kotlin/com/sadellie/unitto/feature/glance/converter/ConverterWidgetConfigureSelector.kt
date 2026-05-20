@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -50,10 +51,19 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.SearchBar
+import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.core.ui.textfield.observe
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,8 +72,6 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.unit_kilometer
 import unitto.core.common.generated.resources.unit_kilometer_short
@@ -76,9 +84,13 @@ internal fun ConverterWidgetConfigureSelectorRoute(
   unitFromId: String,
   onClick: (unitId: String) -> Unit,
 ) {
-  val viewModel: ConverterWidgetConfigureSelectorViewModel = koinViewModel {
-    parametersOf(unitFromId)
-  }
+  val viewModel: ConverterWidgetConfigureSelectorViewModel =
+    assistedMetroViewModel<
+      ConverterWidgetConfigureSelectorViewModel,
+      ConverterWidgetConfigureSelectorViewModel.Factory,
+    > {
+      create(unitFromId)
+    }
   LaunchedEffect(Unit) { viewModel.observeFilter() }
 
   val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -128,10 +140,7 @@ private fun ConverterWidgetUnitList(
   groupedUnits: Map<UnitGroup, List<UnitSearchResultItem>>,
   onClick: (unitId: String) -> Unit,
 ) {
-  LazyColumn(
-    modifier = modifier,
-    verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
-  ) {
+  LazyColumn(modifier = modifier, verticalArrangement = ListItemDefaults.ListArrangement) {
     groupedUnits.forEach { (group, units) ->
       item(group.name, ContentType.HEADER) { ListHeader(text = stringResource(group.res)) }
 
@@ -144,7 +153,7 @@ private fun ConverterWidgetUnitList(
           text = stringResource(unit.basicUnit.displayName),
           style = MaterialTheme.typography.bodyMedium,
           modifier =
-            Modifier.clip(ListItemExpressiveDefaults.listedShaped(index, units.size))
+            Modifier.clip(ListItemDefaults.listedShapes(index, units.size).shape)
               .clickable { onClick(unit.basicUnit.id) }
               .background(MaterialTheme.colorScheme.surfaceBright)
               .padding(Sizes.medium)
@@ -165,14 +174,22 @@ internal data class ConverterWidgetConfigureSelectorUIState(
   val result: Map<UnitGroup, List<UnitSearchResultItem>>?,
 )
 
-internal class ConverterWidgetConfigureSelectorViewModel(
+@AssistedInject
+class ConverterWidgetConfigureSelectorViewModel(
+  @Assisted private val unitFromId: String,
   private val unitsRepo: UnitsRepository,
-  private val unitFromId: String,
 ) : ViewModel() {
+  @AssistedFactory
+  @ManualViewModelAssistedFactoryKey
+  @ContributesIntoMap(AppScope::class)
+  fun interface Factory : ManualViewModelAssistedFactory {
+    fun create(unitFromId: String): ConverterWidgetConfigureSelectorViewModel
+  }
+
   private var job: Job? = null
   private val _query = TextFieldState()
   private val _searchResult = MutableStateFlow<Map<UnitGroup, List<UnitSearchResultItem>>?>(null)
-  val uiState =
+  internal val uiState =
     _searchResult
       .mapLatest { searchResult ->
         if (searchResult == null) return@mapLatest null
@@ -180,7 +197,7 @@ internal class ConverterWidgetConfigureSelectorViewModel(
       }
       .stateIn(viewModelScope, null)
 
-  suspend fun observeFilter() {
+  internal suspend fun observeFilter() {
     _query.observe().collectLatest { query ->
       job?.cancel()
       job =

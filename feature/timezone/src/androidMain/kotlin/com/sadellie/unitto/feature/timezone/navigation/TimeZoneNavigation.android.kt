@@ -19,25 +19,23 @@
 package com.sadellie.unitto.feature.timezone.navigation
 
 import android.os.Build
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.navigation.TimeZoneStartRoute
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.feature.timezone.AddTimeZoneRoute
 import com.sadellie.unitto.feature.timezone.TimeZoneRoute
+import kotlinx.serialization.Serializable
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import kotlinx.serialization.Serializable
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
-internal actual fun Module.timeZoneNavigation() {
-  navigation<TimeZoneStartRoute> {
+actual fun EntryProviderScope<NavKey>.timeZoneNavigation() {
+  entry<TimeZoneStartRoute> {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
       EmptyScreen()
-      return@navigation
+      return@entry
     }
 
     val navigator = LocalNavigator.current
@@ -48,10 +46,10 @@ internal actual fun Module.timeZoneNavigation() {
       },
     )
   }
-  navigation<AddTimeZoneRoute> { route ->
+  entry<AddTimeZoneRoute> { route ->
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
       EmptyScreen()
-      return@navigation
+      return@entry
     }
     val navigator = LocalNavigator.current
     val userTime = ZonedDateTime.parse(route.userTimeIso, DateTimeFormatter.ISO_ZONED_DATE_TIME)

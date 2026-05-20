@@ -70,15 +70,7 @@ sealed interface Token {
 
   sealed interface ProgrammerOperator : Operator, Programmer
 
-  sealed interface MathFunc : Func, Math
-
-  sealed interface Func : Token {
-    /**
-     * Same [Func] but with an opening bracket. Use it only for input from button clicks and in text
-     * field transformation for correct cursor positions.
-     */
-    sealed interface WithBracket : Func
-
+  sealed interface MathFunc : Func, Math {
     companion object {
       val allMathSymbolsWithBracket by lazy {
         listOf(
@@ -94,6 +86,14 @@ sealed interface Token {
         )
       }
     }
+  }
+
+  sealed interface Func : Token {
+    /**
+     * Same [Func] but with an opening bracket. Use it only for input from button clicks and in text
+     * field transformation for correct cursor positions.
+     */
+    sealed interface WithBracket : Func
   }
 
   sealed interface Const : Token
@@ -228,19 +228,18 @@ sealed interface Token {
     override val isUnary = true
   }
 
+  data object Percent : MathOperator {
+    override val symbol = "%"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = true
+  }
+
   data object Modulo : MathOperator {
     override val symbol = "#"
     override val precedence = 3
     override val associativity = Operator.Associativity.LEFT
     override val isUnary = false
-  }
-
-  data object Percent : MathOperator {
-    // not operator in AST, used only in tokenizer and replaced after input fixups
-    override val symbol = "%"
-    override val precedence = -1
-    override val associativity = Operator.Associativity.LEFT
-    override val isUnary = true
   }
 
   data object Sqrt : MathOperator {
@@ -422,8 +421,8 @@ sealed interface Token {
           Divide,
           Power,
           Factorial,
-          Modulo,
           Percent,
+          Modulo,
           Sqrt,
           ArSin,
           ArCos,

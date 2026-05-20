@@ -28,7 +28,7 @@ private class LinkOpenerImpl : LinkOpener {
     try {
       window.open(url)
     } catch (e: Exception) {
-      Logger.e("LinkOpener", e) { "Failed to open link: $url" }
+      Logger.e(e, "LinkOpener") { "Failed to open link: $url" }
     }
   }
 }

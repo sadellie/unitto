@@ -20,26 +20,28 @@ plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.compose)
+  alias(libs.plugins.metro)
 }
 
 kotlin {
   android { namespace = "com.sadellie.unitto.shared" }
   sourceSets.commonMain.dependencies {
+    implementation(libs.dev.zacsweers.metro.metrox.viewmodel.compose)
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.ui.ui.tooling.preview)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
     implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
     implementation(libs.org.jetbrains.androidx.lifecycle.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.datastore.datastore.core)
     implementation(libs.com.eygraber.uri.kmp)
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.core)
-    implementation(libs.io.insert.koin.koin.compose.navigation3)
     implementation(project(":core:themmo"))
     implementation(project(":core:navigation"))
     implementation(project(":core:database"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:data"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
+    implementation(project(":core:remote"))
     implementation(project(":feature:calculator"))
     implementation(project(":feature:converter"))
     implementation(project(":feature:bodymass"))
@@ -49,8 +51,7 @@ kotlin {
     implementation(project(":feature:settings"))
   }
   sourceSets.androidMain.dependencies {
+    implementation(libs.androidx.appcompat.appcompat)
     implementation(project(":feature:glance"))
-    implementation(libs.io.insert.koin.koin.androidx.startup)
-    implementation(libs.io.insert.koin.koin.core.coroutines)
   }
 }

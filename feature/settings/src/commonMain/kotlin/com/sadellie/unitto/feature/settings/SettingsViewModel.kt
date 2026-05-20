@@ -25,14 +25,21 @@ import com.sadellie.unitto.core.common.defaultIODispatcher
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.CurrencyRatesDao
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-internal class SettingsViewModel(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class SettingsViewModel(
   private val userPrefsRepository: UserPreferencesRepository,
   private val currencyRatesDao: CurrencyRatesDao,
 ) : ViewModel() {
-  val uiState =
+  internal val uiState =
     combine(userPrefsRepository.generalPrefs, currencyRatesDao.size()) { prefs, cacheSize ->
         SettingsUIState.Ready(
           enableVibrations = prefs.enableVibrations,
@@ -44,16 +51,17 @@ internal class SettingsViewModel(
       .stateIn(viewModelScope, SettingsUIState.Loading)
 
   /** @see UserPreferencesRepository.updateLastReadChangelog */
-  fun updateLastReadChangelog(value: String) =
+  internal fun updateLastReadChangelog(value: String) =
     viewModelScope.launch { userPrefsRepository.updateLastReadChangelog(value) }
 
   /** @see UserPreferencesRepository.updateVibrations */
-  fun updateVibrations(enabled: Boolean) =
+  internal fun updateVibrations(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateVibrations(enabled) }
 
   /** @see UserPreferencesRepository.updateEnableKeepScreenOn */
-  fun updateEnableKeepScreenOn(enabled: Boolean) =
+  internal fun updateEnableKeepScreenOn(enabled: Boolean) =
     viewModelScope.launch { userPrefsRepository.updateEnableKeepScreenOn(enabled) }
 
-  fun clearCache() = viewModelScope.launch(defaultIODispatcher) { currencyRatesDao.clear() }
+  internal fun clearCache() =
+    viewModelScope.launch(defaultIODispatcher) { currencyRatesDao.clear() }
 }

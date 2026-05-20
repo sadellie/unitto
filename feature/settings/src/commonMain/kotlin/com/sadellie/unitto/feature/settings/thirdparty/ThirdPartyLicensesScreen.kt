@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,10 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.licenses.ThirdParty
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
@@ -52,15 +54,15 @@ internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
     val allThirdParty = remember { ThirdParty.allThirdParty() }
     val linkOpener = rememberLinkOpener()
     LazyColumn(
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
       contentPadding = padding,
       modifier = Modifier.padding(horizontal = Sizes.large),
     ) {
       itemsIndexed(allThirdParty) { index, item ->
         ListItemExpressive(
           onClick = { linkOpener.launch(item.website) },
-          shape = ListItemExpressiveDefaults.listedShaped(index, allThirdParty.size),
-          headlineContent = { Text("${item.name} (${item.license})") },
+          shapes = ListItemDefaults.listedShapes(index, allThirdParty.size),
+          content = { Text("${item.name} (${item.license})") },
           supportingContent = {
             Column {
               Text(item.dev)

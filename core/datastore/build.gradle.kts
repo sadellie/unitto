@@ -16,7 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins { id("unitto.multiplatform.library") }
+plugins {
+  id("unitto.multiplatform.library")
+  alias(libs.plugins.metro)
+}
 
 kotlin {
   android.namespace = "com.sadellie.unitto.core.datastore"
@@ -26,14 +29,12 @@ kotlin {
     implementation(project(":core:themmo"))
     implementation(project(":core:data"))
     implementation(project(":core:navigation"))
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.core)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
     implementation(libs.androidx.navigation3.navigation3.runtime)
+    implementation(libs.androidx.datastore.datastore.preferences.core)
+    implementation(libs.androidx.datastore.datastore.core)
   }
   sourceSets.androidMain.dependencies {
-    implementation(libs.io.insert.koin.koin.android)
-    implementation(libs.io.insert.koin.koin.core.coroutines)
     implementation(libs.androidx.datastore.datastore.preferences)
   }
 }

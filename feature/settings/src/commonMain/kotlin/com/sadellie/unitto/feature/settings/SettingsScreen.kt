@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,12 +61,15 @@ import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.ui.AndroidExclusiveDialog
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.LocalPlatform
 import com.sadellie.unitto.core.ui.Platform
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.middleShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 import com.sadellie.unitto.feature.settings.components.AnnoyingBox
 import com.sadellie.unitto.feature.settings.navigation.AboutRoute
@@ -75,8 +79,8 @@ import com.sadellie.unitto.feature.settings.navigation.ConverterSettingsRoute
 import com.sadellie.unitto.feature.settings.navigation.DisplayRoute
 import com.sadellie.unitto.feature.settings.navigation.FormattingRoute
 import com.sadellie.unitto.feature.settings.navigation.StartingScreenRoute
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.app_name
 import unitto.core.common.generated.resources.calculator_title
@@ -108,7 +112,7 @@ import unitto.core.common.generated.resources.settings_vibrations_support
 
 @Composable
 internal fun SettingsRoute(openDrawer: () -> Unit, navControllerAction: (route: Route) -> Unit) {
-  val viewModel: SettingsViewModel = koinViewModel()
+  val viewModel: SettingsViewModel = metroViewModel()
   var showAndroidExclusiveDialog by rememberSaveable { mutableStateOf(false) }
   val platform = LocalPlatform.current
 
@@ -160,7 +164,7 @@ private fun SettingsScreen(
           .verticalScroll(rememberScrollState())
           .padding(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       val linkOpener = rememberLinkOpener()
       AnimatedVisibility(
@@ -187,35 +191,35 @@ private fun SettingsScreen(
         headlineText = stringResource(Res.string.settings_display),
         supportingText = stringResource(Res.string.settings_display_support),
         onClick = { navControllerAction(DisplayRoute) },
-        shape = ListItemExpressiveDefaults.firstShape,
+        shapes = ListItemDefaults.firstShapes,
       )
       ListItemExpressive(
         icon = Symbols.Home,
         headlineText = stringResource(Res.string.settings_starting_screen),
         supportingText = stringResource(Res.string.settings_starting_screen_support),
         onClick = { navControllerAction(StartingScreenRoute) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols._123,
         headlineText = stringResource(Res.string.settings_formatting),
         supportingText = stringResource(Res.string.settings_formatting_support),
         onClick = { navControllerAction(FormattingRoute) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.Calculate,
         headlineText = stringResource(Res.string.calculator_title),
         supportingText = stringResource(Res.string.settings_calculator_support),
         onClick = { navControllerAction(CalculatorSettingsRoute) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.SwapHoriz,
         headlineText = stringResource(Res.string.converter_title),
         supportingText = stringResource(Res.string.settings_converter_support),
         onClick = { navControllerAction(ConverterSettingsRoute) },
-        shape = ListItemExpressiveDefaults.lastShape,
+        shapes = ListItemDefaults.lastShapes,
       )
       ListHeader(stringResource(Res.string.settings_additional))
       ListItemExpressive(
@@ -224,7 +228,7 @@ private fun SettingsScreen(
         supportingText = stringResource(Res.string.settings_vibrations_support),
         switchState = uiState.enableVibrations,
         onSwitchChange = updateVibrations,
-        shape = ListItemExpressiveDefaults.firstShape,
+        shapes = ListItemDefaults.firstShapes,
       )
       ListItemExpressive(
         icon = Symbols.BacklightHigh,
@@ -232,14 +236,14 @@ private fun SettingsScreen(
         supportingText = stringResource(Res.string.settings_keep_screen_on_support),
         switchState = uiState.enableKeepScreenOn,
         onSwitchChange = updateKeepScreenOn,
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.RestorePage,
         headlineText = stringResource(Res.string.settings_backup),
         supportingText = stringResource(Res.string.settings_backup_support),
         onClick = { navControllerAction(BackupRoute) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       AnimatedVisibility(
         visible = uiState.cacheSize > 0,
@@ -250,28 +254,28 @@ private fun SettingsScreen(
           headlineText = stringResource(Res.string.settings_clear_cache),
           icon = Symbols.Cached,
           onClick = clearCache,
-          shape = ListItemExpressiveDefaults.middleShape,
+          shapes = ListItemDefaults.middleShapes,
         )
       }
       ListItemExpressive(
         icon = Symbols.RateReview,
         headlineText = stringResource(Res.string.settings_rate_this_app),
         onClick = { linkOpener.launch(Config.STORE_LINK) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.DevicesOther,
         headlineText = stringResource(Res.string.settings_unitto_anywhere),
         supportingText = stringResource(Res.string.settings_unitto_anywhere_support),
         onClick = { linkOpener.launch(Config.WEB_LINK) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.Info,
         headlineText = stringResource(Res.string.settings_about_unitto),
         supportingText = stringResource(Res.string.settings_about_unitto_support),
         onClick = { navControllerAction(AboutRoute) },
-        shape = ListItemExpressiveDefaults.lastShape,
+        shapes = ListItemDefaults.lastShapes,
       )
     }
   }

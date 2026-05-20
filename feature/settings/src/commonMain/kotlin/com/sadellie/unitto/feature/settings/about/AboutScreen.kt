@@ -24,11 +24,8 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -39,6 +36,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -68,11 +66,15 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Policy
 import com.sadellie.unitto.core.designsystem.icons.symbols.PrivacyTip
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
-import com.sadellie.unitto.core.ui.ListItemExpressiveDefaults
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShapes
+import com.sadellie.unitto.core.ui.lastShapes
+import com.sadellie.unitto.core.ui.middleShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
+import com.sadellie.unitto.core.ui.singleShapes
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_ok
@@ -118,7 +120,7 @@ private fun AboutScreen(
           .verticalScroll(rememberScrollState())
           .padding(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
-      verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
+      verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       val linkOpener = rememberLinkOpener()
       AuthorBlock(
@@ -129,31 +131,31 @@ private fun AboutScreen(
         icon = Symbols.Help,
         onClick = { showDialog = true },
         headlineText = stringResource(Res.string.settings_currency_rates_note_title),
-        shape = ListItemExpressiveDefaults.firstShape,
+        shapes = ListItemDefaults.firstShapes,
       )
       ListItemExpressive(
         icon = Symbols.PrivacyTip,
         headlineText = stringResource(Res.string.settings_terms_and_conditions),
         onClick = { linkOpener.launch(Config.TERMS_LINK) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.Policy,
         headlineText = stringResource(Res.string.settings_privacy_policy),
         onClick = { linkOpener.launch(Config.PRIVACY_LINK) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.Code,
         headlineText = stringResource(Res.string.settings_view_source_code),
         onClick = { linkOpener.launch(Config.SOURCE_CODE_LINK) },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       ListItemExpressive(
         icon = Symbols.Copyright,
         headlineText = stringResource(Res.string.settings_third_party_licenses),
         onClick = { navigateToThirdParty() },
-        shape = ListItemExpressiveDefaults.middleShape,
+        shapes = ListItemDefaults.middleShapes,
       )
       var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
       ListItemExpressive(
@@ -168,7 +170,7 @@ private fun AboutScreen(
             navigateToAdvanced()
           }
         },
-        shape = ListItemExpressiveDefaults.lastShape,
+        shapes = ListItemDefaults.lastShapes,
       )
     }
   }
@@ -189,69 +191,60 @@ private fun AboutScreen(
 
 @Composable
 private fun AuthorBlock(onClick: () -> Unit, modifier: Modifier) {
-  Row(
-    modifier =
-      modifier
-        .clip(ListItemExpressiveDefaults.singleShape)
-        .clickable(onClick = onClick)
-        .background(MaterialTheme.colorScheme.tertiaryContainer)
-        .padding(start = Sizes.large, top = Sizes.small, bottom = Sizes.small, end = Sizes.small),
-    horizontalArrangement = Arrangement.spacedBy(Sizes.large),
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    Column(modifier = Modifier.weight(1f)) {
-      Text(
-        text = stringResource(Res.string.settings_author),
-        style = ListItemExpressiveDefaults.headlineTextStyle,
-        color = MaterialTheme.colorScheme.onTertiaryContainer,
-      )
-      Text(
-        text = "@sadellie",
-        style = ListItemExpressiveDefaults.supportingTextStyle,
-        color = MaterialTheme.colorScheme.onTertiaryContainer,
-      )
-    }
-
-    val infiniteTransition = rememberInfiniteTransition()
-    val rotation =
-      infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(tween(10_000), RepeatMode.Reverse),
-      )
-    Box(
-      modifier =
-        Modifier.clip(RoundedCornerShape(Sizes.small))
-          .background(MaterialTheme.colorScheme.tertiaryFixedDim),
-      contentAlignment = Alignment.Center,
-    ) {
-      val backgroundShape = remember {
-        listOf(
-            MaterialShapes.Slanted,
-            MaterialShapes.Cookie4Sided,
-            MaterialShapes.Pill,
-            MaterialShapes.Ghostish,
-            MaterialShapes.Gem,
-            MaterialShapes.Arch,
-          )
-          .random()
+  ListItemExpressive(
+    modifier = modifier,
+    colors =
+      ListItemDefaults.segmentedColors(
+        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        supportingContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+      ),
+    supportingContent = { Text(stringResource(Res.string.settings_author)) },
+    shapes = ListItemDefaults.singleShapes,
+    onClick = onClick,
+    content = { Text("@sadellie") },
+    trailingContent = {
+      val infiniteTransition = rememberInfiniteTransition()
+      val rotation =
+        infiniteTransition.animateFloat(
+          initialValue = 0f,
+          targetValue = 360f,
+          animationSpec = infiniteRepeatable(tween(10_000), RepeatMode.Reverse),
+        )
+      Box(
+        modifier =
+          Modifier.clip(RoundedCornerShape(Sizes.small))
+            .background(MaterialTheme.colorScheme.tertiaryFixedDim),
+        contentAlignment = Alignment.Center,
+      ) {
+        val backgroundShape = remember {
+          listOf(
+              MaterialShapes.Slanted,
+              MaterialShapes.Cookie4Sided,
+              MaterialShapes.Pill,
+              MaterialShapes.Ghostish,
+              MaterialShapes.Gem,
+              MaterialShapes.Arch,
+            )
+            .random()
+        }
+        Box(
+          modifier =
+            Modifier.rotate(rotation.value)
+              .padding(Sizes.small)
+              .clip(backgroundShape.toShape())
+              .background(Brush.verticalGradient(listOf(Color(BG_TOP), Color(BG_BOTTOM))))
+              .size(36.dp)
+        )
+        Box(
+          modifier =
+            Modifier.clip(CircleShape)
+              .background(Brush.verticalGradient(listOf(Color(FG_TOP), Color(FG_BOTTOM))))
+              .size(18.dp)
+        )
       }
-      Box(
-        modifier =
-          Modifier.rotate(rotation.value)
-            .padding(Sizes.small)
-            .clip(backgroundShape.toShape())
-            .background(Brush.verticalGradient(listOf(Color(BG_TOP), Color(BG_BOTTOM))))
-            .size(36.dp)
-      )
-      Box(
-        modifier =
-          Modifier.clip(CircleShape)
-            .background(Brush.verticalGradient(listOf(Color(FG_TOP), Color(FG_BOTTOM))))
-            .size(18.dp)
-      )
-    }
-  }
+    },
+  )
 }
 
 private const val BG_TOP = 0xFF3E0077

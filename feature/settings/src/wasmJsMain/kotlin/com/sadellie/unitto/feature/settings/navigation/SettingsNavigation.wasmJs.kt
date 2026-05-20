@@ -18,24 +18,21 @@
 
 package com.sadellie.unitto.feature.settings.navigation
 
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
 import com.sadellie.unitto.core.designsystem.stackedTransition
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.ui.AndroidExclusiveScreenSecondary
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.Module
-import org.koin.dsl.navigation3.navigation
 
-@OptIn(KoinExperimentalAPI::class)
-internal actual fun Module.backupNavigation() {
-  navigation<BackupRoute>(metadata = NavDisplay.stackedTransition()) {
+internal actual fun EntryProviderScope<NavKey>.backupNavigation() {
+  entry<BackupRoute>(metadata = NavDisplay.stackedTransition()) {
     AndroidExclusiveScreenSecondary(LocalNavigator.current::goBack)
   }
 }
 
-@OptIn(KoinExperimentalAPI::class)
-internal actual fun Module.languageNavigation() {
-  navigation<LanguageRoute>(metadata = NavDisplay.stackedTransition()) {
+internal actual fun EntryProviderScope<NavKey>.languageNavigation() {
+  entry<LanguageRoute>(metadata = NavDisplay.stackedTransition()) {
     AndroidExclusiveScreenSecondary(LocalNavigator.current::goBack)
   }
 }

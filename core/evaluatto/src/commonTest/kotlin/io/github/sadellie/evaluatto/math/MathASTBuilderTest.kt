@@ -21,7 +21,9 @@ package io.github.sadellie.evaluatto.math
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
 import io.github.sadellie.evaluatto.ast.ASTNode
+import io.github.sadellie.evaluatto.ast.BracketsNode
 import io.github.sadellie.evaluatto.ast.MathNumberNode
+import io.github.sadellie.evaluatto.ast.PercentNode
 import io.github.sadellie.evaluatto.ast.PlusNode
 import io.github.sadellie.evaluatto.ast.ScriptContext
 import io.github.sadellie.evaluatto.ast.UnaryMinusNode
@@ -62,10 +64,28 @@ class MathASTBuilderTest {
       ),
     )
 
+  @Test
+  fun build_expressionWithUnethicalPercentage() =
+    assertTree(
+      "1+(2+3)%",
+      PlusNode(
+        MathNumberNode(KBigDecimal("1.00"), Token.Number("1")),
+        PercentNode(
+          BracketsNode(
+            PlusNode(
+              MathNumberNode(KBigDecimal("2.00"), Token.Number("2")),
+              MathNumberNode(KBigDecimal("3.00"), Token.Number("3")),
+            )
+          )
+        ),
+      ),
+    )
+
   private fun assertTree(input: String, expected: ASTNode?) {
     val tokens = input.tokenizeMath()
     println(tokens)
     val tree = ASTMathBuilder(tokens).build(cx).firstOrNull()
+    println(tree?.toPrettyString())
     assertEquals(expected, tree)
   }
 }

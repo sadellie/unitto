@@ -25,6 +25,10 @@ import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.ui.textfield.observe
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,8 +37,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepository) :
-  ViewModel() {
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
   private var _calculateJob: Job? = null
   private val _isMetric = MutableStateFlow(getInitialIsMetric())
   private val _height1 = TextFieldState()
@@ -43,7 +49,7 @@ internal class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepos
   private val _result = MutableStateFlow(KBigDecimal.ZERO)
   private val _normalWeightRange = MutableStateFlow(KBigDecimal.ZERO to KBigDecimal.ZERO)
 
-  val uiState =
+  internal val uiState =
     combine(userPreferencesRepository.bodyMassPrefs, _isMetric, _result, _normalWeightRange) {
         userPrefs,
         isMetric,

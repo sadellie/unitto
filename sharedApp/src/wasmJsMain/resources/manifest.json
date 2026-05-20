@@ -1,0 +1,49 @@
+{
+  "name": "Unitto App",
+  "id": "com.sadellie.unitto",
+  "short_name": "Unitto",
+  "description": "😎 Superior Calculator and Converter",
+  "start_url": "index.html",
+  "display_override": ["minimal-ui"],
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "scope": "/",
+  "protocol_handlers": [],
+  "icons": [
+    {
+      "src": "pwa-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "pwa-screenshot-1280x800.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Unitto on your device"
+    },
+    {
+      "src": "pwa-screenshot-414x896.png",
+      "sizes": "414x896",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Unitto on your device"
+    }
+  ]
+}

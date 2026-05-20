@@ -22,12 +22,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import com.sadellie.unitto.core.ui.ListItemExpressive
+import com.sadellie.unitto.core.ui.rectangleShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -36,8 +37,8 @@ fun ExperimentalBar(modifier: Modifier) {
   val linkOpener = rememberLinkOpener()
   ListItemExpressive(
     modifier = modifier,
-    headlineContent = { Text(text = "Alpha") },
-    onClick = null,
+    content = { Text(text = "Alpha") },
+    onClick = {},
     supportingContent = {
       Text(text = "Web version of Unitto is currently in Alpha. Expect the unexpected (bugs)")
     },
@@ -49,7 +50,7 @@ fun ExperimentalBar(modifier: Modifier) {
         Text("Report an issue")
       }
     },
-    shape = RectangleShape,
+    shapes = ListItemDefaults.rectangleShapes,
   )
 }
 

@@ -37,7 +37,10 @@ Play Store is preferred
 # ⚠ Security
 Read [this](./SECURITY.md).
 
-SHA-256 digest: b2d9938c97fa77df78142c311d234aae9e706f10ccba167f2a2a3e33528c1dcf 
+SHA-256 fingerprints
+
+- Play Store: `CA:6B:D6:6C:A9:E3:55:FE:48:2F:26:8D:FC:E7:33:DF:22:F0:C5:86:F3:14:FB:09:5C:3F:CF:02:04:D6:5E:7A`
+- GitHub: `B2:D9:93:8C:97:FA:77:DF:78:14:2C:31:1D:23:4A:AE:9E:70:6F:10:CC:BA:16:7F:2A:2A:3E:33:52:8C:1D:CF`
 
 <sup>TL;DR: the app is legit, no cap fr fr</sup>
 

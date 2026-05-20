@@ -21,6 +21,7 @@ plugins {
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.compose)
   alias(libs.plugins.serialization)
+  alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -32,13 +33,8 @@ kotlin {
     implementation(project(":core:designsystem"))
     implementation(project(":core:datastore"))
     implementation(project(":core:evaluatto"))
-
+    implementation(libs.dev.zacsweers.metro.metrox.viewmodel.compose)
     implementation(libs.org.jetbrains.compose.components.components.resources)
-    implementation(project.dependencies.platform(libs.io.insert.koin.koin.bom))
-    implementation(libs.io.insert.koin.koin.compose.viewmodel)
-    implementation(libs.io.insert.koin.koin.compose.navigation3)
-    implementation(libs.io.insert.koin.koin.core)
-
     implementation(libs.org.jetbrains.compose.foundation.foundation)
     implementation(libs.org.jetbrains.compose.material3.material3)
     implementation(libs.org.jetbrains.compose.material3.material3.window.size)
@@ -47,7 +43,6 @@ kotlin {
     implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
     implementation(libs.co.touchlab.kermit)
   }
-  sourceSets.androidMain.dependencies { implementation(libs.io.insert.koin.koin.core.coroutines) }
   sourceSets.commonTest.dependencies {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)

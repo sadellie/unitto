@@ -35,6 +35,6 @@ kotlin {
     implementation(libs.androidx.navigation3.navigation3.runtime)
     implementation(libs.com.eygraber.uri.kmp)
   }
-  sourceSets.androidMain.dependencies { implementation(libs.androidx.core.core.ktx) }
+  sourceSets.androidMain.dependencies { implementation(libs.androidx.core.core) }
   sourceSets.commonTest.dependencies { implementation(libs.org.jetbrains.kotlin.kotlin.test) }
 }
