@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitsRepository
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.ConverterPrefsRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import dev.zacsweers.metro.AppScope
@@ -43,14 +43,14 @@ import kotlinx.coroutines.withContext
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
 class UnitGroupsViewModel(
-  private val userPrefsRepository: UserPreferencesRepository,
+  private val converterPrefsRepository: ConverterPrefsRepository,
   private val unitsRepository: UnitsRepository,
 ) : ViewModel() {
   private var _autoSortJob: Job? = null
   private val _autoSortDialogState = MutableStateFlow(AutoSortDialogState.NONE)
   private val _unitGroupBeforeAutoSorting = MutableStateFlow(emptyList<UnitGroup>())
   private val _shownUnitGroups =
-    userPrefsRepository.unitGroupsPrefs.map { it.shownUnitGroups }.stateIn(viewModelScope, null)
+    converterPrefsRepository.prefs.map { it.shownUnitGroups }.stateIn(viewModelScope, null)
 
   internal val uiState =
     combine(_shownUnitGroups, _autoSortDialogState, _unitGroupBeforeAutoSorting) {
@@ -66,26 +66,26 @@ class UnitGroupsViewModel(
       }
       .stateIn(viewModelScope, UnitGroupsUIState.Loading)
 
-  /** @see UserPreferencesRepository.removeShownUnitGroup */
+  /** @see ConverterPrefsRepository.removeShownUnitGroup */
   internal fun removeShownUnitGroup(unitGroup: UnitGroup) {
     viewModelScope.launch {
-      userPrefsRepository.removeShownUnitGroup(unitGroup)
+      converterPrefsRepository.removeShownUnitGroup(unitGroup)
       _unitGroupBeforeAutoSorting.update { emptyList() }
     }
   }
 
-  /** @see UserPreferencesRepository.addShownUnitGroup */
+  /** @see ConverterPrefsRepository.addShownUnitGroup */
   internal fun addShownUnitGroup(unitGroup: UnitGroup) {
     viewModelScope.launch {
-      userPrefsRepository.addShownUnitGroup(unitGroup)
+      converterPrefsRepository.addShownUnitGroup(unitGroup)
       _unitGroupBeforeAutoSorting.update { emptyList() }
     }
   }
 
-  /** @see UserPreferencesRepository.updateShownUnitGroups */
+  /** @see ConverterPrefsRepository.updateShownUnitGroups */
   internal fun updateShownUnitGroups(unitGroups: List<UnitGroup>) {
     viewModelScope.launch {
-      userPrefsRepository.updateShownUnitGroups(unitGroups)
+      converterPrefsRepository.updateShownUnitGroups(unitGroups)
       _unitGroupBeforeAutoSorting.update { emptyList() }
     }
   }
@@ -106,7 +106,7 @@ class UnitGroupsViewModel(
             sorting = UnitsListSorting.USAGE,
           )
         val sortedUnitGroups = sortUnitGroupsByUsage(units)
-        userPrefsRepository.updateShownUnitGroups(sortedUnitGroups)
+        converterPrefsRepository.updateShownUnitGroups(sortedUnitGroups)
 
         _autoSortDialogState.update { AutoSortDialogState.NONE }
       }
@@ -114,7 +114,7 @@ class UnitGroupsViewModel(
 
   internal fun undoAutoSortUnitGroups() {
     viewModelScope.launch {
-      userPrefsRepository.updateShownUnitGroups(_unitGroupBeforeAutoSorting.value)
+      converterPrefsRepository.updateShownUnitGroups(_unitGroupBeforeAutoSorting.value)
       _unitGroupBeforeAutoSorting.update { emptyList() }
     }
   }

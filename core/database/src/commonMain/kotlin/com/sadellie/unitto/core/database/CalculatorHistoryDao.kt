@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,36 @@
 
 package com.sadellie.unitto.core.database
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CalculatorHistoryDao {
   @Query("SELECT * FROM calculator_history ORDER BY timestamp DESC")
-  fun getAllDescending(): Flow<List<CalculatorHistoryEntity>>
+  fun getAllDescending(): PagingSource<Int, CalculatorHistoryEntity>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(vararg historyEntity: CalculatorHistoryEntity)
 
   @Query("DELETE FROM calculator_history WHERE entityId = :entityId")
   suspend fun delete(entityId: Int)
+
+  @Query(
+    """
+    UPDATE calculator_history 
+    SET 
+        label = :label,
+        is_favorite = CASE 
+            WHEN :label IS NULL OR :label = '' THEN false 
+            ELSE true 
+        END
+    WHERE entityId = :entityId
+  """
+  )
+  suspend fun updateLabel(entityId: Int, label: String)
 
   @Query("DELETE FROM calculator_history") suspend fun clear()
 }

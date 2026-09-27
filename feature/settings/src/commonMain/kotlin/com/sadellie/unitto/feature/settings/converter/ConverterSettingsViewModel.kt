@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.converter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.ConverterPrefsRepository
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
@@ -32,16 +32,19 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class ConverterSettingsViewModel(private val userPrefsRepository: UserPreferencesRepository) :
+class ConverterSettingsViewModel(private val converterPrefsRepository: ConverterPrefsRepository) :
   ViewModel() {
-  internal val prefs = userPrefsRepository.converterPrefs.stateIn(viewModelScope, null)
+  internal val prefs = converterPrefsRepository.prefs.stateIn(viewModelScope, null)
 
-  internal fun updateUnitConverterFormatTime(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateUnitConverterFormatTime(enabled) }
+  internal fun updateUnitConverterFormatTime(enabled: Boolean) = viewModelScope.launch {
+    converterPrefsRepository.updateUnitConverterFormatTime(enabled)
+  }
 
-  internal fun updateUnitConverterSorting(sorting: UnitsListSorting) =
-    viewModelScope.launch { userPrefsRepository.updateUnitConverterSorting(sorting) }
+  internal fun updateUnitConverterSorting(sorting: UnitsListSorting) = viewModelScope.launch {
+    converterPrefsRepository.updateUnitConverterSorting(sorting)
+  }
 
-  internal fun updateUnitConverterShowIcons(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateUnitConverterShowIcons(enabled) }
+  internal fun updateUnitConverterShowIcons(enabled: Boolean) = viewModelScope.launch {
+    converterPrefsRepository.updateUnitConverterShowIcons(enabled)
+  }
 }

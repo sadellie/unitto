@@ -34,9 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Fraction
@@ -171,17 +168,12 @@ private fun PreviewCalculatorSettingsScreenStandard() {
     mutableStateOf(
       CalculatorPreferences(
         radianMode = true,
-        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
-        middleZero = false,
-        acButton = false,
         additionalButtons = false,
         inverseMode = false,
         partialHistoryView = false,
         steppedPartialHistoryView = false,
         initialPartialHistoryView = false,
         openHistoryViewButton = false,
-        precision = 3,
-        outputFormat = OutputFormat.PLAIN,
         fractionalOutput = true,
         constantCalculation = false,
       )

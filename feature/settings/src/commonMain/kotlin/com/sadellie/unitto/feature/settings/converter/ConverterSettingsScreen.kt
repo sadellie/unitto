@@ -39,9 +39,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.designsystem.icons.symbols.DrawAbstract
@@ -194,11 +191,6 @@ private fun PreviewConverterSettingsScreen() {
   var prefs by remember {
     mutableStateOf(
       ConverterPreferences(
-        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
-        middleZero = false,
-        acButton = true,
-        precision = 3,
-        outputFormat = OutputFormat.PLAIN,
         formatTime = false,
         sorting = UnitsListSorting.USAGE,
         shownUnitGroups = UnitGroup.entries,

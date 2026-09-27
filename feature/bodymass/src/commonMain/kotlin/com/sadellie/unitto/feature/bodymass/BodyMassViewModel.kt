@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
 import com.sadellie.unitto.core.ui.textfield.observe
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
+class BodyMassViewModel(formatterPrefsRepository: FormatterPrefsRepository) : ViewModel() {
   private var _calculateJob: Job? = null
   private val _isMetric = MutableStateFlow(getInitialIsMetric())
   private val _height1 = TextFieldState()
@@ -50,8 +50,8 @@ class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepository) : 
   private val _normalWeightRange = MutableStateFlow(KBigDecimal.ZERO to KBigDecimal.ZERO)
 
   internal val uiState =
-    combine(userPreferencesRepository.bodyMassPrefs, _isMetric, _result, _normalWeightRange) {
-        userPrefs,
+    combine(formatterPrefsRepository.prefs, _isMetric, _result, _normalWeightRange) {
+        formatterSymbols,
         isMetric,
         result,
         normalWeightRange ->
@@ -62,7 +62,7 @@ class BodyMassViewModel(userPreferencesRepository: UserPreferencesRepository) : 
           weight = _weight,
           result = result,
           normalWeightRange = normalWeightRange,
-          formatterSymbols = userPrefs.formatterSymbols,
+          formatterSymbols = formatterSymbols.formatterSymbols,
         )
       }
       .stateIn(viewModelScope, BodyMassUIState.Loading)

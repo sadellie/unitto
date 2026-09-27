@@ -23,7 +23,9 @@ import android.content.Context
 import com.sadellie.unitto.core.data.TimeZoneDataBindings
 import com.sadellie.unitto.core.data.calculator.CalculatorDataBindings
 import com.sadellie.unitto.core.data.converter.ConverterDataBindings
+import com.sadellie.unitto.core.datastore.AppPrefsRepository
 import com.sadellie.unitto.core.datastore.DataStoreBindings
+import com.sadellie.unitto.core.datastore.ThemePrefsRepository
 import com.sadellie.unitto.core.remote.RemoteBindings
 import com.sadellie.unitto.feature.glance.GraphProvider
 import com.sadellie.unitto.feature.glance.WidgetDependencies
@@ -60,6 +62,9 @@ interface AndroidAppGraph : AppGraph, WidgetDependencies {
 
   @Provides
   private fun provideContext(application: Application): Context = application.applicationContext
+
+  val appPrefsRepository: AppPrefsRepository
+  override val themePrefsRepository: ThemePrefsRepository
 }
 
 internal fun getApplicationGraph(context: Context): AndroidAppGraph =

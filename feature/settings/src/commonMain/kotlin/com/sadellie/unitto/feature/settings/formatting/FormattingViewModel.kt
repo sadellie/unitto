@@ -23,7 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -34,12 +34,11 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class FormattingViewModel(private val userPreferencesRepository: UserPreferencesRepository) :
+class FormattingViewModel(private val formatterPrefsRepository: FormatterPrefsRepository) :
   ViewModel() {
-  private val prefs = userPreferencesRepository.formattingPrefs
 
   internal val uiState =
-    prefs
+    formatterPrefsRepository.prefs
       .map { mainPrefs ->
         FormattingUIState(
           precision = mainPrefs.digitsPrecision,
@@ -49,25 +48,24 @@ class FormattingViewModel(private val userPreferencesRepository: UserPreferences
       }
       .stateIn(viewModelScope, null)
 
-  /** @see UserPreferencesRepository.updateDigitsPrecision */
-  internal fun updatePrecision(precision: Int) =
-    viewModelScope.launch {
-      // In UI the slider for precision goes from 0 to 16, where 16 is treated as 1000 (MAX)
-      val newPrecision = if (precision < MAX_SCALE_ALIAS) precision else MAX_SCALE
-      userPreferencesRepository.updateDigitsPrecision(newPrecision)
-    }
+  /** @see FormatterPrefsRepository.updateDigitsPrecision */
+  internal fun updatePrecision(precision: Int) = viewModelScope.launch {
+    // In UI the slider for precision goes from 0 to 16, where 16 is treated as 1000 (MAX)
+    val newPrecision = if (precision < MAX_SCALE_ALIAS) precision else MAX_SCALE
+    formatterPrefsRepository.updateDigitsPrecision(newPrecision)
+  }
 
-  /** @see UserPreferencesRepository.updateFormatterSymbols */
+  /** @see FormatterPrefsRepository.updateFormatterSymbols */
   internal fun updateFormatterSymbols(
     grouping: Token.Formatter,
     fractional: Token.Formatter,
     indian: Boolean,
-  ) =
-    viewModelScope.launch {
-      userPreferencesRepository.updateFormatterSymbols(grouping, fractional, indian)
-    }
+  ) = viewModelScope.launch {
+    formatterPrefsRepository.updateFormatterSymbols(grouping, fractional, indian)
+  }
 
-  /** @see UserPreferencesRepository.updateOutputFormat */
-  internal fun updateOutputFormat(outputFormat: Int) =
-    viewModelScope.launch { userPreferencesRepository.updateOutputFormat(outputFormat) }
+  /** @see FormatterPrefsRepository.updateOutputFormat */
+  internal fun updateOutputFormat(outputFormat: Int) = viewModelScope.launch {
+    formatterPrefsRepository.updateOutputFormat(outputFormat)
+  }
 }

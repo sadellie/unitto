@@ -22,12 +22,9 @@ import android.icu.text.LocaleDisplayNames
 import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.ZonedDateTime
 import java.util.Date
 
-@RequiresApi(Build.VERSION_CODES.N)
 fun TimeZone.offset(currentTime: ZonedDateTime): ZonedDateTime {
   val offsetSeconds = currentTime.offset.totalSeconds.toLong()
   val currentTimeWithoutOffset = currentTime.minusSeconds(offsetSeconds)
@@ -39,7 +36,6 @@ fun TimeZone.offset(currentTime: ZonedDateTime): ZonedDateTime {
   return currentTimeWithoutOffset.plusSeconds(this.rawOffset / MS_IN_S + dstOffsetSeconds)
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 fun TimeZone.regionName(
   timeZoneNames: TimeZoneNames,
   localeDisplayNames: LocaleDisplayNames,
@@ -51,12 +47,10 @@ fun TimeZone.regionName(
   return "$location, $region"
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 fun TimeZone.displayName(locale: ULocale): String {
   return this.getDisplayName(locale) ?: id
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 private fun TimeZone.fallbackRegionName(): String =
   id.replace("_", " ").split("/").reversed().joinToString()
 

@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.calculator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.CalculatorPrefsRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -31,22 +31,28 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class CalculatorSettingsViewModel(private val userPrefsRepository: UserPreferencesRepository) :
-  ViewModel() {
-  internal val prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
+class CalculatorSettingsViewModel(
+  private val calculatorPrefsRepository: CalculatorPrefsRepository
+) : ViewModel() {
+  internal val prefs = calculatorPrefsRepository.prefs.stateIn(viewModelScope, null)
 
-  internal fun updatePartialHistoryView(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updatePartialHistoryView(enabled) }
+  internal fun updatePartialHistoryView(enabled: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updatePartialHistoryView(enabled)
+  }
 
-  internal fun updateSteppedPartialHistoryView(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateSteppedPartialHistoryView(enabled) }
+  internal fun updateSteppedPartialHistoryView(enabled: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateSteppedPartialHistoryView(enabled)
+  }
 
-  internal fun updateOpenHistoryViewButton(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateOpenHistoryViewButton(enabled) }
+  internal fun updateOpenHistoryViewButton(enabled: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateOpenHistoryViewButton(enabled)
+  }
 
-  internal fun updateFractionalOutput(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateFractionalOutput(enabled) }
+  internal fun updateFractionalOutput(enabled: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateFractionalOutput(enabled)
+  }
 
-  internal fun updateConstantCalculation(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateConstantCalculation(enabled) }
+  internal fun updateConstantCalculation(enabled: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateConstantCalculation(enabled)
+  }
 }

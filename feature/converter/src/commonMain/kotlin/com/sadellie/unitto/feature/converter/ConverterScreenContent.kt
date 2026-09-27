@@ -60,8 +60,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
@@ -72,14 +75,12 @@ import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.CurrencyRateUpdateState
 import com.sadellie.unitto.core.data.converter.UnitID
-import com.sadellie.unitto.core.designsystem.LocalLocale
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import com.sadellie.unitto.core.ui.ColumnWithConstraints
-import com.sadellie.unitto.core.ui.PortraitLandscape
+import com.sadellie.unitto.core.ui.datetime.LocalPlatformDateFormatSettings
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.textfield.NumberBaseTextField
@@ -89,9 +90,11 @@ import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.a
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.deleteTokens
 import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
+import com.sadellie.unitto.feature.converter.components.PortraitLandscape
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
-import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.calculator_divide_by_zero_error
@@ -121,7 +124,11 @@ internal fun ConverterDefault(
   swapUnits: (String, String) -> Unit,
   navigateToRightScreen:
     (
-      unitFromId: String, unitToId: String, group: UnitGroup, input1: String, input2: String,
+      unitFromId: String,
+      unitToId: String,
+      group: UnitGroup,
+      input1: String,
+      input2: String,
     ) -> Unit,
   convert: () -> Unit,
 ) {
@@ -140,8 +147,9 @@ internal fun ConverterDefault(
 
   PortraitLandscape(
     modifier = modifier.fillMaxSize(),
-    content1 = { contentModifier ->
-      ColumnWithConstraints(modifier = contentModifier) { boxWithConstraintsScope ->
+    content1 = {
+      var containerSize by remember { mutableStateOf(IntSize.Zero) }
+      Column(modifier = Modifier.onSizeChanged { containerSize = it }) {
         val textFieldModifier = Modifier.fillMaxWidth().weight(2f)
 
         CurrencyUpdateStatusBar(
@@ -194,7 +202,12 @@ internal fun ConverterDefault(
           AnimatedUnitShortName(stringResource(uiState.unitTo.shortName))
         }
 
-        Spacer(modifier = Modifier.height(boxWithConstraintsScope.maxHeight * SPACER_HEIGHT_FACTOR))
+        val density = LocalDensity.current
+        val spacerHeight =
+          remember(density, containerSize) {
+            with(density) { (containerSize.height * SPACER_HEIGHT_FACTOR).toDp() }
+          }
+        Spacer(Modifier.height(spacerHeight))
 
         UnitSelectionButtons(
           modifier = Modifier.fillMaxWidth(),
@@ -216,9 +229,9 @@ internal fun ConverterDefault(
         )
       }
     },
-    content2 = { modifier2 ->
+    content2 = {
       DefaultKeyboard(
-        modifier = modifier2,
+        modifier = Modifier,
         onAddTokenClick = {
           if (focusedOnInput1) uiState.input1.addTokens(it) else uiState.input2.addTokens(it)
         },
@@ -247,12 +260,19 @@ internal fun NumberBase(
   navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
   swapUnits: (String, String) -> Unit,
   navigateToRightScreen:
-    (unitFromId: String, unitToId: String, group: UnitGroup, input1: String, input2: String) -> Unit,
+    (
+      unitFromId: String,
+      unitToId: String,
+      group: UnitGroup,
+      input1: String,
+      input2: String,
+    ) -> Unit,
 ) {
   PortraitLandscape(
     modifier = modifier.fillMaxSize(),
-    content1 = { contentModifier ->
-      ColumnWithConstraints(modifier = contentModifier) {
+    content1 = {
+      var containerSize by remember { mutableStateOf(IntSize.Zero) }
+      Column(modifier = Modifier.onSizeChanged { containerSize = it }) {
         val textFieldModifier = Modifier.weight(2f)
 
         NumberBaseTextField(
@@ -267,7 +287,12 @@ internal fun NumberBase(
         ConverterResultTextField(modifier = textFieldModifier, result = uiState.result)
         AnimatedUnitShortName(stringResource(uiState.unitTo.shortName))
 
-        Spacer(modifier = Modifier.height(it.maxHeight * SPACER_HEIGHT_FACTOR))
+        val density = LocalDensity.current
+        val spacerHeight =
+          remember(density, containerSize) {
+            with(density) { (containerSize.height * SPACER_HEIGHT_FACTOR).toDp() }
+          }
+        Spacer(Modifier.height(spacerHeight))
 
         UnitSelectionButtons(
           modifier = Modifier.fillMaxWidth(),
@@ -290,9 +315,9 @@ internal fun NumberBase(
         )
       }
     },
-    content2 = { modifier2 ->
+    content2 = {
       NumberBaseKeyboard(
-        modifier = modifier2,
+        modifier = Modifier,
         onAddTokenClick = { uiState.input.addTokens(it) },
         onDeleteClick = { uiState.input.deleteTokens() },
         onClearClick = { uiState.input.clearText() },
@@ -424,15 +449,15 @@ private fun CurrencyUpdateStatusBar(
   currencyRateUpdateState: CurrencyRateUpdateState,
   unitFromGroup: UnitGroup,
 ) {
-  val locale = LocalLocale.current
+  val platformDateFormatSettings = LocalPlatformDateFormatSettings.current
   val lastUpdate by
-    remember(currencyRateUpdateState, unitFromGroup, locale) {
+    remember(currencyRateUpdateState, unitFromGroup, platformDateFormatSettings) {
       derivedStateOf {
         if (
           unitFromGroup == UnitGroup.CURRENCY &&
             currencyRateUpdateState is CurrencyRateUpdateState.Ready
         ) {
-          currencyRateUpdateState.date.formatDateWeekDayMonthYear(locale)
+          currencyRateUpdateState.instant.formatDateWeekDayMonthYear(platformDateFormatSettings)
         } else {
           null
         }
@@ -674,7 +699,7 @@ private val converterTextFieldColor: Color
 private fun PreviewCurrencyUpdateStatusBar() {
   CurrencyUpdateStatusBar(
     modifier = Modifier,
-    currencyRateUpdateState = CurrencyRateUpdateState.Ready(LocalDate(2024, 3, 4)),
+    currencyRateUpdateState = CurrencyRateUpdateState.Ready(Clock.System.now()),
     unitFromGroup = UnitGroup.CURRENCY,
   )
 }
@@ -721,4 +746,4 @@ private fun PreviewConverterDefault() {
 }
 
 private const val SPACER_HEIGHT_FACTOR = 0.03f
-private const val RETRY_CURRENCY_UPDATE_DEBOUNCE_MS = 1_000L
+private val RETRY_CURRENCY_UPDATE_DEBOUNCE_MS = 1_000L.milliseconds

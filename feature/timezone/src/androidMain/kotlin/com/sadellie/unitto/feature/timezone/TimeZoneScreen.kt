@@ -22,8 +22,6 @@ import android.icu.text.LocaleDisplayNames
 import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateDp
@@ -39,6 +37,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
@@ -82,6 +81,7 @@ import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
 import dev.zacsweers.metrox.viewmodel.metroViewModel
+import java.time.ZonedDateTime
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -94,9 +94,7 @@ import unitto.core.common.generated.resources.common_label
 import unitto.core.common.generated.resources.common_ok
 import unitto.core.common.generated.resources.time_zone_add_title
 import unitto.core.common.generated.resources.time_zone_title
-import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun TimeZoneRoute(openDrawer: () -> Unit, navigateToAddTimeZone: (ZonedDateTime) -> Unit) {
   val viewModel: TimeZoneViewModel = metroViewModel()
@@ -119,7 +117,6 @@ internal fun TimeZoneRoute(openDrawer: () -> Unit, navigateToAddTimeZone: (Zoned
   }
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 private fun TimeZoneScreen(
   uiState: TimeZoneUIState.Ready,
@@ -248,7 +245,6 @@ private fun TimeZoneScreen(
   )
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 private fun TimeZoneDialog(
   dialogState: TimeZoneDialogState,
@@ -287,7 +283,12 @@ private fun TimeZoneDialog(
       AlertDialog(
         title = { Text(text = stringResource(Res.string.common_label)) },
         text = {
-          OutlinedTextField(state = tfv, modifier = Modifier.focusRequester(focusRequester))
+          OutlinedTextField(
+            state = tfv,
+            modifier = Modifier.focusRequester(focusRequester),
+            shape = MaterialTheme.shapes.large,
+            lineLimits = TextFieldLineLimits.SingleLine,
+          )
           LaunchedEffect(Unit) {
             awaitFrame()
             focusRequester.requestFocus()
@@ -325,7 +326,6 @@ private enum class ContentType {
 
 private const val USER_TIME_UPDATE_FREQUENCY_MS = 5_000L
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Preview
 @Composable
 private fun PreviewTimeZoneScreen() = ExpressivePreview {

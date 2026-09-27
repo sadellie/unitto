@@ -22,9 +22,7 @@ import android.icu.text.LocaleDisplayNames
 import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
-import android.os.Build
 import android.text.format.DateFormat.is24HourFormat
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,13 +59,12 @@ import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 import dev.zacsweers.metrox.viewmodel.metroViewModel
+import java.time.ZonedDateTime
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_read_article
 import unitto.core.common.generated.resources.time_zone_no_results_support
-import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun AddTimeZoneRoute(
   viewModel: AddTimeZoneViewModel = metroViewModel(),
@@ -88,7 +85,6 @@ internal fun AddTimeZoneRoute(
   }
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun AddTimeZoneScreen(
   uiState: AddTimeZoneUIState.Ready,
@@ -156,7 +152,6 @@ fun AddTimeZoneScreen(
   }
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Preview
 @Composable
 fun PreviewAddTimeZoneScreen() {

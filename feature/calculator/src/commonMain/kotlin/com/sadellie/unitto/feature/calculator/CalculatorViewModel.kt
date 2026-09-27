@@ -23,6 +23,7 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KRoundingMode
@@ -32,8 +33,10 @@ import com.sadellie.unitto.core.common.isGreaterThan
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepository
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
-import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
+import com.sadellie.unitto.core.datastore.CalculatorPrefsRepository
+import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
+import com.sadellie.unitto.core.datastore.KeypadPrefsRepository
+import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addBracket
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.addTokens
 import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsMath.deleteTokens
@@ -61,38 +64,50 @@ import kotlinx.coroutines.withContext
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
 class CalculatorViewModel(
-  private val userPrefsRepository: UserPreferencesRepository,
+  formatterPrefsRepository: FormatterPrefsRepository,
+  keypadPrefsRepository: KeypadPrefsRepository,
+  private val calculatorPrefsRepository: CalculatorPrefsRepository,
   private val calculatorHistoryRepository: CalculatorHistoryRepository,
 ) : ViewModel() {
   private var _calculationJob: Job? = null
   private val _input = TextFieldState()
   private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
-  private val _prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
+  private val _calculatorPrefs = calculatorPrefsRepository.prefs.stateIn(viewModelScope, null)
+  private val _formatterPrefs = formatterPrefsRepository.prefs.stateIn(viewModelScope, null)
+  private val _displayPrefs = keypadPrefsRepository.prefs.stateIn(viewModelScope, null)
 
   /** Last result that was set after calling [onEqualClick]. Equal was clicked when not empty */
   private val _lastResult = MutableStateFlow("")
   private val _lastRepeatableOperation = MutableStateFlow<Operation?>(null)
+  private val historyFlow = calculatorHistoryRepository.historyFlow.cachedIn(viewModelScope)
 
   internal val uiState: StateFlow<CalculatorUIState> =
-    combine(_result, _prefs, calculatorHistoryRepository.historyFlow) { result, prefs, history ->
-        prefs ?: return@combine CalculatorUIState.Loading
+    combine(
+        _result,
+        _calculatorPrefs,
+        _formatterPrefs,
+        _displayPrefs,
+      ) { result, calculatorPrefs, formatterPrefs, displayPrefs ->
+        calculatorPrefs ?: return@combine CalculatorUIState.Loading
+        formatterPrefs ?: return@combine CalculatorUIState.Loading
+        displayPrefs ?: return@combine CalculatorUIState.Loading
 
         return@combine CalculatorUIState.Ready(
           input = _input,
           output = result,
-          radianMode = prefs.radianMode,
-          precision = prefs.precision,
-          outputFormat = prefs.outputFormat,
-          formatterSymbols = prefs.formatterSymbols,
-          history = history,
-          middleZero = prefs.middleZero,
-          acButton = prefs.acButton,
-          additionalButtons = prefs.additionalButtons,
-          inverseMode = prefs.inverseMode,
-          partialHistoryView = prefs.partialHistoryView,
-          steppedPartialHistoryView = prefs.steppedPartialHistoryView,
-          initialPartialHistoryView = prefs.initialPartialHistoryView,
-          openHistoryViewButton = prefs.openHistoryViewButton,
+          radianMode = calculatorPrefs.radianMode,
+          precision = formatterPrefs.digitsPrecision,
+          outputFormat = formatterPrefs.outputFormat,
+          formatterSymbols = formatterPrefs.formatterSymbols,
+          history = historyFlow,
+          middleZero = displayPrefs.middleZero,
+          acButton = displayPrefs.acButton,
+          additionalButtons = calculatorPrefs.additionalButtons,
+          inverseMode = calculatorPrefs.inverseMode,
+          partialHistoryView = calculatorPrefs.partialHistoryView,
+          steppedPartialHistoryView = calculatorPrefs.steppedPartialHistoryView,
+          initialPartialHistoryView = calculatorPrefs.initialPartialHistoryView,
+          openHistoryViewButton = calculatorPrefs.openHistoryViewButton,
         )
       }
       .stateIn(viewModelScope, CalculatorUIState.Loading)
@@ -151,104 +166,121 @@ class CalculatorViewModel(
     _lastResult.update { "" }
   }
 
-  internal fun updateRadianMode(newValue: Boolean) =
-    viewModelScope.launch {
-      userPrefsRepository.updateRadianMode(newValue)
-      _lastResult.update { "" }
-      calculateInput()
-    }
+  internal fun updateRadianMode(newValue: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateRadianMode(newValue)
+    _lastResult.update { "" }
+    calculateInput()
+  }
 
-  internal fun updateAdditionalButtons(newValue: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateAdditionalButtons(newValue) }
+  internal fun updateAdditionalButtons(newValue: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateAdditionalButtons(newValue)
+  }
 
-  internal fun updateInverseMode(newValue: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateInverseMode(newValue) }
+  internal fun updateInverseMode(newValue: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateInverseMode(newValue)
+  }
 
-  internal fun updateInitialPartialHistoryView(newValue: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateInitialPartialHistoryView(newValue) }
+  internal fun updateInitialPartialHistoryView(newValue: Boolean) = viewModelScope.launch {
+    calculatorPrefsRepository.updateInitialPartialHistoryView(newValue)
+  }
 
   internal fun clearHistory() = viewModelScope.launch { calculatorHistoryRepository.clear() }
 
-  internal fun deleteHistoryItem(item: CalculatorHistoryItem) =
-    viewModelScope.launch { calculatorHistoryRepository.delete(item.id) }
+  internal fun deleteHistoryItem(item: CalculatorHistoryModel.Item) = viewModelScope.launch {
+    calculatorHistoryRepository.delete(item.id)
+  }
 
-  internal fun onEqualClick() =
+  internal fun updateHistoryItemLabel(item: CalculatorHistoryModel.Item, label: String) =
     viewModelScope.launch {
-      val prefs = _prefs.value ?: return@launch
-      var inputValue = _input.text.toString()
-      val lastResult = _lastResult.value
-      val lastRepeatableOperation = _lastRepeatableOperation.value
-      if (prefs.constantCalculation && lastResult.isNotEmpty() && lastRepeatableOperation != null) {
-        // equal was already clicked, get last operation and apply it
-        inputValue = lastRepeatableOperation.generateExpression(inputValue)
+      calculatorHistoryRepository.updateLabel(item.id, label)
+    }
+
+  internal fun onEqualClick() = viewModelScope.launch {
+    val calculatorPrefs = _calculatorPrefs.value ?: return@launch
+    val formatterrefs = _formatterPrefs.value ?: return@launch
+    var inputValue = _input.text.toString()
+    val lastResult = _lastResult.value
+    val lastRepeatableOperation = _lastRepeatableOperation.value
+    if (
+      calculatorPrefs.constantCalculation &&
+        lastResult.isNotEmpty() &&
+        lastRepeatableOperation != null
+    ) {
+      // equal was already clicked, get last operation and apply it
+      inputValue = lastRepeatableOperation.generateExpression(inputValue)
+    }
+    if (!inputValue.isExpression()) return@launch
+
+    val (result, operation) =
+      try {
+        calculate(
+          inputValue,
+          calculatorPrefs.radianMode,
+          KRoundingMode.HALF_EVEN,
+          calculatorPrefs.constantCalculation,
+        )
+      } catch (_: ExpressionException.DivideByZero) {
+        _result.update { CalculationResult.DivideByZeroError }
+        return@launch
+      } catch (_: Exception) {
+        _result.update { CalculationResult.Error }
+        return@launch
       }
-      if (!inputValue.isExpression()) return@launch
+    _lastRepeatableOperation.update { operation }
 
-      val (result, operation) =
+    val formattedResult =
+      result
+        .toFormattedString(formatterrefs.digitsPrecision, formatterrefs.outputFormat)
+        .replace("-", Token.Minus.symbol) // minus is not recognized by evaluatto
+    calculatorHistoryRepository.add(expression = inputValue, result = formattedResult)
+
+    // _input processing will not recalculate and invalidate _result for this value
+    _lastResult.update { formattedResult }
+    _input.setTextAndPlaceCursorAtEnd(formattedResult)
+    val fractional =
+      if (calculatorPrefs.fractionalOutput) {
         try {
-          calculate(
-            inputValue,
-            prefs.radianMode,
-            KRoundingMode.HALF_EVEN,
-            prefs.constantCalculation,
-          )
-        } catch (_: ExpressionException.DivideByZero) {
-          _result.update { CalculationResult.DivideByZeroError }
-          return@launch
-        } catch (_: Exception) {
+          // Different rounding mode to properly calculate fractional
+          calculate(inputValue, calculatorPrefs.radianMode, KRoundingMode.DOWN)
+            .first
+            .toFractionalString()
+        } catch (e: Exception) {
           _result.update { CalculationResult.Error }
-          return@launch
-        }
-      _lastRepeatableOperation.update { operation }
-
-      val formattedResult =
-        result
-          .toFormattedString(prefs.precision, prefs.outputFormat)
-          .replace("-", Token.Minus.symbol) // minus is not recognized by evaluatto
-      calculatorHistoryRepository.add(expression = inputValue, result = formattedResult)
-
-      // _input processing will not recalculate and invalidate _result for this value
-      _lastResult.update { formattedResult }
-      _input.setTextAndPlaceCursorAtEnd(formattedResult)
-      val fractional =
-        if (prefs.fractionalOutput) {
-          try {
-            // Different rounding mode to properly calculate fractional
-            calculate(inputValue, prefs.radianMode, KRoundingMode.DOWN).first.toFractionalString()
-          } catch (e: Exception) {
-            _result.update { CalculationResult.Error }
-            Logger.e(e, TAG) { "Failed to find fractional for: $inputValue" }
-            ""
-          }
-        } else {
-          // User doesn't want fractional output, clear result field
+          Logger.e(e, TAG) { "Failed to find fractional for: $inputValue" }
           ""
         }
-      _result.update { CalculationResult.Success(fractional) }
-    }
+      } else {
+        // User doesn't want fractional output, clear result field
+        ""
+      }
+    _result.update { CalculationResult.Success(fractional) }
+  }
 
   private fun calculateInput() {
     _calculationJob?.cancel()
-    _calculationJob =
-      viewModelScope.launch {
-        if (!_input.text.toString().isExpression()) {
-          _result.update { CalculationResult.Empty }
-          return@launch
-        }
-
-        val prefs = _prefs.value ?: return@launch
-        val newResult =
-          try {
-            val (calculated, _) =
-              calculate(_input.text.toString(), prefs.radianMode, KRoundingMode.HALF_EVEN)
-            CalculationResult.Success(
-              calculated.toFormattedString(prefs.precision, prefs.outputFormat)
-            )
-          } catch (_: Exception) {
-            CalculationResult.Empty
-          }
-        _result.update { newResult }
+    _calculationJob = viewModelScope.launch {
+      if (!_input.text.toString().isExpression()) {
+        _result.update { CalculationResult.Empty }
+        return@launch
       }
+
+      val calculatorPrefs = _calculatorPrefs.value ?: return@launch
+      val formatterPrefs = _formatterPrefs.value ?: return@launch
+      val newResult =
+        try {
+          val (calculated, _) =
+            calculate(_input.text.toString(), calculatorPrefs.radianMode, KRoundingMode.HALF_EVEN)
+          CalculationResult.Success(
+            calculated.toFormattedString(
+              formatterPrefs.digitsPrecision,
+              formatterPrefs.outputFormat,
+            )
+          )
+        } catch (_: Exception) {
+          CalculationResult.Empty
+        }
+      _result.update { newResult }
+    }
   }
 
   private suspend fun calculate(

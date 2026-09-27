@@ -18,7 +18,7 @@
 
 package com.sadellie.unitto.core.ui.textfield
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -27,18 +27,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboard
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.TextStyle
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 
 @Composable
 fun FixedExpressionInputTextField(
   modifier: Modifier = Modifier,
   value: String,
   formatterSymbols: FormatterSymbols,
-  textColor: Color,
+  textStyle: TextStyle,
   onClick: () -> Unit,
 ) {
   val clipboardManager = createExpressionClipboard(formatterSymbols, LocalClipboard.current)
@@ -46,17 +44,13 @@ fun FixedExpressionInputTextField(
     SelectionContainer(
       modifier =
         Modifier.horizontalScroll(rememberScrollState()) // Must be first
-          .clickable(onClick = onClick)
+          .combinedClickable(onClick = onClick)
           .then(modifier)
     ) {
       Text(
         modifier = Modifier.fillMaxWidth(),
         text = value.formatExpression(formatterSymbols),
-        style =
-          LocalNumberTypography.current.displaySmall.copy(
-            color = textColor,
-            textAlign = TextAlign.End,
-          ),
+        style = textStyle,
       )
     }
   }

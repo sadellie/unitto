@@ -71,13 +71,11 @@ class BaseNumberTest {
   fun `assert and`() {
     assertEquals(
       BaseNumber("f", 16, DataUnit.QWORD),
-      BaseNumber("ff", 16, DataUnit.QWORD)
-        .and(BaseNumber("f", 16, DataUnit.QWORD)),
+      BaseNumber("ff", 16, DataUnit.QWORD).and(BaseNumber("f", 16, DataUnit.QWORD)),
     )
     assertEquals(
       BaseNumber("f0", 16, DataUnit.QWORD),
-      BaseNumber("fffffffffffffff0", 16, DataUnit.QWORD)
-        .and(BaseNumber("ff", 16, DataUnit.QWORD)),
+      BaseNumber("fffffffffffffff0", 16, DataUnit.QWORD).and(BaseNumber("ff", 16, DataUnit.QWORD)),
     )
   }
 
@@ -85,8 +83,7 @@ class BaseNumberTest {
   fun `assert or`() {
     assertEquals(
       BaseNumber("ff", 16, DataUnit.QWORD),
-      BaseNumber("ff", 16, DataUnit.QWORD)
-        .or(BaseNumber("f", 16, DataUnit.QWORD)),
+      BaseNumber("ff", 16, DataUnit.QWORD).or(BaseNumber("f", 16, DataUnit.QWORD)),
     )
     assertEquals(
       BaseNumber("ffffffffffffffff", 16, DataUnit.QWORD),
@@ -122,8 +119,7 @@ class BaseNumberTest {
   fun `assert nor`() {
     assertEquals(
       BaseNumber("ffffffffffffff00", 16, DataUnit.QWORD),
-      BaseNumber("ff", 16, DataUnit.QWORD)
-        .nor(BaseNumber("f", 16, DataUnit.QWORD)),
+      BaseNumber("ff", 16, DataUnit.QWORD).nor(BaseNumber("f", 16, DataUnit.QWORD)),
     )
     assertEquals(
       BaseNumber("0", 16, DataUnit.QWORD),
@@ -135,8 +131,7 @@ class BaseNumberTest {
   fun `assert xor`() {
     assertEquals(
       BaseNumber("f0", 16, DataUnit.QWORD),
-      BaseNumber("ff", 16, DataUnit.QWORD)
-        .xor(BaseNumber("f", 16, DataUnit.QWORD)),
+      BaseNumber("ff", 16, DataUnit.QWORD).xor(BaseNumber("f", 16, DataUnit.QWORD)),
     )
     assertEquals(
       BaseNumber("ffffffffffffff0f", 16, DataUnit.QWORD),
@@ -177,6 +172,46 @@ class BaseNumberTest {
     assertEquals(
       BaseNumber("ffffffffffffffff", 16, DataUnit.QWORD),
       BaseNumber("ffffffffffffffff", 16, DataUnit.QWORD).mod(BaseNumber("10", 16, DataUnit.QWORD)),
+    )
+  }
+
+  @Test
+  fun `assert rol`() {
+    assertEquals(
+      BaseNumber("CE", 16, DataUnit.BYTE),
+      BaseNumber("B3", 16, DataUnit.BYTE).rol(BaseNumber("2", 16, DataUnit.BYTE)),
+    )
+    assertEquals(
+      BaseNumber("BCDA", 16, DataUnit.WORD),
+      BaseNumber("ABCD", 16, DataUnit.WORD).rol(BaseNumber("4", 16, DataUnit.WORD)),
+    )
+    assertEquals(
+      BaseNumber("FF0", 16, DataUnit.QWORD),
+      BaseNumber("FF", 16, DataUnit.QWORD).rol(BaseNumber("4", 16, DataUnit.QWORD)),
+    )
+    assertEquals(
+      BaseNumber("ABCD", 16, DataUnit.WORD),
+      BaseNumber("ABCD", 16, DataUnit.WORD).rol(BaseNumber("10", 16, DataUnit.WORD)),
+    )
+  }
+
+  @Test
+  fun `assert ror`() {
+    assertEquals(
+      BaseNumber("EC", 16, DataUnit.BYTE),
+      BaseNumber("B3", 16, DataUnit.BYTE).ror(BaseNumber("2", 16, DataUnit.BYTE)),
+    )
+    assertEquals(
+      BaseNumber("DABC", 16, DataUnit.WORD),
+      BaseNumber("ABCD", 16, DataUnit.WORD).ror(BaseNumber("4", 16, DataUnit.WORD)),
+    )
+    assertEquals(
+      BaseNumber("FF", 16, DataUnit.QWORD),
+      BaseNumber("FF0", 16, DataUnit.QWORD).ror(BaseNumber("4", 16, DataUnit.QWORD)),
+    )
+    assertEquals(
+      BaseNumber("ABCD", 16, DataUnit.WORD),
+      BaseNumber("ABCD", 16, DataUnit.WORD).ror(BaseNumber("10", 16, DataUnit.WORD)),
     )
   }
 }

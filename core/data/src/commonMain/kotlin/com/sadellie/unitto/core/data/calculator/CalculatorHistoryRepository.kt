@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,13 @@
 
 package com.sadellie.unitto.core.data.calculator
 
-import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
+import androidx.paging.PagingData
+import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
 import kotlinx.coroutines.flow.Flow
 
 interface CalculatorHistoryRepository {
   /** Calculator history sorted by items timestamp from new to old (DESC). */
-  val historyFlow: Flow<List<CalculatorHistoryItem>>
+  val historyFlow: Flow<PagingData<CalculatorHistoryModel>>
 
   /**
    * Save [expression] and [result] in calculator history. Both parameters must use tokens
@@ -31,8 +32,13 @@ interface CalculatorHistoryRepository {
    */
   suspend fun add(expression: String, result: String)
 
-  /** Delete [CalculatorHistoryItem] by id from calculator history */
+  /** Delete [CalculatorHistoryModel] by id from calculator history */
   suspend fun delete(itemId: Int)
+
+  /**
+   * Update [CalculatorHistoryModel.Item.label] and toggle [CalculatorHistoryModel.Item.isFavorite]
+   */
+  suspend fun updateLabel(itemId: Int, label: String)
 
   /** Deletes all entries from calculator history. */
   suspend fun clear()

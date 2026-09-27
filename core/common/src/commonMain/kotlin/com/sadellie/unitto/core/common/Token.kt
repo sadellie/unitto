@@ -395,6 +395,20 @@ sealed interface Token {
     override val isUnary = false
   }
 
+  data object RoL : ProgrammerOperator {
+    override val symbol = "rol"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
+  data object RoR : ProgrammerOperator {
+    override val symbol = "ror"
+    override val precedence = 2
+    override val associativity = Operator.Associativity.LEFT
+    override val isUnary = false
+  }
+
   data object Mod : ProgrammerOperator {
     override val symbol = "mod"
     override val precedence = 2
@@ -455,6 +469,8 @@ sealed interface Token {
           Xor,
           Lsh,
           Rsh,
+          RoL,
+          RoR,
           Mod,
           LeftBracket,
           RightBracket,

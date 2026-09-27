@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,66 @@
 
 package com.sadellie.unitto.core.data.calculator
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.insertSeparators
+import androidx.paging.map
 import com.sadellie.unitto.core.common.defaultIODispatcher
 import com.sadellie.unitto.core.database.CalculatorHistoryDao
 import com.sadellie.unitto.core.database.CalculatorHistoryEntity
-import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
-import kotlinx.coroutines.Dispatchers
+import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class CalculatorHistoryRepositoryImpl(private val calculatorHistoryDao: CalculatorHistoryDao) :
   CalculatorHistoryRepository {
-  override val historyFlow: Flow<List<CalculatorHistoryItem>> =
-    calculatorHistoryDao
-      .getAllDescending()
-      .map { it.toHistoryItemList() }
-      .flowOn(defaultIODispatcher)
 
-  @OptIn(ExperimentalTime::class)
+  override val historyFlow: Flow<PagingData<CalculatorHistoryModel>>
+    get() {
+      val systemTZ = TimeZone.currentSystemDefault()
+      return Pager(
+          config = PagingConfig(pageSize = 50, enablePlaceholders = true),
+          pagingSourceFactory = { calculatorHistoryDao.getAllDescending() },
+        )
+        .flow
+        .map { pagingData ->
+          pagingData
+            .map { entity ->
+              entity.toDomain()
+            }
+            .insertSeparators {
+              before: CalculatorHistoryModel.Item?,
+              after: CalculatorHistoryModel.Item? ->
+              // reverse logic for reverse list in UI. before is higher, after is lower
+              // bottom of the list, never insert header
+              if (before == null) return@insertSeparators null
+              // top of the list, always insert header
+              if (after == null)
+                return@insertSeparators CalculatorHistoryModel.Header(
+                  Instant.fromEpochMilliseconds(before.timestamp)
+                )
+              val beforeInstant = Instant.fromEpochMilliseconds(before.timestamp)
+              val beforeDate = beforeInstant.toLocalDateTime(systemTZ).date
+              val afterInstant = Instant.fromEpochMilliseconds(after.timestamp)
+              val afterDate = afterInstant.toLocalDateTime(systemTZ).date
+              if (beforeDate != afterDate) {
+                // different date between items, insert header
+                return@insertSeparators CalculatorHistoryModel.Header(beforeInstant)
+              }
+              // same date between items
+              return@insertSeparators null
+            }
+        }
+        .flowOn(defaultIODispatcher)
+    }
+
   override suspend fun add(expression: String, result: String) =
     withContext(defaultIODispatcher) {
       calculatorHistoryDao.insert(
@@ -53,11 +92,18 @@ class CalculatorHistoryRepositoryImpl(private val calculatorHistoryDao: Calculat
   override suspend fun delete(itemId: Int) =
     withContext(defaultIODispatcher) { calculatorHistoryDao.delete(itemId) }
 
+  override suspend fun updateLabel(itemId: Int, label: String) =
+    withContext(defaultIODispatcher) { calculatorHistoryDao.updateLabel(itemId, label) }
+
   override suspend fun clear() = withContext(defaultIODispatcher) { calculatorHistoryDao.clear() }
 
-  private suspend fun List<CalculatorHistoryEntity>.toHistoryItemList():
-    List<CalculatorHistoryItem> =
-    withContext(Dispatchers.Default) {
-      this@toHistoryItemList.map { CalculatorHistoryItem(it.entityId, it.expression, it.result) }
-    }
+  private fun CalculatorHistoryEntity.toDomain(): CalculatorHistoryModel.Item =
+    CalculatorHistoryModel.Item(
+      id = this.entityId,
+      timestamp = this.timestamp,
+      expression = this.expression,
+      result = this.result,
+      isFavorite = this.isFavorite,
+      label = this.label,
+    )
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,10 +120,11 @@ internal class ConverterWidget : GlanceAppWidget() {
       dao.getByAppWidgetId(appWidgetId).mapLatest { entities ->
         entityListToDomainList(unitsRepo, entities)
       }
-    val userPrefsRepository = GraphProvider.widgetDependencies.userPreferencesRepository
+
     provideContent {
-      val appPrefs = userPrefsRepository.appPrefs.collectAsState(null).value
-      WidgetTheme(appPrefs?.enableAmoledTheme ?: false) {
+      val themePrefs =
+        GraphProvider.widgetDependencies.themePrefsRepository.prefs.collectAsState(null).value
+      WidgetTheme(themePrefs?.enableAmoledTheme ?: false) {
         CompositionLocalProvider(
           LocalConfiguration provides Configuration(context.resources.configuration),
           LocalDensity provides Density(context),

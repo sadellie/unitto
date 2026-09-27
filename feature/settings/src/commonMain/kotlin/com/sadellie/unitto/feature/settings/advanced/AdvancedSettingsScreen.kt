@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
@@ -31,6 +30,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,9 +41,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.common.OutputFormat
-import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
@@ -62,13 +59,13 @@ import unitto.core.common.generated.resources.common_cancel
 @Composable
 internal fun AdvancedSettingsRoute(navigateUpAction: () -> Unit) {
   val viewModel: AdvancedSettingsViewModel = metroViewModel()
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
+  when (val converterPrefs = viewModel.converterPrefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else ->
       AdvancedSettingsScreen(
         navigateUpAction = navigateUpAction,
         updateCustomApiUrl = viewModel::updateCustomApiUrl,
-        prefs = prefs,
+        converterPrefs = converterPrefs,
       )
   }
 }
@@ -77,7 +74,7 @@ internal fun AdvancedSettingsRoute(navigateUpAction: () -> Unit) {
 private fun AdvancedSettingsScreen(
   navigateUpAction: () -> Unit,
   updateCustomApiUrl: (String) -> Unit,
-  prefs: ConverterPreferences,
+  converterPrefs: ConverterPreferences,
 ) {
   ScaffoldWithLargeTopBar(
     title = "Advanced",
@@ -92,7 +89,7 @@ private fun AdvancedSettingsScreen(
     ) {
       CurrencyExchangeRatesAPI(
         updateCustomApiUrl = { apiUrl -> updateCustomApiUrl(apiUrl) },
-        customApiUrl = prefs.customApiUrl,
+        customApiUrl = converterPrefs.customApiUrl,
       )
     }
   }
@@ -117,8 +114,8 @@ private fun CurrencyExchangeRatesAPI(
       text = {
         OutlinedTextField(
           state = textState,
-          shape = RoundedCornerShape(Sizes.large),
           modifier = Modifier.fillMaxWidth(),
+          shape = MaterialTheme.shapes.large,
           lineLimits = TextFieldLineLimits.SingleLine,
         )
       },
@@ -152,13 +149,8 @@ private fun PreviewAdvancedSettingsScreen() {
   AdvancedSettingsScreen(
     navigateUpAction = {},
     updateCustomApiUrl = {},
-    prefs =
+    converterPrefs =
       ConverterPreferences(
-        formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
-        middleZero = false,
-        acButton = true,
-        precision = 3,
-        outputFormat = OutputFormat.PLAIN,
         formatTime = false,
         sorting = UnitsListSorting.USAGE,
         shownUnitGroups = UnitGroup.entries,

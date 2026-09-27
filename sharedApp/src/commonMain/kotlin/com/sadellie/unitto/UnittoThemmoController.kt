@@ -21,14 +21,14 @@ package com.sadellie.unitto
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import com.sadellie.unitto.core.datastore.AppPreferences
+import com.sadellie.unitto.core.datastore.ThemePreferences
 import com.sadellie.unitto.core.designsystem.theme.DarkThemeColors
 import com.sadellie.unitto.core.designsystem.theme.LightThemeColors
 import io.github.sadellie.themmo.ThemmoController
 
 /** Remembers [ThemmoController] using [prefs] as a key. */
 @Composable
-fun rememberUnittoThemmoController(prefs: AppPreferences) =
+fun rememberUnittoThemmoController(prefs: ThemePreferences) =
   remember(
     prefs.themingMode,
     prefs.enableDynamicTheme,

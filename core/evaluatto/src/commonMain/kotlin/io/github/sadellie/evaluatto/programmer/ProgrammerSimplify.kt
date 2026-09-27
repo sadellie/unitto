@@ -130,7 +130,9 @@ internal class ProgrammerSimplify(
         Token.Or -> child1.or(child2)
         Token.Rsh -> child1.rsh(child2)
         Token.Xor -> child1.xor(child2)
-        Token.Not -> return null
+        Token.Not -> child1.not()
+        Token.RoL -> child1.rol(child2)
+        Token.RoR -> child1.ror(child2)
       }
     return ProgrammerNumberNode(result, context)
   }

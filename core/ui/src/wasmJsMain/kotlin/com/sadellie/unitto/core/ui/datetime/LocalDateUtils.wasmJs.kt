@@ -25,3 +25,5 @@ import kotlinx.datetime.format.MonthNames
 actual fun dayOfWeekNamesAbbreviated(locale: Locale) = DayOfWeekNames.ENGLISH_ABBREVIATED
 
 actual fun monthNamesAbbreviated(locale: Locale) = MonthNames.ENGLISH_ABBREVIATED
+
+actual fun amPm(locale: Locale): Pair<String, String> = "AM" to "PM"

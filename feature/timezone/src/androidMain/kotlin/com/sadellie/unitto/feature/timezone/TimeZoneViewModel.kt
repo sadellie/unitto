@@ -19,8 +19,6 @@
 package com.sadellie.unitto.feature.timezone
 
 import android.icu.util.TimeZone
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
@@ -30,13 +28,12 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import java.time.ZonedDateTime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
@@ -79,11 +76,13 @@ class TimeZoneViewModel(private val timezonesRepository: TimeZonesRepository) : 
     viewModelScope.launch { timezonesRepository.updatePosition(tz, targetPosition) }
   }
 
-  internal fun delete(timeZone: FavoriteZone) =
-    viewModelScope.launch { timezonesRepository.removeFromFavorites(timeZone) }
+  internal fun delete(timeZone: FavoriteZone) = viewModelScope.launch {
+    timezonesRepository.removeFromFavorites(timeZone)
+  }
 
   internal fun selectTimeZone(timeZone: FavoriteZone?) = selectedTimeZone.update { timeZone }
 
-  internal fun updateLabel(timeZone: FavoriteZone, label: String) =
-    viewModelScope.launch { timezonesRepository.updateLabel(timeZone = timeZone, label = label) }
+  internal fun updateLabel(timeZone: FavoriteZone, label: String) = viewModelScope.launch {
+    timezonesRepository.updateLabel(timeZone = timeZone, label = label)
+  }
 }

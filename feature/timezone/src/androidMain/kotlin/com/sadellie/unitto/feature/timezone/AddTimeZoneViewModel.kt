@@ -20,8 +20,6 @@ package com.sadellie.unitto.feature.timezone
 
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
@@ -42,7 +40,6 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
@@ -67,15 +64,15 @@ class AddTimeZoneViewModel(private val timezonesRepository: TimeZonesRepository)
       .collectLatest {}
   }
 
-  internal fun addToFavorites(timeZone: TimeZone) =
-    viewModelScope.launch { timezonesRepository.addToFavorites(timeZone) }
+  internal fun addToFavorites(timeZone: TimeZone) = viewModelScope.launch {
+    timezonesRepository.addToFavorites(timeZone)
+  }
 
   private fun search(query: String) {
     _searchJob?.cancel()
-    _searchJob =
-      viewModelScope.launch {
-        val timezones = timezonesRepository.filter(query, _locale)
-        _result.update { timezones }
-      }
+    _searchJob = viewModelScope.launch {
+      val timezones = timezonesRepository.filter(query, _locale)
+      _result.update { timezones }
+    }
   }
 }

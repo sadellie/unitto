@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,48 +18,73 @@
 
 package com.sadellie.unitto.core.ui.datetime
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.intl.Locale
-import co.touchlab.kermit.Logger
-import kotlinx.datetime.LocalDate
+import kotlin.time.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
+import kotlinx.datetime.toLocalDateTime
 
-/**
- * Format [this] into `Tue, Jan 31, 2022`. Fallbacks to English locale if there was an exception.
- */
-fun LocalDate.formatDateWeekDayMonthYear(locale: Locale): String {
+val LocalPlatformDateFormatSettings =
+  staticCompositionLocalOf<PlatformDateFormatSettings> { error("No PlatformDateFormatSettings") }
+
+data class PlatformDateFormatSettings(
+  val is24Hour: Boolean,
+  val timeZone: TimeZone,
+  val locale: Locale,
+)
+
+/** Thu, Dec 31, 2077 */
+fun Instant.formatDateWeekDayMonthYear(
+  platformDateFormatSettings: PlatformDateFormatSettings
+): String {
+  val weekNames = dayOfWeekNamesAbbreviated(platformDateFormatSettings.locale)
+  val monthNames = monthNamesAbbreviated(platformDateFormatSettings.locale)
+
+  val formatter = LocalDateTime.Format {
+    this.dayOfWeek(weekNames)
+    this.char(',')
+    this.char(' ')
+    this.monthName(monthNames)
+    this.char(' ')
+    this.day()
+    this.char(',')
+    this.char(' ')
+    this.year()
+  }
+  return this.toLocalDateTime(platformDateFormatSettings.timeZone).format(formatter)
+}
+
+fun Instant.formatTime(platformDateFormatSettings: PlatformDateFormatSettings): String {
   val formatter =
-    LocalDate.Format {
-      val weekNames =
-        try {
-          dayOfWeekNamesAbbreviated(locale)
-        } catch (e: IllegalArgumentException) {
-          Logger.e(e, TAG) { "Failed to get week names" }
-          DayOfWeekNames.ENGLISH_ABBREVIATED
-        }
-      val monthNames =
-        try {
-          monthNamesAbbreviated(locale)
-        } catch (e: IllegalArgumentException) {
-          Logger.e(e, TAG) { "Failed to get month names" }
-          MonthNames.ENGLISH_ABBREVIATED
-        }
-      this.dayOfWeek(weekNames)
-      this.chars(", ")
-      this.monthName(monthNames)
-      this.char(' ')
-      this.day()
-      this.chars(", ")
-      this.year()
-    }
+    if (platformDateFormatSettings.is24Hour) formatTime24Formatter
+    else formatTime12Formatter(amPm(platformDateFormatSettings.locale))
 
-  return this.format(formatter)
+  return this.toLocalDateTime(platformDateFormatSettings.timeZone).format(formatter)
 }
 
 expect fun dayOfWeekNamesAbbreviated(locale: Locale): DayOfWeekNames
 
 expect fun monthNamesAbbreviated(locale: Locale): MonthNames
 
-private const val TAG = "LocalDateUtils"
+expect fun amPm(locale: Locale): Pair<String, String>
+
+private val formatTime24Formatter = LocalDateTime.Format {
+  this.hour()
+  this.char(':')
+  this.minute()
+}
+
+private fun formatTime12Formatter(amPm: Pair<String, String>) = LocalDateTime.Format {
+  this.amPmHour()
+  this.char(':')
+  this.minute()
+  this.char(' ')
+  this.amPmMarker(amPm.first, amPm.second)
+}
+
+internal const val TAG = "LocalDateUtils"

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.startingscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.AppPrefsRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -31,10 +31,10 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class StartingScreenViewModel(private val userPrefsRepository: UserPreferencesRepository) :
-  ViewModel() {
-  internal val prefs = userPrefsRepository.startingScreenPrefs.stateIn(viewModelScope, null)
+class StartingScreenViewModel(private val appPrefsRepository: AppPrefsRepository) : ViewModel() {
+  internal val prefs = appPrefsRepository.prefs.stateIn(viewModelScope, null)
 
-  internal fun updateStartingScreen(startingScreen: String) =
-    viewModelScope.launch { userPrefsRepository.updateStartingScreen(startingScreen) }
+  internal fun updateStartingScreen(startingScreen: String) = viewModelScope.launch {
+    appPrefsRepository.updateStartingScreen(startingScreen)
+  }
 }

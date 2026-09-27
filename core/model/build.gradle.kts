@@ -27,6 +27,7 @@ kotlin {
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(libs.org.jetbrains.compose.runtime.runtime)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.org.jetbrains.compose.components.components.resources)
   }
   sourceSets.androidMain.dependencies { implementation(libs.androidx.annotation.annotation.jvm) }

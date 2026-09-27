@@ -18,14 +18,14 @@
 
 package com.sadellie.unitto.core.data.converter
 
-import kotlinx.datetime.LocalDate
+import kotlin.time.Instant
 
 sealed interface CurrencyRateUpdateState {
   data object Loading : CurrencyRateUpdateState
 
   data object Error : CurrencyRateUpdateState
 
-  data class Ready(val date: LocalDate) : CurrencyRateUpdateState
+  data class Ready(val instant: Instant) : CurrencyRateUpdateState
 
   data object Nothing : CurrencyRateUpdateState
 }

@@ -19,6 +19,7 @@
 package com.sadellie.unitto
 
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.designsystem.HapticFeedbackManagerImpl
 import com.sadellie.unitto.core.designsystem.LocalHapticFeedbackManager
@@ -36,7 +38,10 @@ import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.navigation.Route
+import com.sadellie.unitto.core.ui.datetime.LocalPlatformDateFormatSettings
+import com.sadellie.unitto.core.ui.datetime.PlatformDateFormatSettings
 import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
+import kotlinx.datetime.TimeZone
 
 internal class MainActivity : AppCompatActivity() {
 
@@ -47,14 +52,24 @@ internal class MainActivity : AppCompatActivity() {
     val uri = this.intent.data
     val deepLinkRoute = uri?.let { Route.extractRouteFromDeeplink(uri.toString()) }
     val appGraph = getApplicationGraph(this.application)
-    val userPrefsRepository = appGraph.userPreferencesRepository
+    val appPrefs = appGraph.appPrefsRepository.prefs
+    val themePrefs = appGraph.themePrefsRepository.prefs
+    val platformDateFormatSettings =
+      PlatformDateFormatSettings(
+        is24Hour = DateFormat.is24HourFormat(this),
+        timeZone = TimeZone.currentSystemDefault(),
+        locale = Locale.current,
+      )
 
     setContent {
       CompositionLocalProvider(LocalMetroViewModelFactory provides appGraph.metroViewModelFactory) {
-        val prefs = userPrefsRepository.appPrefs.collectAsStateWithLifecycle(null).value
+        val appPrefsValue =
+          appPrefs.collectAsStateWithLifecycle(null).value ?: return@CompositionLocalProvider
+        val themePrefsValue =
+          themePrefs.collectAsStateWithLifecycle(null).value ?: return@CompositionLocalProvider
 
-        LaunchedEffect(prefs?.enableKeepScreenOn) {
-          val enableKeepScreenOn = prefs?.enableKeepScreenOn ?: return@LaunchedEffect
+        LaunchedEffect(appPrefsValue.enableKeepScreenOn) {
+          val enableKeepScreenOn = appPrefsValue.enableKeepScreenOn
           if (enableKeepScreenOn) {
             this@MainActivity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
           } else {
@@ -63,8 +78,8 @@ internal class MainActivity : AppCompatActivity() {
         }
         val view = LocalView.current
         val hapticFeedbackManager =
-          remember(prefs?.enableVibrations) {
-            HapticFeedbackManagerImpl(view, prefs?.enableVibrations ?: false)
+          remember(appPrefsValue.enableVibrations) {
+            HapticFeedbackManagerImpl(view, appPrefsValue.enableVibrations)
           }
 
         val numberTypography = numberTypographyUnitto()
@@ -72,8 +87,9 @@ internal class MainActivity : AppCompatActivity() {
           LocalNumberTypography provides numberTypography,
           LocalWindowSize provides calculateWindowSizeClass(this@MainActivity),
           LocalHapticFeedbackManager provides hapticFeedbackManager,
+          LocalPlatformDateFormatSettings provides platformDateFormatSettings,
         ) {
-          App(deepLinkRoute, prefs)
+          App(deepLinkRoute, appPrefsValue, themePrefsValue)
         }
       }
     }

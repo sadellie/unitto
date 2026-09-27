@@ -56,21 +56,25 @@ import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import com.sadellie.unitto.core.common.combineBig
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
+import com.sadellie.unitto.core.datastore.KeypadPrefsRepository
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.iconpack.And
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Base
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
+import com.sadellie.unitto.core.designsystem.icons.iconpack.Lsh
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Mod
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Nand
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Nor
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Not
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Or
+import com.sadellie.unitto.core.designsystem.icons.iconpack.RoL
+import com.sadellie.unitto.core.designsystem.icons.iconpack.RoR
+import com.sadellie.unitto.core.designsystem.icons.iconpack.Rsh
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Shift
-import com.sadellie.unitto.core.designsystem.icons.iconpack.ShiftLeft
-import com.sadellie.unitto.core.designsystem.icons.iconpack.ShiftRight
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Size
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Xor
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
@@ -107,7 +111,6 @@ import com.sadellie.unitto.core.ui.KeypadButton.Companion.MinusKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.MultiplyKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.PlusKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RightBracketKey
-import com.sadellie.unitto.core.ui.KeypadButton.KeypadButtonAdd
 import com.sadellie.unitto.core.ui.KeypadFlow
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
 import com.sadellie.unitto.core.ui.textfield.AutoSizeTextField
@@ -126,7 +129,6 @@ import io.github.sadellie.evaluatto.programmer.programmerCalculateExpression
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -149,6 +151,7 @@ internal sealed interface ProgrammerScreenUIState {
     val middleZero: Boolean,
     val dataUnit: DataUnit,
     val base: Int,
+    val shiftType: ShiftType,
   ) : ProgrammerScreenUIState
 
   data object Loading : ProgrammerScreenUIState
@@ -169,7 +172,10 @@ internal sealed interface ProgrammerCalculationResult {
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class ProgrammerViewModel(userPrefsRepository: UserPreferencesRepository) : ViewModel() {
+class ProgrammerViewModel(
+  formatterPrefsRepository: FormatterPrefsRepository,
+  keypadPrefsRepository: KeypadPrefsRepository,
+) : ViewModel() {
   private var _calculationJob: Job? = null
   private val _input = TextFieldState()
   private val _result =
@@ -177,19 +183,29 @@ class ProgrammerViewModel(userPrefsRepository: UserPreferencesRepository) : View
   private val _lastResult = MutableStateFlow("")
   private val _base = MutableStateFlow(10)
   private val _dataUnit = MutableStateFlow(DataUnit.QWORD)
-  private val _prefs = userPrefsRepository.calculatorPrefs.stateIn(viewModelScope, null)
+  private val _shiftType = MutableStateFlow(ShiftType.SHIFT)
+  private val _formatterPrefs = formatterPrefsRepository.prefs.stateIn(viewModelScope, null)
+  private val _displayPrefs = keypadPrefsRepository.prefs.stateIn(viewModelScope, null)
 
   internal val uiState =
-    combine(_prefs, _result, _dataUnit, _base) { prefs, result, unit, base ->
-        prefs ?: return@combine ProgrammerScreenUIState.Loading
+    combineBig(_formatterPrefs, _displayPrefs, _result, _dataUnit, _base, _shiftType) {
+        formatterPrefs,
+        displayPrefs,
+        result,
+        unit,
+        base,
+        shiftType ->
+        formatterPrefs ?: return@combineBig ProgrammerScreenUIState.Loading
+        displayPrefs ?: return@combineBig ProgrammerScreenUIState.Loading
         ProgrammerScreenUIState.Ready(
           input = _input,
           output = result,
-          showAcButton = prefs.acButton,
-          formatterSymbols = prefs.formatterSymbols,
-          middleZero = prefs.middleZero,
+          showAcButton = displayPrefs.acButton,
+          formatterSymbols = formatterPrefs.formatterSymbols,
+          middleZero = displayPrefs.middleZero,
           dataUnit = unit,
           base = base,
+          shiftType = shiftType,
         )
       }
       .stateIn(viewModelScope, ProgrammerScreenUIState.Loading)
@@ -296,10 +312,18 @@ class ProgrammerViewModel(userPrefsRepository: UserPreferencesRepository) : View
     calculate()
   }
 
+  internal fun toggleShiftType() {
+    _shiftType.update {
+      when (it) {
+        ShiftType.SHIFT -> ShiftType.ROTATE
+        ShiftType.ROTATE -> ShiftType.SHIFT
+      }
+    }
+  }
+
   private fun calculate() {
     _calculationJob?.cancel()
     _calculationJob = viewModelScope.launch {
-      val prefs = _prefs.value ?: return@launch
       // TODO base and qword in prefs
       val newResult =
         try {
@@ -339,6 +363,7 @@ internal fun ProgrammerRoute(openDrawer: () -> Unit) {
         onEqualClick = viewModel::onEqual,
         toggleSize = viewModel::toggleSize,
         toggleBase = viewModel::toggleBase,
+        toggleShiftType = viewModel::toggleShiftType,
       )
   }
 }
@@ -354,6 +379,7 @@ private fun ProgrammerScreen(
   onEqualClick: () -> Unit,
   toggleSize: () -> Unit,
   toggleBase: () -> Unit,
+  toggleShiftType: () -> Unit,
 ) {
   ScaffoldWithTopBar(
     title = {
@@ -390,7 +416,9 @@ private fun ProgrammerScreen(
         middleZero = uiState.middleZero,
         toggleSize = toggleSize,
         toggleBase = toggleBase,
+        toggleShiftType = toggleShiftType,
         base = uiState.base,
+        shiftType = uiState.shiftType,
       )
     }
   }
@@ -499,7 +527,9 @@ private fun ProgrammerKeyboard(
   middleZero: Boolean,
   toggleSize: () -> Unit,
   toggleBase: () -> Unit,
+  toggleShiftType: () -> Unit,
   base: Int,
+  shiftType: ShiftType,
 ) {
   if (LocalWindowSize.current.widthSizeClass == WindowWidthSizeClass.Compact) {
     ProgrammerKeyboardCompact(
@@ -513,7 +543,9 @@ private fun ProgrammerKeyboard(
       middleZero = middleZero,
       toggleSize = toggleSize,
       toggleBase = toggleBase,
+      toggleShiftType = toggleShiftType,
       base = base,
+      shiftType = shiftType,
     )
   } else {
     ProgrammerKeyboardExpanded(
@@ -527,7 +559,9 @@ private fun ProgrammerKeyboard(
       middleZero = middleZero,
       toggleSize = toggleSize,
       toggleBase = toggleBase,
+      toggleShiftType = toggleShiftType,
       base = base,
+      shiftType = shiftType,
     )
   }
 }
@@ -544,7 +578,9 @@ private fun ProgrammerKeyboardCompact(
   middleZero: Boolean,
   toggleSize: () -> Unit,
   toggleBase: () -> Unit,
+  toggleShiftType: () -> Unit,
   base: Int,
+  shiftType: ShiftType,
 ) {
   KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL) {
     KeypadRow {
@@ -569,15 +605,23 @@ private fun ProgrammerKeyboardCompact(
         ButtonFilled(LeftBracketKey, onAddTokenClick)
         ButtonFilled(RightBracketKey, onAddTokenClick)
       }
-      ButtonFilled(KeyLsh, onAddTokenClick)
-      ButtonFilled(KeyRsh, onAddTokenClick)
+      when (shiftType) {
+        ShiftType.SHIFT -> {
+          ButtonFilled(KeyLsh, onAddTokenClick)
+          ButtonFilled(KeyRsh, onAddTokenClick)
+        }
+        ShiftType.ROTATE -> {
+          ButtonFilled(KeyRoL, onAddTokenClick)
+          ButtonFilled(KeyRoR, onAddTokenClick)
+        }
+      }
     }
 
     KeypadRow {
       ButtonLight(KeyD, onAddTokenClick, base >= 14)
       ButtonLight(KeyE, onAddTokenClick, base >= 15)
       ButtonLight(KeyF, onAddTokenClick, base >= 16)
-      ButtonFilled(KeyShiftType, {}, false)
+      ButtonFilled(KeyShiftType, toggleShiftType)
     }
 
     KeypadRow {
@@ -634,7 +678,9 @@ private fun ProgrammerKeyboardExpanded(
   middleZero: Boolean,
   toggleSize: () -> Unit,
   toggleBase: () -> Unit,
+  toggleShiftType: () -> Unit,
   base: Int,
+  shiftType: ShiftType,
 ) {
   KeypadFlow(modifier = modifier) {
     KeypadRow {
@@ -665,8 +711,16 @@ private fun ProgrammerKeyboardExpanded(
       ButtonLight(Key7, onAddTokenClick, base >= 8)
       ButtonLight(Key8, onAddTokenClick, base >= 9)
       ButtonLight(Key9, onAddTokenClick, base >= 10)
-      ButtonFilled(KeyLsh, onAddTokenClick)
-      ButtonFilled(KeyRsh, onAddTokenClick)
+      when (shiftType) {
+        ShiftType.SHIFT -> {
+          ButtonFilled(KeyLsh, onAddTokenClick)
+          ButtonFilled(KeyRsh, onAddTokenClick)
+        }
+        ShiftType.ROTATE -> {
+          ButtonFilled(KeyRoL, onAddTokenClick)
+          ButtonFilled(KeyRoR, onAddTokenClick)
+        }
+      }
     }
 
     KeypadRow {
@@ -675,7 +729,7 @@ private fun ProgrammerKeyboardExpanded(
       ButtonLight(Key5, onAddTokenClick, base >= 6)
       ButtonLight(Key6, onAddTokenClick, base >= 7)
       ButtonFilled(MultiplyKey, onAddTokenClick)
-      ButtonFilled(DivideKey, onAddTokenClick)
+      ButtonFilled(KeyShiftType, toggleShiftType)
     }
     KeypadRow {
       ButtonTransparent(KeyXor, onAddTokenClick)
@@ -683,7 +737,7 @@ private fun ProgrammerKeyboardExpanded(
       ButtonLight(Key2, onAddTokenClick, base >= 3)
       ButtonLight(Key3, onAddTokenClick, base >= 4)
       ButtonFilled(MinusKey, onAddTokenClick)
-      ButtonFilled(KeyShiftType, {}, false)
+      ButtonFilled(DivideKey, onAddTokenClick)
     }
 
     KeypadRow {
@@ -703,22 +757,27 @@ private fun ProgrammerKeyboardExpanded(
 }
 
 // TODO image descriptions
-private val KeyOr = KeypadButtonAdd(IconPack.Or, null, Token.Or.symbol)
-private val KeyAnd = KeypadButtonAdd(IconPack.And, null, Token.And.symbol)
-private val KeyNot = KeypadButtonAdd(IconPack.Not, null, Token.Not.symbol)
-private val KeyNand = KeypadButtonAdd(IconPack.Nand, null, Token.Nand.symbol)
-private val KeyNor = KeypadButtonAdd(IconPack.Nor, null, Token.Nor.symbol)
-private val KeyXor = KeypadButtonAdd(IconPack.Xor, null, Token.Xor.symbol)
-private val KeyMod = KeypadButtonAdd(IconPack.Mod, null, Token.Mod.symbol)
-// TODO other shift types
-private val KeyLsh = KeypadButtonAdd(IconPack.ShiftLeft, null, Token.Lsh.symbol)
-private val KeyRsh = KeypadButtonAdd(IconPack.ShiftRight, null, Token.Rsh.symbol)
+private val KeyOr = KeypadButton.KeypadButtonAdd(IconPack.Or, null, Token.Or.symbol)
+private val KeyAnd = KeypadButton.KeypadButtonAdd(IconPack.And, null, Token.And.symbol)
+private val KeyNot = KeypadButton.KeypadButtonAdd(IconPack.Not, null, Token.Not.symbol)
+private val KeyNand = KeypadButton.KeypadButtonAdd(IconPack.Nand, null, Token.Nand.symbol)
+private val KeyNor = KeypadButton.KeypadButtonAdd(IconPack.Nor, null, Token.Nor.symbol)
+private val KeyXor = KeypadButton.KeypadButtonAdd(IconPack.Xor, null, Token.Xor.symbol)
+private val KeyMod = KeypadButton.KeypadButtonAdd(IconPack.Mod, null, Token.Mod.symbol)
+private val KeyLsh = KeypadButton.KeypadButtonAdd(IconPack.Lsh, null, Token.Lsh.symbol)
+private val KeyRsh = KeypadButton.KeypadButtonAdd(IconPack.Rsh, null, Token.Rsh.symbol)
+private val KeyRoL = KeypadButton.KeypadButtonAdd(IconPack.RoL, null, Token.RoL.symbol)
+private val KeyRoR = KeypadButton.KeypadButtonAdd(IconPack.RoR, null, Token.RoR.symbol)
 private val KeyBaseSwitch = KeypadButton.KeypadButtonSimple(IconPack.Base, null)
 private val KeyShiftType = KeypadButton.KeypadButtonSimple(IconPack.Shift, null)
 private val KeySize = KeypadButton.KeypadButtonSimple(IconPack.Size, null)
 
+internal enum class ShiftType {
+  SHIFT,
+  ROTATE,
+}
+
 @Stable
-// TODO auto tests
 internal data class ProgrammerInputTransformation(private val grouping: Token.Formatter) :
   InputTransformationWithReplacement {
   override val legalTokens: List<String> =
@@ -731,6 +790,8 @@ internal data class ProgrammerInputTransformation(private val grouping: Token.Fo
       Token.Xor.symbol,
       Token.Lsh.symbol,
       Token.Rsh.symbol,
+      Token.RoL.symbol,
+      Token.RoR.symbol,
       Token.Mod.symbol,
       Token.Digit0.symbol,
       Token.Digit1.symbol,
@@ -783,6 +844,8 @@ internal data class ProgrammerInputTransformation(private val grouping: Token.Fo
       Token.Xor.symbol,
       Token.Lsh.symbol,
       Token.Rsh.symbol,
+      Token.RoL.symbol,
+      Token.RoR.symbol,
       Token.Mod.symbol,
     )
 
@@ -806,7 +869,9 @@ private fun PreviewProgrammerKeyboardCompact() = ExpressivePreview {
     middleZero = false,
     toggleSize = {},
     toggleBase = {},
+    toggleShiftType = {},
     base = 16,
+    shiftType = ShiftType.SHIFT,
   )
 }
 
@@ -824,7 +889,9 @@ private fun PreviewProgrammerKeyboardExpanded() = ExpressivePreview {
     middleZero = false,
     toggleSize = {},
     toggleBase = {},
+    toggleShiftType = {},
     base = 16,
+    shiftType = ShiftType.SHIFT,
   )
 }
 
@@ -842,6 +909,7 @@ private fun PreviewProgrammerScreen() = ExpressivePreview {
           middleZero = true,
           dataUnit = DataUnit.QWORD,
           base = 10,
+          shiftType = ShiftType.SHIFT,
         )
       },
     openDrawer = {},
@@ -852,5 +920,6 @@ private fun PreviewProgrammerScreen() = ExpressivePreview {
     onEqualClick = {},
     toggleSize = {},
     toggleBase = {},
+    toggleShiftType = {},
   )
 }

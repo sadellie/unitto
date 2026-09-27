@@ -23,11 +23,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.OutputFormat
+import com.sadellie.unitto.core.common.combineBig
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.datastore.ConverterPreferences
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.ConverterPrefsRepository
+import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
+import com.sadellie.unitto.core.datastore.KeypadPrefsRepository
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.core.ui.textfield.observe
@@ -55,8 +58,10 @@ import kotlinx.coroutines.launch
 @AssistedInject
 class ConverterViewModel(
   @Assisted private val args: ConverterStartRoute,
-  private val userPrefsRepository: UserPreferencesRepository,
+  private val converterPrefsRepository: ConverterPrefsRepository,
   private val unitsRepo: UnitConverterRepository,
+  formatterPrefsRepository: FormatterPrefsRepository,
+  keypadPrefsRepository: KeypadPrefsRepository,
 ) : ViewModel() {
   @AssistedFactory
   @ManualViewModelAssistedFactoryKey
@@ -85,35 +90,44 @@ class ConverterViewModel(
       .stateIn(viewModelScope, null)
 
   internal val uiState: StateFlow<ConverterUIState> =
-    combine(
+    combineBig(
         _output,
         _unitFrom,
         _unitTo,
         _currencyRateUpdateState,
-        userPrefsRepository.converterPrefs,
-      ) { outputValue, unitFromValue, unitToValue, currencyRateUpdateState, prefs ->
-        if (unitFromValue == null) return@combine ConverterUIState.Loading
-        if (unitToValue == null) return@combine ConverterUIState.Loading
+        converterPrefsRepository.prefs,
+        formatterPrefsRepository.prefs,
+        keypadPrefsRepository.prefs,
+      ) {
+        outputValue,
+        unitFromValue,
+        unitToValue,
+        currencyRateUpdateState,
+        converterPrefs,
+        formatterPrefs,
+        displayPrefs ->
+        if (unitFromValue == null) return@combineBig ConverterUIState.Loading
+        if (unitToValue == null) return@combineBig ConverterUIState.Loading
 
         whenBothAre<BasicUnit.Default>(unitFromValue, unitToValue) { unitFrom, unitTo ->
-          return@combine ConverterUIState.Default(
+          return@combineBig ConverterUIState.Default(
             input1 = _input1,
             input2 = _input2,
             result = outputValue,
             unitFrom = unitFrom,
             unitTo = unitTo,
-            middleZero = prefs.middleZero,
-            formatterSymbols = prefs.formatterSymbols,
-            scale = prefs.precision,
+            middleZero = displayPrefs.middleZero,
+            formatterSymbols = formatterPrefs.formatterSymbols,
+            scale = formatterPrefs.digitsPrecision,
             outputFormat = OutputFormat.PLAIN,
-            formatTime = prefs.formatTime,
+            formatTime = converterPrefs.formatTime,
             currencyRateUpdateState = currencyRateUpdateState,
-            acButton = prefs.acButton,
+            acButton = displayPrefs.acButton,
           )
         }
 
         whenBothAre<BasicUnit.NumberBase>(unitFromValue, unitToValue) { unitFrom, unitTo ->
-          return@combine ConverterUIState.NumberBase(
+          return@combineBig ConverterUIState.NumberBase(
             input = _input1,
             result = outputValue,
             unitFrom = unitFrom,
@@ -121,7 +135,7 @@ class ConverterViewModel(
           )
         }
 
-        return@combine ConverterUIState.Loading
+        return@combineBig ConverterUIState.Loading
       }
       .stateIn(viewModelScope, ConverterUIState.Loading)
 
@@ -133,7 +147,7 @@ class ConverterViewModel(
     val input1Flow = _input1.observe()
     val input2Flow = _input2.observe()
 
-    combine(input1Flow, input2Flow, _unitFromId, _unitToId, userPrefsRepository.converterPrefs) {
+    combine(input1Flow, input2Flow, _unitFromId, _unitToId, converterPrefsRepository.prefs) {
         input1Value,
         input2Value,
         unitFromIdValue,
@@ -152,7 +166,7 @@ class ConverterViewModel(
 
   internal fun retryConvert() {
     viewModelScope.launch {
-      val prefs = userPrefsRepository.converterPrefs.first()
+      val prefs = converterPrefsRepository.prefs.first()
       convert(
         input1Value = _input1.text.toString(),
         input2Value = _input2.text.toString(),
@@ -163,32 +177,29 @@ class ConverterViewModel(
     }
   }
 
-  internal fun updateUnitFromId(id: String) =
-    viewModelScope.launch {
-      val pairId = unitsRepo.getPairId(id)
+  internal fun updateUnitFromId(id: String) = viewModelScope.launch {
+    val pairId = unitsRepo.getPairId(id)
 
-      _unitFromId.update { id }
-      _unitToId.update { pairId }
+    _unitFromId.update { id }
+    _unitToId.update { pairId }
 
-      unitsRepo.incrementCounter(id)
-      updateLatestPairOfUnits()
-    }
+    unitsRepo.incrementCounter(id)
+    updateLatestPairOfUnits()
+  }
 
-  internal fun updateUnitToId(id: String) =
-    viewModelScope.launch {
-      _unitToId.update { id }
-      unitsRepo.incrementCounter(id)
-      setPair()
-      updateLatestPairOfUnits()
-    }
+  internal fun updateUnitToId(id: String) = viewModelScope.launch {
+    _unitToId.update { id }
+    unitsRepo.incrementCounter(id)
+    setPair()
+    updateLatestPairOfUnits()
+  }
 
-  internal fun swapUnits(newUnitFromId: String, newInputToId: String) =
-    viewModelScope.launch {
-      _unitFromId.update { newUnitFromId }
-      _unitToId.update { newInputToId }
-      setPair()
-      updateLatestPairOfUnits()
-    }
+  internal fun swapUnits(newUnitFromId: String, newInputToId: String) = viewModelScope.launch {
+    _unitFromId.update { newUnitFromId }
+    _unitToId.update { newInputToId }
+    setPair()
+    updateLatestPairOfUnits()
+  }
 
   internal fun convert(
     input1Value: String,
@@ -198,59 +209,55 @@ class ConverterViewModel(
     prefs: ConverterPreferences,
   ) {
     _conversionJob?.cancel()
-    _conversionJob =
-      viewModelScope.launch {
-        val result =
-          try {
-            unitsRepo.convert(
-              unitFromId = unitFromIdValue ?: return@launch,
-              unitToId = unitToIdValue ?: return@launch,
-              value1 = input1Value,
-              value2 = input2Value,
-              formatTime = prefs.formatTime,
-              apiUrl = prefs.customApiUrl,
-            )
-          } catch (e: ExpressionException) {
-            Logger.w(e, TAG) { "Failed to convert" }
-            return@launch
-          } catch (e: NumberFormatException) {
-            Logger.w(e, TAG) { "Failed to convert" }
-            return@launch
-          } catch (e: Exception) {
-            Logger.w(e, TAG) { "Failed to convert" }
-            return@launch
-          }
-        _output.update { result }
-      }
+    _conversionJob = viewModelScope.launch {
+      val result =
+        try {
+          unitsRepo.convert(
+            unitFromId = unitFromIdValue ?: return@launch,
+            unitToId = unitToIdValue ?: return@launch,
+            value1 = input1Value,
+            value2 = input2Value,
+            formatTime = prefs.formatTime,
+            apiUrl = prefs.customApiUrl,
+          )
+        } catch (e: ExpressionException) {
+          Logger.w(e, TAG) { "Failed to convert" }
+          return@launch
+        } catch (e: NumberFormatException) {
+          Logger.w(e, TAG) { "Failed to convert" }
+          return@launch
+        } catch (e: Exception) {
+          Logger.w(e, TAG) { "Failed to convert" }
+          return@launch
+        }
+      _output.update { result }
+    }
   }
 
-  private fun loadInitialUnits() =
-    viewModelScope.launch {
-      if (canUseUnitIdsFromArgs()) {
-        _unitFromId.update { args.unitFromId }
-        _unitToId.update { args.unitToId }
-      } else {
-        val prefs = userPrefsRepository.converterPrefs.first()
-        _unitFromId.update { prefs.latestLeftSideUnit }
-        _unitToId.update { prefs.latestRightSideUnit }
-      }
+  private fun loadInitialUnits() = viewModelScope.launch {
+    if (canUseUnitIdsFromArgs()) {
+      _unitFromId.update { args.unitFromId }
+      _unitToId.update { args.unitToId }
+    } else {
+      val prefs = converterPrefsRepository.prefs.first()
+      _unitFromId.update { prefs.latestLeftSideUnit }
+      _unitToId.update { prefs.latestRightSideUnit }
     }
+  }
 
-  private fun setPair() =
-    viewModelScope.launch {
-      unitsRepo.setPair(
-        id = _unitFromId.value ?: return@launch,
-        pairId = _unitToId.value ?: return@launch,
-      )
-    }
+  private fun setPair() = viewModelScope.launch {
+    unitsRepo.setPair(
+      id = _unitFromId.value ?: return@launch,
+      pairId = _unitToId.value ?: return@launch,
+    )
+  }
 
-  private fun updateLatestPairOfUnits() =
-    viewModelScope.launch {
-      userPrefsRepository.updateLatestPairOfUnits(
-        unitFrom = _unitFromId.value ?: return@launch,
-        unitTo = _unitToId.value ?: return@launch,
-      )
-    }
+  private fun updateLatestPairOfUnits() = viewModelScope.launch {
+    converterPrefsRepository.updateLatestPairOfUnits(
+      unitFrom = _unitFromId.value ?: return@launch,
+      unitTo = _unitToId.value ?: return@launch,
+    )
+  }
 
   private suspend fun canUseUnitIdsFromArgs(): Boolean {
     if (args.unitFromId.isBlank() || args.unitToId.isBlank()) return false

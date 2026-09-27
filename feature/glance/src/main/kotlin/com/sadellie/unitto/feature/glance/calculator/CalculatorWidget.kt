@@ -62,7 +62,8 @@ import androidx.glance.unit.ColorProvider
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.datastore.CalculatorPreferences
+import com.sadellie.unitto.core.datastore.FormatterPreferences
+import com.sadellie.unitto.core.datastore.KeypadPreferences
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import com.sadellie.unitto.feature.glance.GraphProvider
 import com.sadellie.unitto.feature.glance.R
@@ -94,25 +95,33 @@ class CalculatorWidget : GlanceAppWidget() {
         CompositionLocalProvider(
           LocalConfiguration provides Configuration(context.resources.configuration)
         ) {
-          val userPrefsRepository = GraphProvider.widgetDependencies.userPreferencesRepository
-          val calculatorPrefs = userPrefsRepository.calculatorPrefs.collectAsState(null).value
-          val appPrefs = userPrefsRepository.appPrefs.collectAsState(null).value
+          val formatterPrefs =
+            GraphProvider.widgetDependencies.formatterPrefsRepository.prefs
+              .collectAsState(null)
+              .value
 
-          LaunchedEffect(calculatorPrefs) {
+          LaunchedEffect(formatterPrefs) {
             updateAppWidgetState(context, id) { state ->
-              state[precisionStateKey] = calculatorPrefs?.precision ?: DEFAULT_PRECISION
-              state[outputFormatStateKey] = calculatorPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
+              state[precisionStateKey] = formatterPrefs?.digitsPrecision ?: DEFAULT_PRECISION
+              state[outputFormatStateKey] = formatterPrefs?.outputFormat ?: DEFAULT_OUTPUT_FORMAT
             }
             this@CalculatorWidget.update(context, id)
           }
 
-          WidgetTheme(appPrefs?.enableAmoledTheme ?: false) {
-            if (calculatorPrefs == null) {
+          val themePrefs =
+            GraphProvider.widgetDependencies.themePrefsRepository.prefs.collectAsState(null).value
+          WidgetTheme(themePrefs?.enableAmoledTheme ?: false) {
+            val keypadPrefs =
+              GraphProvider.widgetDependencies.keypadPrefsRepository.prefs
+                .collectAsState(null)
+                .value
+            if (formatterPrefs == null || keypadPrefs == null) {
               LoadingUI(actionRunCallback<RestartCalculatorWidget>())
             } else {
               val state = currentState<Preferences>()
               ReadyUI(
-                appPrefs = calculatorPrefs,
+                formatterPrefs = formatterPrefs,
+                keypadPrefs = keypadPrefs,
                 input = state[inputStateKey] ?: "",
                 output = state[outputStateKey] ?: "",
               )
@@ -134,14 +143,19 @@ class CalculatorWidget : GlanceAppWidget() {
 }
 
 @Composable
-private fun ReadyUI(appPrefs: CalculatorPreferences, input: String, output: String) {
+private fun ReadyUI(
+  formatterPrefs: FormatterPreferences,
+  keypadPrefs: KeypadPreferences,
+  input: String,
+  output: String,
+) {
   Column(
     modifier =
       GlanceModifier.appWidgetBackground()
         .background(UnittoGlanceTheme.colors.surfaceContainer)
         .fillMaxSize()
   ) {
-    val formatterSymbols = appPrefs.formatterSymbols
+    val formatterSymbols = formatterPrefs.formatterSymbols
     val uiSectionModifier = GlanceModifier.fillMaxWidth()
 
     if (LocalSize.current.height == CalculatorWidget.BIG.height) {
@@ -168,7 +182,7 @@ private fun ReadyUI(appPrefs: CalculatorPreferences, input: String, output: Stri
       deleteTokenAction = DeleteTokenAction.Companion::create,
       equalAction = EqualAction.Companion::create,
       useDot = formatterSymbols.fractional == Token.Dot,
-      middleZero = appPrefs.middleZero,
+      middleZero = keypadPrefs.middleZero,
     )
   }
 }
@@ -245,23 +259,13 @@ private fun ColorProvider.withAlpha(alpha: Float): ColorProvider =
 @Preview
 private fun PreviewWidget() {
   ReadyUI(
-    appPrefs =
-      CalculatorPreferences(
-        radianMode = false,
+    formatterPrefs =
+      FormatterPreferences(
         formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
-        fractionalOutput = false,
-        middleZero = true,
-        inverseMode = false,
-        acButton = true,
-        precision = 3,
+        digitsPrecision = 3,
         outputFormat = OutputFormat.PLAIN,
-        additionalButtons = false,
-        partialHistoryView = false,
-        steppedPartialHistoryView = false,
-        initialPartialHistoryView = false,
-        openHistoryViewButton = false,
-        constantCalculation = false, // TODO constant calc in widget
       ),
+    keypadPrefs = KeypadPreferences(acButton = true, middleZero = true),
     input = "123+456",
     output = "789.012",
   )

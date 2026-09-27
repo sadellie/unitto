@@ -18,26 +18,19 @@
 
 package com.sadellie.unitto.feature.timezone.navigation
 
-import android.os.Build
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.navigation.TimeZoneStartRoute
-import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.feature.timezone.AddTimeZoneRoute
 import com.sadellie.unitto.feature.timezone.TimeZoneRoute
-import kotlinx.serialization.Serializable
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import kotlinx.serialization.Serializable
 
 actual fun EntryProviderScope<NavKey>.timeZoneNavigation() {
   entry<TimeZoneStartRoute> {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-      EmptyScreen()
-      return@entry
-    }
-
     val navigator = LocalNavigator.current
     TimeZoneRoute(
       openDrawer = navigator::openDrawer,
@@ -47,10 +40,6 @@ actual fun EntryProviderScope<NavKey>.timeZoneNavigation() {
     )
   }
   entry<AddTimeZoneRoute> { route ->
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-      EmptyScreen()
-      return@entry
-    }
     val navigator = LocalNavigator.current
     val userTime = ZonedDateTime.parse(route.userTimeIso, DateTimeFormatter.ISO_ZONED_DATE_TIME)
     AddTimeZoneRoute(navigateUp = navigator::goBack, userTime = userTime)

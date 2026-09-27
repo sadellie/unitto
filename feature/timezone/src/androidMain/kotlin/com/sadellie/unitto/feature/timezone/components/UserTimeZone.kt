@@ -68,14 +68,12 @@ import com.sadellie.unitto.core.ui.datetime.formatTimeAmPm
 import com.sadellie.unitto.core.ui.datetime.formatTimeHours
 import com.sadellie.unitto.core.ui.datetime.formatTimeMinutes
 import com.sadellie.unitto.core.ui.datetime.formatZone
-import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogState
-import com.sadellie.unitto.core.ui.datetimepicker.DateTimeDialogs
 import com.sadellie.unitto.core.ui.firstShape
 import com.sadellie.unitto.core.ui.lastShape
+import java.time.ZonedDateTime
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.time_zone_reset
-import java.time.ZonedDateTime
 
 @Composable
 internal fun UserTimeZone(
@@ -93,11 +91,11 @@ internal fun UserTimeZone(
       modifier = Modifier.weight(1f).height(IntrinsicSize.Min),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
-      var dialogState by remember { mutableStateOf(DateTimeDialogState.NONE) }
+      var dialogState by remember { mutableStateOf(DateTimeDialogStateTZ.NONE) }
       Column(
         Modifier.fillMaxWidth()
           .clip(ListItemDefaults.firstShape)
-          .clickable { dialogState = DateTimeDialogState.FROM_TIME }
+          .clickable { dialogState = DateTimeDialogStateTZ.FROM_TIME }
           .background(MaterialTheme.colorScheme.tertiaryContainer)
           .padding(horizontal = 16.dp, vertical = 12.dp)
       ) {
@@ -107,7 +105,7 @@ internal fun UserTimeZone(
       Box(
         Modifier.fillMaxWidth()
           .clip(ListItemDefaults.lastShape)
-          .clickable { dialogState = DateTimeDialogState.FROM_DATE }
+          .clickable { dialogState = DateTimeDialogStateTZ.FROM_DATE }
           .background(MaterialTheme.colorScheme.tertiaryContainer)
           .padding(horizontal = 16.dp, vertical = 12.dp)
       ) {

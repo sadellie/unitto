@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.sadellie.unitto.core.datastore.AppPreferences
+import com.sadellie.unitto.core.datastore.ThemePreferences
 import com.sadellie.unitto.core.designsystem.theme.isDark
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.navigation.pushDynamicShortcut
@@ -39,14 +40,18 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-internal fun ComponentActivity.App(deepLinkRoute: Route?, prefs: AppPreferences?) {
-  val themmoController = rememberUnittoThemmoController(prefs ?: return)
+internal fun ComponentActivity.App(
+  deepLinkRoute: Route?,
+  appPrefs: AppPreferences,
+  themePrefs: ThemePreferences,
+) {
+  val themmoController = rememberUnittoThemmoController(themePrefs)
   Themmo(themmoController = themmoController, motionScheme = MotionScheme.expressive()) {
     val mContext = LocalContext.current
     val backgroundColor = MaterialTheme.colorScheme.surfaceContainer
     val isDarkThemeEnabled = remember(backgroundColor) { backgroundColor.isDark() }
     val shortcutsScope = rememberCoroutineScope()
-    val backStack = rememberNavBackStack(deepLinkRoute ?: prefs.startingScreen)
+    val backStack = rememberNavBackStack(deepLinkRoute ?: appPrefs.startingScreen)
     MainAppContent(
       backStack = backStack,
       onDrawerItemClick = { drawerItem ->

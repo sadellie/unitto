@@ -21,7 +21,7 @@ package com.sadellie.unitto.feature.settings.advanced
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.ConverterPrefsRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -31,11 +31,12 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class AdvancedSettingsViewModel(private val userPrefsRepository: UserPreferencesRepository) :
+class AdvancedSettingsViewModel(private val converterPrefsRepository: ConverterPrefsRepository) :
   ViewModel() {
   // for now converter prefs are enough here
-  internal val prefs = userPrefsRepository.converterPrefs.stateIn(viewModelScope, null)
+  internal val converterPrefs = converterPrefsRepository.prefs.stateIn(viewModelScope, null)
 
-  internal fun updateCustomApiUrl(newApiUrl: String) =
-    viewModelScope.launch { userPrefsRepository.updateCustomApiUrl(newApiUrl) }
+  internal fun updateCustomApiUrl(newApiUrl: String) = viewModelScope.launch {
+    converterPrefsRepository.updateCustomApiUrl(newApiUrl)
+  }
 }

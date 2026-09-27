@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
-import com.sadellie.unitto.core.datastore.DisplayPreferences
+import com.sadellie.unitto.core.datastore.KeypadPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ClearBold
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
 import com.sadellie.unitto.core.designsystem.icons.symbols.Colorize
@@ -103,12 +103,12 @@ internal fun DisplayRoute(
   navigateToLanguages: () -> Unit,
 ) {
   val viewModel: DisplayViewModel = metroViewModel()
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
+  when (val keypadPrefs = viewModel.keypadPrefs.collectAsStateWithLifecycleKMP().value) {
     null -> EmptyScreen()
     else ->
       DisplayScreen(
         navigateUp = navigateUp,
-        prefs = prefs,
+        keypadPrefs = keypadPrefs,
         controller = themmoController,
         onThemeChange = { newValue ->
           themmoController.setThemingMode(newValue)
@@ -140,7 +140,7 @@ internal fun DisplayRoute(
 @Composable
 private fun DisplayScreen(
   navigateUp: () -> Unit,
-  prefs: DisplayPreferences,
+  keypadPrefs: KeypadPreferences,
   controller: ThemmoController,
   onThemeChange: (ThemingMode) -> Unit,
   onDynamicThemeChange: (Boolean) -> Unit,
@@ -207,7 +207,7 @@ private fun DisplayScreen(
         icon = IconPack.ClearBold,
         headlineText = stringResource(Res.string.settings_ac_button),
         supportingText = stringResource(Res.string.settings_ac_button_support),
-        switchState = prefs.acButton,
+        switchState = keypadPrefs.acButton,
         onSwitchChange = updateAcButton,
         shapes = ListItemDefaults.firstShapes,
       )
@@ -216,7 +216,7 @@ private fun DisplayScreen(
         icon = Symbols.ExposureZero,
         headlineText = stringResource(Res.string.settings_middle_zero),
         supportingText = stringResource(Res.string.settings_middle_zero_support),
-        switchState = prefs.middleZero,
+        switchState = keypadPrefs.middleZero,
         onSwitchChange = updateMiddleZero,
         shapes = ListItemDefaults.middleShapes,
       )
@@ -392,7 +392,7 @@ private fun Preview() {
   ) { themmoController ->
     DisplayScreen(
       navigateUp = {},
-      prefs = DisplayPreferences(middleZero = true, acButton = true),
+      keypadPrefs = KeypadPreferences(middleZero = true, acButton = true),
       controller = themmoController,
       onThemeChange = themmoController::setThemingMode,
       onDynamicThemeChange = themmoController::enableDynamicTheme,

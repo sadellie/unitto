@@ -18,24 +18,17 @@
 
 package com.sadellie.unitto.core.data.calculator
 
-import com.sadellie.unitto.core.database.CalculatorHistoryDao
+import androidx.paging.testing.asSnapshot
 import com.sadellie.unitto.core.database.CalculatorHistoryDaoInMemory
 import com.sadellie.unitto.core.database.CalculatorHistoryEntity
-import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
+import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.coroutines.flow.first
+import kotlin.time.Instant
 import kotlinx.coroutines.test.runTest
 
-/**
- * This only verifies correct binding with dao and conversion from [CalculatorHistoryEntity] to
- * [CalculatorHistoryItem] since [CalculatorHistoryRepository] is a wrapper for
- * [CalculatorHistoryDao].
- */
 class CalculatorHistoryRepositoryImplTest {
-
   private val calculatorHistoryDao = CalculatorHistoryDaoInMemory()
-
   private val calculatorHistoryRepository = CalculatorHistoryRepositoryImpl(calculatorHistoryDao)
 
   @Test
@@ -52,11 +45,12 @@ class CalculatorHistoryRepositoryImplTest {
     // get back same data but converted and in right order
     val expected =
       listOf(
-        CalculatorHistoryItem(2, "expression 2", "result 2"),
-        CalculatorHistoryItem(1, "expression 1", "result 1"),
-        CalculatorHistoryItem(0, "expression 0", "result 0"),
+        CalculatorHistoryModel.Item(2, 2, "expression 2", "result 2", false, null),
+        CalculatorHistoryModel.Item(1, 1, "expression 1", "result 1", false, null),
+        CalculatorHistoryModel.Item(0, 0, "expression 0", "result 0", false, null),
+        CalculatorHistoryModel.Header(Instant.fromEpochMilliseconds(0)),
       )
-    val actual = calculatorHistoryRepository.historyFlow.first()
+    val actual = calculatorHistoryRepository.historyFlow.asSnapshot()
 
     assertEquals(expected, actual)
   }
@@ -76,7 +70,8 @@ class CalculatorHistoryRepositoryImplTest {
     calculatorHistoryRepository.add("expression 3", "result 3")
 
     // descending list, latest added item is first
-    val actual = calculatorHistoryRepository.historyFlow.first().first()
+    val actual =
+      calculatorHistoryRepository.historyFlow.asSnapshot().first() as CalculatorHistoryModel.Item
     // timestamp is handled internally and not exposed, can't compare entire item
     assertEquals("expression 3", actual.expression)
     assertEquals("result 3", actual.result)
@@ -99,10 +94,11 @@ class CalculatorHistoryRepositoryImplTest {
     // make sure it is removed and other entries are in place
     val expected =
       listOf(
-        CalculatorHistoryItem(2, "expression 2", "result 2"),
-        CalculatorHistoryItem(0, "expression 0", "result 0"),
+        CalculatorHistoryModel.Item(2, 2, "expression 2", "result 2", false, null),
+        CalculatorHistoryModel.Item(0, 0, "expression 0", "result 0", false, null),
+        CalculatorHistoryModel.Header(Instant.fromEpochMilliseconds(0)),
       )
-    val actual = calculatorHistoryRepository.historyFlow.first()
+    val actual = calculatorHistoryRepository.historyFlow.asSnapshot()
 
     assertEquals(expected, actual)
   }
@@ -122,8 +118,8 @@ class CalculatorHistoryRepositoryImplTest {
     calculatorHistoryRepository.clear()
 
     // make sure flow is empty
-    val expected = emptyList<CalculatorHistoryItem>()
-    val actual = calculatorHistoryRepository.historyFlow.first()
+    val expected = emptyList<CalculatorHistoryModel>()
+    val actual = calculatorHistoryRepository.historyFlow.asSnapshot()
 
     assertEquals(expected, actual)
   }

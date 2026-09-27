@@ -23,26 +23,32 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.offset
 import org.jetbrains.compose.resources.stringResource
 
 /** @param paddingFraction Button padding calculated from container size */
@@ -55,13 +61,15 @@ fun KeypadFlow(
   },
   content: @Composable KeypadFlowScope.() -> Unit,
 ) {
-  ColumnWithConstraints(modifier = modifier) {
+  val containerSize = remember { mutableStateOf(IntSize.Zero) }
+
+  Column(modifier = modifier.onSizeChanged { containerSize.value = it }) {
     val scope =
-      remember(it.maxWidth, it.maxHeight) {
+      remember(paddingFraction, iconHeight, containerSize) {
         KeypadFlowScopeImpl(
           rowModifier = Modifier.weight(1f),
-          buttonModifier =
-            Modifier.fillMaxHeight().padding(paddingFraction(it.maxWidth, it.maxHeight)),
+          containerSize = containerSize,
+          paddingFraction = paddingFraction,
           iconHeight = iconHeight,
         )
       }
@@ -69,11 +77,34 @@ fun KeypadFlow(
   }
 }
 
-internal data class KeypadFlowScopeImpl(
-  val rowModifier: Modifier,
-  val buttonModifier: Modifier,
+private fun Modifier.relativePadding(
+  containerSize: State<IntSize>,
+  paddingFraction: (width: Dp, height: Dp) -> PaddingValues,
+): Modifier = layout { measurable, constraints ->
+  val size = containerSize.value
+  val padding = paddingFraction(size.width.toDp(), size.height.toDp())
+
+  val left = padding.calculateLeftPadding(layoutDirection).roundToPx()
+  val top = padding.calculateTopPadding().roundToPx()
+  val right = padding.calculateRightPadding(layoutDirection).roundToPx()
+  val bottom = padding.calculateBottomPadding().roundToPx()
+
+  val placeable =
+    measurable.measure(constraints.offset(horizontal = -left - right, vertical = -top - bottom))
+  layout(placeable.width + left + right, placeable.height + top + bottom) {
+    placeable.place(left, top)
+  }
+}
+
+internal class KeypadFlowScopeImpl(
+  private val rowModifier: Modifier,
+  containerSize: State<IntSize>,
+  paddingFraction: (width: Dp, height: Dp) -> PaddingValues,
   override val iconHeight: Float,
 ) : KeypadFlowScope {
+  private val buttonModifier: Modifier =
+    Modifier.fillMaxHeight().relativePadding(containerSize, paddingFraction)
+
   @Composable
   override fun KeypadRow(content: @Composable (RowScope.() -> Unit)) {
     Row(modifier = rowModifier, content = content)

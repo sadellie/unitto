@@ -19,8 +19,5 @@
 package com.sadellie.unitto.core.model.timezone
 
 import android.icu.util.TimeZone
-import android.os.Build
-import androidx.annotation.RequiresApi
 
-@RequiresApi(Build.VERSION_CODES.N)
 data class FavoriteZone(val timeZone: TimeZone, val position: Int, val label: String)

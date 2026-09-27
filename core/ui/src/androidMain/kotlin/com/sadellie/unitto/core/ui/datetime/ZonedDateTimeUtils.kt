@@ -44,23 +44,6 @@ fun ZonedDateTime.formatTime(locale: Locale, is24Hour: Boolean): String =
 /**
  * Formats date time into something like:
  *
- * 23:59 or 11:59
- *
- * Depends on system preferences
- *
- * @see UnittoDateTimeFormatter.time24
- * @see UnittoDateTimeFormatter.time12Short
- */
-fun ZonedDateTime.formatTimeShort(locale: Locale, is24Hour: Boolean): String =
-  if (is24Hour) {
-    format(UnittoDateTimeFormatter.time24(locale))
-  } else {
-    format(UnittoDateTimeFormatter.time12Short(locale))
-  }
-
-/**
- * Formats date time into something like:
- *
  * 23 or 11
  *
  * Depends on system preferences
@@ -83,10 +66,6 @@ fun ZonedDateTime.formatTimeMinutes(locale: Locale): String =
 /** @see UnittoDateTimeFormatter.time12AmPm */
 fun ZonedDateTime.formatTimeAmPm(locale: Locale): String =
   format(UnittoDateTimeFormatter.time12AmPm(locale))
-
-/** @see UnittoDateTimeFormatter.dateWeekDayMonthYear */
-fun ZonedDateTime.formatDateWeekDayMonthYear(locale: Locale): String =
-  format(UnittoDateTimeFormatter.dateWeekDayMonthYear(locale))
 
 /** @see UnittoDateTimeFormatter.zone */
 fun ZonedDateTime.formatZone(locale: Locale): String = format(UnittoDateTimeFormatter.zone(locale))

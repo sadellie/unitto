@@ -140,6 +140,32 @@ data class BaseNumber(val value: KBigInteger, private val dataUnit: DataUnit) {
     return BaseNumber(result, dataUnit)
   }
 
+  fun rol(other: BaseNumber): BaseNumber {
+    require(dataUnit == other.dataUnit) { "Different data units" }
+    val unsigned = if (value < KBigInteger.ZERO) value + dataUnit.modulus else value
+    val shift = other.value.intValueExact().mod(dataUnit.bitWidth)
+    val result =
+      unsigned
+        .shl(shift)
+        .or(unsigned.shr(dataUnit.bitWidth - shift))
+        .and(dataUnit.modulus - KBigInteger.ONE)
+    val signedResult = result.toggleSignedUnsigned(dataUnit)
+    return BaseNumber(signedResult, dataUnit)
+  }
+
+  fun ror(other: BaseNumber): BaseNumber {
+    require(dataUnit == other.dataUnit) { "Different data units" }
+    val unsigned = if (value < KBigInteger.ZERO) value + dataUnit.modulus else value
+    val shift = other.value.intValueExact().mod(dataUnit.bitWidth)
+    val result =
+      unsigned
+        .shr(shift)
+        .or(unsigned.shl(dataUnit.bitWidth - shift))
+        .and(dataUnit.modulus - KBigInteger.ONE)
+    val signedResult = result.toggleSignedUnsigned(dataUnit)
+    return BaseNumber(signedResult, dataUnit)
+  }
+
   fun mod(other: BaseNumber): BaseNumber {
     require(dataUnit == other.dataUnit) { "Different data units" }
     require(other.value != KBigInteger.ZERO) { "Modulo by zero" }

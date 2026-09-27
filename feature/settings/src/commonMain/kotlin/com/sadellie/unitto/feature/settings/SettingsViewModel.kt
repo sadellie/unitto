@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.common.defaultIODispatcher
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.database.CurrencyRatesDao
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.AppPrefsRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -36,11 +36,11 @@ import kotlinx.coroutines.launch
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
 class SettingsViewModel(
-  private val userPrefsRepository: UserPreferencesRepository,
+  private val appPrefsRepository: AppPrefsRepository,
   private val currencyRatesDao: CurrencyRatesDao,
 ) : ViewModel() {
   internal val uiState =
-    combine(userPrefsRepository.generalPrefs, currencyRatesDao.size()) { prefs, cacheSize ->
+    combine(appPrefsRepository.prefs, currencyRatesDao.size()) { prefs, cacheSize ->
         SettingsUIState.Ready(
           enableVibrations = prefs.enableVibrations,
           enableKeepScreenOn = prefs.enableKeepScreenOn,
@@ -50,17 +50,20 @@ class SettingsViewModel(
       }
       .stateIn(viewModelScope, SettingsUIState.Loading)
 
-  /** @see UserPreferencesRepository.updateLastReadChangelog */
-  internal fun updateLastReadChangelog(value: String) =
-    viewModelScope.launch { userPrefsRepository.updateLastReadChangelog(value) }
+  /** @see AppPrefsRepository.updateLastReadChangelog */
+  internal fun updateLastReadChangelog(value: String) = viewModelScope.launch {
+    appPrefsRepository.updateLastReadChangelog(value)
+  }
 
-  /** @see UserPreferencesRepository.updateVibrations */
-  internal fun updateVibrations(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateVibrations(enabled) }
+  /** @see AppPrefsRepository.updateVibrations */
+  internal fun updateVibrations(enabled: Boolean) = viewModelScope.launch {
+    appPrefsRepository.updateVibrations(enabled)
+  }
 
-  /** @see UserPreferencesRepository.updateEnableKeepScreenOn */
-  internal fun updateEnableKeepScreenOn(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateEnableKeepScreenOn(enabled) }
+  /** @see AppPrefsRepository.updateEnableKeepScreenOn */
+  internal fun updateEnableKeepScreenOn(enabled: Boolean) = viewModelScope.launch {
+    appPrefsRepository.updateEnableKeepScreenOn(enabled)
+  }
 
   internal fun clearCache() =
     viewModelScope.launch(defaultIODispatcher) { currencyRatesDao.clear() }

@@ -18,43 +18,19 @@
 
 package com.sadellie.unitto.core.data
 
-import android.icu.util.TimeZone
-import android.icu.util.ULocale
-import android.os.Build
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepositoryImpl
 import com.sadellie.unitto.core.database.DatabaseBindings
 import com.sadellie.unitto.core.database.TimeZoneDao
-import com.sadellie.unitto.core.model.timezone.FavoriteZone
-import com.sadellie.unitto.core.model.timezone.SearchResultZone
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
-import kotlinx.coroutines.flow.emptyFlow
 
 @BindingContainer(includes = [DatabaseBindings::class])
 object TimeZoneDataBindings {
   @Provides
   @SingleIn(AppScope::class)
   fun provideTimeZonesRepository(timeZoneDao: TimeZoneDao): TimeZonesRepository =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      TimeZonesRepositoryImpl(dao = timeZoneDao)
-    } else {
-      // unused dummy is easier to implement for this case
-      object : TimeZonesRepository {
-        override val favoriteTimeZones = emptyFlow<List<FavoriteZone>>()
-
-        override suspend fun updatePosition(timeZone: FavoriteZone, targetPosition: Int) {}
-
-        override suspend fun addToFavorites(timeZone: TimeZone) {}
-
-        override suspend fun removeFromFavorites(timeZone: FavoriteZone) {}
-
-        override suspend fun updateLabel(timeZone: FavoriteZone, label: String) {}
-
-        override suspend fun filter(searchQuery: String, locale: ULocale): List<SearchResultZone> =
-          emptyList()
-      }
-    }
+    TimeZonesRepositoryImpl(dao = timeZoneDao)
 }

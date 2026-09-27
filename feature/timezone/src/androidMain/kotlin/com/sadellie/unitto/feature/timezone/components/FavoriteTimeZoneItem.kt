@@ -22,9 +22,7 @@ import android.icu.text.LocaleDisplayNames
 import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
-import android.os.Build
 import android.text.format.DateFormat
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
@@ -73,6 +71,8 @@ import com.sadellie.unitto.core.ui.ProvideColor
 import com.sadellie.unitto.core.ui.ProvideStyle
 import com.sadellie.unitto.core.ui.datetime.formatOffset
 import com.sadellie.unitto.core.ui.datetime.formatTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_add
@@ -82,10 +82,7 @@ import unitto.core.common.generated.resources.common_tomorrow
 import unitto.core.common.generated.resources.common_yesterday
 import unitto.core.common.generated.resources.unit_hour_short
 import unitto.core.common.generated.resources.unit_minute_short
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 internal fun FavoriteTimeZoneItem(
   modifier: Modifier,
@@ -253,7 +250,6 @@ private fun TimeZoneLabel(label: String, expanded: Boolean, onLabelClick: () -> 
 
 private data class FavoriteTimeZoneItemParameter(val expanded: Boolean, val tz: FavoriteZone)
 
-@RequiresApi(Build.VERSION_CODES.N)
 private class FavoriteTimeZoneItemParameterProvider :
   PreviewParameterProvider<FavoriteTimeZoneItemParameter> {
   override val values: Sequence<FavoriteTimeZoneItemParameter>
@@ -278,7 +274,6 @@ private class FavoriteTimeZoneItemParameterProvider :
       )
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Preview(showBackground = true, backgroundColor = 0xFFC1C9FF)
 @Composable
 private fun PreviewFavoriteTimeZones(

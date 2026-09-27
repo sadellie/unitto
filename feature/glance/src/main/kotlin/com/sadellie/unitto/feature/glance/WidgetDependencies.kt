@@ -20,10 +20,14 @@ package com.sadellie.unitto.feature.glance
 
 import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
+import com.sadellie.unitto.core.datastore.KeypadPrefsRepository
+import com.sadellie.unitto.core.datastore.ThemePrefsRepository
 
 interface WidgetDependencies {
-  val userPreferencesRepository: UserPreferencesRepository
+  val formatterPrefsRepository: FormatterPrefsRepository
+  val themePrefsRepository: ThemePrefsRepository
+  val keypadPrefsRepository: KeypadPrefsRepository
   val converterWidgetUnitPairDao: ConverterWidgetUnitPairDao
   val unitsRepository: UnitsRepository
 }

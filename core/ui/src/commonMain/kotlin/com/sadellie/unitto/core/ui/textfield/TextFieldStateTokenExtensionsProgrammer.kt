@@ -38,6 +38,8 @@ object TextFieldStateTokenExtensionsProgrammer : TextFieldStateTokenExtensions {
       Token.Xor.symbol,
       Token.Lsh.symbol,
       Token.Rsh.symbol,
+      Token.RoL.symbol,
+      Token.RoR.symbol,
       Token.Mod.symbol,
     )
   }
@@ -55,6 +57,8 @@ object TextFieldStateTokenExtensionsProgrammer : TextFieldStateTokenExtensions {
       Token.Nor.symbol,
       Token.Lsh.symbol,
       Token.Rsh.symbol,
+      Token.RoL.symbol,
+      Token.RoR.symbol,
       Token.Mod.symbol,
       Token.Or.symbol,
     )

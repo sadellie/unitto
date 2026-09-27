@@ -44,7 +44,9 @@ kotlin {
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
     implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.co.touchlab.kermit)
+    implementation(libs.androidx.paging.paging.compose)
   }
   sourceSets.androidMain.dependencies { implementation(libs.org.jetbrains.compose.ui.ui.tooling) }
   sourceSets.commonTest.dependencies {

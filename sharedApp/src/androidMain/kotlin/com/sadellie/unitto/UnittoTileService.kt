@@ -23,9 +23,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.TileService
-import androidx.annotation.RequiresApi
 
-@RequiresApi(Build.VERSION_CODES.N)
 class UnittoTileService : TileService() {
   @SuppressLint("StartActivityAndCollapseDeprecated")
   override fun onClick() {

@@ -27,8 +27,8 @@ import dev.zacsweers.metro.Provides
 @BindingContainer
 actual class DataStoreBindings {
   @Provides
-  fun provideUserPreferencesRepository(): UserPreferencesRepository =
-    UserPreferencesRepositoryImpl(
+  fun provideUserPrefDataSource(): UserPrefDataSource =
+    UserPrefDataSource(
       dataStore =
         DataStoreFactory.create(
           WebSessionStorage(

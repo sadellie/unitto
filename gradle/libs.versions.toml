@@ -1,6 +1,6 @@
 [versions]
-versionCode = "77"
-versionName = "Unbleached silk 77"
+versionCode = "78"
+versionName = "Unbleached silk 78"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
 androidxBrowserBrowser = "1.10.0"
@@ -78,6 +78,8 @@ uriKmp = "0.0.21"
 buildKonfig = "0.23.0"
 # https://github.com/ZacSweers/metro/releases
 metro = "1.4.4"
+# https://developer.android.com/jetpack/androidx/releases/paging
+paging = "3.5.1"
 
 [libraries]
 androidx-activity-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityActivityCompose" }
@@ -97,6 +99,7 @@ androidx-lifecycle-lifecycle-runtime-compose = { module = "androidx.lifecycle:li
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
 androidx-room-common = { module = "androidx.room:room-common", version.ref = "androidxRoom" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "androidxRoom" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTest" }
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExtJunitKtx" }
@@ -134,6 +137,10 @@ org-jetbrains-androidx-lifecycle-lifecycle-viewmodel-savedstate = { module = "an
 org-jetbrains-androidx-lifecycle-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecyclyViewModel" }
 com-eygraber-uri-kmp = { module = "com.eygraber:uri-kmp", version.ref = "uriKmp" }
 dev-zacsweers-metro-metrox-viewmodel-compose = { module = "dev.zacsweers.metro:metrox-viewmodel-compose", version.ref = "metro" }
+androidx-paging-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+androidx-paging-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+androidx-paging-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
+androidx-paging-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "paging" }
 
 # build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

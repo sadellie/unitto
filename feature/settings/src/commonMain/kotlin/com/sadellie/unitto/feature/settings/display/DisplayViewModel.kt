@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.KeypadPrefsRepository
+import com.sadellie.unitto.core.datastore.ThemePrefsRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -34,34 +35,38 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class DisplayViewModel(private val userPrefsRepository: UserPreferencesRepository) : ViewModel() {
+class DisplayViewModel(
+  private val keypadPrefsRepository: KeypadPrefsRepository,
+  private val themePrefsRepository: ThemePrefsRepository,
+) : ViewModel() {
 
-  internal val prefs = userPrefsRepository.displayPrefs.stateIn(viewModelScope, null)
+  internal val keypadPrefs = keypadPrefsRepository.prefs.stateIn(viewModelScope, null)
 
   internal fun updateThemingMode(themingMode: ThemingMode) {
-    viewModelScope.launch { userPrefsRepository.updateThemingMode(themingMode) }
+    viewModelScope.launch { themePrefsRepository.updateThemingMode(themingMode) }
   }
 
   internal fun updateDynamicTheme(enabled: Boolean) {
-    viewModelScope.launch { userPrefsRepository.updateDynamicTheme(enabled) }
+    viewModelScope.launch { themePrefsRepository.updateDynamicTheme(enabled) }
   }
 
   internal fun updateAmoledTheme(enabled: Boolean) {
-    viewModelScope.launch { userPrefsRepository.updateAmoledTheme(enabled) }
+    viewModelScope.launch { themePrefsRepository.updateAmoledTheme(enabled) }
   }
 
   internal fun updateCustomColor(color: Color) {
-    viewModelScope.launch { userPrefsRepository.updateCustomColor(color.value.toLong()) }
+    viewModelScope.launch { themePrefsRepository.updateCustomColor(color.value.toLong()) }
   }
 
   internal fun updateMonetMode(monetMode: MonetMode) {
-    viewModelScope.launch { userPrefsRepository.updateMonetMode(monetMode) }
+    viewModelScope.launch { themePrefsRepository.updateMonetMode(monetMode) }
   }
 
   internal fun updateAcButton(enabled: Boolean) {
-    viewModelScope.launch { userPrefsRepository.updateAcButton(enabled) }
+    viewModelScope.launch { keypadPrefsRepository.updateAcButton(enabled) }
   }
 
-  internal fun updateMiddleZero(enabled: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateMiddleZero(enabled) }
+  internal fun updateMiddleZero(enabled: Boolean) = viewModelScope.launch {
+    keypadPrefsRepository.updateMiddleZero(enabled)
+  }
 }

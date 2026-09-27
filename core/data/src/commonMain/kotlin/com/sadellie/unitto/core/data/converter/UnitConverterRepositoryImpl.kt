@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
 
 class UnitConverterRepositoryImpl(
@@ -472,7 +473,9 @@ class UnitConverterRepositoryImpl(
         return@withContext ConverterResult.Error.CurrencyError
       }
       currencyRateUpdateState.update {
-        CurrencyRateUpdateState.Ready(LocalDate.fromEpochDays(latestRate.date))
+        CurrencyRateUpdateState.Ready(
+          LocalDate.fromEpochDays(latestRate.date).atStartOfDayIn(TimeZone.UTC)
+        )
       }
 
       val conversion = value.multiply(pairUnitValue).setMaxScale()

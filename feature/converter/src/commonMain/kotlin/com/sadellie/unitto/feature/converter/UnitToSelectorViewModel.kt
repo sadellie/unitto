@@ -25,7 +25,8 @@ import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.datastore.ConverterPreferences
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.ConverterPrefsRepository
+import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.ui.textfield.observe
 import com.sadellie.unitto.feature.converter.navigation.UnitToRoute
@@ -49,8 +50,9 @@ import kotlinx.coroutines.launch
 @AssistedInject
 class UnitToSelectorViewModel(
   @Assisted private val args: UnitToRoute,
-  private val userPrefsRepository: UserPreferencesRepository,
+  private val converterPrefsRepository: ConverterPrefsRepository,
   private val unitsRepo: UnitConverterRepository,
+  formatterPrefsRepository: FormatterPrefsRepository,
 ) : ViewModel() {
   @AssistedFactory
   @ManualViewModelAssistedFactoryKey
@@ -65,17 +67,20 @@ class UnitToSelectorViewModel(
   private val _selectedUnitGroup = MutableStateFlow(args.unitGroup)
 
   internal val unitToUIState: StateFlow<UnitSelectorUIState> =
-    combine(_searchResults, userPrefsRepository.converterPrefs) { searchResults, prefs ->
+    combine(_searchResults, converterPrefsRepository.prefs, formatterPrefsRepository.prefs) {
+        searchResults,
+        converterPrefs,
+        formatterPrefs ->
         UnitSelectorUIState.UnitTo(
           query = _query,
           unitFrom = unitsRepo.getById(args.unitFromId),
           unitTo = unitsRepo.getById(args.unitToId),
-          showFavoritesOnly = prefs.favoritesOnly,
+          showFavoritesOnly = converterPrefs.favoritesOnly,
           units = searchResults,
-          sorting = prefs.sorting,
-          scale = prefs.precision,
-          outputFormat = prefs.outputFormat,
-          formatterSymbols = prefs.formatterSymbols,
+          sorting = converterPrefs.sorting,
+          scale = formatterPrefs.digitsPrecision,
+          outputFormat = formatterPrefs.outputFormat,
+          formatterSymbols = formatterPrefs.formatterSymbols,
         )
       }
       .stateIn(viewModelScope, UnitSelectorUIState.Loading)
@@ -83,7 +88,7 @@ class UnitToSelectorViewModel(
   internal suspend fun observeSearchFilters() {
     val queryFlow = _query.observe()
 
-    combine(queryFlow, _selectedUnitGroup, userPrefsRepository.converterPrefs) {
+    combine(queryFlow, _selectedUnitGroup, converterPrefsRepository.prefs) {
         queryFlowValue,
         selectedUnitGroupValue,
         converterPrefsValue ->
@@ -92,37 +97,36 @@ class UnitToSelectorViewModel(
       .collectLatest {}
   }
 
-  internal fun updateShowFavoritesOnly(value: Boolean) =
-    viewModelScope.launch { userPrefsRepository.updateUnitConverterFavoritesOnly(value) }
+  internal fun updateShowFavoritesOnly(value: Boolean) = viewModelScope.launch {
+    converterPrefsRepository.updateUnitConverterFavoritesOnly(value)
+  }
 
-  internal fun favoriteUnit(unit: UnitSearchResultItem) =
-    viewModelScope.launch {
-      unitsRepo.favorite(unit.basicUnit.id)
-      onSearch(
-        userPrefsRepository.converterPrefs.first(),
-        _query.text.toString(),
-        _selectedUnitGroup.value,
-      )
-    }
+  internal fun favoriteUnit(unit: UnitSearchResultItem) = viewModelScope.launch {
+    unitsRepo.favorite(unit.basicUnit.id)
+    onSearch(
+      converterPrefsRepository.prefs.first(),
+      _query.text.toString(),
+      _selectedUnitGroup.value,
+    )
+  }
 
   private fun onSearch(prefs: ConverterPreferences, query: String, selectedGroupValue: UnitGroup) {
     _searchJob?.cancel()
-    _searchJob =
-      viewModelScope.launch {
-        val result =
-          unitsRepo.filterUnitsAndBatchConvert(
-            query = query,
-            unitGroup = selectedGroupValue,
-            favoritesOnly = prefs.favoritesOnly,
-            sorting = prefs.sorting,
-            unitFromId = args.unitFromId,
-            input1 = args.input1,
-            input2 = args.input2,
-            apiUrl = prefs.customApiUrl,
-          )
+    _searchJob = viewModelScope.launch {
+      val result =
+        unitsRepo.filterUnitsAndBatchConvert(
+          query = query,
+          unitGroup = selectedGroupValue,
+          favoritesOnly = prefs.favoritesOnly,
+          sorting = prefs.sorting,
+          unitFromId = args.unitFromId,
+          input1 = args.input1,
+          input2 = args.input2,
+          apiUrl = prefs.customApiUrl,
+        )
 
-        _searchResults.update { result }
-      }
+      _searchResults.update { result }
+    }
   }
 
   override fun onCleared() {

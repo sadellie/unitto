@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import androidx.room.TypeConverters
 import com.sadellie.unitto.core.database.converters.Converters
 
 @Database(
-  version = 6,
+  version = 7,
   exportSchema = true,
   entities =
     [
@@ -42,6 +42,7 @@ import com.sadellie.unitto.core.database.converters.Converters
       AutoMigration(from = 3, to = 4),
       AutoMigration(from = 4, to = 5),
       AutoMigration(from = 5, to = 6),
+      AutoMigration(from = 6, to = 7),
     ],
 )
 @TypeConverters(Converters::class)

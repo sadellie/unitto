@@ -66,5 +66,13 @@ private fun numberTypographyUnittoImpl(fontFamily: FontFamily): Typography {
         lineHeight = 44.0.sp,
         letterSpacing = 0.0.sp,
       ),
+    titleLarge =
+      TextStyle(
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 22.sp,
+        lineHeight = 28.0.sp,
+        letterSpacing = 0.0.sp,
+      ),
   )
 }

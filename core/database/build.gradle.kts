@@ -29,8 +29,11 @@ kotlin {
     implementation(project(":core:common"))
     implementation(libs.androidx.room.common)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
+    implementation(libs.androidx.paging.paging.common)
   }
   sourceSets.androidMain.dependencies {
+    implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.paging.paging.runtime)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
   }

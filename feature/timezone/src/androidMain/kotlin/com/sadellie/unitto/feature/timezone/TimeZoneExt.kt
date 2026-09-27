@@ -19,13 +19,10 @@
 package com.sadellie.unitto.feature.timezone
 
 import android.icu.util.TimeZone
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
 val TimeZone.offsetSeconds
-  @RequiresApi(Build.VERSION_CODES.N) get() = this.rawOffset / 1000L
+  get() = this.rawOffset / 1000L
 
-@RequiresApi(Build.VERSION_CODES.N)
 fun TimeZone.timeNow(): ZonedDateTime = ZonedDateTime.now(ZoneId.of(this.id, ZoneId.SHORT_IDS))

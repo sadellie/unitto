@@ -41,7 +41,6 @@ actual object DataStoreBindings {
     )
 
   @Provides
-  fun provideUserPreferencesRepository(
-    dataStore: DataStore<Preferences>
-  ): UserPreferencesRepository = UserPreferencesRepositoryImpl(dataStore = dataStore)
+  fun provideUserPrefDataSource(dataStore: DataStore<Preferences>): UserPrefDataSource =
+    UserPrefDataSource(dataStore)
 }

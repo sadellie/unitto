@@ -1,8 +1,8 @@
 {
-  "name": "Unitto App",
+  "name": "Calculator",
   "id": "com.sadellie.unitto",
-  "short_name": "Unitto",
-  "description": "😎 Superior Calculator and Converter",
+  "short_name": "Calculator",
+  "description": "Unitto Calculator. Superior Calculator and Converter",
   "start_url": "index.html",
   "display_override": ["minimal-ui"],
   "display": "standalone",

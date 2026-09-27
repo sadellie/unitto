@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,4 +28,6 @@ data class CalculatorHistoryEntity(
   @ColumnInfo(name = "timestamp") val timestamp: Long,
   @ColumnInfo(name = "expression") val expression: String,
   @ColumnInfo(name = "result") val result: String,
+  @ColumnInfo(name = "is_favorite", defaultValue = "false") val isFavorite: Boolean = false,
+  @ColumnInfo(name = "label") val label: String? = null,
 )

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,4 +18,17 @@
 
 package com.sadellie.unitto.core.model.calculator
 
-data class CalculatorHistoryItem(val id: Int, val expression: String, val result: String)
+import kotlin.time.Instant
+
+sealed interface CalculatorHistoryModel {
+  data class Item(
+    val id: Int,
+    val timestamp: Long,
+    val expression: String,
+    val result: String,
+    val isFavorite: Boolean,
+    val label: String?,
+  ) : CalculatorHistoryModel
+
+  data class Header(val instant: Instant) : CalculatorHistoryModel
+}

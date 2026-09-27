@@ -22,8 +22,6 @@ import android.icu.text.LocaleDisplayNames
 import android.icu.text.TimeZoneNames
 import android.icu.util.TimeZone
 import android.icu.util.ULocale
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.sadellie.unitto.core.common.displayName
 import com.sadellie.unitto.core.common.lev
 import com.sadellie.unitto.core.common.regionName
@@ -36,7 +34,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-@RequiresApi(Build.VERSION_CODES.N)
 class TimeZonesRepositoryImpl(private val dao: TimeZoneDao) : TimeZonesRepository {
   override val favoriteTimeZones: Flow<List<FavoriteZone>> =
     dao.getFavorites().map { list ->

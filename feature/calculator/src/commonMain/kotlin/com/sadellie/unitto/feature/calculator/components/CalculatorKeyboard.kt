@@ -18,16 +18,21 @@
 
 package com.sadellie.unitto.feature.calculator.components
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -43,14 +48,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.KeyboardArrowUp
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
-import com.sadellie.unitto.core.ui.ColumnWithConstraints
 import com.sadellie.unitto.core.ui.KeyboardButtonToken
 import com.sadellie.unitto.core.ui.KeypadButton
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.AcTanKey
@@ -170,159 +178,199 @@ private fun ExpandedKeyboard(
   middleZero: Boolean,
   fractional: Token.Formatter,
 ) {
-  ColumnWithConstraints(modifier = modifier) { constraints ->
-    val spacerHeight = constraints.maxHeight * SPACER_HEIGHT_FACTOR
-    val additionalButtonHeight = constraints.maxHeight * EXPANDED_ADDITIONAL_BUTTON_HEIGHT_FACTOR
+  var containerHeightPx by remember { mutableStateOf(0) }
+  val density = LocalDensity.current
+  val rowHeight =
+    remember(density) {
+      // pass lambda to avoid recompositions
+      { with(density) { (containerHeightPx * ADDITIONAL_BUTTON_HEIGHT_FACTOR).toDp() } }
+    }
 
-    Spacer(modifier = Modifier.height(spacerHeight))
+  val expansionTransition = updateTransition(additionalButtons)
+  val transitionSpecFloat = MaterialTheme.motionScheme.defaultSpatialSpec<Float>()
+  // animated weights
+  val expansionFraction =
+    expansionTransition.animateFloat(transitionSpec = { transitionSpecFloat }) {
+      if (it) 1f else 0f
+    }
+  // will grow from ADDITIONAL_BUTTON_HEIGHT_FACTOR to ADDITIONAL_BUTTON_HEIGHT_FACTOR * 3
+  val additionalWeight = ADDITIONAL_BUTTON_HEIGHT_FACTOR * (1f + 2f * expansionFraction.value)
+  // remaining weight for main keypad
+  val mainWeight = 1f - 3f * SPACER_WEIGHT - additionalWeight
 
-    ExpandedAdditionalKeyboard(
-      expanded = additionalButtons,
+  Column(
+    modifier.onSizeChanged {
+      containerHeightPx = it.height
+    }
+  ) {
+    Spacer(Modifier.weight(SPACER_WEIGHT))
+
+    ExpandedAdditionalKeypad(
+      modifier = Modifier.weight(additionalWeight).fillMaxWidth(),
+      isExpanded = additionalButtons,
+      rowHeight = rowHeight,
       inverseMode = inverseMode,
       radianMode = radianMode,
       onRadianModeClick = onRadianModeClick,
       onInverseModeClick = onInverseModeClick,
-      additionalButtonHeight = additionalButtonHeight,
       onAddTokenClick = onAddTokenClick,
       onAdditionalButtonsClick = onAdditionalButtonsClick,
+      expansionTransition = expansionTransition,
     )
 
-    Spacer(modifier = Modifier.height(spacerHeight))
+    Spacer(Modifier.weight(SPACER_WEIGHT))
 
-    KeypadFlow(
-      modifier = Modifier.weight(1f).fillMaxSize(),
-      iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL,
-    ) {
-      KeypadRow {
-        if (showAcButton) {
-          ButtonTertiary(ClearKey, onClearClick)
-          ButtonFilled(BracketsKey, onBracketsClick)
-        } else {
-          ButtonFilled(LeftBracketKey, onAddTokenClick)
-          ButtonFilled(RightBracketKey, onAddTokenClick)
-        }
-        ButtonFilled(PercentKey, onAddTokenClick)
-        ButtonFilled(DivideKey, onAddTokenClick)
-      }
+    ExpandedMainKeypad(
+      modifier = Modifier.weight(mainWeight).fillMaxWidth(),
+      onAddTokenClick = onAddTokenClick,
+      onBracketsClick = onBracketsClick,
+      onDeleteClick = onDeleteClick,
+      onClearClick = onClearClick,
+      onEqualClick = onEqualClick,
+      showAcButton = showAcButton,
+      middleZero = middleZero,
+      fractional = fractional,
+    )
 
-      KeypadRow {
-        ButtonLight(Key7, onAddTokenClick)
-        ButtonLight(Key8, onAddTokenClick)
-        ButtonLight(Key9, onAddTokenClick)
-        ButtonFilled(MultiplyKey, onAddTokenClick)
-      }
-
-      KeypadRow {
-        ButtonLight(Key4, onAddTokenClick)
-        ButtonLight(Key5, onAddTokenClick)
-        ButtonLight(Key6, onAddTokenClick)
-        ButtonFilled(MinusKey, onAddTokenClick)
-      }
-
-      KeypadRow {
-        ButtonLight(Key1, onAddTokenClick)
-        ButtonLight(Key2, onAddTokenClick)
-        ButtonLight(Key3, onAddTokenClick)
-        ButtonFilled(PlusKey, onAddTokenClick)
-      }
-
-      KeypadRow {
-        val fractionalKey =
-          remember(fractional) { if (fractional == Token.Period) DotKey else CommaKey }
-        if (middleZero) {
-          ButtonLight(fractionalKey, onAddTokenClick)
-          ButtonLight(Key0, onAddTokenClick)
-        } else {
-          ButtonLight(Key0, onAddTokenClick)
-          ButtonLight(fractionalKey, onAddTokenClick)
-        }
-        ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
-        ButtonFilledPrimary(EqualKey, onEqualClick)
-      }
-    }
-
-    Spacer(modifier = Modifier.height(spacerHeight))
+    Spacer(Modifier.weight(SPACER_WEIGHT))
   }
 }
 
 @Composable
-private fun ExpandedAdditionalKeyboard(
-  expanded: Boolean,
+private fun ExpandedMainKeypad(
+  modifier: Modifier,
+  onAddTokenClick: (String) -> Unit,
+  onBracketsClick: () -> Unit,
+  onDeleteClick: () -> Unit,
+  onClearClick: () -> Unit,
+  onEqualClick: () -> Unit,
+  showAcButton: Boolean,
+  middleZero: Boolean,
+  fractional: Token.Formatter,
+) {
+  KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL) {
+    KeypadRow {
+      if (showAcButton) {
+        ButtonTertiary(ClearKey, onClearClick)
+        ButtonFilled(BracketsKey, onBracketsClick)
+      } else {
+        ButtonFilled(LeftBracketKey, onAddTokenClick)
+        ButtonFilled(RightBracketKey, onAddTokenClick)
+      }
+      ButtonFilled(PercentKey, onAddTokenClick)
+      ButtonFilled(DivideKey, onAddTokenClick)
+    }
+    KeypadRow {
+      ButtonLight(Key7, onAddTokenClick)
+      ButtonLight(Key8, onAddTokenClick)
+      ButtonLight(Key9, onAddTokenClick)
+      ButtonFilled(MultiplyKey, onAddTokenClick)
+    }
+    KeypadRow {
+      ButtonLight(Key4, onAddTokenClick)
+      ButtonLight(Key5, onAddTokenClick)
+      ButtonLight(Key6, onAddTokenClick)
+      ButtonFilled(MinusKey, onAddTokenClick)
+    }
+    KeypadRow {
+      ButtonLight(Key1, onAddTokenClick)
+      ButtonLight(Key2, onAddTokenClick)
+      ButtonLight(Key3, onAddTokenClick)
+      ButtonFilled(PlusKey, onAddTokenClick)
+    }
+    KeypadRow {
+      val fractionalKey =
+        remember(fractional) { if (fractional == Token.Period) DotKey else CommaKey }
+      if (middleZero) {
+        ButtonLight(fractionalKey, onAddTokenClick)
+        ButtonLight(Key0, onAddTokenClick)
+      } else {
+        ButtonLight(Key0, onAddTokenClick)
+        ButtonLight(fractionalKey, onAddTokenClick)
+      }
+      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
+      ButtonFilledPrimary(EqualKey, onEqualClick)
+    }
+  }
+}
+
+@Composable
+private fun ExpandedAdditionalKeypad(
+  modifier: Modifier,
+  isExpanded: Boolean,
+  rowHeight: () -> Dp,
   inverseMode: Boolean,
   radianMode: Boolean,
   onRadianModeClick: (Boolean) -> Unit,
   onInverseModeClick: (Boolean) -> Unit,
-  additionalButtonHeight: Dp,
   onAddTokenClick: (String) -> Unit,
   onAdditionalButtonsClick: (Boolean) -> Unit,
+  expansionTransition: Transition<Boolean>,
 ) {
-  Crossfade(
-    targetState = inverseMode,
-    modifier = Modifier.animateContentSize(),
-    label = "Additional keyboard state changes",
-  ) { isInverse ->
-    val iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL_SECONDARY
-    val rows = if (expanded) EXPANDED_ADDITIONAL_ROWS_COUNT else 1
-    val angleKey = if (radianMode) AngleRadKey else AngleDegKey
-
-    if (isInverse) {
-      Row {
-        KeypadFlow(
-          modifier = Modifier.height(additionalButtonHeight * rows).fillMaxWidth().weight(1f),
-          iconHeight = iconHeight,
-        ) {
-          KeypadRow {
+  Row(modifier = modifier, verticalAlignment = Alignment.Top) {
+    Column(Modifier.weight(1f)) {
+      val iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL_SECONDARY
+      KeypadFlow(
+        modifier =
+          Modifier.fillMaxWidth().fixedHeight {
+            rowHeight()
+          },
+        iconHeight = iconHeight,
+      ) {
+        KeypadRow {
+          if (inverseMode) {
             ButtonTransparent(ModuloKey, onAddTokenClick)
             ButtonTransparent(PiKey, onAddTokenClick)
             ButtonTransparent(PowerKey, onAddTokenClick)
             ButtonTransparent(FactorialKey, onAddTokenClick)
-          }
-
-          if (expanded) {
-            KeypadRow {
-              ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) })
-              ButtonTransparent(ArSinKey, onAddTokenClick)
-              ButtonTransparent(ArCosKey, onAddTokenClick)
-              ButtonTransparent(AcTanKey, onAddTokenClick)
-            }
-
-            KeypadRow {
-              ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) })
-              ButtonTransparent(EulerKey, onAddTokenClick)
-              ButtonTransparent(ExKey, onAddTokenClick)
-              ButtonTransparent(Power10Key, onAddTokenClick)
-            }
-          }
-        }
-
-        ToggleExpandedAdditionalKeysButton(
-          modifier = Modifier.size(additionalButtonHeight),
-          expanded = expanded,
-          onClick = onAdditionalButtonsClick,
-        )
-      }
-    } else {
-      Row {
-        KeypadFlow(
-          modifier = Modifier.height(additionalButtonHeight * rows).fillMaxWidth().weight(1f),
-          iconHeight = iconHeight,
-        ) {
-          KeypadRow {
+          } else {
             ButtonTransparent(RootKey, onAddTokenClick)
             ButtonTransparent(PiKey, onAddTokenClick)
             ButtonTransparent(PowerKey, onAddTokenClick)
             ButtonTransparent(FactorialKey, onAddTokenClick)
           }
-
-          if (expanded) {
-            KeypadRow {
+        }
+      }
+      val transitionSpecFloat = MaterialTheme.motionScheme.defaultSpatialSpec<Float>()
+      val transitionSpecIntSize = MaterialTheme.motionScheme.defaultSpatialSpec<IntSize>()
+      expansionTransition.AnimatedVisibility(
+        visible = { it },
+        enter =
+          fadeIn(animationSpec = transitionSpecFloat) +
+            expandVertically(animationSpec = transitionSpecIntSize),
+        exit =
+          fadeOut(animationSpec = transitionSpecFloat) +
+            shrinkVertically(animationSpec = transitionSpecIntSize),
+      ) {
+        KeypadFlow(
+          modifier =
+            Modifier.fillMaxWidth().fixedHeight {
+              rowHeight() * 2
+            },
+          iconHeight = iconHeight,
+        ) {
+          KeypadRow {
+            val angleKey = remember(radianMode) { if (radianMode) AngleRadKey else AngleDegKey }
+            if (inverseMode) {
+              ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) })
+              ButtonTransparent(ArSinKey, onAddTokenClick)
+              ButtonTransparent(ArCosKey, onAddTokenClick)
+              ButtonTransparent(AcTanKey, onAddTokenClick)
+            } else {
               ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) })
               ButtonTransparent(SinKey, onAddTokenClick)
               ButtonTransparent(CosKey, onAddTokenClick)
               ButtonTransparent(TanKey, onAddTokenClick)
             }
+          }
 
-            KeypadRow {
+          KeypadRow {
+            if (inverseMode) {
+              ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) })
+              ButtonTransparent(EulerKey, onAddTokenClick)
+              ButtonTransparent(ExKey, onAddTokenClick)
+              ButtonTransparent(Power10Key, onAddTokenClick)
+            } else {
               ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) })
               ButtonTransparent(EulerKey, onAddTokenClick)
               ButtonTransparent(LnKey, onAddTokenClick)
@@ -330,14 +378,14 @@ private fun ExpandedAdditionalKeyboard(
             }
           }
         }
-
-        ToggleExpandedAdditionalKeysButton(
-          modifier = Modifier.size(additionalButtonHeight),
-          expanded = expanded,
-          onClick = onAdditionalButtonsClick,
-        )
       }
     }
+
+    ToggleExpandedAdditionalKeysButton(
+      modifier = Modifier.fixedSize { rowHeight() },
+      expanded = isExpanded,
+      onClick = { onAdditionalButtonsClick(!isExpanded) },
+    )
   }
 }
 
@@ -393,43 +441,41 @@ private fun CompactKeyboard(
   middleZero: Boolean,
   fractional: Token.Formatter,
 ) {
-  Crossfade(targetState = inverseMode, label = "Inverse switch", modifier = modifier) { inverse ->
-    val angleKey = if (radianMode) AngleRadKey else AngleDegKey
-    if (inverse) {
-      CompactKeyboardInverse(
-        modifier = Modifier.fillMaxSize(),
-        onAddTokenClick = onAddTokenClick,
-        onBracketsClick = onBracketsClick,
-        onDeleteClick = onDeleteClick,
-        onClearClick = onClearClick,
-        onEqualClick = onEqualClick,
-        radianMode = radianMode,
-        onRadianModeClick = onRadianModeClick,
-        inverseMode = inverseMode,
-        onInverseModeClick = onInverseModeClick,
-        showAcButton = showAcButton,
-        middleZero = middleZero,
-        fractional = fractional,
-        angleKey = angleKey,
-      )
-    } else {
-      CompactKeyboardDefault(
-        modifier = Modifier.fillMaxSize(),
-        onAddTokenClick = onAddTokenClick,
-        onBracketsClick = onBracketsClick,
-        onDeleteClick = onDeleteClick,
-        onClearClick = onClearClick,
-        onEqualClick = onEqualClick,
-        radianMode = radianMode,
-        onRadianModeClick = onRadianModeClick,
-        inverseMode = inverseMode,
-        onInverseModeClick = onInverseModeClick,
-        showAcButton = showAcButton,
-        middleZero = middleZero,
-        fractional = fractional,
-        angleKey = angleKey,
-      )
-    }
+  val angleKey = remember(radianMode) { if (radianMode) AngleRadKey else AngleDegKey }
+  if (inverseMode) {
+    CompactKeyboardInverse(
+      modifier = modifier.fillMaxSize(),
+      onAddTokenClick = onAddTokenClick,
+      onBracketsClick = onBracketsClick,
+      onDeleteClick = onDeleteClick,
+      onClearClick = onClearClick,
+      onEqualClick = onEqualClick,
+      radianMode = radianMode,
+      onRadianModeClick = onRadianModeClick,
+      inverseMode = inverseMode,
+      onInverseModeClick = onInverseModeClick,
+      showAcButton = showAcButton,
+      middleZero = middleZero,
+      fractional = fractional,
+      angleKey = angleKey,
+    )
+  } else {
+    CompactKeyboardDefault(
+      modifier = modifier.fillMaxSize(),
+      onAddTokenClick = onAddTokenClick,
+      onBracketsClick = onBracketsClick,
+      onDeleteClick = onDeleteClick,
+      onClearClick = onClearClick,
+      onEqualClick = onEqualClick,
+      radianMode = radianMode,
+      onRadianModeClick = onRadianModeClick,
+      inverseMode = inverseMode,
+      onInverseModeClick = onInverseModeClick,
+      showAcButton = showAcButton,
+      middleZero = middleZero,
+      fractional = fractional,
+      angleKey = angleKey,
+    )
   }
 }
 
@@ -451,12 +497,11 @@ private fun CompactKeyboardInverse(
   angleKey: KeypadButton.KeypadButtonSimple,
 ) {
   KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT) {
-    val iconHeightSecondary = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
-
+    val iconScale = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
     KeypadRow {
-      ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconHeightSecondary)
-      ButtonTransparent(ModuloKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(PiKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconScale)
+      ButtonTransparent(ModuloKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(PiKey, onAddTokenClick, height = iconScale)
       ButtonLight(Key7, onAddTokenClick)
       ButtonLight(Key8, onAddTokenClick)
       ButtonLight(Key9, onAddTokenClick)
@@ -468,33 +513,30 @@ private fun CompactKeyboardInverse(
         ButtonFilled(RightBracketKey, onAddTokenClick)
       }
     }
-
     KeypadRow {
-      ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconHeightSecondary)
-      ButtonTransparent(PowerKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(FactorialKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconScale)
+      ButtonTransparent(PowerKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(FactorialKey, onAddTokenClick, height = iconScale)
       ButtonLight(Key4, onAddTokenClick)
       ButtonLight(Key5, onAddTokenClick)
       ButtonLight(Key6, onAddTokenClick)
       ButtonFilled(MultiplyKey, onAddTokenClick)
       ButtonFilled(DivideKey, onAddTokenClick)
     }
-
     KeypadRow {
-      ButtonTransparent(ArSinKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(ArCosKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(AcTanKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(ArSinKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(ArCosKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(AcTanKey, onAddTokenClick, height = iconScale)
       ButtonLight(Key1, onAddTokenClick)
       ButtonLight(Key2, onAddTokenClick)
       ButtonLight(Key3, onAddTokenClick)
       ButtonFilled(MinusKey, onAddTokenClick)
       ButtonFilled(PercentKey, onAddTokenClick)
     }
-
     KeypadRow {
-      ButtonTransparent(EulerKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(ExKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(Power10Key, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(EulerKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(ExKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(Power10Key, onAddTokenClick, height = iconScale)
       val fractionalKey = if (fractional == Token.Period) DotKey else CommaKey
       if (middleZero) {
         ButtonLight(fractionalKey, onAddTokenClick)
@@ -528,12 +570,11 @@ private fun CompactKeyboardDefault(
   angleKey: KeypadButton.KeypadButtonSimple,
 ) {
   KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT) {
-    val iconHeightSecondary = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
-
+    val iconScale = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
     KeypadRow {
-      ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconHeightSecondary)
-      ButtonTransparent(RootKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(PiKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconScale)
+      ButtonTransparent(RootKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(PiKey, onAddTokenClick, height = iconScale)
       ButtonLight(Key7, onAddTokenClick)
       ButtonLight(Key8, onAddTokenClick)
       ButtonLight(Key9, onAddTokenClick)
@@ -545,33 +586,30 @@ private fun CompactKeyboardDefault(
         ButtonFilled(RightBracketKey, onAddTokenClick)
       }
     }
-
     KeypadRow {
-      ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconHeightSecondary)
-      ButtonTransparent(PowerKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(FactorialKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconScale)
+      ButtonTransparent(PowerKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(FactorialKey, onAddTokenClick, height = iconScale)
       ButtonLight(Key4, onAddTokenClick)
       ButtonLight(Key5, onAddTokenClick)
       ButtonLight(Key6, onAddTokenClick)
       ButtonFilled(MultiplyKey, onAddTokenClick)
       ButtonFilled(DivideKey, onAddTokenClick)
     }
-
     KeypadRow {
-      ButtonTransparent(SinKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(CosKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(TanKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(SinKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(CosKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(TanKey, onAddTokenClick, height = iconScale)
       ButtonLight(Key1, onAddTokenClick)
       ButtonLight(Key2, onAddTokenClick)
       ButtonLight(Key3, onAddTokenClick)
       ButtonFilled(MinusKey, onAddTokenClick)
       ButtonFilled(PercentKey, onAddTokenClick)
     }
-
     KeypadRow {
-      ButtonTransparent(EulerKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(LnKey, onAddTokenClick, height = iconHeightSecondary)
-      ButtonTransparent(LogKey, onAddTokenClick, height = iconHeightSecondary)
+      ButtonTransparent(EulerKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(LnKey, onAddTokenClick, height = iconScale)
+      ButtonTransparent(LogKey, onAddTokenClick, height = iconScale)
       val fractionalKey = if (fractional == Token.Period) DotKey else CommaKey
       if (middleZero) {
         ButtonLight(fractionalKey, onAddTokenClick)
@@ -587,9 +625,23 @@ private fun CompactKeyboardDefault(
   }
 }
 
-private const val SPACER_HEIGHT_FACTOR = 0.025f
-private const val EXPANDED_ADDITIONAL_BUTTON_HEIGHT_FACTOR = 0.09f
-private const val EXPANDED_ADDITIONAL_ROWS_COUNT = 3
+private fun Modifier.fixedHeight(height: () -> Dp): Modifier = layout { measurable, constraints ->
+  val heightPx = height().roundToPx()
+  val placeable = measurable.measure(constraints.copy(minHeight = heightPx, maxHeight = heightPx))
+  layout(placeable.width, heightPx) { placeable.place(0, 0) }
+}
+
+private fun Modifier.fixedSize(size: () -> Dp): Modifier = layout { measurable, constraints ->
+  val sizePx = size().roundToPx()
+  val placeable =
+    measurable.measure(
+      constraints.copy(minWidth = sizePx, maxWidth = sizePx, minHeight = sizePx, maxHeight = sizePx)
+    )
+  layout(sizePx, sizePx) { placeable.place(0, 0) }
+}
+
+private const val ADDITIONAL_BUTTON_HEIGHT_FACTOR = 0.09f
+private const val SPACER_WEIGHT = 0.025f
 
 @Preview(
   device = "spec:width=400dp,height=600dp,dpi=440",
@@ -600,7 +652,34 @@ private const val EXPANDED_ADDITIONAL_ROWS_COUNT = 3
 private fun PreviewExpandedKeyboard() = ExpressivePreview {
   var additionalButtons by remember { mutableStateOf(false) }
   ExpandedKeyboard(
-    modifier = Modifier.fillMaxHeight(),
+    modifier = Modifier.fillMaxSize(),
+    onAddTokenClick = {},
+    onBracketsClick = {},
+    onDeleteClick = {},
+    onClearClick = {},
+    onEqualClick = {},
+    radianMode = true,
+    onRadianModeClick = {},
+    additionalButtons = additionalButtons,
+    onAdditionalButtonsClick = { additionalButtons = it },
+    inverseMode = false,
+    onInverseModeClick = {},
+    showAcButton = true,
+    middleZero = false,
+    fractional = Token.Period,
+  )
+}
+
+@Preview(
+  device = "spec:width=400dp,height=600dp,dpi=440",
+  showSystemUi = false,
+  showBackground = false,
+)
+@Composable
+private fun PreviewExpandedKeyboard2() = ExpressivePreview {
+  var additionalButtons by remember { mutableStateOf(true) }
+  ExpandedKeyboard(
+    modifier = Modifier.fillMaxSize(),
     onAddTokenClick = {},
     onBracketsClick = {},
     onDeleteClick = {},
@@ -627,7 +706,7 @@ private fun PreviewExpandedKeyboard() = ExpressivePreview {
 private fun PreviewCompactKeyboard() = ExpressivePreview {
   var inverseMode by remember { mutableStateOf(false) }
   CompactKeyboard(
-    modifier = Modifier.fillMaxHeight(),
+    modifier = Modifier.fillMaxSize(),
     onAddTokenClick = {},
     onBracketsClick = {},
     onDeleteClick = {},

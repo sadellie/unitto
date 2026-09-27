@@ -33,6 +33,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.ComposeViewport
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,14 +43,18 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.sadellie.unitto.core.data.calculator.CalculatorDataBindings
 import com.sadellie.unitto.core.data.converter.ConverterDataBindings
 import com.sadellie.unitto.core.datastore.AppPreferences
+import com.sadellie.unitto.core.datastore.AppPrefsRepository
 import com.sadellie.unitto.core.datastore.DataStoreBindings
-import com.sadellie.unitto.core.datastore.UserPreferencesRepository
+import com.sadellie.unitto.core.datastore.ThemePreferences
+import com.sadellie.unitto.core.datastore.ThemePrefsRepository
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
 import com.sadellie.unitto.core.remote.RemoteBindings
+import com.sadellie.unitto.core.ui.datetime.LocalPlatformDateFormatSettings
+import com.sadellie.unitto.core.ui.datetime.PlatformDateFormatSettings
 import com.sadellie.unitto.feature.converter.navigation.UnitFromRoute
 import com.sadellie.unitto.feature.converter.navigation.UnitToRoute
 import dev.zacsweers.metro.AppScope
@@ -58,6 +63,7 @@ import dev.zacsweers.metro.createGraphFactory
 import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import io.github.sadellie.themmo.Themmo
 import kotlinx.browser.document
+import kotlinx.datetime.TimeZone
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
@@ -68,22 +74,34 @@ import kotlinx.serialization.modules.polymorphic
 )
 fun main() {
   val appGraph = createGraphFactory<WasmAppGraph.Factory>().create()
+  val platformDateFormatSettings =
+    PlatformDateFormatSettings(
+      is24Hour = true, // todo get preference from browser
+      timeZone = TimeZone.currentSystemDefault(),
+      locale = Locale.current,
+    )
   ComposeViewport(document.body!!) {
     CompositionLocalProvider(
       LocalMetroViewModelFactory provides appGraph.metroViewModelFactory,
       LocalWindowSize provides rememberWindowSizeClass(),
       LocalNumberTypography provides numberTypographyUnitto(),
+      LocalPlatformDateFormatSettings provides platformDateFormatSettings,
     ) {
-      val prefs = appGraph.userPreferencesRepository.appPrefs.collectAsStateWithLifecycle(null)
-      App(prefs = prefs.value)
+      val appPrefs =
+        appGraph.appPrefsRepository.prefs.collectAsStateWithLifecycle(null).value
+          ?: return@CompositionLocalProvider
+      val themePrefs =
+        appGraph.themePrefsRepository.prefs.collectAsStateWithLifecycle(null).value
+          ?: return@CompositionLocalProvider
+      App(appPrefs, themePrefs)
     }
   }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun App(prefs: AppPreferences?) {
-  val themmoController = rememberUnittoThemmoController(prefs ?: return)
+private fun App(appPrefs: AppPreferences, themePrefs: ThemePreferences) {
+  val themmoController = rememberUnittoThemmoController(themePrefs)
   Themmo(themmoController = themmoController) {
     Column(Modifier.fillMaxSize()) {
       ExperimentalBar(modifier = Modifier.fillMaxWidth())
@@ -92,7 +110,7 @@ private fun App(prefs: AppPreferences?) {
         color = MaterialTheme.colorScheme.outlineVariant,
       )
 
-      val backStack = rememberNavBackStack(navBackStackConfig, prefs.startingScreen)
+      val backStack = rememberNavBackStack(navBackStackConfig, appPrefs.startingScreen)
       MainAppContent(
         backStack = backStack,
         onDrawerItemClick = {},
@@ -129,7 +147,8 @@ interface WasmAppGraph : AppGraph {
     fun create(): WasmAppGraph
   }
 
-  val userPreferencesRepository: UserPreferencesRepository
+  val appPrefsRepository: AppPrefsRepository
+  val themePrefsRepository: ThemePrefsRepository
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

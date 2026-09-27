@@ -28,9 +28,6 @@ internal data object UnittoDateTimeFormatter {
   /** 11:59 AM */
   fun time12Full(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a", locale)
 
-  /** 11:59 (no AM/PM) */
-  fun time12Short(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm", locale)
-
   /** 23 */
   fun time24Hours(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("HH", locale)
 
@@ -46,10 +43,6 @@ internal data object UnittoDateTimeFormatter {
   /** 31 Dec 2077 */
   fun dateDayMonthYear(locale: Locale): DateTimeFormatter =
     DateTimeFormatter.ofPattern("d MMM y", locale)
-
-  /** Mon, 31 Dec, 2077 */
-  fun dateWeekDayMonthYear(locale: Locale): DateTimeFormatter =
-    DateTimeFormatter.ofPattern("EEE, MMM d, y", locale)
 
   /** GMT+3 */
   fun zone(locale: Locale): DateTimeFormatter = DateTimeFormatter.ofPattern("O", locale)

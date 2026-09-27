@@ -33,6 +33,7 @@ kotlin {
     implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
     implementation(libs.org.jetbrains.androidx.lifecycle.lifecycle.viewmodel.navigation3)
     implementation(libs.androidx.datastore.datastore.core)
+    implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.com.eygraber.uri.kmp)
     implementation(project(":core:themmo"))
     implementation(project(":core:navigation"))

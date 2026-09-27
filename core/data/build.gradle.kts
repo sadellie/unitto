@@ -36,11 +36,16 @@ kotlin {
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.co.touchlab.kermit)
+    implementation(libs.androidx.paging.paging.common)
   }
-  sourceSets.androidMain.dependencies { implementation(libs.androidx.annotation.annotation.jvm) }
+  sourceSets.androidMain.dependencies {
+    implementation(libs.androidx.paging.paging.runtime)
+    implementation(libs.androidx.annotation.annotation.jvm)
+  }
   sourceSets.commonTest.dependencies {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
+    implementation(libs.androidx.paging.paging.testing)
   }
   sourceSets.androidHostTest.dependencies { implementation(libs.org.robolectric.robolectric) }
 }

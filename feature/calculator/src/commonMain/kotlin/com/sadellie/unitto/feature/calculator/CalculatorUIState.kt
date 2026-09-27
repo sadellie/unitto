@@ -19,8 +19,10 @@
 package com.sadellie.unitto.feature.calculator
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.paging.PagingData
 import com.sadellie.unitto.core.common.FormatterSymbols
-import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
+import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
+import kotlinx.coroutines.flow.Flow
 
 internal sealed interface CalculatorUIState {
   data object Loading : CalculatorUIState
@@ -32,7 +34,7 @@ internal sealed interface CalculatorUIState {
     val precision: Int,
     val outputFormat: Int,
     val formatterSymbols: FormatterSymbols,
-    val history: List<CalculatorHistoryItem>,
+    val history: Flow<PagingData<CalculatorHistoryModel>>,
     val middleZero: Boolean,
     val acButton: Boolean,
     val additionalButtons: Boolean,

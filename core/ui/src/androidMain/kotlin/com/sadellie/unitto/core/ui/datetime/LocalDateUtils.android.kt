@@ -19,28 +19,46 @@
 package com.sadellie.unitto.core.ui.datetime
 
 import androidx.compose.ui.text.intl.Locale
+import co.touchlab.kermit.Logger
+import java.text.DateFormatSymbols
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
-import java.text.DateFormatSymbols
 
-actual fun dayOfWeekNamesAbbreviated(locale: Locale): DayOfWeekNames {
-  val weekDaysFromSunday =
-    DateFormatSymbols.getInstance(locale.platformLocale).shortWeekdays.filterNot(String::isEmpty)
-  return DayOfWeekNames(
-    monday = weekDaysFromSunday[1],
-    tuesday = weekDaysFromSunday[2],
-    wednesday = weekDaysFromSunday[3],
-    thursday = weekDaysFromSunday[4],
-    friday = weekDaysFromSunday[5],
-    saturday = weekDaysFromSunday[6],
-    sunday = weekDaysFromSunday[0],
-  )
+actual fun dayOfWeekNamesAbbreviated(locale: Locale): DayOfWeekNames =
+  try {
+    val weekDaysFromSunday =
+      DateFormatSymbols.getInstance(locale.platformLocale).shortWeekdays.filterNot(String::isEmpty)
+    return DayOfWeekNames(
+      monday = weekDaysFromSunday[1],
+      tuesday = weekDaysFromSunday[2],
+      wednesday = weekDaysFromSunday[3],
+      thursday = weekDaysFromSunday[4],
+      friday = weekDaysFromSunday[5],
+      saturday = weekDaysFromSunday[6],
+      sunday = weekDaysFromSunday[0],
+    )
+  } catch (e: IllegalArgumentException) {
+    Logger.e(e, TAG) { "Failed to get week names" }
+    DayOfWeekNames.ENGLISH_ABBREVIATED
+  }
+
+actual fun monthNamesAbbreviated(locale: Locale): MonthNames =
+  try {
+    MonthNames(
+      DateFormatSymbols.getInstance(locale.platformLocale)
+        .shortMonths
+        .filterNot(String::isEmpty)
+        .toList()
+    )
+  } catch (e: IllegalArgumentException) {
+    Logger.e(e, TAG) { "Failed to get month names" }
+    MonthNames.ENGLISH_ABBREVIATED
+  }
+
+actual fun amPm(locale: Locale): Pair<String, String> {
+  val amPmStrings = DateFormatSymbols.getInstance(locale.platformLocale).amPmStrings
+  val am = amPmStrings.getOrNull(0)
+  val pm = amPmStrings.getOrNull(1)
+  if (am == null || pm == null) return "AM" to "PM"
+  return am to pm
 }
-
-actual fun monthNamesAbbreviated(locale: Locale) =
-  MonthNames(
-    DateFormatSymbols.getInstance(locale.platformLocale)
-      .shortMonths
-      .filterNot(String::isEmpty)
-      .toList()
-  )
