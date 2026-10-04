@@ -31,6 +31,7 @@ internal sealed interface AddSubtractUIState {
     val result: Instant,
     val years: TextFieldState,
     val months: TextFieldState,
+    val weeks: TextFieldState,
     val days: TextFieldState,
     val hours: TextFieldState,
     val minutes: TextFieldState,

@@ -16,9 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.sadellie.evaluatto.programmer
-
-import com.sadellie.unitto.core.common.KBigInteger
+package com.sadellie.unitto.core.common
 
 /**
  * @property modulus Max value for unsigned `KBigInteger.ONE.shl([bitWidth])`

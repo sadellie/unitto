@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,21 +28,21 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.navigation3.ui.NavDisplay
 
-fun unittoFadeIn(): EnterTransition = fadeIn(tween(ENTER_DURATION))
+fun enterTransitionDefault(): EnterTransition = fadeIn(tween(ENTER_DURATION))
 
-fun unittoFadeOut(): ExitTransition = fadeOut(tween(EXIT_DURATION))
+fun exitTransitionDefault(): ExitTransition = fadeOut(tween(EXIT_DURATION))
 
 @Suppress("UnusedReceiverParameter")
 fun NavDisplay.stackedTransition(): Map<String, Any> {
   val screenFraction = 4
   val enterTransition =
-    slideInHorizontally(initialOffsetX = { it / screenFraction }) + unittoFadeIn()
+    slideInHorizontally(initialOffsetX = { it / screenFraction }) + enterTransitionDefault()
   val exitTransition =
-    slideOutHorizontally(targetOffsetX = { -it / screenFraction }) + unittoFadeOut()
+    slideOutHorizontally(targetOffsetX = { -it / screenFraction }) + exitTransitionDefault()
   val popEnterTransition =
-    slideInHorizontally(initialOffsetX = { -it / screenFraction }) + unittoFadeIn()
+    slideInHorizontally(initialOffsetX = { -it / screenFraction }) + enterTransitionDefault()
   val popExitTransition =
-    slideOutHorizontally(targetOffsetX = { it / screenFraction }) + unittoFadeOut()
+    slideOutHorizontally(targetOffsetX = { it / screenFraction }) + exitTransitionDefault()
 
   return NavDisplay.transitionSpec { enterTransition togetherWith exitTransition } +
     NavDisplay.popTransitionSpec { popEnterTransition togetherWith popExitTransition } +

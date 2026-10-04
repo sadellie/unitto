@@ -21,9 +21,10 @@ package com.sadellie.unitto.core.data.calculator
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.sadellie.unitto.core.common.defaultIODispatcher
+import com.sadellie.unitto.core.data.CalculatorHistoryRepository
+import com.sadellie.unitto.core.data.insertDateSeparators
 import com.sadellie.unitto.core.database.CalculatorHistoryDao
 import com.sadellie.unitto.core.database.CalculatorHistoryEntity
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
@@ -32,9 +33,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
-import kotlin.time.Instant
 
 class CalculatorHistoryRepositoryImpl(private val calculatorHistoryDao: CalculatorHistoryDao) :
   CalculatorHistoryRepository {
@@ -52,28 +51,7 @@ class CalculatorHistoryRepositoryImpl(private val calculatorHistoryDao: Calculat
             .map { entity ->
               entity.toDomain()
             }
-            .insertSeparators {
-              before: CalculatorHistoryModel.Item?,
-              after: CalculatorHistoryModel.Item? ->
-              // reverse logic for reverse list in UI. before is higher, after is lower
-              // bottom of the list, never insert header
-              if (before == null) return@insertSeparators null
-              // top of the list, always insert header
-              if (after == null)
-                return@insertSeparators CalculatorHistoryModel.Header(
-                  Instant.fromEpochMilliseconds(before.timestamp)
-                )
-              val beforeInstant = Instant.fromEpochMilliseconds(before.timestamp)
-              val beforeDate = beforeInstant.toLocalDateTime(systemTZ).date
-              val afterInstant = Instant.fromEpochMilliseconds(after.timestamp)
-              val afterDate = afterInstant.toLocalDateTime(systemTZ).date
-              if (beforeDate != afterDate) {
-                // different date between items, insert header
-                return@insertSeparators CalculatorHistoryModel.Header(beforeInstant)
-              }
-              // same date between items
-              return@insertSeparators null
-            }
+            .insertDateSeparators(systemTZ)
         }
         .flowOn(defaultIODispatcher)
     }

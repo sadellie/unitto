@@ -49,6 +49,7 @@ class InstantDifferenceKtTest {
         minutes = 0,
         sumYears = KBigDecimal("0.003"),
         sumMonths = KBigDecimal("0.033"),
+        sumWeeks = KBigDecimal("0.143"),
         sumDays = KBigDecimal("1.000"),
         sumHours = KBigDecimal("24.000"),
         sumMinutes = KBigDecimal("1440.000"),
@@ -71,6 +72,7 @@ class InstantDifferenceKtTest {
         minutes = 0,
         sumYears = KBigDecimal("0.085"),
         sumMonths = KBigDecimal("1.019"),
+        sumWeeks = KBigDecimal("4.429"),
         sumDays = KBigDecimal("31.000"),
         sumHours = KBigDecimal("744.000"),
         sumMinutes = KBigDecimal("44640.000"),
@@ -93,6 +95,7 @@ class InstantDifferenceKtTest {
         minutes = 0,
         sumYears = KBigDecimal("0.003"),
         sumMonths = KBigDecimal("0.033"),
+        sumWeeks = KBigDecimal("0.143"),
         sumDays = KBigDecimal("1.000"),
         sumHours = KBigDecimal("24.000"),
         sumMinutes = KBigDecimal("1440.000"),
@@ -104,6 +107,7 @@ class InstantDifferenceKtTest {
   @Test
   fun `positive big difference`() {
     val date1 = Instant.parse("2023-10-25T12:00:00+01:00")
+    // dst
     val date2 = Instant.parse("2023-11-25T12:00:00+01:00")
 
     assertEquals(
@@ -115,6 +119,7 @@ class InstantDifferenceKtTest {
         minutes = 0,
         sumYears = KBigDecimal("0.085"),
         sumMonths = KBigDecimal("1.019"),
+        sumWeeks = KBigDecimal("4.429"),
         sumDays = KBigDecimal("31.000"),
         sumHours = KBigDecimal("744.000"),
         sumMinutes = KBigDecimal("44640.000"),
@@ -137,6 +142,7 @@ class InstantDifferenceKtTest {
         minutes = 0,
         sumYears = KBigDecimal("0.082"),
         sumMonths = KBigDecimal("0.986"),
+        sumWeeks = KBigDecimal("4.286"),
         sumDays = KBigDecimal("30.000"),
         sumHours = KBigDecimal("720.000"),
         sumMinutes = KBigDecimal("43200.000"),
@@ -159,9 +165,33 @@ class InstantDifferenceKtTest {
         minutes = 0,
         sumYears = KBigDecimal("3.000"),
         sumMonths = KBigDecimal("36.000"),
+        sumWeeks = KBigDecimal("156.429"),
         sumDays = KBigDecimal("1095.000"),
         sumHours = KBigDecimal("26280.000"),
         sumMinutes = KBigDecimal("1576800.000"),
+      ),
+      date1.difference(otherInstant = date2, scale = 3, timeZone = timeZone),
+    )
+  }
+
+  @Test
+  fun `difference one week`() {
+    val date1 = Instant.parse("2023-05-01T12:00:00+01:00")
+    val date2 = Instant.parse("2023-05-08T12:00:00+01:00")
+
+    assertEquals(
+      InstantDifference.Default(
+        years = 0,
+        months = 0,
+        days = 7,
+        hours = 0,
+        minutes = 0,
+        sumYears = KBigDecimal("0.019"),
+        sumMonths = KBigDecimal("0.230"),
+        sumWeeks = KBigDecimal("1.000"),
+        sumDays = KBigDecimal("7.000"),
+        sumHours = KBigDecimal("168.000"),
+        sumMinutes = KBigDecimal("10080.000"),
       ),
       date1.difference(otherInstant = date2, scale = 3, timeZone = timeZone),
     )

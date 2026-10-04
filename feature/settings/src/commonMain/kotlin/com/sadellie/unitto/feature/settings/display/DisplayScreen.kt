@@ -47,15 +47,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sadellie.unitto.core.datastore.CalculatorHistoryPreferences
 import com.sadellie.unitto.core.datastore.KeypadPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.ClearBold
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
 import com.sadellie.unitto.core.designsystem.icons.symbols.Colorize
 import com.sadellie.unitto.core.designsystem.icons.symbols.DarkModeFill
 import com.sadellie.unitto.core.designsystem.icons.symbols.ExposureZero
+import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Language
+import com.sadellie.unitto.core.designsystem.icons.symbols.MoveSelectionDown
 import com.sadellie.unitto.core.designsystem.icons.symbols.Palette
+import com.sadellie.unitto.core.designsystem.icons.symbols.SplitscreenBottom
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.ColorSelector
@@ -68,6 +72,7 @@ import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
 import com.sadellie.unitto.core.ui.firstShapes
 import com.sadellie.unitto.core.ui.lastShapes
 import com.sadellie.unitto.core.ui.middleShapes
+import com.sadellie.unitto.core.ui.singleShapes
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import io.github.sadellie.themmo.Themmo
 import io.github.sadellie.themmo.ThemmoController
@@ -88,13 +93,21 @@ import unitto.core.common.generated.resources.settings_dark_mode
 import unitto.core.common.generated.resources.settings_display
 import unitto.core.common.generated.resources.settings_dynamic_colors
 import unitto.core.common.generated.resources.settings_dynamic_colors_support
+import unitto.core.common.generated.resources.settings_history_view
+import unitto.core.common.generated.resources.settings_history_view_button
+import unitto.core.common.generated.resources.settings_history_view_button_support
+import unitto.core.common.generated.resources.settings_keypad
 import unitto.core.common.generated.resources.settings_language
 import unitto.core.common.generated.resources.settings_language_support
 import unitto.core.common.generated.resources.settings_light_mode
 import unitto.core.common.generated.resources.settings_middle_zero
 import unitto.core.common.generated.resources.settings_middle_zero_support
+import unitto.core.common.generated.resources.settings_partial_history_view
+import unitto.core.common.generated.resources.settings_partial_history_view_support
 import unitto.core.common.generated.resources.settings_selected_color
 import unitto.core.common.generated.resources.settings_selected_style
+import unitto.core.common.generated.resources.settings_stepped_drag_gesture
+import unitto.core.common.generated.resources.settings_stepped_drag_gesture_support
 
 @Composable
 internal fun DisplayRoute(
@@ -103,38 +116,44 @@ internal fun DisplayRoute(
   navigateToLanguages: () -> Unit,
 ) {
   val viewModel: DisplayViewModel = metroViewModel()
-  when (val keypadPrefs = viewModel.keypadPrefs.collectAsStateWithLifecycleKMP().value) {
-    null -> EmptyScreen()
-    else ->
-      DisplayScreen(
-        navigateUp = navigateUp,
-        keypadPrefs = keypadPrefs,
-        controller = themmoController,
-        onThemeChange = { newValue ->
-          themmoController.setThemingMode(newValue)
-          viewModel.updateThemingMode(newValue)
-        },
-        onDynamicThemeChange = { newValue ->
-          themmoController.enableDynamicTheme(newValue)
-          viewModel.updateDynamicTheme(newValue)
-        },
-        onAmoledThemeChange = { newValue ->
-          themmoController.enableAmoledTheme(newValue)
-          viewModel.updateAmoledTheme(newValue)
-        },
-        onColorChange = { newValue ->
-          themmoController.setCustomColor(newValue)
-          viewModel.updateCustomColor(newValue)
-        },
-        onMonetModeChange = { newValue ->
-          themmoController.setMonetMode(newValue)
-          viewModel.updateMonetMode(newValue)
-        },
-        updateAcButton = viewModel::updateAcButton,
-        updateMiddleZero = viewModel::updateMiddleZero,
-        navigateToLanguages = navigateToLanguages,
-      )
+  val keypadPrefs = viewModel.keypadPrefs.collectAsStateWithLifecycle().value
+  val calculatorHistoryPrefs = viewModel.calculatorHistoryPrefs.collectAsStateWithLifecycle().value
+  if (keypadPrefs == null || calculatorHistoryPrefs == null) {
+    EmptyScreen()
+    return
   }
+  DisplayScreen(
+    navigateUp = navigateUp,
+    keypadPrefs = keypadPrefs,
+    calculatorHistoryPrefs = calculatorHistoryPrefs,
+    controller = themmoController,
+    onThemeChange = { newValue ->
+      themmoController.setThemingMode(newValue)
+      viewModel.updateThemingMode(newValue)
+    },
+    onDynamicThemeChange = { newValue ->
+      themmoController.enableDynamicTheme(newValue)
+      viewModel.updateDynamicTheme(newValue)
+    },
+    onAmoledThemeChange = { newValue ->
+      themmoController.enableAmoledTheme(newValue)
+      viewModel.updateAmoledTheme(newValue)
+    },
+    onColorChange = { newValue ->
+      themmoController.setCustomColor(newValue)
+      viewModel.updateCustomColor(newValue)
+    },
+    onMonetModeChange = { newValue ->
+      themmoController.setMonetMode(newValue)
+      viewModel.updateMonetMode(newValue)
+    },
+    updateAcButton = viewModel::updateAcButton,
+    updateMiddleZero = viewModel::updateMiddleZero,
+    navigateToLanguages = navigateToLanguages,
+    updateOpenHistoryViewButton = viewModel::updateOpenHistoryViewButton,
+    updatePartialHistoryView = viewModel::updatePartialHistoryView,
+    updateSteppedPartialHistoryView = viewModel::updateSteppedPartialHistoryView,
+  )
 }
 
 @Composable
@@ -142,6 +161,7 @@ private fun DisplayScreen(
   navigateUp: () -> Unit,
   keypadPrefs: KeypadPreferences,
   controller: ThemmoController,
+  calculatorHistoryPrefs: CalculatorHistoryPreferences,
   onThemeChange: (ThemingMode) -> Unit,
   onDynamicThemeChange: (Boolean) -> Unit,
   onAmoledThemeChange: (Boolean) -> Unit,
@@ -150,6 +170,9 @@ private fun DisplayScreen(
   updateAcButton: (Boolean) -> Unit,
   updateMiddleZero: (Boolean) -> Unit,
   navigateToLanguages: () -> Unit,
+  updateOpenHistoryViewButton: (Boolean) -> Unit,
+  updatePartialHistoryView: (Boolean) -> Unit,
+  updateSteppedPartialHistoryView: (Boolean) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
     title = stringResource(Res.string.settings_display),
@@ -201,8 +224,42 @@ private fun DisplayScreen(
         currentThemingMode = controller.currentThemingMode,
       )
 
-      ListHeader(stringResource(Res.string.settings_additional))
+      ListHeader(stringResource(Res.string.settings_history_view))
+      ListItemExpressive(
+        headlineText = stringResource(Res.string.settings_history_view_button),
+        icon = Symbols.History,
+        supportingText = stringResource(Res.string.settings_history_view_button_support),
+        switchState = calculatorHistoryPrefs.openHistoryViewButton,
+        onSwitchChange = updateOpenHistoryViewButton,
+        shapes = ListItemDefaults.firstShapes,
+      )
+      ListItemExpressive(
+        headlineText = stringResource(Res.string.settings_partial_history_view),
+        icon = Symbols.SplitscreenBottom,
+        supportingText = stringResource(Res.string.settings_partial_history_view_support),
+        switchState = calculatorHistoryPrefs.partialHistoryView,
+        onSwitchChange = updatePartialHistoryView,
+        shapes =
+          if (calculatorHistoryPrefs.partialHistoryView) ListItemDefaults.middleShapes
+          else ListItemDefaults.lastShapes,
+      )
+      AnimatedVisibility(
+        visible = calculatorHistoryPrefs.partialHistoryView,
+        enter = expandVertically() + fadeIn(),
+        exit = shrinkVertically() + fadeOut(),
+        modifier = Modifier.fillMaxWidth(),
+      ) {
+        ListItemExpressive(
+          headlineText = stringResource(Res.string.settings_stepped_drag_gesture),
+          icon = Symbols.MoveSelectionDown,
+          supportingText = stringResource(Res.string.settings_stepped_drag_gesture_support),
+          switchState = calculatorHistoryPrefs.steppedPartialHistoryView,
+          onSwitchChange = updateSteppedPartialHistoryView,
+          shapes = ListItemDefaults.lastShapes,
+        )
+      }
 
+      ListHeader(stringResource(Res.string.settings_keypad))
       ListItemExpressive(
         icon = IconPack.ClearBold,
         headlineText = stringResource(Res.string.settings_ac_button),
@@ -211,22 +268,22 @@ private fun DisplayScreen(
         onSwitchChange = updateAcButton,
         shapes = ListItemDefaults.firstShapes,
       )
-
       ListItemExpressive(
         icon = Symbols.ExposureZero,
         headlineText = stringResource(Res.string.settings_middle_zero),
         supportingText = stringResource(Res.string.settings_middle_zero_support),
         switchState = keypadPrefs.middleZero,
         onSwitchChange = updateMiddleZero,
-        shapes = ListItemDefaults.middleShapes,
+        shapes = ListItemDefaults.lastShapes,
       )
 
+      ListHeader(stringResource(Res.string.settings_additional))
       ListItemExpressive(
         icon = Symbols.Language,
         headlineText = stringResource(Res.string.settings_language),
         supportingText = stringResource(Res.string.settings_language_support),
         onClick = { navigateToLanguages() },
-        shapes = ListItemDefaults.lastShapes,
+        shapes = ListItemDefaults.singleShapes,
       )
     }
   }
@@ -393,6 +450,12 @@ private fun Preview() {
     DisplayScreen(
       navigateUp = {},
       keypadPrefs = KeypadPreferences(middleZero = true, acButton = true),
+      calculatorHistoryPrefs =
+        CalculatorHistoryPreferences(
+          partialHistoryView = true,
+          steppedPartialHistoryView = true,
+          openHistoryViewButton = true,
+        ),
       controller = themmoController,
       onThemeChange = themmoController::setThemingMode,
       onDynamicThemeChange = themmoController::enableDynamicTheme,
@@ -402,6 +465,9 @@ private fun Preview() {
       updateAcButton = {},
       updateMiddleZero = {},
       navigateToLanguages = {},
+      updateOpenHistoryViewButton = {},
+      updatePartialHistoryView = {},
+      updateSteppedPartialHistoryView = {},
     )
   }
 }

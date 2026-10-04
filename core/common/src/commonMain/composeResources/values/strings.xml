@@ -91,6 +91,7 @@
     <string name="date_calculator_start">Start</string>
     <string name="date_calculator_subtract">Subtract</string>
     <string name="date_calculator_title">Date calculator</string>
+    <string name="date_calculator_weeks">Weeks</string>
     <string name="date_calculator_years">Years</string>
     <string name="graphing_add_function">Add function</string>
     <string name="graphing_edit_function">Edit function</string>
@@ -151,7 +152,7 @@
     <string name="settings_back_up">Back up</string>
     <string name="settings_backup">Backup</string>
     <string name="settings_backup_support">Back up and restore your data</string>
-    <string name="settings_calculator_support">History view and fractional output</string>
+    <string name="settings_calculator_support">Fractional output and constant calculation</string>
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_color_theme">Color theme</string>
     <string name="settings_color_theme_support">Pick a theming mode</string>
@@ -164,7 +165,7 @@
     <string name="settings_decimal_separator">Decimal separator</string>
     <string name="settings_disable_unit_group_description">Disable unit group</string>
     <string name="settings_display">Display</string>
-    <string name="settings_display_support">App look and feel</string>
+    <string name="settings_display_support">Themes, keypad and languages</string>
     <string name="settings_dynamic_colors">Dynamic colors</string>
     <string name="settings_dynamic_colors_support">Use colors from your wallpaper</string>
     <string name="settings_enable_unit_group_description">Enable unit group</string>
@@ -178,11 +179,13 @@
     <string name="settings_formatting_support">Precision and numbers appearance</string>
     <string name="settings_fractional_output">Fractional output</string>
     <string name="settings_fractional_output_support">Show results as fractions</string>
+    <string name="settings_history_view">History view</string>
     <string name="settings_history_view_button">History view button</string>
     <string name="settings_history_view_button_support">Show button to toggle history view</string>
     <string name="settings_indian_numbering_system">Indian numbering system</string>
     <string name="settings_keep_screen_on">Keep screen on</string>
     <string name="settings_keep_screen_on_support">Prevent your device from turning off the screen while the app is open</string>
+    <string name="settings_keypad">Keypad</string>
     <string name="settings_language">Language</string>
     <string name="settings_language_support">Change the app language</string>
     <string name="settings_light_mode">Light</string>
@@ -888,8 +891,8 @@
     <string name="unit_gigabyte_short">GB</string>
     <string name="unit_gigafarad">Gigafarad</string>
     <string name="unit_gigafarad_short">GF</string>
-    <string name="unit_gigajoule">Megajoule</string>
-    <string name="unit_gigajoule_short">MJ</string>
+    <string name="unit_gigajoule">Gigajoule</string>
+    <string name="unit_gigajoule_short">GJ</string>
     <string name="unit_gigapascal">Gigapascal</string>
     <string name="unit_gigapascal_short">GPa</string>
     <string name="unit_gigaton">Gigaton of TNT</string>
@@ -1108,8 +1111,8 @@
     <string name="unit_megabyte_short">MB</string>
     <string name="unit_megafarad">Megafarad</string>
     <string name="unit_megafarad_short">MF</string>
-    <string name="unit_megajoule">Gigajoule</string>
-    <string name="unit_megajoule_short">GJ</string>
+    <string name="unit_megajoule">Megajoule</string>
+    <string name="unit_megajoule_short">MJ</string>
     <string name="unit_megaparsec">Megaparsec</string>
     <string name="unit_megaparsec_short">Mpc</string>
     <string name="unit_megapascal">Megapascal</string>

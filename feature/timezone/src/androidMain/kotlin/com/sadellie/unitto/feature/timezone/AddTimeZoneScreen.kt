@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,6 +55,7 @@ import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.SearchBar
 import com.sadellie.unitto.core.ui.SearchPlaceholder
+import com.sadellie.unitto.core.ui.animations.animateItemDefault
 import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
@@ -131,7 +132,7 @@ fun AddTimeZoneScreen(
           itemsIndexed(uiState.searchResults, { _, item -> item.timeZone.id }) { index, item ->
             ListItemExpressive(
               shapes = ListItemDefaults.listedShapes(index, uiState.searchResults.size),
-              modifier = Modifier.animateItem(),
+              modifier = Modifier.animateItemDefault(),
               onClick = {
                 addToFavorites(item.timeZone)
                 navigateUp()

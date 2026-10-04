@@ -18,6 +18,7 @@
 
 package io.github.sadellie.evaluatto.programmer
 
+import com.sadellie.unitto.core.common.BaseNumber
 import com.sadellie.unitto.core.common.KBigInteger
 import com.sadellie.unitto.core.common.Token
 import io.github.sadellie.evaluatto.ExpressionException
@@ -41,7 +42,6 @@ import io.github.sadellie.evaluatto.ast.SqrtNode
 import io.github.sadellie.evaluatto.ast.UnaryMinusNode
 import io.github.sadellie.evaluatto.ast.UnaryNotNode
 import io.github.sadellie.evaluatto.ast.simplifyBottomToTop
-import kotlin.collections.forEach
 
 internal class ProgrammerSimplify(
   override val input: ASTNode,

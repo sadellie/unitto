@@ -78,6 +78,7 @@ import unitto.core.common.generated.resources.date_calculator_minutes
 import unitto.core.common.generated.resources.date_calculator_months
 import unitto.core.common.generated.resources.date_calculator_start
 import unitto.core.common.generated.resources.date_calculator_subtract
+import unitto.core.common.generated.resources.date_calculator_weeks
 import unitto.core.common.generated.resources.date_calculator_years
 
 @Composable
@@ -147,6 +148,7 @@ private fun AddSubtractView(
       formatterSymbols = uiState.formatterSymbols,
       years = uiState.years,
       months = uiState.months,
+      weeks = uiState.weeks,
       days = uiState.days,
       hours = uiState.hours,
       minutes = uiState.minutes,
@@ -209,6 +211,7 @@ private fun InputTextFieldsBox(
   formatterSymbols: FormatterSymbols,
   years: TextFieldState,
   months: TextFieldState,
+  weeks: TextFieldState,
   days: TextFieldState,
   hours: TextFieldState,
   minutes: TextFieldState,
@@ -216,9 +219,17 @@ private fun InputTextFieldsBox(
   TextFieldBox(modifier = modifier) {
     TextFieldRow {
       TimeUnitTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.weight(1f),
         state = years,
         label = stringResource(Res.string.date_calculator_years),
+        maxValue = 9_999.0,
+        formatterSymbols = formatterSymbols,
+        allowFraction = false,
+      )
+      TimeUnitTextField(
+        modifier = Modifier.weight(1f),
+        state = months,
+        label = stringResource(Res.string.date_calculator_months),
         maxValue = 9_999.0,
         formatterSymbols = formatterSymbols,
         allowFraction = false,
@@ -228,13 +239,12 @@ private fun InputTextFieldsBox(
     TextFieldRow {
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
-        state = months,
-        label = stringResource(Res.string.date_calculator_months),
-        maxValue = 9_999.0,
+        state = weeks,
+        label = stringResource(Res.string.date_calculator_weeks),
+        maxValue = 99_999.0,
         formatterSymbols = formatterSymbols,
         allowFraction = false,
       )
-
       TimeUnitTextField(
         modifier = Modifier.weight(1f),
         state = days,
@@ -279,6 +289,7 @@ fun AddSubtractViewPreview() = ExpressivePreview {
         result = InstantUtils.nowWithMinutes().plus(1.seconds),
         years = remember { TextFieldState("12") },
         months = remember { TextFieldState("12") },
+        weeks = remember { TextFieldState("12") },
         days = remember { TextFieldState("12") },
         hours = remember { TextFieldState("12") },
         minutes = remember { TextFieldState("12") },

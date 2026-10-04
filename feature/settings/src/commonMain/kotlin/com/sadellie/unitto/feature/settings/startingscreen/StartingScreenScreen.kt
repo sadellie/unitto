@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.DrawerItem
@@ -46,7 +46,7 @@ import unitto.core.common.generated.resources.settings_starting_screen
 @Composable
 internal fun StartingScreenRoute(navigateUp: () -> Unit) {
   val viewModel: StartingScreenViewModel = metroViewModel()
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
+  when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
     null -> EmptyScreen()
     else -> {
       StartingScreenScreen(

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.runtime.result.ResultEffect
 import androidx.navigation3.ui.NavDisplay
-import com.sadellie.unitto.core.designsystem.unittoFadeIn
-import com.sadellie.unitto.core.designsystem.unittoFadeOut
+import com.sadellie.unitto.core.designsystem.enterTransitionDefault
+import com.sadellie.unitto.core.designsystem.exitTransitionDefault
 import com.sadellie.unitto.core.navigation.LocalEventBus
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.navigation.Navigator
@@ -56,9 +56,11 @@ internal fun ConverterWidgetConfigureNavigation(
     NavDisplay(
       backStack = backStack,
       modifier = Modifier.background(MaterialTheme.colorScheme.background),
-      popTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
-      transitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
-      predictivePopTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      popTransitionSpec = { enterTransitionDefault() togetherWith exitTransitionDefault() },
+      transitionSpec = { enterTransitionDefault() togetherWith exitTransitionDefault() },
+      predictivePopTransitionSpec = {
+        enterTransitionDefault() togetherWith exitTransitionDefault()
+      },
       entryDecorators =
         listOf(
           rememberSaveableStateHolderNavEntryDecorator(),

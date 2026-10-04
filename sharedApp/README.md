@@ -17,8 +17,10 @@ graph LR
     :core:navigation["navigation"]
     :core:database["database"]
     :core:datastore["datastore"]
+    :core:data["data"]
     :core:designsystem["designsystem"]
     :core:ui["ui"]
+    :core:remote["remote"]
   end
   subgraph :feature
     :feature:glance["glance"]
@@ -35,8 +37,10 @@ graph LR
   :sharedApp --> :core:navigation
   :sharedApp --> :core:database
   :sharedApp --> :core:datastore
+  :sharedApp --> :core:data
   :sharedApp --> :core:designsystem
   :sharedApp --> :core:ui
+  :sharedApp --> :core:remote
   :sharedApp --> :feature:calculator
   :sharedApp --> :feature:converter
   :sharedApp --> :feature:bodymass

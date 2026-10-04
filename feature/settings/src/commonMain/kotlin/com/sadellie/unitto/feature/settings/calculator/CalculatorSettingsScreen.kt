@@ -18,13 +18,7 @@
 
 package com.sadellie.unitto.feature.settings.calculator
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
@@ -34,14 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.datastore.CalculatorPreferences
 import com.sadellie.unitto.core.designsystem.icons.iconpack.Fraction
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
 import com.sadellie.unitto.core.designsystem.icons.symbols.AddRowBelow
-import com.sadellie.unitto.core.designsystem.icons.symbols.History
-import com.sadellie.unitto.core.designsystem.icons.symbols.MoveSelectionDown
-import com.sadellie.unitto.core.designsystem.icons.symbols.SplitscreenBottom
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -49,7 +40,6 @@ import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
-import com.sadellie.unitto.core.ui.firstShapes
 import com.sadellie.unitto.core.ui.lastShapes
 import com.sadellie.unitto.core.ui.middleShapes
 import dev.zacsweers.metrox.viewmodel.metroViewModel
@@ -60,26 +50,17 @@ import unitto.core.common.generated.resources.settings_constant_calculation
 import unitto.core.common.generated.resources.settings_constant_calculation_support
 import unitto.core.common.generated.resources.settings_fractional_output
 import unitto.core.common.generated.resources.settings_fractional_output_support
-import unitto.core.common.generated.resources.settings_history_view_button
-import unitto.core.common.generated.resources.settings_history_view_button_support
-import unitto.core.common.generated.resources.settings_partial_history_view
-import unitto.core.common.generated.resources.settings_partial_history_view_support
-import unitto.core.common.generated.resources.settings_stepped_drag_gesture
-import unitto.core.common.generated.resources.settings_stepped_drag_gesture_support
 
 @Composable
 internal fun CalculatorSettingsRoute(navigateUpAction: () -> Unit) {
   val viewModel: CalculatorSettingsViewModel = metroViewModel()
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
+  when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
     null -> EmptyScreen()
     else -> {
       CalculatorSettingsScreen(
         prefs = prefs,
         navigateUpAction = navigateUpAction,
-        updatePartialHistoryView = viewModel::updatePartialHistoryView,
-        updateSteppedPartialHistoryView = viewModel::updateSteppedPartialHistoryView,
         updateFractionalOutput = viewModel::updateFractionalOutput,
-        updateOpenHistoryViewButton = viewModel::updateOpenHistoryViewButton,
         updateConstantCalculation = viewModel::updateConstantCalculation,
       )
     }
@@ -90,9 +71,6 @@ internal fun CalculatorSettingsRoute(navigateUpAction: () -> Unit) {
 private fun CalculatorSettingsScreen(
   prefs: CalculatorPreferences,
   navigateUpAction: () -> Unit,
-  updatePartialHistoryView: (Boolean) -> Unit,
-  updateSteppedPartialHistoryView: (Boolean) -> Unit,
-  updateOpenHistoryViewButton: (Boolean) -> Unit,
   updateFractionalOutput: (Boolean) -> Unit,
   updateConstantCalculation: (Boolean) -> Unit,
 ) {
@@ -107,15 +85,6 @@ private fun CalculatorSettingsScreen(
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       ListItemExpressive(
-        headlineText = stringResource(Res.string.settings_history_view_button),
-        icon = Symbols.History,
-        supportingText = stringResource(Res.string.settings_history_view_button_support),
-        switchState = prefs.openHistoryViewButton,
-        onSwitchChange = updateOpenHistoryViewButton,
-        shapes = ListItemDefaults.firstShapes,
-      )
-
-      ListItemExpressive(
         headlineText = stringResource(Res.string.settings_fractional_output),
         icon = IconPack.Fraction,
         supportingText = stringResource(Res.string.settings_fractional_output_support),
@@ -123,31 +92,6 @@ private fun CalculatorSettingsScreen(
         onSwitchChange = updateFractionalOutput,
         shapes = ListItemDefaults.middleShapes,
       )
-
-      ListItemExpressive(
-        headlineText = stringResource(Res.string.settings_partial_history_view),
-        icon = Symbols.SplitscreenBottom,
-        supportingText = stringResource(Res.string.settings_partial_history_view_support),
-        switchState = prefs.partialHistoryView,
-        onSwitchChange = updatePartialHistoryView,
-        shapes = ListItemDefaults.middleShapes,
-      )
-
-      AnimatedVisibility(
-        visible = prefs.partialHistoryView,
-        enter = expandVertically() + fadeIn(),
-        exit = shrinkVertically() + fadeOut(),
-        modifier = Modifier.fillMaxWidth(),
-      ) {
-        ListItemExpressive(
-          headlineText = stringResource(Res.string.settings_stepped_drag_gesture),
-          icon = Symbols.MoveSelectionDown,
-          supportingText = stringResource(Res.string.settings_stepped_drag_gesture_support),
-          switchState = prefs.steppedPartialHistoryView,
-          onSwitchChange = updateSteppedPartialHistoryView,
-          shapes = ListItemDefaults.middleShapes,
-        )
-      }
 
       ListItemExpressive(
         headlineText = stringResource(Res.string.settings_constant_calculation),
@@ -170,10 +114,7 @@ private fun PreviewCalculatorSettingsScreenStandard() {
         radianMode = true,
         additionalButtons = false,
         inverseMode = false,
-        partialHistoryView = false,
-        steppedPartialHistoryView = false,
         initialPartialHistoryView = false,
-        openHistoryViewButton = false,
         fractionalOutput = true,
         constantCalculation = false,
       )
@@ -182,10 +123,7 @@ private fun PreviewCalculatorSettingsScreenStandard() {
   CalculatorSettingsScreen(
     prefs = prefs,
     navigateUpAction = {},
-    updatePartialHistoryView = { prefs = prefs.copy(partialHistoryView = it) },
-    updateSteppedPartialHistoryView = { prefs = prefs.copy(steppedPartialHistoryView = it) },
     updateFractionalOutput = { prefs = prefs.copy(fractionalOutput = it) },
-    updateOpenHistoryViewButton = { prefs = prefs.copy(openHistoryViewButton = it) },
     updateConstantCalculation = { prefs = prefs.copy(constantCalculation = it) },
   )
 }

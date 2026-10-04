@@ -54,12 +54,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.MAX_SCALE
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.designsystem.icons.symbols.DecimalIncrease
 import com.sadellie.unitto.core.designsystem.icons.symbols.EMobileData
@@ -103,7 +103,7 @@ import kotlin.math.roundToInt
 @Composable
 fun FormattingRoute(navigateUpAction: () -> Unit) {
   val viewModel: FormattingViewModel = metroViewModel()
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     null -> EmptyScreen()
     else -> {
       FormattingScreen(

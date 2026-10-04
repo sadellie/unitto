@@ -41,7 +41,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
@@ -59,7 +59,7 @@ import unitto.core.common.generated.resources.common_cancel
 @Composable
 internal fun AdvancedSettingsRoute(navigateUpAction: () -> Unit) {
   val viewModel: AdvancedSettingsViewModel = metroViewModel()
-  when (val converterPrefs = viewModel.converterPrefs.collectAsStateWithLifecycleKMP().value) {
+  when (val converterPrefs = viewModel.converterPrefs.collectAsStateWithLifecycle().value) {
     null -> EmptyScreen()
     else ->
       AdvancedSettingsScreen(

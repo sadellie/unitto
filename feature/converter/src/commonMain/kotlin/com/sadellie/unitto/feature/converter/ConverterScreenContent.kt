@@ -74,11 +74,11 @@ import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.CurrencyRateUpdateState
-import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.designsystem.icons.symbols.SwapHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
+import com.sadellie.unitto.core.model.converter.UnitID
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.datetime.LocalPlatformDateFormatSettings
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
@@ -92,8 +92,6 @@ import com.sadellie.unitto.feature.converter.components.DefaultKeyboard
 import com.sadellie.unitto.feature.converter.components.NumberBaseKeyboard
 import com.sadellie.unitto.feature.converter.components.PortraitLandscape
 import com.sadellie.unitto.feature.converter.components.UnitSelectionButton
-import kotlin.time.Clock
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
@@ -115,6 +113,8 @@ import unitto.core.common.generated.resources.unit_nanosecond_short
 import unitto.core.common.generated.resources.unit_ounce_short
 import unitto.core.common.generated.resources.unit_pound_short
 import unitto.core.common.generated.resources.unit_second_short
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun ConverterDefault(
@@ -277,7 +277,7 @@ internal fun NumberBase(
 
         NumberBaseTextField(
           modifier = textFieldModifier,
-          minRatio = 0.7f,
+          minRatio = TEXT_FIELD_MIN_RATIO,
           placeholder = Token.Digit0.symbol,
           state = uiState.input,
           textColor = converterTextFieldColor,
@@ -362,7 +362,7 @@ private fun CalculationResultTextField(
     ExpressionTextField(
       modifier = Modifier,
       state = calculationTextField,
-      minRatio = 0.7f,
+      minRatio = TEXT_FIELD_MIN_RATIO,
       textColor = converterTextFieldColor.copy(alpha = 0.6f),
       formatterSymbols = formatterSymbols,
       readOnly = true,
@@ -385,7 +385,7 @@ private fun SingleUnitInput(
       modifier = Modifier.fillMaxWidth().weight(2f),
       textColor = converterTextFieldColor,
       state = input,
-      minRatio = 0.7f,
+      minRatio = TEXT_FIELD_MIN_RATIO,
       formatterSymbols = formatterSymbols,
       placeholder = Token.Digit0.symbol,
     )
@@ -417,7 +417,7 @@ private fun DoubleUnitInput(
         modifier = Modifier.fillMaxWidth().weight(1f),
         textColor = converterTextFieldColor,
         state = input1,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         formatterSymbols = formatterSymbols,
         placeholder = Token.Digit0.symbol,
       )
@@ -434,7 +434,7 @@ private fun DoubleUnitInput(
           },
         state = input2,
         textColor = converterTextFieldColor,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         formatterSymbols = formatterSymbols,
         placeholder = Token.Digit0.symbol,
       )
@@ -501,7 +501,7 @@ private fun ConverterResultTextField(
         modifier = modifier,
         state = state,
         textColor = converterTextFieldColor,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         formatterSymbols = formatterSymbols,
         readOnly = true,
       )
@@ -512,7 +512,7 @@ private fun ConverterResultTextField(
         modifier = modifier,
         textColor = converterTextFieldColor,
         state = state,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         readOnly = true,
       )
     }
@@ -545,7 +545,7 @@ private fun ConverterResultTextField(
         modifier = modifier,
         textColor = converterTextFieldColor,
         state = state,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         readOnly = true,
       )
     }
@@ -568,7 +568,7 @@ private fun ConverterResultTextField(
         modifier = modifier,
         textColor = converterTextFieldColor,
         state = state,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         readOnly = true,
       )
     }
@@ -591,7 +591,7 @@ private fun ConverterResultTextField(
         modifier = modifier,
         textColor = converterTextFieldColor,
         state = state,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         readOnly = true,
       )
     }
@@ -600,14 +600,14 @@ private fun ConverterResultTextField(
         modifier = modifier,
         state = TextFieldState(stringResource(Res.string.common_loading)),
         textColor = converterTextFieldColor,
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         readOnly = true,
       )
     is ConverterResult.Error.DivideByZeroError ->
       SimpleTextField(
         modifier = modifier,
         state = TextFieldState(stringResource(Res.string.calculator_divide_by_zero_error)),
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         readOnly = true,
         textColor = MaterialTheme.colorScheme.error,
       )
@@ -615,7 +615,7 @@ private fun ConverterResultTextField(
       SimpleTextField(
         modifier = modifier,
         state = TextFieldState(stringResource(Res.string.common_error)),
-        minRatio = 0.7f,
+        minRatio = TEXT_FIELD_MIN_RATIO,
         readOnly = true,
         textColor = MaterialTheme.colorScheme.error,
       )
@@ -746,4 +746,5 @@ private fun PreviewConverterDefault() {
 }
 
 private const val SPACER_HEIGHT_FACTOR = 0.03f
+private const val TEXT_FIELD_MIN_RATIO = 0.25f
 private val RETRY_CURRENCY_UPDATE_DEBOUNCE_MS = 1_000L.milliseconds

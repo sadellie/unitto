@@ -18,6 +18,8 @@
 
 package io.github.sadellie.evaluatto.programmer
 
+import com.sadellie.unitto.core.common.BaseNumber
+import com.sadellie.unitto.core.common.DataUnit
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

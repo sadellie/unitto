@@ -413,8 +413,8 @@
     <string name="unit_gigabyte_per_second_short">GB/s</string>
     <string name="unit_gigabyte_short">GB</string>
     <string name="unit_gigafarad_short">GF</string>
-    <string name="unit_gigajoule">兆焦耳</string>
-    <string name="unit_gigajoule_short">MJ</string>
+    <string name="unit_gigajoule">吉焦耳</string>
+    <string name="unit_gigajoule_short">GJ</string>
     <string name="unit_gigapascal">吉帕斯卡</string>
     <string name="unit_gigapascal_short">GPa</string>
     <string name="unit_gigaton">吉吨三硝基甲苯释放的能量</string>
@@ -578,8 +578,8 @@
     <string name="unit_megabyte_per_second_short">MB/s</string>
     <string name="unit_megabyte_short">MB</string>
     <string name="unit_megafarad_short">MF</string>
-    <string name="unit_megajoule">吉焦耳</string>
-    <string name="unit_megajoule_short">GJ</string>
+    <string name="unit_megajoule">兆焦耳</string>
+    <string name="unit_megajoule_short">MJ</string>
     <string name="unit_megaparsec">百万秒差距</string>
     <string name="unit_megaparsec_short">Mpc</string>
     <string name="unit_megapascal">兆帕斯卡</string>

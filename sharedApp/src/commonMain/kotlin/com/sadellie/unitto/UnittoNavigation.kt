@@ -36,8 +36,8 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.sadellie.unitto.core.designsystem.unittoFadeIn
-import com.sadellie.unitto.core.designsystem.unittoFadeOut
+import com.sadellie.unitto.core.designsystem.enterTransitionDefault
+import com.sadellie.unitto.core.designsystem.exitTransitionDefault
 import com.sadellie.unitto.core.navigation.DrawerItem
 import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.navigation.Navigator
@@ -45,7 +45,7 @@ import com.sadellie.unitto.core.navigation.TopLevelRoute
 import com.sadellie.unitto.core.navigation.additionalDrawerItems
 import com.sadellie.unitto.core.navigation.mainDrawerItems
 import com.sadellie.unitto.core.ui.BackHandler
-import com.sadellie.unitto.core.ui.NavigationDrawer
+import com.sadellie.unitto.core.ui.navigation.NavigationDrawer
 import com.sadellie.unitto.feature.bodymass.navigation.bodyMassNavigation
 import com.sadellie.unitto.feature.calculator.navigation.calculatorNavigation
 import com.sadellie.unitto.feature.converter.navigation.converterNavigation
@@ -116,9 +116,11 @@ private fun UnittoNavigation(
     NavDisplay(
       modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
       backStack = backStack,
-      popTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
-      transitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
-      predictivePopTransitionSpec = { unittoFadeIn() togetherWith unittoFadeOut() },
+      popTransitionSpec = { enterTransitionDefault() togetherWith exitTransitionDefault() },
+      transitionSpec = { enterTransitionDefault() togetherWith exitTransitionDefault() },
+      predictivePopTransitionSpec = {
+        enterTransitionDefault() togetherWith exitTransitionDefault()
+      },
       entryDecorators =
         listOf(
           rememberSaveableStateHolderNavEntryDecorator(),

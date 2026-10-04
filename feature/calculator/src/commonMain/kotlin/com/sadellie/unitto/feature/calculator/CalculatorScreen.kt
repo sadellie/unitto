@@ -18,21 +18,10 @@
 
 package com.sadellie.unitto.feature.calculator
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
 import androidx.compose.foundation.gestures.AnchoredDraggableState
-import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
-import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,17 +32,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -69,59 +52,51 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
-import com.sadellie.unitto.core.designsystem.LocalHapticFeedbackManager
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
-import com.sadellie.unitto.core.designsystem.icons.symbols.Delete
-import com.sadellie.unitto.core.designsystem.icons.symbols.History
-import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
-import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
 import com.sadellie.unitto.core.ui.BackHandler
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
-import com.sadellie.unitto.feature.calculator.components.CalculatorHistoryList
+import com.sadellie.unitto.core.ui.calculators.CalculationResult
+import com.sadellie.unitto.core.ui.calculators.CalculatorHistoryList
+import com.sadellie.unitto.core.ui.calculators.CalculatorHistoryListItem
+import com.sadellie.unitto.core.ui.calculators.CalculatorTextBoxDefaults
+import com.sadellie.unitto.core.ui.calculators.CalculatorWithHistoryLayoutDefault
+import com.sadellie.unitto.core.ui.calculators.ClearHistoryButton
+import com.sadellie.unitto.core.ui.calculators.DragState
+import com.sadellie.unitto.core.ui.calculators.LiquidCalculatorView
+import com.sadellie.unitto.core.ui.calculators.OpenHistoryViewButton
+import com.sadellie.unitto.core.ui.calculators.TextBox
+import com.sadellie.unitto.core.ui.calculators.deferredHeight
+import com.sadellie.unitto.core.ui.calculators.liquidFlingBehaviour
+import com.sadellie.unitto.core.ui.calculators.toggleDragState
+import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.feature.calculator.components.CalculatorKeyboard
-import com.sadellie.unitto.feature.calculator.components.HistoryItemHeight
-import com.sadellie.unitto.feature.calculator.components.TextBox
 import dev.zacsweers.metrox.viewmodel.metroViewModel
-import kotlin.time.Clock
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.stringResource
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.calculator_clear_history
-import unitto.core.common.generated.resources.calculator_clear_history_support
-import unitto.core.common.generated.resources.common_cancel
-import unitto.core.common.generated.resources.common_clear
-import unitto.core.common.generated.resources.settings_history_view_button
+import kotlin.time.Clock
 
 @Composable
 internal fun CalculatorRoute(openDrawer: () -> Unit) {
   val viewModel: CalculatorViewModel = metroViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     CalculatorUIState.Loading -> EmptyScreen()
     is CalculatorUIState.Ready ->
       Ready(
@@ -157,8 +132,8 @@ internal fun Ready(
   onAdditionalButtonsClick: (Boolean) -> Unit,
   onInverseModeClick: (Boolean) -> Unit,
   onClearHistoryClick: () -> Unit,
-  onDeleteHistoryItemClick: (CalculatorHistoryModel.Item) -> Unit,
-  onUpdateHistoryItemLabel: (CalculatorHistoryModel.Item, String) -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateHistoryItemLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
   updateInitialPartialHistoryView: (Boolean) -> Unit,
   onHardwareInput: () -> Unit,
 ) {
@@ -216,8 +191,8 @@ private fun ReadyCompact(
   onAdditionalButtonsClick: (Boolean) -> Unit,
   onInverseModeClick: (Boolean) -> Unit,
   onClearHistoryClick: () -> Unit,
-  onDeleteHistoryItemClick: (CalculatorHistoryModel.Item) -> Unit,
-  onUpdateHistoryItemLabel: (CalculatorHistoryModel.Item, String) -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateHistoryItemLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
   updateInitialPartialHistoryView: (Boolean) -> Unit,
   onHardwareInput: () -> Unit,
 ) {
@@ -285,7 +260,7 @@ private fun ReadyCompact(
         )
       },
       textBox = { offset, height ->
-        TextBox(
+        CalculatorTextBox(
           modifier =
             Modifier.offset(offset)
               .height(height)
@@ -293,7 +268,7 @@ private fun ReadyCompact(
               .anchoredDraggable(
                 state = dragState,
                 orientation = Orientation.Vertical,
-                flingBehavior = liquidFlingBehaviour(dragState),
+                flingBehavior = dragState.liquidFlingBehaviour(),
               ),
           formatterSymbols = uiState.formatterSymbols,
           state = uiState.input,
@@ -350,8 +325,8 @@ private fun ReadyExpanded(
   onAdditionalButtonsClick: (Boolean) -> Unit,
   onInverseModeClick: (Boolean) -> Unit,
   onClearHistoryClick: () -> Unit,
-  onDeleteHistoryItemClick: (CalculatorHistoryModel.Item) -> Unit,
-  onUpdateHistoryItemLabel: (CalculatorHistoryModel.Item, String) -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateHistoryItemLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
   onHardwareInput: () -> Unit,
 ) {
 
@@ -386,8 +361,12 @@ private fun ReadyExpanded(
         },
       ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues).fillMaxHeight()) {
-          TextBox(
-            modifier = Modifier.fillMaxHeight(TEXT_BOX_HEIGHT_FACTOR_COMPACT).fillMaxWidth(),
+          CalculatorTextBox(
+            modifier =
+              Modifier.fillMaxHeight(
+                  CalculatorWithHistoryLayoutDefault.TEXT_BOX_HEIGHT_FACTOR_COMPACT
+                )
+                .fillMaxWidth(),
             formatterSymbols = uiState.formatterSymbols,
             state = uiState.input,
             output = uiState.output,
@@ -423,229 +402,13 @@ private fun ReadyExpanded(
 }
 
 @Composable
-private fun LiquidCalculatorView(
-  modifier: Modifier,
-  calculatorHistory: @Composable (height: () -> Dp) -> Unit,
-  textBox: @Composable (offset: Density.() -> IntOffset, height: Dp) -> Unit,
-  keyboard: @Composable (offset: Density.() -> IntOffset, height: () -> Dp) -> Unit,
-  partialHistoryView: Boolean,
-  steppedPartialHistoryView: Boolean,
-  updateInitialPartialHistoryView: (Boolean) -> Unit,
-  dragState: AnchoredDraggableState<DragState>,
-) =
-  BoxWithConstraints(modifier) {
-    val density = LocalDensity.current
-    val isCompact = LocalWindowSize.current.heightSizeClass == WindowHeightSizeClass.Compact
-    val textBoxHeight =
-      maxHeight * if (isCompact) TEXT_BOX_HEIGHT_FACTOR_COMPACT else TEXT_BOX_HEIGHT_FACTOR_EXPANDED
-
-    LaunchedEffect(
-      partialHistoryView,
-      steppedPartialHistoryView,
-      textBoxHeight,
-      maxHeight,
-      dragState.settledValue,
-    ) {
-      dragState.updateAnchors(
-        updateDraggableAnchors(
-          density = density,
-          partialHistoryView = partialHistoryView,
-          steppedPartialHistoryView = steppedPartialHistoryView,
-          textBoxHeight = textBoxHeight,
-          maxHeight = maxHeight,
-          settledValue = dragState.settledValue,
-        )
-      )
-      dragState.settle(snap())
-    }
-
-    // deferred calculations
-    val historyHeight: () -> Dp =
-      remember(dragState, density) {
-        {
-          val offset = dragState.offset
-          if (offset.isNaN()) 0.dp else with(density) { offset.toDp() }
-        }
-      }
-    val keyboardHeight: () -> Dp =
-      remember(dragState, density, textBoxHeight, maxHeight) {
-        {
-          val offset = dragState.offset
-          val h = if (offset.isNaN()) 0.dp else with(density) { offset.toDp() }
-          maxHeight - textBoxHeight - minOf(h, HistoryItemHeight)
-        }
-      }
-    val textBoxOffset: Density.() -> IntOffset =
-      remember(historyHeight) {
-        { IntOffset(0, historyHeight().roundToPx()) }
-      }
-    val keyboardOffset: Density.() -> IntOffset =
-      remember(historyHeight, textBoxHeight) {
-        { IntOffset(0, (historyHeight() + textBoxHeight).roundToPx()) }
-      }
-
-    val hapticFeedbackManager = LocalHapticFeedbackManager.current
-    val vibrationScope = rememberCoroutineScope()
-    LaunchedEffect(dragState.targetValue, dragState.settledValue) {
-      if (dragState.targetValue == dragState.settledValue) return@LaunchedEffect
-      hapticFeedbackManager.vibrateGestureThresholdActivate(vibrationScope)
-    }
-    LaunchedEffect(dragState.settledValue) {
-      delay(REMEMBER_PARTIAL_HISTORY_VIEW_STATE_DELAY_MS)
-      updateInitialPartialHistoryView(dragState.settledValue == DragState.PARTIAL)
-    }
-
-    calculatorHistory(historyHeight)
-    textBox(textBoxOffset, textBoxHeight)
-    keyboard(keyboardOffset, keyboardHeight)
-  }
-
-private fun Modifier.deferredHeight(height: () -> Dp): Modifier =
-  layout { measurable, constraints ->
-    val h = height().roundToPx().coerceAtLeast(0)
-    val placeable = measurable.measure(constraints.copy(minHeight = h, maxHeight = h))
-    layout(placeable.width, h) {
-      placeable.place(0, 0)
-    }
-  }
-
-@Composable
-private fun ClearHistoryDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
-  AlertDialog(
-    icon = { Icon(Symbols.Delete, stringResource(Res.string.calculator_clear_history)) },
-    title = { Text(stringResource(Res.string.calculator_clear_history)) },
-    text = { Text(stringResource(Res.string.calculator_clear_history_support)) },
-    confirmButton = {
-      TextButton(onClick = onConfirm, shapes = ButtonDefaults.shapes()) {
-        Text(stringResource(Res.string.common_clear))
-      }
-    },
-    dismissButton = {
-      TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
-        Text(stringResource(Res.string.common_cancel))
-      }
-    },
-    onDismissRequest = onDismiss,
-  )
-}
-
-private fun updateDraggableAnchors(
-  density: Density,
-  partialHistoryView: Boolean,
-  steppedPartialHistoryView: Boolean,
-  textBoxHeight: Dp,
-  maxHeight: Dp,
-  settledValue: DragState,
-): DraggableAnchors<DragState> =
-  with(density) {
-    DraggableAnchors {
-      when {
-        partialHistoryView && steppedPartialHistoryView ->
-          when (settledValue) {
-            DragState.CLOSED -> {
-              DragState.CLOSED at 0f
-              DragState.PARTIAL at HistoryItemHeight.toPx()
-            }
-
-            DragState.PARTIAL -> {
-              DragState.CLOSED at 0f
-              DragState.PARTIAL at HistoryItemHeight.toPx()
-              DragState.OPEN at (maxHeight - textBoxHeight).toPx()
-            }
-
-            DragState.OPEN -> {
-              DragState.PARTIAL at HistoryItemHeight.toPx()
-              DragState.OPEN at (maxHeight - textBoxHeight).toPx()
-            }
-          }
-
-        partialHistoryView -> {
-          DragState.CLOSED at 0f
-          DragState.PARTIAL at HistoryItemHeight.toPx()
-          DragState.OPEN at (maxHeight - textBoxHeight).toPx()
-        }
-
-        else -> {
-          DragState.CLOSED at 0f
-          DragState.OPEN at (maxHeight - textBoxHeight).toPx()
-        }
-      }
-    }
-  }
-
-@Composable
-private fun liquidFlingBehaviour(dragState: AnchoredDraggableState<DragState>) =
-  AnchoredDraggableDefaults.flingBehavior(
-    state = dragState,
-    animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
-  )
-
-@Composable
-private fun ClearHistoryButton(onClick: () -> Unit) {
-  IconButton(
-    onClick = onClick,
-    shapes = IconButtonDefaults.shapes(),
-    content = {
-      Icon(
-        imageVector = Symbols.Delete,
-        contentDescription = stringResource(Res.string.calculator_clear_history),
-        modifier = Modifier.size(IconButtonDefaults.mediumIconSize),
-      )
-    },
-    modifier =
-      Modifier.semantics { testTag = "historyButton" }
-        .size(
-          IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Uniform)
-        ),
-  )
-}
-
-@Composable
-private fun OpenHistoryViewButton(onClick: () -> Unit, isOpen: Boolean) {
-  IconButton(onClick = onClick, shapes = IconButtonDefaults.shapes()) {
-    val rotation =
-      animateFloatAsState(
-        targetValue = if (isOpen) 360f else 0f,
-        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
-        label = "Open history view",
-      )
-    Icon(
-      imageVector = Symbols.History,
-      contentDescription = stringResource(Res.string.settings_history_view_button),
-      modifier = Modifier.rotate(rotation.value),
-    )
-  }
-}
-
-@Composable
 private fun ReadyCompactActions(
   isOpen: Boolean,
   onOpenHistoryView: () -> Unit,
   onClearHistoryClick: () -> Unit,
   openHistoryViewButton: Boolean,
 ) {
-  var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
-  val transitionSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
-  AnimatedVisibility(
-    visible = isOpen,
-    label = "History buttons reveal",
-    enter = fadeIn(transitionSpec) + scaleIn(transitionSpec, 0.5f),
-    exit = fadeOut(transitionSpec) + scaleOut(transitionSpec, 0.5f),
-  ) {
-    Row {
-      ClearHistoryButton(onClick = { showClearHistoryDialog = true })
-    }
-  }
-
-  if (showClearHistoryDialog) {
-    ClearHistoryDialog(
-      onConfirm = {
-        onClearHistoryClick()
-        showClearHistoryDialog = false
-      },
-      onDismiss = { showClearHistoryDialog = false },
-    )
-  }
+  ClearHistoryButton(onClearHistoryClick, isOpen)
 
   if (openHistoryViewButton) {
     OpenHistoryViewButton(
@@ -657,40 +420,42 @@ private fun ReadyCompactActions(
 
 @Composable
 private fun ReadyExpandedActions(onClearHistoryClick: () -> Unit) {
-  var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
-  ClearHistoryButton(onClick = { showClearHistoryDialog = true })
-  if (showClearHistoryDialog) {
-    ClearHistoryDialog(
-      onConfirm = {
-        onClearHistoryClick()
-        showClearHistoryDialog = false
-      },
-      onDismiss = { showClearHistoryDialog = false },
-    )
-  }
+  ClearHistoryButton(onClearHistoryClick, true)
 }
 
-private suspend fun AnchoredDraggableState<DragState>.toggleDragState(
-  isExpanding: Boolean,
-  dragAnimationSpec: AnimationSpec<Float>,
+@Composable
+private fun CalculatorTextBox(
+  modifier: Modifier,
+  formatterSymbols: FormatterSymbols,
+  state: TextFieldState,
+  output: CalculationResult,
+  onEnter: () -> Unit,
+  showHandle: Boolean,
+  onHardwareInput: (() -> Unit)?,
 ) {
-  val target =
-    when (this.currentValue) {
-      DragState.CLOSED ->
-        if (this.anchors.hasPositionFor(DragState.PARTIAL)) DragState.PARTIAL else DragState.OPEN
-      DragState.PARTIAL -> if (isExpanding) DragState.OPEN else DragState.CLOSED
-      DragState.OPEN ->
-        if (this.anchors.hasPositionFor(DragState.PARTIAL)) DragState.PARTIAL else DragState.CLOSED
-    }
-
-  if (this.anchors.hasPositionFor(target)) {
-    this.animateTo(target, dragAnimationSpec)
-  }
+  TextBox(
+    modifier = modifier,
+    formatterSymbols = formatterSymbols,
+    input = {
+      ExpressionTextField(
+        modifier = Modifier.fillMaxWidth(),
+        state = state,
+        minRatio = CalculatorTextBoxDefaults.INPUT_TEXT_FIELD_MIN_RATIO,
+        formatterSymbols = formatterSymbols,
+        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        onKeyboardAction =
+          KeyboardActionHandler {
+            onEnter()
+            it()
+          },
+        onHardwareInput = onHardwareInput,
+      )
+    },
+    output = output,
+    showHandle = showHandle,
+  )
 }
-
-private const val TEXT_BOX_HEIGHT_FACTOR_COMPACT = 0.4f
-private const val TEXT_BOX_HEIGHT_FACTOR_EXPANDED = 0.25f
-private const val REMEMBER_PARTIAL_HISTORY_VIEW_STATE_DELAY_MS = 1_000L
 
 @Preview(widthDp = 432, heightDp = 1008, device = "spec:parent=pixel_5,orientation=portrait")
 @Preview(widthDp = 432, heightDp = 864, device = "spec:parent=pixel_5,orientation=portrait")
@@ -705,14 +470,14 @@ private fun PreviewCalculatorScreen() {
     flowOf(
       PagingData.from(
         List(3) {
-          CalculatorHistoryModel.Item(
+          CalculatorHistoryListItem.Item(
             id = it,
             timestamp = Clock.System.now().epochSeconds,
             expression = "123".repeat(1 * it + 1),
             result = "45678",
             isFavorite = it % 2 == 0,
             label = if (it % 3 == 0) "Label content" else null,
-          ) as CalculatorHistoryModel
+          ) as CalculatorHistoryListItem
         }
       )
     )

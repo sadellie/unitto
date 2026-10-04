@@ -19,8 +19,8 @@
 package com.sadellie.unitto.core.datastore
 
 import androidx.datastore.preferences.core.Preferences
-import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
+import com.sadellie.unitto.core.model.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
@@ -102,7 +102,7 @@ class ConverterPrefsRepository(private val source: UserPrefDataSource) {
     } ?: ConverterPreferences.DEFAULT_SHOWN_UNIT_GROUPS
 
   private fun Preferences.getUnitConverterSorting() =
-    this[DatastorePrefKeys.UNIT_CONVERTER_SORTING]?.let { UnitsListSorting.valueOf(it) }
+    this[DatastorePrefKeys.UNIT_CONVERTER_SORTING]?.letTryOrNull { UnitsListSorting.valueOf(it) }
       ?: ConverterPreferences.DEFAULT_UNIT_CONVERTER_SORTING
 
   private fun List<UnitGroup>.packToString(): String = this.joinToString(",")

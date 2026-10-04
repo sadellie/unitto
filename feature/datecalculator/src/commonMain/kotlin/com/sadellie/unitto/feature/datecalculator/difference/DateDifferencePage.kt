@@ -128,6 +128,7 @@ fun DateDifferenceViewPreview() = ExpressivePreview {
             minutes = 5,
             sumYears = KBigDecimal("0.083"),
             sumMonths = KBigDecimal("1.000"),
+            sumWeeks = KBigDecimal("23.000"),
             sumDays = KBigDecimal("30.000"),
             sumHours = KBigDecimal("720.000"),
             sumMinutes = KBigDecimal("43200.000"),

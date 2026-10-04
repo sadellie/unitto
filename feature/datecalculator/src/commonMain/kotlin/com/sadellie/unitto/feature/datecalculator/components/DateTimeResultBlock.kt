@@ -44,6 +44,7 @@ import unitto.core.common.generated.resources.date_calculator_difference
 import unitto.core.common.generated.resources.date_calculator_hours
 import unitto.core.common.generated.resources.date_calculator_minutes
 import unitto.core.common.generated.resources.date_calculator_months
+import unitto.core.common.generated.resources.date_calculator_weeks
 import unitto.core.common.generated.resources.date_calculator_years
 
 @Composable
@@ -73,51 +74,51 @@ internal fun DateTimeResultBlock(
             Column {
               if (diff.years > 0) {
                 PartialDateText(
-                  Res.string.date_calculator_years,
-                  diff.years,
-                  precision,
-                  outputFormat,
-                  formatterSymbols,
+                  text = Res.string.date_calculator_years,
+                  value = diff.years,
+                  precision = precision,
+                  outputFormat = outputFormat,
+                  formatterSymbols = formatterSymbols,
                 )
               }
 
               if (diff.months > 0) {
                 PartialDateText(
-                  Res.string.date_calculator_months,
-                  diff.months,
-                  precision,
-                  outputFormat,
-                  formatterSymbols,
+                  text = Res.string.date_calculator_months,
+                  value = diff.months,
+                  precision = precision,
+                  outputFormat = outputFormat,
+                  formatterSymbols = formatterSymbols,
                 )
               }
 
               if (diff.days > 0) {
                 PartialDateText(
-                  Res.string.date_calculator_days,
-                  diff.days,
-                  precision,
-                  outputFormat,
-                  formatterSymbols,
+                  text = Res.string.date_calculator_days,
+                  value = diff.days,
+                  precision = precision,
+                  outputFormat = outputFormat,
+                  formatterSymbols = formatterSymbols,
                 )
               }
 
               if (diff.hours > 0) {
                 PartialDateText(
-                  Res.string.date_calculator_hours,
-                  diff.hours,
-                  precision,
-                  outputFormat,
-                  formatterSymbols,
+                  text = Res.string.date_calculator_hours,
+                  value = diff.hours,
+                  precision = precision,
+                  outputFormat = outputFormat,
+                  formatterSymbols = formatterSymbols,
                 )
               }
 
               if (diff.minutes > 0) {
                 PartialDateText(
-                  Res.string.date_calculator_minutes,
-                  diff.minutes,
-                  precision,
-                  outputFormat,
-                  formatterSymbols,
+                  text = Res.string.date_calculator_minutes,
+                  value = diff.minutes,
+                  precision = precision,
+                  outputFormat = outputFormat,
+                  formatterSymbols = formatterSymbols,
                 )
               }
             }
@@ -126,43 +127,51 @@ internal fun DateTimeResultBlock(
 
       1 ->
         SingleDateText(
-          Res.string.date_calculator_years,
-          diff.sumYears,
-          precision,
-          outputFormat,
-          formatterSymbols,
+          headerText = Res.string.date_calculator_years,
+          value = diff.sumYears,
+          precision = precision,
+          outputFormat = outputFormat,
+          formatterSymbols = formatterSymbols,
         )
       2 ->
         SingleDateText(
-          Res.string.date_calculator_months,
-          diff.sumMonths,
-          precision,
-          outputFormat,
-          formatterSymbols,
+          headerText = Res.string.date_calculator_months,
+          value = diff.sumMonths,
+          precision = precision,
+          outputFormat = outputFormat,
+          formatterSymbols = formatterSymbols,
         )
       3 ->
         SingleDateText(
-          Res.string.date_calculator_days,
-          diff.sumDays,
-          precision,
-          outputFormat,
-          formatterSymbols,
+          headerText = Res.string.date_calculator_weeks,
+          value = diff.sumWeeks,
+          precision = precision,
+          outputFormat = outputFormat,
+          formatterSymbols = formatterSymbols,
         )
       4 ->
         SingleDateText(
-          Res.string.date_calculator_hours,
-          diff.sumHours,
-          precision,
-          outputFormat,
-          formatterSymbols,
+          headerText = Res.string.date_calculator_days,
+          value = diff.sumDays,
+          precision = precision,
+          outputFormat = outputFormat,
+          formatterSymbols = formatterSymbols,
         )
       5 ->
         SingleDateText(
-          Res.string.date_calculator_minutes,
-          diff.sumMinutes,
-          precision,
-          outputFormat,
-          formatterSymbols,
+          headerText = Res.string.date_calculator_hours,
+          value = diff.sumHours,
+          precision = precision,
+          outputFormat = outputFormat,
+          formatterSymbols = formatterSymbols,
+        )
+      6 ->
+        SingleDateText(
+          headerText = Res.string.date_calculator_minutes,
+          value = diff.sumMinutes,
+          precision = precision,
+          outputFormat = outputFormat,
+          formatterSymbols = formatterSymbols,
         )
     }
   }
@@ -226,6 +235,7 @@ private fun DateTimeResultBlockPreview() {
         minutes = 0,
         sumYears = KBigDecimal.ZERO,
         sumMonths = KBigDecimal.ZERO,
+        sumWeeks = KBigDecimal.ZERO,
         sumDays = KBigDecimal.ZERO,
         sumHours = KBigDecimal.ZERO,
         sumMinutes = KBigDecimal("46080"),

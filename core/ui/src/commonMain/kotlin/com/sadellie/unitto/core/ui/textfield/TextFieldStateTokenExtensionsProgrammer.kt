@@ -21,9 +21,8 @@ package com.sadellie.unitto.core.ui.textfield
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.text.TextRange
 import com.sadellie.unitto.core.common.Token
-import kotlin.collections.plus
 
-object TextFieldStateTokenExtensionsProgrammer : TextFieldStateTokenExtensions {
+class TextFieldStateTokenExtensionsProgrammer : TextFieldStateTokenExtensions {
   override val closeBeforeOperators: List<String> by lazy {
     listOf(
       Token.Plus.symbol,

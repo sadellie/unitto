@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.calculator.components
+package com.sadellie.unitto.core.ui.calculators
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -95,13 +95,11 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.MoreHoriz
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
-import com.sadellie.unitto.core.model.calculator.CalculatorHistoryModel
 import com.sadellie.unitto.core.ui.ProvideColor
+import com.sadellie.unitto.core.ui.animations.animateItemDefault
 import com.sadellie.unitto.core.ui.datetime.LocalPlatformDateFormatSettings
 import com.sadellie.unitto.core.ui.datetime.formatDateWeekDayMonthYear
 import com.sadellie.unitto.core.ui.textfield.FixedExpressionInputTextField
-import kotlin.math.roundToInt
-import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.jetbrains.compose.resources.stringResource
@@ -113,15 +111,31 @@ import unitto.core.common.generated.resources.common_cancel
 import unitto.core.common.generated.resources.common_delete
 import unitto.core.common.generated.resources.common_label
 import unitto.core.common.generated.resources.common_ok
+import kotlin.math.roundToInt
+import kotlin.time.Clock
+import kotlin.time.Instant
+
+sealed interface CalculatorHistoryListItem {
+  data class Item(
+    val id: Int,
+    val timestamp: Long,
+    val expression: String,
+    val result: String,
+    val isFavorite: Boolean,
+    val label: String?,
+  ) : CalculatorHistoryListItem
+
+  data class Header(val instant: Instant) : CalculatorHistoryListItem
+}
 
 @Composable
-internal fun CalculatorHistoryList(
+fun CalculatorHistoryList(
   modifier: Modifier,
-  itemsFlow: Flow<PagingData<CalculatorHistoryModel>>,
+  itemsFlow: Flow<PagingData<CalculatorHistoryListItem>>,
   formatterSymbols: FormatterSymbols,
   addTokens: (String) -> Unit,
-  onDelete: (CalculatorHistoryModel.Item) -> Unit,
-  onUpdateLabel: (CalculatorHistoryModel.Item, String) -> Unit,
+  onDelete: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
   showMenuButton: Boolean,
 ) {
   val pagingItems = itemsFlow.collectAsLazyPagingItems()
@@ -180,11 +194,11 @@ private fun HistoryListPlaceholder(modifier: Modifier) {
 @Composable
 private fun HistoryListContent(
   modifier: Modifier,
-  pagingItems: LazyPagingItems<CalculatorHistoryModel>,
+  pagingItems: LazyPagingItems<CalculatorHistoryListItem>,
   formatterSymbols: FormatterSymbols,
   addTokens: (String) -> Unit,
-  onDelete: (CalculatorHistoryModel.Item) -> Unit,
-  onUpdateLabel: (CalculatorHistoryModel.Item, String) -> Unit,
+  onDelete: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
   showMenuButton: Boolean,
 ) {
   val listState = rememberLazyListState()
@@ -215,8 +229,8 @@ private fun HistoryListContent(
       key =
         pagingItems.itemKey {
           when (it) {
-            is CalculatorHistoryModel.Header -> "header_$it"
-            is CalculatorHistoryModel.Item -> "item_${it.id}"
+            is CalculatorHistoryListItem.Header -> "header_$it"
+            is CalculatorHistoryListItem.Item -> "item_${it.id}"
           }
         },
     ) { index ->
@@ -225,11 +239,12 @@ private fun HistoryListContent(
         Spacer(Modifier.fillMaxWidth().height(HistoryItemHeight))
       } else {
         when (item) {
-          is CalculatorHistoryModel.Header ->
+          is CalculatorHistoryListItem.Header ->
             HistoryListHeader(modifier = Modifier.fillMaxWidth(), header = item)
-          is CalculatorHistoryModel.Item ->
+          is CalculatorHistoryListItem.Item ->
             HistoryListItem(
-              modifier = Modifier.animateItem().fillMaxWidth().heightIn(min = HistoryItemHeight),
+              modifier =
+                Modifier.animateItemDefault().fillMaxWidth().heightIn(min = HistoryItemHeight),
               item = item,
               formatterSymbols = formatterSymbols,
               addTokens = addTokens,
@@ -249,7 +264,7 @@ private fun HistoryListContent(
 @Composable
 private fun HistoryListHeader(
   modifier: Modifier,
-  header: CalculatorHistoryModel.Header,
+  header: CalculatorHistoryListItem.Header,
 ) {
   val platformDateFormatSettings = LocalPlatformDateFormatSettings.current
   val formattedDate =
@@ -273,7 +288,7 @@ private enum class HistoryListItemDragState {
 @Composable
 private fun HistoryListItem(
   modifier: Modifier,
-  item: CalculatorHistoryModel.Item,
+  item: CalculatorHistoryListItem.Item,
   formatterSymbols: FormatterSymbols,
   addTokens: (String) -> Unit,
   onDelete: () -> Unit,
@@ -372,7 +387,7 @@ private fun HistoryListItemBackgroundContent(
   modifier: Modifier,
   onDelete: () -> Unit,
   onUpdateLabel: (String) -> Unit,
-  item: CalculatorHistoryModel.Item,
+  item: CalculatorHistoryListItem.Item,
 ) {
   Row(
     modifier = modifier,
@@ -482,7 +497,7 @@ private fun HistoryListItemLabelDialog(
 @Composable
 private fun HistoryListItemContent(
   modifier: Modifier,
-  item: CalculatorHistoryModel.Item,
+  item: CalculatorHistoryListItem.Item,
   formatterSymbols: FormatterSymbols,
   addTokens: (String) -> Unit,
   onMenuClick: () -> Unit,
@@ -569,7 +584,7 @@ private fun PreviewCalculatorHistoryList() {
     flowOf(
       PagingData.from(
         listOf(
-          CalculatorHistoryModel.Item(
+          CalculatorHistoryListItem.Item(
             id = 0,
             timestamp = timestamp,
             expression = "123",
@@ -577,7 +592,7 @@ private fun PreviewCalculatorHistoryList() {
             isFavorite = true,
             label = "Label content",
           ),
-          CalculatorHistoryModel.Item(
+          CalculatorHistoryListItem.Item(
             id = 1,
             timestamp = timestamp,
             expression = "123456789",
@@ -585,7 +600,7 @@ private fun PreviewCalculatorHistoryList() {
             isFavorite = true,
             label = null,
           ),
-          CalculatorHistoryModel.Item(
+          CalculatorHistoryListItem.Item(
             id = 3,
             timestamp = timestamp,
             expression = "123",
@@ -593,7 +608,7 @@ private fun PreviewCalculatorHistoryList() {
             isFavorite = true,
             label = "Label content",
           ),
-          CalculatorHistoryModel.Header(instant),
+          CalculatorHistoryListItem.Header(instant),
         )
       )
     )

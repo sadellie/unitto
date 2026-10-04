@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +20,15 @@ package com.sadellie.unitto.core.ui
 
 import android.os.Build
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import com.sadellie.unitto.core.designsystem.LocalHapticFeedbackManager
 
-internal actual fun Modifier.haptics(isPressed: Boolean) = composed {
+@Composable
+internal actual fun Modifier.haptics(isPressed: Boolean): Modifier {
   val coroutineScope = rememberCoroutineScope()
   val hapticFeedbackManager = LocalHapticFeedbackManager.current
 
@@ -39,7 +40,7 @@ internal actual fun Modifier.haptics(isPressed: Boolean) = composed {
     }
   }
 
-  this.pointerInput(Unit) {
+  return this.pointerInput(Unit) {
     detectTapGestures(onLongPress = { hapticFeedbackManager.vibrateLongPress(coroutineScope) })
   }
 }

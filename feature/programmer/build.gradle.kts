@@ -28,7 +28,9 @@ kotlin {
   android.namespace = "com.sadellie.unitto.feature.programmer"
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
+    implementation(project(":core:model"))
     implementation(project(":core:ui"))
+    implementation(project(":core:data"))
     implementation(project(":core:navigation"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:datastore"))
@@ -42,6 +44,7 @@ kotlin {
     implementation(libs.org.jetbrains.androidx.navigation3.navigation3.ui)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.serialization.json)
     implementation(libs.co.touchlab.kermit)
+    implementation(libs.androidx.paging.paging.compose)
   }
   sourceSets.commonTest.dependencies {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)

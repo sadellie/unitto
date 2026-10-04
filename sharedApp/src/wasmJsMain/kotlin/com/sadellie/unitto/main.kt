@@ -42,6 +42,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.sadellie.unitto.core.data.calculator.CalculatorDataBindings
 import com.sadellie.unitto.core.data.converter.ConverterDataBindings
+import com.sadellie.unitto.core.data.programmer.ProgrammerDataBindings
 import com.sadellie.unitto.core.datastore.AppPreferences
 import com.sadellie.unitto.core.datastore.AppPrefsRepository
 import com.sadellie.unitto.core.datastore.DataStoreBindings
@@ -137,6 +138,7 @@ private val navBackStackConfig = SavedStateConfiguration {
     [
       DataStoreBindings::class,
       CalculatorDataBindings::class,
+      ProgrammerDataBindings::class,
       ConverterDataBindings::class,
       RemoteBindings::class,
     ],

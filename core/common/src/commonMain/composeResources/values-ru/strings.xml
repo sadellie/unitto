@@ -578,8 +578,8 @@
     <string name="unit_gigabyte_short">ГБ</string>
     <string name="unit_gigafarad">Гигафарад</string>
     <string name="unit_gigafarad_short">ГФ</string>
-    <string name="unit_gigajoule">Мегаджоуль</string>
-    <string name="unit_gigajoule_short">мДж</string>
+    <string name="unit_gigajoule">Гигаджоуль</string>
+    <string name="unit_gigajoule_short">гДж</string>
     <string name="unit_gigapascal">Гигапаскаль</string>
     <string name="unit_gigapascal_short">ГПа</string>
     <string name="unit_gigaton">Гигатонна ТНТ</string>
@@ -794,8 +794,8 @@
     <string name="unit_megabyte_short">МБ</string>
     <string name="unit_megafarad">Мегафарад</string>
     <string name="unit_megafarad_short">МФ</string>
-    <string name="unit_megajoule">Гигаджоуль</string>
-    <string name="unit_megajoule_short">гДж</string>
+    <string name="unit_megajoule">Мегаджоуль</string>
+    <string name="unit_megajoule_short">мДж</string>
     <string name="unit_megaparsec">Мегапарсек</string>
     <string name="unit_megaparsec_short">Мпк</string>
     <string name="unit_megapascal">Мегапаскаль</string>

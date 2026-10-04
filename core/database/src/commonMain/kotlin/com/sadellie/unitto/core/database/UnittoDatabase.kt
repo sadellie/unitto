@@ -28,6 +28,8 @@ import kotlinx.coroutines.flow.update
 interface UnittoDatabase {
   fun calculatorHistoryDao(): CalculatorHistoryDao
 
+  fun programmerHistoryDao(): ProgrammerHistoryDao
+
   fun unitsDao(): UnitsDao
 
   fun currencyRatesDao(): CurrencyRatesDao
@@ -35,6 +37,8 @@ interface UnittoDatabase {
 
 class UnittoDatabaseInMemory : UnittoDatabase {
   override fun calculatorHistoryDao() = CalculatorHistoryDaoInMemory()
+
+  override fun programmerHistoryDao() = ProgrammerHistoryDaoInMemory()
 
   override fun unitsDao(): UnitsDao = UnitsDaoInMemory()
 
@@ -137,6 +141,80 @@ class CalculatorHistoryDaoInMemory : CalculatorHistoryDao {
   }
 
   override suspend fun insert(vararg historyEntity: CalculatorHistoryEntity) =
+    entries.updateAndInvalidateSource { currentEntities ->
+      val maxId = currentEntities.maxOfOrNull { it.entityId } ?: -1
+      val newEntities =
+        historyEntity.asList().mapIndexed { index, entity ->
+          entity.copy(entityId = maxId + 1 + index)
+        }
+
+      (currentEntities + newEntities).distinctBy { it.entityId }
+    }
+
+  override suspend fun delete(entityId: Int) = entries.updateAndInvalidateSource { currentEntries ->
+    currentEntries.filter { it.entityId != entityId }
+  }
+
+  override suspend fun updateLabel(entityId: Int, label: String) =
+    entries.updateAndInvalidateSource { currentEntries ->
+      currentEntries.map {
+        if (it.entityId == entityId) it.copy(isFavorite = label.isNotEmpty(), label = label) else it
+      }
+    }
+
+  override suspend fun clear() = entries.updateAndInvalidateSource { emptyList() }
+}
+
+class ProgrammerHistoryDaoInMemory : ProgrammerHistoryDao {
+  private val entries = MutableStateFlow(emptyList<ProgrammerHistoryEntity>())
+  private var activeSource: PagingSource<Int, ProgrammerHistoryEntity>? = null
+
+  private inline fun <T> MutableStateFlow<T>.updateAndInvalidateSource(function: (T) -> T): Unit =
+    this.update(function).also {
+      activeSource?.invalidate()
+    }
+
+  override fun getAllDescending(): PagingSource<Int, ProgrammerHistoryEntity> {
+    val source =
+      object : PagingSource<Int, ProgrammerHistoryEntity>() {
+        override suspend fun load(
+          params: LoadParams<Int>
+        ): LoadResult<Int, ProgrammerHistoryEntity> {
+          val allItems = entries.value.sortedByDescending { it.timestamp }
+          val currentKey = params.key ?: 0
+          val prevKey = if (currentKey == 0) null else currentKey - 1
+          val fromIndex = currentKey * params.loadSize
+          if (fromIndex >= allItems.size) {
+            return LoadResult.Page(
+              data = emptyList(),
+              prevKey = prevKey,
+              nextKey = null,
+            )
+          }
+
+          val toIndex = minOf(fromIndex + params.loadSize, allItems.size)
+          val pageData = allItems.subList(fromIndex, toIndex)
+
+          return LoadResult.Page(
+            data = pageData,
+            prevKey = prevKey,
+            nextKey = currentKey + 1,
+          )
+        }
+
+        override fun getRefreshKey(state: PagingState<Int, ProgrammerHistoryEntity>): Int? {
+          return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+              ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+          }
+        }
+      }
+
+    activeSource = source
+    return source
+  }
+
+  override suspend fun insert(vararg historyEntity: ProgrammerHistoryEntity) =
     entries.updateAndInvalidateSource { currentEntities ->
       val maxId = currentEntities.maxOfOrNull { it.entityId } ?: -1
       val newEntities =

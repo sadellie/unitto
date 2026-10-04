@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.stateIn
+import com.sadellie.unitto.core.datastore.CalculatorHistoryPrefsRepository
 import com.sadellie.unitto.core.datastore.KeypadPrefsRepository
 import com.sadellie.unitto.core.datastore.ThemePrefsRepository
 import dev.zacsweers.metro.AppScope
@@ -38,8 +39,10 @@ import kotlinx.coroutines.launch
 class DisplayViewModel(
   private val keypadPrefsRepository: KeypadPrefsRepository,
   private val themePrefsRepository: ThemePrefsRepository,
+  private val calculatorHistoryPrefsRepository: CalculatorHistoryPrefsRepository,
 ) : ViewModel() {
-
+  internal val calculatorHistoryPrefs =
+    calculatorHistoryPrefsRepository.prefs.stateIn(viewModelScope, null)
   internal val keypadPrefs = keypadPrefsRepository.prefs.stateIn(viewModelScope, null)
 
   internal fun updateThemingMode(themingMode: ThemingMode) {
@@ -60,6 +63,18 @@ class DisplayViewModel(
 
   internal fun updateMonetMode(monetMode: MonetMode) {
     viewModelScope.launch { themePrefsRepository.updateMonetMode(monetMode) }
+  }
+
+  internal fun updatePartialHistoryView(enabled: Boolean) = viewModelScope.launch {
+    calculatorHistoryPrefsRepository.updatePartialHistoryView(enabled)
+  }
+
+  internal fun updateSteppedPartialHistoryView(enabled: Boolean) = viewModelScope.launch {
+    calculatorHistoryPrefsRepository.updateSteppedPartialHistoryView(enabled)
+  }
+
+  internal fun updateOpenHistoryViewButton(enabled: Boolean) = viewModelScope.launch {
+    calculatorHistoryPrefsRepository.updateOpenHistoryViewButton(enabled)
   }
 
   internal fun updateAcButton(enabled: Boolean) {

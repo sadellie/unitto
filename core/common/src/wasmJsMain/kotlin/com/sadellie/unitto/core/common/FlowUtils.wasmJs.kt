@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,6 @@
 
 package com.sadellie.unitto.core.common
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.Lifecycle
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.StateFlow
 
 actual val defaultIODispatcher = Dispatchers.Default
-
-@Composable
-actual fun <T> StateFlow<T>.collectAsStateWithLifecycleKMP(
-  initialValue: T,
-  minActiveState: Lifecycle.State,
-  context: CoroutineContext,
-): State<T> = collectAsState(initial = initialValue, context = context)

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.designsystem.icons.symbols.AddCircle
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cancel
 import com.sadellie.unitto.core.designsystem.icons.symbols.DragHandle
@@ -64,6 +64,7 @@ import com.sadellie.unitto.core.ui.ListHeader
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.animations.animateItemDefault
 import com.sadellie.unitto.core.ui.listedShapes
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
@@ -86,7 +87,7 @@ import unitto.core.common.generated.resources.settings_unit_groups_undo
 @Composable
 internal fun UnitGroupsRoute(navigateUpAction: () -> Unit) {
   val viewModel: UnitGroupsViewModel = metroViewModel()
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     UnitGroupsUIState.Loading -> EmptyScreen()
     is UnitGroupsUIState.Ready ->
       UnitGroupsScreen(
@@ -181,7 +182,7 @@ private fun UnitGroupsScreen(
     ) {
       item(key = "enabled", contentType = ContentType.HEADER) {
         ListHeader(
-          modifier = Modifier.animateItem().then(headerModifier),
+          modifier = Modifier.animateItemDefault().then(headerModifier),
           text = stringResource(Res.string.common_enabled),
         )
       }
@@ -203,7 +204,7 @@ private fun UnitGroupsScreen(
       item(key = "disabled", contentType = ContentType.HEADER) {
         ListHeader(
           text = stringResource(Res.string.common_disabled),
-          modifier = Modifier.animateItem().then(headerModifier),
+          modifier = Modifier.animateItemDefault().then(headerModifier),
         )
       }
 
@@ -291,7 +292,10 @@ private fun LazyItemScope.EnabledUnitGroupItem(
                 indication = ripple(false),
                 onClick = {},
               )
-              .draggableHandle(onDragStopped = onDragStopped, interactionSource = interactionSource),
+              .draggableHandle(
+                onDragStopped = onDragStopped,
+                interactionSource = interactionSource,
+              ),
         )
       },
     )
@@ -305,7 +309,7 @@ private fun LazyItemScope.DisabledUnitGroupItem(
   shapes: ListItemShapes,
 ) {
   ListItemExpressive(
-    modifier = Modifier.animateItem(),
+    modifier = Modifier.animateItemDefault(),
     onClick = onClick,
     shapes = shapes,
     content = { Text(stringResource(unitGroup.res)) },

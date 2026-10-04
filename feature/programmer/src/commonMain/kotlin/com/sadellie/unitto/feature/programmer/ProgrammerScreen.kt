@@ -19,351 +19,90 @@
 package com.sadellie.unitto.feature.programmer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldBuffer
-import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.clearText
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.navigation3.runtime.EntryProviderScope
-import androidx.navigation3.runtime.NavKey
-import co.touchlab.kermit.Logger
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import com.sadellie.unitto.core.common.DataUnit
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
-import com.sadellie.unitto.core.common.combineBig
-import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.datastore.FormatterPrefsRepository
-import com.sadellie.unitto.core.datastore.KeypadPrefsRepository
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
-import com.sadellie.unitto.core.designsystem.icons.iconpack.And
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Base
-import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Lsh
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Mod
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Nand
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Nor
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Not
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Or
-import com.sadellie.unitto.core.designsystem.icons.iconpack.RoL
-import com.sadellie.unitto.core.designsystem.icons.iconpack.RoR
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Rsh
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Shift
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Size
-import com.sadellie.unitto.core.designsystem.icons.iconpack.Xor
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
-import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
-import com.sadellie.unitto.core.navigation.LocalNavigator
-import com.sadellie.unitto.core.navigation.ProgrammerStartRoute
+import com.sadellie.unitto.core.model.programmer.ShiftType
+import com.sadellie.unitto.core.ui.BackHandler
 import com.sadellie.unitto.core.ui.DrawerButton
 import com.sadellie.unitto.core.ui.EmptyScreen
-import com.sadellie.unitto.core.ui.KeyboardButtonToken
-import com.sadellie.unitto.core.ui.KeypadButton
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.BackspaceKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.BracketsKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.ClearKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.DivideKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.EqualKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key0
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key1
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key2
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key3
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key4
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key5
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key6
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key7
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key8
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.Key9
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.KeyA
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.KeyB
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.KeyC
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.KeyD
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.KeyE
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.KeyF
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.LeftBracketKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.MinusKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.MultiplyKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.PlusKey
-import com.sadellie.unitto.core.ui.KeypadButton.Companion.RightBracketKey
-import com.sadellie.unitto.core.ui.KeypadFlow
 import com.sadellie.unitto.core.ui.ScaffoldWithTopBar
-import com.sadellie.unitto.core.ui.textfield.AutoSizeTextField
-import com.sadellie.unitto.core.ui.textfield.InputTransformationWithReplacement
-import com.sadellie.unitto.core.ui.textfield.SimpleTextField
-import com.sadellie.unitto.core.ui.textfield.TextFieldStateTokenExtensionsProgrammer
-import com.sadellie.unitto.core.ui.textfield.observe
-import com.sadellie.unitto.core.ui.textfield.placeCursorAtTheEnd
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import com.sadellie.unitto.core.ui.calculators.CalculationResult
+import com.sadellie.unitto.core.ui.calculators.CalculatorHistoryList
+import com.sadellie.unitto.core.ui.calculators.CalculatorHistoryListItem
+import com.sadellie.unitto.core.ui.calculators.CalculatorWithHistoryLayoutDefault
+import com.sadellie.unitto.core.ui.calculators.ClearHistoryButton
+import com.sadellie.unitto.core.ui.calculators.DragState
+import com.sadellie.unitto.core.ui.calculators.LiquidCalculatorView
+import com.sadellie.unitto.core.ui.calculators.OpenHistoryViewButton
+import com.sadellie.unitto.core.ui.calculators.deferredHeight
+import com.sadellie.unitto.core.ui.calculators.liquidFlingBehaviour
+import com.sadellie.unitto.core.ui.calculators.toggleDragState
 import dev.zacsweers.metrox.viewmodel.metroViewModel
-import io.github.sadellie.evaluatto.programmer.DataUnit
-import io.github.sadellie.evaluatto.programmer.programmerCalculateExpression
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.stringResource
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.common_error
-
-fun EntryProviderScope<NavKey>.programmerNavigation() {
-  entry<ProgrammerStartRoute> {
-    val navigator = LocalNavigator.current
-    ProgrammerRoute(openDrawer = navigator::openDrawer)
-  }
-}
-
-internal sealed interface ProgrammerScreenUIState {
-  data class Ready(
-    val input: TextFieldState,
-    val output: ProgrammerCalculationResult,
-    val showAcButton: Boolean,
-    val formatterSymbols: FormatterSymbols,
-    val middleZero: Boolean,
-    val dataUnit: DataUnit,
-    val base: Int,
-    val shiftType: ShiftType,
-  ) : ProgrammerScreenUIState
-
-  data object Loading : ProgrammerScreenUIState
-}
-
-internal sealed interface ProgrammerCalculationResult {
-  data object Empty : ProgrammerCalculationResult
-
-  data class Success(val value: String) : ProgrammerCalculationResult
-
-  sealed interface Error : ProgrammerCalculationResult {
-    data object VisibleError : Error
-
-    data object InvisibleError : Error
-  }
-}
-
-@Inject
-@ViewModelKey
-@ContributesIntoMap(AppScope::class)
-class ProgrammerViewModel(
-  formatterPrefsRepository: FormatterPrefsRepository,
-  keypadPrefsRepository: KeypadPrefsRepository,
-) : ViewModel() {
-  private var _calculationJob: Job? = null
-  private val _input = TextFieldState()
-  private val _result =
-    MutableStateFlow<ProgrammerCalculationResult>(ProgrammerCalculationResult.Empty)
-  private val _lastResult = MutableStateFlow("")
-  private val _base = MutableStateFlow(10)
-  private val _dataUnit = MutableStateFlow(DataUnit.QWORD)
-  private val _shiftType = MutableStateFlow(ShiftType.SHIFT)
-  private val _formatterPrefs = formatterPrefsRepository.prefs.stateIn(viewModelScope, null)
-  private val _displayPrefs = keypadPrefsRepository.prefs.stateIn(viewModelScope, null)
-
-  internal val uiState =
-    combineBig(_formatterPrefs, _displayPrefs, _result, _dataUnit, _base, _shiftType) {
-        formatterPrefs,
-        displayPrefs,
-        result,
-        unit,
-        base,
-        shiftType ->
-        formatterPrefs ?: return@combineBig ProgrammerScreenUIState.Loading
-        displayPrefs ?: return@combineBig ProgrammerScreenUIState.Loading
-        ProgrammerScreenUIState.Ready(
-          input = _input,
-          output = result,
-          showAcButton = displayPrefs.acButton,
-          formatterSymbols = formatterPrefs.formatterSymbols,
-          middleZero = displayPrefs.middleZero,
-          dataUnit = unit,
-          base = base,
-          shiftType = shiftType,
-        )
-      }
-      .stateIn(viewModelScope, ProgrammerScreenUIState.Loading)
-
-  internal suspend fun observe() {
-    _input.observe().collectLatest { input ->
-      val lastResult = _lastResult.value
-      // skip
-      if (lastResult == input && lastResult.isNotEmpty()) return@collectLatest
-      calculate()
-    }
-  }
-
-  internal fun onClear() {
-    _input.clearText()
-    _result.update { ProgrammerCalculationResult.Empty }
-  }
-
-  internal fun onBrackets() {
-    val isEqualClicked = _lastResult.value.isNotEmpty()
-    if (isEqualClicked) {
-      _input.placeCursorAtTheEnd()
-      _lastResult.update { "" }
-    }
-    with(TextFieldStateTokenExtensionsProgrammer) { _input.addBracket() }
-  }
-
-  internal fun onAddToken(token: String) {
-    val isEqualClicked = _lastResult.value.isNotEmpty()
-    if (isEqualClicked) {
-      when {
-        token in Token.digitsWithDotSymbols -> _input.clearText()
-        else -> _input.placeCursorAtTheEnd()
-      }
-      _lastResult.update { "" }
-    }
-    with(TextFieldStateTokenExtensionsProgrammer) { _input.addTokens(token) }
-  }
-
-  internal fun onDelete() {
-    val isEqualClicked = _lastResult.value.isNotEmpty()
-    if (isEqualClicked) {
-      _input.clearText()
-      _lastResult.update { "" }
-    } else {
-      with(TextFieldStateTokenExtensionsProgrammer) { _input.deleteTokens() }
-    }
-  }
-
-  internal fun onEqual() {
-    val result = _result.value
-    Logger.d(tag = TAG) { "onEqual: $result" }
-    when (result) {
-      is ProgrammerCalculationResult.Success -> {
-        _lastResult.update { "" }
-        _input.setTextAndPlaceCursorAtEnd(result.value)
-        _result.update { ProgrammerCalculationResult.Empty }
-      }
-      is ProgrammerCalculationResult.Error ->
-        _result.update { ProgrammerCalculationResult.Error.VisibleError }
-      ProgrammerCalculationResult.Empty -> return
-    }
-  }
-
-  internal fun toggleSize() {
-    _dataUnit.update { unit ->
-      when (unit) {
-        DataUnit.QWORD -> DataUnit.WORD
-        DataUnit.WORD -> DataUnit.BYTE
-        DataUnit.BYTE -> DataUnit.QWORD
-      }
-    }
-    _lastResult.update { "" }
-    calculate()
-  }
-
-  internal fun toggleBase() {
-    val oldRadix = _base.value
-    val newRadix =
-      when (oldRadix) {
-        2 -> 8
-        8 -> 10
-        10 -> 16
-        else -> 2
-      }
-
-    val currentExpression = _input.text.toString()
-    if (currentExpression.isEmpty()) {
-      _base.update { newRadix }
-      return
-    }
-
-    val convertedExpression =
-      convertExpressionBase(
-        expression = currentExpression,
-        fromRadix = oldRadix,
-        toRadix = newRadix,
-        dataUnit = _dataUnit.value,
-      )
-
-    _input.setTextAndPlaceCursorAtEnd(convertedExpression)
-    _base.update { newRadix }
-    _lastResult.update { "" }
-    calculate()
-  }
-
-  internal fun toggleShiftType() {
-    _shiftType.update {
-      when (it) {
-        ShiftType.SHIFT -> ShiftType.ROTATE
-        ShiftType.ROTATE -> ShiftType.SHIFT
-      }
-    }
-  }
-
-  private fun calculate() {
-    _calculationJob?.cancel()
-    _calculationJob = viewModelScope.launch {
-      // TODO base and qword in prefs
-      val newResult =
-        try {
-          ProgrammerCalculationResult.Success(
-            programmerCalculateExpression(_input.text.toString(), _base.value, _dataUnit.value)
-          )
-        } catch (e: Exception) {
-          Logger.e(throwable = e, tag = TAG) { "Failed to calculate" }
-          ProgrammerCalculationResult.Error.InvisibleError
-        }
-
-      Logger.d(tag = TAG) { "Calculate: $newResult" }
-      _result.update { newResult }
-    }
-  }
-
-  companion object {
-    private const val TAG = "ProgrammerViewModel"
-  }
-}
+import kotlin.time.Clock
 
 @Composable
 internal fun ProgrammerRoute(openDrawer: () -> Unit) {
   val viewModel: ProgrammerViewModel = metroViewModel()
-  LaunchedEffect(Unit) { viewModel.observe() }
+  LaunchedEffect(Unit) { viewModel.observeInput() }
 
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     ProgrammerScreenUIState.Loading -> EmptyScreen()
     is ProgrammerScreenUIState.Ready ->
       ProgrammerScreen(
         uiState = uiState,
         openDrawer = openDrawer,
-        onClearClick = viewModel::onClear,
-        onBracketsClick = viewModel::onBrackets,
-        onAddTokenClick = viewModel::onAddToken,
-        onDeleteClick = viewModel::onDelete,
+        onClearClick = viewModel::cleanInput,
+        onBracketsClick = viewModel::addBracket,
+        onAddTokenClick = viewModel::addTokens,
+        onDeleteClick = viewModel::deleteTokens,
         onEqualClick = viewModel::onEqual,
         toggleSize = viewModel::toggleSize,
         toggleBase = viewModel::toggleBase,
         toggleShiftType = viewModel::toggleShiftType,
+        onClearHistoryClick = viewModel::clearHistory,
+        onDeleteHistoryItemClick = viewModel::deleteHistoryItem,
+        onUpdateHistoryItemLabel = viewModel::updateHistoryItemLabel,
+        updateInitialPartialHistoryView = viewModel::updateInitialPartialHistoryView,
       )
   }
 }
@@ -380,519 +119,290 @@ private fun ProgrammerScreen(
   toggleSize: () -> Unit,
   toggleBase: () -> Unit,
   toggleShiftType: () -> Unit,
+  onClearHistoryClick: () -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateHistoryItemLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
+  updateInitialPartialHistoryView: (Boolean) -> Unit,
 ) {
+  val windowSizeClass = LocalWindowSize.current
+  if (
+    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
+      windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
+  ) {
+    ProgrammerScreenExpanded(
+      uiState = uiState,
+      onClearClick = onClearClick,
+      onBracketsClick = onBracketsClick,
+      onAddTokenClick = onAddTokenClick,
+      onDeleteClick = onDeleteClick,
+      onEqualClick = onEqualClick,
+      toggleSize = toggleSize,
+      toggleBase = toggleBase,
+      toggleShiftType = toggleShiftType,
+      onClearHistoryClick = onClearHistoryClick,
+      onDeleteHistoryItemClick = onDeleteHistoryItemClick,
+      onUpdateHistoryItemLabel = onUpdateHistoryItemLabel,
+    )
+  } else {
+    ProgrammerScreenCompact(
+      uiState = uiState,
+      openDrawer = openDrawer,
+      onClearClick = onClearClick,
+      onBracketsClick = onBracketsClick,
+      onAddTokenClick = onAddTokenClick,
+      onDeleteClick = onDeleteClick,
+      onEqualClick = onEqualClick,
+      toggleSize = toggleSize,
+      toggleBase = toggleBase,
+      toggleShiftType = toggleShiftType,
+      updateInitialPartialHistoryView = updateInitialPartialHistoryView,
+      onClearHistoryClick = onClearHistoryClick,
+      onDeleteHistoryItemClick = onDeleteHistoryItemClick,
+      onUpdateHistoryItemLabel = onUpdateHistoryItemLabel,
+    )
+  }
+}
+
+@Composable
+private fun ProgrammerScreenCompact(
+  uiState: ProgrammerScreenUIState.Ready,
+  openDrawer: () -> Unit,
+  onClearClick: () -> Unit,
+  onBracketsClick: () -> Unit,
+  onAddTokenClick: (String) -> Unit,
+  onDeleteClick: () -> Unit,
+  onEqualClick: () -> Unit,
+  toggleSize: () -> Unit,
+  toggleBase: () -> Unit,
+  toggleShiftType: () -> Unit,
+  updateInitialPartialHistoryView: (Boolean) -> Unit,
+  onClearHistoryClick: () -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateHistoryItemLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
+) {
+  val focusManager = LocalFocusManager.current
+  val dragState = remember {
+    val initialValue =
+      if (uiState.partialHistoryView && uiState.initialPartialHistoryView) DragState.PARTIAL
+      else DragState.CLOSED
+    AnchoredDraggableState(initialValue)
+  }
+  val isOpen = remember(dragState.currentValue) { dragState.currentValue == DragState.OPEN }
+  val draggableScope = rememberCoroutineScope()
+  val dragAnimationSpec = MaterialTheme.motionScheme.defaultSpatialSpec<Float>()
+  var isExpanding by rememberSaveable { mutableStateOf(true) }
+  LaunchedEffect(dragState.currentValue) {
+    focusManager.clearFocus()
+    when (dragState.currentValue) {
+      DragState.CLOSED -> isExpanding = true
+      DragState.OPEN -> isExpanding = false
+      DragState.PARTIAL -> Unit
+    }
+  }
+  BackHandler(dragState.currentValue != DragState.CLOSED) {
+    draggableScope.launch {
+      dragState.toggleDragState(isExpanding = false, dragAnimationSpec = dragAnimationSpec)
+    }
+  }
+
   ScaffoldWithTopBar(
-    title = {
-      Text(
-        text = "${uiState.base} (${uiState.dataUnit.name})",
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.End,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
-    },
+    title = { ProgrammerTitle(uiState) },
     navigationIcon = { DrawerButton(onClick = openDrawer) },
     colors =
       TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+    actions = {
+      ProgrammerCompactActions(
+        isOpen = isOpen,
+        onClearHistoryClick = onClearHistoryClick,
+        onOpenHistoryView = {
+          draggableScope.launch {
+            dragState.toggleDragState(
+              isExpanding = isExpanding,
+              dragAnimationSpec = dragAnimationSpec,
+            )
+          }
+        },
+        openHistoryViewButton = uiState.openHistoryViewButton,
+      )
+    },
   ) { paddingValues ->
-    Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
-      TextFieldsBox(
-        modifier = Modifier.fillMaxHeight(0.25f).fillMaxWidth(),
-        input = uiState.input,
-        output = uiState.output,
-        formatterSymbols = uiState.formatterSymbols,
-      )
-
-      ProgrammerKeyboard(
-        modifier =
-          Modifier.weight(1f)
-            .fillMaxWidth()
-            .padding(horizontal = Sizes.small, vertical = Sizes.extraSmall),
-        showAcButton = uiState.showAcButton,
-        onClearClick = onClearClick,
-        onBracketsClick = onBracketsClick,
-        onAddTokenClick = onAddTokenClick,
-        onDeleteClick = onDeleteClick,
-        onEqualClick = onEqualClick,
-        middleZero = uiState.middleZero,
-        toggleSize = toggleSize,
-        toggleBase = toggleBase,
-        toggleShiftType = toggleShiftType,
-        base = uiState.base,
-        shiftType = uiState.shiftType,
-      )
-    }
-  }
-}
-
-@Composable
-private fun TextFieldsBox(
-  modifier: Modifier,
-  input: TextFieldState,
-  output: ProgrammerCalculationResult,
-  formatterSymbols: FormatterSymbols,
-) {
-  Column(
-    modifier =
-      modifier
-        .clip(
-          RoundedCornerShape(
-            topStartPercent = 0,
-            topEndPercent = 0,
-            bottomStartPercent = 20,
-            bottomEndPercent = 20,
-          )
+    LiquidCalculatorView(
+      modifier = Modifier.padding(paddingValues),
+      calculatorHistory = { height ->
+        CalculatorHistoryList(
+          modifier =
+            Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh)
+              .fillMaxWidth()
+              .deferredHeight(height),
+          itemsFlow = uiState.history,
+          formatterSymbols = uiState.formatterSymbols,
+          addTokens = onAddTokenClick,
+          onDelete = onDeleteHistoryItemClick,
+          onUpdateLabel = onUpdateHistoryItemLabel,
+          showMenuButton = isOpen,
         )
-        .background(MaterialTheme.colorScheme.surfaceVariant)
-        .padding(vertical = Sizes.extraSmall, horizontal = Sizes.small)
-  ) {
-    Text("Preview. Backend test, not UI")
-    ProgrammerTextField(
-      modifier = Modifier.weight(3f).fillMaxWidth(),
-      state = input,
-      minRatio = 0.5f,
-      textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-      readOnly = false,
-      formatterSymbols = formatterSymbols,
-    )
-    ProgrammerResultTextField(
-      modifier = Modifier.weight(2f).fillMaxWidth(),
-      result = output,
-      formatterSymbols = formatterSymbols,
+      },
+      textBox = { offset, height ->
+        TextFieldsBox(
+          modifier =
+            Modifier.offset(offset)
+              .height(height)
+              .fillMaxWidth()
+              .anchoredDraggable(
+                state = dragState,
+                orientation = Orientation.Vertical,
+                flingBehavior = dragState.liquidFlingBehaviour(),
+              ),
+          formatterSymbols = uiState.formatterSymbols,
+          state = uiState.input,
+          output = uiState.output,
+          showHandle = true,
+        )
+      },
+      keyboard = { offset, height ->
+        ProgrammerKeyboard(
+          modifier =
+            Modifier.offset(offset)
+              .deferredHeight(height)
+              .fillMaxWidth()
+              .padding(horizontal = Sizes.small, vertical = Sizes.extraSmall),
+          showAcButton = uiState.showAcButton,
+          onClearClick = onClearClick,
+          onBracketsClick = onBracketsClick,
+          onAddTokenClick = onAddTokenClick,
+          onDeleteClick = onDeleteClick,
+          onEqualClick = {
+            focusManager.clearFocus()
+            onEqualClick()
+          },
+          middleZero = uiState.middleZero,
+          toggleSize = toggleSize,
+          toggleBase = toggleBase,
+          toggleShiftType = toggleShiftType,
+          base = uiState.base,
+          shiftType = uiState.shiftType,
+          // additionalButtons = uiState.additionalButtons,
+        )
+      },
+      partialHistoryView = uiState.partialHistoryView,
+      steppedPartialHistoryView = uiState.steppedPartialHistoryView,
+      updateInitialPartialHistoryView = updateInitialPartialHistoryView,
+      dragState = dragState,
     )
   }
 }
 
 @Composable
-private fun ProgrammerResultTextField(
-  modifier: Modifier,
-  result: ProgrammerCalculationResult,
-  formatterSymbols: FormatterSymbols,
+private fun ProgrammerScreenExpanded(
+  uiState: ProgrammerScreenUIState.Ready,
+  onClearClick: () -> Unit,
+  onBracketsClick: () -> Unit,
+  onAddTokenClick: (String) -> Unit,
+  onDeleteClick: () -> Unit,
+  onEqualClick: () -> Unit,
+  toggleSize: () -> Unit,
+  toggleBase: () -> Unit,
+  toggleShiftType: () -> Unit,
+  onClearHistoryClick: () -> Unit,
+  onDeleteHistoryItemClick: (CalculatorHistoryListItem.Item) -> Unit,
+  onUpdateHistoryItemLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
 ) {
-  LaunchedEffect(result) { Logger.d(tag = "TAGGER") { "Result: $result" } }
-  when (result) {
-    ProgrammerCalculationResult.Empty,
-    ProgrammerCalculationResult.Error.InvisibleError -> Spacer(modifier)
-    ProgrammerCalculationResult.Error.VisibleError -> {
-      val error = stringResource(Res.string.common_error)
-      SimpleTextField(
-        modifier = modifier,
-        state = remember(error) { TextFieldState(error) },
-        minRatio = 0.5f,
-        textColor = MaterialTheme.colorScheme.error,
-        readOnly = true,
+  Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer) { paddingValues ->
+    Row(
+      modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues).fillMaxSize()
+    ) {
+      CalculatorHistoryList(
+        modifier =
+          Modifier.weight(2f)
+            .fillMaxHeight()
+            .padding(Sizes.small)
+            .clip(MaterialTheme.shapes.small)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+        itemsFlow = uiState.history,
+        formatterSymbols = uiState.formatterSymbols,
+        addTokens = onAddTokenClick,
+        onDelete = onDeleteHistoryItemClick,
+        onUpdateLabel = onUpdateHistoryItemLabel,
+        showMenuButton = true,
       )
+      ScaffoldWithTopBar(
+        modifier = Modifier.weight(3f),
+        title = { ProgrammerTitle(uiState) },
+        navigationIcon = {
+          ReadyExpandedActions(onClearHistoryClick = onClearHistoryClick)
+        },
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+          ),
+      ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues).fillMaxHeight()) {
+          TextFieldsBox(
+            modifier =
+              Modifier.fillMaxHeight(
+                  CalculatorWithHistoryLayoutDefault.TEXT_BOX_HEIGHT_FACTOR_COMPACT
+                )
+                .fillMaxWidth(),
+            formatterSymbols = uiState.formatterSymbols,
+            state = uiState.input,
+            output = uiState.output,
+            showHandle = false,
+          )
+          val focusManager = LocalFocusManager.current
+          ProgrammerKeyboard(
+            modifier = Modifier.padding(Sizes.large).weight(1f).fillMaxWidth(),
+            showAcButton = uiState.showAcButton,
+            onClearClick = onClearClick,
+            onBracketsClick = onBracketsClick,
+            onAddTokenClick = onAddTokenClick,
+            onDeleteClick = onDeleteClick,
+            onEqualClick = {
+              focusManager.clearFocus()
+              onEqualClick()
+            },
+            middleZero = uiState.middleZero,
+            toggleSize = toggleSize,
+            toggleBase = toggleBase,
+            toggleShiftType = toggleShiftType,
+            base = uiState.base,
+            shiftType = uiState.shiftType,
+          )
+        }
+      }
     }
-    is ProgrammerCalculationResult.Success ->
-      ProgrammerTextField(
-        modifier = modifier,
-        state = remember(result.value) { TextFieldState(result.value) },
-        minRatio = 0.5f,
-        textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f),
-        readOnly = true,
-        formatterSymbols = formatterSymbols,
-      )
   }
 }
 
 @Composable
-private fun ProgrammerTextField(
-  modifier: Modifier,
-  state: TextFieldState,
-  formatterSymbols: FormatterSymbols,
-  readOnly: Boolean,
-  textColor: Color,
-  minRatio: Float,
-) {
-  AutoSizeTextField(
-    state = state,
-    modifier = modifier,
-    readOnly = readOnly,
-    inputTransformation = ProgrammerInputTransformation(formatterSymbols.grouping),
-    textStyle = LocalNumberTypography.current.displayLarge.copy(textColor),
-    lineLimits = TextFieldLineLimits.SingleLine,
-    cursorBrush = SolidColor(textColor),
-    minRatio = minRatio,
+private fun ProgrammerTitle(uiState: ProgrammerScreenUIState.Ready) {
+  Text(
+    text = "${uiState.base} (${uiState.dataUnit.name})",
+    modifier = Modifier.fillMaxWidth(),
+    textAlign = TextAlign.End,
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
   )
 }
 
 @Composable
-private fun ProgrammerKeyboard(
-  modifier: Modifier,
-  showAcButton: Boolean,
-  onClearClick: () -> Unit,
-  onBracketsClick: () -> Unit,
-  onAddTokenClick: (String) -> Unit,
-  onDeleteClick: () -> Unit,
-  onEqualClick: () -> Unit,
-  middleZero: Boolean,
-  toggleSize: () -> Unit,
-  toggleBase: () -> Unit,
-  toggleShiftType: () -> Unit,
-  base: Int,
-  shiftType: ShiftType,
+private fun ProgrammerCompactActions(
+  isOpen: Boolean,
+  onOpenHistoryView: () -> Unit,
+  onClearHistoryClick: () -> Unit,
+  openHistoryViewButton: Boolean,
 ) {
-  if (LocalWindowSize.current.widthSizeClass == WindowWidthSizeClass.Compact) {
-    ProgrammerKeyboardCompact(
-      modifier = modifier,
-      showAcButton = showAcButton,
-      onClearClick = onClearClick,
-      onBracketsClick = onBracketsClick,
-      onAddTokenClick = onAddTokenClick,
-      onDeleteClick = onDeleteClick,
-      onEqualClick = onEqualClick,
-      middleZero = middleZero,
-      toggleSize = toggleSize,
-      toggleBase = toggleBase,
-      toggleShiftType = toggleShiftType,
-      base = base,
-      shiftType = shiftType,
-    )
-  } else {
-    ProgrammerKeyboardExpanded(
-      modifier = modifier,
-      showAcButton = showAcButton,
-      onClearClick = onClearClick,
-      onBracketsClick = onBracketsClick,
-      onAddTokenClick = onAddTokenClick,
-      onDeleteClick = onDeleteClick,
-      onEqualClick = onEqualClick,
-      middleZero = middleZero,
-      toggleSize = toggleSize,
-      toggleBase = toggleBase,
-      toggleShiftType = toggleShiftType,
-      base = base,
-      shiftType = shiftType,
+  ClearHistoryButton(onClearHistoryClick, isOpen)
+
+  if (openHistoryViewButton) {
+    OpenHistoryViewButton(
+      onClick = onOpenHistoryView,
+      isOpen = isOpen,
     )
   }
 }
 
 @Composable
-private fun ProgrammerKeyboardCompact(
-  modifier: Modifier,
-  showAcButton: Boolean,
-  onClearClick: () -> Unit,
-  onBracketsClick: () -> Unit,
-  onAddTokenClick: (String) -> Unit,
-  onDeleteClick: () -> Unit,
-  onEqualClick: () -> Unit,
-  middleZero: Boolean,
-  toggleSize: () -> Unit,
-  toggleBase: () -> Unit,
-  toggleShiftType: () -> Unit,
-  base: Int,
-  shiftType: ShiftType,
-) {
-  KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL) {
-    KeypadRow {
-      ButtonTransparent(KeyOr, onAddTokenClick)
-      ButtonTransparent(KeyAnd, onAddTokenClick)
-      ButtonTransparent(KeyNot, onAddTokenClick)
-      ButtonTransparent(KeyMod, onAddTokenClick)
-    }
-
-    KeypadRow {
-      ButtonTransparent(KeyNor, onAddTokenClick)
-      ButtonTransparent(KeyNand, onAddTokenClick)
-      ButtonTransparent(KeyXor, onAddTokenClick)
-      ButtonTransparent(KeySize, toggleSize)
-    }
-
-    KeypadRow {
-      if (showAcButton) {
-        ButtonTertiary(ClearKey, onClearClick)
-        ButtonFilled(BracketsKey, onBracketsClick)
-      } else {
-        ButtonFilled(LeftBracketKey, onAddTokenClick)
-        ButtonFilled(RightBracketKey, onAddTokenClick)
-      }
-      when (shiftType) {
-        ShiftType.SHIFT -> {
-          ButtonFilled(KeyLsh, onAddTokenClick)
-          ButtonFilled(KeyRsh, onAddTokenClick)
-        }
-        ShiftType.ROTATE -> {
-          ButtonFilled(KeyRoL, onAddTokenClick)
-          ButtonFilled(KeyRoR, onAddTokenClick)
-        }
-      }
-    }
-
-    KeypadRow {
-      ButtonLight(KeyD, onAddTokenClick, base >= 14)
-      ButtonLight(KeyE, onAddTokenClick, base >= 15)
-      ButtonLight(KeyF, onAddTokenClick, base >= 16)
-      ButtonFilled(KeyShiftType, toggleShiftType)
-    }
-
-    KeypadRow {
-      ButtonLight(KeyA, onAddTokenClick, base >= 11)
-      ButtonLight(KeyB, onAddTokenClick, base >= 12)
-      ButtonLight(KeyC, onAddTokenClick, base >= 13)
-      ButtonFilled(DivideKey, onAddTokenClick)
-    }
-
-    KeypadRow {
-      ButtonLight(Key7, onAddTokenClick, base >= 8)
-      ButtonLight(Key8, onAddTokenClick, base >= 9)
-      ButtonLight(Key9, onAddTokenClick, base >= 10)
-      ButtonFilled(MultiplyKey, onAddTokenClick)
-    }
-
-    KeypadRow {
-      ButtonLight(Key4, onAddTokenClick, base >= 5)
-      ButtonLight(Key5, onAddTokenClick, base >= 6)
-      ButtonLight(Key6, onAddTokenClick, base >= 7)
-      ButtonFilled(MinusKey, onAddTokenClick)
-    }
-
-    KeypadRow {
-      ButtonLight(Key1, onAddTokenClick, base >= 2)
-      ButtonLight(Key2, onAddTokenClick, base >= 3)
-      ButtonLight(Key3, onAddTokenClick, base >= 4)
-      ButtonFilled(PlusKey, onAddTokenClick)
-    }
-
-    KeypadRow {
-      if (middleZero) {
-        ButtonLight(KeyBaseSwitch, null, toggleBase)
-        ButtonLight(Key0, onAddTokenClick)
-      } else {
-        ButtonLight(Key0, onAddTokenClick)
-        ButtonLight(KeyBaseSwitch, null, toggleBase)
-      }
-      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
-      ButtonFilledPrimary(EqualKey, onEqualClick)
-    }
-  }
-}
-
-@Composable
-private fun ProgrammerKeyboardExpanded(
-  modifier: Modifier,
-  showAcButton: Boolean,
-  onClearClick: () -> Unit,
-  onBracketsClick: () -> Unit,
-  onAddTokenClick: (String) -> Unit,
-  onDeleteClick: () -> Unit,
-  onEqualClick: () -> Unit,
-  middleZero: Boolean,
-  toggleSize: () -> Unit,
-  toggleBase: () -> Unit,
-  toggleShiftType: () -> Unit,
-  base: Int,
-  shiftType: ShiftType,
-) {
-  KeypadFlow(modifier = modifier) {
-    KeypadRow {
-      ButtonTransparent(KeyNot, onAddTokenClick)
-      ButtonLight(KeyD, onAddTokenClick, base >= 14)
-      ButtonLight(KeyE, onAddTokenClick, base >= 15)
-      ButtonLight(KeyF, onAddTokenClick, base >= 16)
-      if (showAcButton) {
-        ButtonTertiary(ClearKey, onClearClick)
-        ButtonFilled(BracketsKey, onBracketsClick)
-      } else {
-        ButtonFilled(LeftBracketKey, onAddTokenClick)
-        ButtonFilled(RightBracketKey, onAddTokenClick)
-      }
-    }
-
-    KeypadRow {
-      ButtonTransparent(KeyNand, onAddTokenClick)
-      ButtonLight(KeyA, onAddTokenClick, base >= 11)
-      ButtonLight(KeyB, onAddTokenClick, base >= 12)
-      ButtonLight(KeyC, onAddTokenClick, base >= 13)
-      ButtonFilled(KeyMod, onAddTokenClick)
-      ButtonFilled(KeySize, toggleSize)
-    }
-
-    KeypadRow {
-      ButtonTransparent(KeyAnd, onAddTokenClick)
-      ButtonLight(Key7, onAddTokenClick, base >= 8)
-      ButtonLight(Key8, onAddTokenClick, base >= 9)
-      ButtonLight(Key9, onAddTokenClick, base >= 10)
-      when (shiftType) {
-        ShiftType.SHIFT -> {
-          ButtonFilled(KeyLsh, onAddTokenClick)
-          ButtonFilled(KeyRsh, onAddTokenClick)
-        }
-        ShiftType.ROTATE -> {
-          ButtonFilled(KeyRoL, onAddTokenClick)
-          ButtonFilled(KeyRoR, onAddTokenClick)
-        }
-      }
-    }
-
-    KeypadRow {
-      ButtonTransparent(KeyNor, onAddTokenClick)
-      ButtonLight(Key4, onAddTokenClick, base >= 5)
-      ButtonLight(Key5, onAddTokenClick, base >= 6)
-      ButtonLight(Key6, onAddTokenClick, base >= 7)
-      ButtonFilled(MultiplyKey, onAddTokenClick)
-      ButtonFilled(KeyShiftType, toggleShiftType)
-    }
-    KeypadRow {
-      ButtonTransparent(KeyXor, onAddTokenClick)
-      ButtonLight(Key1, onAddTokenClick, base >= 2)
-      ButtonLight(Key2, onAddTokenClick, base >= 3)
-      ButtonLight(Key3, onAddTokenClick, base >= 4)
-      ButtonFilled(MinusKey, onAddTokenClick)
-      ButtonFilled(DivideKey, onAddTokenClick)
-    }
-
-    KeypadRow {
-      ButtonTransparent(KeyOr, onAddTokenClick)
-      if (middleZero) {
-        ButtonLight(KeyBaseSwitch, null, toggleBase)
-        ButtonLight(Key0, onAddTokenClick)
-      } else {
-        ButtonLight(Key0, onAddTokenClick)
-        ButtonLight(KeyBaseSwitch, null, toggleBase)
-      }
-      ButtonLight(BackspaceKey, onClearClick, onDeleteClick)
-      ButtonFilled(PlusKey, onAddTokenClick)
-      ButtonFilledPrimary(EqualKey, onEqualClick)
-    }
-  }
-}
-
-// TODO image descriptions
-private val KeyOr = KeypadButton.KeypadButtonAdd(IconPack.Or, null, Token.Or.symbol)
-private val KeyAnd = KeypadButton.KeypadButtonAdd(IconPack.And, null, Token.And.symbol)
-private val KeyNot = KeypadButton.KeypadButtonAdd(IconPack.Not, null, Token.Not.symbol)
-private val KeyNand = KeypadButton.KeypadButtonAdd(IconPack.Nand, null, Token.Nand.symbol)
-private val KeyNor = KeypadButton.KeypadButtonAdd(IconPack.Nor, null, Token.Nor.symbol)
-private val KeyXor = KeypadButton.KeypadButtonAdd(IconPack.Xor, null, Token.Xor.symbol)
-private val KeyMod = KeypadButton.KeypadButtonAdd(IconPack.Mod, null, Token.Mod.symbol)
-private val KeyLsh = KeypadButton.KeypadButtonAdd(IconPack.Lsh, null, Token.Lsh.symbol)
-private val KeyRsh = KeypadButton.KeypadButtonAdd(IconPack.Rsh, null, Token.Rsh.symbol)
-private val KeyRoL = KeypadButton.KeypadButtonAdd(IconPack.RoL, null, Token.RoL.symbol)
-private val KeyRoR = KeypadButton.KeypadButtonAdd(IconPack.RoR, null, Token.RoR.symbol)
-private val KeyBaseSwitch = KeypadButton.KeypadButtonSimple(IconPack.Base, null)
-private val KeyShiftType = KeypadButton.KeypadButtonSimple(IconPack.Shift, null)
-private val KeySize = KeypadButton.KeypadButtonSimple(IconPack.Size, null)
-
-internal enum class ShiftType {
-  SHIFT,
-  ROTATE,
-}
-
-@Stable
-internal data class ProgrammerInputTransformation(private val grouping: Token.Formatter) :
-  InputTransformationWithReplacement {
-  override val legalTokens: List<String> =
-    listOf(
-      Token.Nand.symbol,
-      Token.Or.symbol,
-      Token.And.symbol,
-      Token.Not.symbol,
-      Token.Nor.symbol,
-      Token.Xor.symbol,
-      Token.Lsh.symbol,
-      Token.Rsh.symbol,
-      Token.RoL.symbol,
-      Token.RoR.symbol,
-      Token.Mod.symbol,
-      Token.Digit0.symbol,
-      Token.Digit1.symbol,
-      Token.Digit2.symbol,
-      Token.Digit3.symbol,
-      Token.Digit4.symbol,
-      Token.Digit5.symbol,
-      Token.Digit6.symbol,
-      Token.Digit7.symbol,
-      Token.Digit8.symbol,
-      Token.Digit9.symbol,
-      Token.LetterA.symbol,
-      Token.LetterB.symbol,
-      Token.LetterC.symbol,
-      Token.LetterD.symbol,
-      Token.LetterE.symbol,
-      Token.LetterF.symbol,
-      Token.Minus.symbol,
-      Token.Divide.symbol,
-      Token.Multiply.symbol,
-      Token.Plus.symbol,
-      Token.LeftBracket.symbol,
-      Token.RightBracket.symbol,
-    )
-
-  override val replacementMap: Map<String, String> =
-    mapOf(
-      grouping.symbol to "",
-      "-" to Token.Minus.symbol,
-      "–" to Token.Minus.symbol,
-      "—" to Token.Minus.symbol,
-      "/" to Token.Divide.symbol,
-      "*" to Token.Multiply.symbol,
-      "•" to Token.Multiply.symbol,
-      "a" to Token.LetterA.symbol,
-      "b" to Token.LetterB.symbol,
-      "c" to Token.LetterC.symbol,
-      "d" to Token.LetterD.symbol,
-      "e" to Token.LetterE.symbol,
-      "f" to Token.LetterF.symbol,
-    )
-
-  private val longProgrammerTokens =
-    listOf(
-      Token.Or.symbol,
-      Token.And.symbol,
-      Token.Not.symbol,
-      Token.Nand.symbol,
-      Token.Nor.symbol,
-      Token.Xor.symbol,
-      Token.Lsh.symbol,
-      Token.Rsh.symbol,
-      Token.RoL.symbol,
-      Token.RoR.symbol,
-      Token.Mod.symbol,
-    )
-
-  override val illegalTokens: List<String> = emptyList()
-
-  override fun TextFieldBuffer.transformInput() =
-    transformInputWithReplacements(longProgrammerTokens)
-}
-
-@Composable
-@Preview
-private fun PreviewProgrammerKeyboardCompact() = ExpressivePreview {
-  ProgrammerKeyboardCompact(
-    modifier = Modifier.aspectRatio(0.5f).width(400.dp),
-    showAcButton = true,
-    onClearClick = {},
-    onBracketsClick = {},
-    onAddTokenClick = {},
-    onDeleteClick = {},
-    onEqualClick = {},
-    middleZero = false,
-    toggleSize = {},
-    toggleBase = {},
-    toggleShiftType = {},
-    base = 16,
-    shiftType = ShiftType.SHIFT,
-  )
-}
-
-@Composable
-@Preview
-private fun PreviewProgrammerKeyboardExpanded() = ExpressivePreview {
-  ProgrammerKeyboardExpanded(
-    modifier = Modifier.aspectRatio(2f).width(400.dp),
-    showAcButton = true,
-    onClearClick = {},
-    onBracketsClick = {},
-    onAddTokenClick = {},
-    onDeleteClick = {},
-    onEqualClick = {},
-    middleZero = false,
-    toggleSize = {},
-    toggleBase = {},
-    toggleShiftType = {},
-    base = 16,
-    shiftType = ShiftType.SHIFT,
-  )
+private fun ReadyExpandedActions(onClearHistoryClick: () -> Unit) {
+  ClearHistoryButton(onClearHistoryClick, true)
 }
 
 @Composable
@@ -903,13 +413,32 @@ private fun PreviewProgrammerScreen() = ExpressivePreview {
       remember {
         ProgrammerScreenUIState.Ready(
           input = TextFieldState("123andABC"),
-          output = ProgrammerCalculationResult.Success("789"),
+          output = CalculationResult.Success("789"),
           showAcButton = true,
           formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
           middleZero = true,
           dataUnit = DataUnit.QWORD,
           base = 10,
           shiftType = ShiftType.SHIFT,
+          partialHistoryView = true,
+          steppedPartialHistoryView = true,
+          initialPartialHistoryView = false,
+          openHistoryViewButton = true,
+          history =
+            flowOf(
+              PagingData.from(
+                List(3) {
+                  CalculatorHistoryListItem.Item(
+                    id = it,
+                    timestamp = Clock.System.now().epochSeconds,
+                    expression = "123".repeat(1 * it + 1),
+                    result = "45678",
+                    isFavorite = it % 2 == 0,
+                    label = if (it % 3 == 0) "Label content" else null,
+                  ) as CalculatorHistoryListItem
+                }
+              )
+            ),
         )
       },
     openDrawer = {},
@@ -921,5 +450,9 @@ private fun PreviewProgrammerScreen() = ExpressivePreview {
     toggleSize = {},
     toggleBase = {},
     toggleShiftType = {},
+    updateInitialPartialHistoryView = {},
+    onClearHistoryClick = {},
+    onDeleteHistoryItemClick = {},
+    onUpdateHistoryItemLabel = { _, _ -> },
   )
 }

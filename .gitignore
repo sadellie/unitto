@@ -8,6 +8,6 @@ build/
 
 local.properties
 
-tools/
-internals/
+/tools/
+/internals/
 /detekt/*.html

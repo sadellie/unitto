@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,16 +29,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.KBigDecimal
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
-import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.model.converter.UnitGroup
+import com.sadellie.unitto.core.model.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -72,9 +73,7 @@ internal fun UnitFromSelectorRoute(
 ) {
   LaunchedEffect(Unit) { unitSelectorViewModel.observeSearchFilters() }
 
-  when (
-    val uiState = unitSelectorViewModel.unitFromUIState.collectAsStateWithLifecycleKMP().value
-  ) {
+  when (val uiState = unitSelectorViewModel.unitFromUIState.collectAsStateWithLifecycle().value) {
     is UnitSelectorUIState.UnitFrom ->
       UnitFromSelectorScreen(
         uiState = uiState,
@@ -130,91 +129,94 @@ private fun UnitFromSelectorScreen(
       }
     },
   ) { paddingValues ->
-    if (uiState.units != null) {
-      UnitsList(
-        modifier = Modifier,
-        searchResult = uiState.units,
-        navigateToUnitGroups = navigateToUnitGroups,
-        selectedUnitId = uiState.unitFromId,
-        supportLabel = { stringResource(it.basicUnit.shortName) },
-        onClick = {
-          uiState.query.clearText()
-          updateUnitFrom(it.basicUnit.id)
-          navigateUp()
-        },
-        favoriteUnit = { favoriteUnit(it) },
-        contentPadding = paddingValues,
-      )
-    }
+    UnitsList(
+      modifier = Modifier,
+      searchState = uiState.searchState,
+      navigateToUnitGroups = navigateToUnitGroups,
+      selectedUnitId = uiState.unitFromId,
+      supportLabel = { stringResource(it.basicUnit.shortName) },
+      onClick = {
+        uiState.query.clearText()
+        updateUnitFrom(it.basicUnit.id)
+        navigateUp()
+      },
+      favoriteUnit = { favoriteUnit(it) },
+      contentPadding = paddingValues,
+    )
   }
 }
 
 @Preview
 @Composable
 private fun UnitFromSelectorScreenPreview() {
-  val units: Map<UnitGroup, List<UnitSearchResultItem>> =
-    mapOf(
-      UnitGroup.LENGTH to
-        listOf(
-            NormalUnit(
-              UnitID.meter,
-              KBigDecimal("1000000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_meter,
-              Res.string.unit_meter_short,
-            ),
-            NormalUnit(
-              UnitID.kilometer,
-              KBigDecimal("1000000000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_kilometer,
-              Res.string.unit_kilometer_short,
-            ),
-            NormalUnit(
-              UnitID.nautical_mile,
-              KBigDecimal("1852000000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_nautical_mile,
-              Res.string.unit_nautical_mile_short,
-            ),
-            NormalUnit(
-              UnitID.inch,
-              KBigDecimal("25400000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_inch,
-              Res.string.unit_inch_short,
-            ),
-            NormalUnit(
-              UnitID.foot,
-              KBigDecimal("304800000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_foot,
-              Res.string.unit_foot_short,
-            ),
-            NormalUnit(
-              UnitID.yard,
-              KBigDecimal("914400000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_yard,
-              Res.string.unit_yard_short,
-            ),
-            NormalUnit(
-              UnitID.mile,
-              KBigDecimal("1609344000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_mile,
-              Res.string.unit_mile_short,
-            ),
-          )
-          .map { UnitSearchResultItem(it, UnitStats(it.id), null) }
+  val searchState = remember {
+    UnitSearchState(
+      units =
+        mapOf(
+          UnitGroup.LENGTH to
+            listOf(
+                NormalUnit(
+                  UnitID.meter,
+                  KBigDecimal("1000000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_meter,
+                  Res.string.unit_meter_short,
+                ),
+                NormalUnit(
+                  UnitID.kilometer,
+                  KBigDecimal("1000000000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_kilometer,
+                  Res.string.unit_kilometer_short,
+                ),
+                NormalUnit(
+                  UnitID.nautical_mile,
+                  KBigDecimal("1852000000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_nautical_mile,
+                  Res.string.unit_nautical_mile_short,
+                ),
+                NormalUnit(
+                  UnitID.inch,
+                  KBigDecimal("25400000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_inch,
+                  Res.string.unit_inch_short,
+                ),
+                NormalUnit(
+                  UnitID.foot,
+                  KBigDecimal("304800000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_foot,
+                  Res.string.unit_foot_short,
+                ),
+                NormalUnit(
+                  UnitID.yard,
+                  KBigDecimal("914400000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_yard,
+                  Res.string.unit_yard_short,
+                ),
+                NormalUnit(
+                  UnitID.mile,
+                  KBigDecimal("1609344000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_mile,
+                  Res.string.unit_mile_short,
+                ),
+              )
+              .map { UnitSearchResultItem(it, UnitStats(it.id), null) }
+        ),
+      isLoading = false,
     )
+  }
 
   UnitFromSelectorScreen(
     uiState =
       UnitSelectorUIState.UnitFrom(
         unitFromId = UnitID.kilometer,
         query = TextFieldState("test"),
-        units = units,
+        searchState = searchState,
         selectedUnitGroup = UnitGroup.SPEED,
         shownUnitGroups = UnitGroup.entries,
         showFavoritesOnly = false,

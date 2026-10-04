@@ -33,7 +33,7 @@ internal sealed interface UnitSelectorUIState {
     val unitFromId: String,
     val shownUnitGroups: List<UnitGroup>,
     val showFavoritesOnly: Boolean,
-    val units: Map<UnitGroup, List<UnitSearchResultItem>>?,
+    val searchState: UnitSearchState,
     val selectedUnitGroup: UnitGroup?,
     val sorting: UnitsListSorting,
     val showIcons: Boolean,
@@ -44,10 +44,15 @@ internal sealed interface UnitSelectorUIState {
     val unitFrom: BasicUnit,
     val unitTo: BasicUnit,
     val showFavoritesOnly: Boolean,
-    val units: Map<UnitGroup, List<UnitSearchResultItem>>?,
+    val searchState: UnitSearchState,
     val sorting: UnitsListSorting,
     val scale: Int,
     val outputFormat: Int,
     val formatterSymbols: FormatterSymbols,
   ) : UnitSelectorUIState
 }
+
+internal data class UnitSearchState(
+  val units: Map<UnitGroup, List<UnitSearchResultItem>>,
+  val isLoading: Boolean,
+)

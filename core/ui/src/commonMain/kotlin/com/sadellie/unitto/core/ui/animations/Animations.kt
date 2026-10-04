@@ -16,34 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.ui
+package com.sadellie.unitto.core.ui.animations
 
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemColors
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.sadellie.unitto.core.navigation.DrawerItem
-import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.unit.IntOffset
 
 @Composable
-internal actual fun DrawerItem(
-  modifier: Modifier,
-  destination: DrawerItem,
-  icon: ImageVector,
-  selected: Boolean,
-  onClick: () -> Unit,
-  colors: NavigationDrawerItemColors,
-) {
-  val label = stringResource(destination.name)
-  NavigationDrawerItem(
-    modifier = modifier,
-    label = { Text(label) },
-    icon = { Icon(icon, label) },
-    selected = selected,
-    onClick = onClick,
-    colors = colors,
-  )
-}
+context(scope: LazyItemScope)
+fun Modifier.animateItemDefault(): Modifier =
+  with(scope) {
+    val fadeSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
+    val placementSpec = MaterialTheme.motionScheme.defaultSpatialSpec<IntOffset>()
+    this@animateItemDefault.animateItem(
+      fadeInSpec = fadeSpec,
+      placementSpec = placementSpec,
+      fadeOutSpec = fadeSpec,
+    )
+  }

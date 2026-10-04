@@ -29,17 +29,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.data.converter.ConverterResult
-import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.UnitSearchResultItem
 import com.sadellie.unitto.core.data.converter.UnitStats
 import com.sadellie.unitto.core.model.converter.UnitGroup
+import com.sadellie.unitto.core.model.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import com.sadellie.unitto.core.ui.EmptyScreen
@@ -73,7 +73,7 @@ internal fun UnitToSelectorRoute(
 ) {
   LaunchedEffect(Unit) { unitSelectorViewModel.observeSearchFilters() }
 
-  when (val uiState = unitSelectorViewModel.unitToUIState.collectAsStateWithLifecycleKMP().value) {
+  when (val uiState = unitSelectorViewModel.unitToUIState.collectAsStateWithLifecycle().value) {
     is UnitSelectorUIState.UnitTo ->
       UnitToSelectorScreen(
         uiState = uiState,
@@ -114,33 +114,31 @@ private fun UnitToSelectorScreen(
       )
     },
   ) { paddingValues ->
-    if (uiState.units != null) {
-      UnitsList(
-        modifier = Modifier,
-        searchResult = uiState.units,
-        navigateToUnitGroups = navigateToUnitGroups,
-        selectedUnitId = uiState.unitTo.id,
-        supportLabel = {
-          val shortName = stringResource(it.basicUnit.shortName)
-          remember(uiState.scale, uiState.outputFormat, uiState.formatterSymbols) {
-            unitToSupportLabel(
-              shortName = shortName,
-              unitSearchResultItem = it,
-              scale = uiState.scale,
-              outputFormat = uiState.outputFormat,
-              formatterSymbols = uiState.formatterSymbols,
-            )
-          }
-        },
-        onClick = {
-          uiState.query.clearText()
-          updateUnitTo(it.basicUnit.id)
-          navigateUp()
-        },
-        favoriteUnit = { favoriteUnit(it) },
-        contentPadding = paddingValues,
-      )
-    }
+    UnitsList(
+      modifier = Modifier,
+      searchState = uiState.searchState,
+      navigateToUnitGroups = navigateToUnitGroups,
+      selectedUnitId = uiState.unitTo.id,
+      supportLabel = {
+        val shortName = stringResource(it.basicUnit.shortName)
+        remember(uiState.scale, uiState.outputFormat, uiState.formatterSymbols) {
+          unitToSupportLabel(
+            shortName = shortName,
+            unitSearchResultItem = it,
+            scale = uiState.scale,
+            outputFormat = uiState.outputFormat,
+            formatterSymbols = uiState.formatterSymbols,
+          )
+        }
+      },
+      onClick = {
+        uiState.query.clearText()
+        updateUnitTo(it.basicUnit.id)
+        navigateUp()
+      },
+      favoriteUnit = { favoriteUnit(it) },
+      contentPadding = paddingValues,
+    )
   }
 }
 
@@ -166,70 +164,75 @@ private fun unitToSupportLabel(
 @Preview
 @Composable
 private fun UnitToSelectorPreview() {
-  val units: Map<UnitGroup, List<UnitSearchResultItem>> =
-    mapOf(
-      UnitGroup.LENGTH to
-        listOf(
-            NormalUnit(
-              UnitID.meter,
-              KBigDecimal("1000000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_meter,
-              Res.string.unit_meter_short,
-            ),
-            NormalUnit(
-              UnitID.kilometer,
-              KBigDecimal("1000000000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_kilometer,
-              Res.string.unit_kilometer_short,
-            ),
-            NormalUnit(
-              UnitID.nautical_mile,
-              KBigDecimal("1852000000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_nautical_mile,
-              Res.string.unit_nautical_mile_short,
-            ),
-            NormalUnit(
-              UnitID.inch,
-              KBigDecimal("25400000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_inch,
-              Res.string.unit_inch_short,
-            ),
-            NormalUnit(
-              UnitID.foot,
-              KBigDecimal("304800000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_foot,
-              Res.string.unit_foot_short,
-            ),
-            NormalUnit(
-              UnitID.yard,
-              KBigDecimal("914400000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_yard,
-              Res.string.unit_yard_short,
-            ),
-            NormalUnit(
-              UnitID.mile,
-              KBigDecimal("1609344000000000000000"),
-              UnitGroup.LENGTH,
-              Res.string.unit_mile,
-              Res.string.unit_mile_short,
-            ),
-          )
-          .map { UnitSearchResultItem(it, UnitStats(it.id), null) }
+  val searchState = remember {
+    UnitSearchState(
+      units =
+        mapOf(
+          UnitGroup.LENGTH to
+            listOf(
+                NormalUnit(
+                  UnitID.meter,
+                  KBigDecimal("1000000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_meter,
+                  Res.string.unit_meter_short,
+                ),
+                NormalUnit(
+                  UnitID.kilometer,
+                  KBigDecimal("1000000000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_kilometer,
+                  Res.string.unit_kilometer_short,
+                ),
+                NormalUnit(
+                  UnitID.nautical_mile,
+                  KBigDecimal("1852000000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_nautical_mile,
+                  Res.string.unit_nautical_mile_short,
+                ),
+                NormalUnit(
+                  UnitID.inch,
+                  KBigDecimal("25400000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_inch,
+                  Res.string.unit_inch_short,
+                ),
+                NormalUnit(
+                  UnitID.foot,
+                  KBigDecimal("304800000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_foot,
+                  Res.string.unit_foot_short,
+                ),
+                NormalUnit(
+                  UnitID.yard,
+                  KBigDecimal("914400000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_yard,
+                  Res.string.unit_yard_short,
+                ),
+                NormalUnit(
+                  UnitID.mile,
+                  KBigDecimal("1609344000000000000000"),
+                  UnitGroup.LENGTH,
+                  Res.string.unit_mile,
+                  Res.string.unit_mile_short,
+                ),
+              )
+              .map { UnitSearchResultItem(it, UnitStats(it.id), null) }
+        ),
+      isLoading = false,
     )
+  }
 
   UnitToSelectorScreen(
     uiState =
       UnitSelectorUIState.UnitTo(
-        unitFrom = units.values.first().first().basicUnit,
-        unitTo = units.values.first().first().basicUnit,
+        unitFrom = searchState.units.values.first().first().basicUnit,
+        unitTo = searchState.units.values.first().first().basicUnit,
         query = TextFieldState("test"),
-        units = units,
+        searchState = searchState,
         showFavoritesOnly = false,
         sorting = UnitsListSorting.USAGE,
         scale = 3,

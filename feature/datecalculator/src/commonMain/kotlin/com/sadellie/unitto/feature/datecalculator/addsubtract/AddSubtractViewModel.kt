@@ -54,55 +54,69 @@ class AddSubtractViewModel(formatterPrefsRepository: FormatterPrefsRepository) :
   private val _addition = MutableStateFlow(true)
   private val _years = TextFieldState()
   private val _months = TextFieldState()
+  private val _weeks = TextFieldState()
   private val _days = TextFieldState()
   private val _hours = TextFieldState()
   private val _minutes = TextFieldState()
 
   internal val uiState: StateFlow<AddSubtractUIState> =
     combine(_result, _start, _addition, formatterPrefsRepository.prefs) {
-      resultValue,
-      startValue,
-      additionValue,
-      formatterPrefs ->
-      return@combine AddSubtractUIState.Ready(
-        addition = additionValue,
-        start = startValue,
-        result = resultValue,
-        years = _years,
-        months = _months,
-        days = _days,
-        hours = _hours,
-        minutes = _minutes,
-        formatterSymbols = formatterPrefs.formatterSymbols,
-      )
-    }
+        resultValue,
+        startValue,
+        additionValue,
+        formatterPrefs ->
+        return@combine AddSubtractUIState.Ready(
+          addition = additionValue,
+          start = startValue,
+          result = resultValue,
+          years = _years,
+          months = _months,
+          weeks = _weeks,
+          days = _days,
+          hours = _hours,
+          minutes = _minutes,
+          formatterSymbols = formatterPrefs.formatterSymbols,
+        )
+      }
       .stateIn(viewModelScope, AddSubtractUIState.Loading)
 
   internal suspend fun observeInput() {
     val yearsFlow = _years.observe()
     val monthsFlow = _months.observe()
+    val weeksFlow = _weeks.observe()
     val daysFlow = _days.observe()
     val hoursFlow = _hours.observe()
     val minutesFlow = _minutes.observe()
 
-    combineBig(_addition, _start, yearsFlow, monthsFlow, daysFlow, hoursFlow, minutesFlow) {
-      additionValue,
-      startValue,
-      yearsValue,
-      monthsValue,
-      daysValue,
-      hoursValue,
-      minutesValue ->
-      calculate(
+    combineBig(
+        _addition,
+        _start,
+        yearsFlow,
+        monthsFlow,
+        weeksFlow,
+        daysFlow,
+        hoursFlow,
+        minutesFlow,
+      ) {
         additionValue,
         startValue,
-        yearsValue.toString().ifEmpty { "0" }.toInt(),
-        monthsValue.toString().ifEmpty { "0" }.toInt(),
-        daysValue.toString().ifEmpty { "0" }.toInt(),
-        hoursValue.toString().ifEmpty { "0" }.toInt(),
-        minutesValue.toString().ifEmpty { "0" }.toInt(),
-      )
-    }
+        yearsValue,
+        monthsValue,
+        weeksValue,
+        daysValue,
+        hoursValue,
+        minutesValue ->
+        calculate(
+          additionValue,
+          startValue,
+          yearsValue.toString().ifEmpty { "0" }.toInt(),
+          monthsValue.toString().ifEmpty { "0" }.toInt(),
+          weeksValue.toString().ifEmpty { "0" }.toInt(),
+          daysValue.toString().ifEmpty { "0" }.toInt(),
+          hoursValue.toString().ifEmpty { "0" }.toInt(),
+          minutesValue.toString().ifEmpty { "0" }.toInt(),
+        )
+      }
       .collectLatest {}
   }
 
@@ -115,6 +129,7 @@ class AddSubtractViewModel(formatterPrefsRepository: FormatterPrefsRepository) :
     start: Instant,
     years: Int,
     months: Int,
+    weeks: Int,
     days: Int,
     hours: Int,
     minutes: Int,
@@ -122,11 +137,13 @@ class AddSubtractViewModel(formatterPrefsRepository: FormatterPrefsRepository) :
     _calculateJob?.cancel()
     _calculateJob =
       viewModelScope.launch(Dispatchers.Default) {
+        val daysInWeeks = weeks * 7
+        val totalDays = days + daysInWeeks
         val period =
           DateTimePeriod(
             years = if (addition) years else -years,
             months = if (addition) months else -months,
-            days = if (addition) days else -days,
+            days = if (addition) totalDays else -totalDays,
             hours = if (addition) hours else -hours,
             minutes = if (addition) minutes else -minutes,
           )

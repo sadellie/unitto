@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.ui
+package com.sadellie.unitto.core.ui.navigation
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
@@ -25,7 +25,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemColors
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
@@ -119,14 +121,23 @@ internal fun SheetContent(
 }
 
 @Composable
-internal expect fun DrawerItem(
+private fun DrawerItem(
   modifier: Modifier = Modifier,
   destination: DrawerItem,
   icon: ImageVector,
   selected: Boolean,
   onClick: () -> Unit,
   colors: NavigationDrawerItemColors,
-)
+) {
+  NavigationDrawerItem(
+    modifier = modifier,
+    label = { Text(stringResource(destination.name)) },
+    icon = { Icon(icon, stringResource(destination.name)) },
+    selected = selected,
+    onClick = onClick,
+    colors = colors,
+  )
+}
 
 private const val HELLO_DURATION_MS = 2_000L
 

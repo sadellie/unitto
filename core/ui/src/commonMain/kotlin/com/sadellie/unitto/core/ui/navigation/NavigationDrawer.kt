@@ -16,13 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.core.ui
+package com.sadellie.unitto.core.ui.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -32,9 +35,8 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.PermanentDrawerSheet
-import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -46,13 +48,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
+import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.DrawerItem
 import com.sadellie.unitto.core.navigation.TopLevelRoute
@@ -72,24 +74,19 @@ fun NavigationDrawer(
   content: @Composable () -> Unit,
 ) {
   if (LocalWindowSize.current.widthSizeClass == WindowWidthSizeClass.Expanded) {
-    PermanentNavigationDrawer(
-      modifier = modifier,
-      drawerContent = {
-        PermanentDrawerSheet(
-          modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState()),
-          drawerContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-          drawerContentColor = MaterialTheme.colorScheme.onSurface,
-        ) {
-          SheetContent(
-            mainTabs = mainTabs,
-            additionalTabs = additionalTabs,
-            currentDestination = currentDestination,
-            onItemClick = onItemClick,
-          )
-        }
-      },
-      content = content,
-    )
+    Row(modifier = modifier.background(MaterialTheme.colorScheme.surfaceContainer)) {
+      NavigationRailUnitto(
+        modifier =
+          Modifier.verticalScroll(rememberScrollState())
+            .padding(vertical = Sizes.large, horizontal = Sizes.small),
+        mainTabs = mainTabs,
+        additionalTabs = additionalTabs,
+        currentDestination = currentDestination,
+        onItemClick = onItemClick,
+      )
+      VerticalDivider()
+      content()
+    }
   } else {
     ModalNavigationDrawer(
       modifier = modifier.drawerEdgeGesture(edgeGesture, state),
@@ -114,11 +111,12 @@ fun NavigationDrawer(
   }
 }
 
-private fun Modifier.drawerEdgeGesture(enabled: Boolean, state: DrawerState) = composed {
+@Composable
+private fun Modifier.drawerEdgeGesture(enabled: Boolean, state: DrawerState): Modifier {
   val dragThresholdPx = with(LocalDensity.current) { UnittoModalDrawerDragHandleThreshold.toPx() }
   val dragStartPx = with(LocalDensity.current) { UnittoModalDrawerDragHandleWidth.toPx() }
   val scope = rememberCoroutineScope()
-  this.pointerInput(enabled) {
+  return this.pointerInput(enabled) {
     if (!enabled) return@pointerInput
     var consumedDistance = 0f
     var startX = 0f

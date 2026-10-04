@@ -32,7 +32,6 @@ plugins {
   alias(libs.plugins.serialization) apply false
 
   alias(libs.plugins.detekt) apply true
-  alias(libs.plugins.dev.iurysouza.modulegraph) apply true
 }
 
 tasks.register("detektProjectReport", Detekt::class) {

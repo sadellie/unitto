@@ -30,6 +30,7 @@ graph LR
     :feature:glance["glance"]
   end
   :feature:settings --> :core:data
+  :sharedApp --> :core:data
   :core:datastore --> :core:data
   :feature:calculator --> :core:data
   :feature:converter --> :core:data

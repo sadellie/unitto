@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.designsystem.ExpressivePreview
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.model.converter.UnitGroup
@@ -43,11 +43,15 @@ internal fun ConverterRoute(
   navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
   navigateToRightScreen:
     (
-      unitFromId: String, unitToId: String, group: UnitGroup, input1: String, input2: String,
+      unitFromId: String,
+      unitToId: String,
+      group: UnitGroup,
+      input1: String,
+      input2: String,
     ) -> Unit,
   openDrawer: () -> Unit,
 ) {
-  val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP()
+  val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
@@ -67,7 +71,11 @@ private fun ConverterScreen(
   navigateToLeftScreen: (unitFromId: String, group: UnitGroup) -> Unit,
   navigateToRightScreen:
     (
-      unitFromId: String, unitToId: String, group: UnitGroup, input1: String, input2: String,
+      unitFromId: String,
+      unitToId: String,
+      group: UnitGroup,
+      input1: String,
+      input2: String,
     ) -> Unit,
   openDrawer: () -> Unit,
   swapUnits: (String, String) -> Unit,

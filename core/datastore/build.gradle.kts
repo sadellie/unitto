@@ -27,7 +27,6 @@ kotlin {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:themmo"))
-    implementation(project(":core:data"))
     implementation(project(":core:navigation"))
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines)
     implementation(libs.androidx.navigation3.navigation3.runtime)

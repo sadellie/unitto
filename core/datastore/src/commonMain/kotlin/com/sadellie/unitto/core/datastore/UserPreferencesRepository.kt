@@ -42,10 +42,3 @@ class UserPrefDataSource(private val dataStore: DataStore<Preferences>) {
     dataStore.edit(transform)
   }
 }
-
-internal inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? =
-  try {
-    this?.let(block)
-  } catch (_: Exception) {
-    null
-  }

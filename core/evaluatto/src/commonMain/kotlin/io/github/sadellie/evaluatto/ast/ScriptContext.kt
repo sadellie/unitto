@@ -18,10 +18,10 @@
 
 package io.github.sadellie.evaluatto.ast
 
+import com.sadellie.unitto.core.common.DataUnit
 import com.sadellie.unitto.core.common.KMathContext
 import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.MAX_SCALE
-import io.github.sadellie.evaluatto.programmer.DataUnit
 
 internal sealed interface ScriptContext {
   data class Math(

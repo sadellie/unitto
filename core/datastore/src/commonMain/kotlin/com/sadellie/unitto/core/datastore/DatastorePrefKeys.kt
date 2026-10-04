@@ -73,4 +73,9 @@ object DatastorePrefKeys {
   val UNIT_CONVERTER_CUSTOM_API_URL =
     stringPreferencesKey(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY)
   val UNIT_CONVERTER_SHOW_ICONS = booleanPreferencesKey(PrefKeys.UNIT_CONVERTER_SHOW_ICONS_PREF_KEY)
+
+  // PROGRAMMER
+  val PROGRAMMER_BASE = intPreferencesKey(PrefKeys.PROGRAMMER_BASE_PREF_KEY)
+  val PROGRAMMER_DATA_UNIT = stringPreferencesKey(PrefKeys.PROGRAMMER_DATA_UNIT_PREF_KEY)
+  val PROGRAMMER_SHIFT_TYPE = stringPreferencesKey(PrefKeys.PROGRAMMER_SHIFT_TYPE_PREF_KEY)
 }

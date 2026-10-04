@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,13 +27,14 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ripple
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 
+@Composable
 fun Modifier.squashable(
   onClick: () -> Unit = {},
   onLongClick: (() -> Unit)? = null,
@@ -42,7 +43,7 @@ fun Modifier.squashable(
   cornerRadiusRange: IntRange,
   role: Role = Role.Button,
   animationSpec: AnimationSpec<Int> = tween(),
-) = composed {
+): Modifier {
   val isPressed by interactionSource.collectIsPressedAsState()
   val cornerRadius: Int by
     animateIntAsState(
@@ -51,7 +52,7 @@ fun Modifier.squashable(
       label = "Squashed animation",
     )
 
-  this.clip(RoundedCornerShape(cornerRadius))
+  return this.clip(RoundedCornerShape(cornerRadius))
     .haptics(isPressed)
     .combinedClickable(
       onClick = onClick,
@@ -63,6 +64,7 @@ fun Modifier.squashable(
     )
 }
 
+@Composable
 fun Modifier.squashable(
   onClick: () -> Unit = {},
   onLongClick: (() -> Unit)? = null,
@@ -71,7 +73,7 @@ fun Modifier.squashable(
   cornerRadiusRange: ClosedRange<Dp>,
   role: Role = Role.Button,
   animationSpec: AnimationSpec<Dp> = tween(),
-) = composed {
+): Modifier {
   val isPressed by interactionSource.collectIsPressedAsState()
   val cornerRadius: Dp by
     animateDpAsState(
@@ -80,7 +82,7 @@ fun Modifier.squashable(
       label = "Squashed animation",
     )
 
-  this.clip(RoundedCornerShape(cornerRadius))
+  return this.clip(RoundedCornerShape(cornerRadius))
     .haptics(isPressed)
     .combinedClickable(
       onClick = onClick,
@@ -92,4 +94,4 @@ fun Modifier.squashable(
     )
 }
 
-internal expect fun Modifier.haptics(isPressed: Boolean): Modifier
+@Composable internal expect fun Modifier.haptics(isPressed: Boolean): Modifier

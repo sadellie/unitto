@@ -539,8 +539,8 @@
     <string name="unit_gigabyte_short">GB</string>
     <string name="unit_gigafarad">Gigafarad</string>
     <string name="unit_gigafarad_short">GF</string>
-    <string name="unit_gigajoule">Megajoule</string>
-    <string name="unit_gigajoule_short">MJ</string>
+    <string name="unit_gigajoule">Gigajoule</string>
+    <string name="unit_gigajoule_short">GJ</string>
     <string name="unit_gigapascal">Gigapascal</string>
     <string name="unit_gigapascal_short">GPa</string>
     <string name="unit_gigaton">Gigatone di TNT</string>
@@ -752,8 +752,8 @@
     <string name="unit_megabyte_short">MB</string>
     <string name="unit_megafarad">Megafarad</string>
     <string name="unit_megafarad_short">MF</string>
-    <string name="unit_megajoule">Gigajoule</string>
-    <string name="unit_megajoule_short">GJ</string>
+    <string name="unit_megajoule">Megajoule</string>
+    <string name="unit_megajoule_short">MJ</string>
     <string name="unit_megaparsec">Megaparsec</string>
     <string name="unit_megaparsec_short">Mpc</string>
     <string name="unit_megapascal">Megapascal</string>

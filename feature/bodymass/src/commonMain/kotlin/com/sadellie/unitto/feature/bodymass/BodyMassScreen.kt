@@ -47,10 +47,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.DrawerButton
@@ -81,7 +81,7 @@ internal fun BodyMassRoute(openDrawer: () -> Unit) {
   val viewModel: BodyMassViewModel = metroViewModel()
   LaunchedEffect(Unit) { viewModel.observeInput() }
 
-  when (val uiState = viewModel.uiState.collectAsStateWithLifecycleKMP().value) {
+  when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
     BodyMassUIState.Loading -> EmptyScreen()
     is BodyMassUIState.Ready ->
       BodyMassScreen(

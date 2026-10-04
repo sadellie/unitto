@@ -13,9 +13,10 @@ Module to get data from network. Currently used for currencies only.
 
 graph LR
   subgraph :core
-    :core:data["data"]
     :core:remote["remote"]
+    :core:data["data"]
   end
+  :sharedApp --> :core:remote
   :core:data --> :core:remote
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;

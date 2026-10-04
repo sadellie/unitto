@@ -23,6 +23,7 @@ import android.content.Context
 import com.sadellie.unitto.core.data.TimeZoneDataBindings
 import com.sadellie.unitto.core.data.calculator.CalculatorDataBindings
 import com.sadellie.unitto.core.data.converter.ConverterDataBindings
+import com.sadellie.unitto.core.data.programmer.ProgrammerDataBindings
 import com.sadellie.unitto.core.datastore.AppPrefsRepository
 import com.sadellie.unitto.core.datastore.DataStoreBindings
 import com.sadellie.unitto.core.datastore.ThemePrefsRepository
@@ -49,6 +50,7 @@ class UnittoApplication : Application() {
     [
       DataStoreBindings::class,
       CalculatorDataBindings::class,
+      ProgrammerDataBindings::class,
       ConverterDataBindings::class,
       TimeZoneDataBindings::class,
       RemoteBindings::class,

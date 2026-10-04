@@ -20,6 +20,7 @@ package com.sadellie.unitto.core.ui.datetime
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.intl.Locale
+import co.touchlab.kermit.Logger
 import kotlin.time.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -29,8 +30,14 @@ import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 
-val LocalPlatformDateFormatSettings =
-  staticCompositionLocalOf<PlatformDateFormatSettings> { error("No PlatformDateFormatSettings") }
+val LocalPlatformDateFormatSettings = staticCompositionLocalOf {
+  Logger.e { "Using default PlatformDateFormatSettings" }
+  PlatformDateFormatSettings(
+    is24Hour = true,
+    timeZone = TimeZone.currentSystemDefault(),
+    locale = Locale("en-US"),
+  )
+}
 
 data class PlatformDateFormatSettings(
   val is24Hour: Boolean,

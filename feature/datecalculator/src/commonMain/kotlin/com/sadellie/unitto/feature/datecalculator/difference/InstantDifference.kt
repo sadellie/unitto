@@ -33,6 +33,7 @@ internal sealed interface InstantDifference {
     val minutes: Long,
     val sumYears: KBigDecimal,
     val sumMonths: KBigDecimal,
+    val sumWeeks: KBigDecimal,
     val sumDays: KBigDecimal,
     val sumHours: KBigDecimal,
     val sumMinutes: KBigDecimal,
@@ -69,6 +70,7 @@ internal fun Instant.difference(
     minutes = period.minutes.toLong(),
     sumYears = epSeconds.divide(secondsInYear, scale, KRoundingMode.HALF_EVEN),
     sumMonths = epSeconds.divide(secondsInMonth, scale, KRoundingMode.HALF_EVEN),
+    sumWeeks = epSeconds.divide(secondsInWeek, scale, KRoundingMode.HALF_EVEN),
     sumDays = epSeconds.divide(secondsInDay, scale, KRoundingMode.HALF_EVEN),
     sumHours = epSeconds.divide(secondsInHour, scale, KRoundingMode.HALF_EVEN),
     sumMinutes = epSeconds.divide(secondsInMinute, scale, KRoundingMode.HALF_EVEN),
@@ -77,6 +79,7 @@ internal fun Instant.difference(
 
 private val secondsInYear by lazy { KBigDecimal("31536000") }
 private val secondsInMonth by lazy { KBigDecimal("2628000") }
+private val secondsInWeek by lazy { KBigDecimal("604800") }
 private val secondsInDay by lazy { KBigDecimal("86400") }
 private val secondsInHour by lazy { KBigDecimal("3600") }
 private val secondsInMinute by lazy { KBigDecimal("60") }

@@ -37,6 +37,10 @@ actual class DatabaseBindings {
     database.calculatorHistoryDao()
 
   @Provides
+  fun provideProgrammerHistoryDao(database: UnittoDatabase): ProgrammerHistoryDao =
+    database.programmerHistoryDao()
+
+  @Provides
   fun provideCurrencyRatesDao(database: UnittoDatabase): CurrencyRatesDao =
     database.currencyRatesDao()
 }

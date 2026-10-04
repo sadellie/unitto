@@ -18,14 +18,19 @@
 
 package com.sadellie.unitto.core.data.calculator
 
+import com.sadellie.unitto.core.data.CalculatorHistoryRepository
 import com.sadellie.unitto.core.database.CalculatorHistoryDao
 import com.sadellie.unitto.core.database.DatabaseBindings
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.Qualifier
+
+@Qualifier annotation class Calculator
 
 @BindingContainer(includes = [DatabaseBindings::class])
 object CalculatorDataBindings {
   @Provides
+  @Calculator
   fun provideCalculatorHistoryRepository(
     calculatorHistoryDao: CalculatorHistoryDao
   ): CalculatorHistoryRepository =

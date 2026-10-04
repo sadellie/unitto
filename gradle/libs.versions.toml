@@ -1,6 +1,6 @@
 [versions]
-versionCode = "78"
-versionName = "Unbleached silk 78"
+versionCode = "79"
+versionName = "Unbleached silk 79"
 
 # https://mvnrepository.com/artifact/androidx.browser/browser
 androidxBrowserBrowser = "1.10.0"

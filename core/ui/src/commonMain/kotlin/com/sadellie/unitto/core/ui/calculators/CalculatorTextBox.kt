@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.calculator.components
+package com.sadellie.unitto.core.ui.calculators
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,9 +27,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
@@ -38,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
@@ -47,21 +45,28 @@ import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
 import com.sadellie.unitto.core.ui.textfield.ExpressionTextField
 import com.sadellie.unitto.core.ui.textfield.SimpleTextField
-import com.sadellie.unitto.feature.calculator.CalculationResult
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.calculator_divide_by_zero_error
 import unitto.core.common.generated.resources.common_error
 
+sealed interface CalculationResult {
+  data class Success(val text: String) : CalculationResult
+
+  data object Empty : CalculationResult
+
+  data object DivideByZeroError : CalculationResult
+
+  data object Error : CalculationResult
+}
+
 @Composable
 fun TextBox(
   modifier: Modifier,
   formatterSymbols: FormatterSymbols,
-  state: TextFieldState,
+  input: @Composable () -> Unit,
   output: CalculationResult,
-  onEnter: () -> Unit,
   showHandle: Boolean,
-  onHardwareInput: (() -> Unit)?,
 ) {
   Column(
     modifier =
@@ -79,24 +84,19 @@ fun TextBox(
         .padding(top = Sizes.extraSmall),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    ExpressionTextField(
-      modifier = Modifier.weight(INPUT_WEIGHT).fillMaxWidth().padding(horizontal = Sizes.small),
-      state = state,
-      minRatio = 0.5f,
-      formatterSymbols = formatterSymbols,
-      textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-      keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-      onKeyboardAction =
-        KeyboardActionHandler {
-          onEnter()
-          it()
-        },
-      onHardwareInput = onHardwareInput,
-    )
+    Box(
+      Modifier.weight(CalculatorTextBoxDefaults.INPUT_WEIGHT)
+        .fillMaxWidth()
+        .padding(horizontal = Sizes.small)
+    ) {
+      input()
+    }
     if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
       CalculationResultTextField(
         modifier =
-          Modifier.weight(CALCULATION_WEIGHT).fillMaxWidth().padding(horizontal = Sizes.small),
+          Modifier.weight(CalculatorTextBoxDefaults.CALCULATION_WEIGHT)
+            .fillMaxWidth()
+            .padding(horizontal = Sizes.small),
         output = output,
         formatterSymbols = formatterSymbols,
       )
@@ -124,8 +124,11 @@ private fun CalculationResultTextField(
       ExpressionTextField(
         modifier = modifier,
         state = remember(output) { TextFieldState(output.text) },
-        minRatio = 0.8f,
-        textColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(CALCULATION_ALPHA),
+        minRatio = CalculatorTextBoxDefaults.OUTPUT_TEXT_FIELD_MIN_RATIO,
+        textColor =
+          MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            CalculatorTextBoxDefaults.CALCULATION_ALPHA
+          ),
         formatterSymbols = formatterSymbols,
         readOnly = true,
       )
@@ -133,7 +136,7 @@ private fun CalculationResultTextField(
       SimpleTextField(
         modifier = modifier,
         state = TextFieldState(stringResource(Res.string.calculator_divide_by_zero_error)),
-        minRatio = 0.8f,
+        minRatio = CalculatorTextBoxDefaults.OUTPUT_TEXT_FIELD_MIN_RATIO,
         textColor = MaterialTheme.colorScheme.error,
         readOnly = true,
       )
@@ -141,41 +144,59 @@ private fun CalculationResultTextField(
       SimpleTextField(
         modifier = modifier,
         state = TextFieldState(stringResource(Res.string.common_error)),
-        minRatio = 0.8f,
+        minRatio = CalculatorTextBoxDefaults.OUTPUT_TEXT_FIELD_MIN_RATIO,
         textColor = MaterialTheme.colorScheme.error,
         readOnly = true,
       )
   }
 }
 
-private const val INPUT_WEIGHT = 3f
-private const val CALCULATION_WEIGHT = 2f
-private const val CALCULATION_ALPHA = 0.6f
+data object CalculatorTextBoxDefaults {
+  const val INPUT_WEIGHT = 3f
+  const val CALCULATION_WEIGHT = 2f
+  const val CALCULATION_ALPHA = 0.6f
+  const val INPUT_TEXT_FIELD_MIN_RATIO = 0.25f
+  const val OUTPUT_TEXT_FIELD_MIN_RATIO = 0.35f
+}
 
 @Composable
 @Preview
 private fun PreviewTextBox() {
+  val formatterSymbols = remember { FormatterSymbols(Token.Space, Token.Period, false) }
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token.Space, Token.Comma, false),
-    state = TextFieldState("123456.789"),
+    formatterSymbols = formatterSymbols,
+    input = {
+      ExpressionTextField(
+        modifier = Modifier,
+        state = rememberTextFieldState("Text"),
+        formatterSymbols = formatterSymbols,
+        textColor = MaterialTheme.colorScheme.onSurface,
+        minRatio = 0.5f,
+      )
+    },
     output = CalculationResult.Success("789012.345"),
-    onEnter = {},
     showHandle = true,
-    onHardwareInput = null,
   )
 }
 
 @Composable
 @Preview
 private fun PreviewTextBoxNoHandle() {
+  val formatterSymbols = remember { FormatterSymbols(Token.Space, Token.Period, false) }
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token.Space, Token.Comma, false),
-    state = TextFieldState("123456.789"),
+    formatterSymbols = formatterSymbols,
+    input = {
+      ExpressionTextField(
+        modifier = Modifier,
+        state = rememberTextFieldState("Text"),
+        formatterSymbols = formatterSymbols,
+        textColor = MaterialTheme.colorScheme.onSurface,
+        minRatio = 0.5f,
+      )
+    },
     output = CalculationResult.Success("789012.345"),
-    onEnter = {},
     showHandle = false,
-    onHardwareInput = null,
   )
 }

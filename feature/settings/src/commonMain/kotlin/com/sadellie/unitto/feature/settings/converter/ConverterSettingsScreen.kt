@@ -39,7 +39,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sadellie.unitto.core.common.collectAsStateWithLifecycleKMP
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.designsystem.icons.symbols.DrawAbstract
 import com.sadellie.unitto.core.designsystem.icons.symbols.Rule
@@ -77,7 +77,7 @@ internal fun ConverterSettingsRoute(
   navigateToUnitsGroup: () -> Unit,
 ) {
   val viewModel: ConverterSettingsViewModel = metroViewModel()
-  when (val prefs = viewModel.prefs.collectAsStateWithLifecycleKMP().value) {
+  when (val prefs = viewModel.prefs.collectAsStateWithLifecycle().value) {
     null -> EmptyScreen()
     else -> {
       ConverterSettingsScreen(

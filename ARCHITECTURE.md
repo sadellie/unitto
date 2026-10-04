@@ -56,8 +56,10 @@ graph LR
   :sharedApp --> :core:navigation
   :sharedApp --> :core:database
   :sharedApp --> :core:datastore
+  :sharedApp --> :core:data
   :sharedApp --> :core:designsystem
   :sharedApp --> :core:ui
+  :sharedApp --> :core:remote
   :sharedApp --> :feature:calculator
   :sharedApp --> :feature:converter
   :sharedApp --> :feature:bodymass
@@ -65,16 +67,16 @@ graph LR
   :sharedApp --> :feature:timezone
   :sharedApp --> :feature:programmer
   :sharedApp --> :feature:settings
-  :androidApp --> :sharedApp
-  :androidApp --> :core:themmo
-  :androidApp --> :core:datastore
-  :androidApp --> :core:designsystem
-  :androidApp --> :core:navigation
   :core:datastore --> :core:common
   :core:datastore --> :core:model
   :core:datastore --> :core:themmo
   :core:datastore --> :core:data
   :core:datastore --> :core:navigation
+  :androidApp --> :sharedApp
+  :androidApp --> :core:themmo
+  :androidApp --> :core:datastore
+  :androidApp --> :core:designsystem
+  :androidApp --> :core:navigation
   :feature:bodymass --> :core:common
   :feature:bodymass --> :core:ui
   :feature:bodymass --> :core:navigation
@@ -129,14 +131,14 @@ graph LR
   :feature:glance --> :core:navigation
   :feature:glance --> :core:themmo
   :feature:glance --> :core:ui
+  :core:backup --> :core:database
+  :core:backup --> :core:datastore
   :feature:programmer --> :core:common
   :feature:programmer --> :core:ui
   :feature:programmer --> :core:navigation
   :feature:programmer --> :core:designsystem
   :feature:programmer --> :core:datastore
   :feature:programmer --> :core:evaluatto
-  :core:backup --> :core:database
-  :core:backup --> :core:datastore
   :core:navigation --> :core:common
   :core:navigation --> :core:designsystem
 ```

@@ -31,8 +31,8 @@ graph LR
   end
   :feature:settings --> :core:navigation
   :sharedApp --> :core:navigation
-  :androidApp --> :core:navigation
   :core:datastore --> :core:navigation
+  :androidApp --> :core:navigation
   :feature:bodymass --> :core:navigation
   :feature:calculator --> :core:navigation
   :feature:converter --> :core:navigation

@@ -18,10 +18,10 @@
 
 package io.github.sadellie.evaluatto.ast
 
+import com.sadellie.unitto.core.common.BaseNumber
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isLessThan
-import io.github.sadellie.evaluatto.programmer.BaseNumber
 
 internal interface NumberNode : AtomicNode {
   override val token: Token.Number

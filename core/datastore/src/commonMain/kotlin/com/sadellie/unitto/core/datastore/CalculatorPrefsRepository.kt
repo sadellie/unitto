@@ -33,22 +33,15 @@ class CalculatorPrefsRepository(private val source: UserPrefDataSource) {
         additionalButtons =
           it[DatastorePrefKeys.ADDITIONAL_BUTTONS]
             ?: CalculatorPreferences.DEFAULT_ADDITIONAL_BUTTONS,
-        partialHistoryView =
-          it[DatastorePrefKeys.PARTIAL_HISTORY_VIEW]
-            ?: CalculatorPreferences.DEFAULT_PARTIAL_HISTORY_VIEW,
-        steppedPartialHistoryView =
-          it[DatastorePrefKeys.STEPPED_PARTIAL_HISTORY_VIEW]
-            ?: CalculatorPreferences.DEFAULT_STEPPED_PARTIAL_HISTORY_VIEW,
         initialPartialHistoryView =
           it[DatastorePrefKeys.INITIAL_PARTIAL_HISTORY_VIEW]
             ?: CalculatorPreferences.DEFAULT_INITIAL_PARTIAL_HISTORY_VIEW,
-        openHistoryViewButton =
-          it[DatastorePrefKeys.OPEN_HISTORY_VIEW_BUTTON]
-            ?: CalculatorPreferences.DEFAULT_OPEN_HISTORY_VIEW_BUTTON,
         constantCalculation =
-          it[DatastorePrefKeys.CONSTANT_CALCULATION] ?: CalculatorPreferences.DEFAULT_CONSTANT_CALCULATION,
+          it[DatastorePrefKeys.CONSTANT_CALCULATION]
+            ?: CalculatorPreferences.DEFAULT_CONSTANT_CALCULATION,
         fractionalOutput =
-          it[DatastorePrefKeys.FRACTIONAL_OUTPUT] ?: CalculatorPreferences.DEFAULT_FRACTIONAL_OUTPUT,
+          it[DatastorePrefKeys.FRACTIONAL_OUTPUT]
+            ?: CalculatorPreferences.DEFAULT_FRACTIONAL_OUTPUT,
       )
     }
 
@@ -68,18 +61,6 @@ class CalculatorPrefsRepository(private val source: UserPrefDataSource) {
     it[DatastorePrefKeys.INITIAL_PARTIAL_HISTORY_VIEW] = initialPartialHistoryView
   }
 
-  suspend fun updatePartialHistoryView(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.PARTIAL_HISTORY_VIEW] = enabled
-  }
-
-  suspend fun updateSteppedPartialHistoryView(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.STEPPED_PARTIAL_HISTORY_VIEW] = enabled
-  }
-
-  suspend fun updateOpenHistoryViewButton(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.OPEN_HISTORY_VIEW_BUTTON] = enabled
-  }
-
   suspend fun updateFractionalOutput(enabled: Boolean) = source.edit { preferences ->
     preferences[DatastorePrefKeys.FRACTIONAL_OUTPUT] = enabled
   }
@@ -93,30 +74,16 @@ data class CalculatorPreferences(
   val radianMode: Boolean,
   val inverseMode: Boolean,
   val additionalButtons: Boolean,
-  val partialHistoryView: Boolean,
-  val steppedPartialHistoryView: Boolean,
   val initialPartialHistoryView: Boolean,
-  val openHistoryViewButton: Boolean,
   val constantCalculation: Boolean,
   val fractionalOutput: Boolean,
 ) {
   internal companion object Defaults {
     const val DEFAULT_RADIAN_MODE: Boolean = true
-
     const val DEFAULT_INVERSE_MODE: Boolean = false
-
     const val DEFAULT_ADDITIONAL_BUTTONS: Boolean = false
-
-    const val DEFAULT_PARTIAL_HISTORY_VIEW: Boolean = true
-
-    const val DEFAULT_STEPPED_PARTIAL_HISTORY_VIEW: Boolean = true
-
     const val DEFAULT_INITIAL_PARTIAL_HISTORY_VIEW: Boolean = false
-
-    const val DEFAULT_OPEN_HISTORY_VIEW_BUTTON: Boolean = false
-
     const val DEFAULT_CONSTANT_CALCULATION: Boolean = false
-
     const val DEFAULT_FRACTIONAL_OUTPUT: Boolean = true
   }
 }

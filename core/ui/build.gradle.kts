@@ -36,6 +36,7 @@ kotlin {
     implementation(libs.org.jetbrains.androidx.lifecycle.lifecycle.viewmodel.savedstate)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.datetime)
     implementation(libs.co.touchlab.kermit)
+    implementation(libs.androidx.paging.paging.compose)
   }
   sourceSets.androidMain.dependencies {
     implementation(libs.org.jetbrains.compose.ui.ui.tooling)

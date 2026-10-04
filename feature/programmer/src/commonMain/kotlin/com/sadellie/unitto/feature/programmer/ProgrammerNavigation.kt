@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.sadellie.unitto.feature.calculator
+package com.sadellie.unitto.feature.programmer
 
-internal enum class DragState {
-  CLOSED,
-  PARTIAL,
-  OPEN,
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
+import com.sadellie.unitto.core.navigation.LocalNavigator
+import com.sadellie.unitto.core.navigation.ProgrammerStartRoute
+
+fun EntryProviderScope<NavKey>.programmerNavigation() {
+  entry<ProgrammerStartRoute> {
+    val navigator = LocalNavigator.current
+    ProgrammerRoute(openDrawer = navigator::openDrawer)
+  }
 }

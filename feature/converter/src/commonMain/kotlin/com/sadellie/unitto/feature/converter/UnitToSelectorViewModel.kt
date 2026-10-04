@@ -63,7 +63,8 @@ class UnitToSelectorViewModel(
 
   private var _searchJob: Job? = null
   private val _query = TextFieldState()
-  private val _searchResults = MutableStateFlow<Map<UnitGroup, List<UnitSearchResultItem>>?>(null)
+  private val _searchResults =
+    MutableStateFlow(UnitSearchState(units = emptyMap(), isLoading = true))
   private val _selectedUnitGroup = MutableStateFlow(args.unitGroup)
 
   internal val unitToUIState: StateFlow<UnitSelectorUIState> =
@@ -76,7 +77,7 @@ class UnitToSelectorViewModel(
           unitFrom = unitsRepo.getById(args.unitFromId),
           unitTo = unitsRepo.getById(args.unitToId),
           showFavoritesOnly = converterPrefs.favoritesOnly,
-          units = searchResults,
+          searchState = searchResults,
           sorting = converterPrefs.sorting,
           scale = formatterPrefs.digitsPrecision,
           outputFormat = formatterPrefs.outputFormat,
@@ -113,6 +114,9 @@ class UnitToSelectorViewModel(
   private fun onSearch(prefs: ConverterPreferences, query: String, selectedGroupValue: UnitGroup) {
     _searchJob?.cancel()
     _searchJob = viewModelScope.launch {
+      _searchResults.update {
+        it.copy(isLoading = true)
+      }
       val result =
         unitsRepo.filterUnitsAndBatchConvert(
           query = query,
@@ -125,7 +129,9 @@ class UnitToSelectorViewModel(
           apiUrl = prefs.customApiUrl,
         )
 
-      _searchResults.update { result }
+      _searchResults.update {
+        it.copy(units = result, isLoading = false)
+      }
     }
   }
 

@@ -18,8 +18,8 @@
 
 package com.sadellie.unitto.feature.programmer
 
-import io.github.sadellie.evaluatto.programmer.BaseNumber
-import io.github.sadellie.evaluatto.programmer.DataUnit
+import com.sadellie.unitto.core.common.BaseNumber
+import com.sadellie.unitto.core.common.DataUnit
 
 @Suppress("EmptyRange")
 internal fun convertExpressionBase(
@@ -38,12 +38,11 @@ internal fun convertExpressionBase(
         i++
       }
       val numStr = expression.substring(start until i)
-      val converted =
-        runCatching {
-            val baseNumber = BaseNumber(symbolic = numStr, base = fromRadix, dataUnit = dataUnit)
-            baseNumber.toString(toRadix).uppercase()
-          }
-          .getOrDefault(numStr.uppercase())
+      val converted = runCatching {
+        val baseNumber = BaseNumber(symbolic = numStr, base = fromRadix, dataUnit = dataUnit)
+        baseNumber.toString(toRadix).uppercase()
+      }
+        .getOrDefault(numStr.uppercase())
 
       result.append(converted)
     } else {
