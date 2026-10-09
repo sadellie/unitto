@@ -24,6 +24,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -163,6 +164,7 @@ private fun SettingsScreen(
         Modifier.fillMaxSize()
           .verticalScroll(rememberScrollState())
           .padding(padding)
+          .consumeWindowInsets(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {

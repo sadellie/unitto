@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -87,7 +88,7 @@ private fun ConverterScreen(
     is ConverterUIState.NumberBase ->
       UnitConverterTopBar(openDrawer) {
         NumberBase(
-          modifier = Modifier.padding(it),
+          modifier = Modifier.padding(it).consumeWindowInsets(it),
           uiState = uiState,
           navigateToLeftScreen = navigateToLeftScreen,
           swapUnits = swapUnits,
@@ -98,7 +99,7 @@ private fun ConverterScreen(
     is ConverterUIState.Default ->
       UnitConverterTopBar(openDrawer) {
         ConverterDefault(
-          modifier = Modifier.padding(it),
+          modifier = Modifier.padding(it).consumeWindowInsets(it),
           uiState = uiState,
           navigateToLeftScreen = navigateToLeftScreen,
           swapUnits = swapUnits,

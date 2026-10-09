@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.settings.calculator
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
@@ -40,8 +41,8 @@ import com.sadellie.unitto.core.ui.ListArrangement
 import com.sadellie.unitto.core.ui.ListItemExpressive
 import com.sadellie.unitto.core.ui.NavigateUpButton
 import com.sadellie.unitto.core.ui.ScaffoldWithLargeTopBar
+import com.sadellie.unitto.core.ui.firstShapes
 import com.sadellie.unitto.core.ui.lastShapes
-import com.sadellie.unitto.core.ui.middleShapes
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
@@ -81,6 +82,7 @@ private fun CalculatorSettingsScreen(
     Column(
       modifier =
         Modifier.padding(padding)
+          .consumeWindowInsets(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
@@ -90,7 +92,7 @@ private fun CalculatorSettingsScreen(
         supportingText = stringResource(Res.string.settings_fractional_output_support),
         switchState = prefs.fractionalOutput,
         onSwitchChange = updateFractionalOutput,
-        shapes = ListItemDefaults.middleShapes,
+        shapes = ListItemDefaults.firstShapes,
       )
 
       ListItemExpressive(

@@ -42,6 +42,7 @@ internal sealed interface ProgrammerScreenUIState {
     val initialPartialHistoryView: Boolean,
     val openHistoryViewButton: Boolean,
     val history: Flow<PagingData<CalculatorHistoryListItem>>,
+    val topToBottom: Boolean,
   ) : ProgrammerScreenUIState
 
   data object Loading : ProgrammerScreenUIState

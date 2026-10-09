@@ -28,6 +28,7 @@ import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -81,7 +82,6 @@ import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.feature.timezone.components.FavoriteTimeZoneItem
 import com.sadellie.unitto.feature.timezone.components.UserTimeZone
 import dev.zacsweers.metrox.viewmodel.metroViewModel
-import java.time.ZonedDateTime
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -94,6 +94,7 @@ import unitto.core.common.generated.resources.common_label
 import unitto.core.common.generated.resources.common_ok
 import unitto.core.common.generated.resources.time_zone_add_title
 import unitto.core.common.generated.resources.time_zone_title
+import java.time.ZonedDateTime
 
 @Composable
 internal fun TimeZoneRoute(openDrawer: () -> Unit, navigateToAddTimeZone: (ZonedDateTime) -> Unit) {
@@ -178,7 +179,7 @@ private fun TimeZoneScreen(
   ) { padding ->
     LazyColumn(
       state = lazyListState,
-      modifier = Modifier.fillMaxSize(),
+      modifier = Modifier.consumeWindowInsets(padding).fillMaxSize(),
       contentPadding =
         padding + PaddingValues(start = Sizes.large, end = Sizes.large, bottom = 124.dp),
       verticalArrangement = ListItemDefaults.ListArrangement,

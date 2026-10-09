@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.datastore
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -27,47 +28,51 @@ class CalculatorPrefsRepository(private val source: UserPrefDataSource) {
   val prefs: Flow<CalculatorPreferences> =
     source.rawData.map {
       CalculatorPreferences(
-        radianMode = it[DatastorePrefKeys.RADIAN_MODE] ?: CalculatorPreferences.DEFAULT_RADIAN_MODE,
-        inverseMode =
-          it[DatastorePrefKeys.INVERSE_MODE] ?: CalculatorPreferences.DEFAULT_INVERSE_MODE,
+        radianMode = it[radianModeKey] ?: CalculatorPreferences.DEFAULT_RADIAN_MODE,
+        inverseMode = it[inverseModeKey] ?: CalculatorPreferences.DEFAULT_INVERSE_MODE,
         additionalButtons =
-          it[DatastorePrefKeys.ADDITIONAL_BUTTONS]
-            ?: CalculatorPreferences.DEFAULT_ADDITIONAL_BUTTONS,
+          it[additionalButtonsKey] ?: CalculatorPreferences.DEFAULT_ADDITIONAL_BUTTONS,
         initialPartialHistoryView =
-          it[DatastorePrefKeys.INITIAL_PARTIAL_HISTORY_VIEW]
+          it[initialPartialHistoryViewKey]
             ?: CalculatorPreferences.DEFAULT_INITIAL_PARTIAL_HISTORY_VIEW,
         constantCalculation =
-          it[DatastorePrefKeys.CONSTANT_CALCULATION]
-            ?: CalculatorPreferences.DEFAULT_CONSTANT_CALCULATION,
+          it[constantCalculationKey] ?: CalculatorPreferences.DEFAULT_CONSTANT_CALCULATION,
         fractionalOutput =
-          it[DatastorePrefKeys.FRACTIONAL_OUTPUT]
-            ?: CalculatorPreferences.DEFAULT_FRACTIONAL_OUTPUT,
+          it[fractionalOutputKey] ?: CalculatorPreferences.DEFAULT_FRACTIONAL_OUTPUT,
       )
     }
 
   suspend fun updateRadianMode(radianMode: Boolean) = source.edit {
-    it[DatastorePrefKeys.RADIAN_MODE] = radianMode
+    it[radianModeKey] = radianMode
   }
 
   suspend fun updateAdditionalButtons(additionalButtons: Boolean) = source.edit {
-    it[DatastorePrefKeys.ADDITIONAL_BUTTONS] = additionalButtons
+    it[additionalButtonsKey] = additionalButtons
   }
 
   suspend fun updateInverseMode(inverseMode: Boolean) = source.edit {
-    it[DatastorePrefKeys.INVERSE_MODE] = inverseMode
+    it[inverseModeKey] = inverseMode
   }
 
   suspend fun updateInitialPartialHistoryView(initialPartialHistoryView: Boolean) = source.edit {
-    it[DatastorePrefKeys.INITIAL_PARTIAL_HISTORY_VIEW] = initialPartialHistoryView
+    it[initialPartialHistoryViewKey] = initialPartialHistoryView
   }
 
   suspend fun updateFractionalOutput(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.FRACTIONAL_OUTPUT] = enabled
+    preferences[fractionalOutputKey] = enabled
   }
 
   suspend fun updateConstantCalculation(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.CONSTANT_CALCULATION] = enabled
+    preferences[constantCalculationKey] = enabled
   }
+
+  private val radianModeKey = booleanPreferencesKey(PrefKeys.RADIAN_MODE_PREF_KEY)
+  private val fractionalOutputKey = booleanPreferencesKey(PrefKeys.FRACTIONAL_OUTPUT_PREF_KEY)
+  private val additionalButtonsKey = booleanPreferencesKey(PrefKeys.ADDITIONAL_BUTTONS_PREF_KEY)
+  private val inverseModeKey = booleanPreferencesKey(PrefKeys.INVERSE_MODE_PREF_KEY)
+  private val constantCalculationKey = booleanPreferencesKey(PrefKeys.CONSTANT_CALCULATION_PREF_KEY)
+  private val initialPartialHistoryViewKey =
+    booleanPreferencesKey(PrefKeys.INITIAL_PARTIAL_HISTORY_VIEW_PREF_KEY)
 }
 
 data class CalculatorPreferences(

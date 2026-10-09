@@ -111,7 +111,7 @@ class CalculatorViewModel(
         _formatterPrefs,
         keypadPrefsRepository.prefs,
         calculatorHistoryPrefsRepository.prefs,
-      ) { result, calculatorPrefs, formatterPrefs, displayPrefs, calculatorHistoryPrefs ->
+      ) { result, calculatorPrefs, formatterPrefs, keypadPrefs, calculatorHistoryPrefs ->
         calculatorPrefs ?: return@combine CalculatorUIState.Loading
         formatterPrefs ?: return@combine CalculatorUIState.Loading
 
@@ -123,14 +123,15 @@ class CalculatorViewModel(
           outputFormat = formatterPrefs.outputFormat,
           formatterSymbols = formatterPrefs.formatterSymbols,
           history = historyFlow,
-          middleZero = displayPrefs.middleZero,
-          acButton = displayPrefs.acButton,
+          middleZero = keypadPrefs.middleZero,
+          acButton = keypadPrefs.acButton,
           additionalButtons = calculatorPrefs.additionalButtons,
           inverseMode = calculatorPrefs.inverseMode,
           partialHistoryView = calculatorHistoryPrefs.partialHistoryView,
           steppedPartialHistoryView = calculatorHistoryPrefs.steppedPartialHistoryView,
           initialPartialHistoryView = calculatorPrefs.initialPartialHistoryView,
           openHistoryViewButton = calculatorHistoryPrefs.openHistoryViewButton,
+          topToBottom = keypadPrefs.topToBottom,
         )
       }
       .stateIn(viewModelScope, CalculatorUIState.Loading)

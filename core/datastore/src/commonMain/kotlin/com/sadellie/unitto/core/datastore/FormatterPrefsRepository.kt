@@ -18,6 +18,9 @@
 
 package com.sadellie.unitto.core.datastore
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.core.common.FormatterSymbols
 import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
@@ -29,25 +32,19 @@ class FormatterPrefsRepository(private val source: UserPrefDataSource) {
   val prefs =
     source.rawData.map {
       val grouping =
-        it[DatastorePrefKeys.FORMATTER_GROUPING]
-          ?: FormatterPreferences.DEFAULT_FORMATTER_SYMBOLS_GROUPING.symbol
+        it[formatterGroupingKey] ?: FormatterPreferences.DEFAULT_FORMATTER_SYMBOLS_GROUPING.symbol
       val fractional =
-        it[DatastorePrefKeys.FORMATTER_FRACTIONAL]
-          ?: FormatterPreferences.DEFAULT_FORMATTER_SYMBOLS_FRACTIONAL.symbol
-      val indian =
-        it[DatastorePrefKeys.FORMATTER_INDIAN]
-          ?: FormatterPreferences.DEFAULT_FORMATTER_SYMBOLS_INDIAN
+        it[formatterFractionKey] ?: FormatterPreferences.DEFAULT_FORMATTER_SYMBOLS_FRACTIONAL.symbol
+      val indian = it[formatterIndianKey] ?: FormatterPreferences.DEFAULT_FORMATTER_SYMBOLS_INDIAN
       FormatterPreferences(
         formatterSymbols = produceFormatterSymbols(grouping, fractional, indian),
-        digitsPrecision =
-          it[DatastorePrefKeys.DIGITS_PRECISION] ?: FormatterPreferences.DEFAULT_DIGITS_PRECISION,
-        outputFormat =
-          it[DatastorePrefKeys.OUTPUT_FORMAT] ?: FormatterPreferences.DEFAULT_OUTPUT_FORMAT,
+        digitsPrecision = it[digitsPrecisionKey] ?: FormatterPreferences.DEFAULT_DIGITS_PRECISION,
+        outputFormat = it[outputFormatKey] ?: FormatterPreferences.DEFAULT_OUTPUT_FORMAT,
       )
     }
 
   suspend fun updateDigitsPrecision(precision: Int) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.DIGITS_PRECISION] = precision
+    preferences[digitsPrecisionKey] = precision
   }
 
   suspend fun updateFormatterSymbols(
@@ -58,15 +55,21 @@ class FormatterPrefsRepository(private val source: UserPrefDataSource) {
     // Grouping and fractional symbols are always different
     if (grouping == fractional) return
     source.edit { preferences ->
-      preferences[DatastorePrefKeys.FORMATTER_GROUPING] = grouping.symbol
-      preferences[DatastorePrefKeys.FORMATTER_FRACTIONAL] = fractional.symbol
-      preferences[DatastorePrefKeys.FORMATTER_INDIAN] = indian
+      preferences[formatterGroupingKey] = grouping.symbol
+      preferences[formatterFractionKey] = fractional.symbol
+      preferences[formatterIndianKey] = indian
     }
   }
 
   suspend fun updateOutputFormat(outputFormat: Int) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.OUTPUT_FORMAT] = outputFormat
+    preferences[outputFormatKey] = outputFormat
   }
+
+  private val digitsPrecisionKey = intPreferencesKey(PrefKeys.DIGITS_PRECISION_PREF_KEY)
+  private val formatterGroupingKey = stringPreferencesKey(PrefKeys.FORMATTER_GROUPING_PREF_KEY)
+  private val formatterFractionKey = stringPreferencesKey(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY)
+  private val formatterIndianKey = booleanPreferencesKey(PrefKeys.FORMATTER_INDIAN_PREF_KEY)
+  private val outputFormatKey = intPreferencesKey(PrefKeys.OUTPUT_FORMAT_PREF_KEY)
 }
 
 data class FormatterPreferences(
@@ -76,18 +79,14 @@ data class FormatterPreferences(
 ) {
   internal companion object Defaults {
     val DEFAULT_FORMATTER_SYMBOLS_GROUPING: Token.Formatter = Token.Space
-
     val DEFAULT_FORMATTER_SYMBOLS_FRACTIONAL: Token.Formatter = Token.Period
-
     const val DEFAULT_FORMATTER_SYMBOLS_INDIAN: Boolean = false
-
     const val DEFAULT_DIGITS_PRECISION: Int = 3
-
     const val DEFAULT_OUTPUT_FORMAT: Int = OutputFormat.PLAIN
   }
 }
 
-internal fun produceFormatterSymbols(grouping: String?, fractional: String?, indian: Boolean?) =
+private fun produceFormatterSymbols(grouping: String?, fractional: String?, indian: Boolean?) =
   if (grouping == null || fractional == null) {
     FormatterSymbols(
       FormatterPreferences.DEFAULT_FORMATTER_SYMBOLS_GROUPING,

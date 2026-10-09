@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.datastore
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.map
 
@@ -27,28 +28,33 @@ class CalculatorHistoryPrefsRepository(private val source: UserPrefDataSource) {
     source.rawData.map {
       CalculatorHistoryPreferences(
         partialHistoryView =
-          it[DatastorePrefKeys.PARTIAL_HISTORY_VIEW]
-            ?: CalculatorHistoryPreferences.DEFAULT_PARTIAL_HISTORY_VIEW,
+          it[partialHistoryViewKey] ?: CalculatorHistoryPreferences.DEFAULT_PARTIAL_HISTORY_VIEW,
         steppedPartialHistoryView =
-          it[DatastorePrefKeys.STEPPED_PARTIAL_HISTORY_VIEW]
+          it[steppedPartialHistoryViewKey]
             ?: CalculatorHistoryPreferences.DEFAULT_STEPPED_PARTIAL_HISTORY_VIEW,
         openHistoryViewButton =
-          it[DatastorePrefKeys.OPEN_HISTORY_VIEW_BUTTON]
+          it[openHistoryViewButtonKey]
             ?: CalculatorHistoryPreferences.DEFAULT_OPEN_HISTORY_VIEW_BUTTON,
       )
     }
 
   suspend fun updatePartialHistoryView(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.PARTIAL_HISTORY_VIEW] = enabled
+    preferences[partialHistoryViewKey] = enabled
   }
 
   suspend fun updateSteppedPartialHistoryView(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.STEPPED_PARTIAL_HISTORY_VIEW] = enabled
+    preferences[steppedPartialHistoryViewKey] = enabled
   }
 
   suspend fun updateOpenHistoryViewButton(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.OPEN_HISTORY_VIEW_BUTTON] = enabled
+    preferences[openHistoryViewButtonKey] = enabled
   }
+
+  private val partialHistoryViewKey = booleanPreferencesKey(PrefKeys.PARTIAL_HISTORY_VIEW_PREF_KEY)
+  private val steppedPartialHistoryViewKey =
+    booleanPreferencesKey(PrefKeys.STEPPED_PARTIAL_HISTORY_VIEW_PREF_KEY)
+  private val openHistoryViewButtonKey =
+    booleanPreferencesKey(PrefKeys.OPEN_HISTORY_VIEW_BUTTON_PREF_KEY)
 }
 
 data class CalculatorHistoryPreferences(

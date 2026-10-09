@@ -28,4 +28,5 @@ enum class MonetMode {
   Monochrome,
   Fidelity,
   Content,
+  Cmf,
 }

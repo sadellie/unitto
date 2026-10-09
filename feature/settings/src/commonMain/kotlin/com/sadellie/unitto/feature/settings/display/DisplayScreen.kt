@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -54,6 +55,7 @@ import com.sadellie.unitto.core.designsystem.icons.iconpack.ClearBold
 import com.sadellie.unitto.core.designsystem.icons.iconpack.IconPack
 import com.sadellie.unitto.core.designsystem.icons.symbols.Colorize
 import com.sadellie.unitto.core.designsystem.icons.symbols.DarkModeFill
+import com.sadellie.unitto.core.designsystem.icons.symbols.Dialpad
 import com.sadellie.unitto.core.designsystem.icons.symbols.ExposureZero
 import com.sadellie.unitto.core.designsystem.icons.symbols.History
 import com.sadellie.unitto.core.designsystem.icons.symbols.Language
@@ -87,6 +89,10 @@ import unitto.core.common.generated.resources.settings_additional
 import unitto.core.common.generated.resources.settings_amoled_dark
 import unitto.core.common.generated.resources.settings_amoled_dark_support
 import unitto.core.common.generated.resources.settings_auto
+import unitto.core.common.generated.resources.settings_button_order
+import unitto.core.common.generated.resources.settings_button_order_bottom_to_top
+import unitto.core.common.generated.resources.settings_button_order_support
+import unitto.core.common.generated.resources.settings_button_order_top_to_bottom
 import unitto.core.common.generated.resources.settings_color_theme
 import unitto.core.common.generated.resources.settings_color_theme_support
 import unitto.core.common.generated.resources.settings_dark_mode
@@ -153,6 +159,7 @@ internal fun DisplayRoute(
     updateOpenHistoryViewButton = viewModel::updateOpenHistoryViewButton,
     updatePartialHistoryView = viewModel::updatePartialHistoryView,
     updateSteppedPartialHistoryView = viewModel::updateSteppedPartialHistoryView,
+    updateTopToBottom = viewModel::updateTopToBottom,
   )
 }
 
@@ -173,6 +180,7 @@ private fun DisplayScreen(
   updateOpenHistoryViewButton: (Boolean) -> Unit,
   updatePartialHistoryView: (Boolean) -> Unit,
   updateSteppedPartialHistoryView: (Boolean) -> Unit,
+  updateTopToBottom: (Boolean) -> Unit,
 ) {
   ScaffoldWithLargeTopBar(
     title = stringResource(Res.string.settings_display),
@@ -183,7 +191,8 @@ private fun DisplayScreen(
         Modifier.fillMaxSize()
           .verticalScroll(rememberScrollState())
           .padding(paddingValues)
-          .padding(horizontal = Sizes.large),
+          .consumeWindowInsets(paddingValues)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       ThemingModeSelector(
@@ -274,7 +283,26 @@ private fun DisplayScreen(
         supportingText = stringResource(Res.string.settings_middle_zero_support),
         switchState = keypadPrefs.middleZero,
         onSwitchChange = updateMiddleZero,
+        shapes = ListItemDefaults.middleShapes,
+      )
+      ListItemExpressive(
         shapes = ListItemDefaults.lastShapes,
+        leadingContent = {
+          Icon(Symbols.Dialpad, stringResource(Res.string.settings_button_order))
+        },
+        headlineContent = {
+          Text(stringResource(Res.string.settings_button_order))
+        },
+        supportingContent = {
+          Text(stringResource(Res.string.settings_button_order_support))
+        },
+        secondaryContent = {
+          KeypadTopToBottomFormatSelector(
+            modifier = Modifier.fillMaxWidth(),
+            onChange = updateTopToBottom,
+            topToBottom = keypadPrefs.topToBottom,
+          )
+        },
       )
 
       ListHeader(stringResource(Res.string.settings_additional))
@@ -440,6 +468,33 @@ private fun StyleSelector(
 @Composable @Stable internal expect fun isDynamicThemingSupported(): Boolean
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun KeypadTopToBottomFormatSelector(
+  modifier: Modifier,
+  onChange: (Boolean) -> Unit,
+  topToBottom: Boolean,
+) {
+  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.small)) {
+    ToggleButton(
+      onCheckedChange = { onChange(true) },
+      checked = topToBottom,
+      modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
+    ) {
+      Text(stringResource(Res.string.settings_button_order_top_to_bottom))
+    }
+    ToggleButton(
+      onCheckedChange = { onChange(false) },
+      checked = !topToBottom,
+      modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
+    ) {
+      Text(stringResource(Res.string.settings_button_order_bottom_to_top))
+    }
+  }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Preview
 @Composable
 private fun Preview() {
@@ -449,7 +504,7 @@ private fun Preview() {
   ) { themmoController ->
     DisplayScreen(
       navigateUp = {},
-      keypadPrefs = KeypadPreferences(middleZero = true, acButton = true),
+      keypadPrefs = KeypadPreferences(middleZero = true, acButton = true, topToBottom = false),
       calculatorHistoryPrefs =
         CalculatorHistoryPreferences(
           partialHistoryView = true,
@@ -468,6 +523,7 @@ private fun Preview() {
       updateOpenHistoryViewButton = {},
       updatePartialHistoryView = {},
       updateSteppedPartialHistoryView = {},
+      updateTopToBottom = {},
     )
   }
 }

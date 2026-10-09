@@ -21,8 +21,10 @@ package com.sadellie.unitto.feature.bodymass.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +41,9 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.designsystem.shapes.Sizes
+import com.sadellie.unitto.core.designsystem.theme.DarkThemeColors
+import com.sadellie.unitto.core.designsystem.theme.LightThemeColors
+import com.sadellie.unitto.core.designsystem.theme.isDark
 import com.sadellie.unitto.core.ui.textfield.formatExpression
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -59,13 +64,6 @@ internal fun BodyMassResult(
   rangeSuffix: String,
   formatterSymbols: FormatterSymbols,
 ) {
-  val formattedValue =
-    remember(value, formatterSymbols) {
-      value
-        .toFormattedString(BODY_MASS_VALUE_SCALE, OutputFormat.PLAIN)
-        .formatExpression(formatterSymbols)
-    }
-
   val formattedRange =
     remember(range, formatterSymbols, rangeSuffix) {
       val low =
@@ -83,24 +81,12 @@ internal fun BodyMassResult(
   val classification = remember(value) { getBodyMassData(value) }
 
   Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(Sizes.large)) {
-    Column(
-      modifier =
-        Modifier.clip(MaterialTheme.shapes.extraLarge)
-          .background(classification.color)
-          .padding(Sizes.large)
-          .fillMaxWidth()
-    ) {
-      Text(
-        text = stringResource(classification.classification),
-        style = MaterialTheme.typography.displaySmall,
-        color = MaterialTheme.colorScheme.onSecondaryContainer,
-      )
-      Text(
-        text = formattedValue,
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onSecondaryContainer,
-      )
-    }
+    BodyMassBlock(
+      modifier = Modifier.fillMaxWidth(),
+      bodyMassData = classification,
+      value = value,
+      formatterSymbols = formatterSymbols,
+    )
 
     Column(
       modifier =
@@ -123,48 +109,114 @@ internal fun BodyMassResult(
   }
 }
 
+@Composable
+private fun BodyMassBlock(
+  modifier: Modifier,
+  bodyMassData: BodyMassData,
+  value: KBigDecimal,
+  formatterSymbols: FormatterSymbols,
+) {
+  Column(
+    modifier =
+      modifier
+        .clip(MaterialTheme.shapes.extraLarge)
+        .background(bodyMassData.backgroundColor)
+        .padding(Sizes.large)
+  ) {
+    val textColor = bodyMassData.textColor
+    Text(
+      text = stringResource(bodyMassData.classificationLabel),
+      style = MaterialTheme.typography.displaySmall,
+      color = textColor,
+    )
+    val formattedValue =
+      remember(value, formatterSymbols) {
+        value
+          .toFormattedString(BODY_MASS_VALUE_SCALE, OutputFormat.PLAIN)
+          .formatExpression(formatterSymbols)
+      }
+    Text(
+      text = formattedValue,
+      style = MaterialTheme.typography.bodyLarge,
+      color = textColor,
+    )
+  }
+}
+
 @Immutable
 private data class BodyMassData(
   val minValue: KBigDecimal,
-  val color: Color,
-  val classification: StringResource,
-)
+  val classificationLabel: StringResource,
+  private val lightBackgroundColor: Color,
+  private val lightTextColor: Color,
+  private val darkBackgroundColor: Color,
+  private val darkTextColor: Color,
+) {
+  val backgroundColor: Color
+    @Composable
+    get() =
+      if (MaterialTheme.colorScheme.background.isDark()) darkBackgroundColor
+      else lightBackgroundColor
+
+  val textColor: Color
+    @Composable
+    get() = if (MaterialTheme.colorScheme.background.isDark()) darkTextColor else lightTextColor
+}
 
 @Stable
-private fun getBodyMassData(value: KBigDecimal): BodyMassData =
-  indexes.first { value >= it.minValue }
+private fun getBodyMassData(value: KBigDecimal): BodyMassData = indexes.first {
+  value >= it.minValue
+}
 
 private val indexes by lazy {
   listOf(
     BodyMassData(
       minValue = KBigDecimal("40"),
-      color = Color(0x80FF2323),
-      classification = Res.string.body_mass_obese_3,
+      classificationLabel = Res.string.body_mass_obese_3,
+      lightBackgroundColor = Color(0xFFDE3730),
+      lightTextColor = Color(0xFFFFFFFF),
+      darkBackgroundColor = Color(0xFF8C1D18),
+      darkTextColor = Color(0xFFFFFFFF),
     ),
     BodyMassData(
       minValue = KBigDecimal("35"),
-      color = Color(0x80F85F31),
-      classification = Res.string.body_mass_obese_2,
+      classificationLabel = Res.string.body_mass_obese_2,
+      lightBackgroundColor = Color(0xFFD9531E),
+      lightTextColor = Color(0xFFFFFFFF),
+      darkBackgroundColor = Color(0xFF8A3312),
+      darkTextColor = Color(0xFFFFFFFF),
     ),
     BodyMassData(
       minValue = KBigDecimal("30"),
-      color = Color(0x80FF9634),
-      classification = Res.string.body_mass_obese_1,
+      classificationLabel = Res.string.body_mass_obese_1,
+      lightBackgroundColor = Color(0xFFF59E0B),
+      lightTextColor = Color(0xFF000000),
+      darkBackgroundColor = Color(0xFF92400E),
+      darkTextColor = Color(0xFFFFFFFF),
     ),
     BodyMassData(
       minValue = KBigDecimal("25"),
-      color = Color(0x80DBEC18),
-      classification = Res.string.body_mass_overweight,
+      classificationLabel = Res.string.body_mass_overweight,
+      lightBackgroundColor = Color(0xFFD4C511),
+      lightTextColor = Color(0xFF000000),
+      darkBackgroundColor = Color(0xFF665D08),
+      darkTextColor = Color(0xFFFFFFFF),
     ),
     BodyMassData(
       minValue = KBigDecimal("18.5"),
-      color = Color(0x805BF724),
-      classification = Res.string.body_mass_normal,
+      classificationLabel = Res.string.body_mass_normal,
+      lightBackgroundColor = Color(0xFF4ADE80),
+      lightTextColor = Color(0xFF000000),
+      darkBackgroundColor = Color(0xFF166534),
+      darkTextColor = Color(0xFFFFFFFF),
     ),
     BodyMassData(
       minValue = KBigDecimal("0"),
-      color = Color(0x800EACDD),
-      classification = Res.string.body_mass_underweight,
+      classificationLabel = Res.string.body_mass_underweight,
+      lightBackgroundColor = Color(0xFF0EA5E9),
+      lightTextColor = Color(0xFF000000),
+      darkBackgroundColor = Color(0xFF075985),
+      darkTextColor = Color(0xFFFFFFFF),
     ),
   )
 }
@@ -173,11 +225,43 @@ private const val BODY_MASS_RANGE_SCALE = 0
 
 @Preview
 @Composable
-fun PreviewBodyMassResult() {
+private fun PreviewBodyMassResult() {
   BodyMassResult(
     value = KBigDecimal(18.5),
     range = KBigDecimal(50.0) to KBigDecimal(80.0),
     rangeSuffix = "kg",
     formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
   )
+}
+
+@Preview
+@Composable
+private fun PreviewBodyMassBlock() {
+  Row {
+    MaterialExpressiveTheme(colorScheme = LightThemeColors) {
+      Column(modifier = Modifier.weight(1f).background(MaterialTheme.colorScheme.background)) {
+        indexes.forEach { index ->
+          BodyMassBlock(
+            modifier = Modifier,
+            bodyMassData = index,
+            value = index.minValue,
+            formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
+          )
+        }
+      }
+    }
+
+    MaterialExpressiveTheme(colorScheme = DarkThemeColors) {
+      Column(modifier = Modifier.weight(1f).background(MaterialTheme.colorScheme.background)) {
+        indexes.forEach { index ->
+          BodyMassBlock(
+            modifier = Modifier,
+            bodyMassData = index,
+            value = index.minValue,
+            formatterSymbols = FormatterSymbols(Token.Space, Token.Period, false),
+          )
+        }
+      }
+    }
+  }
 }

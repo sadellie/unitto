@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -139,7 +140,7 @@ private fun MainScreen(
   ) { paddingValues ->
     if (uiState.selectedUnits.isEmpty()) {
       Box(
-        modifier = Modifier.padding(paddingValues).fillMaxSize(),
+        modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues).fillMaxSize(),
         contentAlignment = Alignment.Center,
       ) {
         Text(stringResource(Res.string.converter_widget_configure_list_placeholder))
@@ -151,6 +152,7 @@ private fun MainScreen(
     LazyColumn(
       modifier =
         Modifier.padding(paddingValues)
+          .consumeWindowInsets(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {

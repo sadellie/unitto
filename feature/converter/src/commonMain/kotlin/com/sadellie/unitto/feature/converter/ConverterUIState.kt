@@ -46,6 +46,7 @@ internal sealed interface ConverterUIState {
     val formatTime: Boolean,
     val currencyRateUpdateState: CurrencyRateUpdateState,
     val acButton: Boolean,
+    val topToBottom: Boolean,
   ) : ConverterUIState
 
   data class NumberBase(
@@ -53,6 +54,7 @@ internal sealed interface ConverterUIState {
     val result: ConverterResult,
     val unitFrom: BasicUnit.NumberBase,
     val unitTo: BasicUnit.NumberBase,
+    val topToBottom: Boolean,
   ) : ConverterUIState
 }
 

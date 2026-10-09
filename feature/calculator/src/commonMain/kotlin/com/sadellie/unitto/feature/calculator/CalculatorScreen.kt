@@ -244,7 +244,7 @@ private fun ReadyCompact(
     },
   ) { paddingValues ->
     LiquidCalculatorView(
-      modifier = Modifier.padding(paddingValues),
+      modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues),
       calculatorHistory = { height ->
         CalculatorHistoryList(
           modifier =
@@ -303,6 +303,7 @@ private fun ReadyCompact(
           showAcButton = uiState.acButton,
           middleZero = uiState.middleZero,
           fractional = uiState.formatterSymbols.fractional,
+          topToBottom = uiState.topToBottom,
         )
       },
       partialHistoryView = uiState.partialHistoryView,
@@ -329,7 +330,6 @@ private fun ReadyExpanded(
   onUpdateHistoryItemLabel: (CalculatorHistoryListItem.Item, String) -> Unit,
   onHardwareInput: () -> Unit,
 ) {
-
   Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer) { paddingValues ->
     Row(
       modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues).fillMaxSize()
@@ -360,7 +360,10 @@ private fun ReadyExpanded(
           ReadyExpandedActions(onClearHistoryClick = onClearHistoryClick)
         },
       ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues).fillMaxHeight()) {
+        Column(
+          modifier =
+            Modifier.padding(paddingValues).consumeWindowInsets(paddingValues).fillMaxHeight()
+        ) {
           CalculatorTextBox(
             modifier =
               Modifier.fillMaxHeight(
@@ -394,6 +397,7 @@ private fun ReadyExpanded(
             showAcButton = uiState.acButton,
             middleZero = uiState.middleZero,
             fractional = uiState.formatterSymbols.fractional,
+            topToBottom = uiState.topToBottom,
           )
         }
       }
@@ -508,6 +512,7 @@ private fun PreviewCalculatorScreen() {
             steppedPartialHistoryView = true,
             initialPartialHistoryView = false,
             openHistoryViewButton = true,
+            topToBottom = false,
           ),
         openDrawer = {},
         onAddTokenClick = {},

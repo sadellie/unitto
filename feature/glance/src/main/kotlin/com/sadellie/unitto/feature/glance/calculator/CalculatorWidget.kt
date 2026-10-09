@@ -183,6 +183,7 @@ private fun ReadyUI(
       equalAction = EqualAction.Companion::create,
       useDot = formatterSymbols.fractional == Token.Dot,
       middleZero = keypadPrefs.middleZero,
+      topToBottom = keypadPrefs.topToBottom,
     )
   }
 }
@@ -265,7 +266,7 @@ private fun PreviewWidget() {
         digitsPrecision = 3,
         outputFormat = OutputFormat.PLAIN,
       ),
-    keypadPrefs = KeypadPreferences(acButton = true, middleZero = true),
+    keypadPrefs = KeypadPreferences(acButton = true, middleZero = true, topToBottom = false),
     input = "123+456",
     output = "789.012",
   )

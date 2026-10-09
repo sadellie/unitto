@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.settings.startingscreen
 
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -70,7 +71,9 @@ private fun StartingScreenScreen(
   ) { padding ->
     LazyColumn(
       contentPadding = padding,
-      modifier = Modifier.padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
+      modifier =
+        Modifier.consumeWindowInsets(padding)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       itemsIndexed(mainDrawerItems, { _, destination -> destination.topLevelRoute.routeId }) {

@@ -105,7 +105,7 @@ class ConverterViewModel(
         currencyRateUpdateState,
         converterPrefs,
         formatterPrefs,
-        displayPrefs ->
+        keypadPrefs ->
         if (unitFromValue == null) return@combineBig ConverterUIState.Loading
         if (unitToValue == null) return@combineBig ConverterUIState.Loading
 
@@ -116,13 +116,14 @@ class ConverterViewModel(
             result = outputValue,
             unitFrom = unitFrom,
             unitTo = unitTo,
-            middleZero = displayPrefs.middleZero,
+            middleZero = keypadPrefs.middleZero,
             formatterSymbols = formatterPrefs.formatterSymbols,
             scale = formatterPrefs.digitsPrecision,
             outputFormat = OutputFormat.PLAIN,
             formatTime = converterPrefs.formatTime,
             currencyRateUpdateState = currencyRateUpdateState,
-            acButton = displayPrefs.acButton,
+            acButton = keypadPrefs.acButton,
+            topToBottom = keypadPrefs.topToBottom,
           )
         }
 
@@ -132,6 +133,7 @@ class ConverterViewModel(
             result = outputValue,
             unitFrom = unitFrom,
             unitTo = unitTo,
+            topToBottom = keypadPrefs.topToBottom,
           )
         }
 
@@ -215,8 +217,8 @@ class ConverterViewModel(
           unitsRepo.convert(
             unitFromId = unitFromIdValue ?: return@launch,
             unitToId = unitToIdValue ?: return@launch,
-            value1 = input1Value,
-            value2 = input2Value,
+            value1 = input1Value.ifEmpty { "0" },
+            value2 = input2Value.ifEmpty { "0" },
             formatTime = prefs.formatTime,
             apiUrl = prefs.customApiUrl,
           )

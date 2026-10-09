@@ -18,9 +18,10 @@
 
 package com.sadellie.unitto.feature.programmer
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,6 +74,7 @@ import com.sadellie.unitto.core.ui.KeypadButton.Companion.MultiplyKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.PlusKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RightBracketKey
 import com.sadellie.unitto.core.ui.KeypadFlow
+import com.sadellie.unitto.core.ui.KeypadFlowScope
 
 @Composable
 internal fun ProgrammerKeyboard(
@@ -89,8 +91,9 @@ internal fun ProgrammerKeyboard(
   toggleShiftType: () -> Unit,
   base: Int,
   shiftType: ShiftType,
+  topToBottom: Boolean,
 ) {
-  if (LocalWindowSize.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+  if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
     ProgrammerKeyboardCompact(
       modifier = modifier,
       showAcButton = showAcButton,
@@ -105,6 +108,7 @@ internal fun ProgrammerKeyboard(
       toggleShiftType = toggleShiftType,
       base = base,
       shiftType = shiftType,
+      topToBottom = topToBottom,
     )
   } else {
     ProgrammerKeyboardExpanded(
@@ -121,12 +125,13 @@ internal fun ProgrammerKeyboard(
       toggleShiftType = toggleShiftType,
       base = base,
       shiftType = shiftType,
+      topToBottom = topToBottom,
     )
   }
 }
 
 @Composable
-private fun ProgrammerKeyboardCompact(
+private fun ProgrammerKeyboardExpanded(
   modifier: Modifier,
   showAcButton: Boolean,
   onClearClick: () -> Unit,
@@ -140,6 +145,7 @@ private fun ProgrammerKeyboardCompact(
   toggleShiftType: () -> Unit,
   base: Int,
   shiftType: ShiftType,
+  topToBottom: Boolean,
 ) {
   KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL) {
     KeypadRow {
@@ -177,37 +183,43 @@ private fun ProgrammerKeyboardCompact(
     }
 
     KeypadRow {
-      ButtonLight(KeyD, onAddTokenClick, base >= 14)
-      ButtonLight(KeyE, onAddTokenClick, base >= 15)
-      ButtonLight(KeyF, onAddTokenClick, base >= 16)
+      if (topToBottom) {
+        Numbers123(onAddTokenClick, this, base)
+      } else {
+        NumbersDEF(onAddTokenClick, this, base)
+      }
       ButtonFilled(KeyShiftType, toggleShiftType)
     }
 
     KeypadRow {
-      ButtonLight(KeyA, onAddTokenClick, base >= 11)
-      ButtonLight(KeyB, onAddTokenClick, base >= 12)
-      ButtonLight(KeyC, onAddTokenClick, base >= 13)
+      if (topToBottom) {
+        Numbers456(onAddTokenClick, this, base)
+      } else {
+        NumbersABC(onAddTokenClick, this, base)
+      }
       ButtonFilled(DivideKey, onAddTokenClick)
     }
 
     KeypadRow {
-      ButtonLight(Key7, onAddTokenClick, base >= 8)
-      ButtonLight(Key8, onAddTokenClick, base >= 9)
-      ButtonLight(Key9, onAddTokenClick, base >= 10)
+      Numbers789(onAddTokenClick, this, base)
       ButtonFilled(MultiplyKey, onAddTokenClick)
     }
 
     KeypadRow {
-      ButtonLight(Key4, onAddTokenClick, base >= 5)
-      ButtonLight(Key5, onAddTokenClick, base >= 6)
-      ButtonLight(Key6, onAddTokenClick, base >= 7)
+      if (topToBottom) {
+        NumbersABC(onAddTokenClick, this, base)
+      } else {
+        Numbers456(onAddTokenClick, this, base)
+      }
       ButtonFilled(MinusKey, onAddTokenClick)
     }
 
     KeypadRow {
-      ButtonLight(Key1, onAddTokenClick, base >= 2)
-      ButtonLight(Key2, onAddTokenClick, base >= 3)
-      ButtonLight(Key3, onAddTokenClick, base >= 4)
+      if (topToBottom) {
+        NumbersDEF(onAddTokenClick, this, base)
+      } else {
+        Numbers123(onAddTokenClick, this, base)
+      }
       ButtonFilled(PlusKey, onAddTokenClick)
     }
 
@@ -226,7 +238,7 @@ private fun ProgrammerKeyboardCompact(
 }
 
 @Composable
-private fun ProgrammerKeyboardExpanded(
+private fun ProgrammerKeyboardCompact(
   modifier: Modifier,
   showAcButton: Boolean,
   onClearClick: () -> Unit,
@@ -240,13 +252,16 @@ private fun ProgrammerKeyboardExpanded(
   toggleShiftType: () -> Unit,
   base: Int,
   shiftType: ShiftType,
+  topToBottom: Boolean,
 ) {
   KeypadFlow(modifier = modifier) {
     KeypadRow {
       ButtonTransparent(KeyNot, onAddTokenClick)
-      ButtonLight(KeyD, onAddTokenClick, base >= 14)
-      ButtonLight(KeyE, onAddTokenClick, base >= 15)
-      ButtonLight(KeyF, onAddTokenClick, base >= 16)
+      if (topToBottom) {
+        Numbers123(onAddTokenClick, this, base)
+      } else {
+        NumbersDEF(onAddTokenClick, this, base)
+      }
       if (showAcButton) {
         ButtonTertiary(ClearKey, onClearClick)
         ButtonFilled(BracketsKey, onBracketsClick)
@@ -258,18 +273,18 @@ private fun ProgrammerKeyboardExpanded(
 
     KeypadRow {
       ButtonTransparent(KeyNand, onAddTokenClick)
-      ButtonLight(KeyA, onAddTokenClick, base >= 11)
-      ButtonLight(KeyB, onAddTokenClick, base >= 12)
-      ButtonLight(KeyC, onAddTokenClick, base >= 13)
+      if (topToBottom) {
+        Numbers456(onAddTokenClick, this, base)
+      } else {
+        NumbersABC(onAddTokenClick, this, base)
+      }
       ButtonFilled(KeyMod, onAddTokenClick)
       ButtonFilled(KeySize, toggleSize)
     }
 
     KeypadRow {
       ButtonTransparent(KeyAnd, onAddTokenClick)
-      ButtonLight(Key7, onAddTokenClick, base >= 8)
-      ButtonLight(Key8, onAddTokenClick, base >= 9)
-      ButtonLight(Key9, onAddTokenClick, base >= 10)
+      Numbers789(onAddTokenClick, this, base)
       when (shiftType) {
         ShiftType.SHIFT -> {
           ButtonFilled(KeyLsh, onAddTokenClick)
@@ -284,17 +299,21 @@ private fun ProgrammerKeyboardExpanded(
 
     KeypadRow {
       ButtonTransparent(KeyNor, onAddTokenClick)
-      ButtonLight(Key4, onAddTokenClick, base >= 5)
-      ButtonLight(Key5, onAddTokenClick, base >= 6)
-      ButtonLight(Key6, onAddTokenClick, base >= 7)
+      if (topToBottom) {
+        NumbersABC(onAddTokenClick, this, base)
+      } else {
+        Numbers456(onAddTokenClick, this, base)
+      }
       ButtonFilled(MultiplyKey, onAddTokenClick)
       ButtonFilled(KeyShiftType, toggleShiftType)
     }
     KeypadRow {
       ButtonTransparent(KeyXor, onAddTokenClick)
-      ButtonLight(Key1, onAddTokenClick, base >= 2)
-      ButtonLight(Key2, onAddTokenClick, base >= 3)
-      ButtonLight(Key3, onAddTokenClick, base >= 4)
+      if (topToBottom) {
+        NumbersDEF(onAddTokenClick, this, base)
+      } else {
+        Numbers123(onAddTokenClick, this, base)
+      }
       ButtonFilled(MinusKey, onAddTokenClick)
       ButtonFilled(DivideKey, onAddTokenClick)
     }
@@ -315,6 +334,66 @@ private fun ProgrammerKeyboardExpanded(
   }
 }
 
+@Composable
+private fun KeypadFlowScope.Numbers123(
+  onAddTokenClick: (String) -> Unit,
+  rowScope: RowScope,
+  base: Int,
+) =
+  with(rowScope) {
+    ButtonLight(Key1, onAddTokenClick, base >= 2)
+    ButtonLight(Key2, onAddTokenClick, base >= 3)
+    ButtonLight(Key3, onAddTokenClick, base >= 4)
+  }
+
+@Composable
+private fun KeypadFlowScope.Numbers456(
+  onAddTokenClick: (String) -> Unit,
+  rowScope: RowScope,
+  base: Int,
+) =
+  with(rowScope) {
+    ButtonLight(Key4, onAddTokenClick, base >= 5)
+    ButtonLight(Key5, onAddTokenClick, base >= 6)
+    ButtonLight(Key6, onAddTokenClick, base >= 7)
+  }
+
+@Composable
+private fun KeypadFlowScope.Numbers789(
+  onAddTokenClick: (String) -> Unit,
+  rowScope: RowScope,
+  base: Int,
+) =
+  with(rowScope) {
+    ButtonLight(Key7, onAddTokenClick, base >= 8)
+    ButtonLight(Key8, onAddTokenClick, base >= 9)
+    ButtonLight(Key9, onAddTokenClick, base >= 10)
+  }
+
+@Composable
+private fun KeypadFlowScope.NumbersABC(
+  onAddTokenClick: (String) -> Unit,
+  rowScope: RowScope,
+  base: Int,
+) =
+  with(rowScope) {
+    ButtonLight(KeyA, onAddTokenClick, base >= 11)
+    ButtonLight(KeyB, onAddTokenClick, base >= 12)
+    ButtonLight(KeyC, onAddTokenClick, base >= 13)
+  }
+
+@Composable
+private fun KeypadFlowScope.NumbersDEF(
+  onAddTokenClick: (String) -> Unit,
+  rowScope: RowScope,
+  base: Int,
+) =
+  with(rowScope) {
+    ButtonLight(KeyD, onAddTokenClick, base >= 14)
+    ButtonLight(KeyE, onAddTokenClick, base >= 15)
+    ButtonLight(KeyF, onAddTokenClick, base >= 16)
+  }
+
 // TODO image descriptions
 private val KeyOr = KeypadButton.KeypadButtonAdd(IconPack.Or, null, Token.Or.symbol)
 private val KeyAnd = KeypadButton.KeypadButtonAdd(IconPack.And, null, Token.And.symbol)
@@ -333,8 +412,8 @@ private val KeySize = KeypadButton.KeypadButtonSimple(IconPack.Size, null)
 
 @Composable
 @Preview
-private fun PreviewProgrammerKeyboardCompact() = ExpressivePreview {
-  ProgrammerKeyboardCompact(
+private fun PreviewProgrammerKeyboardExpanded() = ExpressivePreview {
+  ProgrammerKeyboardExpanded(
     modifier = Modifier.aspectRatio(0.5f).width(400.dp),
     showAcButton = true,
     onClearClick = {},
@@ -348,13 +427,14 @@ private fun PreviewProgrammerKeyboardCompact() = ExpressivePreview {
     toggleShiftType = {},
     base = 16,
     shiftType = ShiftType.SHIFT,
+    topToBottom = false,
   )
 }
 
 @Composable
 @Preview
-private fun PreviewProgrammerKeyboardExpanded() = ExpressivePreview {
-  ProgrammerKeyboardExpanded(
+private fun PreviewProgrammerKeyboardCompact() = ExpressivePreview {
+  ProgrammerKeyboardCompact(
     modifier = Modifier.aspectRatio(2f).width(400.dp),
     showAcButton = true,
     onClearClick = {},
@@ -368,5 +448,6 @@ private fun PreviewProgrammerKeyboardExpanded() = ExpressivePreview {
     toggleShiftType = {},
     base = 16,
     shiftType = ShiftType.SHIFT,
+    topToBottom = false,
   )
 }

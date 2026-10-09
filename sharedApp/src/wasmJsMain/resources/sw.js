@@ -1,51 +1,69 @@
-const CACHE_NAME = "unitto-wasm-cache-v1";
+const CACHE_NAME = "unitto-wasm-cache-{VERSION}";
 
-const ASSETS = ["index.html", "manifest.json"];
-
-// cache service worker for offline
+const PRECACHED_ASSETS = [/*__PRECACHED_ASSETS__*/]
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)),
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.addAll(PRECACHED_ASSETS);
+      // force activation
+      await self.skipWaiting();
+    })(),
   );
-  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
-        }),
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key)),
       );
-    }),
+      await self.clients.claim();
+    })(),
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
+  // ignore non-GET requests
+  if (event.request.method !== "GET") return;
+
+  // ignore cross-origin requests
   if (!event.request.url.startsWith(self.location.origin)) return;
 
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        if (response.status === 200) {
+    (async () => {
+      // try cache first
+      const cached = await caches.match(event.request);
+      if (cached) return cached;
+
+      // try update cache if not found
+      try {
+        const response = await fetch(event.request);
+        if (response.ok && response.type === "basic") {
+          // update cache
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseClone);
           });
         }
-        return response;
-      })
-      .catch(() => {
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
 
-          if (event.request.mode === "navigate") {
-            return caches.match("index.html");
-          }
+        return response;
+      } catch (error) {
+        if (event.request.mode === "navigate") {
+          const fallback = await caches.match("/index.html");
+          if (fallback) return fallback;
+        }
+
+        return new Response("Offline. Check your connection", {
+          status: 503,
+          statusText: "Unavailable",
+          headers: { "Content-Type": "text/plain" },
         });
-      }),
+      }
+    })(),
   );
 });

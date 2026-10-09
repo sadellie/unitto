@@ -36,7 +36,11 @@ import androidx.compose.material3.ListItemShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,6 +60,7 @@ import com.sadellie.unitto.core.ui.SearchPlaceholder
 import com.sadellie.unitto.core.ui.animations.animateItemDefault
 import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.feature.converter.UnitSearchState
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_open_settings
@@ -74,6 +79,7 @@ import unitto.core.common.generated.resources.unit_nautical_mile
 import unitto.core.common.generated.resources.unit_nautical_mile_short
 import unitto.core.common.generated.resources.unit_yard
 import unitto.core.common.generated.resources.unit_yard_short
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun UnitsList(
@@ -147,9 +153,15 @@ internal fun UnitsList(
       }
     }
   }
-  // todo debounce
+
+  var showLoader by remember { mutableStateOf(false) }
+  LaunchedEffect(searchState.isLoading) {
+    // delay switching to loading
+    if (searchState.isLoading) delay(100.milliseconds)
+    showLoader = searchState.isLoading
+  }
   AnimatedVisibility(
-    visible = searchState.isLoading,
+    visible = showLoader,
     modifier = modifier.fillMaxSize().padding(contentPadding),
     enter = fadeIn(fadeAnimationSpec),
     exit = fadeOut(fadeAnimationSpec),

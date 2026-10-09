@@ -19,6 +19,9 @@
 package com.sadellie.unitto.core.datastore
 
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.core.common.DataUnit
 import com.sadellie.unitto.core.model.programmer.ShiftType
 import dev.zacsweers.metro.Inject
@@ -30,61 +33,58 @@ class ProgrammerPrefsRepository(private val source: UserPrefDataSource) {
   val prefs: Flow<ProgrammerPreferences> =
     source.rawData.map {
       ProgrammerPreferences(
-        base = it[DatastorePrefKeys.PROGRAMMER_BASE] ?: ProgrammerPreferences.DEFAULT_BASE,
+        base = it[baseKey] ?: ProgrammerPreferences.DEFAULT_BASE,
         dataUnit = it.getDataUnit(),
         shiftType = it.getShiftType(),
-        additionalButtons =
-          it[DatastorePrefKeys.ADDITIONAL_BUTTONS]
-            ?: ProgrammerPreferences.DEFAULT_ADDITIONAL_BUTTONS,
         initialPartialHistoryView =
-          it[DatastorePrefKeys.INITIAL_PARTIAL_HISTORY_VIEW]
+          it[initialPartialHistoryViewKey]
             ?: ProgrammerPreferences.DEFAULT_INITIAL_PARTIAL_HISTORY_VIEW,
       )
     }
 
   suspend fun updateBase(base: Int) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.PROGRAMMER_BASE] = base
+    preferences[baseKey] = base
   }
 
   suspend fun updateDataUnit(dataUnit: DataUnit) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.PROGRAMMER_DATA_UNIT] = dataUnit.name
+    preferences[dataUnitKey] = dataUnit.name
   }
 
   suspend fun updateShiftType(shiftType: ShiftType) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.PROGRAMMER_SHIFT_TYPE] = shiftType.name
-  }
-
-  suspend fun updateAdditionalButtons(additionalButtons: Boolean) = source.edit {
-    it[DatastorePrefKeys.ADDITIONAL_BUTTONS] = additionalButtons
+    preferences[shiftTypeKey] = shiftType.name
   }
 
   suspend fun updateInitialPartialHistoryView(initialPartialHistoryView: Boolean) = source.edit {
-    it[DatastorePrefKeys.INITIAL_PARTIAL_HISTORY_VIEW] = initialPartialHistoryView
+    it[initialPartialHistoryViewKey] = initialPartialHistoryView
   }
 
   private fun Preferences.getDataUnit(): DataUnit =
-    this[DatastorePrefKeys.PROGRAMMER_DATA_UNIT]?.letTryOrNull {
+    this[dataUnitKey]?.letTryOrNull {
       DataUnit.valueOf(it)
     } ?: ProgrammerPreferences.DEFAULT_DATA_UNIT
 
   private fun Preferences.getShiftType(): ShiftType =
-    this[DatastorePrefKeys.PROGRAMMER_SHIFT_TYPE]?.letTryOrNull {
+    this[shiftTypeKey]?.letTryOrNull {
       ShiftType.valueOf(it)
     } ?: ProgrammerPreferences.DEFAULT_SHIFT_TYPE
+
+  private val baseKey = intPreferencesKey(PrefKeys.PROGRAMMER_BASE_PREF_KEY)
+  private val dataUnitKey = stringPreferencesKey(PrefKeys.PROGRAMMER_DATA_UNIT_PREF_KEY)
+  private val shiftTypeKey = stringPreferencesKey(PrefKeys.PROGRAMMER_SHIFT_TYPE_PREF_KEY)
+  private val initialPartialHistoryViewKey =
+    booleanPreferencesKey(PrefKeys.PROGRAMMER_INITIAL_PARTIAL_HISTORY_VIEW_PREF_KEY)
 }
 
 data class ProgrammerPreferences(
   val base: Int,
   val dataUnit: DataUnit,
   val shiftType: ShiftType,
-  val additionalButtons: Boolean,
   val initialPartialHistoryView: Boolean,
 ) {
   internal companion object Defaults {
     const val DEFAULT_BASE = 10
     val DEFAULT_DATA_UNIT = DataUnit.QWORD
     val DEFAULT_SHIFT_TYPE = ShiftType.SHIFT
-    const val DEFAULT_ADDITIONAL_BUTTONS: Boolean = false
     const val DEFAULT_INITIAL_PARTIAL_HISTORY_VIEW: Boolean = false
   }
 }

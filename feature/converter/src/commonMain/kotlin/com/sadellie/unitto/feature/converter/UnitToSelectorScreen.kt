@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.converter
 
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.MaterialTheme
@@ -115,7 +116,7 @@ private fun UnitToSelectorScreen(
     },
   ) { paddingValues ->
     UnitsList(
-      modifier = Modifier,
+      modifier = Modifier.consumeWindowInsets(paddingValues),
       searchState = uiState.searchState,
       navigateToUnitGroups = navigateToUnitGroups,
       selectedUnitId = uiState.unitTo.id,

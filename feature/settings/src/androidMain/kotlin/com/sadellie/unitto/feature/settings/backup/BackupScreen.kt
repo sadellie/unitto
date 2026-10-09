@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -111,6 +112,7 @@ private fun BackupScreenReady(
       modifier =
         Modifier.verticalScroll(scrollState)
           .padding(paddingValues)
+          .consumeWindowInsets(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
@@ -185,7 +187,10 @@ private fun BackupRestoreControls(
 private fun BackupScreenInProgress() {
   BackHandler {}
   Scaffold(containerColor = MaterialTheme.colorScheme.surfaceContainer) { padding ->
-    Box(modifier = Modifier.padding(padding).fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(
+      modifier = Modifier.padding(padding).consumeWindowInsets(padding).fillMaxSize(),
+      contentAlignment = Alignment.Center,
+    ) {
       CircularWavyProgressIndicator()
     }
   }

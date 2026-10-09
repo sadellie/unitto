@@ -20,11 +20,14 @@ package com.sadellie.unitto.feature.settings.converter
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
@@ -108,7 +111,9 @@ private fun ConverterSettingsScreen(
   ) { padding ->
     Column(
       modifier =
-        Modifier.padding(padding)
+        Modifier.verticalScroll(rememberScrollState())
+          .padding(padding)
+          .consumeWindowInsets(padding)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {

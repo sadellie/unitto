@@ -22,9 +22,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
@@ -35,79 +34,117 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.offset
+import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Constraints
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.roundToInt
 
-/** @param paddingFraction Button padding calculated from container size */
 @Composable
 fun KeypadFlow(
   modifier: Modifier,
   iconHeight: Float = 1f,
-  paddingFraction: (width: Dp, height: Dp) -> PaddingValues = { width, height ->
-    PaddingValues(width * DEFAULT_PADDING_FRACTION, height * DEFAULT_PADDING_FRACTION)
-  },
   content: @Composable KeypadFlowScope.() -> Unit,
 ) {
-  val containerSize = remember { mutableStateOf(IntSize.Zero) }
+  SubcomposeLayout(modifier) { constraints ->
+    val maxHeight = constraints.maxHeight
+    val maxWidth = constraints.maxWidth
 
-  Column(modifier = modifier.onSizeChanged { containerSize.value = it }) {
-    val scope =
-      remember(paddingFraction, iconHeight, containerSize) {
-        KeypadFlowScopeImpl(
-          rowModifier = Modifier.weight(1f),
-          containerSize = containerSize,
-          paddingFraction = paddingFraction,
-          iconHeight = iconHeight,
-        )
+    val verticalSpacingPx =
+      if (maxHeight == Constraints.Infinity) {
+        0
+      } else {
+        (maxHeight * DEFAULT_PADDING_FRACTION).roundToInt()
       }
-    scope.content()
+    val horizontalSpacingPx =
+      if (maxWidth == Constraints.Infinity) {
+        0
+      } else {
+        (maxWidth * DEFAULT_PADDING_FRACTION).roundToInt()
+      }
+
+    val measurables =
+      subcompose(KeypadSlots.Rows) {
+        val scope =
+          remember(iconHeight) {
+            KeypadFlowScopeImpl(
+              rowModifier = Modifier.fillMaxWidth(),
+              iconHeight = iconHeight,
+            )
+          }
+        CompositionLocalProvider(LocalKeypadSpacingPx provides horizontalSpacingPx) {
+          scope.content()
+        }
+      }
+
+    val count = measurables.size
+    val totalSpacing = verticalSpacingPx * (count - 1).coerceAtLeast(0)
+
+    // each child will have same height
+    val childHeight =
+      if (count > 0 && maxHeight != Constraints.Infinity) {
+        ((maxHeight - totalSpacing) / count).coerceAtLeast(0)
+      } else {
+        0
+      }
+
+    val childConstraints =
+      if (maxHeight == Constraints.Infinity) {
+        constraints
+      } else {
+        constraints.copy(minHeight = childHeight, maxHeight = childHeight)
+      }
+
+    val placeables = measurables.map { it.measure(childConstraints) }
+
+    val widestChild = placeables.maxOfOrNull { it.width } ?: 0
+    val width = widestChild.coerceIn(constraints.minWidth, maxWidth)
+    val height =
+      if (maxHeight == Constraints.Infinity) {
+        placeables.sumOf { it.height } + totalSpacing
+      } else maxHeight
+
+    layout(width, height) {
+      var y = 0
+      placeables.forEach { p ->
+        p.placeRelative(0, y)
+        y += p.height + verticalSpacingPx
+      }
+    }
   }
 }
 
-private fun Modifier.relativePadding(
-  containerSize: State<IntSize>,
-  paddingFraction: (width: Dp, height: Dp) -> PaddingValues,
-): Modifier = layout { measurable, constraints ->
-  val size = containerSize.value
-  val padding = paddingFraction(size.width.toDp(), size.height.toDp())
-
-  val left = padding.calculateLeftPadding(layoutDirection).roundToPx()
-  val top = padding.calculateTopPadding().roundToPx()
-  val right = padding.calculateRightPadding(layoutDirection).roundToPx()
-  val bottom = padding.calculateBottomPadding().roundToPx()
-
-  val placeable =
-    measurable.measure(constraints.offset(horizontal = -left - right, vertical = -top - bottom))
-  layout(placeable.width + left + right, placeable.height + top + bottom) {
-    placeable.place(left, top)
-  }
+private enum class KeypadSlots {
+  Rows
 }
+
+private val LocalKeypadSpacingPx = compositionLocalOf { 0 }
 
 internal class KeypadFlowScopeImpl(
   private val rowModifier: Modifier,
-  containerSize: State<IntSize>,
-  paddingFraction: (width: Dp, height: Dp) -> PaddingValues,
   override val iconHeight: Float,
 ) : KeypadFlowScope {
-  private val buttonModifier: Modifier =
-    Modifier.fillMaxHeight().relativePadding(containerSize, paddingFraction)
+
+  private val buttonModifier: Modifier = Modifier.fillMaxHeight()
 
   @Composable
-  override fun KeypadRow(content: @Composable (RowScope.() -> Unit)) {
-    Row(modifier = rowModifier, content = content)
+  override fun KeypadRow(content: @Composable RowScope.() -> Unit) {
+    val spacingPx = LocalKeypadSpacingPx.current
+    val spacing = with(LocalDensity.current) { spacingPx.toDp() }
+    Row(
+      modifier = rowModifier,
+      horizontalArrangement = Arrangement.spacedBy(spacing),
+      content = content,
+    )
   }
 
   @Composable
@@ -458,4 +495,4 @@ object KeyboardButtonToken {
   const val ICON_HEIGHT_SHORT_SECONDARY = 1.1f
 }
 
-private const val DEFAULT_PADDING_FRACTION = 0.01f
+private const val DEFAULT_PADDING_FRACTION = 0.02f

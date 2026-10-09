@@ -24,6 +24,7 @@ import androidx.glance.action.Action
 import androidx.glance.action.action
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
+import androidx.glance.layout.RowScope
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.preview.ExperimentalGlancePreviewApi
@@ -43,6 +44,7 @@ internal fun CalculatorKeyboard(
   equalAction: () -> Action,
   useDot: Boolean,
   middleZero: Boolean,
+  topToBottom: Boolean,
 ) =
   Column(modifier = modifier) {
     val rowModifier = GlanceModifier.fillMaxWidth()
@@ -53,9 +55,20 @@ internal fun CalculatorKeyboard(
       addBracketAction = addBracketAction,
       addTokenAction = addTokenAction,
     )
-    KeyboardRow2(rowModifier = rowModifier, addTokenAction = addTokenAction)
-    KeyboardRow3(rowModifier = rowModifier, addTokenAction = addTokenAction)
-    KeyboardRow4(rowModifier = rowModifier, addTokenAction = addTokenAction)
+    KeyboardRow2(
+      rowModifier = rowModifier,
+      addTokenAction = addTokenAction,
+      topToBottom = topToBottom,
+    )
+    KeyboardRow3(
+      rowModifier = rowModifier,
+      addTokenAction = addTokenAction,
+    )
+    KeyboardRow4(
+      rowModifier = rowModifier,
+      addTokenAction = addTokenAction,
+      topToBottom = topToBottom,
+    )
     KeyboardRow5(
       rowModifier = rowModifier,
       middleZero = middleZero,
@@ -104,28 +117,18 @@ private fun KeyboardRow1(
 }
 
 @Composable
-private fun KeyboardRow2(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
+private fun KeyboardRow2(
+  rowModifier: GlanceModifier,
+  addTokenAction: (String) -> Action,
+  topToBottom: Boolean,
+) {
   Row(rowModifier) {
     val buttonModifier = GlanceModifier.defaultWeight()
-
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key7,
-      onClick = addTokenAction(Token.Digit7.symbol),
-    )
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key8,
-      onClick = addTokenAction(Token.Digit8.symbol),
-    )
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key9,
-      onClick = addTokenAction(Token.Digit9.symbol),
-    )
+    if (topToBottom) {
+      Numbers123(buttonModifier, addTokenAction)
+    } else {
+      Numbers789(buttonModifier, addTokenAction)
+    }
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
@@ -136,28 +139,13 @@ private fun KeyboardRow2(rowModifier: GlanceModifier, addTokenAction: (String) -
 }
 
 @Composable
-private fun KeyboardRow3(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
+private fun KeyboardRow3(
+  rowModifier: GlanceModifier,
+  addTokenAction: (String) -> Action,
+) {
   Row(rowModifier) {
     val buttonModifier = GlanceModifier.defaultWeight()
-
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key4,
-      onClick = addTokenAction(Token.Digit4.symbol),
-    )
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key5,
-      onClick = addTokenAction(Token.Digit5.symbol),
-    )
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key6,
-      onClick = addTokenAction(Token.Digit6.symbol),
-    )
+    Numbers456(buttonModifier, addTokenAction)
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
@@ -168,28 +156,18 @@ private fun KeyboardRow3(rowModifier: GlanceModifier, addTokenAction: (String) -
 }
 
 @Composable
-private fun KeyboardRow4(rowModifier: GlanceModifier, addTokenAction: (String) -> Action) {
+private fun KeyboardRow4(
+  rowModifier: GlanceModifier,
+  addTokenAction: (String) -> Action,
+  topToBottom: Boolean,
+) {
   Row(rowModifier) {
     val buttonModifier = GlanceModifier.defaultWeight()
-
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key1,
-      onClick = addTokenAction(Token.Digit1.symbol),
-    )
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key2,
-      onClick = addTokenAction(Token.Digit2.symbol),
-    )
-    IconButton(
-      glanceModifier = buttonModifier,
-      containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
-      iconRes = R.drawable.key3,
-      onClick = addTokenAction(Token.Digit3.symbol),
-    )
+    if (topToBottom) {
+      Numbers789(buttonModifier, addTokenAction)
+    } else {
+      Numbers123(buttonModifier, addTokenAction)
+    }
     IconButton(
       glanceModifier = buttonModifier,
       containerColor = UnittoGlanceTheme.colors.secondaryContainer,
@@ -253,6 +231,81 @@ private fun KeyboardRow5(
   }
 }
 
+@Composable
+private fun RowScope.Numbers123(
+  buttonModifier: GlanceModifier,
+  addTokenAction: (String) -> Action,
+) {
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key1,
+    onClick = addTokenAction(Token.Digit1.symbol),
+  )
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key2,
+    onClick = addTokenAction(Token.Digit2.symbol),
+  )
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key3,
+    onClick = addTokenAction(Token.Digit3.symbol),
+  )
+}
+
+@Composable
+private fun RowScope.Numbers456(
+  buttonModifier: GlanceModifier,
+  addTokenAction: (String) -> Action,
+) {
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key4,
+    onClick = addTokenAction(Token.Digit4.symbol),
+  )
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key5,
+    onClick = addTokenAction(Token.Digit5.symbol),
+  )
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key6,
+    onClick = addTokenAction(Token.Digit6.symbol),
+  )
+}
+
+@Composable
+private fun RowScope.Numbers789(
+  buttonModifier: GlanceModifier,
+  addTokenAction: (String) -> Action,
+) {
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key7,
+    onClick = addTokenAction(Token.Digit7.symbol),
+  )
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key8,
+    onClick = addTokenAction(Token.Digit8.symbol),
+  )
+  IconButton(
+    glanceModifier = buttonModifier,
+    containerColor = UnittoGlanceTheme.colors.inverseOnSurface,
+    iconRes = R.drawable.key9,
+    onClick = addTokenAction(Token.Digit9.symbol),
+  )
+}
+
 @OptIn(ExperimentalGlancePreviewApi::class)
 @Preview
 @Composable
@@ -263,6 +316,7 @@ private fun PreviewCalculatorKeyboard() {
     addTokenAction = { emptyAction },
     middleZero = true,
     useDot = true,
+    topToBottom = false,
     addBracketAction = { emptyAction },
     clearInputAction = { emptyAction },
     equalAction = { emptyAction },

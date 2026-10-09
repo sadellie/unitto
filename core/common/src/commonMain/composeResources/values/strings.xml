@@ -131,6 +131,7 @@
     <string name="locale_en_rGB" translatable="false">English (UK)</string>
     <string name="locale_es" translatable="false">Español</string>
     <string name="locale_fr" translatable="false">Français</string>
+    <string name="locale_hi" translatable="false">हिन्दी</string>
     <string name="locale_hu" translatable="false">Magyar</string>
     <string name="locale_in" translatable="false">Indonesia</string>
     <string name="locale_it" translatable="false">Italiano</string>
@@ -152,6 +153,10 @@
     <string name="settings_back_up">Back up</string>
     <string name="settings_backup">Backup</string>
     <string name="settings_backup_support">Back up and restore your data</string>
+    <string name="settings_button_order">Button order</string>
+    <string name="settings_button_order_bottom_to_top">Bottom to top</string>
+    <string name="settings_button_order_support">Set numbers to start from top or bottom</string>
+    <string name="settings_button_order_top_to_bottom">Top to bottom</string>
     <string name="settings_calculator_support">Fractional output and constant calculation</string>
     <string name="settings_clear_cache">Clear cache</string>
     <string name="settings_color_theme">Color theme</string>
@@ -187,6 +192,8 @@
     <string name="settings_keep_screen_on_support">Prevent your device from turning off the screen while the app is open</string>
     <string name="settings_keypad">Keypad</string>
     <string name="settings_language">Language</string>
+    <string name="settings_language_llm">Experimental languages</string>
+    <string name="settings_language_llm_support">Some languages are partially automated and may contain inaccuracies. English is fully supported.</string>
     <string name="settings_language_support">Change the app language</string>
     <string name="settings_light_mode">Light</string>
     <string name="settings_middle_zero">Zero in the middle</string>
@@ -1292,7 +1299,7 @@
     <string name="unit_pound_force_per_square_inch">Pound-force/square inch</string>
     <string name="unit_pound_force_per_square_inch_short">pf/in²</string>
     <string name="unit_pound_force_short">lbf</string>
-    <string name="unit_pound_short">lbs</string>
+    <string name="unit_pound_short">lb</string>
     <string name="unit_prefix_atto">Atto</string>
     <string name="unit_prefix_atto_short">a</string>
     <string name="unit_prefix_base">Base</string>

@@ -26,6 +26,7 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.plus
@@ -175,7 +176,7 @@ private fun UnitGroupsScreen(
 
     LazyColumn(
       state = lazyListState,
-      modifier = Modifier.fillMaxSize(),
+      modifier = Modifier.consumeWindowInsets(paddingValues).fillMaxSize(),
       verticalArrangement = ListItemDefaults.ListArrangement,
       contentPadding =
         paddingValues + PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),

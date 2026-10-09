@@ -23,8 +23,11 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -35,6 +38,8 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationRailDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberDrawerState
@@ -85,7 +90,19 @@ fun NavigationDrawer(
         onItemClick = onItemClick,
       )
       VerticalDivider()
-      content()
+      // only consume start and pass the rest
+      Scaffold(
+        modifier =
+          Modifier.consumeWindowInsets(
+            NavigationRailDefaults.windowInsets.only(WindowInsetsSides.Start)
+          ),
+        contentWindowInsets =
+          NavigationRailDefaults.windowInsets.only(
+            WindowInsetsSides.Vertical + WindowInsetsSides.End
+          ),
+      ) {
+        content()
+      }
     }
   } else {
     ModalNavigationDrawer(

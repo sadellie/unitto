@@ -65,6 +65,7 @@ android {
         "it",
         "nl",
         "pt-rBR",
+        "hi",
         "ru",
         "tr",
         "zh-rCN",

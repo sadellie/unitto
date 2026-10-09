@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.settings.thirdparty
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -56,7 +57,7 @@ internal fun ThirdPartyLicensesScreen(navigateUpAction: () -> Unit = {}) {
     LazyColumn(
       verticalArrangement = ListItemDefaults.ListArrangement,
       contentPadding = padding,
-      modifier = Modifier.padding(horizontal = Sizes.large),
+      modifier = Modifier.consumeWindowInsets(padding).padding(horizontal = Sizes.large),
     ) {
       itemsIndexed(allThirdParty) { index, item ->
         ListItemExpressive(

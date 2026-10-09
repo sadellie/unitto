@@ -19,6 +19,7 @@
 package com.sadellie.unitto.feature.settings.advanced
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -85,6 +86,7 @@ private fun AdvancedSettingsScreen(
         Modifier.fillMaxSize()
           .verticalScroll(rememberScrollState())
           .padding(paddingValues)
+          .consumeWindowInsets(paddingValues)
           .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large)
     ) {
       CurrencyExchangeRatesAPI(

@@ -82,6 +82,8 @@
     <string name="settings_formatting">Pemformatan</string>
     <string name="settings_formatting_support">Tampilan angka dan kepresisian</string>
     <string name="settings_language">Bahasa</string>
+    <string name="settings_language_llm">Bahasa eksperimental</string>
+    <string name="settings_language_llm_support">Beberapa bahasa sebagian otomatis dan mungkin mengandung ketidakakuratan. Bahasa Inggris didukung sepenuhnya.</string>
     <string name="settings_language_support">Ubah bahasa aplikasi</string>
     <string name="settings_light_mode">Terang</string>
     <string name="settings_middle_zero">Nol di tengah</string>
@@ -699,7 +701,7 @@
     <string name="unit_pound_force_foot_short">lbf*ft</string>
     <string name="unit_pound_force_inch_short">lbf*in</string>
     <string name="unit_pound_force_short">lbf</string>
-    <string name="unit_pound_short">lbs</string>
+    <string name="unit_pound_short">lb</string>
     <string name="unit_prefix_atto">Ato</string>
     <string name="unit_prefix_atto_short">a</string>
     <string name="unit_prefix_centi">Senti</string>

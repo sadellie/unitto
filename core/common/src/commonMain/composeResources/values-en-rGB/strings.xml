@@ -885,7 +885,7 @@
     <string name="unit_pound_force_inch">Pound-force inch</string>
     <string name="unit_pound_force_inch_short">lbf*in</string>
     <string name="unit_pound_force_short">lbf</string>
-    <string name="unit_pound_short">lbs</string>
+    <string name="unit_pound_short">lb</string>
     <string name="unit_prefix_atto">Atto</string>
     <string name="unit_prefix_atto_short">a</string>
     <string name="unit_prefix_base">Base</string>

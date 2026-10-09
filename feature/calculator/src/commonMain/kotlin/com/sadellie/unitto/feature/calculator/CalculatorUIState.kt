@@ -38,6 +38,7 @@ internal sealed interface CalculatorUIState {
     val history: Flow<PagingData<CalculatorHistoryListItem>>,
     val middleZero: Boolean,
     val acButton: Boolean,
+    val topToBottom: Boolean,
     val additionalButtons: Boolean,
     val inverseMode: Boolean,
     val partialHistoryView: Boolean,

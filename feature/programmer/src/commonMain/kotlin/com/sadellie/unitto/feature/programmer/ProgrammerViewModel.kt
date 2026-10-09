@@ -118,6 +118,7 @@ class ProgrammerViewModel(
           initialPartialHistoryView = programmerPrefs.initialPartialHistoryView,
           openHistoryViewButton = calculatorHistoryPrefs.openHistoryViewButton,
           history = historyFlow,
+          topToBottom = keypadPrefs.topToBottom,
         )
       }
       .stateIn(viewModelScope, ProgrammerScreenUIState.Loading)

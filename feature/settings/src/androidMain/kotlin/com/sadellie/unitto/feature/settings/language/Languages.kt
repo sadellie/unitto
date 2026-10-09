@@ -24,6 +24,7 @@ import unitto.core.common.generated.resources.locale_en
 import unitto.core.common.generated.resources.locale_en_rGB
 import unitto.core.common.generated.resources.locale_es
 import unitto.core.common.generated.resources.locale_fr
+import unitto.core.common.generated.resources.locale_hi
 import unitto.core.common.generated.resources.locale_hu
 import unitto.core.common.generated.resources.locale_in
 import unitto.core.common.generated.resources.locale_it
@@ -42,6 +43,7 @@ internal val languages by lazy {
     "de" to Res.string.locale_de,
     "es" to Res.string.locale_es,
     "fr" to Res.string.locale_fr,
+    "hi" to Res.string.locale_hi,
     "hu" to Res.string.locale_hu,
     "id" to Res.string.locale_in,
     "it" to Res.string.locale_it,

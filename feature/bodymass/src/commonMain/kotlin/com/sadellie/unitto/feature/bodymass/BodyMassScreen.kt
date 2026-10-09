@@ -27,6 +27,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -112,6 +113,7 @@ private fun BodyMassScreen(
       modifier =
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
+          .consumeWindowInsets(paddingValues)
           .padding(Sizes.large)
           .fillMaxSize(),
       verticalArrangement = Arrangement.spacedBy(Sizes.large),

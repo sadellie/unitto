@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -134,7 +135,8 @@ fun FormattingScreen(
       modifier =
         Modifier.verticalScroll(rememberScrollState())
           .padding(paddingValues)
-          .padding(horizontal = Sizes.large),
+          .consumeWindowInsets(paddingValues)
+          .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
       verticalArrangement = ListItemDefaults.ListArrangement,
     ) {
       val precisions: ClosedFloatingPointRange<Float> = 0f..MAX_SCALE_ALIAS

@@ -84,4 +84,8 @@ class DisplayViewModel(
   internal fun updateMiddleZero(enabled: Boolean) = viewModelScope.launch {
     keypadPrefsRepository.updateMiddleZero(enabled)
   }
+
+  internal fun updateTopToBottom(enabled: Boolean) = viewModelScope.launch {
+    keypadPrefsRepository.updateTopToBottom(enabled)
+  }
 }

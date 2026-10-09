@@ -18,6 +18,9 @@
 
 package com.sadellie.unitto
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,10 +52,15 @@ import com.sadellie.unitto.core.datastore.DataStoreBindings
 import com.sadellie.unitto.core.datastore.ThemePreferences
 import com.sadellie.unitto.core.datastore.ThemePrefsRepository
 import com.sadellie.unitto.core.designsystem.LocalWindowSize
+import com.sadellie.unitto.core.designsystem.theme.DarkThemeColors
+import com.sadellie.unitto.core.designsystem.theme.LightThemeColors
 import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
+import com.sadellie.unitto.core.navigation.DateCalculatorStartRoute
+import com.sadellie.unitto.core.navigation.ProgrammerStartRoute
+import com.sadellie.unitto.core.navigation.TimeZoneStartRoute
 import com.sadellie.unitto.core.remote.RemoteBindings
 import com.sadellie.unitto.core.ui.datetime.LocalPlatformDateFormatSettings
 import com.sadellie.unitto.core.ui.datetime.PlatformDateFormatSettings
@@ -88,13 +96,15 @@ fun main() {
       LocalNumberTypography provides numberTypographyUnitto(),
       LocalPlatformDateFormatSettings provides platformDateFormatSettings,
     ) {
-      val appPrefs =
-        appGraph.appPrefsRepository.prefs.collectAsStateWithLifecycle(null).value
-          ?: return@CompositionLocalProvider
-      val themePrefs =
-        appGraph.themePrefsRepository.prefs.collectAsStateWithLifecycle(null).value
-          ?: return@CompositionLocalProvider
-      App(appPrefs, themePrefs)
+      val appPrefs = appGraph.appPrefsRepository.prefs.collectAsStateWithLifecycle(null).value
+      val themePrefs = appGraph.themePrefsRepository.prefs.collectAsStateWithLifecycle(null).value
+      if (appPrefs == null || themePrefs == null) {
+        val splashColor =
+          if (isSystemInDarkTheme()) DarkThemeColors.background else LightThemeColors.background
+        Box(modifier = Modifier.background(splashColor).fillMaxSize())
+      } else {
+        App(appPrefs, themePrefs)
+      }
     }
   }
 }
@@ -128,6 +138,9 @@ private val navBackStackConfig = SavedStateConfiguration {
       this.subclass(ConverterStartRoute::class, ConverterStartRoute.serializer())
       this.subclass(UnitFromRoute::class, UnitFromRoute.serializer())
       this.subclass(UnitToRoute::class, UnitToRoute.serializer())
+      this.subclass(DateCalculatorStartRoute::class, DateCalculatorStartRoute.serializer())
+      this.subclass(TimeZoneStartRoute::class, TimeZoneStartRoute.serializer())
+      this.subclass(ProgrammerStartRoute::class, ProgrammerStartRoute.serializer())
     }
   }
 }

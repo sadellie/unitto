@@ -1,0 +1,53 @@
+name: Deploy KMP WASM to /app
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}app/
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: zulu
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build WASM
+        run: ./gradlew sharedApp:wasmJsBrowserDistribution
+
+      - name: Move to /app
+        run: |
+          mkdir -p build/app
+          cp -r sharedApp/build/dist/wasmJs/productionExecutable/* build/app/
+
+      - name: Upload Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

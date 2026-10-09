@@ -20,6 +20,8 @@ package com.sadellie.unitto.feature.glance.converter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -125,10 +127,11 @@ private fun ConverterWidgetConfigureSelectorScreen(
     } else {
       ConverterWidgetUnitList(
         modifier =
-          Modifier.padding(paddingValues)
+          Modifier.consumeWindowInsets(paddingValues)
             .padding(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),
         groupedUnits = uiState.result,
         onClick = onClick,
+        contentPadding = paddingValues,
       )
     }
   }
@@ -139,8 +142,13 @@ private fun ConverterWidgetUnitList(
   modifier: Modifier,
   groupedUnits: Map<UnitGroup, List<UnitSearchResultItem>>,
   onClick: (unitId: String) -> Unit,
+  contentPadding: PaddingValues,
 ) {
-  LazyColumn(modifier = modifier, verticalArrangement = ListItemDefaults.ListArrangement) {
+  LazyColumn(
+    modifier = modifier,
+    verticalArrangement = ListItemDefaults.ListArrangement,
+    contentPadding = contentPadding,
+  ) {
     groupedUnits.forEach { (group, units) ->
       item(group.name, ContentType.HEADER) { ListHeader(text = stringResource(group.res)) }
 

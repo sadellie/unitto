@@ -25,6 +25,7 @@ import android.icu.util.ULocale
 import android.text.format.DateFormat.is24HourFormat
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.plus
@@ -60,11 +61,11 @@ import com.sadellie.unitto.core.ui.datetime.formatTime
 import com.sadellie.unitto.core.ui.listedShapes
 import com.sadellie.unitto.core.ui.rememberLinkOpener
 import dev.zacsweers.metrox.viewmodel.metroViewModel
-import java.time.ZonedDateTime
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_read_article
 import unitto.core.common.generated.resources.time_zone_no_results_support
+import java.time.ZonedDateTime
 
 @Composable
 internal fun AddTimeZoneRoute(
@@ -111,7 +112,7 @@ fun AddTimeZoneScreen(
       if (empty) {
         val linkOpener = rememberLinkOpener()
         SearchPlaceholder(
-          modifier = Modifier.padding(paddingValues),
+          modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues),
           onButtonClick = {
             linkOpener.launch("https://sadellie.github.io/unitto/help#add-time-zones")
           },
@@ -123,7 +124,7 @@ fun AddTimeZoneScreen(
         val is24Hour = is24HourFormat(mContext)
 
         LazyColumn(
-          modifier = Modifier.fillMaxSize(),
+          modifier = Modifier.fillMaxSize().consumeWindowInsets(paddingValues),
           contentPadding =
             paddingValues +
               PaddingValues(start = Sizes.large, end = Sizes.large, bottom = Sizes.large),

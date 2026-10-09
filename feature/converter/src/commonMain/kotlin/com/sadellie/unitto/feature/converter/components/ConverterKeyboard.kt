@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.converter.components
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
@@ -57,6 +58,7 @@ import com.sadellie.unitto.core.ui.KeypadButton.Companion.PowerKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RightBracketKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.RootKey
 import com.sadellie.unitto.core.ui.KeypadFlow
+import com.sadellie.unitto.core.ui.KeypadFlowScope
 
 @Composable
 internal fun DefaultKeyboard(
@@ -68,6 +70,7 @@ internal fun DefaultKeyboard(
   fractional: Token.Formatter,
   middleZero: Boolean,
   acButton: Boolean,
+  topToBottom: Boolean,
 ) {
   val iconHeight: Float =
     if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium)
@@ -88,23 +91,17 @@ internal fun DefaultKeyboard(
     }
 
     KeypadRow {
-      ButtonLight(Key7, onAddTokenClick)
-      ButtonLight(Key8, onAddTokenClick)
-      ButtonLight(Key9, onAddTokenClick)
+      if (topToBottom) Numbers123(onAddTokenClick, this) else Numbers789(onAddTokenClick, this)
       ButtonFilled(DivideKey, onAddTokenClick)
     }
 
     KeypadRow {
-      ButtonLight(Key4, onAddTokenClick)
-      ButtonLight(Key5, onAddTokenClick)
-      ButtonLight(Key6, onAddTokenClick)
+      Numbers456(onAddTokenClick, this)
       ButtonFilled(MultiplyKey, onAddTokenClick)
     }
 
     KeypadRow {
-      ButtonLight(Key1, onAddTokenClick)
-      ButtonLight(Key2, onAddTokenClick)
-      ButtonLight(Key3, onAddTokenClick)
+      if (topToBottom) Numbers789(onAddTokenClick, this) else Numbers123(onAddTokenClick, this)
       ButtonFilled(MinusKey, onAddTokenClick)
     }
 
@@ -130,6 +127,7 @@ internal fun NumberBaseKeyboard(
   onAddTokenClick: (String) -> Unit,
   onClearClick: () -> Unit,
   onDeleteClick: () -> Unit,
+  topToBottom: Boolean,
 ) {
   val iconHeight: Float =
     if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium)
@@ -138,33 +136,23 @@ internal fun NumberBaseKeyboard(
 
   KeypadFlow(modifier = modifier, iconHeight = iconHeight) {
     KeypadRow {
-      ButtonFilled(KeyA, onAddTokenClick)
-      ButtonFilled(KeyB, onAddTokenClick)
-      ButtonFilled(KeyC, onAddTokenClick)
+      NumbersABC(onAddTokenClick, this)
     }
 
     KeypadRow {
-      ButtonFilled(KeyD, onAddTokenClick)
-      ButtonFilled(KeyE, onAddTokenClick)
-      ButtonFilled(KeyF, onAddTokenClick)
+      NumbersDEF(onAddTokenClick, this)
     }
 
     KeypadRow {
-      ButtonLight(Key7, onAddTokenClick)
-      ButtonLight(Key8, onAddTokenClick)
-      ButtonLight(Key9, onAddTokenClick)
+      if (topToBottom) Numbers123(onAddTokenClick, this) else Numbers789(onAddTokenClick, this)
     }
 
     KeypadRow {
-      ButtonLight(Key4, onAddTokenClick)
-      ButtonLight(Key5, onAddTokenClick)
-      ButtonLight(Key6, onAddTokenClick)
+      Numbers456(onAddTokenClick, this)
     }
 
     KeypadRow {
-      ButtonLight(Key1, onAddTokenClick)
-      ButtonLight(Key2, onAddTokenClick)
-      ButtonLight(Key3, onAddTokenClick)
+      if (topToBottom) Numbers789(onAddTokenClick, this) else Numbers123(onAddTokenClick, this)
     }
 
     KeypadRow {
@@ -173,6 +161,46 @@ internal fun NumberBaseKeyboard(
     }
   }
 }
+
+@Composable
+private fun KeypadFlowScope.Numbers123(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(Key1, onAddTokenClick)
+    ButtonLight(Key2, onAddTokenClick)
+    ButtonLight(Key3, onAddTokenClick)
+  }
+
+@Composable
+private fun KeypadFlowScope.Numbers456(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(Key4, onAddTokenClick)
+    ButtonLight(Key5, onAddTokenClick)
+    ButtonLight(Key6, onAddTokenClick)
+  }
+
+@Composable
+private fun KeypadFlowScope.Numbers789(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(Key7, onAddTokenClick)
+    ButtonLight(Key8, onAddTokenClick)
+    ButtonLight(Key9, onAddTokenClick)
+  }
+
+@Composable
+private fun KeypadFlowScope.NumbersABC(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(KeyA, onAddTokenClick)
+    ButtonLight(KeyB, onAddTokenClick)
+    ButtonLight(KeyC, onAddTokenClick)
+  }
+
+@Composable
+private fun KeypadFlowScope.NumbersDEF(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(KeyD, onAddTokenClick)
+    ButtonLight(KeyE, onAddTokenClick)
+    ButtonLight(KeyF, onAddTokenClick)
+  }
 
 @Preview
 @Composable
@@ -186,6 +214,7 @@ private fun PreviewConverterKeyboard() {
     fractional = Token.Period,
     middleZero = false,
     acButton = true,
+    topToBottom = false,
   )
 }
 
@@ -197,5 +226,6 @@ private fun PreviewConverterKeyboardNumberBase() {
     onAddTokenClick = {},
     onClearClick = {},
     onDeleteClick = {},
+    topToBottom = false,
   )
 }

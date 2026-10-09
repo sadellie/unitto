@@ -19,6 +19,8 @@
 package com.sadellie.unitto.core.datastore
 
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.Route
 import com.sadellie.unitto.core.navigation.graphRoutes
@@ -30,36 +32,37 @@ class AppPrefsRepository(private val source: UserPrefDataSource) {
   val prefs =
     source.rawData.map {
       AppPreferences(
-        enableVibrations =
-          it[DatastorePrefKeys.ENABLE_VIBRATIONS] ?: AppPreferences.DEFAULT_ENABLE_VIBRATIONS,
-        enableKeepScreenOn =
-          it[DatastorePrefKeys.ENABLE_KEEP_SCREEN_ON]
-            ?: AppPreferences.DEFAULT_ENABLE_KEEP_SCREEN_ON,
-        lastReadChangelog =
-          it[DatastorePrefKeys.LAST_READ_CHANGELOG] ?: AppPreferences.DEFAULT_LAST_READ_CHANGELOG,
+        enableVibrations = it[enableVibrationsKey] ?: AppPreferences.DEFAULT_ENABLE_VIBRATIONS,
+        enableKeepScreenOn = it[enableKeepScreenOn] ?: AppPreferences.DEFAULT_ENABLE_KEEP_SCREEN_ON,
+        lastReadChangelog = it[lastReadChangelogKey] ?: AppPreferences.DEFAULT_LAST_READ_CHANGELOG,
         startingScreen = it.getStartingScreen(),
       )
     }
 
   suspend fun updateLastReadChangelog(value: String) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.LAST_READ_CHANGELOG] = value
+    preferences[lastReadChangelogKey] = value
   }
 
   suspend fun updateVibrations(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.ENABLE_VIBRATIONS] = enabled
+    preferences[enableVibrationsKey] = enabled
   }
 
   suspend fun updateEnableKeepScreenOn(enabled: Boolean) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.ENABLE_KEEP_SCREEN_ON] = enabled
+    preferences[enableKeepScreenOn] = enabled
   }
 
   suspend fun updateStartingScreen(graphId: String) = source.edit { preferences ->
-    preferences[DatastorePrefKeys.STARTING_SCREEN] = graphId
+    preferences[startingScreenKey] = graphId
   }
 
   private fun Preferences.getStartingScreen() =
-    graphRoutes.firstOrNull { it.routeId == this[DatastorePrefKeys.STARTING_SCREEN] }
+    graphRoutes.firstOrNull { it.routeId == this[startingScreenKey] }
       ?: AppPreferences.DEFAULT_STARTING_SCREEN
+
+  private val startingScreenKey = stringPreferencesKey(PrefKeys.STARTING_SCREEN_PREF_KEY)
+  private val lastReadChangelogKey = stringPreferencesKey(PrefKeys.LAST_READ_CHANGELOG_PREF_KEY)
+  private val enableVibrationsKey = booleanPreferencesKey(PrefKeys.ENABLE_VIBRATIONS_PREF_KEY)
+  private val enableKeepScreenOn = booleanPreferencesKey(PrefKeys.ENABLE_KEEP_SCREEN_ON_PREF_KEY)
 }
 
 data class AppPreferences(
@@ -70,11 +73,8 @@ data class AppPreferences(
 ) {
   internal companion object Defaults {
     const val DEFAULT_ENABLE_VIBRATIONS = true
-
     const val DEFAULT_ENABLE_KEEP_SCREEN_ON = false
-
     const val DEFAULT_LAST_READ_CHANGELOG = ""
-
     val DEFAULT_STARTING_SCREEN: Route = CalculatorStartRoute
   }
 }

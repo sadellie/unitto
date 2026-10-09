@@ -227,7 +227,7 @@ private fun ProgrammerScreenCompact(
     },
   ) { paddingValues ->
     LiquidCalculatorView(
-      modifier = Modifier.padding(paddingValues),
+      modifier = Modifier.padding(paddingValues).consumeWindowInsets(paddingValues),
       calculatorHistory = { height ->
         CalculatorHistoryList(
           modifier =
@@ -281,7 +281,7 @@ private fun ProgrammerScreenCompact(
           toggleShiftType = toggleShiftType,
           base = uiState.base,
           shiftType = uiState.shiftType,
-          // additionalButtons = uiState.additionalButtons,
+          topToBottom = uiState.topToBottom,
         )
       },
       partialHistoryView = uiState.partialHistoryView,
@@ -336,7 +336,10 @@ private fun ProgrammerScreenExpanded(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
           ),
       ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues).fillMaxHeight()) {
+        Column(
+          modifier =
+            Modifier.padding(paddingValues).consumeWindowInsets(paddingValues).fillMaxHeight()
+        ) {
           TextFieldsBox(
             modifier =
               Modifier.fillMaxHeight(
@@ -366,6 +369,7 @@ private fun ProgrammerScreenExpanded(
             toggleShiftType = toggleShiftType,
             base = uiState.base,
             shiftType = uiState.shiftType,
+            topToBottom = uiState.topToBottom,
           )
         }
       }
@@ -439,6 +443,7 @@ private fun PreviewProgrammerScreen() = ExpressivePreview {
                 }
               )
             ),
+          topToBottom = false,
         )
       },
     openDrawer = {},

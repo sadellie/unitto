@@ -20,6 +20,7 @@ package com.sadellie.unitto.feature.converter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
@@ -130,7 +131,7 @@ private fun UnitFromSelectorScreen(
     },
   ) { paddingValues ->
     UnitsList(
-      modifier = Modifier,
+      modifier = Modifier.consumeWindowInsets(paddingValues),
       searchState = uiState.searchState,
       navigateToUnitGroups = navigateToUnitGroups,
       selectedUnitId = uiState.unitFromId,

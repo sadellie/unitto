@@ -46,6 +46,7 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.Airwave
 import com.sadellie.unitto.core.designsystem.icons.symbols.Asterisk
 import com.sadellie.unitto.core.designsystem.icons.symbols.AttachMoney
 import com.sadellie.unitto.core.designsystem.icons.symbols.BacklightHigh
+import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.Code
 import com.sadellie.unitto.core.designsystem.icons.symbols.Compress
 import com.sadellie.unitto.core.designsystem.icons.symbols.DeviceThermostat
@@ -87,6 +88,7 @@ import com.sadellie.unitto.core.ui.AssistChip
 import com.sadellie.unitto.core.ui.FilterChip
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
+import unitto.core.common.generated.resources.common_clear
 import unitto.core.common.generated.resources.common_expand_less_description
 import unitto.core.common.generated.resources.common_expand_more_description
 import unitto.core.common.generated.resources.common_open_settings
@@ -124,6 +126,13 @@ internal fun UnitGroupFilter(
       modifier = modifier,
       maxRows = if (isExpanded) Int.MAX_VALUE else 2,
       mainContent = {
+        AssistChip(
+          modifier = chipModifier,
+          onClick = { selectAction(null) },
+          imageVector = Symbols.Close,
+          contentDescription = stringResource(Res.string.common_clear),
+        )
+
         items.forEach { item ->
           val selected = item == chosenUnitGroup
           val icons = remember(showIcons) { if (showIcons) item.icons else null }

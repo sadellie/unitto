@@ -31,8 +31,8 @@ Play Store is preferred
 </p>
 
 1. Read [CONTRIBUTING.md](./CONTRIBUTING.md)
-2. Hard forks and alterations of Unitto are **NOT** welcomed. Use a _Fork_ button so that commits' author is not lost
-3. Do **NOT** use branding materials (app name, icons, descriptions, screenshots and other materials)
+2. Hard forks, distribution, and other modifications of Unitto are subject to the strict enforcement of the GNU GPL v3 license
+3. You **must not** use any original branding materials (including the app name, icons, descriptions, and screenshots) in your modifications. You are strictly prohibited from suggesting or implying any affiliation with or endorsement by this project.
 
 # ⚠ Security
 Read [this](./SECURITY.md).
@@ -44,8 +44,8 @@ SHA-256 fingerprints
 
 <sup>TL;DR: the app is legit, no cap fr fr</sup>
 
-
 ## 🌐 State of Unitto Web (Alpha)
+- Can be installed as PWA
 - Main features are on par with Android version (including accuracy of calculations)
 - Physical keyboard support is implemented with almost no limitations
 - User interface adapts to bigger screens
@@ -57,9 +57,6 @@ SHA-256 fingerprints
 ### Web version uses additional licensed code
 - wasm port of [kt-math](https://github.com/gciatto/kt-math) with additional fixes. Files in `kt-math` folder are [licensed under GPL-2.0](./kt-math/LICENSE-kt-math)
 - incomplete port of [big-math](https://github.com/eobermuhlner/big-math) with additional fixes. Files in `core/common/wasmJsMain` folder are [licensed under MIT](./core/common/LICENSE-big-math.txt)
-
-## 🤖 Custom ROM developers
-Leave.
 
 ## 🔎 Additional
 - Terms and Conditions: https://sadellie.github.io/unitto/terms

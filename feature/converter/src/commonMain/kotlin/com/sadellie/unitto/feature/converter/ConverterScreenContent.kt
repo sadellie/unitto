@@ -248,6 +248,7 @@ internal fun ConverterDefault(
         fractional = uiState.formatterSymbols.fractional,
         middleZero = uiState.middleZero,
         acButton = uiState.acButton,
+        topToBottom = uiState.topToBottom,
       )
     },
   )
@@ -321,6 +322,7 @@ internal fun NumberBase(
         onAddTokenClick = { uiState.input.addTokens(it) },
         onDeleteClick = { uiState.input.deleteTokens() },
         onClearClick = { uiState.input.clearText() },
+        topToBottom = uiState.topToBottom,
       )
     },
   )
@@ -738,6 +740,7 @@ private fun PreviewConverterDefault() {
         outputFormat = OutputFormat.PLAIN,
         result = ConverterResult.Default(KBigDecimal.ZERO, KBigDecimal.ZERO),
         formatTime = true,
+        topToBottom = false,
       ),
     navigateToRightScreen = { _, _, _, _, _ -> },
     navigateToLeftScreen = { _, _ -> },

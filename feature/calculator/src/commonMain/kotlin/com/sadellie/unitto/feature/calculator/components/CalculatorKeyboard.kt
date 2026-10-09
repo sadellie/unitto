@@ -30,6 +30,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -104,6 +105,7 @@ import com.sadellie.unitto.core.ui.KeypadButton.Companion.RootKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.SinKey
 import com.sadellie.unitto.core.ui.KeypadButton.Companion.TanKey
 import com.sadellie.unitto.core.ui.KeypadFlow
+import com.sadellie.unitto.core.ui.KeypadFlowScope
 
 @Composable
 internal fun CalculatorKeyboard(
@@ -122,6 +124,7 @@ internal fun CalculatorKeyboard(
   showAcButton: Boolean,
   middleZero: Boolean,
   fractional: Token.Formatter,
+  topToBottom: Boolean,
 ) {
   if (LocalWindowSize.current.heightSizeClass < WindowHeightSizeClass.Medium) {
     CompactKeyboard(
@@ -138,6 +141,7 @@ internal fun CalculatorKeyboard(
       showAcButton = showAcButton,
       middleZero = middleZero,
       fractional = fractional,
+      topToBottom = topToBottom,
     )
   } else {
     ExpandedKeyboard(
@@ -156,6 +160,7 @@ internal fun CalculatorKeyboard(
       showAcButton = showAcButton,
       middleZero = middleZero,
       fractional = fractional,
+      topToBottom = topToBottom,
     )
   }
 }
@@ -177,6 +182,7 @@ private fun ExpandedKeyboard(
   showAcButton: Boolean,
   middleZero: Boolean,
   fractional: Token.Formatter,
+  topToBottom: Boolean,
 ) {
   var containerHeightPx by remember { mutableStateOf(0) }
   val density = LocalDensity.current
@@ -230,6 +236,7 @@ private fun ExpandedKeyboard(
       showAcButton = showAcButton,
       middleZero = middleZero,
       fractional = fractional,
+      topToBottom = topToBottom,
     )
 
     Spacer(Modifier.weight(SPACER_WEIGHT))
@@ -247,6 +254,7 @@ private fun ExpandedMainKeypad(
   showAcButton: Boolean,
   middleZero: Boolean,
   fractional: Token.Formatter,
+  topToBottom: Boolean,
 ) {
   KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_TALL) {
     KeypadRow {
@@ -261,21 +269,15 @@ private fun ExpandedMainKeypad(
       ButtonFilled(DivideKey, onAddTokenClick)
     }
     KeypadRow {
-      ButtonLight(Key7, onAddTokenClick)
-      ButtonLight(Key8, onAddTokenClick)
-      ButtonLight(Key9, onAddTokenClick)
+      if (topToBottom) Numbers123(onAddTokenClick, this) else Numbers789(onAddTokenClick, this)
       ButtonFilled(MultiplyKey, onAddTokenClick)
     }
     KeypadRow {
-      ButtonLight(Key4, onAddTokenClick)
-      ButtonLight(Key5, onAddTokenClick)
-      ButtonLight(Key6, onAddTokenClick)
+      Numbers456(onAddTokenClick, this)
       ButtonFilled(MinusKey, onAddTokenClick)
     }
     KeypadRow {
-      ButtonLight(Key1, onAddTokenClick)
-      ButtonLight(Key2, onAddTokenClick)
-      ButtonLight(Key3, onAddTokenClick)
+      if (topToBottom) Numbers789(onAddTokenClick, this) else Numbers123(onAddTokenClick, this)
       ButtonFilled(PlusKey, onAddTokenClick)
     }
     KeypadRow {
@@ -440,6 +442,7 @@ private fun CompactKeyboard(
   showAcButton: Boolean,
   middleZero: Boolean,
   fractional: Token.Formatter,
+  topToBottom: Boolean,
 ) {
   val angleKey = remember(radianMode) { if (radianMode) AngleRadKey else AngleDegKey }
   if (inverseMode) {
@@ -458,6 +461,7 @@ private fun CompactKeyboard(
       middleZero = middleZero,
       fractional = fractional,
       angleKey = angleKey,
+      topToBottom = topToBottom,
     )
   } else {
     CompactKeyboardDefault(
@@ -475,6 +479,7 @@ private fun CompactKeyboard(
       middleZero = middleZero,
       fractional = fractional,
       angleKey = angleKey,
+      topToBottom = topToBottom,
     )
   }
 }
@@ -495,6 +500,7 @@ private fun CompactKeyboardInverse(
   middleZero: Boolean,
   fractional: Token.Formatter,
   angleKey: KeypadButton.KeypadButtonSimple,
+  topToBottom: Boolean,
 ) {
   KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT) {
     val iconScale = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
@@ -502,9 +508,7 @@ private fun CompactKeyboardInverse(
       ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconScale)
       ButtonTransparent(ModuloKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(PiKey, onAddTokenClick, height = iconScale)
-      ButtonLight(Key7, onAddTokenClick)
-      ButtonLight(Key8, onAddTokenClick)
-      ButtonLight(Key9, onAddTokenClick)
+      if (topToBottom) Numbers123(onAddTokenClick, this) else Numbers789(onAddTokenClick, this)
       if (showAcButton) {
         ButtonTertiary(ClearKey, onClearClick)
         ButtonFilled(BracketsKey, onBracketsClick)
@@ -517,9 +521,7 @@ private fun CompactKeyboardInverse(
       ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconScale)
       ButtonTransparent(PowerKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(FactorialKey, onAddTokenClick, height = iconScale)
-      ButtonLight(Key4, onAddTokenClick)
-      ButtonLight(Key5, onAddTokenClick)
-      ButtonLight(Key6, onAddTokenClick)
+      Numbers456(onAddTokenClick, this)
       ButtonFilled(MultiplyKey, onAddTokenClick)
       ButtonFilled(DivideKey, onAddTokenClick)
     }
@@ -527,9 +529,7 @@ private fun CompactKeyboardInverse(
       ButtonTransparent(ArSinKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(ArCosKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(AcTanKey, onAddTokenClick, height = iconScale)
-      ButtonLight(Key1, onAddTokenClick)
-      ButtonLight(Key2, onAddTokenClick)
-      ButtonLight(Key3, onAddTokenClick)
+      if (topToBottom) Numbers789(onAddTokenClick, this) else Numbers123(onAddTokenClick, this)
       ButtonFilled(MinusKey, onAddTokenClick)
       ButtonFilled(PercentKey, onAddTokenClick)
     }
@@ -568,6 +568,7 @@ private fun CompactKeyboardDefault(
   middleZero: Boolean,
   fractional: Token.Formatter,
   angleKey: KeypadButton.KeypadButtonSimple,
+  topToBottom: Boolean,
 ) {
   KeypadFlow(modifier = modifier, iconHeight = KeyboardButtonToken.ICON_HEIGHT_SHORT) {
     val iconScale = KeyboardButtonToken.ICON_HEIGHT_SHORT_SECONDARY
@@ -575,9 +576,7 @@ private fun CompactKeyboardDefault(
       ButtonTransparent(angleKey, { onRadianModeClick(!radianMode) }, height = iconScale)
       ButtonTransparent(RootKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(PiKey, onAddTokenClick, height = iconScale)
-      ButtonLight(Key7, onAddTokenClick)
-      ButtonLight(Key8, onAddTokenClick)
-      ButtonLight(Key9, onAddTokenClick)
+      if (topToBottom) Numbers123(onAddTokenClick, this) else Numbers789(onAddTokenClick, this)
       if (showAcButton) {
         ButtonTertiary(ClearKey, onClearClick)
         ButtonFilled(BracketsKey, onBracketsClick)
@@ -590,9 +589,7 @@ private fun CompactKeyboardDefault(
       ButtonTransparent(InvKey, { onInverseModeClick(!inverseMode) }, height = iconScale)
       ButtonTransparent(PowerKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(FactorialKey, onAddTokenClick, height = iconScale)
-      ButtonLight(Key4, onAddTokenClick)
-      ButtonLight(Key5, onAddTokenClick)
-      ButtonLight(Key6, onAddTokenClick)
+      Numbers456(onAddTokenClick, this)
       ButtonFilled(MultiplyKey, onAddTokenClick)
       ButtonFilled(DivideKey, onAddTokenClick)
     }
@@ -600,9 +597,7 @@ private fun CompactKeyboardDefault(
       ButtonTransparent(SinKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(CosKey, onAddTokenClick, height = iconScale)
       ButtonTransparent(TanKey, onAddTokenClick, height = iconScale)
-      ButtonLight(Key1, onAddTokenClick)
-      ButtonLight(Key2, onAddTokenClick)
-      ButtonLight(Key3, onAddTokenClick)
+      if (topToBottom) Numbers789(onAddTokenClick, this) else Numbers123(onAddTokenClick, this)
       ButtonFilled(MinusKey, onAddTokenClick)
       ButtonFilled(PercentKey, onAddTokenClick)
     }
@@ -624,6 +619,30 @@ private fun CompactKeyboardDefault(
     }
   }
 }
+
+@Composable
+private fun KeypadFlowScope.Numbers123(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(Key1, onAddTokenClick)
+    ButtonLight(Key2, onAddTokenClick)
+    ButtonLight(Key3, onAddTokenClick)
+  }
+
+@Composable
+private fun KeypadFlowScope.Numbers456(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(Key4, onAddTokenClick)
+    ButtonLight(Key5, onAddTokenClick)
+    ButtonLight(Key6, onAddTokenClick)
+  }
+
+@Composable
+private fun KeypadFlowScope.Numbers789(onAddTokenClick: (String) -> Unit, rowScope: RowScope) =
+  with(rowScope) {
+    ButtonLight(Key7, onAddTokenClick)
+    ButtonLight(Key8, onAddTokenClick)
+    ButtonLight(Key9, onAddTokenClick)
+  }
 
 private fun Modifier.fixedHeight(height: () -> Dp): Modifier = layout { measurable, constraints ->
   val heightPx = height().roundToPx()
@@ -667,6 +686,7 @@ private fun PreviewExpandedKeyboard() = ExpressivePreview {
     showAcButton = true,
     middleZero = false,
     fractional = Token.Period,
+    topToBottom = false,
   )
 }
 
@@ -694,6 +714,7 @@ private fun PreviewExpandedKeyboard2() = ExpressivePreview {
     showAcButton = true,
     middleZero = false,
     fractional = Token.Period,
+    topToBottom = false,
   )
 }
 
@@ -719,5 +740,6 @@ private fun PreviewCompactKeyboard() = ExpressivePreview {
     showAcButton = true,
     middleZero = false,
     fractional = Token.Period,
+    topToBottom = false,
   )
 }
